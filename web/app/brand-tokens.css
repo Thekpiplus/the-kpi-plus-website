@@ -1,0 +1,56 @@
+:root {
+  --kpi-kpi-lime-start: #E6E81F;
+  --kpi-kpi-lime-end: #A3CE39;
+  --kpi-kpi-teal: #0B6660;
+  --kpi-deep-teal: #063F3B;
+  --kpi-charcoal: #3B3B3B;
+  --kpi-white: #FFFFFF;
+  --kpi-light-lime: #F2F8E2;
+  --kpi-light-grey: #F4F4F4;
+  --kpi-line-grey: #E3E8EB;
+  --kpi-body-text: #555555;
+  --kpi-lime-gradient: linear-gradient(135deg, #E6E81F 0%, #A3CE39 100%);
+  --kpi-teal-gradient: linear-gradient(135deg, #0B6660 0%, #063F3B 100%);
+  --kpi-font-display: "Montserrat", "Sarabun", Arial, sans-serif;
+  --kpi-font-body: "Sarabun", "Montserrat", Arial, sans-serif;
+  --kpi-wrap: 72rem;
+  --kpi-gutter: 1.25rem;
+  --kpi-hero-y: 3.25rem;
+  --kpi-section-y: 3.5rem;
+  --kpi-touch: 2.75rem;
+  --kpi-radius: 0.75rem;
+  --kpi-radius-lg: 1.25rem;
+}
+
+@media (min-width: 40rem) {
+  :root {
+    --kpi-gutter: 1.75rem;
+    --kpi-hero-y: 3.75rem;
+    --kpi-section-y: 4.25rem;
+  }
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --kpi-gutter: 2rem;
+    --kpi-hero-y: 4rem;
+    --kpi-section-y: 4.5rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --kpi-gutter: 2.5rem;
+    --kpi-hero-y: 4.75rem;
+    --kpi-section-y: 5.25rem;
+  }
+}
+
+@media (min-width: 80rem) {
+  :root {
+    --kpi-wrap: 76rem;
+    --kpi-gutter: 2.5rem;
+    --kpi-hero-y: 5.25rem;
+    --kpi-section-y: 5.75rem;
+  }
+}

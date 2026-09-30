@@ -1,0 +1,448 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String    @id @default(cuid())
+  phone          String    @unique
+  email          String    @unique
+  name           String
+  role           String    @default("owner")
+  modules        String    @default("")
+  pinHash        String
+  pinSalt        String
+  failedAttempts Int       @default(0)
+  lockedUntil    DateTime?
+  createdAt      DateTime  @default(now())
+  partner        Partner?
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  tokenHash String   @unique
+  expiresAt DateTime
+  ip        String
+  userAgent String
+  createdAt DateTime @default(now())
+}
+
+model TrustedDevice {
+  id              String    @id @default(cuid())
+  userId          String
+  deviceTokenHash String    @unique
+  userAgent       String
+  verifiedAt      DateTime
+  lastSeenAt      DateTime
+}
+
+model DeviceChallenge {
+  id        String   @id @default(cuid())
+  userId    String
+  codeHash  String
+  expiresAt DateTime
+  attempts  Int      @default(0)
+}
+
+model PinReset {
+  id        String    @id @default(cuid())
+  userId    String
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+}
+
+model LoginAttempt {
+  id        String   @id @default(cuid())
+  phone     String
+  email     String   @default("")
+  userId    String   @default("")
+  userName  String   @default("")
+  role      String   @default("")
+  shop      String   @default("")
+  ip        String
+  userAgent String   @default("")
+  success   Boolean
+  reason    String
+  createdAt DateTime @default(now())
+
+  @@index([email])
+  @@index([createdAt])
+}
+
+model RateLimit {
+  id        String   @id
+  count     Int      @default(0)
+  resetAt   DateTime
+}
+
+model Stage {
+  id        String  @id @default(cuid())
+  name      String
+  nameTh    String
+  sortOrder Int
+  isWon     Boolean @default(false)
+  isLost    Boolean @default(false)
+  leads     Lead[]
+}
+
+model Lead {
+  id               String     @id @default(cuid())
+  stageId          String
+  stage            Stage      @relation(fields: [stageId], references: [id])
+  ownerId          String?
+  contactName      String
+  businessName     String     @default("")
+  businessType     String     @default("")
+  phone            String     @default("")
+  phoneNormalized  String     @default("")
+  email            String     @default("")
+  location         String     @default("")
+  website          String     @default("")
+  services         String     @default("[]")
+  source           String
+  formName         String     @default("")
+  pageUrl          String     @default("")
+  message          String     @default("")
+  rawPayload       String     @default("")
+  utm              String     @default("{}")
+  locale           String     @default("th")
+  estimatedValue   Float?
+  decisionDate     DateTime?
+  lastContactAt    DateTime?
+  nextActivityAt   DateTime?
+  outcome          String     @default("")
+  outcomeReason    String     @default("")
+  noFollowUp       Boolean    @default(false)
+  noFollowUpReason String     @default("")
+  partnerId        String?
+  partner          Partner?   @relation(fields: [partnerId], references: [id])
+  referralId       String?
+  referralStatus   String     @default("")
+  referredAt       DateTime?
+  referralAcceptedAt DateTime?
+  protectionEndsAt DateTime?
+  creditNote       String     @default("")
+  archivedAt       DateTime?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+  activities       Activity[]
+  events           LeadEvent[]
+  notifications    Notification[]
+  attachments      Attachment[]
+  payments         PaymentRecord[]
+  commissions      CommissionItem[]
+  referrals        Referral[]
+  creditDecisions  LeadCreditDecision[]
+}
+
+model Activity {
+  id            String    @id @default(cuid())
+  leadId        String
+  lead          Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  ownerId       String?
+  type          String
+  title         String
+  dueAt         DateTime
+  status        String    @default("open")
+  notes         String    @default("")
+  outcome       String    @default("")
+  firstResponse Boolean   @default(false)
+  completedAt   DateTime?
+  createdAt     DateTime  @default(now())
+}
+
+model LeadEvent {
+  id        String   @id @default(cuid())
+  leadId    String
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  userId    String?
+  type      String
+  detail    String
+  createdAt DateTime @default(now())
+}
+
+model Notification {
+  id            String    @id @default(cuid())
+  leadId        String
+  lead          Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  kind          String
+  toEmail       String
+  status        String
+  error         String    @default("")
+  attempts      Int       @default(0)
+  lastAttemptAt DateTime?
+  createdAt     DateTime  @default(now())
+}
+
+model Attachment {
+  id        String   @id @default(cuid())
+  leadId    String
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  filename  String
+  mime      String
+  size      Int
+  path      String
+  createdAt DateTime @default(now())
+}
+
+model Partner {
+  id               String               @id @default(cuid())
+  userId           String?              @unique
+  user             User?                @relation(fields: [userId], references: [id])
+  type             String
+  legalName        String
+  displayName      String
+  email            String
+  phone            String
+  phoneNormalized  String               @default("")
+  address          String               @default("")
+  taxIdEncrypted   String               @default("")
+  taxIdLast4       String               @default("")
+  pendingLegalName String               @default("")
+  pendingTaxIdEncrypted String          @default("")
+  pendingTaxIdLast4 String              @default("")
+  tier             String
+  status           String               @default("pending")
+  kycStatus        String               @default("unverified")
+  approvedAt       DateTime?
+  renewsAt         DateTime?
+  termsVersion     String               @default("")
+  termsAcceptedAt  DateTime?
+  reviewNote       String               @default("")
+  reviewedAt       DateTime?
+  reviewedById     String?
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+  leads            Lead[]
+  banks            PartnerBankAccount[]
+  documents        PartnerDocument[]
+  referrals        Referral[]
+  commissions      CommissionItem[]
+  payouts          Payout[]
+  audits           AuditLog[]
+}
+
+model PartnerBankAccount {
+  id                     String    @id @default(cuid())
+  partnerId              String
+  partner                Partner   @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  bankName               String
+  accountName            String
+  accountNumberEncrypted String
+  accountLast4           String
+  status                 String
+  approvedAt             DateTime?
+  approvedById           String?
+  createdAt              DateTime  @default(now())
+}
+
+model PartnerDocument {
+  id        String   @id @default(cuid())
+  partnerId String
+  partner   Partner  @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  kind      String
+  filename  String
+  mime      String
+  size      Int
+  path      String
+  checksum  String
+  createdAt DateTime @default(now())
+}
+
+model Referral {
+  id               String           @id @default(cuid())
+  partnerId        String
+  partner          Partner          @relation(fields: [partnerId], references: [id])
+  leadId           String?
+  lead             Lead?            @relation(fields: [leadId], references: [id])
+  status           String           @default("draft")
+  businessName     String
+  contactName      String
+  phone            String
+  email            String           @default("")
+  need             String
+  submittedAt      DateTime?
+  reviewedAt       DateTime?
+  acceptedAt       DateTime?
+  protectionEndsAt DateTime?
+  rejectedReason   String           @default("")
+  creditNote       String           @default("")
+  ownerId          String?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  commissions      CommissionItem[]
+}
+
+model PaymentRecord {
+  id               String           @id @default(cuid())
+  leadId           String
+  lead             Lead             @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  serviceMonth     String
+  serviceName      String
+  grossSatang      Int
+  discountSatang   Int              @default(0)
+  vatSatang        Int              @default(0)
+  ineligibleSatang Int              @default(0)
+  receivedSatang   Int
+  confirmed        Boolean          @default(false)
+  confirmedAt      DateTime?
+  confirmedById    String?
+  kind             String           @default("receipt")
+  note             String           @default("")
+  createdAt        DateTime         @default(now())
+  commissions      CommissionItem[]
+}
+
+model CommissionRule {
+  id          String   @id @default(cuid())
+  version     Int      @unique
+  payload     String
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  createdById String?
+}
+
+model CommissionItem {
+  id               String         @id @default(cuid())
+  partnerId        String
+  partner          Partner        @relation(fields: [partnerId], references: [id])
+  leadId           String
+  lead             Lead           @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  referralId       String?
+  referral         Referral?      @relation(fields: [referralId], references: [id])
+  paymentId        String?
+  payment          PaymentRecord? @relation(fields: [paymentId], references: [id])
+  ruleVersion      Int
+  partnerTier      String
+  serviceMonth     String
+  monthIndex       Int
+  status           String
+  eligibleSatang   Int
+  rateBps          Int
+  calculatedSatang Int
+  paidSatang       Int            @default(0)
+  adjustmentSatang Int            @default(0)
+  remainingSatang  Int
+  exceptionReason  String         @default("")
+  holdReason       String         @default("")
+  snapshot         String         @default("{}")
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  payoutLines      PayoutLine[]
+}
+
+model Payout {
+  id                String       @id @default(cuid())
+  partnerId         String
+  partner           Partner      @relation(fields: [partnerId], references: [id])
+  status            String       @default("draft")
+  dueDate           DateTime
+  paidAt            DateTime?
+  method            String       @default("")
+  reference         String       @default("")
+  grossSatang       Int
+  adjustmentSatang  Int          @default(0)
+  withholdingSatang Int          @default(0)
+  netSatang         Int
+  bankSnapshot      String       @default("{}")
+  note              String       @default("")
+  createdAt         DateTime     @default(now())
+  lines             PayoutLine[]
+}
+
+model PayoutLine {
+  id           String         @id @default(cuid())
+  payoutId     String
+  payout       Payout         @relation(fields: [payoutId], references: [id], onDelete: Cascade)
+  commissionId String
+  commission   CommissionItem @relation(fields: [commissionId], references: [id])
+  amountSatang Int
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  partnerId  String?
+  partner    Partner? @relation(fields: [partnerId], references: [id])
+  entityType String
+  entityId   String
+  action     String
+  detail     String
+  createdAt  DateTime @default(now())
+}
+
+model LeadCreditDecision {
+  id              String   @id @default(cuid())
+  leadId          String
+  lead            Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  winnerPartnerId String?
+  reason          String
+  decidedById     String
+  createdAt       DateTime @default(now())
+}
+
+model CmsDocument {
+  id               String    @id @default(cuid())
+  kind             String
+  title            String
+  slug             String
+  locale           String    @default("th")
+  status           String    @default("draft")
+  template         String    @default("general")
+  excerpt          String    @default("")
+  body             String    @default("[]")
+  featuredImage    String    @default("")
+  imageAlt         String    @default("")
+  category         String    @default("")
+  tags             String    @default("")
+  author           String    @default("")
+  seoTitle         String    @default("")
+  metaDescription  String    @default("")
+  canonical        String    @default("")
+  ogImage          String    @default("")
+  noindex          Boolean   @default(false)
+  showInMenu       Boolean   @default(false)
+  menu             String    @default("none")
+  menuParent       String    @default("")
+  menuPosition     Int       @default(0)
+  publishedAt      DateTime?
+  scheduledAt      DateTime?
+  trashedAt        DateTime?
+  updatedBy        String    @default("")
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@unique([kind, slug, locale])
+}
+
+model CmsMedia {
+  id        String   @id @default(cuid())
+  filename  String
+  path      String
+  alt       String   @default("")
+  caption   String   @default("")
+  mime      String
+  size      Int
+  createdAt DateTime @default(now())
+}
+
+model CmsRedirect {
+  id         String   @id @default(cuid())
+  fromPath   String   @unique
+  toPath     String
+  statusCode Int      @default(301)
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now())
+}
+
+model CmsSetting {
+  id        String   @id
+  value     String   @default("{}")
+  updatedAt DateTime @updatedAt
+}
