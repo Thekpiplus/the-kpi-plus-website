@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useId, useState } from "react";
 import { FormPrivacyNotice } from "@/components/FormPrivacyNotice";
 import { AUDIT_CONTACTS, readUtm } from "@/lib/audit";
+import { auditCopyFor } from "@/lib/audit-copy";
 import {
   ENQUIRY_SERVICES,
   ENQUIRY_UI,
@@ -24,6 +25,13 @@ type FormState = {
 };
 
 type FieldError = Partial<Record<"name" | "businessName" | "contact" | "serviceInterest" | "consent", string>>;
+
+const revenueGroups = {
+  th: { contact: "ข้อมูลติดต่อ", hotel: "เกี่ยวกับโรงแรม", topic: "เรื่องที่อยากคุย" },
+  en: { contact: "Contact details", hotel: "About the hotel", topic: "What you'd like to discuss" },
+  ru: { contact: "Contact details", hotel: "About the hotel", topic: "What you'd like to discuss" },
+  zh: { contact: "Contact details", hotel: "About the hotel", topic: "What you'd like to discuss" },
+} as const;
 
 function ContactNote({ locale, className = "" }: { locale: Locale; className?: string }) {
   const t = ENQUIRY_UI[locale];
@@ -46,17 +54,19 @@ function Field({
   htmlFor,
   error,
   optional,
+  labelClassName = "block text-sm font-bold text-[#3B3B3B]",
   children,
 }: {
   label: string;
   htmlFor: string;
   error?: string;
   optional?: string;
+  labelClassName?: string;
   children: React.ReactNode;
 }) {
   return (
     <div>
-      <label htmlFor={htmlFor} className="block text-sm font-bold text-[#3B3B3B]">
+      <label htmlFor={htmlFor} className={labelClassName}>
         {label}
         {optional ? <span className="ml-2 font-medium text-[#555555]">({optional})</span> : null}
       </label>
@@ -299,6 +309,147 @@ export function EnquiryForm({
       )}
     </div>
   );
+
+  if (service === "revenue" && !compact) {
+    const groups = revenueGroups[locale];
+    const labelClassName = "kpi-revenue-enquiry-label";
+    return (
+      <section id={sectionId} className="kpi-revenue-enquiry scroll-mt-28">
+        <div className="kpi-section kpi-revenue-enquiry-grid">
+          <div className="kpi-revenue-enquiry-intro">
+            <p className="kpi-kicker kpi-revenue-enquiry-kicker">{kickerText}</p>
+            <h2 className="kpi-h2 kpi-revenue-enquiry-heading">{heading}</h2>
+            <p className="kpi-revenue-enquiry-lead">
+              {lead.split("\n").map((line, index) => (
+                <span key={line} className={index > 0 ? "kpi-revenue-enquiry-line" : undefined}>
+                  {line}
+                </span>
+              ))}
+            </p>
+          </div>
+          <div className="kpi-revenue-enquiry-panel">
+            {status === "success" ? (
+              <div role="status">
+                <p className="kpi-revenue-enquiry-success">{t.success}</p>
+                <p className="kpi-revenue-enquiry-reply">{auditCopyFor(locale).trustReply}</p>
+                <ContactNote locale={locale} className="kpi-revenue-enquiry-direct" />
+              </div>
+            ) : (
+              <form className="kpi-revenue-enquiry-fields" onSubmit={onSubmit} noValidate>
+                <div className="kpi-revenue-enquiry-group">
+                  <p className="kpi-revenue-enquiry-group-label">{groups.contact}</p>
+                  <div className="kpi-revenue-enquiry-pair">
+                    <Field label={t.name} htmlFor={`${formId}-name`} error={errors.name} labelClassName={labelClassName}>
+                      <input
+                        id={`${formId}-name`}
+                        name="name"
+                        autoComplete="name"
+                        className="kpi-field"
+                        value={state.name}
+                        aria-invalid={Boolean(errors.name)}
+                        onBlur={() => validate()}
+                        onChange={(event) => setState((current) => ({ ...current, name: event.target.value }))}
+                      />
+                    </Field>
+                    <Field label={t.contact} htmlFor={`${formId}-contact`} error={errors.contact} labelClassName={labelClassName}>
+                      <input
+                        id={`${formId}-contact`}
+                        name="contact"
+                        autoComplete="tel"
+                        inputMode="email"
+                        className="kpi-field"
+                        value={state.contact}
+                        aria-invalid={Boolean(errors.contact)}
+                        onBlur={() => validate()}
+                        onChange={(event) => setState((current) => ({ ...current, contact: event.target.value }))}
+                      />
+                    </Field>
+                  </div>
+                </div>
+                <div className="kpi-revenue-enquiry-group">
+                  <p className="kpi-revenue-enquiry-group-label">{groups.hotel}</p>
+                  <Field label={t.business} htmlFor={`${formId}-business`} error={errors.businessName} labelClassName={labelClassName}>
+                    <input
+                      id={`${formId}-business`}
+                      name="organization"
+                      autoComplete="organization"
+                      className="kpi-field"
+                      value={state.businessName}
+                      aria-invalid={Boolean(errors.businessName)}
+                      onBlur={() => validate()}
+                      onChange={(event) => setState((current) => ({ ...current, businessName: event.target.value }))}
+                    />
+                  </Field>
+                </div>
+                <div className="kpi-revenue-enquiry-group">
+                  <p className="kpi-revenue-enquiry-group-label">{groups.topic}</p>
+                  <Field label={t.message} htmlFor={`${formId}-message`} optional={t.messageOptional} labelClassName={labelClassName}>
+                    <textarea
+                      id={`${formId}-message`}
+                      name="message"
+                      rows={4}
+                      className="kpi-field"
+                      placeholder={t.messageHint}
+                      value={state.message}
+                      onChange={(event) => setState((current) => ({ ...current, message: event.target.value }))}
+                    />
+                  </Field>
+                </div>
+                <input type="hidden" name="serviceInterest" value={preset?.id ?? "revenue"} />
+                <div className="kpi-revenue-enquiry-privacy">
+                  <FormPrivacyNotice locale={locale} />
+                </div>
+                <label className="kpi-revenue-enquiry-consent">
+                  <input
+                    type="checkbox"
+                    checked={state.consent}
+                    aria-invalid={Boolean(errors.consent)}
+                    onChange={(event) => setState((current) => ({ ...current, consent: event.target.checked }))}
+                  />
+                  <span>
+                    {t.consent}{" "}
+                    <Link href={privacyHref} className="font-semibold text-[#0B6660]">
+                      {t.privacy}
+                    </Link>
+                  </span>
+                </label>
+                {errors.consent ? (
+                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                    {errors.consent}
+                  </p>
+                ) : null}
+                <input
+                  type="text"
+                  name="companyWebsite"
+                  value={state.companyWebsite}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  className="absolute left-[-10000px] h-px w-px overflow-hidden"
+                  onChange={(event) => setState((current) => ({ ...current, companyWebsite: event.target.value }))}
+                />
+                <button className="kpi-button" type="submit" disabled={status === "submitting"}>
+                  {status === "submitting" ? t.sending : cta}
+                </button>
+                {status === "error" ? (
+                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                    {t.failed}
+                  </p>
+                ) : null}
+                {status === "unavailable" ? (
+                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                    {t.unavailable}
+                  </p>
+                ) : null}
+                <p className="kpi-revenue-enquiry-reply">{auditCopyFor(locale).trustReply}</p>
+                <ContactNote locale={locale} className="kpi-revenue-enquiry-direct" />
+              </form>
+            )}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   if (compact) {
     return (

@@ -34,26 +34,26 @@ const copy = {
       "มีข้อมูลอยู่ในหลายระบบ แต่ยังไม่มีใครรวบรวมให้เป็นแผนที่ทีมลงมือทำได้",
       "ทีมขาย การตลาด และปฏิบัติการทำงานหนัก แต่ยังไม่เห็นเป้าหมายรายได้ร่วมกัน",
     ],
-    helpTitle: "เดอะ เคพีไอ พลัส ช่วยดูแลส่วนไหนได้บ้าง?",
+    helpTitle: "5 ด้านที่เชื่อมกัน เพื่อเพิ่มรายได้โรงแรม",
     help: [
-      ["01", "Revenue Management", "วิเคราะห์ยอดจองล่วงหน้า ความต้องการของตลาด ราคา และห้องว่าง เพื่อวางแผนว่าวันไหนควรรักษาราคา ปรับราคา หรือเปลี่ยนข้อเสนอ"],
-      ["02", "Distribution และ OTA", "ดูว่าโรงแรมขายผ่านช่องทางใด แต่ละช่องทางสร้างยอดจองแบบไหน มีต้นทุนเท่าไร และควรจัดห้องว่างหรือข้อเสนออย่างไร"],
-      ["03", "Direct Booking", "ตรวจเส้นทางจากเว็บไซต์ Google หรือสื่อการตลาด ไปจนถึงระบบจองและการตอบคำถาม เพื่อหาจุดที่ทำให้ลูกค้าตัดสินใจจองตรงได้ง่ายขึ้น"],
-      ["04", "Marketing และ Demand", "เชื่อมแผนการตลาดกับวันที่โรงแรมต้องการยอดขายจริง ไม่ว่าจะเป็นการค้นหาบน Google โฆษณา เนื้อหา หรือโปรโมชัน โดยเลือกงานตามความพร้อมและเป้าหมายของโรงแรม"],
-      ["05", "Systems, Data และ Reporting", "ดูว่า PMS, Channel Manager, Booking Engine และรายงานที่มีอยู่ช่วยให้ทีมตัดสินใจได้หรือยัง พร้อมจัดข้อมูลให้เห็นผลและสิ่งที่ต้องทำต่อ"],
+      ["01", "Revenue Management", "วิเคราะห์ Demand ราคา และห้องว่าง\nเพื่อวางแผนราคา โปรโมชัน และการขายให้เหมาะกับแต่ละช่วง"],
+      ["02", "Distribution และ OTA", "ดูช่องทางขาย ต้นทุน ค่าคอมมิชชัน\nและประสิทธิภาพของแต่ละ OTA เพื่อจัดสัดส่วนการขายให้เหมาะสม"],
+      ["03", "Direct Booking", "ดูตั้งแต่เว็บไซต์ ระบบจอง ไปจนถึงข้อเสนอและการตลาด\nเพื่อเพิ่มโอกาสให้ลูกค้าจองตรง"],
+      ["04", "Marketing และ Demand", "เชื่อมแผนการตลาดกับวันที่โรงแรมต้องการยอดจอง\nเพื่อให้สื่อและงบโฆษณาทำงานตามเป้าหมายรายได้"],
+      ["05", "Systems, Data และ Reporting", "เชื่อมข้อมูลจาก PMS, Channel Manager, Booking Engine และรายงาน\nให้ทีมเห็นภาพเดียวกันและตัดสินใจได้เร็วขึ้น"],
     ],
-    helpClose: "โรงแรมไม่จำเป็นต้องใช้ทุกบริการพร้อมกัน เราจะช่วยจัดลำดับว่าส่วนใดมีผลต่อรายได้และควรเริ่มก่อน",
-    methodTitle: "เราทำงานจากข้อมูลไปสู่การตัดสินใจ",
+    helpClose: "โรงแรมไม่จำเป็นต้องใช้ทุกบริการพร้อมกัน\nเราช่วยจัดลำดับว่าส่วนไหนมีผลต่อรายได้ และควรเริ่มจากตรงไหนก่อน",
+    methodTitle: "จากข้อมูล สู่การตัดสินใจที่ลงมือทำได้จริง",
     steps: [
-      ["01", "ดูภาพรวมโรงแรม", "ราคา ห้องว่าง ยอดจอง ช่องทางขาย เว็บไซต์ ระบบ และวิธีทำงานของทีม"],
-      ["02", "หาจุดที่เสียโอกาส", "เช่น ห้องที่ขายเร็วเกินไป วันที่ยังขายช้า ต้นทุนช่องทางสูง หรือขั้นตอนจองตรงที่ไม่สะดวก"],
-      ["03", "กำหนดขอบเขตและแผนงาน", "เลือกว่าจะเริ่มจาก Revenue Management หรือให้ทีมช่วยดูแล Commercial Management หลายส่วนร่วมกัน"],
-      ["04", "ลงมือและทบทวนผล", "ระบุสิ่งที่ต้องทำ ผู้รับผิดชอบ และตัวเลขที่ใช้ติดตาม แล้วปรับแผนตามสถานการณ์จริง"],
+      ["01", "ดูภาพรวมโรงแรม", "ดูราคา ห้องว่าง ยอดจอง ช่องทางขาย เว็บไซต์ ระบบ\nและวิธีทำงานของทีม"],
+      ["02", "หาจุดที่เสียโอกาส", "หาให้ชัดว่ารายได้หายตรงไหน\nเช่น ราคาขายต่ำ วันที่ยอดจองช้า ต้นทุนช่องทางสูง\nหรือขั้นตอนการจองไม่ลื่น"],
+      ["03", "กำหนดขอบเขตและแผนงาน", "เลือกว่าจะเริ่มจาก Revenue Management\nหรือให้ทีมช่วยดูหลายส่วนในภาพรวม Commercial Management"],
+      ["04", "ลงมือและทบทวนผล", "กำหนดสิ่งที่ต้องทำ ผู้รับผิดชอบ และตัวเลขที่ใช้ติดตาม\nแล้วปรับแผนจากผลลัพธ์จริง"],
     ],
     measureTitle: "เราดูผลอย่างไร?",
-    measureBody:
-      "เราเริ่มจากตัวเลขห้องพัก เช่น Occupancy, ADR, RevPAR และความเร็วของการจองล่วงหน้า แล้วดูต่อถึงสัดส่วนยอดขายแต่ละช่องทาง ต้นทุนการขาย การสอบถาม และการจองตรงตามข้อมูลที่โรงแรมตรวจสอบได้",
-    measureClose: "เป้าหมายคือให้เจ้าของโรงแรมเห็นมากกว่า “เดือนนี้ขายได้เท่าไร” แต่เห็นด้วยว่ารายได้มาจากไหน ต้นทุนเป็นอย่างไร และควรทำอะไรต่อ",
+    measureIntro: "เริ่มจากตัวเลขที่บอกสุขภาพของธุรกิจ\nไม่ใช่ดูแค่ยอดขายรวม",
+    measureNext: "จากนั้นจึงดูต่อว่า\nรายได้มาจากช่องทางไหน ต้นทุนเท่าไร\nและการจองตรงโตขึ้นหรือไม่",
+    measureClose: "เป้าหมายคือให้เจ้าของโรงแรมเห็นมากกว่า\n“เดือนนี้ขายได้เท่าไร”\nแต่เข้าใจว่า\nรายได้มาจากไหน อะไรทำกำไร และอะไรควรทำต่อ",
     relatedTitle: "เรื่องที่เกี่ยวข้องกับรายได้ ช่องทาง และการจองตรง",
     details: "ดูรายละเอียด",
     toolName: "คำนวณ RevPAR, ADR และ Occupancy",
@@ -318,91 +318,182 @@ export function RevenueView({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <section className="border-y border-[#E3E8EB] bg-white">
+      <section className="kpi-revenue-framework">
         <div className="kpi-section">
-          <h2 className="kpi-h2">{t.helpTitle}</h2>
-          <div className="kpi-grid-2 mt-10">
-            {t.help.map(([num, title, body]) => (
-              <article key={num} className="kpi-card relative overflow-hidden p-7">
-                <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-                <span className="kpi-latin text-sm font-black tracking-[.16em] text-[#0B6660]">{num}</span>
-                <h3 className="mt-5 text-xl font-extrabold text-[#3B3B3B]">{title}</h3>
-                <p className="mt-3 text-base leading-7 text-[#555555]">{body}</p>
+          <h2 className="kpi-h2 kpi-revenue-framework-heading">
+            {locale === "th" ? (
+              <>
+                5 ด้านที่เชื่อมกัน
+                <span className="kpi-revenue-framework-break"> </span>
+                เพื่อ<span className="kpi-revenue-framework-em">เพิ่มรายได้โรงแรม</span>
+              </>
+            ) : (
+              t.helpTitle
+            )}
+          </h2>
+          <div className="kpi-revenue-framework-grid">
+            {t.help.map(([num, title, body], index) => (
+              <article key={num} className={index === 0 ? "kpi-revenue-framework-item is-primary" : "kpi-revenue-framework-item"}>
+                <span className="kpi-revenue-framework-num">{num}</span>
+                {index === 0 ? <span className="kpi-revenue-framework-mark" aria-hidden="true" /> : null}
+                <h3>{title}</h3>
+                <p>
+                  {body.split("\n").map((line, lineIndex) => (
+                    <span key={line} className={lineIndex > 0 ? "kpi-revenue-framework-line" : undefined}>
+                      {line}
+                    </span>
+                  ))}
+                </p>
               </article>
             ))}
           </div>
-          <p className="mt-8 max-w-3xl text-base leading-8 text-[#3B3B3B]">{t.helpClose}</p>
-          <a href="#revenue-enquiry" className="kpi-button mt-8">
+          <p className="kpi-revenue-framework-close">
+            {t.helpClose.split("\n").map((line, lineIndex) => (
+              <span key={line} className={lineIndex > 0 ? "kpi-revenue-framework-line" : undefined}>
+                {line}
+              </span>
+            ))}
+          </p>
+          <a href="#revenue-enquiry" className="kpi-button kpi-revenue-framework-cta">
             {t.cta} <ArrowUpRight className="h-4 w-4" />
           </a>
         </div>
       </section>
 
-      <section className="kpi-section">
-        <h2 className="kpi-h2">{t.methodTitle}</h2>
-        <ol className="mt-10 grid gap-4">
-          {t.steps.map(([num, title, body]) => (
-            <li key={num} className="kpi-card flex gap-4 p-6 sm:items-start">
-              <span className="kpi-latin text-sm font-black tracking-[.14em] text-[#0B6660]">{num}</span>
-              <div>
-                <h3 className="text-xl font-extrabold text-[#3B3B3B]">{title}</h3>
-                <p className="mt-2 text-base leading-7 text-[#555555]">{body}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      <section className="border-y border-[#E3E8EB] bg-white">
-        <div className="kpi-section">
-          <h2 className="kpi-h2">{t.measureTitle}</h2>
-          <p className="kpi-lead mt-5">{t.measureBody}</p>
-          <p className="mt-5 max-w-3xl text-base leading-8 text-[#555555]">{t.measureClose}</p>
+      <section className="kpi-section kpi-revenue-method">
+        <div className="kpi-revenue-method-inner">
+          <h2 className="kpi-h2 kpi-revenue-method-heading">
+            {locale === "th" ? (
+              <>
+                จากข้อมูล
+                <span className="kpi-revenue-method-break"> </span>
+                สู่การตัดสินใจที่<span className="kpi-revenue-method-em">ลงมือทำได้จริง</span>
+              </>
+            ) : (
+              t.methodTitle
+            )}
+          </h2>
+          <ol className="kpi-revenue-method-list">
+            {t.steps.map(([num, title, body]) => (
+              <li key={num} className="kpi-revenue-method-step">
+                <span className="kpi-revenue-method-num">{num}</span>
+                <div className="kpi-revenue-method-copy">
+                  <h3>{title}</h3>
+                  <p>
+                    {body.split("\n").map((line, lineIndex) => (
+                      <span key={line} className={lineIndex > 0 ? "kpi-revenue-method-line" : undefined}>
+                        {line}
+                      </span>
+                    ))}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 
-      <section className="border-t border-[#E3E8EB] bg-white">
+      <section className="kpi-revenue-measure">
         <div className="kpi-section">
-          <h2 className="kpi-h2">{t.relatedTitle}</h2>
-          <div className="kpi-grid-3 mt-10">
+          <h2 className="kpi-h2 kpi-revenue-measure-heading">{t.measureTitle}</h2>
+          {locale === "th" ? (
+            <>
+              <p className="kpi-revenue-measure-intro">
+                {copy.th.measureIntro.split("\n").map((line, index) => (
+                  <span key={line} className={index > 0 ? "kpi-revenue-measure-line" : undefined}>
+                    {line}
+                  </span>
+                ))}
+              </p>
+              <dl className="kpi-revenue-measure-metrics">
+                {[
+                  ["Occupancy", "อัตราการเข้าพัก"],
+                  ["ADR", "ราคาขายเฉลี่ย"],
+                  ["RevPAR", "รายได้ต่อห้องที่มีขาย"],
+                  ["Booking Pace", "ความเร็วของยอดจอง"],
+                ].map(([name, label]) => (
+                  <div key={name} className="kpi-revenue-measure-metric">
+                    <dt>{name}</dt>
+                    <dd>{label}</dd>
+                  </div>
+                ))}
+              </dl>
+              <p className="kpi-revenue-measure-next">
+                <span>จากนั้นจึงดูต่อว่า</span>
+                <span className="kpi-revenue-measure-line kpi-revenue-measure-strong">
+                  <span className="kpi-revenue-measure-em">รายได้มาจากช่องทางไหน</span> ต้นทุนเท่าไร
+                </span>
+                <span className="kpi-revenue-measure-line kpi-revenue-measure-strong">และการจองตรงโตขึ้นหรือไม่</span>
+              </p>
+              <p className="kpi-revenue-measure-close">
+                <span>เป้าหมายคือให้เจ้าของโรงแรมเห็นมากกว่า</span>
+                <span className="kpi-revenue-measure-line">“เดือนนี้ขายได้เท่าไร”</span>
+                <span className="kpi-revenue-measure-line">แต่เข้าใจว่า</span>
+                <span className="kpi-revenue-measure-line kpi-revenue-measure-strong">
+                  รายได้มาจากไหน อะไรทำกำไร และอะไรควรทำต่อ
+                </span>
+              </p>
+            </>
+          ) : (
+            <>
+              <p className="kpi-lead kpi-revenue-measure-legacy">{t.measureBody}</p>
+              <p className="kpi-revenue-measure-legacy-close">{t.measureClose}</p>
+            </>
+          )}
+        </div>
+      </section>
+
+      <section className="kpi-revenue-related">
+        <div className="kpi-section">
+          <h2 className="kpi-h2 kpi-revenue-related-heading">
+            {locale === "th" ? (
+              <>
+                เรื่องที่เกี่ยวข้องกับรายได้
+                <span className="kpi-revenue-related-break"> </span>
+                ช่องทาง และการจองตรง
+              </>
+            ) : (
+              t.relatedTitle
+            )}
+          </h2>
+          <div className="kpi-revenue-related-layout">
             {insights.map((post) => {
               const href = existingHref(post.href, locale) ?? post.href;
               return (
-                <article key={post.slug} className="kpi-card relative flex flex-col overflow-hidden p-7">
-                  <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-                  <p className="text-xs font-extrabold uppercase tracking-[.14em] text-[#0B6660]">{post.category[locale]}</p>
-                  <h3 className="mt-4 text-xl font-extrabold leading-snug text-[#3B3B3B]">{post.title[locale]}</h3>
-                  <Link href={href} className="mt-auto inline-flex items-center gap-2 pt-8 text-sm font-semibold text-[#0B6660]">
-                    {insightsUi.read} <ArrowUpRight className="h-4 w-4" />
+                <article key={post.slug} className="kpi-revenue-related-featured">
+                  <span className="kpi-revenue-related-mark" aria-hidden="true" />
+                  <p className="kpi-revenue-related-kicker">{post.category[locale]}</p>
+                  <h3>{post.title[locale]}</h3>
+                  <Link href={href} className="kpi-revenue-related-cta">
+                    {insightsUi.read} <span className="kpi-revenue-related-arrow" aria-hidden="true">↗</span>
                   </Link>
                 </article>
               );
             })}
-            <article className="kpi-card relative flex flex-col overflow-hidden p-7">
-              <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-              <h3 className="mt-3 text-xl font-extrabold text-[#3B3B3B]">{t.toolName}</h3>
-              <p className="mt-3 text-base leading-7 text-[#555555]">{t.toolBody}</p>
-              <Link href="/tools/revpar-calculator" className="mt-auto pt-8 text-sm font-semibold text-[#0B6660]">
-                {t.toolCta}
-              </Link>
-            </article>
-            {existingHref("/case-studies", locale) ? (
-              <article className="kpi-card relative flex flex-col overflow-hidden p-7">
-                <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-                <h3 className="mt-3 text-xl font-extrabold text-[#3B3B3B]">{caseStudiesHeading[locale]}</h3>
-                <Link href={existingHref("/case-studies", locale) ?? "/case-studies"} className="mt-auto pt-8 text-sm font-semibold text-[#0B6660]">
-                  {t.details}
+            <div className="kpi-revenue-related-list">
+              <article className="kpi-revenue-related-item">
+                <h3>{t.toolName}</h3>
+                <p>{t.toolBody}</p>
+                <Link href="/tools/revpar-calculator" className="kpi-revenue-related-cta">
+                  {t.toolCta} <span className="kpi-revenue-related-arrow" aria-hidden="true">↗</span>
                 </Link>
               </article>
-            ) : null}
-            <article className="kpi-card relative flex flex-col overflow-hidden p-7">
-              <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-              <h3 className="mt-3 text-xl font-extrabold text-[#3B3B3B]">{solutionNavLabel("/solutions/outsourced-hotel-reservations", locale)}</h3>
-              <p className="mt-3 text-base leading-7 text-[#555555]">{t.reservationBody}</p>
-              <Link href={reservationHref} className="mt-auto pt-8 text-sm font-semibold text-[#0B6660]">
-                {t.details}
-              </Link>
-            </article>
+              {existingHref("/case-studies", locale) ? (
+                <article className="kpi-revenue-related-item">
+                  <h3>{caseStudiesHeading[locale]}</h3>
+                  <Link href={existingHref("/case-studies", locale) ?? "/case-studies"} className="kpi-revenue-related-cta">
+                    {t.details} <span className="kpi-revenue-related-arrow" aria-hidden="true">↗</span>
+                  </Link>
+                </article>
+              ) : null}
+              <article className="kpi-revenue-related-item">
+                <h3>{solutionNavLabel("/solutions/outsourced-hotel-reservations", locale)}</h3>
+                <p>{t.reservationBody}</p>
+                <Link href={reservationHref} className="kpi-revenue-related-cta">
+                  {locale === "th" ? "ดูบริการ" : t.details} <span className="kpi-revenue-related-arrow" aria-hidden="true">↗</span>
+                </Link>
+              </article>
+            </div>
           </div>
         </div>
       </section>

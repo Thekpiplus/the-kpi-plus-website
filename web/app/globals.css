@@ -919,6 +919,957 @@ form .kpi-button {
   }
 }
 
+.kpi-revenue-framework {
+  border-block: 1px solid #e3e8eb;
+  background: #fff;
+}
+
+.kpi-shell .kpi-revenue-framework h2.kpi-revenue-framework-heading {
+  max-width: 16em;
+  margin: 0;
+  font-size: clamp(1.5rem, 1.05rem + 1.35vw, 2.25rem) !important;
+  text-align: left;
+}
+
+.kpi-shell :lang(th) .kpi-revenue-framework h2.kpi-revenue-framework-heading {
+  font-family: "Noto Sans Thai", Tahoma, Arial, sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+.kpi-revenue-framework-em {
+  color: #7d9a16;
+  font-weight: 700;
+}
+
+.kpi-revenue-framework-break {
+  display: inline;
+}
+
+.kpi-revenue-framework-grid {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 1.85rem;
+}
+
+.kpi-revenue-framework-item {
+  border: 1px solid rgba(59, 59, 59, 0.14);
+  border-radius: 10px;
+  background: transparent;
+  box-shadow: none;
+  padding: 1rem 1.05rem 1.1rem;
+  transition:
+    border-color 220ms ease,
+    transform 220ms ease;
+}
+
+.kpi-revenue-framework-item.is-primary {
+  padding: 1.25rem 1.3rem 1.35rem;
+}
+
+.kpi-revenue-framework-num {
+  display: block;
+  color: #0b6660;
+  font-family: Poppins, sans-serif !important;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+}
+
+.kpi-revenue-framework-mark {
+  display: block;
+  width: 1.75rem;
+  height: 2px;
+  margin-top: 0.55rem;
+  background: #c7f000;
+}
+
+.kpi-shell .kpi-revenue-framework-item h3 {
+  margin: 0.7rem 0 0;
+  color: #0b1f33;
+  font-size: 1.3rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0;
+  line-height: 1.35;
+  transition: color 220ms ease;
+}
+
+.kpi-shell :lang(th) .kpi-revenue-framework-item h3 {
+  font-family: "Noto Sans Thai", Tahoma, Arial, sans-serif !important;
+  letter-spacing: 0 !important;
+}
+
+.kpi-shell :lang(en) .kpi-revenue-framework-item h3 {
+  font-family: Poppins, sans-serif !important;
+}
+
+.kpi-revenue-framework-item.is-primary h3 {
+  margin-top: 0.85rem;
+  font-size: 1.5rem !important;
+}
+
+.kpi-shell .kpi-revenue-framework-item p {
+  margin: 0.65rem 0 0;
+  color: #5c5c5c;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.7;
+}
+
+.kpi-shell :lang(th) .kpi-revenue-framework-item p,
+.kpi-shell :lang(th) .kpi-revenue-framework-close {
+  font-family: "Noto Sans Thai", Tahoma, Arial, sans-serif;
+  letter-spacing: 0;
+}
+
+.kpi-revenue-framework-line {
+  display: block;
+}
+
+.kpi-revenue-framework-close {
+  max-width: 38rem;
+  margin: 2.15rem 0 0;
+  color: #3b3b3b;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.7;
+}
+
+.kpi-revenue-framework .kpi-revenue-framework-cta {
+  margin-top: 1.65rem;
+  min-height: 2.75rem;
+  border-radius: 9px;
+  box-shadow: none;
+}
+
+.kpi-revenue-framework .kpi-revenue-framework-cta:hover,
+.kpi-revenue-framework .kpi-revenue-framework-cta:active {
+  box-shadow: none;
+}
+
+@media (hover: hover) {
+  .kpi-revenue-framework-item:hover {
+    border-color: rgba(59, 59, 59, 0.32);
+    transform: translateY(-2px);
+  }
+
+  .kpi-revenue-framework-item:hover .kpi-revenue-framework-num {
+    color: #7d9a16;
+  }
+
+  .kpi-revenue-framework-item:hover h3 {
+    color: #06141f;
+  }
+}
+
+@media (min-width: 48rem) and (max-width: 63.99rem) {
+  .kpi-revenue-framework-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.9rem;
+  }
+
+  .kpi-revenue-framework-item:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 64rem) {
+  .kpi-revenue-framework-break {
+    display: block;
+    height: 0;
+    overflow: hidden;
+    font-size: 0;
+    line-height: 0;
+  }
+
+  .kpi-revenue-framework-grid {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 1rem 1.1rem;
+  }
+
+  .kpi-revenue-framework-item:nth-child(1) {
+    grid-column: span 7;
+  }
+
+  .kpi-revenue-framework-item:nth-child(2) {
+    grid-column: span 5;
+  }
+
+  .kpi-revenue-framework-item:nth-child(n + 3) {
+    grid-column: span 4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kpi-revenue-framework-item,
+  .kpi-revenue-framework-item h3,
+  .kpi-revenue-framework-num {
+    transition: none;
+  }
+
+  .kpi-revenue-framework-item:hover {
+    transform: none;
+  }
+}
+
+.kpi-revenue-method-inner {
+  max-width: 44rem;
+  margin-inline: auto;
+}
+
+.kpi-shell .kpi-revenue-method h2.kpi-revenue-method-heading {
+  max-width: 14em;
+  margin: 0;
+  font-size: clamp(1.5rem, 1.05rem + 1.35vw, 2.25rem) !important;
+  text-align: left;
+}
+
+.kpi-shell :lang(th) .kpi-revenue-method h2.kpi-revenue-method-heading {
+  font-family: "Noto Sans Thai", Tahoma, Arial, sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+.kpi-revenue-method-em {
+  color: #7d9a16;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.kpi-revenue-method-break {
+  display: inline;
+}
+
+.kpi-revenue-method-list {
+  margin: 2.15rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.kpi-revenue-method-step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.35rem minmax(0, 1fr);
+  column-gap: 0.85rem;
+  padding-bottom: 1.7rem;
+}
+
+.kpi-revenue-method-step:nth-child(2),
+.kpi-revenue-method-step:nth-child(3) {
+  padding-bottom: 2.15rem;
+}
+
+.kpi-revenue-method-step:last-child {
+  padding-bottom: 0;
+}
+
+.kpi-revenue-method-step::after {
+  content: "";
+  position: absolute;
+  left: 0.38rem;
+  top: 1.15rem;
+  bottom: 0;
+  width: 1px;
+  background: rgba(11, 102, 96, 0.42);
+  transition: background-color 220ms ease;
+}
+
+.kpi-revenue-method-step:last-child::after {
+  display: none;
+}
+
+.kpi-revenue-method-num {
+  position: relative;
+  z-index: 1;
+  color: #0b6660;
+  font-family: Poppins, sans-serif !important;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  transition: color 220ms ease;
+}
+
+.kpi-revenue-method-copy {
+  min-width: 0;
+  transition: transform 220ms ease;
+}
+
+.kpi-revenue-method-step:nth-child(1) .kpi-revenue-method-copy,
+.kpi-revenue-method-step:nth-child(4) .kpi-revenue-method-copy {
+  max-width: 32rem;
+}
+
+.kpi-shell .kpi-revenue-method-copy h3 {
+  margin: 0;
+  color: #0b1f33;
+  font-size: 1.4rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0;
+  line-height: 1.35;
+  transition: color 220ms ease;
+}
+
+.kpi-shell :lang(th) .kpi-revenue-method-copy h3,
+.kpi-shell :lang(th) .kpi-revenue-method-copy p {
+  font-family: "Noto Sans Thai", Tahoma, Arial, sans-serif !important;
+  letter-spacing: 0 !important;
+}
+
+.kpi-shell :lang(en) .kpi-revenue-method-copy h3,
+.kpi-shell :lang(en) .kpi-revenue-method-copy p {
+  font-family: Poppins, sans-serif !important;
+}
+
+.kpi-shell .kpi-revenue-method-copy p {
+  margin: 0.45rem 0 0;
+  color: #555555;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.7;
+}
+
+.kpi-revenue-method-line {
+  display: block;
+}
+
+@media (hover: hover) {
+  .kpi-revenue-method-step:hover .kpi-revenue-method-num {
+    color: #7d9a16;
+  }
+
+  .kpi-revenue-method-step:hover h3 {
+    color: #06141f;
+  }
+
+  .kpi-revenue-method-step:hover .kpi-revenue-method-copy {
+    transform: translateX(2px);
+  }
+
+  .kpi-revenue-method-step:hover::after {
+    background: rgba(11, 102, 96, 0.7);
+  }
+}
+
+@media (min-width: 48rem) {
+  .kpi-revenue-method-step {
+    grid-template-columns: 2.75rem minmax(0, 1fr);
+    column-gap: 1.35rem;
+    padding-bottom: 1.9rem;
+  }
+
+  .kpi-revenue-method-step:nth-child(2),
+  .kpi-revenue-method-step:nth-child(3) {
+    padding-bottom: 2.45rem;
+  }
+
+  .kpi-revenue-method-step::after {
+    left: 0.42rem;
+    background: rgba(11, 102, 96, 0.42);
+  }
+}
+
+@media (min-width: 64rem) {
+  .kpi-revenue-method-break {
+    display: block;
+    height: 0;
+    overflow: hidden;
+    font-size: 0;
+    line-height: 0;
+  }
+
+  .kpi-shell .kpi-revenue-method-copy h3 {
+    font-size: 1.5rem !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kpi-revenue-method-num,
+  .kpi-revenue-method-copy,
+  .kpi-revenue-method-copy h3,
+  .kpi-revenue-method-step::after {
+    transition: none;
+  }
+
+  .kpi-revenue-method-step:hover .kpi-revenue-method-copy {
+    transform: none;
+  }
+}
+
+.kpi-revenue-measure {
+  border-block: 1px solid #e3e8eb;
+  background: #fff;
+}
+
+.kpi-shell .kpi-revenue-measure h2.kpi-revenue-measure-heading {
+  max-width: 12em;
+  margin: 0;
+  font-size: clamp(2rem, 1.35rem + 0.9vw, 2.375rem) !important;
+  font-weight: 700 !important;
+  text-align: left;
+}
+
+.kpi-shell :lang(th) .kpi-revenue-measure h2.kpi-revenue-measure-heading,
+.kpi-shell :lang(th) .kpi-revenue-measure-intro,
+.kpi-shell :lang(th) .kpi-revenue-measure-next,
+.kpi-shell :lang(th) .kpi-revenue-measure-close,
+.kpi-shell :lang(th) .kpi-revenue-measure-metric dd {
+  font-family: "Noto Sans Thai", Tahoma, Arial, sans-serif !important;
+  letter-spacing: 0 !important;
+}
+
+.kpi-revenue-measure-intro {
+  max-width: 28rem;
+  margin: 1.05rem 0 0;
+  color: #0b1f33;
+  font-size: 1.1875rem;
+  font-weight: 500;
+  line-height: 1.6;
+}
+
+.kpi-revenue-measure-line {
+  display: block;
+}
+
+.kpi-revenue-measure-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 1.55rem 0 0;
+  padding: 0;
+  border-top: 1px solid rgba(59, 59, 59, 0.12);
+}
+
+.kpi-revenue-measure-metric {
+  margin: 0;
+  padding: 0.9rem 1rem 0.95rem 0;
+  border-bottom: 1px solid rgba(59, 59, 59, 0.12);
+}
+
+.kpi-revenue-measure-metric:nth-child(odd) {
+  padding-right: 1rem;
+  border-right: 1px solid rgba(59, 59, 59, 0.12);
+}
+
+.kpi-revenue-measure-metric:nth-child(even) {
+  padding-left: 1rem;
+}
+
+.kpi-revenue-measure-metric dt {
+  margin: 0;
+  color: #0b1f33;
+  font-family: Poppins, sans-serif !important;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.35;
+}
+
+.kpi-revenue-measure-metric dd {
+  margin: 0.28rem 0 0;
+  color: #6a6a6a;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.kpi-revenue-measure-next,
+.kpi-revenue-measure-close {
+  max-width: 36rem;
+  margin: 1.45rem 0 0;
+  color: #3b3b3b;
+  font-size: 1.0625rem;
+  font-weight: 400;
+  line-height: 1.7;
+}
+
+.kpi-revenue-measure-close {
+  margin-top: 1.15rem;
+}
+
+.kpi-revenue-measure-strong {
+  font-weight: 600;
+  color: #0b1f33;
+}
+
+.kpi-revenue-measure-em {
+  color: #7d9a16;
+  font-weight: 700;
+}
+
+.kpi-revenue-measure-legacy {
+  margin-top: 1.15rem;
+}
+
+.kpi-revenue-measure-legacy-close {
+  max-width: 40rem;
+  margin: 1.15rem 0 0;
+  color: #555555;
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+@media (min-width: 64rem) {
+  .kpi-revenue-measure-metrics {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .kpi-revenue-measure-metric,
+  .kpi-revenue-measure-metric:nth-child(odd),
+  .kpi-revenue-measure-metric:nth-child(even) {
+    padding: 1rem 1.35rem 0.15rem;
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 1px solid rgba(59, 59, 59, 0.12);
+  }
+
+  .kpi-revenue-measure-metric:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+}
+
+.kpi-revenue-related {
+  border-top: 1px solid #e3e8eb;
+  background: #fff;
+}
+
+.kpi-shell .kpi-revenue-related-heading {
+  font-size: clamp(1.5rem, 1.05rem + 1.35vw, 2.25rem) !important;
+  line-height: 1.35 !important;
+  text-align: left;
+}
+
+.kpi-shell :lang(th) .kpi-revenue-related-heading {
+  font-family: "Noto Sans Thai", "Poppins", Tahoma, Arial, sans-serif !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+.kpi-revenue-related-break {
+  display: block;
+  height: 0;
+  overflow: hidden;
+  font-size: 0;
+  line-height: 0;
+}
+
+.kpi-revenue-related-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: stretch;
+  margin-top: 1.65rem;
+}
+
+.kpi-revenue-related-list {
+  display: grid;
+  gap: 0.75rem;
+  align-content: start;
+}
+
+.kpi-revenue-related-featured,
+.kpi-revenue-related-item {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(59, 59, 59, 0.14);
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: none;
+  transition: border-color 220ms ease;
+}
+
+.kpi-revenue-related-featured {
+  padding: 1.7rem 1.45rem 1.45rem;
+}
+
+.kpi-revenue-related-item {
+  padding: 1rem 1.1rem 0.95rem;
+}
+
+.kpi-revenue-related-mark {
+  display: block;
+  width: 1.75rem;
+  height: 2px;
+  margin-bottom: 1.15rem;
+  background: #c7f000;
+}
+
+.kpi-revenue-related-kicker {
+  margin: 0;
+  color: #0b6660;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+
+.kpi-shell .kpi-revenue-related-featured h3,
+.kpi-shell .kpi-revenue-related-item h3 {
+  margin: 0;
+  color: #0b1f33;
+  font-weight: 600 !important;
+  letter-spacing: 0;
+  transition: color 220ms ease;
+}
+
+.kpi-shell .kpi-revenue-related-featured h3 {
+  margin-top: 0.85rem;
+  font-size: clamp(1.5rem, 1.15rem + 0.55vw, 1.875rem) !important;
+  line-height: 1.35 !important;
+}
+
+.kpi-shell .kpi-revenue-related-item h3 {
+  font-size: clamp(1.125rem, 1.05rem + 0.15vw, 1.25rem) !important;
+  line-height: 1.4 !important;
+}
+
+.kpi-shell :lang(th) .kpi-revenue-related-featured h3,
+.kpi-shell :lang(th) .kpi-revenue-related-item h3,
+.kpi-shell :lang(th) .kpi-revenue-related-kicker,
+.kpi-shell :lang(th) .kpi-revenue-related-item p,
+.kpi-shell :lang(th) .kpi-revenue-related-cta {
+  font-family: "Noto Sans Thai", "Poppins", Tahoma, Arial, sans-serif !important;
+  letter-spacing: 0 !important;
+}
+
+.kpi-revenue-related-item p {
+  margin: 0.4rem 0 0;
+  color: #555555;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  line-height: 1.7;
+}
+
+.kpi-revenue-related-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  width: fit-content;
+  margin-top: 0.75rem;
+  color: #0b1f33;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.4;
+  text-decoration: none;
+  transition: color 220ms ease;
+}
+
+.kpi-revenue-related-featured .kpi-revenue-related-cta {
+  margin-top: auto;
+  padding-top: 1.75rem;
+}
+
+.kpi-revenue-related-arrow {
+  display: inline-block;
+  transition: transform 220ms ease;
+}
+
+.kpi-revenue-related-featured:hover,
+.kpi-revenue-related-item:hover {
+  border-color: rgba(11, 31, 51, 0.36);
+}
+
+.kpi-revenue-related-featured:hover h3,
+.kpi-revenue-related-item:hover h3 {
+  color: #06141f;
+}
+
+.kpi-revenue-related-featured:hover .kpi-revenue-related-cta,
+.kpi-revenue-related-item:hover .kpi-revenue-related-cta {
+  color: #7d9a16;
+}
+
+.kpi-revenue-related-featured:hover .kpi-revenue-related-arrow,
+.kpi-revenue-related-item:hover .kpi-revenue-related-arrow {
+  transform: translateX(3px);
+}
+
+@media (min-width: 48rem) {
+  .kpi-revenue-related-layout {
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    gap: 1rem;
+  }
+
+  .kpi-revenue-related-featured {
+    padding: 2rem 1.85rem 1.7rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  .kpi-revenue-related-layout {
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.78fr);
+    gap: 1.25rem;
+    margin-top: 1.85rem;
+  }
+
+  .kpi-revenue-related-featured {
+    padding: 2.35rem 2.4rem 2rem;
+  }
+
+  .kpi-revenue-related-item {
+    padding: 1.05rem 1.2rem 1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kpi-revenue-related-featured,
+  .kpi-revenue-related-item,
+  .kpi-revenue-related-featured h3,
+  .kpi-revenue-related-item h3,
+  .kpi-revenue-related-cta,
+  .kpi-revenue-related-arrow {
+    transition: none;
+  }
+
+  .kpi-revenue-related-featured:hover .kpi-revenue-related-arrow,
+  .kpi-revenue-related-item:hover .kpi-revenue-related-arrow {
+    transform: none;
+  }
+}
+
+.kpi-revenue-enquiry {
+  border-top: 1px solid #e3e8eb;
+  background: #f4f4f4;
+}
+
+.kpi-revenue-enquiry-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.kpi-revenue-enquiry-kicker {
+  font-family: Poppins, sans-serif !important;
+  color: #0b6660;
+  letter-spacing: 0.14em !important;
+}
+
+.kpi-shell .kpi-revenue-enquiry-heading {
+  max-width: 11em;
+  margin-top: 0.85rem;
+  font-size: clamp(1.5rem, 1.05rem + 1.35vw, 2.25rem) !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+  letter-spacing: 0 !important;
+  text-align: left;
+}
+
+.kpi-shell :lang(th) .kpi-revenue-enquiry-heading {
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+}
+
+.kpi-shell :lang(th) .kpi-revenue-enquiry-heading,
+.kpi-shell :lang(th) .kpi-revenue-enquiry-lead,
+.kpi-shell :lang(th) .kpi-revenue-enquiry-group-label,
+.kpi-shell :lang(th) .kpi-revenue-enquiry-label,
+.kpi-shell :lang(th) .kpi-revenue-enquiry-privacy,
+.kpi-shell :lang(th) .kpi-revenue-enquiry-consent,
+.kpi-shell :lang(th) .kpi-revenue-enquiry-reply,
+.kpi-shell :lang(th) .kpi-revenue-enquiry-direct,
+.kpi-shell :lang(th) .kpi-revenue-enquiry-success {
+  font-family: "Noto Sans Thai", "Poppins", Tahoma, Arial, sans-serif !important;
+  letter-spacing: 0 !important;
+}
+
+.kpi-revenue-enquiry-lead {
+  max-width: 28rem;
+  margin: 0.9rem 0 0;
+  color: #555555;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.7;
+}
+
+.kpi-revenue-enquiry-line {
+  display: block;
+}
+
+.kpi-revenue-enquiry-panel {
+  border: 1px solid rgba(59, 59, 59, 0.14);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: none;
+  padding: 1.25rem 1.15rem 1.15rem;
+}
+
+.kpi-revenue-enquiry-fields {
+  display: grid;
+  gap: 0;
+}
+
+.kpi-revenue-enquiry-group + .kpi-revenue-enquiry-group {
+  margin-top: 1.05rem;
+  padding-top: 1.05rem;
+  border-top: 1px solid rgba(59, 59, 59, 0.1);
+}
+
+.kpi-revenue-enquiry-group-label {
+  margin: 0 0 0.75rem;
+  color: #0b6660;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.kpi-revenue-enquiry-pair {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.kpi-revenue-enquiry-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: #3b3b3b;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.kpi-revenue-enquiry .kpi-field {
+  box-sizing: border-box;
+  height: 46px;
+  min-height: 46px;
+  margin-top: 0;
+  border: 1px solid rgba(59, 59, 59, 0.18);
+  border-radius: 8px;
+  box-shadow: none;
+  padding: 0 0.85rem;
+  line-height: 1.4;
+}
+
+.kpi-revenue-enquiry textarea.kpi-field {
+  height: 110px;
+  min-height: 110px;
+  padding: 0.7rem 0.85rem;
+  resize: vertical;
+}
+
+.kpi-revenue-enquiry .kpi-field:focus {
+  outline: none;
+  border-color: #7d9a16;
+  box-shadow: none;
+}
+
+.kpi-revenue-enquiry-privacy {
+  margin-top: 1.15rem;
+}
+
+.kpi-revenue-enquiry-privacy p {
+  margin: 0;
+  color: #6a6a6a;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  line-height: 1.65;
+}
+
+.kpi-revenue-enquiry-privacy a,
+.kpi-revenue-enquiry-consent a {
+  color: #0b6660;
+  font-weight: 600;
+}
+
+.kpi-revenue-enquiry-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  min-height: 2.75rem;
+  margin-top: 0.85rem;
+  color: #6a6a6a;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  line-height: 1.65;
+}
+
+.kpi-revenue-enquiry-consent input {
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-top: 0.15rem;
+  flex-shrink: 0;
+  accent-color: #0b6660;
+}
+
+.kpi-revenue-enquiry .kpi-button {
+  width: 100%;
+  min-height: 46px;
+  margin-top: 1rem;
+  border-radius: 9px;
+  box-shadow: none;
+  font-weight: 600;
+}
+
+.kpi-revenue-enquiry .kpi-button:hover,
+.kpi-revenue-enquiry .kpi-button:active {
+  transform: none;
+  box-shadow: none;
+  filter: none;
+}
+
+.kpi-revenue-enquiry-reply {
+  margin: 0.7rem 0 0;
+  color: #6a6a6a;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  line-height: 1.55;
+}
+
+.kpi-revenue-enquiry-direct {
+  margin-top: 1rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgba(59, 59, 59, 0.1);
+  color: #6a6a6a;
+  font-size: 0.8125rem !important;
+  font-weight: 400;
+  line-height: 1.6 !important;
+}
+
+.kpi-revenue-enquiry-direct a {
+  color: #0b6660;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.kpi-revenue-enquiry-success {
+  margin: 0;
+  color: #0b1f33;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+@media (min-width: 40rem) {
+  .kpi-revenue-enquiry-pair {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .kpi-revenue-enquiry .kpi-button {
+    width: fit-content;
+    min-width: 12.5rem;
+    padding-inline: 1.35rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  .kpi-revenue-enquiry-grid {
+    grid-template-columns: minmax(0, 0.34fr) minmax(0, 0.58fr);
+    column-gap: 8%;
+    justify-content: space-between;
+  }
+
+  .kpi-revenue-enquiry-panel {
+    padding: 1.55rem 1.65rem 1.35rem;
+  }
+}
+
 .kpi-hero h1,
 .kpi-hero-pad h1,
 .kpi-h1 {
@@ -3487,6 +4438,10 @@ form .kpi-button {
   font-size: inherit;
   font-weight: 700;
   letter-spacing: 0;
+}
+
+.kpi-faq-em.kpi-latin {
+  font-family: Poppins, sans-serif !important;
 }
 
 .kpi-faq-home .kpi-faq-mark {
