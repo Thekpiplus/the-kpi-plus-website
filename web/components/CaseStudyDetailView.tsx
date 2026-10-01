@@ -172,7 +172,7 @@ export function CaseStudyDetailView({ locale, slug }: { locale: Locale; slug: st
             <div className="kpi-cs-metric-grid mt-6">
               {study.metrics.map((metric) => (
                 <div key={metric.label} className="kpi-cs-metric">
-                  <p className="kpi-cs-stat-value kpi-latin text-[#063F3B]">{metric.value}</p>
+                  <p className="kpi-cs-stat-value kpi-latin text-[#0B1F33]">{metric.value}</p>
                   <p className="mt-2 text-sm font-semibold text-[#3B3B3B]">{metric.label}</p>
                 </div>
               ))}
@@ -202,7 +202,7 @@ export function CaseStudyDetailView({ locale, slug }: { locale: Locale; slug: st
                     </div>
                     <div>
                       <p className="text-xs font-bold uppercase tracking-[.12em] text-[#3B3B3B]">{t.after}</p>
-                      <p className="kpi-latin mt-1 text-xl font-bold text-[#063F3B]">{row.after}</p>
+                      <p className="kpi-latin mt-1 text-xl font-bold text-[#0B1F33]">{row.after}</p>
                       <div className="kpi-cs-bar kpi-cs-bar-after mt-3" aria-hidden="true">
                         <span style={{ width: `${row.bar ?? 100}%` }} />
                       </div>
@@ -221,7 +221,7 @@ export function CaseStudyDetailView({ locale, slug }: { locale: Locale; slug: st
           <div className="mt-8 kpi-cs-breakdown">
             <div>
               <p className="text-sm font-semibold text-[#3B3B3B]">{study.breakdown.totalLabel}</p>
-              <p className="kpi-latin mt-2 text-4xl font-extrabold text-[#063F3B]">{study.breakdown.totalValue}</p>
+              <p className="kpi-latin mt-2 text-4xl font-extrabold text-[#0B1F33]">{study.breakdown.totalValue}</p>
             </div>
             <div className="grid gap-4">
               {study.breakdown.parts.map((part) => (
@@ -230,7 +230,7 @@ export function CaseStudyDetailView({ locale, slug }: { locale: Locale; slug: st
                     <p className="font-semibold text-[#3B3B3B]">{part.label}</p>
                     <p className="kpi-latin text-sm font-bold text-[#0B6660]">{part.share}</p>
                   </div>
-                  <p className="kpi-latin mt-1 text-xl font-extrabold text-[#063F3B]">{part.value}</p>
+                  <p className="kpi-latin mt-1 text-xl font-extrabold text-[#0B1F33]">{part.value}</p>
                   <div className="kpi-cs-bar kpi-cs-bar-after mt-3" aria-hidden="true">
                     <span style={{ width: `${part.percent}%` }} />
                   </div>
@@ -259,7 +259,7 @@ export function CaseStudyDetailView({ locale, slug }: { locale: Locale; slug: st
           {study.keyInsight ? (
             <article className="kpi-cs-callout">
               <p className="kpi-kicker text-[#0B6660]">{t.keyInsight}</p>
-              <p className="mt-4 text-xl font-extrabold leading-8 text-[#063F3B]">{study.keyInsight}</p>
+              <p className="mt-4 text-xl font-extrabold leading-8 text-[#0B1F33]">{study.keyInsight}</p>
             </article>
           ) : null}
           <article className="kpi-cs-callout kpi-cs-callout-dark">
@@ -276,7 +276,7 @@ export function CaseStudyDetailView({ locale, slug }: { locale: Locale; slug: st
         </Link>
       </section>
 
-      <section className="bg-[#063F3B] text-white">
+      <section className="bg-[#0B1F33] text-white">
         <div className="kpi-section">
           <p className="kpi-kicker text-[#F2F8E2]">{t.closerEyebrow}</p>
           <h2 className="kpi-h2 mt-4 text-white">{t.closerTitle}</h2>

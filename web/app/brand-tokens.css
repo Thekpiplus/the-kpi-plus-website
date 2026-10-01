@@ -1,8 +1,19 @@
+/* Thai subset only, so Poppins is never used for Thai characters. */
+@font-face {
+  font-family: "Noto Sans Thai";
+  src: url("/fonts/noto-sans-thai/NotoSansThai.woff2") format("woff2");
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+02D7, U+0303, U+0331, U+0E01-0E5B, U+200C-200D, U+25CC;
+}
+
 :root {
   --kpi-kpi-lime-start: #E6E81F;
   --kpi-kpi-lime-end: #A3CE39;
+  --kpi-accent: #C7F000;
   --kpi-kpi-teal: #0B6660;
-  --kpi-deep-teal: #063F3B;
+  --kpi-deep-teal: #0B1F33;
   --kpi-charcoal: #3B3B3B;
   --kpi-white: #FFFFFF;
   --kpi-light-lime: #F2F8E2;
@@ -10,9 +21,10 @@
   --kpi-line-grey: #E3E8EB;
   --kpi-body-text: #555555;
   --kpi-lime-gradient: linear-gradient(135deg, #E6E81F 0%, #A3CE39 100%);
-  --kpi-teal-gradient: linear-gradient(135deg, #0B6660 0%, #063F3B 100%);
-  --kpi-font-display: "Montserrat", "Sarabun", Arial, sans-serif;
-  --kpi-font-body: "Sarabun", "Montserrat", Arial, sans-serif;
+  --kpi-teal-gradient: linear-gradient(135deg, #0B6660 0%, #0B1F33 100%);
+  --kpi-font-display: "Poppins", sans-serif;
+  --kpi-font-thai: "Noto Sans Thai", Tahoma, Arial, sans-serif;
+  --kpi-font-body: "Noto Sans Thai", "Poppins", Tahoma, Arial, sans-serif;
   --kpi-wrap: 72rem;
   --kpi-gutter: 1.25rem;
   --kpi-hero-y: 3.25rem;

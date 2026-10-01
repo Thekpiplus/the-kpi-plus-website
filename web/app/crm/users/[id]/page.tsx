@@ -35,12 +35,12 @@ export default async function UserDetailPage({
             ดู Login Log ของอีเมลนี้
           </Link>
         </p>
-        {saved === "1" ? <p className="mt-4 font-semibold text-[#063F3B]">บันทึกแล้ว</p> : null}
-        {error === "invalid" ? <p className="mt-4 font-semibold text-[#063F3B]">ข้อมูลไม่ครบหรือบทบาทไม่ถูกต้อง</p> : null}
-        {error === "last_owner" ? <p className="mt-4 font-semibold text-[#063F3B]">ต้องเหลือเจ้าของระบบอย่างน้อย 1 คน</p> : null}
-        {error === "self_role" ? <p className="mt-4 font-semibold text-[#063F3B]">เปลี่ยนบทบาทของตัวเองเป็นอย่างอื่นไม่ได้</p> : null}
-        {error === "partner" ? <p className="mt-4 font-semibold text-[#063F3B]">บัญชีพาร์ตเนอร์จัดการจาก Partner Management</p> : null}
-        {locked ? <p className="mt-4 font-semibold text-[#063F3B]">บัญชีนี้ถูกล็อกจากการลองรหัสผิดหลายครั้ง</p> : null}
+        {saved === "1" ? <p className="mt-4 font-semibold text-[#0B1F33]">บันทึกแล้ว</p> : null}
+        {error === "invalid" ? <p className="mt-4 font-semibold text-[#0B1F33]">ข้อมูลไม่ครบหรือบทบาทไม่ถูกต้อง</p> : null}
+        {error === "last_owner" ? <p className="mt-4 font-semibold text-[#0B1F33]">ต้องเหลือเจ้าของระบบอย่างน้อย 1 คน</p> : null}
+        {error === "self_role" ? <p className="mt-4 font-semibold text-[#0B1F33]">เปลี่ยนบทบาทของตัวเองเป็นอย่างอื่นไม่ได้</p> : null}
+        {error === "partner" ? <p className="mt-4 font-semibold text-[#0B1F33]">บัญชีพาร์ตเนอร์จัดการจาก Partner Management</p> : null}
+        {locked ? <p className="mt-4 font-semibold text-[#0B1F33]">บัญชีนี้ถูกล็อกจากการลองรหัสผิดหลายครั้ง</p> : null}
 
         {canEdit ? (
           <>

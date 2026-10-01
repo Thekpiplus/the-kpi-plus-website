@@ -68,7 +68,7 @@ export function SiteShell({
         <main>
           {!hasOwnBreadcrumbs(route) && crumbs.length > 1 ? <PageBreadcrumbs items={crumbs} /> : null}
           {children}
-          <PageFaqs items={faqs} locale={locale} />
+          <PageFaqs items={faqs} locale={locale} editorial={route === "/"} />
         </main>
         <Footer extraLinks={extraFooter} />
         <CookieConsent />

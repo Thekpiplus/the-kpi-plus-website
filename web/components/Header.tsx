@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { ChevronDown, Earth, MenuIcon } from "@/components/Icons";
+import { ArrowUpRight, ChevronDown, Earth, MenuIcon } from "@/components/Icons";
 import {
   locales,
   uiCopy,
@@ -97,7 +97,7 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
       <div className="kpi-wrap kpi-header-bar overflow-visible">
         <Link href={homeHref(locale)} aria-label={locale === "th" ? `${brandName(locale)} หน้าแรก` : `${brandName(locale)} home`} className="shrink-0 px-1 py-1">
           <img
-            src="/brand/KPIPlus_Horizontal_FullColor.svg"
+            src="/brand/KPIPlus_Horizontal_FullColor.png"
             alt={brandName(locale)}
             className="h-9 w-auto min-w-[108px] object-contain object-left sm:h-10 md:h-12"
           />
@@ -115,9 +115,7 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
               onMouseLeave={scheduleCloseSolutions}
             >
               <div
-                className={`inline-flex h-11 items-center rounded-xl transition duration-150 hover:bg-[#F2F8E2] hover:text-[#0B6660] ${
-                  openSolutions ? "bg-[#F2F8E2] text-[#0B6660]" : ""
-                }`}
+                className={`kpi-solutions-trigger inline-flex h-11 items-center rounded-xl ${openSolutions ? "is-open" : ""}`}
               >
                 <Link
                   href={solutionsIndexHref(locale)}
@@ -149,28 +147,21 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
               <div
                 id="solutions-menu"
                 role="menu"
-                className="absolute left-0 top-full pt-2"
+                className="kpi-solutions-menu absolute left-0 top-full"
                 style={{
                   display: openSolutions ? "block" : "none",
                   zIndex: 80,
                   width: "min(48rem, calc(100vw - 2.5rem))",
                 }}
               >
-                <div className="rounded-2xl border border-[#E3E8EB] bg-white p-6 shadow-[0_18px_40px_rgba(11,31,51,.08)]">
-                  <div className="grid grid-cols-3 gap-6">
+                <div className="kpi-solutions-panel">
+                  <div className="kpi-solutions-grid">
                     {groups.map((group) => (
                       <div key={group.id}>
-                        <p className={`text-xs font-extrabold text-[#0B6660] ${locale === "en" ? "uppercase tracking-[.12em]" : "tracking-[.06em]"}`}>
-                          {group.title}
-                        </p>
-                        <div className="mt-3 grid gap-2">
+                        <p className="kpi-solutions-heading">{group.title}</p>
+                        <div className="kpi-solutions-links">
                           {group.items.map((item) => (
-                            <Link
-                              key={item.href}
-                              href={item.href}
-                              role="menuitem"
-                              className="text-sm text-[#555555] transition hover:text-[#0B6660]"
-                            >
+                            <Link key={item.href} href={item.href} role="menuitem" className="kpi-solutions-link">
                               {item.label}
                             </Link>
                           ))}
@@ -178,12 +169,9 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
                       </div>
                     ))}
                   </div>
-                  <Link
-                    href={solutionsIndexHref(locale)}
-                    role="menuitem"
-                    className="mt-5 inline-flex text-sm font-semibold text-[#0B6660]"
-                  >
+                  <Link href={solutionsIndexHref(locale)} role="menuitem" className="kpi-solutions-all">
                     {t.allSolutions}
+                    <ArrowUpRight className="h-3.5 w-3.5" />
                   </Link>
                 </div>
               </div>
@@ -223,7 +211,7 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
               type="button"
               aria-expanded={openLang}
               aria-haspopup="menu"
-              className="kpi-thai-nav inline-flex items-center gap-2 rounded-xl border border-[#E3E8EB] px-3 py-2 text-[0.94rem] font-normal text-[#555555] transition hover:border-[#0B6660] hover:text-[#0B6660]"
+              className="kpi-thai-nav inline-flex h-11 items-center gap-2 rounded-xl border border-[#E3E8EB] px-3 text-[0.94rem] font-normal text-[#555555] transition hover:border-[#0B6660] hover:text-[#0B6660]"
               onClick={() => {
                 setOpenSolutions(false);
                 setOpenLang((value) => !value);
@@ -254,7 +242,7 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
           <Link
             data-track="public_header_audit_cta"
             href={auditHref(locale)}
-            className="kpi-cta kpi-header-cta kpi-thai-nav rounded-xl px-4 text-[0.96rem] font-semibold leading-6 sm:whitespace-nowrap sm:px-5"
+            className="kpi-cta kpi-header-cta kpi-thai-nav"
           >
             {t.audit}
           </Link>

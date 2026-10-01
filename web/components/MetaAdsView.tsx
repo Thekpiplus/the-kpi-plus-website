@@ -282,12 +282,12 @@ export function MetaAdsView({ locale }: { locale: Locale }) {
             <div className="kpi-grid-2 mt-8">
               <article className="kpi-card p-6">
                 <img src="/brand/meta/facebook.svg" alt="" className="kpi-platform-mark" />
-                <p className="kpi-latin mt-4 text-3xl font-extrabold tracking-[-.04em] text-[#063F3B]">{t.facebookStat}</p>
+                <p className="kpi-latin mt-4 text-3xl font-extrabold tracking-[-.04em] text-[#0B1F33]">{t.facebookStat}</p>
                 <p className="mt-2 text-sm leading-6 text-[#555555]">{t.facebookLabel}</p>
               </article>
               <article className="kpi-card p-6">
                 <img src="/brand/meta/instagram.svg" alt="" className="kpi-platform-mark" />
-                <p className="kpi-latin mt-4 text-3xl font-extrabold tracking-[-.04em] text-[#063F3B]">{t.instagramStat}</p>
+                <p className="kpi-latin mt-4 text-3xl font-extrabold tracking-[-.04em] text-[#0B1F33]">{t.instagramStat}</p>
                 <p className="mt-2 text-sm leading-6 text-[#555555]">{t.instagramLabel}</p>
               </article>
             </div>

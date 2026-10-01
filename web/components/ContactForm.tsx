@@ -143,7 +143,7 @@ export function ContactForm({ locale }: { locale: Locale }) {
       <button type="submit" className="kpi-button mt-2">
         {t.submit}
       </button>
-      {error ? <p className="text-sm font-semibold text-[#063F3B]">ส่งไม่สำเร็จ ลองอีกครั้ง</p> : null}
+      {error ? <p className="text-sm font-semibold text-[#0B1F33]">ส่งไม่สำเร็จ ลองอีกครั้ง</p> : null}
       {submitted ? <p className="text-sm font-semibold text-[#0B6660]">{t.done}. {t.note}</p> : null}
     </form>
   );

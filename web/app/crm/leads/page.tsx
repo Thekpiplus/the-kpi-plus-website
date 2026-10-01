@@ -127,7 +127,7 @@ export default async function LeadsPage({
                 {lead.formName ? ` · ${formLabel(lead.formName)}` : ""} · {ownersById[lead.ownerId ?? ""] || "ยังไม่มีผู้ดูแล"} ·{" "}
                 {formatMoney(lead.estimatedValue)} · {lead.phone || lead.email || "ไม่มีช่องทางติดต่อ"} · {formatThaiDateTime(lead.updatedAt)}
               </p>
-              {interest ? <p className="mt-2 text-sm text-[#063F3B]">{interest}</p> : null}
+              {interest ? <p className="mt-2 text-sm text-[#0B1F33]">{interest}</p> : null}
               <div className="mt-3 grid gap-2 md:grid-cols-2">
                 <form action={changeLeadStage} className="grid gap-2">
                   <input type="hidden" name="leadId" value={lead.id} />

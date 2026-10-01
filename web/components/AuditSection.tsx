@@ -130,67 +130,92 @@ export function AuditSection({ locale, leftExtra }: { locale: Locale; leftExtra?
   };
 
   return (
-    <section id="audit" className="relative border-t border-[#E3E8EB] bg-[#F4F4F4]">
-      <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
+    <section id="audit" className="kpi-home-audit border-t border-[#E3E8EB] bg-[#F4F4F4]">
       <div className={`kpi-section kpi-split-audit${leftExtra ? " kpi-split-audit-fill" : ""}`}>
-        <div className={leftExtra ? "kpi-audit-copy" : undefined}>
-          <img src="/brand/KPIPlus_Symbol_FullColor.svg" alt="" width={36} height={36} className="h-9 w-9" />
-          <h2 className="kpi-h2 mt-6">{t.heading}</h2>
-          <p className="mt-5 max-w-xl text-base leading-8 text-[#555555]">{t.intro}</p>
-          <p className="mt-8 text-xs font-semibold uppercase tracking-[.16em] text-[#0B6660]">{t.nextTitle}</p>
-          <ol className="mt-4 grid gap-4">
+        <div className="kpi-audit-copy">
+          <p className="kpi-audit-kicker kpi-latin">{t.eyebrow}</p>
+          <h2 className="kpi-h2 kpi-audit-heading">
+            {locale === "th" ? (
+              <>
+                {"ขอวิเคราะห์"}
+                <span className="kpi-audit-break"> </span>
+                {"Performance โรงแรม"}
+              </>
+            ) : (
+              t.heading
+            )}
+          </h2>
+          <p className="kpi-audit-intro">{t.intro}</p>
+          <ol className="kpi-audit-steps">
             {t.nextSteps.map(([num, body]) => (
-              <li key={num} className="flex gap-4">
-                <span className="text-sm font-black tracking-[.14em] text-[#0B6660]">{num}</span>
-                <p className="text-base leading-7 text-[#555555]">{body}</p>
+              <li key={num}>
+                <span className="kpi-latin">{num}</span>
+                <p>{body}</p>
               </li>
             ))}
           </ol>
+          <p className="kpi-audit-trust">
+            {t.trustFree}
+            <br />
+            {t.trustReply}
+          </p>
           {leftExtra}
         </div>
 
-        <div className="rounded-[1.5rem] border border-[#E3E8EB] bg-white p-6 shadow-[0_18px_40px_rgba(11,31,51,.06)] sm:p-8">
+        <div className="kpi-audit-panel">
           {status === "success" ? (
-            <div className="rounded-2xl bg-[#F2F8E2] p-6" role="status">
-              <h3 className="text-2xl font-extrabold tracking-[-.04em] text-[#063F3B]">{t.successTitle}</h3>
+            <div className="bg-[#F2F8E2] p-6" role="status">
+              <h3 className="text-2xl font-extrabold tracking-[-.04em] text-[#0B1F33]">{t.successTitle}</h3>
               <p className="mt-4 text-base leading-8 text-[#555555]">{t.successBody}</p>
               <ContactLinks locale={locale} className="mt-6" />
             </div>
           ) : (
-            <form className="grid gap-5" onSubmit={onSubmit} noValidate>
-              <Field label={t.name} error={errors.name} htmlFor={`${formId}-name`}>
-                <input
-                  id={`${formId}-name`}
-                  name="name"
-                  autoComplete="name"
-                  className="kpi-field mt-1"
-                  value={state.name}
-                  aria-invalid={Boolean(errors.name)}
-                  onBlur={() => validate()}
-                  onChange={(event) => setState((current) => ({ ...current, name: event.target.value }))}
-                />
-              </Field>
-              <Field label={t.hotel} error={errors.hotel} htmlFor={`${formId}-hotel`}>
-                <input
-                  id={`${formId}-hotel`}
-                  name="hotel"
-                  className="kpi-field mt-1"
-                  value={state.hotel}
-                  aria-invalid={Boolean(errors.hotel)}
-                  onBlur={() => validate()}
-                  onChange={(event) => setState((current) => ({ ...current, hotel: event.target.value }))}
-                />
-              </Field>
-              <div className="grid gap-5 sm:grid-cols-2">
-                <Field label={t.province} error={errors.province} htmlFor={`${formId}-province`}>
+            <form className="kpi-audit-form" onSubmit={onSubmit} noValidate>
+              <p className="kpi-audit-group">{t.groupHotel}</p>
+              <div className="kpi-audit-row">
+                <Field label={t.name} error={errors.name} htmlFor={`${formId}-name`}>
                   <input
-                    id={`${formId}-province`}
-                    name="province"
-                    className="kpi-field mt-1"
-                    value={state.province}
-                    aria-invalid={Boolean(errors.province)}
+                    id={`${formId}-name`}
+                    name="name"
+                    autoComplete="name"
+                    className="kpi-field"
+                    value={state.name}
+                    aria-invalid={Boolean(errors.name)}
                     onBlur={() => validate()}
-                    onChange={(event) => setState((current) => ({ ...current, province: event.target.value }))}
+                    onChange={(event) => setState((current) => ({ ...current, name: event.target.value }))}
+                  />
+                </Field>
+                <Field label={t.role} error={errors.role} htmlFor={`${formId}-role`}>
+                  <select
+                    id={`${formId}-role`}
+                    name="role"
+                    className="kpi-field"
+                    value={state.role}
+                    aria-invalid={Boolean(errors.role)}
+                    onBlur={() => validate()}
+                    onChange={(event) =>
+                      setState((current) => ({ ...current, role: event.target.value as AuditRole | "" }))
+                    }
+                  >
+                    <option value="">{t.rolePlaceholder}</option>
+                    {auditRoleOrder.map((role) => (
+                      <option key={role} value={role}>
+                        {t.roles[role]}
+                      </option>
+                    ))}
+                  </select>
+                </Field>
+              </div>
+              <div className="kpi-audit-row">
+                <Field label={t.hotel} error={errors.hotel} htmlFor={`${formId}-hotel`}>
+                  <input
+                    id={`${formId}-hotel`}
+                    name="hotel"
+                    className="kpi-field"
+                    value={state.hotel}
+                    aria-invalid={Boolean(errors.hotel)}
+                    onBlur={() => validate()}
+                    onChange={(event) => setState((current) => ({ ...current, hotel: event.target.value }))}
                   />
                 </Field>
                 <Field label={t.rooms} htmlFor={`${formId}-rooms`}>
@@ -198,96 +223,41 @@ export function AuditSection({ locale, leftExtra }: { locale: Locale; leftExtra?
                     id={`${formId}-rooms`}
                     name="rooms"
                     inputMode="numeric"
-                    className="kpi-field mt-1"
+                    className="kpi-field"
                     value={state.rooms}
                     onChange={(event) => setState((current) => ({ ...current, rooms: event.target.value }))}
                   />
                 </Field>
               </div>
-              <Field label={t.role} error={errors.role} htmlFor={`${formId}-role`}>
-                <select
-                  id={`${formId}-role`}
-                  name="role"
-                  className="kpi-field mt-1"
-                  value={state.role}
-                  aria-invalid={Boolean(errors.role)}
+              <Field label={t.province} error={errors.province} htmlFor={`${formId}-province`}>
+                <input
+                  id={`${formId}-province`}
+                  name="province"
+                  className="kpi-field"
+                  value={state.province}
+                  aria-invalid={Boolean(errors.province)}
                   onBlur={() => validate()}
-                  onChange={(event) =>
-                    setState((current) => ({ ...current, role: event.target.value as AuditRole | "" }))
-                  }
-                >
-                  <option value="">{t.rolePlaceholder}</option>
-                  {auditRoleOrder.map((role) => (
-                    <option key={role} value={role}>
-                      {t.roles[role]}
-                    </option>
-                  ))}
-                </select>
+                  onChange={(event) => setState((current) => ({ ...current, province: event.target.value }))}
+                />
               </Field>
 
-              <div>
-                <p className="kpi-label">{t.contactHint}</p>
-                <div className="mt-3 grid gap-4">
-                  <Field label={t.phone} htmlFor={`${formId}-phone`}>
-                    <input
-                      id={`${formId}-phone`}
-                      name="phone"
-                      type="tel"
-                      autoComplete="tel"
-                      className="kpi-field mt-1"
-                      value={state.phone}
-                      onBlur={() => validate()}
-                      onChange={(event) => setState((current) => ({ ...current, phone: event.target.value }))}
-                    />
-                  </Field>
-                  <Field label={t.lineId} htmlFor={`${formId}-line`}>
-                    <input
-                      id={`${formId}-line`}
-                      name="lineId"
-                      className="kpi-field mt-1"
-                      value={state.lineId}
-                      onBlur={() => validate()}
-                      onChange={(event) => setState((current) => ({ ...current, lineId: event.target.value }))}
-                    />
-                  </Field>
-                  <Field label={t.email} htmlFor={`${formId}-email`}>
-                    <input
-                      id={`${formId}-email`}
-                      name="email"
-                      type="email"
-                      autoComplete="email"
-                      className="kpi-field mt-1"
-                      value={state.email}
-                      onBlur={() => validate()}
-                      onChange={(event) => setState((current) => ({ ...current, email: event.target.value }))}
-                    />
-                  </Field>
-                </div>
-                {errors.contact ? (
-                  <p id={`${formId}-contact-error`} className="mt-2 text-sm text-[#bd3f3f]" role="alert">
-                    {errors.contact}
-                  </p>
-                ) : null}
-              </div>
-
+              <p className="kpi-audit-group">{t.groupFocus}</p>
               <fieldset>
                 <legend className="kpi-label">{t.concernsLegend}</legend>
-                <div className="mt-3 grid gap-3">
+                <div className="kpi-audit-concerns">
                   {auditFocusOrder.map((value) => {
                     const checked = state.concerns.includes(value);
                     return (
                       <label
                         key={value}
-                        className={`flex cursor-pointer items-start gap-3 rounded-2xl border px-4 py-3 text-sm leading-6 transition ${
-                          checked ? "border-[#0B6660] bg-[#F2F8E2] text-[#063F3B]" : "border-[#E3E8EB] bg-white text-[#555555]"
-                        }`}
+                        className={`kpi-audit-check${checked ? " is-checked" : ""}`}
                       >
                         <input
                           type="checkbox"
                           name="concerns"
                           value={value}
                           checked={checked}
-                          className="mt-1 h-4 w-4 accent-[#0B6660]"
+                          className="mt-0.5 h-4 w-4 accent-[#0B6660]"
                           onChange={() => toggleConcern(value)}
                         />
                         <span>{t.concerns[value]}</span>
@@ -306,19 +276,65 @@ export function AuditSection({ locale, leftExtra }: { locale: Locale; leftExtra?
                 <textarea
                   id={`${formId}-details`}
                   name="details"
-                  className="kpi-field mt-1 min-h-28"
+                  className="kpi-field"
                   placeholder={t.detailsPlaceholder}
                   value={state.details}
                   onChange={(event) => setState((current) => ({ ...current, details: event.target.value }))}
                 />
               </Field>
 
-              <FormPrivacyNotice locale={locale} />
-              <label className="flex items-start gap-3 text-sm leading-7 text-[#555555]">
+              <p className="kpi-audit-group">{t.groupContact}</p>
+              <p className="kpi-audit-hint">{t.contactHint}</p>
+              <div className="kpi-audit-row">
+                <Field label={t.phone} htmlFor={`${formId}-phone`}>
+                  <input
+                    id={`${formId}-phone`}
+                    name="phone"
+                    type="tel"
+                    autoComplete="tel"
+                    className="kpi-field"
+                    value={state.phone}
+                    onBlur={() => validate()}
+                    onChange={(event) => setState((current) => ({ ...current, phone: event.target.value }))}
+                  />
+                </Field>
+                <Field label={t.lineId} htmlFor={`${formId}-line`}>
+                  <input
+                    id={`${formId}-line`}
+                    name="lineId"
+                    className="kpi-field"
+                    value={state.lineId}
+                    onBlur={() => validate()}
+                    onChange={(event) => setState((current) => ({ ...current, lineId: event.target.value }))}
+                  />
+                </Field>
+              </div>
+              <Field label={t.email} htmlFor={`${formId}-email`}>
+                <input
+                  id={`${formId}-email`}
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  className="kpi-field"
+                  value={state.email}
+                  onBlur={() => validate()}
+                  onChange={(event) => setState((current) => ({ ...current, email: event.target.value }))}
+                />
+              </Field>
+              {errors.contact ? (
+                <p id={`${formId}-contact-error`} className="text-sm text-[#bd3f3f]" role="alert">
+                  {errors.contact}
+                </p>
+              ) : null}
+
+              <div className="kpi-audit-privacy">
+                <FormPrivacyNotice locale={locale} />
+              </div>
+              <label className="kpi-audit-consent">
                 <input
                   type="checkbox"
                   name="consent"
-                  className="mt-1 h-4 w-4 accent-[#0B6660]"
+                  className="mt-0.5 h-4 w-4 accent-[#0B6660]"
                   checked={state.consent}
                   onChange={(event) => setState((current) => ({ ...current, consent: event.target.checked }))}
                 />
@@ -349,22 +365,23 @@ export function AuditSection({ locale, leftExtra }: { locale: Locale; leftExtra?
               </div>
 
               {status === "error" ? (
-                <div className="rounded-2xl border border-[#E3E8EB] bg-[#F4F4F4] p-4" role="alert">
+                <div className="border border-[#E3E8EB] bg-[#F4F4F4] p-4" role="alert">
                   <p className="font-semibold text-[#3B3B3B]">{t.errorTitle}</p>
                   <p className="mt-2 text-sm leading-7 text-[#555555]">{t.errorBody}</p>
                   <ContactLinks locale={locale} className="mt-4" />
                 </div>
               ) : null}
 
+              <p className="kpi-audit-time">{t.timeNote}</p>
               <button
                 type="submit"
-                className="kpi-cta inline-flex w-full items-center justify-center rounded-xl px-6 py-3.5 font-semibold"
+                className="kpi-cta w-full"
                 disabled={status === "submitting"}
                 aria-busy={status === "submitting"}
               >
                 {status === "submitting" ? t.submitting : t.submit}
               </button>
-              <p className="text-sm leading-7 text-[#555555]">{t.followUp}</p>
+              <p className="kpi-audit-follow">{t.followUp}</p>
               <ContactLinks locale={locale} />
             </form>
           )}

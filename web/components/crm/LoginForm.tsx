@@ -8,7 +8,7 @@ export function LoginForm({ error }: { error?: string }) {
   return (
     <form action="/api/crm/login" method="post" className="crm-card mx-auto mt-16 max-w-md">
       <img
-        src="/brand/KPIPlus_Horizontal_FullColor.svg"
+        src="/brand/KPIPlus_Horizontal_FullColor.png"
         alt="The KPI Plus"
         width={180}
         height={40}
@@ -24,7 +24,7 @@ export function LoginForm({ error }: { error?: string }) {
         รหัสผ่าน
         <input className="crm-field" type="password" name="password" autoComplete="current-password" required />
       </label>
-      {error ? <p className="mt-3 text-sm font-semibold text-[#063F3B]">{ERRORS[error] ?? ERRORS.invalid}</p> : null}
+      {error ? <p className="mt-3 text-sm font-semibold text-[#0B1F33]">{ERRORS[error] ?? ERRORS.invalid}</p> : null}
       <button className="kpi-button mt-6" type="submit">
         เข้าสู่ระบบ
       </button>

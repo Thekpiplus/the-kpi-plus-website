@@ -61,7 +61,7 @@ export function SolutionsIndexView({ locale }: { locale: Locale }) {
                 {group.items.map((item) => (
                   <article key={item.href} className="kpi-card relative flex flex-col overflow-hidden p-7 sm:p-8">
                     <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-                    <h4 className={`${locale === "en" ? "kpi-latin " : ""}mt-3 text-xl font-extrabold leading-snug text-[#063F3B]`}>{item.label}</h4>
+                    <h4 className={`${locale === "en" ? "kpi-latin " : ""}mt-3 text-xl font-extrabold leading-snug text-[#0B1F33]`}>{item.label}</h4>
                     {item.problem ? <p className="mt-4 text-base leading-8 text-[#555555]">{item.problem}</p> : null}
                     <Link href={item.href} className="mt-auto pt-8 text-sm font-semibold text-[#0B6660]">
                       {t.details}
@@ -77,7 +77,7 @@ export function SolutionsIndexView({ locale }: { locale: Locale }) {
       {t.unsureTitle ? (
         <section className="kpi-section">
           <div className="rounded-[1.5rem] bg-[#F2F8E2] px-6 py-12 sm:px-12 sm:py-14">
-            <h2 className="kpi-h2 text-[#063F3B]">{t.unsureTitle}</h2>
+            <h2 className="kpi-h2 text-[#0B1F33]">{t.unsureTitle}</h2>
             <p className="kpi-lead mt-5">{t.unsureBody}</p>
             <Link href={audit} className="kpi-button mt-8">
               {t.audit}

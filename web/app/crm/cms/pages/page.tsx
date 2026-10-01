@@ -23,7 +23,7 @@ export default async function CmsPagesPage({
           สร้างหน้า
         </Link>
       </div>
-      {params.deleted === "1" ? <p className="font-semibold text-[#063F3B]">ย้ายเข้าถังขยะแล้ว</p> : null}
+      {params.deleted === "1" ? <p className="font-semibold text-[#0B1F33]">ย้ายเข้าถังขยะแล้ว</p> : null}
       <form className="crm-card grid gap-3 md:grid-cols-3" method="get">
         <label className="text-sm font-bold">
           ค้นหา

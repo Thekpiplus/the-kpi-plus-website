@@ -16,20 +16,22 @@ const copy = {
     crumb: "โซลูชัน",
     eyebrow: "บริหารรายได้และกลยุทธ์การขาย",
     title: "ดูแลมากกว่าราคาห้องพัก เพื่อให้ทุกช่องทางขายทำงานร่วมกัน",
-    lead: "การเพิ่มรายได้โรงแรมไม่ได้จบที่การปรับราคาห้อง เดอะ เคพีไอ พลัส ช่วยดูทั้งราคา ห้องว่าง OTA การจองตรง การตลาด ระบบที่ใช้ และข้อมูลผลประกอบการ เพื่อให้โรงแรมเห็นว่าโอกาสอยู่ตรงไหนและทีมควรลงมือทำอะไรต่อ",
+    lead: "การเพิ่มรายได้โรงแรมไม่ได้จบที่การปรับราคาห้อง เราดูทั้งราคา ห้องว่าง ช่องทางขาย และ Demand เพื่อให้เห็นว่าโอกาสของรายได้อยู่ตรงไหน",
     leadClose:
-      "โรงแรมสามารถเริ่มจาก Revenue Management เฉพาะส่วนที่ต้องการ หรือให้เราช่วยดูแล Commercial Management ในภาพกว้างขึ้นตามขอบเขตงานที่ตกลงกัน",
-    cta: "ให้ทีมดูโอกาสเพิ่มรายได้ของโรงแรม",
+      "จาก Revenue Management ไปจนถึง Commercial Management โรงแรมสามารถเลือกเริ่มเฉพาะส่วนที่ต้องการ หรือให้ทีมเราช่วยดูภาพรวมทั้งระบบ",
+    cta: "ขอวิเคราะห์โอกาสเพิ่มรายได้",
     secondary: "ดูโซลูชันทั้งหมด",
     underCta: "ส่งชื่อโรงแรม จำนวนห้อง และลิงก์ที่พัก เพื่อให้ทีมดูจุดเริ่มต้น",
+    heroAlt: "แล็ปท็อปแสดงตัวเลขรายได้โรงแรมบนโต๊ะทำงานใกล้ล็อบบี้",
     photoAlt: "ทีมโรงแรมดูราคา ช่องทางขาย และแผนรายได้ร่วมกัน",
-    problemTitle: "โรงแรมของคุณกำลังเจอเรื่องนี้หรือไม่?",
+    problemTitle: "ปัญหาไหนกำลังฉุดรายได้ของโรงแรม?",
+    problemCaption: "มองราคา ช่องทางขาย และ Demand ในภาพเดียว",
     problems: [
-      "ห้องพักเต็มหลายคืน แต่ราคาเฉลี่ยยังต่ำ",
-      "มีห้องว่างบางช่วง และไม่แน่ใจว่าควรปรับราคา โปรโมชัน หรือช่องทางขาย",
-      "OTA สร้างยอดจอง แต่ยังไม่เห็นชัดว่ารายได้หลังต้นทุนเหลือเท่าไร",
+      "ห้องพักเต็มหลายคืน แต่ราคาห้องยังต่ำกว่าที่ควร",
+      "มีห้องว่างบางช่วง แต่ยังไม่แน่ใจว่าควรปรับราคา โปรโมชัน หรือช่องทางขาย",
+      "OTA สร้างยอดจอง แต่ยังไม่เห็นชัดว่ารายได้หลังหักต้นทุนเหลือเท่าไร",
       "อยากเพิ่มการจองตรง แต่เว็บไซต์ ระบบจอง และการตลาดยังไม่เชื่อมกัน",
-      "มีข้อมูลในหลายระบบ แต่ไม่มีใครนำมารวมเป็นแผนที่ทีมลงมือทำได้",
+      "มีข้อมูลอยู่ในหลายระบบ แต่ยังไม่มีใครรวบรวมให้เป็นแผนที่ทีมลงมือทำได้",
       "ทีมขาย การตลาด และปฏิบัติการทำงานหนัก แต่ยังไม่เห็นเป้าหมายรายได้ร่วมกัน",
     ],
     helpTitle: "เดอะ เคพีไอ พลัส ช่วยดูแลส่วนไหนได้บ้าง?",
@@ -70,6 +72,7 @@ const copy = {
     cta: "Ask the team to review a hotel revenue opportunity",
     secondary: "All solutions",
     underCta: "Send the hotel name, room count, and a listing link for a first look.",
+    heroAlt: "A laptop showing hotel revenue figures on a desk beside a lobby",
     photoAlt: "A hotel team reviewing rates, channels, and a revenue plan together",
     problemTitle: "Does any of this sound like the hotel now?",
     problems: [
@@ -118,6 +121,7 @@ const copy = {
     cta: "Попросить команду посмотреть, где отель может увеличить доход",
     secondary: "Все решения",
     underCta: "Отправьте название отеля, число номеров и ссылку на объект для первого просмотра.",
+    heroAlt: "Ноутбук с цифрами дохода отеля на столе рядом с лобби",
     photoAlt: "Команда отеля вместе смотрит цены, каналы и план по доходу",
     problemTitle: "Похоже ли это на ваш отель сейчас?",
     problems: [
@@ -166,6 +170,7 @@ const copy = {
     cta: "請團隊看這間飯店哪裡有機會增加收益",
     secondary: "查看全部方案",
     underCta: "留下飯店名稱、房數與住宿連結，讓團隊先看起點。",
+    heroAlt: "筆電顯示飯店收益數字，放在靠近大廳的工作桌上",
     photoAlt: "飯店團隊一起檢視價格、通路與收益計畫",
     problemTitle: "你的飯店現在是否遇到這些情況？",
     problems: [
@@ -206,6 +211,17 @@ const copy = {
   },
 } as const;
 
+type DiagnosticLine = { before: string; em?: string; after?: string };
+
+const diagnosticTh: DiagnosticLine[][] = [
+  [{ before: "ห้องพักเต็มหลายคืน" }, { before: "แต่", em: "ราคาห้องยังต่ำ", after: "กว่าที่ควร" }],
+  [{ before: "มี", em: "ห้องว่างบางช่วง" }, { before: "แต่ยังไม่แน่ใจว่าควรปรับราคา โปรโมชัน หรือช่องทางขาย" }],
+  [{ before: "OTA สร้างยอดจอง" }, { before: "แต่ยังไม่เห็นชัดว่า", em: "รายได้หลังหักต้นทุน", after: "เหลือเท่าไร" }],
+  [{ before: "อยากเพิ่ม", em: "การจองตรง" }, { before: "แต่เว็บไซต์ ระบบจอง และการตลาดยังไม่เชื่อมกัน" }],
+  [{ before: "มี", em: "ข้อมูลอยู่ในหลายระบบ" }, { before: "แต่ยังไม่มีใครรวบรวมให้เป็นแผนที่ทีมลงมือทำได้" }],
+  [{ before: "ทีมขาย การตลาด และปฏิบัติการทำงานหนัก" }, { before: "แต่ยังไม่เห็น", em: "เป้าหมายรายได้ร่วมกัน" }],
+];
+
 export function RevenueView({ locale }: { locale: Locale }) {
   const t = copy[locale];
   const insightsUi = insightsIndexCopy[locale];
@@ -217,52 +233,87 @@ export function RevenueView({ locale }: { locale: Locale }) {
 
   return (
     <SiteShell locale={locale} route={localizePath("/solutions/revenue-commercial-management", locale)}>
-      <PageHero>
-        <nav aria-label="Breadcrumb" className="text-sm text-white/70">
-          <ol className="flex flex-wrap items-center gap-2">
-            <li>
-              <Link href={solutions} className="hover:text-white">
-                {t.crumb}
+      <PageHero className="kpi-revenue-hero">
+        <div className="kpi-revenue-hero-grid">
+          <div className="kpi-revenue-hero-copy">
+            <nav aria-label="Breadcrumb" className="kpi-revenue-hero-crumb">
+              <ol className="flex flex-wrap items-center gap-2">
+                <li>
+                  <Link href={solutions} className="hover:text-white">
+                    {t.crumb}
+                  </Link>
+                </li>
+                <li className="flex items-center gap-2">
+                  <span aria-hidden="true">/</span>
+                  <span>{solutionNavLabel("/solutions/revenue-commercial-management", locale)}</span>
+                </li>
+              </ol>
+            </nav>
+            <h1 className="kpi-h1 kpi-revenue-hero-title">
+              {locale === "th" ? (
+                <>
+                  ดูแลมากกว่าราคาห้องพัก
+                  <span className="kpi-revenue-hero-break"> </span>
+                  เพื่อให้<span className="kpi-revenue-hero-em">ทุกช่องทางขาย</span>
+                  <span className="kpi-revenue-hero-break"> </span>
+                  ทำงานร่วมกัน
+                </>
+              ) : (
+                t.title
+              )}
+            </h1>
+            <p className="kpi-revenue-hero-lead">{t.lead}</p>
+            <p className="kpi-revenue-hero-lead kpi-revenue-hero-lead-next">{t.leadClose}</p>
+            <div className="kpi-actions">
+              <a href="#revenue-enquiry" className="kpi-button">
+                {t.cta} <ArrowUpRight className="h-4 w-4" />
+              </a>
+              <Link href={solutions} className="kpi-button-ghost kpi-revenue-hero-secondary">
+                {t.secondary}
               </Link>
-            </li>
-            <li className="flex items-center gap-2">
-              <span aria-hidden="true">/</span>
-              <span className="text-white">{solutionNavLabel("/solutions/revenue-commercial-management", locale)}</span>
-            </li>
-          </ol>
-        </nav>
-        <p className="kpi-kicker mt-5 text-[#F2F8E2]">{t.eyebrow}</p>
-        <h1 className="kpi-h1 mt-5">{t.title}</h1>
-        <p className="kpi-lead mt-5 text-white/72">{t.lead}</p>
-        <p className="mt-4 max-w-3xl text-base leading-8 text-white/64">{t.leadClose}</p>
-        <div className="kpi-actions">
-          <a href="#revenue-enquiry" className="kpi-button">
-            {t.cta} <ArrowUpRight className="h-4 w-4" />
-          </a>
-          <Link href={solutions} className="kpi-button-ghost">
-            {t.secondary}
-          </Link>
+            </div>
+            <p className="kpi-revenue-hero-note">{t.underCta}</p>
+          </div>
+          <figure className="kpi-revenue-hero-photo">
+            <img src="/media/revenue-hero-desk.jpg" alt={t.heroAlt} width={1200} height={900} />
+          </figure>
         </div>
-        <p className="mt-4 max-w-xl text-sm leading-6 text-white/64">{t.underCta}</p>
       </PageHero>
 
-      <section className="kpi-section">
-        <div className="kpi-split">
+      <section className="kpi-section kpi-revenue-diagnostic">
+        <div className="kpi-revenue-diagnostic-grid">
           <div>
-            <h2 className="kpi-h2">{t.problemTitle}</h2>
-            <div className="mt-10 grid gap-4">
-              {t.problems.map((problem, index) => (
-                <article key={problem} className="kpi-card flex gap-4 p-6">
-                  <span className="kpi-latin text-sm font-black tracking-[.14em] text-[#0B6660]">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <p className="text-base leading-7 text-[#555555]">{problem}</p>
-                </article>
+            <h2 className="kpi-h2">
+              {locale === "th" ? (
+                <>
+                  ปัญหาไหนกำลัง<span className="kpi-revenue-diagnostic-em">ฉุดรายได้</span>ของโรงแรม?
+                </>
+              ) : (
+                t.problemTitle
+              )}
+            </h2>
+            <ol className="kpi-revenue-diagnostic-list">
+              {(locale === "th" ? diagnosticTh : t.problems.map((text) => [{ before: text }])).map((lines, index) => (
+                <li key={index} className="kpi-revenue-diagnostic-item">
+                  <span className="kpi-revenue-diagnostic-num">{String(index + 1).padStart(2, "0")}</span>
+                  <p className="kpi-revenue-diagnostic-text">
+                    {lines.map((line, lineIndex) => (
+                      <span key={lineIndex} className={lineIndex > 0 ? "kpi-revenue-diagnostic-line" : undefined}>
+                        {line.before}
+                        {line.em ? <span className="kpi-revenue-diagnostic-em">{line.em}</span> : null}
+                        {line.after}
+                      </span>
+                    ))}
+                  </p>
+                </li>
               ))}
-            </div>
+            </ol>
           </div>
-          <figure className="kpi-home-photo">
+          <figure className="kpi-revenue-diagnostic-visual">
             <img src="/media/the-kpi-plus-revenue-scene_4932d3c7.jpg" alt={t.photoAlt} width={1200} height={900} />
+            {locale === "th" ? (
+              <figcaption className="kpi-revenue-diagnostic-caption">{copy.th.problemCaption}</figcaption>
+            ) : null}
           </figure>
         </div>
       </section>

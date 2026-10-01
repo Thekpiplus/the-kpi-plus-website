@@ -2,10 +2,17 @@ import { AUDIT_FOCUS_VALUES, AUDIT_RESPONSE_DAYS, AUDIT_ROLES, type AuditFocus, 
 import type { Locale } from "./seo";
 
 type AuditCopy = {
+  eyebrow: string;
   heading: string;
   intro: string;
   nextTitle: string;
   nextSteps: [string, string][];
+  trustFree: string;
+  trustReply: string;
+  timeNote: string;
+  groupHotel: string;
+  groupFocus: string;
+  groupContact: string;
   name: string;
   hotel: string;
   province: string;
@@ -40,14 +47,21 @@ type AuditCopy = {
 };
 
 const th: AuditCopy = {
+  eyebrow: "Hotel Performance Review",
   heading: "ขอวิเคราะห์ Performance โรงแรม",
-  intro: "เล่าให้เราฟังว่าโรงแรมกำลังเจออะไร ทีม เดอะ เคพีไอ พลัส จะช่วยดูว่ารายได้กำลังหายไปตรงไหน โอกาสอยู่ตรงไหน และอะไรควรทำก่อน",
+  intro: "เล่าให้เราฟังว่าโรงแรมกำลังเจออะไร เราจะช่วยดูว่ารายได้กำลังหายไปตรงไหน และอะไรควรทำก่อน",
   nextTitle: "หลังจากส่งข้อมูล",
   nextSteps: [
-    ["01", "เล่าสถานการณ์ของโรงแรมตามที่เห็นอยู่ตอนนี้"],
-    ["02", "ทีมดูตัวเลขร่วมกัน และแยกว่าอะไรคือปัญหา อะไรคือโอกาส"],
-    ["03", "คุยกันว่าควรทำอะไรก่อน โดยไม่ต้องเริ่มทุกอย่างพร้อมกัน"],
+    ["01", "เห็นสถานการณ์จากข้อมูลที่มี"],
+    ["02", "หาโอกาสที่ควรโฟกัสก่อน"],
+    ["03", "ได้แนวทางที่ทีมเอาไปเดินต่อได้"],
   ],
+  trustFree: "ไม่มีค่าใช้จ่าย",
+  trustReply: `ทีมงานจะติดต่อกลับภายใน ${AUDIT_RESPONSE_DAYS} วันทำการ`,
+  timeNote: "ใช้เวลาประมาณ 2–3 นาที · ไม่มีค่าใช้จ่าย",
+  groupHotel: "ข้อมูลโรงแรม",
+  groupFocus: "สิ่งที่ต้องการคำปรึกษา",
+  groupContact: "ช่องทางติดต่อ",
   name: "ชื่อ–นามสกุล",
   hotel: "ชื่อโรงแรม",
   province: "จังหวัด / พื้นที่",
@@ -84,7 +98,7 @@ const th: AuditCopy = {
   consentError: "กรุณายินยอมก่อนส่งข้อมูล",
   submit: "ขอวิเคราะห์ Performance โรงแรม",
   submitting: "กำลังส่งข้อมูล",
-  followUp: `ทีมของเราจะติดต่อกลับภายใน ${AUDIT_RESPONSE_DAYS} วันทำการ เพื่อนัดคุยและดูตัวเลขของโรงแรมร่วมกัน`,
+  followUp: `ทีมของเราจะติดต่อกลับภายใน ${AUDIT_RESPONSE_DAYS} วันทำการ`,
   orTalk: "หรือ คุยกับทีม เดอะ เคพีไอ พลัส",
   line: "LINE",
   call: "โทร",
@@ -96,6 +110,7 @@ const th: AuditCopy = {
 };
 
 const en: AuditCopy = {
+  eyebrow: "Hotel Performance Review",
   heading: "Request a Hotel Performance Audit",
   intro: "Tell us what's happening at your hotel. Our team will help you see where revenue is being lost, where the opportunities are, and what to do first.",
   nextTitle: "What happens next",
@@ -104,6 +119,12 @@ const en: AuditCopy = {
     ["02", "We look at the numbers together and separate the leak from the opportunity."],
     ["03", "We agree what to do first, without starting everything at once."],
   ],
+  trustFree: "No fee",
+  trustReply: `The team will reply within ${AUDIT_RESPONSE_DAYS} business days`,
+  timeNote: "About 2–3 minutes · No fee",
+  groupHotel: "Hotel details",
+  groupFocus: "What to review",
+  groupContact: "How to reach you",
   name: "Full name",
   hotel: "Hotel name",
   province: "Province / area",

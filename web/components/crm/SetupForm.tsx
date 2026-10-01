@@ -52,7 +52,7 @@ export function SetupForm() {
           required
         />
       </label>
-      {error ? <p className="mt-3 text-sm font-semibold text-[#063F3B]">{error}</p> : null}
+      {error ? <p className="mt-3 text-sm font-semibold text-[#0B1F33]">{error}</p> : null}
       <button className="kpi-button mt-6" type="submit">
         สร้างบัญชีเจ้าของ
       </button>

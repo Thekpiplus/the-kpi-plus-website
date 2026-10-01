@@ -169,7 +169,7 @@ export function EnquiryForm({
     <div className="rounded-[1.5rem] border border-[#E3E8EB] bg-white p-6 shadow-[0_18px_40px_rgba(11,31,51,.06)] sm:p-8">
       {status === "success" ? (
         <div className="rounded-2xl bg-[#F2F8E2] p-6" role="status">
-          <p className="text-lg font-extrabold leading-8 text-[#063F3B]">{t.success}</p>
+          <p className="text-lg font-extrabold leading-8 text-[#0B1F33]">{t.success}</p>
           <ContactNote locale={locale} className="mt-5" />
         </div>
       ) : (

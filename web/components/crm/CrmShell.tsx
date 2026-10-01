@@ -109,7 +109,7 @@ export function CrmShell({
         <div className="crm-top-brand">
           <Link href="/crm" className="crm-brand">
             <img
-              src="/brand/KPIPlus_Horizontal_FullColor.svg"
+              src="/brand/KPIPlus_Horizontal_FullColor.png"
               alt="The KPI Plus"
               width={180}
               height={40}

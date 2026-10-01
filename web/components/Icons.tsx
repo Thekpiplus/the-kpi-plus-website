@@ -156,3 +156,45 @@ export function Download(props: IconProps) {
     </svg>
   );
 }
+
+export function InsightIcon(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <circle cx="11" cy="11" r="6.5" />
+      <path d="m20 20-3.2-3.2" />
+    </svg>
+  );
+}
+
+export function OpportunityIcon(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <path d="M4 16.5 9 11l3 3 7.5-8" />
+      <path d="M14 6h6v6" />
+    </svg>
+  );
+}
+
+export function PlanIcon(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <path d="M9 7h10" />
+      <path d="M9 12h10" />
+      <path d="M9 17h10" />
+      <path d="m4 7 1.2 1.2L7.2 6" />
+      <path d="m4 12 1.2 1.2L7.2 11" />
+      <path d="m4 17 1.2 1.2L7.2 16" />
+    </svg>
+  );
+}
+
+export function OptimizeIcon(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <path d="M5 19V9" />
+      <path d="M10 19V5" />
+      <path d="M15 19v-6" />
+      <path d="M4 19h16" />
+    </svg>
+  );
+}

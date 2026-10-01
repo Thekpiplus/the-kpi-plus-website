@@ -22,7 +22,7 @@ export function NewLeadForm({
       <h1 className="text-2xl font-extrabold text-[#3B3B3B]">คีย์ลีด</h1>
       <p className="mt-2 text-sm">บันทึกลีดจากโทร LINE WhatsApp งานอีเวนต์ คนรู้จัก หรือแหล่งอื่น แล้วตั้งติดตามต่อได้ทันที</p>
       {duplicateId ? (
-        <p className="mt-4 font-semibold text-[#063F3B]">
+        <p className="mt-4 font-semibold text-[#0B1F33]">
           พบบันทึกที่อาจซ้ำ{" "}
           <a className="underline" href={`/crm/leads/${duplicateId}`}>
             เปิดลีดเดิม
@@ -30,7 +30,7 @@ export function NewLeadForm({
           หรือกดบันทึกอีกครั้งเพื่อสร้างต่อ
         </p>
       ) : null}
-      {error && !duplicateId ? <p className="mt-4 font-semibold text-[#063F3B]">บันทึกลีดไม่สำเร็จ ตรวจชื่อผู้ติดต่อแล้วลองใหม่</p> : null}
+      {error && !duplicateId ? <p className="mt-4 font-semibold text-[#0B1F33]">บันทึกลีดไม่สำเร็จ ตรวจชื่อผู้ติดต่อแล้วลองใหม่</p> : null}
       {duplicateId ? <input type="hidden" name="confirmDuplicate" value="1" /> : null}
 
       <label className="mt-5 block text-sm font-bold text-[#3B3B3B]">

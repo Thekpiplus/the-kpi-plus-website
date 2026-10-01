@@ -11,7 +11,7 @@ alwaysApply: true
 - Preserve all 93 routes, language prefixes (`/en`, `/ru`, `/zh`; Thai is unprefixed), canonicals, and hreflang.
 - Thai default locale. Do not invent missing translations. Hide chrome links that do not exist in the current language.
 - Calculators compute locally. Do not fake a form backend.
-- Brand tokens (CI v3.0): Lime `#E6E81F` → `#A3CE39`, Teal `#0B6660`, Deep Teal `#063F3B`, Charcoal `#3B3B3B`, Light Lime `#F2F8E2`, Light Grey `#F4F4F4`, Line Grey `#E3E8EB`, body `#555555`.
+- Brand tokens (CI v3.0): Lime `#E6E81F` → `#A3CE39`, Teal `#0B6660`, Deep Teal `#0B1F33`, Charcoal `#3B3B3B`, Light Lime `#F2F8E2`, Light Grey `#F4F4F4`, Line Grey `#E3E8EB`, body `#555555`.
 - Typography: Montserrat for Latin display, labels, and buttons; Sarabun for Thai and all body copy. Text on Lime is Charcoal or Deep Teal, never white. Lime is never body text on white.
 - Website header uses the horizontal full-colour logo, 36–48 px high. Favicon uses the symbol only.
 - Check new pages against `web/content/seo-manifest.json`.

@@ -387,8 +387,8 @@ export function ConversionView({ locale }: { locale: Locale }) {
           <table className="w-full min-w-[36rem] border-collapse text-left">
             <thead className="bg-[#F2F8E2]">
               <tr>
-                <th className="px-6 py-4 text-sm font-extrabold text-[#063F3B]">{t.tableStep}</th>
-                <th className="px-6 py-4 text-sm font-extrabold text-[#063F3B]">{t.tableLook}</th>
+                <th className="px-6 py-4 text-sm font-extrabold text-[#0B1F33]">{t.tableStep}</th>
+                <th className="px-6 py-4 text-sm font-extrabold text-[#0B1F33]">{t.tableLook}</th>
               </tr>
             </thead>
             <tbody>

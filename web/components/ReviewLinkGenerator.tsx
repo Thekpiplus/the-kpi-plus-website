@@ -129,7 +129,7 @@ export function ReviewLinkGenerator() {
       const href = await QRCode.toDataURL(selected.reviewUri, {
         width: 720,
         margin: 2,
-        color: { dark: "#063F3B", light: "#FFFFFF" },
+        color: { dark: "#0B1F33", light: "#FFFFFF" },
       });
       const link = document.createElement("a");
       link.href = href;
@@ -189,7 +189,7 @@ export function ReviewLinkGenerator() {
                   >
                     <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-[#0B6660]" />
                     <span>
-                      <span className="block text-base font-extrabold text-[#063F3B]">{place.name}</span>
+                      <span className="block text-base font-extrabold text-[#0B1F33]">{place.name}</span>
                       <span className="mt-1 block text-sm leading-6 text-[#555555]">{place.address}</span>
                       {place.type ? <span className="mt-1 block text-xs font-semibold text-[#0B6660]">{place.type}</span> : null}
                     </span>
@@ -211,9 +211,9 @@ export function ReviewLinkGenerator() {
         {selected?.reviewUri ? (
           <div className="mt-8 rounded-2xl border border-[#E3E8EB] bg-[#F4F4F4] p-5 sm:p-6">
             {selected.name ? (
-              <p className="text-lg font-extrabold text-[#063F3B]">{selected.name}</p>
+              <p className="text-lg font-extrabold text-[#0B1F33]">{selected.name}</p>
             ) : (
-              <p className="text-lg font-extrabold text-[#063F3B]">ลิงก์เขียนรีวิว Google</p>
+              <p className="text-lg font-extrabold text-[#0B1F33]">ลิงก์เขียนรีวิว Google</p>
             )}
             {selected.address ? <p className="mt-2 text-sm leading-6 text-[#555555]">{selected.address}</p> : null}
             <p className="mt-4 break-all text-sm leading-6 text-[#3B3B3B]">{selected.reviewUri}</p>

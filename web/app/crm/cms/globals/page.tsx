@@ -17,7 +17,7 @@ export default async function CmsGlobalsPage({
         <h1 className="text-3xl font-extrabold text-[#3B3B3B]">ตั้งค่าเว็บ</h1>
         <p className="mt-2">ค่าทั้งไซต์ ฟอร์มติดต่อยังทำงานในโค้ดตามเดิม ไม่มี backend ปลอม</p>
       </div>
-      {saved === "1" ? <p className="font-semibold text-[#063F3B]">บันทึกแล้ว</p> : null}
+      {saved === "1" ? <p className="font-semibold text-[#0B1F33]">บันทึกแล้ว</p> : null}
       <form action={saveGlobals} className="crm-card mx-auto max-w-xl">
         <label className="text-sm font-bold">
           โดเมน canonical

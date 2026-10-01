@@ -33,10 +33,10 @@ export function CmsDocumentForm({
       <p className="mt-2 text-sm">
         ออกแบบเลย์เอาต์ยังอยู่ที่โค้ด ช่องนี้แก้เนื้อหา SEO รูป และเมนู หน้าเดิมของเว็บถูกล็อกไว้ สร้างได้เฉพาะ slug ใหม่
       </p>
-      {saved ? <p className="mt-4 font-semibold text-[#063F3B]">บันทึกแล้ว</p> : null}
-      {error === "invalid" ? <p className="mt-4 font-semibold text-[#063F3B]">กรอกชื่อและ slug เป็นตัวอักษรอังกฤษ ตัวเลข และ - ให้ครบ</p> : null}
-      {error === "locked" ? <p className="mt-4 font-semibold text-[#063F3B]">เส้นทางนี้เป็นหน้าจากโค้ด เลือก slug อื่น</p> : null}
-      {error === "exists" ? <p className="mt-4 font-semibold text-[#063F3B]">slug ภาษานี้มีอยู่แล้ว</p> : null}
+      {saved ? <p className="mt-4 font-semibold text-[#0B1F33]">บันทึกแล้ว</p> : null}
+      {error === "invalid" ? <p className="mt-4 font-semibold text-[#0B1F33]">กรอกชื่อและ slug เป็นตัวอักษรอังกฤษ ตัวเลข และ - ให้ครบ</p> : null}
+      {error === "locked" ? <p className="mt-4 font-semibold text-[#0B1F33]">เส้นทางนี้เป็นหน้าจากโค้ด เลือก slug อื่น</p> : null}
+      {error === "exists" ? <p className="mt-4 font-semibold text-[#0B1F33]">slug ภาษานี้มีอยู่แล้ว</p> : null}
 
       <label className="mt-5 block text-sm font-bold">
         ชื่อเรื่อง

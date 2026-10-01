@@ -38,7 +38,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         <p className="text-xs font-extrabold tracking-[.12em] text-[#0B6660]">{lead.stage.nameTh}</p>
         <h1 className="mt-1 text-3xl font-extrabold text-[#3B3B3B]">{lead.contactName}</h1>
         <p className="mt-2">{lead.businessName || lead.formName || "ยังไม่มีชื่อกิจการ"}</p>
-        {interest ? <p className="mt-2 font-semibold text-[#063F3B]">{interest}</p> : null}
+        {interest ? <p className="mt-2 font-semibold text-[#0B1F33]">{interest}</p> : null}
         <p className="mt-2 text-sm">
           {sourceLabel(lead.source)}
           {lead.formName ? ` · ${formLabel(lead.formName)}` : ""} · {owner?.name || "ยังไม่มีผู้ดูแล"} · มูลค่า {formatMoney(lead.estimatedValue)}
@@ -120,7 +120,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
           <h2 className="text-xl font-extrabold">ข้อมูลลีด</h2>
           {formRows.length ? (
             <dl className="mt-4 grid gap-2 rounded-xl bg-[#F2F8E2] p-4 text-sm">
-              <p className="font-extrabold text-[#063F3B]">คำตอบจากแบบฟอร์มเว็บไซต์</p>
+              <p className="font-extrabold text-[#0B1F33]">คำตอบจากแบบฟอร์มเว็บไซต์</p>
               {formRows.map((row) => (
                 <div key={row.key} className="grid gap-0.5 sm:grid-cols-[10rem_1fr]">
                   <dt className="font-bold text-[#0B6660]">{row.label}</dt>

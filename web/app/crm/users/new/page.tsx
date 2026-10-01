@@ -17,9 +17,9 @@ export default async function NewUserPage({
       <h1 className="text-2xl font-extrabold text-[#3B3B3B]">เพิ่มผู้ใช้ทีม</h1>
       <p className="mt-2 text-sm">ติ๊กได้หนึ่ง หลาย หรือทุกฟังก์ชันที่ต้องการให้บัญชีนี้เข้าใช้</p>
       {error === "invalid" ? (
-        <p className="mt-4 font-semibold text-[#063F3B]">กรอกข้อมูลให้ครบ และเลือกอย่างน้อย 1 ฟังก์ชัน</p>
+        <p className="mt-4 font-semibold text-[#0B1F33]">กรอกข้อมูลให้ครบ และเลือกอย่างน้อย 1 ฟังก์ชัน</p>
       ) : null}
-      {error === "exists" ? <p className="mt-4 font-semibold text-[#063F3B]">อีเมลหรือเบอร์นี้มีในระบบแล้ว</p> : null}
+      {error === "exists" ? <p className="mt-4 font-semibold text-[#0B1F33]">อีเมลหรือเบอร์นี้มีในระบบแล้ว</p> : null}
 
       <label className="mt-5 block text-sm font-bold">
         ชื่อ

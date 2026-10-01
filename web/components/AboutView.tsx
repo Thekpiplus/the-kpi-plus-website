@@ -404,7 +404,7 @@ export function AboutView({ locale }: { locale: Locale }) {
         <p className="mt-6 max-w-3xl text-base leading-8 text-[#555555]">{t.heroBody}</p>
         <p className="mt-6 max-w-3xl text-base leading-8 text-[#555555]">{t.partnerLead}</p>
         <p className="mt-6 max-w-3xl text-base leading-8 text-[#555555]">{t.partnerGoal}</p>
-        <p className="mt-4 max-w-3xl text-2xl font-extrabold leading-9 text-[#063F3B]">{t.partnerAccent}</p>
+        <p className="mt-4 max-w-3xl text-2xl font-extrabold leading-9 text-[#0B1F33]">{t.partnerAccent}</p>
         <div className="kpi-grid-2 mt-12">
           <article className="kpi-card p-7">
             <p className="text-xs font-extrabold uppercase tracking-[.14em] text-[#0B6660]">{t.visionLabel}</p>
@@ -453,7 +453,7 @@ export function AboutView({ locale }: { locale: Locale }) {
           <h2 className="kpi-h2">{t.experienceTitle}</h2>
           <p className="mt-5 max-w-3xl text-base leading-8 text-[#555555]">{t.experienceBody}</p>
           <div className="mt-10 kpi-card p-8">
-            <p className="text-6xl font-extrabold tracking-[-.06em] text-[#063F3B]">100+</p>
+            <p className="text-6xl font-extrabold tracking-[-.06em] text-[#0B1F33]">100+</p>
             <p className="mt-3 text-base font-semibold text-[#3B3B3B]">{t.experienceMetric}</p>
           </div>
           <ClientLogoMarquee label={t.experienceMetric} />
@@ -501,7 +501,7 @@ export function AboutView({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <section className="bg-[#063F3B] text-white">
+      <section className="bg-[#0B1F33] text-white">
         <div className="kpi-section">
           <p className="kpi-kicker text-[#F2F8E2]">{t.closerEyebrow}</p>
           <h2 className="kpi-h2 mt-5 text-white">{t.closerTitle}</h2>

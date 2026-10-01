@@ -20,10 +20,10 @@ export default async function PartnerReferralsPage({
       <h1 className="text-3xl font-extrabold text-[#3B3B3B]">คีย์ลีด</h1>
       <p>ส่งข้อมูลธุรกิจที่อยากแนะนำ ทีมขายจะตรวจและรับเข้า CRM เมื่อผ่านการตรวจสอบ</p>
       {sent === "1" ? (
-        <p className="crm-card font-semibold text-[#063F3B]">ส่งลีดแล้ว ทีมจะตรวจสอบและอัปเดตสถานะในหน้านี้</p>
+        <p className="crm-card font-semibold text-[#0B1F33]">ส่งลีดแล้ว ทีมจะตรวจสอบและอัปเดตสถานะในหน้านี้</p>
       ) : null}
       {error === "incomplete" ? (
-        <p className="crm-card font-semibold text-[#063F3B]">กรุณากรอกชื่อธุรกิจ ผู้ติดต่อ ความต้องการ และเบอร์หรืออีเมลอย่างน้อยหนึ่งอย่าง</p>
+        <p className="crm-card font-semibold text-[#0B1F33]">กรุณากรอกชื่อธุรกิจ ผู้ติดต่อ ความต้องการ และเบอร์หรืออีเมลอย่างน้อยหนึ่งอย่าง</p>
       ) : null}
       <form action={portalSubmitReferral} className="crm-card mx-auto w-full max-w-xl">
         <label className="block text-sm font-bold text-[#3B3B3B]">

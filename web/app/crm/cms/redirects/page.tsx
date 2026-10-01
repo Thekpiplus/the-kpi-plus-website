@@ -15,9 +15,9 @@ export default async function CmsRedirectsPage({
         <h1 className="text-3xl font-extrabold text-[#3B3B3B]">Redirects</h1>
         <p className="mt-2">ย้ายเส้นทางเก่าไปหน้าใหม่โดยไม่ต้องแก้โค้ด</p>
       </div>
-      {params.saved === "1" ? <p className="font-semibold text-[#063F3B]">บันทึกแล้ว</p> : null}
-      {params.error === "invalid" ? <p className="font-semibold text-[#063F3B]">from ต้องขึ้นต้นด้วย /</p> : null}
-      {params.error === "exists" ? <p className="font-semibold text-[#063F3B]">เส้นทางนี้มี redirect อยู่แล้ว</p> : null}
+      {params.saved === "1" ? <p className="font-semibold text-[#0B1F33]">บันทึกแล้ว</p> : null}
+      {params.error === "invalid" ? <p className="font-semibold text-[#0B1F33]">from ต้องขึ้นต้นด้วย /</p> : null}
+      {params.error === "exists" ? <p className="font-semibold text-[#0B1F33]">เส้นทางนี้มี redirect อยู่แล้ว</p> : null}
       <form action={createRedirect} className="crm-card mx-auto max-w-xl">
         <label className="text-sm font-bold">
           จาก

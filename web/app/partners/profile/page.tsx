@@ -29,9 +29,9 @@ export default async function PartnerProfilePage({
         สถานะโปรแกรม {statusLabel(partner.status)} · เอกสาร {statusLabel(partner.kycStatus)}
         {partner.taxIdLast4 ? ` · เลขท้าย ${partner.taxIdLast4}` : ""}
       </p>
-      {saved === "1" ? <p className="crm-card font-semibold text-[#063F3B]">บันทึกแล้ว ข้อมูลส่วนตัวรอทีมตรวจก่อนแทนที่ของเดิม</p> : null}
+      {saved === "1" ? <p className="crm-card font-semibold text-[#0B1F33]">บันทึกแล้ว ข้อมูลส่วนตัวรอทีมตรวจก่อนแทนที่ของเดิม</p> : null}
       {error === "file" ? (
-        <p className="crm-card font-semibold text-[#063F3B]">อัปโหลดได้เฉพาะ PDF หรือรูป JPEG/PNG ขนาดไม่เกิน 8MB</p>
+        <p className="crm-card font-semibold text-[#0B1F33]">อัปโหลดได้เฉพาะ PDF หรือรูป JPEG/PNG ขนาดไม่เกิน 8MB</p>
       ) : null}
 
       <form action={updatePartnerProfile} className="crm-card mx-auto w-full max-w-xl">

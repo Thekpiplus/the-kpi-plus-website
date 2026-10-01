@@ -77,7 +77,7 @@
 .crm-top-tools a:hover,
 .crm-top-tools button:hover {
   background: #f2f8e2;
-  color: #063f3b;
+  color: #0b1f33;
 }
 
 .crm-nav-tree {
@@ -113,12 +113,12 @@
 
 .crm-nav-parent-link:hover {
   background: #f4f4f4;
-  color: #063f3b;
+  color: #0b1f33;
 }
 
 .crm-nav-parent-link[aria-current="page"] {
   background: #f2f8e2;
-  color: #063f3b;
+  color: #0b1f33;
 }
 
 .crm-nav-parent-link[aria-current="page"]::after {
@@ -129,7 +129,7 @@
   bottom: 0;
   height: 3px;
   border-radius: 999px 999px 0 0;
-  background: #e6e81f;
+  background: #c7f000;
 }
 
 .crm-nav-sub {
@@ -174,8 +174,8 @@
 
 .crm-nav-children a:hover,
 .crm-nav-children a[aria-current="page"] {
-  background: #e6e81f;
-  color: #063f3b;
+  background: #c7f000;
+  color: #0b1f33;
 }
 
 .crm-nav-group {
@@ -219,7 +219,7 @@
 .crm-nav a[aria-current="page"],
 .crm-nav a:hover {
   background: #f2f8e2;
-  color: #063f3b;
+  color: #0b1f33;
 }
 
 .crm-main {
@@ -261,7 +261,7 @@
 
 .crm-button-quiet:hover {
   background: #f2f8e2;
-  color: #063f3b;
+  color: #0b1f33;
 }
 
 .crm-archive-tabs {
@@ -281,8 +281,8 @@
 
 .crm-archive-tabs a:hover,
 .crm-archive-tabs a[aria-current="page"] {
-  background: #e6e81f;
-  color: #063f3b;
+  background: #c7f000;
+  color: #0b1f33;
 }
 
 .crm-archived-banner {
@@ -290,7 +290,7 @@
   padding: 0.75rem 0.9rem;
   border-radius: 0.85rem;
   background: #f4f4f4;
-  color: #063f3b;
+  color: #0b1f33;
   font-weight: 700;
 }
 

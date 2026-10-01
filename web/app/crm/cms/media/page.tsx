@@ -15,9 +15,9 @@ export default async function CmsMediaPage({
         <h1 className="text-3xl font-extrabold text-[#3B3B3B]">Media</h1>
         <p className="mt-2">อัปโหลดรูปไปที่ /media/cms แล้วคัดลอกพาธไปใส่ในหน้าหรือบทความ</p>
       </div>
-      {params.saved === "1" ? <p className="font-semibold text-[#063F3B]">อัปโหลดแล้ว</p> : null}
-      {params.error === "invalid" ? <p className="font-semibold text-[#063F3B]">เลือกไฟล์ก่อนอัปโหลด</p> : null}
-      {params.error === "type" ? <p className="font-semibold text-[#063F3B]">ใช้ได้เฉพาะ jpg png webp gif svg pdf</p> : null}
+      {params.saved === "1" ? <p className="font-semibold text-[#0B1F33]">อัปโหลดแล้ว</p> : null}
+      {params.error === "invalid" ? <p className="font-semibold text-[#0B1F33]">เลือกไฟล์ก่อนอัปโหลด</p> : null}
+      {params.error === "type" ? <p className="font-semibold text-[#0B1F33]">ใช้ได้เฉพาะ jpg png webp gif svg pdf</p> : null}
       <form action={uploadMedia} className="crm-card mx-auto max-w-xl" encType="multipart/form-data">
         <label className="text-sm font-bold">
           ไฟล์

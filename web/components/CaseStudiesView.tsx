@@ -145,7 +145,7 @@ export function CaseStudiesView({ locale }: { locale: Locale }) {
                 <span className="mx-2 text-[#0B6660]">·</span>
                 {study.propertyType}
               </p>
-              <p className="kpi-latin mt-5 text-3xl font-extrabold tracking-[-.04em] text-[#063F3B] sm:text-4xl">
+              <p className="kpi-latin mt-5 text-3xl font-extrabold tracking-[-.04em] text-[#0B1F33] sm:text-4xl">
                 {study.mainResult}
               </p>
               <p className="mt-3 text-sm font-semibold text-[#0B6660]">{study.supportingResult}</p>
@@ -162,7 +162,7 @@ export function CaseStudiesView({ locale }: { locale: Locale }) {
         <p className="mt-10 max-w-3xl text-sm leading-7 text-[#555555]">{caseStudyDisclaimer}</p>
       </section>
 
-      <section className="bg-[#063F3B] text-white">
+      <section className="bg-[#0B1F33] text-white">
         <div className="kpi-section">
           <p className="kpi-kicker text-[#F2F8E2]">{t.closerEyebrow}</p>
           <h2 className="kpi-h2 mt-4 text-white">{t.closerTitle}</h2>

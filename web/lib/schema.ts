@@ -16,7 +16,7 @@ export function organizationSchema(locale: Locale = "en") {
     alternateName: locale === "th" ? "The KPI Plus" : "เดอะ เคพีไอ พลัส",
     legalName: legalName(locale),
     url: SITE,
-    logo: `${SITE}/brand/KPIPlus_Symbol_FullColor.svg`,
+    logo: `${SITE}/brand/KPIPlus_Symbol_FullColor.png`,
     image: `${SITE}/media/the-kpi-plus-founders_f4c8516e.webp`,
     email: "info@thekpiplus.com",
     telephone: "+66-82-635-6266",
@@ -264,7 +264,7 @@ export function articleSchema(post: InsightPost, canonical: string, locale: Loca
       name: publisherName,
       logo: {
         "@type": "ImageObject",
-        url: `${SITE}/brand/KPIPlus_Symbol_FullColor.svg`,
+        url: `${SITE}/brand/KPIPlus_Symbol_FullColor.png`,
       },
     },
     mainEntityOfPage: {
@@ -293,7 +293,7 @@ export function blogSchema(
       name: brandName(locale),
       logo: {
         "@type": "ImageObject",
-        url: `${SITE}/brand/KPIPlus_Symbol_FullColor.svg`,
+        url: `${SITE}/brand/KPIPlus_Symbol_FullColor.png`,
       },
     },
     blogPost: posts.map((post) => ({

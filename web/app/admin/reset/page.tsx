@@ -40,7 +40,7 @@ function ResetForm() {
           required
         />
       </label>
-      {error ? <p className="mt-3 text-sm font-semibold text-[#063F3B]">{error}</p> : null}
+      {error ? <p className="mt-3 text-sm font-semibold text-[#0B1F33]">{error}</p> : null}
       {done ? (
         <p className="mt-3 text-sm font-semibold text-[#0B6660]">
           ตั้ง PIN ใหม่แล้ว <a href="/admin">เข้าสู่ระบบ</a>

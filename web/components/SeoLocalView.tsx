@@ -402,7 +402,7 @@ export function SeoLocalView({ locale }: { locale: Locale }) {
           </article>
           <article className="kpi-card p-6">
             <img src="/brand/google/google.svg" alt="" className="kpi-platform-mark" />
-            <p className="kpi-latin mt-4 text-3xl font-extrabold tracking-[-.04em] text-[#063F3B]">{t.growthStat}</p>
+            <p className="kpi-latin mt-4 text-3xl font-extrabold tracking-[-.04em] text-[#0B1F33]">{t.growthStat}</p>
             <h3 className="mt-3 text-lg font-extrabold text-[#3B3B3B]">{t.growthTitle}</h3>
             <p className="mt-3 text-sm leading-7 text-[#555555]">{t.growthLabel}</p>
             <p className="mt-3 text-xs leading-6 text-[#555555]">{t.growthNote}</p>

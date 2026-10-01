@@ -13,7 +13,7 @@ const studyUrl = "https://www.sciencedirect.com/science/article/abs/pii/S0278431
 
 const collaborators = [
   { name: "NAWA", src: "/brand/partners/nawa.png", href: "https://www.nawaone.co/en", alt: "NAWA Smartest Hospitality Platform" },
-  { name: "The KPI Plus Academy", src: "/brand/KPIPlus_Horizontal_FullColor.svg", href: academyHome, alt: "The KPI Plus Academy" },
+  { name: "The KPI Plus Academy", src: "/brand/KPIPlus_Horizontal_FullColor.png", href: academyHome, alt: "The KPI Plus Academy" },
   { name: "Australia Smart", src: "/brand/partners/australia-smart.png", href: "https://www.australiasmart.com.au", alt: "Australia Smart Edu Biz Coach" },
 ] as const;
 
@@ -521,7 +521,7 @@ export function TrainingView({ locale }: { locale: Locale }) {
           </figure>
           <div>
             <h2 className="kpi-h2">{t.nateTitle}</h2>
-            <p className="mt-6 text-xl font-extrabold text-[#063F3B]">{t.nateName}</p>
+            <p className="mt-6 text-xl font-extrabold text-[#0B1F33]">{t.nateName}</p>
             <p className="mt-2 text-sm font-semibold tracking-wide text-[#0B6660]">{t.nateNameEn}</p>
             <p className="mt-4 max-w-2xl text-base leading-8 text-[#555555]">{t.nateBody}</p>
             <p className="mt-5 max-w-2xl text-base leading-8 text-[#3B3B3B]">{t.nateClose}</p>

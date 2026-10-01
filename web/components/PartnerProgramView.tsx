@@ -147,7 +147,7 @@ export function PartnerProgramView({ sent, error }: { sent?: boolean; error?: st
             พนักงานหรืออดีตพนักงานโรงแรม ผู้ให้บริการเทคโนโลยีโรงแรม เอเจนซี นักการตลาด ผู้ดูแลวิลล่า ซัพพลายเออร์
             และผู้ประกอบอาชีพอิสระ
           </p>
-          <p className="mt-6 text-lg font-extrabold leading-8 text-[#063F3B]">
+          <p className="mt-6 text-lg font-extrabold leading-8 text-[#0B1F33]">
             ไม่จำเป็นต้องเป็นนักขายมืออาชีพ หากคุณรู้จักธุรกิจที่ The KPI Plus อาจช่วยได้ และอยากเริ่มจากการแนะนำอย่างจริงใจ ก็สมัครได้
           </p>
         </div>
@@ -217,7 +217,7 @@ export function PartnerProgramView({ sent, error }: { sent?: boolean; error?: st
       <section className="kpi-section">
         {sent ? <TrackOnce event="generate_lead" params={{ form: "partner_application" }} /> : null}
         {error === "unavailable" ? (
-          <p className="mb-6 font-semibold text-[#063F3B]">ระบบรับสมัครยังไม่พร้อม กรุณาลองใหม่ภายหลังหรือติดต่อทีมงาน</p>
+          <p className="mb-6 font-semibold text-[#0B1F33]">ระบบรับสมัครยังไม่พร้อม กรุณาลองใหม่ภายหลังหรือติดต่อทีมงาน</p>
         ) : null}
         <PartnerApplyForm sent={sent} error={error} />
       </section>

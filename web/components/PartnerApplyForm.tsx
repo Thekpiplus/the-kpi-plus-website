@@ -32,7 +32,7 @@ export function PartnerApplyForm({ sent, error }: { sent?: boolean; error?: stri
       </p>
 
       {sent ? (
-        <p className="mt-6 rounded-xl bg-[#F2F8E2] px-4 py-3 font-semibold text-[#063F3B]">
+        <p className="mt-6 rounded-xl bg-[#F2F8E2] px-4 py-3 font-semibold text-[#0B1F33]">
           ส่งใบสมัครแล้ว เข้า Partner Portal ด้วยอีเมลและรหัส 4 หลักเพื่อคีย์ลีดได้เลย{" "}
           <a href="/partners/login" className="underline">
             เข้าสู่ระบบ
@@ -40,10 +40,10 @@ export function PartnerApplyForm({ sent, error }: { sent?: boolean; error?: stri
         </p>
       ) : null}
       {error === "invalid" ? (
-        <p className="mt-6 font-semibold text-[#063F3B]">กรุณากรอกข้อมูลที่จำเป็นและยอมรับเงื่อนไขให้ครบ</p>
+        <p className="mt-6 font-semibold text-[#0B1F33]">กรุณากรอกข้อมูลที่จำเป็นและยอมรับเงื่อนไขให้ครบ</p>
       ) : null}
       {error === "pin" ? (
-        <p className="mt-6 font-semibold text-[#063F3B]">กรุณาตั้งรหัสเข้าใช้งานเป็นตัวเลข 4 หลัก</p>
+        <p className="mt-6 font-semibold text-[#0B1F33]">กรุณาตั้งรหัสเข้าใช้งานเป็นตัวเลข 4 หลัก</p>
       ) : null}
 
       <fieldset className="mt-8 grid gap-4">
