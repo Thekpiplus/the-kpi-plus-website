@@ -86,7 +86,7 @@ export const ENQUIRY_SERVICES: EnquiryService[] = [
       zh: "討論外包訂房",
     },
     body: {
-      th: "ส่งชื่อ กิจการ ช่องทางติดต่อ และข้อความสั้น ๆ ทีมจะติดต่อกลับเพื่อคุยต่อ",
+      th: "ส่งข้อมูลสั้น ๆ เกี่ยวกับโรงแรม\nแล้วทีมจะช่วยดูว่าควรเริ่มจากจุดไหนก่อน",
       en: "Share your name, property, a contact detail, and an optional note. The team will reply to continue.",
       ru: "Оставьте имя, объект, контакт и короткое сообщение. Команда ответит, чтобы продолжить разговор.",
       zh: "留下姓名、飯店／事業、聯絡方式與簡短備註，團隊會回覆並繼續討論。",
@@ -95,7 +95,7 @@ export const ENQUIRY_SERVICES: EnquiryService[] = [
       th: "ส่งข้อความถึงทีม",
       en: "Send to the team",
       ru: "Отправить команде",
-      zh: "送出給團隊",
+      zh: "送出ให้團隊",
     },
   },
   {
@@ -115,19 +115,19 @@ export const ENQUIRY_SERVICES: EnquiryService[] = [
       zh: "B2B & Distribution",
     },
     title: {
-      th: "คุยเรื่อง B2B และเอเยนต์",
+      th: "คุยเรื่อง B2B และเอเจนต์",
       en: "Talk about B2B and agent sales",
       ru: "Обсудить B2B и агентские продажи",
       zh: "討論 B2B 與代理銷售",
     },
     body: {
-      th: "ส่งชื่อ กิจการ ช่องทางติดต่อ และข้อความสั้น ๆ ทีมจะติดต่อกลับเพื่อคุยต่อ",
+      th: "ส่งข้อมูลสั้น ๆ เกี่ยวกับโรงแรม\nแล้วทีมจะช่วยดูว่าช่องทาง B2B\nควรเริ่มจากตรงไหน",
       en: "Share your name, property, a contact detail, and an optional note. The team will reply to continue.",
       ru: "Оставьте имя, объект, контакт и короткое сообщение. Команда ответит, чтобы продолжить разговор.",
       zh: "留下姓名、飯店／事業、聯絡方式與簡短備註，團隊會回覆並繼續討論。",
     },
     submit: {
-      th: "ส่งข้อความถึงทีม",
+      th: "ขอประเมินโอกาส B2B",
       en: "Send to the team",
       ru: "Отправить команде",
       zh: "送出給團隊",

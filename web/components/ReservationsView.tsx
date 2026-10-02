@@ -1,5 +1,5 @@
+import { Fragment } from "react";
 import Link from "next/link";
-import { ArrowUpRight } from "@/components/Icons";
 import { PageHero } from "@/components/PageHero";
 import { ReservationsEnquiry } from "@/components/ReservationsEnquiry";
 import { ReservationsStickyCta } from "@/components/ReservationsStickyCta";
@@ -10,33 +10,85 @@ import { existingHref, localizePath, type Locale } from "@/lib/seo";
 
 const relatedInsightHrefs = ["/insights/direct-booking-journey-audit"] as const;
 
+const helpMarks = ["ทุกช่องทาง", "ติดตามลูกค้า", "ยืนยันการจอง", "ส่งต่องาน", "ปรับการขาย"] as const;
+const methodPhases = ["Assess", "Setup", "Operate", "Review"] as const;
+const measureMetrics = [
+  { name: "Response Time", label: "เวลาตอบกลับ" },
+  { name: "Enquiries", label: "จำนวนคำถาม" },
+  { name: "Conversion", label: "สัดส่วนคำถามที่กลายเป็นยอดจอง" },
+  { name: "Follow-up", label: "งานติดตามที่เสร็จตามกำหนด" },
+] as const;
+
+function helpRich(text: string, mark?: string) {
+  return text.split("\n").map((line, index) => {
+    const markAt = mark ? line.indexOf(mark) : -1;
+    return (
+      <Fragment key={`${index}-${line}`}>
+        {index > 0 ? <span className="kpi-reservations-help-br"> </span> : null}
+        {markAt >= 0 ? (
+          <>
+            {line.slice(0, markAt)}
+            <span className="kpi-reservations-help-em">{mark}</span>
+            {line.slice(markAt + (mark?.length ?? 0))}
+          </>
+        ) : (
+          line
+        )}
+      </Fragment>
+    );
+  });
+}
+
+function problemText(text: string, mark?: string) {
+  return text.split("\n").map((line, index) => {
+    const markAt = mark ? line.indexOf(mark) : -1;
+    return (
+      <Fragment key={line}>
+        {index > 0 ? <span className="kpi-reservations-problem-br"> </span> : null}
+        {markAt >= 0 ? (
+          <>
+            {line.slice(0, markAt)}
+            <span className="kpi-reservations-problem-em">{mark}</span>
+            {line.slice(markAt + (mark?.length ?? 0))}
+          </>
+        ) : (
+          line
+        )}
+      </Fragment>
+    );
+  });
+}
+
 const copy = {
   th: {
     crumb: "โซลูชัน",
     eyebrow: "บริการทีมรับจองสำหรับโรงแรม",
     title: "ให้เราช่วยดูแลงานจอง เพื่อให้ทีมของคุณมีเวลาดูแลแขก",
-    lead: "ระหว่างเช็กอิน รับโทรศัพท์ และดูแลแขกที่เข้าพัก คำถามเรื่องห้องว่างหรือราคาจากลูกค้าใหม่อาจรอตอบนานเกินไป เดอะ เคพีไอ พลัส ช่วยรับและจัดการงานสำรองห้องพักตามช่องทางและเวลาที่ตกลงกัน ตั้งแต่ตอบคำถาม เสนอห้องพัก ติดตามลูกค้า ยืนยันการจอง ไปจนถึงส่งต่อข้อมูลให้ทีมโรงแรม",
-    leadClose: "โรงแรมจึงมีทีมช่วยดูแลโอกาสการขาย ขณะที่พนักงานหน้างานมีสมาธิกับประสบการณ์ของแขกมากขึ้น",
+    lead: "ระหว่างเช็กอิน รับโทรศัพท์ ตอบคำถาม และดูแลแขก\nทีมโรงแรมอาจไม่มีเวลาติดตามทุกคำถามเรื่องห้องว่างและราคา",
+    leadNext: "The KPI Plus ช่วยรับและจัดการงานสำรองห้องพัก\nตั้งแต่ตอบคำถาม เสนอห้อง ติดตามลูกค้า\nไปจนถึงส่งต่อข้อมูลให้ทีมโรงแรม",
+    leadClose: "โรงแรมจึงไม่พลาดโอกาสการขาย\nและทีมหน้างานมีเวลาโฟกัสกับประสบการณ์ของแขกมากขึ้น",
     cta: "ให้ทีมประเมินงานจองของโรงแรม",
+    heroCta: "ขอประเมินงานจอง",
     secondary: "ดูโซลูชันทั้งหมด",
-    underCta: "ส่งช่องทางที่ลูกค้าติดต่อ และช่วงเวลาที่อยากให้ทีมช่วยดูแล",
-    photoAlt: "ทีมโรงแรมดูแลแขกที่เคาน์เตอร์ ขณะมีคำถามจองเข้ามาจากช่องทางอื่น",
+    underCta: "ส่งช่องทางที่ลูกค้าติดต่อ\nและช่วงเวลาที่อยากให้ทีมช่วยดูแล",
+    photoAlt: "พนักงานโรงแรมรับสายเรื่องการจองที่โต๊ะทำงานหน้างาน",
     problemTitle: "งานจองกำลังดึงเวลาทีมหน้างานไปมากแค่ไหน?",
-    problems: [
-      "พนักงานต้องสลับระหว่างดูแลแขกตรงหน้าและตอบข้อความลูกค้าที่กำลังจะจอง",
-      "มีคำถามเข้ามาจากหลายช่องทาง แต่ไม่มีคนติดตามต่อจนทราบผล",
-      "ลูกค้าได้รับราคาและเงื่อนไขไม่ตรงกัน เพราะข้อมูลกระจายอยู่หลายที่",
-      "ลูกค้าสนใจจองตรง แต่ขั้นตอนเสนอราคา ชำระเงิน และยืนยันการจองยังไม่ชัด",
-      "การจองถูกยืนยันแล้ว แต่ข้อมูลสำคัญส่งต่อไปหน้าเคาน์เตอร์ไม่ครบ",
-      "เจ้าของโรงแรมไม่เห็นว่ามีลูกค้าสอบถามเข้ามากี่ราย และพลาดการจองตรงที่ขั้นตอนไหน",
+    problemItems: [
+      { text: "ทีมต้องสลับระหว่างดูแลแขกตรงหน้า\nกับตอบลูกค้าที่กำลังจะจอง", mark: "ตอบลูกค้าที่กำลังจะจอง" },
+      { text: "คำถามเข้ามาหลายช่องทาง\nแต่ไม่มีคนติดตามต่อจนจบ", mark: "หลายช่องทาง" },
+      { text: "ราคาและเงื่อนไขไม่ตรงกัน\nเพราะข้อมูลกระจายอยู่หลายที่", mark: "ไม่ตรงกัน" },
+      { text: "ลูกค้าสนใจจองตรง\nแต่ขั้นตอนเสนอราคา ชำระเงิน และยืนยันยังไม่ชัด", mark: "จองตรง" },
+      { text: "ยืนยันการจองแล้ว\nแต่ข้อมูลไม่ครบตอนส่งต่อให้หน้างาน", mark: "ข้อมูลไม่ครบ" },
+      { text: "เจ้าของโรงแรมยังไม่เห็นว่า\nลูกค้าหายไปตรงไหนในขั้นตอนการจอง", mark: "ลูกค้าหายไปตรงไหน" },
     ],
+    problemCaption: "งานจองที่ชัดเจน ช่วยให้ทีมหน้างานโฟกัสกับแขกได้มากขึ้น",
     helpTitle: "เดอะ เคพีไอ พลัส ช่วยดูแลงานอะไร?",
     help: [
-      ["01", "รับและตอบคำถามเรื่องการจอง", "ดูแลคำถามจากช่องทางที่ตกลงร่วมกัน เช่น LINE อีเมล ข้อความบนโซเชียล หรือโทรศัพท์ โดยใช้ข้อมูลห้องพัก ราคา และเงื่อนไขที่โรงแรมอนุมัติ"],
-      ["02", "เสนอห้องพักและติดตามลูกค้า", "ตรวจห้องว่าง แจ้งตัวเลือกและเงื่อนไขให้ชัด แล้วติดตามผู้ที่ขอข้อมูลไปแต่ยังไม่ได้ตัดสินใจ ตามวิธีและช่วงเวลาที่ตกลงกับโรงแรม"],
-      ["03", "จัดการขั้นตอนยืนยันการจอง", "ตรวจรายละเอียดวันเข้าพัก จำนวนผู้เข้าพัก ราคา และข้อมูลที่จำเป็น ก่อนบันทึกหรือส่งต่อการจองในระบบที่โรงแรมใช้ การรับเงินหรือยืนยันการชำระเงินจะดำเนินการตามขั้นตอนและสิทธิ์ที่โรงแรมกำหนด"],
-      ["04", "ส่งต่องานให้ทีมโรงแรม", "สรุปข้อมูลการจองและคำขอพิเศษให้ทีมที่ดูแลแขกหน้างาน เพื่อให้แขกไม่ต้องเล่าเรื่องเดิมซ้ำเมื่อมาถึง"],
-      ["05", "สรุปข้อมูลที่ช่วยปรับการขาย", "ดูว่าลูกค้าติดต่อมาจากช่องทางไหน ถามเรื่องอะไร ตอบกลับได้เร็วเพียงใด และมีเรื่องใดที่ทำให้ลูกค้ายังไม่จอง เพื่อนำข้อมูลไปปรับข้อเสนอ ราคา หรือขั้นตอนทำงานร่วมกัน"],
+      ["01", "รับและตอบคำถามเรื่องการจอง", "ดูแลคำถามจากทุกช่องทาง\nพร้อมตอบเรื่องห้องว่าง ราคา และเงื่อนไข"],
+      ["02", "เสนอห้องพักและติดตามลูกค้า", "ช่วยแนะนำตัวเลือกที่เหมาะสม\nและติดตามลูกค้าที่สนใจแต่ยังไม่ยืนยัน"],
+      ["03", "จัดการขั้นตอนยืนยันการจอง", "ตรวจรายละเอียดการเข้าพัก ราคา การชำระเงิน\nและข้อมูลสำคัญก่อนยืนยัน"],
+      ["04", "ส่งต่องานให้ทีมโรงแรม", "สรุปข้อมูลการจองและคำขอพิเศษ\nให้ทีมหน้างานรับช่วงต่อได้ทันที"],
+      ["05", "สรุปข้อมูลเพื่อปรับการขาย", "ดูว่าลูกค้ามาจากช่องทางไหน\nถามเรื่องอะไร ตอบกลับได้เร็วเพียงใด\nและติดตรงจุดไหน\nเพื่อนำข้อมูลไปปรับข้อเสนอ ราคา\nหรือขั้นตอนการขายร่วมกัน"],
     ],
     directTitle: "การจองตรงดีขึ้นได้อย่างไร?",
     directBody:
@@ -52,10 +104,10 @@ const copy = {
       "ก่อนเริ่มงาน ทั้งสองทีมจะตกลงเรื่องช่องทางที่ดูแล เวลาทำการ ผู้มีสิทธิ์อนุมัติราคา ขั้นตอนชำระเงิน การใช้ระบบ และวิธีส่งต่อกรณีเร่งด่วนให้ชัดเจน",
     methodTitle: "เริ่มทำงานอย่างไร?",
     steps: [
-      ["01", "ดูงานจองที่มีอยู่", "ตรวจช่องทางติดต่อ ปริมาณคำถาม ระบบที่ใช้ และปัญหาที่ทีมเจอ"],
-      ["02", "กำหนดขอบเขตการดูแล", "ตกลงช่องทาง เวลา ราคาและเงื่อนไขที่ใช้ตอบ สิทธิ์การเข้าถึงระบบ และขั้นตอนส่งต่อ"],
-      ["03", "เริ่มรับงานและประสานทีม", "ดูแลคำถามและการจองตามขั้นตอนที่อนุมัติ พร้อมส่งข้อมูลให้โรงแรม"],
-      ["04", "ทบทวนคุณภาพงาน", "ดูเวลาตอบ จำนวนคำถาม การติดตาม ผลการจอง และปัญหาที่ควรแก้ร่วมกัน"],
+      ["01", "ดูงานที่มีอยู่", "ตรวจช่องทางติดต่อ ปริมาณคำถาม\nระบบที่ใช้ และปัญหาที่ทีมเจอ"],
+      ["02", "กำหนดขอบเขตการดูแล", "ตกลงช่องทาง เวลา ราคา เงื่อนไข\nสิทธิ์การเข้าถึงระบบ และขั้นตอนส่งต่อ"],
+      ["03", "เริ่มรับงานและประสานทีม", "ดูแลคำถามและการจองตามขั้นตอนที่อนุมัติ\nพร้อมส่งข้อมูลให้ทีมโรงแรม"],
+      ["04", "ทบทวนและพัฒนางาน", "ดูเวลาตอบ จำนวนคำถาม การติดตาม\nผลการจอง และจุดที่ควรปรับร่วมกัน"],
     ],
     measureTitle: "เราติดตามผลอะไร?",
     measureBody:
@@ -257,109 +309,271 @@ export function ReservationsView({ locale }: { locale: Locale }) {
 
   return (
     <SiteShell locale={locale} route={localizePath("/solutions/outsourced-hotel-reservations", locale)}>
-      <PageHero>
-        <nav aria-label="Breadcrumb" className="text-sm text-white/70">
-          <ol className="flex flex-wrap items-center gap-2">
-            <li>
-              <Link href={solutions} className="hover:text-white">
-                {t.crumb}
+      <PageHero className="kpi-reservations-hero">
+        <div className="kpi-reservations-hero-grid">
+          <div className="kpi-reservations-hero-copy">
+            <nav aria-label="Breadcrumb" className="kpi-reservations-hero-crumb">
+              <ol className="flex flex-wrap items-center gap-2">
+                <li>
+                  <Link href={solutions}>{t.crumb}</Link>
+                </li>
+                <li className="flex items-center gap-2">
+                  <span aria-hidden="true">/</span>
+                  <span>{solutionNavLabel("/solutions/outsourced-hotel-reservations", locale)}</span>
+                </li>
+              </ol>
+            </nav>
+            <h1 className="kpi-h1 kpi-reservations-hero-title">
+              {locale === "th" ? (
+                <>
+                  <span className="kpi-reservations-hero-line">ให้เราช่วยดูแลงานจอง</span>
+                  <span className="kpi-reservations-hero-line">เพื่อให้ทีมของคุณ</span>
+                  <span className="kpi-reservations-hero-line kpi-reservations-hero-em">มีเวลาดูแลแขก</span>
+                </>
+              ) : (
+                t.title
+              )}
+            </h1>
+            {locale === "th" ? (
+              <>
+                <p className="kpi-reservations-hero-lead">{copy.th.lead.replaceAll("\n", " ")}</p>
+                <p className="kpi-reservations-hero-lead kpi-reservations-hero-lead-next">
+                  {copy.th.leadNext.replaceAll("\n", " ")}
+                </p>
+                <p className="kpi-reservations-hero-outcome">
+                  {copy.th.leadClose.split("\n").map((line) => (
+                    <span key={line} className="kpi-reservations-hero-outcome-line">
+                      {line}
+                    </span>
+                  ))}
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="kpi-reservations-hero-lead">{t.lead}</p>
+                <p className="kpi-reservations-hero-outcome">{t.leadClose}</p>
+              </>
+            )}
+            <div className="kpi-actions">
+              <a href="#reservations-enquiry" className="kpi-button">
+                {locale === "th" ? copy.th.heroCta : t.cta}{" "}
+                <span className="kpi-reservations-hero-arrow" aria-hidden="true">
+                  ↗
+                </span>
+              </a>
+              <Link href={solutions} className="kpi-button-ghost kpi-reservations-hero-secondary">
+                {t.secondary}
               </Link>
-            </li>
-            <li className="flex items-center gap-2">
-              <span aria-hidden="true">/</span>
-              <span className="text-white">{solutionNavLabel("/solutions/outsourced-hotel-reservations", locale)}</span>
-            </li>
-          </ol>
-        </nav>
-        <p className="kpi-kicker mt-5 text-[#F2F8E2]">{t.eyebrow}</p>
-        <h1 className="kpi-h1 mt-5">{t.title}</h1>
-        <p className="kpi-lead mt-5 text-white/72">{t.lead}</p>
-        <p className="mt-4 max-w-3xl text-base leading-8 text-white/64">{t.leadClose}</p>
-        <div className="kpi-actions">
-          <a href="#reservations-enquiry" className="kpi-button">
-            {t.cta} <ArrowUpRight className="h-4 w-4" />
-          </a>
-          <Link href={solutions} className="kpi-button-ghost">
-            {t.secondary}
-          </Link>
+            </div>
+            <p className="kpi-reservations-hero-note">
+              {locale === "th" ? copy.th.underCta.replaceAll("\n", " ") : t.underCta}
+            </p>
+          </div>
+          <figure className="kpi-reservations-hero-photo">
+            <img src="/media/reservations-hero-desk.jpg" alt={t.photoAlt} width={1200} height={900} />
+          </figure>
         </div>
-        <p className="mt-4 max-w-xl text-sm leading-6 text-white/64">{t.underCta}</p>
       </PageHero>
 
-      <section className="kpi-section">
-        <div className="kpi-split">
-          <div>
-            <h2 className="kpi-h2">{t.problemTitle}</h2>
-            <div className="mt-10 grid gap-4">
-              {t.problems.map((problem, index) => (
-                <article key={problem} className="kpi-card flex gap-4 p-6">
-                  <span className="kpi-latin text-sm font-black tracking-[.14em] text-[#0B6660]">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <p className="text-base leading-7 text-[#555555]">{problem}</p>
+      <section className="kpi-section kpi-reservations-problems">
+        <h2 className="kpi-h2 kpi-reservations-problem-title">
+          {locale === "th" ? (
+            <>
+              <span className="kpi-reservations-problem-title-line">
+                งานจองกำลัง<span className="kpi-reservations-problem-title-em">ดึงเวลา</span>
+              </span>
+              <span className="kpi-reservations-problem-title-br"> </span>
+              <span className="kpi-reservations-problem-title-line">ทีมหน้างานไปมากแค่ไหน?</span>
+            </>
+          ) : (
+            t.problemTitle
+          )}
+        </h2>
+        <div className="kpi-reservations-problems-grid">
+          <div className="kpi-reservations-problem-list">
+            {(locale === "th"
+              ? copy.th.problemItems
+              : copy[locale].problems.map((text) => ({ text, mark: undefined }))
+            ).map((item, index) => (
+                <article key={item.text} className="kpi-reservations-problem">
+                  <span className="kpi-reservations-problem-num kpi-latin">{String(index + 1).padStart(2, "0")}</span>
+                  <p className="kpi-reservations-problem-text">{problemText(item.text, item.mark)}</p>
                 </article>
-              ))}
-            </div>
+            ))}
           </div>
-          <figure className="kpi-home-photo">
-            <img src="/media/kpi-grow-revenue_f786a5a5.jpg" alt={t.photoAlt} width={1200} height={900} />
+          <figure className="kpi-reservations-problem-photo">
+            <img src="/media/reservations-hero-desk.jpg" alt={t.photoAlt} width={1200} height={1500} />
+            {locale === "th" ? <figcaption>{copy.th.problemCaption}</figcaption> : null}
           </figure>
         </div>
       </section>
 
       <section className="border-y border-[#E3E8EB] bg-white">
-        <div className="kpi-section">
-          <h2 className="kpi-h2">{t.helpTitle}</h2>
-          <div className="kpi-grid-2 mt-10">
-            {t.help.map(([num, title, body]) => (
-              <article key={num} className="kpi-card relative overflow-hidden p-7">
-                <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-                <span className="kpi-latin text-sm font-black tracking-[.16em] text-[#0B6660]">{num}</span>
-                <h3 className="mt-5 text-xl font-extrabold text-[#3B3B3B]">{title}</h3>
-                <p className="mt-3 text-base leading-7 text-[#555555]">{body}</p>
-              </article>
-            ))}
+        <div className="kpi-section kpi-reservations-help">
+          <p className="kpi-reservations-help-kicker kpi-latin">RESERVATION SUPPORT</p>
+          <h2 className="kpi-h2 kpi-reservations-help-title">{t.helpTitle}</h2>
+          <div className="kpi-reservations-help-grid">
+            {t.help.map(([num, title, body], index) => {
+              const mark = locale === "th" ? helpMarks[index] : undefined;
+              const markedTitle = Boolean(mark && title.includes(mark));
+              return (
+                <article key={num} className={index === 4 ? "kpi-reservations-help-step is-outcome" : "kpi-reservations-help-step"}>
+                  <span className="kpi-reservations-help-num kpi-latin">{num}</span>
+                  <h3 className="kpi-reservations-help-name">{markedTitle ? helpRich(title, mark) : title}</h3>
+                  <p className="kpi-reservations-help-body">{helpRich(body, markedTitle ? undefined : mark)}</p>
+                </article>
+              );
+            })}
           </div>
-          <a href="#reservations-enquiry" className="kpi-button mt-10">
-            {t.cta} <ArrowUpRight className="h-4 w-4" />
+          <a href="#reservations-enquiry" className="kpi-button kpi-reservations-help-cta">
+            {t.cta} <span aria-hidden="true">↗</span>
           </a>
         </div>
       </section>
 
-      <section className="kpi-section">
-        <h2 className="kpi-h2">{t.directTitle}</h2>
-        <p className="kpi-lead mt-5">{t.directBody}</p>
-        <p className="mt-5 max-w-3xl text-base leading-8 text-[#555555]">{t.directClose}</p>
-      </section>
-
-      <section className="border-y border-[#E3E8EB] bg-white">
-        <div className="kpi-section">
-          <h2 className="kpi-h2">{t.splitTitle}</h2>
-          <div className="kpi-grid-2 mt-10">
-            <article className="kpi-card relative overflow-hidden p-7">
-              <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-              <h3 className="mt-3 text-xl font-extrabold text-[#3B3B3B]">{t.splitUs}</h3>
-              <p className="mt-3 text-base leading-7 text-[#555555]">{t.splitUsBody}</p>
-            </article>
-            <article className="kpi-card relative overflow-hidden p-7">
-              <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-              <h3 className="mt-3 text-xl font-extrabold text-[#3B3B3B]">{t.splitHotel}</h3>
-              <p className="mt-3 text-base leading-7 text-[#555555]">{t.splitHotelBody}</p>
-            </article>
-          </div>
-          <p className="mt-8 max-w-3xl text-base leading-8 text-[#3B3B3B]">{t.splitClose}</p>
+      <section className="kpi-section kpi-reservations-direct">
+        <div className="kpi-reservations-direct-inner">
+          <h2 className="kpi-h2 kpi-reservations-direct-title">
+            {locale === "th" ? (
+              <>
+                <span className="kpi-reservations-direct-em">การจองตรง</span>ดีขึ้นได้อย่างไร?
+              </>
+            ) : (
+              t.directTitle
+            )}
+          </h2>
+          {locale === "th" ? (
+            <>
+              <p className="kpi-reservations-direct-intro">
+                เมื่อมีคนดูแลคำถามและติดตามลูกค้าอย่างต่อเนื่อง
+                <span className="kpi-reservations-direct-br"> </span>
+                ทุก <span className="kpi-latin">enquiry</span> จะชัดเจนขึ้น ตั้งแต่ลูกค้าติดต่อเข้ามา
+                <span className="kpi-reservations-direct-br"> </span>
+                จนถึงการยืนยันการจอง
+              </p>
+              <div className="kpi-reservations-direct-list">
+                <article className="kpi-reservations-direct-row">
+                  <span className="kpi-reservations-direct-num kpi-latin">01</span>
+                  <div>
+                    <h3>ตอบลูกค้าได้ต่อเนื่อง</h3>
+                    <p>
+                      ไม่ว่าลูกค้าจะมาจากเว็บไซต์ <span className="kpi-latin">Google, LINE</span> หรือโทรศัพท์
+                      <span className="kpi-reservations-direct-br"> </span>
+                      ทีมจะเห็นข้อมูลและติดตามต่อได้ง่ายขึ้น
+                    </p>
+                  </div>
+                </article>
+                <article className="kpi-reservations-direct-row">
+                  <span className="kpi-reservations-direct-num kpi-latin">02</span>
+                  <div>
+                    <h3>เห็นจุดที่ลูกค้าหายไป</h3>
+                    <p>
+                      ดูได้ว่าลูกค้าติดตรงราคา ข้อเสนอ หรือขั้นตอนการจอง
+                      <span className="kpi-reservations-direct-br"> </span>
+                      เพื่อแก้จุดที่ทำให้ <span className="kpi-latin">conversion</span> หลุด
+                    </p>
+                  </div>
+                </article>
+                <article className="kpi-reservations-direct-row">
+                  <span className="kpi-reservations-direct-num kpi-latin">03</span>
+                  <div>
+                    <h3>เชื่อมข้อมูลกลับไปสู่การขาย</h3>
+                    <p>
+                      ข้อมูลจาก <span className="kpi-latin">Reservations</span> สามารถนำไปใช้กับ
+                      <span className="kpi-reservations-direct-br"> </span>
+                      <span className="kpi-latin">Revenue Management, OTA</span> และ <span className="kpi-latin">Marketing</span>
+                      <span className="kpi-reservations-direct-br"> </span>
+                      เพื่อปรับราคา ข้อเสนอ และช่องทางขายให้เหมาะขึ้น
+                    </p>
+                  </div>
+                </article>
+              </div>
+              <p className="kpi-reservations-direct-close">
+                <span>เป้าหมายไม่ใช่แค่ตอบลูกค้าให้เร็วขึ้น</span>
+                <span className="kpi-reservations-direct-close-strong">
+                  แต่ทำให้ทุกคำถามมีโอกาส<span className="kpi-reservations-direct-em">กลายเป็นยอดจอง</span>มากขึ้น
+                </span>
+              </p>
+            </>
+          ) : (
+            <>
+              <p className="kpi-reservations-direct-intro">{t.directBody}</p>
+              <p className="kpi-reservations-direct-close">{t.directClose}</p>
+            </>
+          )}
         </div>
       </section>
 
-      <section className="kpi-section">
-        <h2 className="kpi-h2">{t.methodTitle}</h2>
-        <ol className="mt-10 grid gap-4">
-          {t.steps.map(([num, title, body]) => (
-            <li key={num} className="kpi-card flex gap-4 p-6 sm:items-start">
-              <span className="kpi-latin text-sm font-black tracking-[.14em] text-[#0B6660]">{num}</span>
-              <div>
-                <h3 className="text-xl font-extrabold text-[#3B3B3B]">{title}</h3>
-                <p className="mt-2 text-base leading-7 text-[#555555]">{body}</p>
+      <section className="border-y border-[#E3E8EB] bg-white">
+        <div className="kpi-section kpi-reservations-split">
+          <h2 className="kpi-h2 kpi-reservations-split-title">{t.splitTitle}</h2>
+          <div className="kpi-reservations-split-grid">
+            {locale === "th" ? (
+              <>
+                <div className="kpi-reservations-split-col">
+                  <p className="kpi-reservations-split-role">เราดูแล</p>
+                  <h3>เดอะ เคพีไอ พลัส</h3>
+                  <ul className="kpi-reservations-split-list">
+                    <li>รับคำถามและข้อสงสัยจากลูกค้า</li>
+                    <li>เสนอห้องและติดตามลูกค้า</li>
+                    <li>ยืนยันหรือบันทึกข้อมูลตามขอบเขตบริการ</li>
+                    <li>ส่งต่องานให้ทีมโรงแรมอย่างครบถ้วน</li>
+                  </ul>
+                </div>
+                <div className="kpi-reservations-split-col">
+                  <p className="kpi-reservations-split-role">โรงแรมยืนยัน</p>
+                  <h3>ทีมโรงแรม</h3>
+                  <ul className="kpi-reservations-split-list">
+                    <li>ยืนยันข้อมูลห้องพักและราคา</li>
+                    <li>กำหนดนโยบายและเงื่อนไข</li>
+                    <li>แจ้งข้อยกเว้นที่ใช้ตอบลูกค้า</li>
+                    <li>ดูแลแขกเมื่อเข้าพักจริง</li>
+                  </ul>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="kpi-reservations-split-col">
+                  <h3 className="kpi-latin">{t.splitUs}</h3>
+                  <p className="kpi-reservations-split-body">{t.splitUsBody}</p>
+                </div>
+                <div className="kpi-reservations-split-col">
+                  <h3>{t.splitHotel}</h3>
+                  <p className="kpi-reservations-split-body">{t.splitHotelBody}</p>
+                </div>
+              </>
+            )}
+          </div>
+          {locale === "th" ? (
+            <div className="kpi-reservations-split-note">
+              <p className="kpi-reservations-split-note-title">ก่อนเริ่มงาน เราจะตกลงร่วมกันเรื่อง</p>
+              <p className="kpi-reservations-split-note-body">
+                ช่องทางที่ดูแล · เวลาทำการ · สิทธิ์อนุมัติราคา · ขั้นตอนชำระเงิน · ระบบที่ใช้ · วิธีส่งต่อกรณีเร่งด่วน
+              </p>
+            </div>
+          ) : (
+            <p className="kpi-reservations-split-note kpi-reservations-split-note-body">{t.splitClose}</p>
+          )}
+        </div>
+      </section>
+
+      <section className="kpi-section kpi-reservations-method">
+        <h2 className="kpi-h2 kpi-reservations-method-title">{t.methodTitle}</h2>
+        <ol className="kpi-reservations-method-list">
+          {t.steps.map(([num, title, body], index) => (
+            <li key={num} className="kpi-reservations-method-step">
+              <span className="kpi-reservations-method-num kpi-latin">{num}</span>
+              <div className="kpi-reservations-method-copy">
+                <p className="kpi-reservations-method-phase kpi-latin">{methodPhases[index]}</p>
+                <h3>{title}</h3>
+                <p className="kpi-reservations-method-body">
+                  {body.split("\n").map((line, lineIndex) => (
+                    <Fragment key={`${num}-${lineIndex}`}>
+                      {lineIndex > 0 ? <span className="kpi-reservations-method-br"> </span> : null}
+                      {line}
+                    </Fragment>
+                  ))}
+                </p>
               </div>
             </li>
           ))}
@@ -367,46 +581,116 @@ export function ReservationsView({ locale }: { locale: Locale }) {
       </section>
 
       <section className="border-y border-[#E3E8EB] bg-white">
-        <div className="kpi-section">
-          <h2 className="kpi-h2">{t.measureTitle}</h2>
-          <p className="kpi-lead mt-5">{t.measureBody}</p>
-          <p className="mt-5 max-w-3xl text-base leading-8 text-[#555555]">{t.measureClose}</p>
+        <div className="kpi-section kpi-reservations-measure">
+          <h2 className="kpi-h2 kpi-reservations-measure-title">{t.measureTitle}</h2>
+          {locale === "th" ? (
+            <p className="kpi-reservations-measure-intro">
+              ไม่ใช่แค่ตอบลูกค้าให้เร็ว
+              <span className="kpi-reservations-measure-br"> </span>
+              แต่ดูว่าคำถามแต่ละช่องทางเปลี่ยนเป็นยอดจองได้แค่ไหน
+            </p>
+          ) : (
+            <p className="kpi-reservations-measure-intro">{t.measureBody}</p>
+          )}
+          <div className="kpi-reservations-measure-metrics">
+            {measureMetrics.map((metric) => (
+              <div key={metric.name} className="kpi-reservations-measure-metric">
+                <p className="kpi-reservations-measure-name kpi-latin">{metric.name}</p>
+                {locale === "th" ? <p className="kpi-reservations-measure-label">{metric.label}</p> : null}
+              </div>
+            ))}
+          </div>
+          {locale === "th" ? (
+            <p className="kpi-reservations-measure-close">
+              <span>เพื่อให้โรงแรมเห็นทั้งคุณภาพการตอบลูกค้า</span>
+              <span className="kpi-reservations-measure-close-strong">และโอกาสรายได้ที่เกิดขึ้นจริง</span>
+            </p>
+          ) : (
+            <p className="kpi-reservations-measure-close">{t.measureClose}</p>
+          )}
         </div>
       </section>
 
       <section className="border-t border-[#E3E8EB] bg-white">
-        <div className="kpi-section">
-          <h2 className="kpi-h2">{t.relatedTitle}</h2>
-          <div className="kpi-grid-3 mt-10">
+        <div className="kpi-section kpi-reservations-related">
+          <h2 className="kpi-h2 kpi-reservations-related-title">
+            {locale === "th" ? (
+              <>
+                <span className="kpi-reservations-related-title-line">เรื่องที่เกี่ยวข้องกับการจองตรง</span>
+                <span className="kpi-reservations-related-br"> </span>
+                <span className="kpi-reservations-related-title-line">รายได้ และเว็บไซต์</span>
+              </>
+            ) : (
+              t.relatedTitle
+            )}
+          </h2>
+          <div className="kpi-reservations-related-grid">
             {insights.map((post) => {
               const href = existingHref(post.href, locale) ?? post.href;
               return (
-                <article key={post.slug} className="kpi-card relative flex flex-col overflow-hidden p-7">
-                  <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-                  <p className="text-xs font-extrabold uppercase tracking-[.14em] text-[#0B6660]">{post.category[locale]}</p>
-                  <h3 className="mt-4 text-xl font-extrabold leading-snug text-[#3B3B3B]">{post.title[locale]}</h3>
-                  <Link href={href} className="mt-auto inline-flex items-center gap-2 pt-8 text-sm font-semibold text-[#0B6660]">
-                    {insightsUi.read} <ArrowUpRight className="h-4 w-4" />
-                  </Link>
-                </article>
+                <Link key={post.slug} href={href} className="kpi-reservations-related-item is-featured">
+                  <span className="kpi-reservations-related-rule" aria-hidden="true" />
+                  <p className="kpi-reservations-related-cat">{post.category[locale]}</p>
+                  <h3>
+                    {locale === "th" ? (
+                      <>
+                        วิเคราะห์เส้นทาง <span className="kpi-latin">Direct Booking</span> ของโรงแรม
+                      </>
+                    ) : (
+                      post.title[locale]
+                    )}
+                  </h3>
+                  <span className="kpi-reservations-related-cta">
+                    {insightsUi.read}
+                    <span className="kpi-reservations-related-arrow" aria-hidden="true">
+                      ↗
+                    </span>
+                  </span>
+                </Link>
               );
             })}
-            <article className="kpi-card relative flex flex-col overflow-hidden p-7">
-              <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-              <h3 className="mt-3 text-xl font-extrabold text-[#3B3B3B]">{solutionNavLabel("/solutions/revenue-commercial-management", locale)}</h3>
-              <p className="mt-3 text-base leading-7 text-[#555555]">{t.revenueBody}</p>
-              <Link href={revenueHref} className="mt-auto pt-8 text-sm font-semibold text-[#0B6660]">
-                {t.details}
+            <div className="kpi-reservations-related-side">
+              <Link href={revenueHref} className="kpi-reservations-related-item">
+                <h3>{t.revenueTitle}</h3>
+                <p>
+                  {locale === "th" ? (
+                    <>
+                      ข้อมูลจากงานจองสามารถนำกลับไปใช้ปรับราคา
+                      <span className="kpi-reservations-related-br"> </span>
+                      ข้อเสนอ และช่องทางขายได้
+                    </>
+                  ) : (
+                    t.revenueBody
+                  )}
+                </p>
+                <span className="kpi-reservations-related-cta">
+                  {t.details}
+                  <span className="kpi-reservations-related-arrow" aria-hidden="true">
+                    ↗
+                  </span>
+                </span>
               </Link>
-            </article>
-            <article className="kpi-card relative flex flex-col overflow-hidden p-7">
-              <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-              <h3 className="mt-3 text-xl font-extrabold text-[#3B3B3B]">{solutionNavLabel("/solutions/hotel-direct-bookings", locale)}</h3>
-              <p className="mt-3 text-base leading-7 text-[#555555]">{t.conversionBody}</p>
-              <Link href={conversionHref} className="mt-auto pt-8 text-sm font-semibold text-[#0B6660]">
-                {t.details}
+              <Link href={conversionHref} className="kpi-reservations-related-item">
+                <h3>{t.conversionTitle}</h3>
+                <p>
+                  {locale === "th" ? (
+                    <>
+                      เมื่อลูกค้าเริ่มจากเว็บไซต์
+                      <span className="kpi-reservations-related-br"> </span>
+                      เส้นทางสอบถามและจองบนหน้าเว็บต้องชัดพอให้เดินต่อได้
+                    </>
+                  ) : (
+                    t.conversionBody
+                  )}
+                </p>
+                <span className="kpi-reservations-related-cta">
+                  {t.details}
+                  <span className="kpi-reservations-related-arrow" aria-hidden="true">
+                    ↗
+                  </span>
+                </span>
               </Link>
-            </article>
+            </div>
           </div>
         </div>
       </section>

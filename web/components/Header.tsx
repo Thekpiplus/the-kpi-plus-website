@@ -32,6 +32,8 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
   const solutionsRef = useRef<HTMLDivElement>(null);
   const langRef = useRef<HTMLDivElement>(null);
   const closeTimer = useRef<number | null>(null);
+  const skipScrollReset = useRef(true);
+  const fromHistory = useRef(false);
   const currentLang = locales.find((item) => item.id === locale)?.label ?? "ไทย";
 
   const clearCloseTimer = () => {
@@ -60,9 +62,40 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
   };
 
   useEffect(() => {
+    const onPopState = () => {
+      fromHistory.current = true;
+    };
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+
+  useEffect(() => {
     closeSolutionsMenu();
     setOpenLang(false);
     setOpenMenu(false);
+
+    if (skipScrollReset.current) {
+      skipScrollReset.current = false;
+      return;
+    }
+    if (fromHistory.current) {
+      fromHistory.current = false;
+      return;
+    }
+    if (window.location.hash) return;
+
+    const scrollToPageTop = () => {
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    };
+    scrollToPageTop();
+    const frame = window.requestAnimationFrame(scrollToPageTop);
+    const timer = window.setTimeout(scrollToPageTop, 0);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(timer);
+    };
   }, [pathname]);
 
   useEffect(() => {

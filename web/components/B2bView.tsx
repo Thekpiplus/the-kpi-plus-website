@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight } from "@/components/Icons";
+import type { ReactNode } from "react";
 import { B2bEnquiry } from "@/components/B2bEnquiry";
 import { B2bStickyCta } from "@/components/B2bStickyCta";
 import { PageHero } from "@/components/PageHero";
@@ -35,19 +35,19 @@ const copy = {
     ],
     existingTitle: "มีพาร์ตเนอร์อยู่แล้ว แต่ยังไม่เห็นผลชัด?",
     existing: [
-      "มีสัญญาหลายฉบับ แต่ไม่ชัดว่ารายใดส่งยอดขายจริง",
-      "กันห้องไว้ให้พาร์ตเนอร์ แต่ห้องไม่ได้ถูกขายตามที่คาด",
-      "ราคาและเงื่อนไขของแต่ละรายไม่สอดคล้องกัน",
-      "ขาดการอัปเดตสินค้าและการติดตามกับเอเยนต์",
-      "ไม่ได้นำยอดขาย B2B ไปพิจารณาร่วมกับ OTA และการจองตรง",
+      "มีสัญญาหลายฉบับ แต่ยังไม่รู้ว่าพาร์ตเนอร์รายไหนสร้างยอดขายจริง",
+      "กันห้องไว้ให้พาร์ตเนอร์ แต่ยอดขายไม่เป็นไปตามที่คาด",
+      "ราคาและเงื่อนไขแต่ละราย ไม่สอดคล้องกัน",
+      "ขาดการอัปเดตสินค้า และการติดตามกับเอเจนต์อย่างต่อเนื่อง",
+      "ยังไม่ได้มอง B2B ร่วมกับ OTA และ Direct Booking ในภาพเดียวกัน",
     ],
-    methodTitle: "วิธีทำงาน",
+    methodTitle: "วิธีที่เราทำงานร่วมกับโรงแรม",
     steps: [
       ["01", "ดูภาพรวมโรงแรม", "จำนวนห้อง ตลาดหลัก ฤดูกาล ราคา และช่องทางขายปัจจุบัน"],
-      ["02", "ประเมินโอกาส B2B", "ระบุตลาดหรือช่วงวันที่พาร์ตเนอร์อาจช่วยได้ พร้อมข้อจำกัดที่ต้องจัดการ"],
-      ["03", "คัดเลือกและเริ่มพูดคุย", "ประสานพาร์ตเนอร์ที่เหมาะสมจากเครือข่าย และทบทวนราคาและเงื่อนไขร่วมกับโรงแรม"],
-      ["04", "เริ่มขายและติดตามผล", "ดูยอดจอง การใช้ห้องที่จัดสรร และผลต่อรายได้และช่องทางขายอื่น"],
-      ["05", "ปรับความร่วมมือ", "ตัดสินใจจากผลงานจริงว่าควรทำต่อ เปลี่ยนเงื่อนไข หรือจัดลำดับพาร์ตเนอร์ใหม่"],
+      ["02", "ประเมินโอกาส B2B", "ดูว่าตลาดหรือช่วงไหนที่พาร์ตเนอร์อาจช่วยเพิ่มยอดขายได้ และมีข้อจำกัดอะไรบ้าง"],
+      ["03", "คัดเลือกและเริ่มพูดคุย", "ประสานพาร์ตเนอร์ที่เหมาะสม พร้อมทบทวนราคาและเงื่อนไขร่วมกับโรงแรม"],
+      ["04", "เริ่มขายและติดตามผล", "ดูยอดจอง การใช้ห้องที่จัดสรร และผลต่อรายได้เมื่อเทียบกับช่องทางอื่น"],
+      ["05", "ปรับความร่วมมือ", "ตัดสินใจจากผลงานจริงว่าควรทำต่อ ปรับเงื่อนไข หรือเปลี่ยนพาร์ตเนอร์"],
     ],
     measureTitle: "เราวัดผลอะไร?",
     measureBody: "เราไม่ได้ดูเพียงจำนวนพาร์ตเนอร์ที่เซ็นสัญญา แต่ดูจำนวนคืนห้องพัก รายได้ และผลงานของแต่ละราย เทียบกับเงื่อนไขที่ตกลงไว้",
@@ -222,6 +222,183 @@ const copy = {
   },
 } as const;
 
+const thaiExistingMarks = [
+  "สร้างยอดขายจริง",
+  "ยอดขายไม่เป็นไปตามที่คาด",
+  "ไม่สอดคล้องกัน",
+  "การติดตามกับเอเจนต์",
+  "OTA และ Direct Booking",
+] as const;
+
+function existingLatin(text: string): ReactNode {
+  const parts = text.split(/(B2B|OTA|Direct Booking)/g);
+  return parts.map((part, index) =>
+    part === "B2B" || part === "OTA" || part === "Direct Booking" ? (
+      <span key={index} className="kpi-latin">
+        {part}
+      </span>
+    ) : (
+      part
+    ),
+  );
+}
+
+function existingLine(text: string, mark?: string): ReactNode {
+  if (!mark) return existingLatin(text);
+  const at = text.indexOf(mark);
+  if (at < 0) return existingLatin(text);
+  const phrase =
+    mark === "OTA และ Direct Booking" ? (
+      <>
+        <span className="kpi-latin kpi-b2b-existing-em">OTA</span>
+        {" และ "}
+        <span className="kpi-latin kpi-b2b-existing-em">Direct Booking</span>
+      </>
+    ) : (
+      <span className="kpi-b2b-existing-em">{mark}</span>
+    );
+  return (
+    <>
+      {existingLatin(text.slice(0, at))}
+      {phrase}
+      {existingLatin(text.slice(at + mark.length))}
+    </>
+  );
+}
+
+const b2bPhases = ["Assess", "Evaluate", "Connect", "Sell", "Review"] as const;
+
+const b2bMetrics = [
+  { name: "Room Nights", label: "จำนวนคืนห้องพักที่ขายได้" },
+  { name: "Revenue", label: "รายได้จากแต่ละพาร์ตเนอร์" },
+  { name: "Net Contribution", label: "รายได้หลังหักต้นทุนและค่าคอมมิชชัน" },
+  { name: "Performance vs Allotment", label: "ผลลัพธ์เทียบกับห้องที่จัดสรรไว้" },
+] as const;
+
+const thaiMethod: { num: string; title: ReactNode; body: ReactNode }[] = [
+  {
+    num: "01",
+    title: "ดูภาพรวมโรงแรม",
+    body: (
+      <>
+        จำนวนห้อง ตลาดหลัก ฤดูกาล
+        <span className="kpi-b2b-method-br"> </span>
+        ราคา และช่องทางขายปัจจุบัน
+      </>
+    ),
+  },
+  {
+    num: "02",
+    title: (
+      <>
+        ประเมินโอกาส <span className="kpi-latin">B2B</span>
+      </>
+    ),
+    body: (
+      <>
+        ดูว่าตลาดหรือช่วงไหนที่พาร์ตเนอร์
+        <span className="kpi-b2b-method-br"> </span>
+        อาจช่วยเพิ่มยอดขายได้
+        <span className="kpi-b2b-method-br"> </span>
+        และมีข้อจำกัดอะไรบ้าง
+      </>
+    ),
+  },
+  {
+    num: "03",
+    title: "คัดเลือกและเริ่มพูดคุย",
+    body: (
+      <>
+        ประสานพาร์ตเนอร์ที่เหมาะสม
+        <span className="kpi-b2b-method-br"> </span>
+        พร้อมทบทวนราคาและเงื่อนไขร่วมกับโรงแรม
+      </>
+    ),
+  },
+  {
+    num: "04",
+    title: "เริ่มขายและติดตามผล",
+    body: (
+      <>
+        ดูยอดจอง การใช้ห้องที่จัดสรร
+        <span className="kpi-b2b-method-br"> </span>
+        และผลต่อรายได้เมื่อเทียบกับช่องทางอื่น
+      </>
+    ),
+  },
+  {
+    num: "05",
+    title: "ปรับความร่วมมือ",
+    body: (
+      <>
+        ตัดสินใจจากผลงานจริงว่าควรทำต่อ
+        <span className="kpi-b2b-method-br"> </span>
+        ปรับเงื่อนไข หรือเปลี่ยนพาร์ตเนอร์
+      </>
+    ),
+  },
+];
+
+const thaiHelp: { num: string; title: ReactNode; body: ReactNode }[] = [
+  {
+    num: "01",
+    title: "ประเมินตลาดและความเหมาะสม",
+    body: (
+      <>
+        ประเมินว่าช่องทาง <span className="kpi-latin">B2B</span>{" "}
+        <span className="kpi-b2b-help-em">เหมาะกับโรงแรมหรือไม่</span> จากตลาด กลุ่มลูกค้า ช่วงเวลาที่ต้องการยอดขาย
+        และรูปแบบการขายของโรงแรม
+      </>
+    ),
+  },
+  {
+    num: "02",
+    title: "คัดเลือกและประสานพาร์ตเนอร์",
+    body: (
+      <>
+        ช่วยคัดเลือก <span className="kpi-latin">Agent, Wholesaler</span> หรือ{" "}
+        <span className="kpi-latin">B2B Partner</span>{" "}
+        <span className="kpi-b2b-help-em">ที่เหมาะกับตลาด</span> และ{" "}
+        <span className="kpi-latin">positioning</span> ของโรงแรม
+      </>
+    ),
+  },
+  {
+    num: "03",
+    title: "ช่วยวางราคาและเงื่อนไขการขาย",
+    body: (
+      <>
+        ช่วยวาง<span className="kpi-b2b-help-em">ราคา เงื่อนไข</span> ค่าคอมมิชชัน และกรอบการขายให้ชัดก่อนเริ่มทำงานร่วมกัน
+      </>
+    ),
+  },
+  {
+    num: "04",
+    title: "ประสานสัญญาและการเริ่มขาย",
+    body: (
+      <>
+        ช่วยประสานข้อมูล สัญญา ขั้นตอน<span className="kpi-b2b-help-em">เริ่มขาย</span> และการเชื่อมต่อที่จำเป็นกับทีมโรงแรม
+      </>
+    ),
+  },
+  {
+    num: "05",
+    title: (
+      <>
+        ติดตามว่าพาร์ตเนอร์
+        <span className="kpi-b2b-help-title-br"> </span>
+        สร้างยอดขายจริงไหม
+      </>
+    ),
+    body: (
+      <>
+        ติดตามว่าพาร์ตเนอร์สร้าง <span className="kpi-latin">room nights</span> และ
+        <span className="kpi-b2b-help-em">รายได้จริง</span>หรือไม่ พร้อมดูต้นทุน ช่องทาง และโอกาสที่ควรปรับต่อ
+      </>
+    ),
+  },
+];
+
 export function B2bView({ locale }: { locale: Locale }) {
   const t = copy[locale];
   const solutions = localizePath("/solutions", locale);
@@ -230,34 +407,79 @@ export function B2bView({ locale }: { locale: Locale }) {
 
   return (
     <SiteShell locale={locale} route={localizePath("/solutions/b2b-agent-sales", locale)}>
-      <PageHero>
-        <nav aria-label="Breadcrumb" className="text-sm text-white/70">
-          <ol className="flex flex-wrap items-center gap-2">
-            <li>
-              <Link href={solutions} className="hover:text-white">
-                {t.crumb}
+      <PageHero className="kpi-b2b-hero">
+        <div className="kpi-b2b-hero-grid">
+          <div className="kpi-b2b-hero-copy">
+            <nav aria-label="Breadcrumb" className="kpi-b2b-hero-crumb">
+              <ol className="flex flex-wrap items-center gap-2">
+                <li>
+                  <Link href={solutions}>{t.crumb}</Link>
+                </li>
+                <li className="flex items-center gap-2">
+                  <span aria-hidden="true">/</span>
+                  <span>{solutionNavLabel("/solutions/b2b-agent-sales", locale)}</span>
+                </li>
+              </ol>
+            </nav>
+            <h1 className="kpi-h1 kpi-b2b-hero-title">
+              {locale === "th" ? (
+                <>
+                  <span className="kpi-b2b-hero-line">
+                    หา<span className="kpi-b2b-hero-em">พาร์ตเนอร์ที่เหมาะกับโรงแรม</span>
+                  </span>
+                  <span className="kpi-b2b-hero-br"> </span>
+                  <span className="kpi-b2b-hero-line">ไม่ใช่เพิ่มรายชื่อ</span>
+                  <span className="kpi-b2b-hero-br"> </span>
+                  <span className="kpi-b2b-hero-line">เอเจนต์ให้มากที่สุด</span>
+                </>
+              ) : (
+                t.title
+              )}
+            </h1>
+            {locale === "th" ? (
+              <>
+                <p className="kpi-b2b-hero-lead">
+                  <span className="kpi-latin">Agent, Wholesaler</span> และพาร์ตเนอร์ <span className="kpi-latin">B2B</span>{" "}
+                  สามารถช่วยให้โรงแรมเข้าถึงตลาดใหม่ และเติมยอดขายในช่วงที่ต้องการได้
+                </p>
+                <p className="kpi-b2b-hero-lead kpi-b2b-hero-lead-next">
+                  <span className="kpi-latin">The KPI Plus</span> ช่วยประเมินว่าช่องทาง <span className="kpi-latin">B2B</span>{" "}
+                  เหมาะกับโรงแรมหรือไม่ จากนั้นจึงคัดเลือก ประสานงาน และวางเงื่อนไขการขาย กับพาร์ตเนอร์ที่เหมาะสม
+                </p>
+                <p className="kpi-b2b-hero-outcome">
+                  <span>เป้าหมายไม่ใช่มีพาร์ตเนอร์ให้มากที่สุด</span>
+                  <span className="kpi-b2b-hero-outcome-strong">แต่เลือกช่องทางที่สร้างรายได้ให้โรงแรมได้จริง</span>
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="kpi-b2b-hero-lead">{t.lead}</p>
+                <p className="kpi-b2b-hero-outcome">{t.leadClose}</p>
+              </>
+            )}
+            <div className="kpi-actions">
+              <a href="#b2b-enquiry" className="kpi-button">
+                {locale === "th" ? (
+                  <>
+                    ประเมินโอกาส <span className="kpi-latin">B2B</span> ของโรงแรม
+                  </>
+                ) : (
+                  t.cta
+                )}{" "}
+                <span className="kpi-b2b-hero-arrow" aria-hidden="true">
+                  ↗
+                </span>
+              </a>
+              <Link href={solutions} className="kpi-button-ghost kpi-b2b-hero-secondary">
+                {t.secondary}
               </Link>
-            </li>
-            <li className="flex items-center gap-2">
-              <span aria-hidden="true">/</span>
-              <span className="text-white">{solutionNavLabel("/solutions/b2b-agent-sales", locale)}</span>
-            </li>
-          </ol>
-        </nav>
-        <p className="kpi-kicker mt-5 text-[#F2F8E2]">{t.eyebrow}</p>
-        <h1 className="kpi-h1 mt-5">{t.title}</h1>
-        <p className="kpi-lead mt-5 text-white/72">{t.lead}</p>
-        <p className="mt-4 max-w-3xl text-base leading-8 text-white/64">{t.leadClose}</p>
-        <p className="mt-4 max-w-3xl text-sm leading-7 text-white/64">{t.fit}</p>
-        <div className="kpi-actions">
-          <a href="#b2b-enquiry" className="kpi-button">
-            {t.cta} <ArrowUpRight className="h-4 w-4" />
-          </a>
-          <Link href={solutions} className="kpi-button-ghost">
-            {t.secondary}
-          </Link>
+            </div>
+            <p className="kpi-b2b-hero-note">{t.underCta}</p>
+          </div>
+          <figure className="kpi-b2b-hero-photo">
+            <img src="/media/b2b-hero-meeting.jpg" alt={t.photoAlt} width={1200} height={900} />
+          </figure>
         </div>
-        <p className="mt-4 max-w-xl text-sm leading-6 text-white/64">{t.underCta}</p>
       </PageHero>
 
       <section className="kpi-section">
@@ -273,86 +495,176 @@ export function B2bView({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <section className="border-y border-[#E3E8EB] bg-white">
+      <section className="kpi-b2b-help border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section">
-          <h2 className="kpi-h2">{t.helpTitle}</h2>
-          <div className="kpi-grid-2 mt-10">
-            {t.help.map(([num, title, body]) => (
-              <article key={num} className="kpi-card relative overflow-hidden p-7">
-                <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-                <span className="kpi-latin text-sm font-black tracking-[.16em] text-[#0B6660]">{num}</span>
-                <h3 className="mt-5 text-xl font-extrabold text-[#3B3B3B]">{title}</h3>
-                <p className="mt-3 text-base leading-7 text-[#555555]">{body}</p>
-              </article>
-            ))}
-          </div>
-          <a href="#b2b-enquiry" className="kpi-button mt-10">
-            {t.cta} <ArrowUpRight className="h-4 w-4" />
+          <h2 className="kpi-h2 kpi-b2b-help-title">{t.helpTitle}</h2>
+          <ol className="kpi-b2b-help-list">
+            {(locale === "th" ? thaiHelp : t.help.map(([num, title, body]) => ({ num, title, body }))).map(
+              (item, index) => (
+                <li
+                  key={item.num}
+                  className={index === 4 ? "kpi-b2b-help-step kpi-b2b-help-step-outcome" : "kpi-b2b-help-step"}
+                >
+                  <div className="kpi-b2b-help-head">
+                    <span className="kpi-latin kpi-b2b-help-num">{item.num}</span>
+                    <h3>{item.title}</h3>
+                  </div>
+                  <p>{item.body}</p>
+                </li>
+              ),
+            )}
+          </ol>
+          <a href="#b2b-enquiry" className="kpi-button kpi-b2b-help-cta">
+            {t.cta}{" "}
+            <span className="kpi-b2b-help-arrow" aria-hidden="true">
+              ↗
+            </span>
           </a>
         </div>
       </section>
 
-      <section className="kpi-section">
-        <h2 className="kpi-h2">{t.existingTitle}</h2>
-        <div className="mt-10 grid gap-4">
+      <section className="kpi-section kpi-b2b-existing">
+        <h2 className="kpi-h2 kpi-b2b-existing-title">
+          {locale === "th" ? (
+            <>
+              มีพาร์ตเนอร์อยู่แล้ว แต่<span className="kpi-b2b-existing-title-em">ยังไม่เห็นผลชัด?</span>
+            </>
+          ) : (
+            t.existingTitle
+          )}
+        </h2>
+        <ol className="kpi-b2b-existing-list">
           {t.existing.map((item, index) => (
-            <article key={item} className="kpi-card flex gap-4 p-6">
-              <span className="kpi-latin text-sm font-black tracking-[.14em] text-[#0B6660]">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <p className="text-base leading-7 text-[#555555]">{item}</p>
-            </article>
+            <li key={item} className="kpi-b2b-existing-row">
+              <span className="kpi-latin kpi-b2b-existing-num">{String(index + 1).padStart(2, "0")}</span>
+              <p>{locale === "th" ? existingLine(item, thaiExistingMarks[index]) : item}</p>
+            </li>
           ))}
-        </div>
+        </ol>
       </section>
 
-      <section className="border-y border-[#E3E8EB] bg-white">
+      <section className="kpi-b2b-method border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section">
-          <h2 className="kpi-h2">{t.methodTitle}</h2>
-          <ol className="mt-10 grid gap-4">
-            {t.steps.map(([num, title, body]) => (
-              <li key={num} className="kpi-card flex gap-4 p-6 sm:items-start">
-                <span className="kpi-latin text-sm font-black tracking-[.14em] text-[#0B6660]">{num}</span>
-                <div>
-                  <h3 className="text-xl font-extrabold text-[#3B3B3B]">{title}</h3>
-                  <p className="mt-2 text-base leading-7 text-[#555555]">{body}</p>
-                </div>
-              </li>
-            ))}
+          <h2 className="kpi-h2 kpi-b2b-method-title">{t.methodTitle}</h2>
+          <ol className="kpi-b2b-method-list">
+            {(locale === "th" ? thaiMethod : t.steps.map(([num, title, body]) => ({ num, title, body }))).map(
+              (step, index) => (
+                <li key={step.num} className="kpi-b2b-method-step">
+                  <span className="kpi-latin kpi-b2b-method-num">{step.num}</span>
+                  <div className="kpi-b2b-method-copy">
+                    <p className="kpi-latin kpi-b2b-method-phase">{b2bPhases[index]}</p>
+                    <h3>{step.title}</h3>
+                    <p className="kpi-b2b-method-body">{step.body}</p>
+                  </div>
+                </li>
+              ),
+            )}
           </ol>
         </div>
       </section>
 
-      <section className="kpi-section">
-        <h2 className="kpi-h2">{t.measureTitle}</h2>
-        <p className="kpi-lead mt-5">{t.measureBody}</p>
-        <p className="mt-5 max-w-3xl text-base leading-8 text-[#555555]">{t.measureClose}</p>
+      <section className="kpi-section kpi-b2b-measure">
+        <h2 className="kpi-h2 kpi-b2b-measure-title">{t.measureTitle}</h2>
+        {locale === "th" ? (
+          <p className="kpi-b2b-measure-intro">
+            ไม่ได้ดูแค่จำนวนพาร์ตเนอร์
+            <span className="kpi-b2b-measure-br"> </span>
+            แต่ดูว่าพาร์ตเนอร์แต่ละรายสร้างยอดขายและรายได้จริงแค่ไหน
+          </p>
+        ) : (
+          <p className="kpi-b2b-measure-intro">{t.measureBody}</p>
+        )}
+        <div className="kpi-b2b-measure-metrics">
+          {b2bMetrics.map((metric) => (
+            <div key={metric.name} className="kpi-b2b-measure-metric">
+              <p className="kpi-latin kpi-b2b-measure-name">{metric.name}</p>
+              {locale === "th" ? <p className="kpi-b2b-measure-label">{metric.label}</p> : null}
+            </div>
+          ))}
+        </div>
+        {locale === "th" ? (
+          <p className="kpi-b2b-measure-close">
+            <span>
+              เพื่อดูว่า <span className="kpi-latin">B2B</span> ควรมีบทบาทแค่ไหน
+            </span>
+            <span className="kpi-b2b-measure-close-strong">
+              เมื่อเทียบกับ <span className="kpi-latin kpi-b2b-measure-em">OTA</span> และ{" "}
+              <span className="kpi-latin kpi-b2b-measure-em">Direct Booking</span>
+            </span>
+          </p>
+        ) : (
+          <p className="kpi-b2b-measure-close">{t.measureClose}</p>
+        )}
       </section>
 
       {budgetHref || revenueHref ? (
-        <section className="border-t border-[#E3E8EB] bg-white">
+        <section className="kpi-b2b-related border-t border-[#E3E8EB] bg-white">
           <div className="kpi-section">
-            <h2 className="kpi-h2">{t.relatedTitle}</h2>
-            <div className="kpi-grid-2 mt-10">
-              {budgetHref ? (
-                <article className="kpi-card relative flex flex-col overflow-hidden p-7">
-                  <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-                  <h3 className="mt-3 text-xl font-extrabold text-[#3B3B3B]">{t.toolName}</h3>
-                  <p className="mt-3 text-base leading-7 text-[#555555]">{t.toolBody}</p>
-                  <Link href={budgetHref} className="mt-auto pt-8 text-sm font-semibold text-[#0B6660]">
-                    {t.toolCta}
-                  </Link>
-                </article>
-              ) : null}
+            <h2 className="kpi-h2 kpi-b2b-related-title">
+              {locale === "th" ? (
+                <>
+                  เรื่องที่เกี่ยวข้องกับช่องทางขาย
+                  <span className="kpi-b2b-related-br"> </span>
+                  และแผนรายได้
+                </>
+              ) : (
+                t.relatedTitle
+              )}
+            </h2>
+            <div className="kpi-b2b-related-grid">
               {revenueHref ? (
-                <article className="kpi-card relative flex flex-col overflow-hidden p-7">
-                  <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-                  <h3 className="mt-3 text-xl font-extrabold text-[#3B3B3B]">{solutionNavLabel("/solutions/revenue-commercial-management", locale)}</h3>
-                  <p className="mt-3 text-base leading-7 text-[#555555]">{t.revenueBody}</p>
-                  <Link href={revenueHref} className="mt-auto pt-8 text-sm font-semibold text-[#0B6660]">
-                    {t.details}
-                  </Link>
-                </article>
+                <Link href={revenueHref} className="kpi-b2b-related-item is-featured">
+                  <span className="kpi-b2b-related-rule" aria-hidden="true" />
+                  <h3>{t.revenueTitle}</h3>
+                  <p>
+                    {locale === "th" ? (
+                      <>
+                        มอง <span className="kpi-latin">B2B</span> ร่วมกับราคา <span className="kpi-latin">OTA</span> และ{" "}
+                        <span className="kpi-latin">Direct Booking</span>
+                        <span className="kpi-b2b-related-br"> </span>
+                        เพื่อจัดสัดส่วนช่องทางขายให้เหมาะกับเป้าหมายรายได้
+                      </>
+                    ) : (
+                      t.revenueBody
+                    )}
+                  </p>
+                  <span className="kpi-b2b-related-cta">
+                    {t.details}{" "}
+                    <span className="kpi-b2b-related-arrow" aria-hidden="true">
+                      ↗
+                    </span>
+                  </span>
+                </Link>
+              ) : null}
+              {budgetHref ? (
+                <Link href={budgetHref} className="kpi-b2b-related-item">
+                  <h3>
+                    {locale === "th" ? (
+                      <>
+                        เครื่องคำนวณ <span className="kpi-latin">Budget</span> โรงแรม
+                      </>
+                    ) : (
+                      t.toolName
+                    )}
+                  </h3>
+                  <p>
+                    {locale === "th" ? (
+                      <>
+                        ดูแผนรายได้และค่าใช้จ่ายในภาพรวม
+                        <span className="kpi-b2b-related-br"> </span>
+                        ก่อนตัดสินใจเรื่องช่องทางขายเพิ่ม
+                      </>
+                    ) : (
+                      t.toolBody
+                    )}
+                  </p>
+                  <span className="kpi-b2b-related-cta">
+                    {t.toolCta}{" "}
+                    <span className="kpi-b2b-related-arrow" aria-hidden="true">
+                      ↗
+                    </span>
+                  </span>
+                </Link>
               ) : null}
             </div>
           </div>
