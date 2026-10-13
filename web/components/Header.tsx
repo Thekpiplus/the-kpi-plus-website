@@ -277,7 +277,16 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
             href={auditHref(locale)}
             className="kpi-cta kpi-header-cta kpi-thai-nav"
           >
-            {t.audit}
+            {locale === "th" ? (
+              <>
+                <span className="kpi-header-cta-line">ขอวิเคราะห์</span>
+                <span className="kpi-header-cta-line">
+                  <span className="kpi-latin">Performance</span> โรงแรม
+                </span>
+              </>
+            ) : (
+              t.audit
+            )}
           </Link>
         </div>
       </div>

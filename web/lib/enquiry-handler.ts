@@ -6,9 +6,12 @@ type Payload = {
   name?: string;
   businessName?: string;
   hotel?: string;
+  organization?: string;
+  business?: string;
   contact?: string;
   phone?: string;
   email?: string;
+  lineId?: string;
   serviceInterest?: string;
   service?: string;
   form?: string;
@@ -22,6 +25,18 @@ type Payload = {
   /** Legacy fields — accepted and stored in raw payload, not required */
   [key: string]: unknown;
 };
+
+export function enquiryPayload(
+  body: Record<string, unknown>,
+  defaults: { form: string; serviceInterest: string },
+): Payload {
+  return {
+    ...body,
+    form: typeof body.form === "string" ? body.form : defaults.form,
+    serviceInterest:
+      typeof body.serviceInterest === "string" ? body.serviceInterest : defaults.serviceInterest,
+  };
+}
 
 function text(value: unknown) {
   return typeof value === "string" ? value.trim() : "";

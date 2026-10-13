@@ -1,6 +1,4 @@
 import Link from "next/link";
-import { ArrowUpRight } from "@/components/Icons";
-import { PageHero } from "@/components/PageHero";
 import { SiteShell } from "@/components/SiteShell";
 import { WebsiteEnquiry } from "@/components/WebsiteEnquiry";
 import { WebsiteStickyCta } from "@/components/WebsiteStickyCta";
@@ -10,6 +8,112 @@ import { existingHref, localizePath, type Locale } from "@/lib/seo";
 const googleIpsos = "https://business.google.com/in/think/consumer-insights/insights-apac-traveler-behaviors/";
 const thaiStudy = "https://so03.tci-thaijo.org/index.php/art/article/view/288881";
 
+const thaiQuestions = [
+  {
+    num: "01",
+    title: "ห้องพักชัดพอไหม?",
+    em: "ห้องพัก",
+    lines: ["ห้องแต่ละประเภทต่างกันอย่างไร", "และภาพตรงกับประสบการณ์จริงหรือไม่?"],
+  },
+  {
+    num: "02",
+    title: "ลูกค้าเข้าใจทำเลไหม?",
+    em: "ทำเล",
+    lines: ["โรงแรมอยู่ตรงไหน เดินทางอย่างไร", "และใกล้อะไรที่สำคัญ?"],
+  },
+  {
+    num: "03",
+    title: "ราคาและเงื่อนไขชัดไหม?",
+    em: "ราคาและเงื่อนไข",
+    lines: ["ลูกค้าเข้าใจว่าราคานี้รวมอะไร", "และมีเงื่อนไขการยกเลิกอย่างไร?"],
+  },
+  {
+    num: "04",
+    title: "ติดต่อหรือจองต่อได้ง่ายไหม?",
+    em: "ติดต่อหรือจอง",
+    lines: ["ลูกค้าหาปุ่มจอง ช่องทางติดต่อ", "หรือข้อมูลที่ต้องการได้ทันทีหรือไม่?"],
+  },
+  {
+    num: "05",
+    title: "เส้นทางไปสู่การจองลื่นไหม?",
+    em: "ระบบจอง",
+    lines: ["เมื่อกดจองแล้ว ระบบจองชัดเจน", "ใช้งานง่าย และไม่ทำให้ลูกค้าหลุดหรือไม่?"],
+  },
+  {
+    num: "06",
+    title: "ทีมโรงแรมดูแลต่อเองได้ไหม?",
+    em: "ดูแลต่อเอง",
+    lines: ["ทีมสามารถแก้ข้อมูลห้องพัก", "โปรโมชั่น ราคา และภาพ", "ได้สะดวกแค่ไหน?"],
+  },
+] as const;
+
+function emphasizePhrase(text: string, em: string, className = "kpi-website-questions-em") {
+  const index = text.indexOf(em);
+  if (!em || index < 0) return text;
+  return (
+    <>
+      {text.slice(0, index)}
+      <span className={className}>{em}</span>
+      {text.slice(index + em.length)}
+    </>
+  );
+}
+
+const thaiHelpSteps = [
+  {
+    num: "01",
+    title: "วางเว็บไซต์จากมุมมองของผู้เข้าพัก",
+    em: "มุมมองของผู้เข้าพัก",
+    lines: [
+      "จัดหน้าและลำดับข้อมูลให้ลูกค้าเข้าใจ",
+      "โรงแรม ห้องพัก ทำเล สิ่งอำนวยความสะดวก",
+      "โปรโมชั่น และวิธีจองได้ง่าย",
+    ],
+  },
+  {
+    num: "02",
+    title: "เล่าเรื่องโรงแรมด้วยข้อมูลและภาพจริง",
+    em: "ข้อมูลและภาพจริง",
+    lines: ["พัฒนาเนื้อหาที่แสดงจุดเด่นโดยไม่เกินจริง", "พร้อมวางรายการภาพที่มีอยู่", "และภาพที่ควรถ่ายเพิ่ม"],
+  },
+  {
+    num: "03",
+    title: "ออกแบบให้ใช้งานง่ายบนมือถือ",
+    em: "ใช้งานง่ายบนมือถือ",
+    lines: [
+      "ดูทั้งการอ่าน การนำทาง ความเร็วของหน้า",
+      "ปุ่มติดต่อ และเส้นทางไปหน้าจอง",
+      "บนอุปกรณ์ที่ลูกค้าใช้งานจริง",
+    ],
+  },
+  {
+    num: "04",
+    title: "เชื่อมระบบจองและการวัดผล",
+    em: "ระบบจองและการวัดผล",
+    lines: [
+      "ตรวจว่าหน้าห้องพักและข้อเสนอ",
+      "พาลูกค้าไปยัง Booking Engine ได้ชัด",
+      "พร้อมตั้งค่าการติดตามความสนใจ",
+      "และการจองที่ตรวจสอบได้",
+    ],
+  },
+  {
+    num: "05",
+    title: "ทำให้ทีมโรงแรมดูแลเว็บต่อได้",
+    em: "ดูแลเว็บต่อได้",
+    lines: [
+      "เลือกวิธีจัดการเนื้อหา",
+      "ให้เหมาะกับคนที่ใช้งานจริง",
+    ],
+    linesAfter: [
+      "หากทีมต้องอัปเดตรูป ข้อความ",
+      "หรือโปรโมชั่นเอง",
+      "เว็บไซต์ควรมีขั้นตอนแก้ไขที่เข้าใจง่าย",
+      "และกำหนดสิทธิ์ได้เหมาะสม",
+    ],
+  },
+] as const;
+
 const tools = [
   { name: "WordPress", src: "/brand/tools/wordpress.webp", mark: "plain", kind: "cms" },
   { name: "Cursor", src: "/brand/tools/cursor.png", mark: "plain", kind: "dev" },
@@ -17,18 +121,168 @@ const tools = [
   { name: "Manus", src: "/brand/tools/manus.png", mark: "tile", kind: "dev" },
 ] as const;
 
+const thaiCmsSteps = [
+  {
+    num: "01",
+    label: "CMS & USERS",
+    title: "เลือก CMS จากคนที่จะใช้งานจริง",
+    lines: [
+      "ดูว่าทีมโรงแรมต้องแก้อะไรบ่อยแค่ไหน",
+      "ใครเป็นคนดูแล",
+      "และเว็บไซต์ต้องเชื่อมกับระบบอะไรบ้าง",
+    ],
+  },
+  {
+    num: "02",
+    label: "TECHNOLOGY FIT",
+    title: "เลือกเทคโนโลยีให้เหมาะกับความซับซ้อน",
+    lines: [
+      "WordPress อาจเหมาะกับเว็บไซต์",
+      "ที่ทีมต้องแก้เนื้อหาเองเป็นประจำ",
+      "ส่วนเว็บไซต์ที่มี requirement เฉพาะ",
+      "ควรเลือก CMS หรือแนวทางพัฒนา",
+      "ให้เหมาะกับงานจริง",
+    ],
+  },
+  {
+    num: "03",
+    label: "DEVELOPMENT TOOLS",
+    title: "เครื่องมือพัฒนาควรช่วยทีม ไม่เพิ่มภาระให้โรงแรม",
+    lines: [
+      "ทีมพัฒนาอาจใช้ Cursor, Claude หรือ Manus",
+      "เพื่อช่วยจัดการงานและทำต้นแบบ",
+      "แต่เว็บไซต์ที่ส่งมอบ",
+      "ต้องใช้งานง่าย ดูแลต่อได้",
+      "และไม่บังคับให้ทีมโรงแรม",
+      "ต้องเรียนรู้เครื่องมือเหล่านี้",
+    ],
+  },
+] as const;
+
+function withLatinTools(text: string) {
+  const parts = text.split(
+    /(WordPress|Cursor|Claude|Manus|CMS|requirement|Booking Engine|SEO|Tracking|Mobile UX|Mobile|Links|Forms)/g,
+  );
+  return parts.map((part, index) =>
+    /^(WordPress|Cursor|Claude|Manus|CMS|requirement|Booking Engine|SEO|Tracking|Mobile UX|Mobile|Links|Forms)$/.test(
+      part,
+    ) ? (
+      <span key={`${part}-${index}`} className="kpi-latin">
+        {part}
+      </span>
+    ) : (
+      part
+    ),
+  );
+}
+
+const thaiMeasureGroups = [
+  {
+    num: "01",
+    title: "Landing Page Engagement",
+    em: "Landing Page",
+    lines: ["ดูว่าลูกค้าเข้าหน้าห้องพัก", "โปรโมชั่น หรือหน้าที่สำคัญจริงหรือไม่"],
+  },
+  {
+    num: "02",
+    title: "Mobile Experience",
+    em: "Mobile",
+    lines: ["ดูพฤติกรรมบนมือถือ", "เพราะเป็นอุปกรณ์หลักที่ลูกค้าใช้ค้นหา", "และเดินทางไปสู่การจอง"],
+  },
+  {
+    num: "03",
+    title: "Contact & Booking Intent",
+    em: "",
+    lines: ["ดูการกดโทร แชต ปุ่มจอง", "หรือการเข้าสู่ Booking Engine"],
+  },
+  {
+    num: "04",
+    title: "Booking Outcome",
+    em: "Booking Outcome",
+    lines: ["หาก Booking Engine", "สามารถส่งข้อมูลกลับมาได้"],
+    linesAfter: ["จึงดูต่อถึงการจองสำเร็จ", "และมูลค่าที่ตรวจสอบได้"],
+  },
+] as const;
+
+const thaiMethodSteps = [
+  {
+    num: "01",
+    label: "DISCOVER",
+    title: "เข้าใจโรงแรม",
+    lines: ["ดูกลุ่มลูกค้า ห้องพัก จุดเด่น", "เว็บไซต์เดิม และระบบจอง"],
+  },
+  {
+    num: "02",
+    label: "STRUCTURE",
+    title: "วางโครงสร้าง",
+    lines: ["กำหนดหน้าที่จำเป็น ข้อมูลที่ลูกค้าต้องเห็น", "และเส้นทางจากการค้นพบไปสู่การติดต่อหรือจอง"],
+  },
+  {
+    num: "03",
+    label: "SELECT",
+    title: "เลือกวิธีพัฒนา",
+    lines: ["เลือก CMS และวิธีเชื่อมต่อ", "ให้เหมาะกับทีม ระบบ และการดูแลระยะยาว"],
+  },
+  {
+    num: "04",
+    label: "BUILD",
+    title: "ออกแบบและพัฒนา",
+    lines: ["ทำงานร่วมกับโรงแรมเพื่อยืนยันภาพ ข้อความ", "ราคา เงื่อนไข และประสบการณ์ใช้งาน"],
+  },
+  {
+    num: "05",
+    label: "HANDOVER",
+    title: "ตรวจและส่งมอบ",
+    lines: ["ทดสอบ Mobile, Links, Booking Engine,", "Forms และ Tracking"],
+    linesAfter: ["พร้อมเตรียมทีมให้ดูแลเนื้อหาต่อได้หลังเปิดใช้งาน"],
+  },
+] as const;
+
+const thaiToolsCopy = [
+  "เราเลือกเครื่องมือตามงาน ไม่ยึดติดกับแพลตฟอร์มใดแพลตฟอร์มหนึ่ง",
+  "WordPress อาจใช้เป็น CMS ส่วน Cursor, Claude หรือ Manus อาจช่วยในขั้นตอนวางแผน พัฒนา หรือจัดการงานเบื้องหลัง",
+  "สิ่งที่โรงแรมได้รับต้องยังคงใช้งานง่าย ดูแลต่อได้ และไม่ผูกกับเครื่องมือเหล่านี้",
+] as const;
+
+const thaiNewDecision = [
+  {
+    key: "improve",
+    title: "ปรับเว็บไซต์เดิม",
+    support: ["เหมาะเมื่อระบบพื้นฐานยังดี", "แต่ต้องปรับประสบการณ์และข้อมูลให้ชัดขึ้น"],
+    points: [
+      "ทีมยังแก้ไขเนื้อหาได้สะดวก",
+      "เว็บไซต์บนมือถือยังใช้งานได้ดี",
+      "เชื่อม Booking Engine ได้",
+      "โครงสร้างยังรองรับ SEO และ Tracking",
+      "ปัญหาหลักอยู่ที่เนื้อหา ภาพ หรือเส้นทางจอง",
+    ],
+  },
+  {
+    key: "rebuild",
+    title: "สร้างเว็บไซต์ใหม่",
+    support: ["เหมาะเมื่อข้อจำกัดของระบบเดิม", "เริ่มขัดขวางการขายและการดูแลเว็บไซต์"],
+    points: [
+      "ระบบเดิมแก้ไขยากหรือพึ่งผู้พัฒนามากเกินไป",
+      "Mobile UX มีปัญหา",
+      "โครงสร้างไม่รองรับห้องพัก โปรโมชั่น หรือหลายภาษาได้ดี",
+      "เชื่อม Booking Engine หรือการวัดผลได้จำกัด",
+      "การแก้ต่อมีต้นทุนสูงกว่าการวางระบบใหม่",
+    ],
+  },
+] as const;
+
 const copy = {
   th: {
     crumb: "โซลูชัน",
-    eyebrow: "ออกแบบเว็บไซต์โรงแรม",
+    eyebrow: "Hotel Website & Direct Booking",
     title: "เว็บไซต์ที่ทำให้ลูกค้ามั่นใจก่อนจอง และทีมโรงแรมใช้งานต่อได้จริง",
-    lead: "ลูกค้าอาจพบโรงแรมจาก OTA, Google Maps หรือโซเชียลมีเดีย แล้วเข้ามาดูเว็บไซต์ทางการเพื่อเช็กห้องพัก ทำเล ราคา และเงื่อนไขอีกครั้ง เว็บไซต์ที่ดีจึงต้องแสดงตัวตนของโรงแรม ตอบคำถามสำคัญ และพาลูกค้าไปสู่การติดต่อหรือจองได้สะดวก",
+    lead: "ลูกค้าอาจพบโรงแรมจาก OTA, Google Maps หรือโซเชียลมีเดีย ก่อนกลับมาดูเว็บไซต์เพื่อเช็กห้องพัก ทำเล ราคา และเงื่อนไขอีกครั้งก่อนตัดสินใจ เว็บไซต์จึงต้องตอบคำถามสำคัญได้ชัด และพาลูกค้าไปสู่การติดต่อหรือจองได้ง่าย",
     leadClose:
-      "เดอะ เคพีไอ พลัส ช่วยวางโครงสร้าง ออกแบบ และพัฒนาเว็บไซต์ให้เชื่อมกับเป้าหมายด้านรายได้และการจองตรง โดยเลือก CMS หรือแนวทางพัฒนาตามสิ่งที่โรงแรมต้องการ ไม่ยึดติดกับเครื่องมือเดียว",
-    cta: "ให้ทีมดูเว็บไซต์โรงแรมของคุณ",
+      "The KPI Plus ช่วยวางโครงสร้าง ออกแบบ และพัฒนาเว็บไซต์ให้เชื่อมกับเป้าหมายด้านรายได้และ Direct Booking เลือก CMS หรือแนวทางพัฒนาตามสิ่งที่โรงแรมต้องใช้จริง ไม่ยึดติดกับเครื่องมือเดียว",
+    cta: "ดูโอกาสเพิ่ม Direct Booking",
     secondary: "ดูโซลูชันทั้งหมด",
     underCta: "ส่งชื่อโรงแรม ลิงก์เว็บไซต์เดิม และสิ่งที่อยากปรับ",
-    photoAlt: "ลูกค้าเปิดเว็บไซต์โรงแรมบนมือถือเพื่อดูห้องพักก่อนจอง",
+    photoAlt: "แล็ปท็อปในโรงแรมแสดงหน้าเว็บห้องพักพร้อมปุ่มจองตรง",
     whyTitle: "ทำไมเว็บไซต์ทางการจึงช่วยสร้างความมั่นใจ?",
     whyBody:
       "งานสำรวจผู้เดินทางในหลายประเทศเอเชียแปซิฟิก รวมประเทศไทย พบว่า มากกว่า 3 ใน 5 ของผู้ตอบในแต่ละตลาดต้องมั่นใจก่อนจอง และมากกว่าครึ่งตรวจสอบข้อมูลการเดินทางจากแหล่งอื่นเพิ่มเติม เว็บไซต์ทางการจึงเป็นที่ที่โรงแรมควรให้ข้อมูลห้องพักและเงื่อนไขที่ชัดเจน ตรวจสอบได้ และตรงกับช่องทางอื่น",
@@ -300,12 +554,6 @@ const copy = {
   },
 } as const;
 
-function toolMarkClass(mark: (typeof tools)[number]["mark"]) {
-  if (mark === "tile") return "kpi-tool-mark-tile";
-  if (mark === "wordmark") return "kpi-tool-wordmark";
-  return "kpi-tool-mark";
-}
-
 export function WebsiteView({ locale }: { locale: Locale }) {
   const t = copy[locale];
   const solutions = localizePath("/solutions", locale);
@@ -314,165 +562,638 @@ export function WebsiteView({ locale }: { locale: Locale }) {
 
   return (
     <SiteShell locale={locale} route={localizePath("/solutions/hotel-website-design", locale)}>
-      <PageHero>
-        <nav aria-label="Breadcrumb" className="text-sm text-white/70">
-          <ol className="flex flex-wrap items-center gap-2">
-            <li>
-              <Link href={solutions} className="hover:text-white">
-                {t.crumb}
-              </Link>
-            </li>
-            <li className="flex items-center gap-2">
-              <span aria-hidden="true">/</span>
-              <span className="text-white">{solutionNavLabel("/solutions/hotel-website-design", locale)}</span>
-            </li>
-          </ol>
-        </nav>
-        <p className="kpi-kicker mt-5 text-[#F2F8E2]">{t.eyebrow}</p>
-        <h1 className="kpi-h1 mt-5">{t.title}</h1>
-        <p className="kpi-lead mt-5 text-white/72">{t.lead}</p>
-        <p className="mt-4 max-w-3xl text-base leading-8 text-white/64">{t.leadClose}</p>
-        <div className="kpi-actions">
-          <a href="#website-enquiry" className="kpi-button">
-            {t.cta} <ArrowUpRight className="h-4 w-4" />
-          </a>
-          <Link href={solutions} className="kpi-button-ghost">
-            {t.secondary}
-          </Link>
-        </div>
-        <p className="mt-4 max-w-xl text-sm leading-6 text-white/64">{t.underCta}</p>
-      </PageHero>
-
-      <section className="kpi-section">
-        <div className="kpi-split">
-          <div>
-            <h2 className="kpi-h2">{t.whyTitle}</h2>
-            <p className="mt-6 max-w-2xl text-base leading-8 text-[#555555]">{t.whyBody}</p>
-            <p className="mt-5 max-w-2xl text-base leading-8 text-[#3B3B3B]">{t.whyStudy}</p>
-            <p className="mt-5 max-w-2xl text-sm leading-7 text-[#555555]">
-              {t.sourceLabel}:{" "}
-              <a href={googleIpsos} target="_blank" rel="noreferrer" className="font-semibold text-[#0B6660]">
-                {t.sourceGoogle}
-              </a>
-              {" · "}
-              <a href={thaiStudy} target="_blank" rel="noreferrer" className="font-semibold text-[#0B6660]">
-                {t.sourceThai}
-              </a>
-            </p>
-          </div>
-          <figure className="kpi-home-photo">
-            <img src="/media/kpi-grow-demand_24299cd0.jpg" alt={t.photoAlt} width={1200} height={900} />
-          </figure>
-        </div>
-      </section>
-
-      <section className="border-y border-[#E3E8EB] bg-white">
-        <div className="kpi-section">
-          <h2 className="kpi-h2">{t.questionsTitle}</h2>
-          <div className="mt-10 grid gap-4">
-            {t.questions.map((item, index) => (
-              <article key={item} className="kpi-card flex gap-4 p-6">
-                <span className="kpi-latin text-sm font-black tracking-[.14em] text-[#0B6660]">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <p className="text-base leading-7 text-[#555555]">{item}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="kpi-section">
-        <h2 className="kpi-h2">{t.helpTitle}</h2>
-        <div className="kpi-grid-2 mt-10">
-          {t.help.map(([num, title, body]) => (
-            <article key={num} className="kpi-card relative overflow-hidden p-7">
-              <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-              <span className="kpi-latin text-sm font-black tracking-[.16em] text-[#0B6660]">{num}</span>
-              <h3 className="mt-5 text-xl font-extrabold text-[#3B3B3B]">{title}</h3>
-              <p className="mt-3 text-base leading-7 text-[#555555]">{body}</p>
-            </article>
-          ))}
-        </div>
-        <a href="#website-enquiry" className="kpi-button mt-10">
-          {t.cta} <ArrowUpRight className="h-4 w-4" />
-        </a>
-      </section>
-
-      <section className="border-y border-[#E3E8EB] bg-white">
-        <div className="kpi-section">
-          <h2 className="kpi-h2">{t.cmsTitle}</h2>
-          <p className="kpi-lead mt-5">{t.cmsBody}</p>
-          <p className="mt-5 max-w-3xl text-base leading-8 text-[#555555]">{t.cmsWordpress}</p>
-          <p className="mt-5 max-w-3xl text-base leading-8 text-[#555555]">{t.cmsTools}</p>
-        </div>
-      </section>
-
-      <section className="kpi-section">
-        <h2 className="kpi-h2">{t.newTitle}</h2>
-        <p className="mt-6 max-w-3xl text-base leading-8 text-[#555555]">{t.newBody}</p>
-        <p className="mt-5 max-w-3xl text-base leading-8 text-[#3B3B3B]">{t.newClose}</p>
-      </section>
-
-      <section className="border-y border-[#E3E8EB] bg-white">
-        <div className="kpi-section">
-          <h2 className="kpi-h2">{t.methodTitle}</h2>
-          <ol className="mt-10 grid gap-4">
-            {t.steps.map(([num, title, body]) => (
-              <li key={num} className="kpi-card flex gap-4 p-6 sm:items-start">
-                <span className="kpi-latin text-sm font-black tracking-[.14em] text-[#0B6660]">{num}</span>
-                <div>
-                  <h3 className="text-xl font-extrabold text-[#3B3B3B]">{title}</h3>
-                  <p className="mt-2 text-base leading-7 text-[#555555]">{body}</p>
-                </div>
+      <section className="kpi-hero kpi-home-hero-section kpi-website-hero">
+        <div className="kpi-wrap">
+          <nav aria-label="Breadcrumb" className="kpi-website-hero-crumb">
+            <ol>
+              <li>
+                <Link href={solutions}>{t.crumb}</Link>
               </li>
-            ))}
-          </ol>
-
-          <div className="mt-12 rounded-[1.5rem] border border-[#E3E8EB] bg-[#F4F4F4] p-6 sm:p-8">
-            <h3 className="text-lg font-extrabold text-[#3B3B3B]">{t.toolsTitle}</h3>
-            <p className="mt-3 max-w-3xl text-sm leading-7 text-[#555555]">{t.toolsBody}</p>
-            <div className="kpi-tool-grid mt-6">
-              {tools.map((tool) => (
-                <article key={tool.name} className="kpi-tool-card">
-                  <img src={tool.src} alt="" className={toolMarkClass(tool.mark)} />
-                  <p className="kpi-latin text-base font-extrabold text-[#3B3B3B]">{tool.name}</p>
-                  <p className="text-sm leading-6 text-[#555555]">{tool.kind === "cms" ? t.cmsExample : t.devAid}</p>
-                </article>
-              ))}
+              <li>
+                <span aria-hidden="true">/</span>
+                <span>{solutionNavLabel("/solutions/hotel-website-design", locale)}</span>
+              </li>
+            </ol>
+          </nav>
+          <div className="kpi-home-hero">
+            <div className="kpi-home-hero-copy">
+              <p className="kpi-home-eyebrow kpi-latin">{t.eyebrow}</p>
+              <h1 className="kpi-h1 kpi-home-h1">
+                {locale === "th" ? (
+                  <>
+                    <span className="kpi-home-h1-lead">
+                      เว็บไซต์ที่ทำให้ลูกค้า<span className="kpi-home-accent">มั่นใจก่อนจอง</span>
+                    </span>
+                    <span className="kpi-home-h1-rest">และทีมโรงแรมใช้งานต่อได้จริง</span>
+                  </>
+                ) : (
+                  t.title
+                )}
+              </h1>
+              {locale === "th" ? (
+                <>
+                  <p className="kpi-lead kpi-home-lead">
+                    ลูกค้าอาจพบโรงแรมจาก <span className="kpi-latin">OTA</span>,{" "}
+                    <span className="kpi-latin">Google Maps</span> หรือโซเชียลมีเดีย
+                    ก่อนกลับมาดูเว็บไซต์เพื่อเช็กห้องพัก ทำเล ราคา และเงื่อนไขอีกครั้ง
+                    เว็บไซต์จึงต้องตอบคำถามสำคัญได้ชัด และพาไปสู่การติดต่อหรือจองได้ง่าย
+                  </p>
+                  <p className="kpi-website-lead-close">
+                    <span className="kpi-latin">The KPI Plus</span> ช่วยออกแบบและพัฒนาเว็บไซต์
+                    ให้เชื่อมกับเป้าหมายด้านรายได้และ <span className="kpi-latin">Direct Booking</span>
+                    โดยเลือก <span className="kpi-latin">CMS</span> ตามที่โรงแรมต้องใช้จริง
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="kpi-lead kpi-home-lead">{t.lead}</p>
+                  <p className="kpi-website-lead-close">{t.leadClose}</p>
+                </>
+              )}
+              <div className="kpi-actions">
+                <a href="#website-enquiry" className="kpi-button">
+                  {locale === "th" ? (
+                    <>
+                      ดูโอกาสเพิ่ม <span className="kpi-latin">Direct Booking</span>
+                    </>
+                  ) : (
+                    t.cta
+                  )}{" "}
+                  <span aria-hidden="true">↗</span>
+                </a>
+                <Link href={solutions} className="kpi-button-ghost">
+                  {t.secondary}
+                </Link>
+              </div>
+              <p className="kpi-website-hero-note">{t.underCta}</p>
+              <p className="kpi-home-trust kpi-website-journey">
+                {(
+                  [
+                    ["01", "Discover"],
+                    ["02", "Explore Rooms"],
+                    ["03", "Check Offer"],
+                    ["04", "Book Direct"],
+                  ] as const
+                ).map(([num, step]) => (
+                  <span key={step}>
+                    <span className="kpi-latin">
+                      {num} {step}
+                    </span>
+                  </span>
+                ))}
+              </p>
+            </div>
+            <div className="kpi-hero-visual kpi-home-photo">
+              <img src="/media/hotel-website-hero-laptop.jpg" alt={t.photoAlt} width={1200} height={900} />
             </div>
           </div>
         </div>
       </section>
 
-      <section className="kpi-section">
+      <section className="kpi-section kpi-website-why">
+        <div className="kpi-website-why-grid">
+          <div className="kpi-website-why-copy">
+            <h2 className="kpi-h2">
+              {locale === "th" ? (
+                <>
+                  ทำไมเว็บไซต์ทางการจึงช่วย
+                  <span className="kpi-website-why-em">สร้างความมั่นใจ</span>?
+                </>
+              ) : (
+                t.whyTitle
+              )}
+            </h2>
+            {locale === "th" ? (
+              <>
+                <div className="kpi-website-why-findings">
+                  <article className="kpi-website-why-finding">
+                    <p className="kpi-website-why-stat">
+                      <span className="kpi-latin kpi-website-why-number">3</span>
+                      <span className="kpi-website-why-stat-mid"> ใน </span>
+                      <span className="kpi-latin kpi-website-why-number">5</span>
+                      <span className="kpi-website-why-stat-label"> นักเดินทาง</span>
+                    </p>
+                    <p className="kpi-website-why-finding-body">
+                      ต้องการข้อมูลและเงื่อนไขที่ชัดเจนจากแหล่งเพิ่มเติมก่อนตัดสินใจจอง
+                    </p>
+                  </article>
+                  <article className="kpi-website-why-finding">
+                    <h3>ราคาและเงื่อนไขมีผลต่อความตั้งใจจอง</h3>
+                    <p className="kpi-website-why-finding-body">
+                      เว็บไซต์ทางการควรช่วยให้ลูกค้าเข้าใจสิ่งที่จะได้รับ ราคา และเงื่อนไขก่อนตัดสินใจ
+                    </p>
+                  </article>
+                </div>
+                <p className="kpi-website-why-takeaway">
+                  <span>เว็บไซต์ทางการจึงไม่ใช่แค่ช่องทางขาย</span>
+                  <span className="kpi-website-why-takeaway-strong">
+                    แต่เป็นจุดที่ช่วยยืนยันว่าข้อมูลนี้เชื่อถือได้
+                    <span className="kpi-website-why-br"> </span>
+                    และจองต่อได้จริง
+                  </span>
+                </p>
+                <div className="kpi-website-why-sources">
+                  <p>
+                    <span className="kpi-latin">Source:</span>{" "}
+                    <a href={googleIpsos} target="_blank" rel="noreferrer">
+                      Google / Ipsos
+                    </a>
+                  </p>
+                  <p>
+                    <span className="kpi-latin">Source:</span>{" "}
+                    <a href={thaiStudy} target="_blank" rel="noreferrer">
+                      Thailand hotel booking cancellation research
+                    </a>
+                  </p>
+                </div>
+              </>
+            ) : (
+              <>
+                <p className="kpi-website-why-fallback">{t.whyBody}</p>
+                <p className="kpi-website-why-fallback">{t.whyStudy}</p>
+                <div className="kpi-website-why-sources">
+                  <p>
+                    {t.sourceLabel}:{" "}
+                    <a href={googleIpsos} target="_blank" rel="noreferrer">
+                      {t.sourceGoogle}
+                    </a>
+                  </p>
+                  <p>
+                    {t.sourceLabel}:{" "}
+                    <a href={thaiStudy} target="_blank" rel="noreferrer">
+                      {t.sourceThai}
+                    </a>
+                  </p>
+                </div>
+              </>
+            )}
+          </div>
+          <figure className="kpi-website-why-media">
+            <img
+              src="/media/hotel-website-why-phone.jpg"
+              alt={
+                locale === "th"
+                  ? "นักเดินทางดูเว็บไซต์โรงแรมทางการบนมือถือเพื่อเช็กห้องพักและเงื่อนไขก่อนจอง"
+                  : t.photoAlt
+              }
+              width={1200}
+              height={900}
+            />
+          </figure>
+        </div>
+      </section>
+
+      <section className="border-y border-[#E3E8EB] bg-white">
+        <div className="kpi-section kpi-website-questions">
+          <h2 className="kpi-h2">
+            {locale === "th" ? (
+              <>
+                <span className="kpi-website-questions-line">เว็บไซต์โรงแรมของคุณ</span>
+                <span className="kpi-website-questions-br"> </span>
+                <span className="kpi-website-questions-line kpi-website-questions-em">
+                  ตอบคำถามเหล่านี้ได้ไหม?
+                </span>
+              </>
+            ) : (
+              t.questionsTitle
+            )}
+          </h2>
+          {locale === "th" ? (
+            <>
+              <ol className="kpi-website-questions-list">
+                {thaiQuestions.map((item) => {
+                  const emInTitle = item.title.includes(item.em);
+                  return (
+                    <li key={item.num} className="kpi-website-questions-item">
+                      <span className="kpi-latin kpi-website-questions-num">{item.num}</span>
+                      <div className="kpi-website-questions-copy">
+                        <h3>{emphasizePhrase(item.title, item.em)}</h3>
+                        <p>
+                          {item.lines.map((line, lineIndex) => (
+                            <span key={line}>
+                              {lineIndex > 0 ? <span className="kpi-website-questions-br"> </span> : null}
+                              {emInTitle ? line : emphasizePhrase(line, item.em)}
+                            </span>
+                          ))}
+                        </p>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ol>
+              <p className="kpi-website-questions-close">
+                <span>เว็บไซต์ที่ดีไม่ควรแค่ดูสวย</span>
+                <span className="kpi-website-questions-close-strong">
+                  แต่ควรช่วยให้ลูกค้า
+                  <span className="kpi-website-questions-br"> </span>
+                  เข้าใจ มั่นใจ และเดินต่อไปสู่การจองได้ง่าย
+                </span>
+              </p>
+              <a href="#website-enquiry" className="kpi-website-questions-cta">
+                ให้ทีมช่วยดูเว็บไซต์โรงแรมของคุณ
+                <span aria-hidden="true">↗</span>
+              </a>
+            </>
+          ) : (
+            <ol className="kpi-website-questions-list">
+              {t.questions.map((item, index) => (
+                <li key={item} className="kpi-website-questions-item">
+                  <span className="kpi-latin kpi-website-questions-num">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <div className="kpi-website-questions-copy">
+                    <p>{item}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          )}
+        </div>
+      </section>
+
+      <section className="kpi-section kpi-website-help">
+        <h2 className="kpi-h2">{t.helpTitle}</h2>
+        {locale === "th" ? (
+          <>
+            <ol className="kpi-website-help-list">
+              {thaiHelpSteps.map((step) => (
+                <li
+                  key={step.num}
+                  className={`kpi-website-help-item${step.num === "05" ? " is-outcome" : ""}`}
+                >
+                  <span className="kpi-latin kpi-website-help-num">{step.num}</span>
+                  <div className="kpi-website-help-copy">
+                    <h3>{emphasizePhrase(step.title, step.em, "kpi-website-help-em")}</h3>
+                    <p>
+                      {step.lines.map((line, lineIndex) => (
+                        <span key={line}>
+                          {lineIndex > 0 ? <span className="kpi-website-help-br"> </span> : null}
+                          {line.includes("Booking Engine") ? (
+                            <>
+                              พาลูกค้าไปยัง <span className="kpi-latin">Booking Engine</span> ได้ชัด
+                            </>
+                          ) : (
+                            line
+                          )}
+                        </span>
+                      ))}
+                    </p>
+                    {"linesAfter" in step && step.linesAfter ? (
+                      <p className="kpi-website-help-p-follow">
+                        {step.linesAfter.map((line, lineIndex) => (
+                          <span key={line}>
+                            {lineIndex > 0 ? <span className="kpi-website-help-br"> </span> : null}
+                            {line}
+                          </span>
+                        ))}
+                      </p>
+                    ) : null}
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <a href="#website-enquiry" className="kpi-button kpi-website-help-cta">
+              ดูโอกาสเพิ่ม <span className="kpi-latin">Direct Booking</span>
+              <span aria-hidden="true">↗</span>
+            </a>
+          </>
+        ) : (
+          <>
+            <ol className="kpi-website-help-list">
+              {t.help.map(([num, title, body]) => (
+                <li
+                  key={num}
+                  className={`kpi-website-help-item${num === "05" ? " is-outcome" : ""}`}
+                >
+                  <span className="kpi-latin kpi-website-help-num">{num}</span>
+                  <div className="kpi-website-help-copy">
+                    <h3>{title}</h3>
+                    <p>{body}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <a href="#website-enquiry" className="kpi-button kpi-website-help-cta">
+              {t.cta} <span aria-hidden="true">↗</span>
+            </a>
+          </>
+        )}
+      </section>
+
+      <section className="kpi-website-cms border-y border-[#E3E8EB] bg-white">
+        <div className="kpi-section">
+          <h2 className="kpi-h2">{t.cmsTitle}</h2>
+          {locale === "th" ? (
+            <>
+              <ol className="kpi-website-cms-list">
+                {thaiCmsSteps.map((step) => (
+                  <li key={step.num} className="kpi-website-cms-item">
+                    <span className="kpi-latin kpi-website-cms-num">{step.num}</span>
+                    <span className="kpi-latin kpi-website-cms-label">{step.label}</span>
+                    <h3>{step.title}</h3>
+                    <p>
+                      {step.lines.map((line, lineIndex) => (
+                        <span key={line}>
+                          {lineIndex > 0 ? <span className="kpi-website-cms-br"> </span> : null}
+                          {withLatinTools(line)}
+                        </span>
+                      ))}
+                    </p>
+                  </li>
+                ))}
+              </ol>
+              <p className="kpi-website-cms-close">
+                <span>เป้าหมายไม่ใช่เลือกเทคโนโลยีที่ใหม่ที่สุด</span>
+                <span className="kpi-website-cms-close-strong">
+                  แต่เลือกสิ่งที่ทีมโรงแรม
+                  <span className="kpi-website-cms-br"> </span>
+                  <span className="kpi-website-cms-em">ใช้งานต่อได้จริง</span>
+                </span>
+              </p>
+            </>
+          ) : (
+            <>
+              <p className="kpi-lead mt-5">{t.cmsBody}</p>
+              <p className="mt-5 max-w-3xl text-base leading-8 text-[#555555]">{t.cmsWordpress}</p>
+              <p className="mt-5 max-w-3xl text-base leading-8 text-[#555555]">{t.cmsTools}</p>
+            </>
+          )}
+        </div>
+      </section>
+
+      <section className="kpi-section kpi-website-new">
+        <h2 className="kpi-h2">{t.newTitle}</h2>
+        {locale === "th" ? (
+          <>
+            <div className="kpi-website-new-grid">
+              {thaiNewDecision.map((side) => (
+                <article key={side.key} className="kpi-website-new-col">
+                  <h3>{side.title}</h3>
+                  <p className="kpi-website-new-support">
+                    {side.support.map((line, lineIndex) => (
+                      <span key={line}>
+                        {lineIndex > 0 ? <span className="kpi-website-new-br"> </span> : null}
+                        {line}
+                      </span>
+                    ))}
+                  </p>
+                  <ul className="kpi-website-new-points">
+                    {side.points.map((point) => (
+                      <li key={point}>{withLatinTools(point)}</li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
+            <p className="kpi-website-new-close">
+              <span>เราไม่เริ่มจากคำว่า “ต้องทำใหม่”</span>
+              <span className="kpi-website-new-close-strong">
+                แต่เริ่มจากดูว่า
+                <span className="kpi-website-new-br"> </span>
+                เว็บไซต์เดิม
+                <span className="kpi-website-new-em">ยังพาโรงแรมไปต่อได้แค่ไหน</span>
+              </span>
+            </p>
+          </>
+        ) : (
+          <>
+            <p className="mt-6 max-w-3xl text-base leading-8 text-[#555555]">{t.newBody}</p>
+            <p className="mt-5 max-w-3xl text-base leading-8 text-[#3B3B3B]">{t.newClose}</p>
+          </>
+        )}
+      </section>
+
+      <section className="kpi-website-method border-y border-[#E3E8EB] bg-white">
+        <div className="kpi-section">
+          <h2 className="kpi-h2">{t.methodTitle}</h2>
+          {locale === "th" ? (
+            <ol className="kpi-website-method-list">
+              {thaiMethodSteps.map((step) => (
+                <li key={step.num} className="kpi-website-method-item">
+                  <div className="kpi-website-method-meta">
+                    <span className="kpi-latin kpi-website-method-num">{step.num}</span>
+                    <span className="kpi-latin kpi-website-method-label">{step.label}</span>
+                  </div>
+                  <div className="kpi-website-method-copy">
+                    <h3>{step.title}</h3>
+                    <p>
+                      {step.lines.map((line, lineIndex) => (
+                        <span key={line}>
+                          {lineIndex > 0 ? <span className="kpi-website-method-br"> </span> : null}
+                          {withLatinTools(line)}
+                        </span>
+                      ))}
+                    </p>
+                    {"linesAfter" in step && step.linesAfter ? (
+                      <p className="kpi-website-method-p-follow">
+                        {step.linesAfter.map((line, lineIndex) => (
+                          <span key={line}>
+                            {lineIndex > 0 ? <span className="kpi-website-method-br"> </span> : null}
+                            {line}
+                          </span>
+                        ))}
+                      </p>
+                    ) : null}
+                  </div>
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <ol className="kpi-website-method-list">
+              {t.steps.map(([num, title, body]) => (
+                <li key={num} className="kpi-website-method-item">
+                  <div className="kpi-website-method-meta">
+                    <span className="kpi-latin kpi-website-method-num">{num}</span>
+                  </div>
+                  <div className="kpi-website-method-copy">
+                    <h3>{title}</h3>
+                    <p>{body}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          )}
+
+          <div className="kpi-website-method-tools">
+            <h3 className="kpi-website-method-tools-title">{t.toolsTitle}</h3>
+            {locale === "th" ? (
+              <>
+                <div className="kpi-website-method-tools-copy">
+                  {thaiToolsCopy.map((para) => (
+                    <p key={para}>{withLatinTools(para)}</p>
+                  ))}
+                </div>
+                <ul className="kpi-website-method-tools-row" aria-label="เครื่องมือที่ทีมอาจใช้">
+                  {tools.map((tool) => (
+                    <li key={tool.name}>
+                      <img
+                        src={tool.src}
+                        alt={tool.mark === "wordmark" ? tool.name : ""}
+                        className={`kpi-website-method-tools-mark${tool.mark === "wordmark" ? " is-wordmark" : ""}`}
+                      />
+                      {tool.mark === "wordmark" ? (
+                        <span className="kpi-website-method-tools-name-fallback kpi-latin">{tool.name}</span>
+                      ) : (
+                        <span className="kpi-latin">{tool.name}</span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+                <p className="kpi-website-method-tools-close">
+                  <span>เครื่องมือเป็นเพียงสิ่งที่ช่วยให้ทีมทำงานได้ดีขึ้น</span>
+                  <span className="kpi-website-method-tools-close-strong">
+                    เว็บไซต์ที่ส่งมอบต้องเป็นสิ่งที่ทีมโรงแรม
+                    <span className="kpi-website-method-em">ใช้งานต่อได้จริง</span>
+                  </span>
+                </p>
+              </>
+            ) : (
+              <>
+                <p className="kpi-website-method-tools-fallback">{t.toolsBody}</p>
+                <ul className="kpi-website-method-tools-row" aria-label={t.toolsTitle}>
+                  {tools.map((tool) => (
+                    <li key={tool.name}>
+                      <img
+                        src={tool.src}
+                        alt={tool.mark === "wordmark" ? tool.name : ""}
+                        className={`kpi-website-method-tools-mark${tool.mark === "wordmark" ? " is-wordmark" : ""}`}
+                      />
+                      {tool.mark === "wordmark" ? (
+                        <span className="kpi-website-method-tools-name-fallback kpi-latin">{tool.name}</span>
+                      ) : (
+                        <span className="kpi-latin">{tool.name}</span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+          </div>
+        </div>
+      </section>
+
+      <section className="kpi-section kpi-website-measure">
         <h2 className="kpi-h2">{t.measureTitle}</h2>
-        <p className="kpi-lead mt-5">{t.measureBody}</p>
-        <p className="mt-5 max-w-3xl text-base leading-8 text-[#3B3B3B]">{t.measureNote}</p>
+        {locale === "th" ? (
+          <>
+            <ol className="kpi-website-measure-list">
+              {thaiMeasureGroups.map((group) => (
+                <li key={group.num} className="kpi-website-measure-item">
+                  <span className="kpi-latin kpi-website-measure-num">{group.num}</span>
+                  <div className="kpi-website-measure-copy">
+                    <h3 className="kpi-latin">
+                      {group.em
+                        ? emphasizePhrase(group.title, group.em, "kpi-website-measure-em")
+                        : group.title}
+                    </h3>
+                    <p>
+                      {group.lines.map((line, lineIndex) => (
+                        <span key={line}>
+                          {lineIndex > 0 ? <span className="kpi-website-measure-br"> </span> : null}
+                          {withLatinTools(line)}
+                        </span>
+                      ))}
+                    </p>
+                    {"linesAfter" in group && group.linesAfter ? (
+                      <p className="kpi-website-measure-p-follow">
+                        {group.linesAfter.map((line, lineIndex) => (
+                          <span key={line}>
+                            {lineIndex > 0 ? <span className="kpi-website-measure-br"> </span> : null}
+                            {line}
+                          </span>
+                        ))}
+                      </p>
+                    ) : null}
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <p className="kpi-website-measure-close">
+              <span>
+                การคลิกปุ่มจอง
+                <span className="kpi-website-measure-br"> </span>
+                ยังไม่ใช่<span className="kpi-website-measure-em">การจองสำเร็จ</span>
+              </span>
+              <span className="kpi-website-measure-close-strong">
+                เราจึงวัดให้ลึกที่สุด
+                <span className="kpi-website-measure-br"> </span>
+                เท่าที่ระบบของโรงแรมรองรับ
+              </span>
+            </p>
+          </>
+        ) : (
+          <>
+            <p className="kpi-lead mt-5">{t.measureBody}</p>
+            <p className="mt-5 max-w-3xl text-base leading-8 text-[#3B3B3B]">{t.measureNote}</p>
+          </>
+        )}
       </section>
 
       {toolHref || conversionHref ? (
-        <section className="border-t border-[#E3E8EB] bg-white">
+        <section className="kpi-website-related border-t border-[#E3E8EB] bg-white">
           <div className="kpi-section">
-            <h2 className="kpi-h2">{t.relatedTitle}</h2>
-            <div className="kpi-grid-2 mt-10">
+            <h2 className="kpi-h2">
+              {locale === "th" ? (
+                <>
+                  <span className="kpi-website-related-line">เรื่องที่เกี่ยวข้องกับเว็บไซต์</span>
+                  <span className="kpi-website-related-br"> </span>
+                  <span className="kpi-website-related-line">การค้นหา และการจองตรง</span>
+                </>
+              ) : (
+                t.relatedTitle
+              )}
+            </h2>
+            <div className="kpi-website-related-layout">
               {toolHref ? (
-                <article className="kpi-card relative flex flex-col overflow-hidden p-7">
-                  <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-                  <h3 className="mt-3 text-xl font-extrabold text-[#3B3B3B]">{t.toolName}</h3>
-                  <p className="mt-3 text-base leading-7 text-[#555555]">{t.toolBody}</p>
-                  <Link href={toolHref} className="mt-auto pt-8 text-sm font-semibold text-[#0B6660]">
+                <article className="kpi-website-related-primary">
+                  <span className="kpi-website-related-accent" aria-hidden="true" />
+                  <h3>{t.toolName}</h3>
+                  {locale === "th" ? (
+                    <>
+                      <p>
+                        ดูว่าหน้าเว็บพร้อมให้ลูกค้า
+                        <span className="kpi-website-related-br"> </span>
+                        ค้นหาข้อมูลห้องพัก โปรโมชั่น และทำเล
+                      </p>
+                      <p className="kpi-website-related-follow">
+                        รวมถึงเดินทางต่อไปสู่
+                        <span className="kpi-website-related-br"> </span>
+                        การสอบถามหรือการจองได้หรือไม่
+                      </p>
+                    </>
+                  ) : (
+                    <p>{t.toolBody}</p>
+                  )}
+                  <Link href={toolHref} className="kpi-website-related-cta">
                     {t.toolCta}
+                    <span aria-hidden="true">↗</span>
                   </Link>
                 </article>
               ) : null}
               {conversionHref ? (
-                <article className="kpi-card relative flex flex-col overflow-hidden p-7">
-                  <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-                  <h3 className="mt-3 text-xl font-extrabold text-[#3B3B3B]">{solutionNavLabel("/solutions/hotel-direct-bookings", locale)}</h3>
-                  <p className="mt-3 text-base leading-7 text-[#555555]">{t.conversionBody}</p>
-                  <Link href={conversionHref} className="mt-auto pt-8 text-sm font-semibold text-[#0B6660]">
+                <article className="kpi-website-related-secondary">
+                  <h3>{locale === "th" ? t.conversionTitle : solutionNavLabel("/solutions/hotel-direct-bookings", locale)}</h3>
+                  {locale === "th" ? (
+                    <>
+                      <p>
+                        เมื่อโครงสร้างเว็บไซต์พร้อมแล้ว
+                        <span className="kpi-website-related-br"> </span>
+                        ดูต่อว่าเส้นทางจากหน้าห้องพัก
+                      </p>
+                      <p className="kpi-website-related-follow">
+                        ไปสู่การสอบถาม
+                        <span className="kpi-website-related-br"> </span>
+                        หรือ <span className="kpi-latin">Booking Engine</span>
+                        <span className="kpi-website-related-br"> </span>
+                        ชัดพอหรือไม่
+                      </p>
+                    </>
+                  ) : (
+                    <p>{t.conversionBody}</p>
+                  )}
+                  <Link href={conversionHref} className="kpi-website-related-cta">
                     {t.details}
+                    <span aria-hidden="true">↗</span>
                   </Link>
                 </article>
               ) : null}

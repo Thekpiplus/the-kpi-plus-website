@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ArrowUpRight } from "@/components/Icons";
 import { GoogleAdsEnquiry } from "@/components/GoogleAdsEnquiry";
 import { GoogleAdsStickyCta } from "@/components/GoogleAdsStickyCta";
-import { PageHero } from "@/components/PageHero";
 import { SiteShell } from "@/components/SiteShell";
 import { insightPosts, insightsIndexCopy } from "@/lib/insights";
 import { solutionNavLabel } from "@/lib/nav";
@@ -295,187 +294,639 @@ export function GoogleAdsView({ locale }: { locale: Locale }) {
 
   return (
     <SiteShell locale={locale} route={localizePath("/solutions/google-ads-management", locale)}>
-      <PageHero>
-        <nav aria-label="Breadcrumb" className="text-sm text-white/70">
-          <ol className="flex flex-wrap items-center gap-2">
-            <li>
-              <Link href={solutions} className="hover:text-white">
-                {t.crumb}
-              </Link>
-            </li>
-            <li className="flex items-center gap-2">
-              <span aria-hidden="true">/</span>
-              <span className="text-white">{solutionNavLabel("/solutions/google-ads-management", locale)}</span>
-            </li>
-          </ol>
-        </nav>
-        <p className="kpi-kicker mt-5 text-[#F2F8E2]">{t.eyebrow}</p>
-        <h1 className="kpi-h1 mt-5">{t.title}</h1>
-        <p className="kpi-lead mt-5 text-white/72">{t.lead}</p>
-        <div className="kpi-actions">
-          <a href="#google-ads-enquiry" className="kpi-button">
-            {t.cta} <ArrowUpRight className="h-4 w-4" />
-          </a>
-          <Link href={solutions} className="kpi-button-ghost">
-            {t.secondary}
-          </Link>
+      <section className="kpi-hero kpi-home-hero-section kpi-google-ads-hero">
+        <div className="kpi-wrap">
+          <nav aria-label="Breadcrumb" className="kpi-google-ads-hero-crumb">
+            <ol>
+              <li>
+                <Link href={solutions}>{t.crumb}</Link>
+              </li>
+              <li>
+                <span aria-hidden="true">/</span>
+                <span>{solutionNavLabel("/solutions/google-ads-management", locale)}</span>
+              </li>
+            </ol>
+          </nav>
+          <div className="kpi-home-hero">
+            <div className="kpi-home-hero-copy">
+              <p className="kpi-home-eyebrow kpi-latin">Hotel Search &amp; Direct Booking</p>
+              <h1 className="kpi-h1 kpi-home-h1">
+                {locale === "th" ? (
+                  <>
+                    <span className="kpi-home-h1-lead">เมื่อลูกค้าค้นหาที่พัก</span>
+                    <span className="kpi-home-h1-rest">
+                      ให้เขาเจอโรงแรมของคุณ
+                      <span className="kpi-home-h1-close">และจองต่อได้ง่าย</span>
+                    </span>
+                  </>
+                ) : (
+                  t.title
+                )}
+              </h1>
+              {locale === "th" ? (
+                <p className="kpi-lead kpi-home-lead">
+                  <span className="kpi-google-ads-lead-line">
+                    นักเดินทางเริ่มค้นหาชื่อโรงแรม ทำเล หรือที่พักที่ต้องการบน <span className="kpi-latin">Google</span> แต่การได้คลิกยังไม่ใช่จุดจบ
+                  </span>
+                  <span className="kpi-google-ads-lead-line">
+                    <span className="kpi-latin">The KPI Plus</span> วาง <span className="kpi-latin">Google Ads</span> ให้ทำงานร่วมกับเว็บไซต์ ราคา ข้อเสนอ และระบบจอง เพื่อเพิ่มโอกาสให้ความสนใจกลายเป็น <span className="kpi-latin">Direct Booking</span>
+                  </span>
+                </p>
+              ) : (
+                <p className="kpi-lead kpi-home-lead">{t.lead}</p>
+              )}
+              <div className="kpi-actions">
+                <a href="#google-ads-enquiry" className="kpi-button">
+                  {locale === "th" ? (
+                    <>
+                      ดูโอกาสเพิ่ม <span className="kpi-latin">Direct Booking</span>
+                    </>
+                  ) : (
+                    t.cta
+                  )}{" "}
+                  <span aria-hidden="true">↗</span>
+                </a>
+                <Link href={solutions} className="kpi-button-ghost">
+                  {t.secondary}
+                </Link>
+              </div>
+              <p className="kpi-home-trust kpi-google-ads-journey">
+                {t.flow.map((step, index) => (
+                  <span key={step}>
+                    <span className="kpi-latin">{String(index + 1).padStart(2, "0")}</span> {step}
+                  </span>
+                ))}
+              </p>
+            </div>
+            <div className="kpi-hero-visual kpi-home-photo">
+              <img src="/media/google-ads-hero-search.jpg" alt={t.photoAlt} width={1200} height={900} />
+            </div>
+          </div>
         </div>
-        <p className="mt-4 max-w-xl text-sm leading-6 text-white/64">{t.underCta}</p>
-        <div className="kpi-platform-row mt-8">
-          {t.flow.map((step, index) => (
-            <span key={step} className="kpi-platform">
-              <span className="kpi-latin ml-2 text-xs font-black tracking-[.14em] text-[#0B6660]">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              {step}
-            </span>
-          ))}
-        </div>
-      </PageHero>
+      </section>
 
-      <section className="kpi-section">
-        <div className="kpi-split">
-          <div>
-            <h2 className="kpi-h2">{t.whyTitle}</h2>
-            <p className="mt-6 max-w-2xl text-base leading-8 text-[#555555]">{t.whyBody}</p>
-            <div className="kpi-grid-2 mt-8">
-              <article className="kpi-card p-6">
-                <img src="/brand/google/google.svg" alt="" className="kpi-platform-mark" />
-                <h3 className="mt-4 text-lg font-extrabold text-[#3B3B3B]">{t.hotelAdsTitle}</h3>
-                <p className="mt-3 text-sm leading-7 text-[#555555]">{t.hotelAdsBody}</p>
-                <p className="mt-4 text-sm">
-                  <a href={hotelAdsSource} target="_blank" rel="noreferrer" className="font-semibold text-[#0B6660]">
-                    {t.hotelAdsSource}
-                  </a>
-                </p>
+      <section className="kpi-section kpi-google-ads-compare">
+        <div className="kpi-google-ads-compare-grid">
+          <div className="kpi-google-ads-compare-copy">
+            <h2 className="kpi-h2">
+              {locale === "th" ? (
+                <>
+                  <span className="kpi-google-ads-compare-line">ลูกค้ากำลังเปรียบเทียบที่พัก</span>
+                  <span className="kpi-google-ads-compare-br"> </span>
+                  <span className="kpi-google-ads-compare-line">
+                    ของคุณอยู่บน <span className="kpi-latin kpi-google-ads-compare-em">Google</span>
+                  </span>
+                </>
+              ) : (
+                t.whyTitle
+              )}
+            </h2>
+            {locale === "th" ? (
+              <p className="kpi-google-ads-compare-lead">
+                <span className="kpi-google-ads-compare-lead-line">
+                  ก่อนตัดสินใจจอง นักเดินทางมักดูชื่อโรงแรม
+                  <span className="kpi-google-ads-compare-br"> </span>
+                  ทำเล ราคา และช่องทางจองบน <span className="kpi-latin">Google</span>
+                </span>
+                <span className="kpi-google-ads-compare-lead-line">
+                  หากข้อมูลและหน้าเว็บพร้อม
+                  <span className="kpi-google-ads-compare-br"> </span>
+                  โรงแรมมีโอกาสพาลูกค้าเข้าสู่ <span className="kpi-latin">Direct Booking</span> ได้มากขึ้น
+                </span>
+              </p>
+            ) : (
+              <p className="kpi-google-ads-compare-lead">{t.whyBody}</p>
+            )}
+            <div className="kpi-google-ads-compare-cols">
+              <article>
+                <img src="/brand/google/google.svg" alt="" className="kpi-google-ads-compare-mark" />
+                <h3 className="kpi-latin">{t.hotelAdsTitle}</h3>
+                {locale === "th" ? (
+                  <p>
+                    <span className="kpi-google-ads-compare-copy-line">
+                      แสดงราคาและช่องทางจองของโรงแรม
+                      <span className="kpi-google-ads-compare-br"> </span>
+                      ในพื้นที่ค้นหาที่เกี่ยวข้อง
+                    </span>
+                    <span className="kpi-google-ads-compare-copy-line">
+                      ช่วยพาลูกค้าไปยังเว็บไซต์
+                      <span className="kpi-google-ads-compare-br"> </span>
+                      หรือ <span className="kpi-latin">Booking Engine</span> ของโรงแรม
+                    </span>
+                  </p>
+                ) : (
+                  <p>{t.hotelAdsBody}</p>
+                )}
               </article>
-              <article className="kpi-card p-6">
-                <img src="/brand/google/google.svg" alt="" className="kpi-platform-mark" />
-                <h3 className="mt-4 text-lg font-extrabold text-[#3B3B3B]">{t.freeTitle}</h3>
-                <p className="mt-3 text-sm leading-7 text-[#555555]">{t.freeBody}</p>
-                <p className="mt-4 text-sm">
-                  <a href={freeLinksSource} target="_blank" rel="noreferrer" className="font-semibold text-[#0B6660]">
-                    {t.freeSource}
-                  </a>
-                </p>
+              <article>
+                <img src="/brand/google/google.svg" alt="" className="kpi-google-ads-compare-mark" />
+                <h3 className="kpi-latin">Free Booking Links</h3>
+                {locale === "th" ? (
+                  <p>
+                    <span className="kpi-google-ads-compare-copy-line">
+                      แสดงลิงก์จองโดยไม่เสียค่าโฆษณา
+                      <span className="kpi-google-ads-compare-br"> </span>
+                      เมื่อข้อมูลราคา ห้องว่าง
+                      <span className="kpi-google-ads-compare-br"> </span>
+                      และการเชื่อมต่อของโรงแรมพร้อม
+                    </span>
+                  </p>
+                ) : (
+                  <p>{t.freeBody}</p>
+                )}
               </article>
             </div>
-            <p className="mt-5 max-w-2xl text-sm leading-7 text-[#555555]">{t.whyNote}</p>
+            <p className="kpi-google-ads-compare-source">
+              <a href={hotelAdsSource} target="_blank" rel="noreferrer">
+                {t.hotelAdsSource.replace("Google Hotel Center Help", "")}
+                <span className="kpi-latin">Google Hotel Center Help</span>
+              </a>
+              <a href={freeLinksSource} target="_blank" rel="noreferrer" className="sr-only">
+                {t.freeSource}
+              </a>
+            </p>
           </div>
-          <figure className="kpi-home-photo">
-            <img src="/media/kpi-grow-demand_24299cd0.jpg" alt={t.photoAlt} width={1200} height={900} />
+          <figure className="kpi-google-ads-compare-photo">
+            <img src="/media/google-ads-compare-phone.jpg" alt={t.photoAlt} width={1200} height={900} />
           </figure>
         </div>
       </section>
 
       <section className="border-y border-[#E3E8EB] bg-white">
-        <div className="kpi-section">
-          <h2 className="kpi-h2">{t.problemTitle}</h2>
-          <div className="kpi-grid-2 mt-10">
-            {t.problems.map((problem, index) => (
-              <article key={problem} className="kpi-card flex gap-4 p-6">
-                <span className="kpi-latin text-sm font-black tracking-[.14em] text-[#0B6660]">
-                  {String(index + 1).padStart(2, "0")}
+        <div className="kpi-section kpi-google-ads-problems">
+          <h2 className="kpi-h2">
+            {locale === "th" ? (
+              <>
+                <span className="kpi-google-ads-problem-line">มีคนค้นหาโรงแรม</span>
+                <span className="kpi-google-ads-problem-br"> </span>
+                <span className="kpi-google-ads-problem-line">
+                  แต่<span className="kpi-google-ads-problem-em">ยอดจองตรง</span>ไปไม่ถึงเป้าหมาย?
                 </span>
-                <p className="text-base leading-7 text-[#555555]">{problem}</p>
-              </article>
-            ))}
-          </div>
-          <p className="mt-8 max-w-2xl text-base leading-8 text-[#3B3B3B]">{t.problemClose}</p>
-          <a href="#google-ads-enquiry" className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#0B6660]">
-            {t.problemCta} <ArrowUpRight className="h-4 w-4" />
+              </>
+            ) : (
+              t.problemTitle
+            )}
+          </h2>
+          <ol className="kpi-google-ads-problems-list">
+            {locale === "th" ? (
+              <>
+                <li>
+                  <span className="kpi-latin">01</span>
+                  <p>
+                    ลูกค้าค้นหาชื่อโรงแรมแล้วเจอหลายช่องทาง
+                    <span className="kpi-google-ads-problem-br"> </span>
+                    แต่<span className="kpi-google-ads-problem-em">เว็บไซต์โรงแรมยังไม่เด่น</span>
+                  </p>
+                </li>
+                <li>
+                  <span className="kpi-latin">02</span>
+                  <p>
+                    โฆษณาพาลูกค้าเข้ามาได้
+                    <span className="kpi-google-ads-problem-br"> </span>
+                    แต่ยังไม่รู้ว่า
+                    <span className="kpi-google-ads-problem-em">
+                      เปลี่ยนเป็น <span className="kpi-latin">enquiry</span> หรือ <span className="kpi-latin">booking</span> ได้เท่าไร
+                    </span>
+                  </p>
+                </li>
+                <li>
+                  <span className="kpi-latin">03</span>
+                  <p>
+                    โฆษณาพาไปหน้าแรก
+                    <span className="kpi-google-ads-problem-br"> </span>
+                    แทนที่จะพาไป<span className="kpi-google-ads-problem-em">หน้าห้องพักหรือข้อเสนอ</span>ที่ตรงความต้องการ
+                  </p>
+                </li>
+                <li>
+                  <span className="kpi-latin">04</span>
+                  <p>
+                    ราคา ห้องว่าง หรือเงื่อนไขบนหน้าเว็บ
+                    <span className="kpi-google-ads-problem-br"> </span>
+                    ยัง<span className="kpi-google-ads-problem-em">ไม่ชัดพอให้ตัดสินใจจอง</span>
+                  </p>
+                </li>
+                <li>
+                  <span className="kpi-latin">05</span>
+                  <p>
+                    แคมเปญชื่อโรงแรมกับคำค้นหาที่พักในพื้นที่
+                    <span className="kpi-google-ads-problem-br"> </span>
+                    ถูกวัดรวมกันจน<span className="kpi-google-ads-problem-em">ดูผลแยกได้ยาก</span>
+                  </p>
+                </li>
+              </>
+            ) : (
+              t.problems.map((problem, index) => (
+                <li key={problem}>
+                  <span className="kpi-latin">{String(index + 1).padStart(2, "0")}</span>
+                  <p>{problem}</p>
+                </li>
+              ))
+            )}
+          </ol>
+          {locale === "th" ? (
+            <p className="kpi-google-ads-problem-close">
+              <span>ปัญหาอาจไม่ได้อยู่ที่โฆษณาเพียงอย่างเดียว</span>
+              <span className="kpi-google-ads-problem-close-strong">
+                แต่เกิดจาก <span className="kpi-latin kpi-google-ads-problem-em">Search → Website → Booking Path</span> ที่ยังไม่เชื่อมกัน
+              </span>
+            </p>
+          ) : (
+            <p className="kpi-google-ads-problem-close">{t.problemClose}</p>
+          )}
+          <a href="#google-ads-enquiry" className="kpi-button">
+            {t.problemCta} <span aria-hidden="true">↗</span>
           </a>
         </div>
       </section>
 
-      <section className="kpi-section">
-        <h2 className="kpi-h2">{t.helpTitle}</h2>
-        <div className="kpi-grid-2 mt-10">
-          {t.help.map(([num, title, body]) => (
-            <article key={num} className="kpi-card relative overflow-hidden p-7">
-              <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-              <span className="kpi-latin text-sm font-black tracking-[.16em] text-[#0B6660]">{num}</span>
-              <h3 className="mt-5 text-xl font-extrabold text-[#3B3B3B]">{title}</h3>
-              <p className="mt-3 text-base leading-7 text-[#555555]">{body}</p>
-            </article>
-          ))}
-        </div>
-        <a href="#google-ads-enquiry" className="kpi-button mt-10">
-          {t.cta} <ArrowUpRight className="h-4 w-4" />
+      <section className="kpi-section kpi-google-ads-help">
+        <h2 className="kpi-h2">
+          {locale === "th" ? (
+            <>
+              จากคำค้นหา ไปสู่<span className="kpi-google-ads-help-em">การจองตรง</span>ที่วัดผลได้
+            </>
+          ) : (
+            t.helpTitle
+          )}
+        </h2>
+        <ol className="kpi-google-ads-help-steps">
+          {locale === "th" ? (
+            <>
+              <li>
+                <span className="kpi-latin kpi-google-ads-help-num">01</span>
+                <h3>
+                  เลือก<span className="kpi-google-ads-help-em">คำค้นหาและเป้าหมาย</span>ให้เหมาะกับโรงแรม
+                </h3>
+                <p>
+                  แยกคำค้นหาชื่อโรงแรม
+                  <span className="kpi-google-ads-help-br"> </span>
+                  ออกจากคำค้นหาที่พักตามทำเล ประเภทห้อง หรือความต้องการ
+                  <span className="kpi-google-ads-help-br"> </span>
+                  เพื่อดูว่าคำค้นหากลุ่มไหนควรได้รับงบและข้อความแบบใด
+                </p>
+              </li>
+              <li>
+                <span className="kpi-latin kpi-google-ads-help-num">02</span>
+                <h3>
+                  จับคู่โฆษณากับ<span className="kpi-google-ads-help-em">ราคาและข้อเสนอจริง</span>
+                </h3>
+                <p>
+                  โฆษณาควรบอกสิ่งที่ลูกค้าจะพบเมื่อคลิก
+                  <span className="kpi-google-ads-help-br"> </span>
+                  และสอดคล้องกับห้องว่าง ราคา
+                  <span className="kpi-google-ads-help-br"> </span>
+                  และเงื่อนไขที่โรงแรมพร้อมขาย
+                </p>
+              </li>
+              <li>
+                <span className="kpi-latin kpi-google-ads-help-num">03</span>
+                <h3>
+                  ปรับเส้นทางเข้าสู่<span className="kpi-google-ads-help-em">เว็บไซต์และระบบจอง</span>
+                </h3>
+                <p>
+                  พาลูกค้าไปยังหน้าห้องพักหรือข้อเสนอที่ตรงความต้องการ
+                  <span className="kpi-google-ads-help-br"> </span>
+                  พร้อมทำให้การดูราคา เลือกวันเข้าพัก
+                  <span className="kpi-google-ads-help-br"> </span>
+                  และเข้าสู่ระบบจองทำได้ง่าย
+                </p>
+              </li>
+              <li>
+                <span className="kpi-latin kpi-google-ads-help-num">04</span>
+                <h3>
+                  ติดตาม<span className="kpi-google-ads-help-em">ผลที่เกี่ยวกับธุรกิจ</span>
+                </h3>
+                <p>
+                  ดูคลิก การเข้าชมหน้าเว็บ การเข้าสู่ระบบจอง
+                  <span className="kpi-google-ads-help-br"> </span>
+                  การสอบถาม และยอดจองที่ติดตามได้
+                  <span className="kpi-google-ads-help-br"> </span>
+                  พร้อมดูต้นทุนโฆษณาเทียบกับผลลัพธ์
+                </p>
+              </li>
+            </>
+          ) : (
+            t.help.map(([num, title, body]) => (
+              <li key={num}>
+                <span className="kpi-latin kpi-google-ads-help-num">{num}</span>
+                <h3>{title}</h3>
+                <p>{body}</p>
+              </li>
+            ))
+          )}
+        </ol>
+        <a href="#google-ads-enquiry" className="kpi-button">
+          {t.cta} <span aria-hidden="true">↗</span>
         </a>
       </section>
 
       <section className="border-y border-[#E3E8EB] bg-white">
-        <div className="kpi-section">
-          <h2 className="kpi-h2">{t.channelTitle}</h2>
-          <div className="kpi-grid-3 mt-10">
-            {t.channels.map(([title, body]) => (
-              <article key={title} className="kpi-card relative overflow-hidden p-7">
-                <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-                <img src="/brand/google/google.svg" alt="" className="kpi-platform-mark" />
-                <h3 className="mt-5 text-xl font-extrabold text-[#3B3B3B]">{title}</h3>
-                <p className="mt-3 text-base leading-7 text-[#555555]">{body}</p>
-              </article>
-            ))}
+        <div className="kpi-section kpi-google-ads-channels">
+          <h2 className="kpi-h2">
+            {locale === "th" ? "โรงแรมของคุณควรเริ่มจากช่องทางไหน?" : t.channelTitle}
+          </h2>
+          {locale === "th" ? (
+            <p className="kpi-google-ads-channels-lead">
+              ไม่จำเป็นต้องเริ่มทุกช่องทางพร้อมกัน
+              <span className="kpi-google-ads-channels-br"> </span>
+              เพราะแต่ละช่องทางมีบทบาทต่างกัน
+            </p>
+          ) : null}
+          <div className="kpi-google-ads-channels-grid">
+            {locale === "th" ? (
+              <>
+                <article>
+                  <p className="kpi-google-ads-channels-kicker kpi-latin">
+                    <span>01</span> / Search Demand
+                  </p>
+                  <h3 className="kpi-latin">Search Ads</h3>
+                  <p>
+                    <span className="kpi-google-ads-channels-copy">
+                      เหมาะเมื่ออยากจับ <span className="kpi-latin">Demand</span>
+                      <span className="kpi-google-ads-channels-br"> </span>
+                      จากคนที่<span className="kpi-google-ads-channels-em">กำลังค้นหาที่พัก</span>หรือชื่อโรงแรม
+                    </span>
+                    <span className="kpi-google-ads-channels-copy">
+                      และต้องการพาลูกค้าเข้าสู่หน้าเว็บ
+                      <span className="kpi-google-ads-channels-br"> </span>
+                      ที่ตรงกับความต้องการ
+                    </span>
+                  </p>
+                </article>
+                <article>
+                  <p className="kpi-google-ads-channels-kicker kpi-latin">
+                    <span>02</span> / Rate Visibility
+                  </p>
+                  <h3 className="kpi-latin">Hotel Ads</h3>
+                  <p>
+                    <span className="kpi-google-ads-channels-copy">
+                      เหมาะเมื่อโรงแรมพร้อมเชื่อม
+                      <span className="kpi-google-ads-channels-br"> </span>
+                      ราคาและห้องว่าง
+                    </span>
+                    <span className="kpi-google-ads-channels-copy">
+                      เพื่อให้ลูกค้าเห็นราคาโรงแรม
+                      <span className="kpi-google-ads-channels-br"> </span>
+                      ในจังหวะที่<span className="kpi-google-ads-channels-em">กำลังเปรียบเทียบที่พัก</span>
+                    </span>
+                  </p>
+                </article>
+                <article>
+                  <p className="kpi-google-ads-channels-kicker kpi-latin">
+                    <span>03</span> / Free Direct Link
+                  </p>
+                  <h3 className="kpi-latin">Free Booking Links</h3>
+                  <p>
+                    <span className="kpi-google-ads-channels-copy">
+                      เหมาะเมื่อข้อมูลราคา ห้องว่าง
+                      <span className="kpi-google-ads-channels-br"> </span>
+                      และการเชื่อมต่อพร้อม
+                    </span>
+                    <span className="kpi-google-ads-channels-copy">
+                      และต้องการเพิ่มช่องทาง <span className="kpi-latin kpi-google-ads-channels-em">Direct Booking</span>
+                      <span className="kpi-google-ads-channels-br"> </span>
+                      โดยไม่เสียค่าโฆษณาต่อคลิก
+                    </span>
+                  </p>
+                </article>
+              </>
+            ) : (
+              t.channels.map(([title, body], index) => (
+                <article key={title}>
+                  <p className="kpi-google-ads-channels-kicker kpi-latin">
+                    <span>{String(index + 1).padStart(2, "0")}</span>
+                    {" / "}
+                    {["Search Demand", "Rate Visibility", "Free Direct Link"][index]}
+                  </p>
+                  <h3 className="kpi-latin">{index === 2 ? "Free Booking Links" : title}</h3>
+                  <p>{body}</p>
+                </article>
+              ))
+            )}
           </div>
-          <p className="mt-8 max-w-2xl text-base leading-8 text-[#3B3B3B]">{t.channelClose}</p>
+          {locale === "th" ? (
+            <p className="kpi-google-ads-channels-close">
+              <span>ช่องทางที่เหมาะ ไม่ได้ขึ้นอยู่กับว่าอะไร “ดีที่สุด”</span>
+              <span className="kpi-google-ads-channels-close-strong">
+                แต่ขึ้นอยู่กับระบบจอง เว็บไซต์ งบประมาณ
+                <span className="kpi-google-ads-channels-br"> </span>
+                ตลาด และเป้าหมายรายได้ของโรงแรม
+              </span>
+            </p>
+          ) : (
+            <p className="kpi-google-ads-channels-close">{t.channelClose}</p>
+          )}
         </div>
       </section>
 
-      <section className="kpi-section">
-        <h2 className="kpi-h2">{t.methodTitle}</h2>
-        <ol className="mt-10 grid gap-4">
-          {t.steps.map(([num, title, body]) => (
-            <li key={num} className="kpi-card flex gap-4 p-6 sm:items-start">
-              <span className="kpi-latin text-sm font-black tracking-[.14em] text-[#0B6660]">{num}</span>
-              <div>
-                <h3 className="text-xl font-extrabold text-[#3B3B3B]">{title}</h3>
-                <p className="mt-2 text-base leading-7 text-[#555555]">{body}</p>
-              </div>
-            </li>
-          ))}
+      <section className="kpi-section kpi-google-ads-method">
+        <h2 className="kpi-h2">
+          {locale === "th" ? (
+            <>
+              <span className="kpi-google-ads-method-line">ดูทั้งโฆษณาและการจอง</span>
+              <span className="kpi-google-ads-method-br"> </span>
+              <span className="kpi-google-ads-method-line">ไม่ดูแค่จำนวนคลิก</span>
+            </>
+          ) : (
+            t.methodTitle
+          )}
+        </h2>
+        <ol className="kpi-google-ads-method-steps">
+          {locale === "th" ? (
+            <>
+              <li>
+                <span className="kpi-latin">01</span>
+                <div>
+                  <h3>ตรวจสถานการณ์</h3>
+                  <p>
+                    ดูเว็บไซต์ ระบบจอง <span className="kpi-latin">Google Ads</span>
+                    <span className="kpi-google-ads-method-br"> </span>
+                    ตลาดเป้าหมาย และช่วงที่โรงแรมต้องการเพิ่มยอดขาย
+                  </p>
+                </div>
+              </li>
+              <li>
+                <span className="kpi-latin">02</span>
+                <div>
+                  <h3>ตรวจเส้นทางลูกค้า</h3>
+                  <p>
+                    ดูตั้งแต่คำค้นหา → หน้าเว็บ → ราคาและห้องว่าง
+                    <span className="kpi-google-ads-method-br"> </span>→ ระบบจอง → การยืนยัน
+                  </p>
+                </div>
+              </li>
+              <li>
+                <span className="kpi-latin">03</span>
+                <div>
+                  <h3>วางแผนแคมเปญ</h3>
+                  <p>
+                    กำหนดคำค้นหา ข้อความโฆษณา
+                    <span className="kpi-google-ads-method-br"> </span>
+                    <span className="kpi-latin">Landing Page</span> งบประมาณ และสิ่งที่ต้องวัด
+                  </p>
+                </div>
+              </li>
+              <li>
+                <span className="kpi-latin">04</span>
+                <div>
+                  <h3>ทบทวนและปรับ</h3>
+                  <p>
+                    ดูผลที่ตรวจสอบได้
+                    <span className="kpi-google-ads-method-br"> </span>
+                    แล้วปรับคำค้นหา งบ และข้อเสนอ
+                    <span className="kpi-google-ads-method-br"> </span>
+                    ให้สอดคล้องกับสถานการณ์ขายจริง
+                  </p>
+                </div>
+              </li>
+            </>
+          ) : (
+            t.steps.map(([num, title, body]) => (
+              <li key={num}>
+                <span className="kpi-latin">{num}</span>
+                <div>
+                  <h3>{title}</h3>
+                  <p>{body}</p>
+                </div>
+              </li>
+            ))
+          )}
         </ol>
       </section>
 
-      <section className="kpi-section">
-        <h2 className="kpi-h2">{t.measureTitle}</h2>
-        <p className="kpi-lead mt-5">{t.measureBody}</p>
-        <p className="mt-5 max-w-2xl text-sm leading-7 text-[#555555]">{t.measureNote}</p>
+      <section className="kpi-section kpi-google-ads-measure">
+        <h2 className="kpi-h2">
+          {locale === "th" ? (
+            <>
+              <span className="kpi-google-ads-measure-line">ตัวเลขที่สำคัญกว่าคลิก</span>
+              <span className="kpi-google-ads-measure-br"> </span>
+              <span className="kpi-google-ads-measure-line">คือสิ่งที่ลูกค้าทำต่อ</span>
+            </>
+          ) : (
+            t.measureTitle
+          )}
+        </h2>
+        {locale === "th" ? (
+          <p className="kpi-google-ads-measure-lead">
+            เราไม่ได้ดูแค่ว่ามีคนคลิกโฆษณากี่ครั้ง
+            <span className="kpi-google-ads-measure-br"> </span>
+            แต่ดูว่าหลังจากคลิกแล้ว ลูกค้าเดินต่อไปถึงไหน
+          </p>
+        ) : (
+          <p className="kpi-google-ads-measure-lead">{t.measureBody}</p>
+        )}
+        <div className="kpi-google-ads-measure-row">
+          {(
+            [
+              ["Website Visit", "ลูกค้าเข้าหน้าไหน"],
+              ["Booking Engine Entry", "มีคนเข้าสู่ระบบจองเท่าไร"],
+              ["Enquiry / Booking", "มีการสอบถามหรือจองจริงหรือไม่"],
+              ["Cost per Result", "ต้นทุนต่อผลลัพธ์คุ้มกับรายได้หรือไม่"],
+            ] as const
+          ).map(([name, label]) => (
+            <div key={name} className="kpi-google-ads-measure-metric">
+              <p className="kpi-latin">{name}</p>
+              {locale === "th" ? <p>{label}</p> : null}
+            </div>
+          ))}
+        </div>
+        {locale === "th" ? (
+          <p className="kpi-google-ads-measure-close">
+            <span>
+              เป้าหมายไม่ใช่แค่เพิ่ม <span className="kpi-latin">Traffic</span>
+            </span>
+            <span>
+              แต่ทำให้ <span className="kpi-latin">Traffic</span> ที่ซื้อมา
+            </span>
+            <span className="kpi-google-ads-measure-close-strong">
+              มีโอกาส<span className="kpi-google-ads-measure-em">กลายเป็นรายได้ของโรงแรม</span>
+            </span>
+          </p>
+        ) : (
+          <p className="kpi-google-ads-measure-close">{t.measureNote}</p>
+        )}
       </section>
 
       <section className="border-t border-[#E3E8EB] bg-white">
-        <div className="kpi-section">
-          <h2 className="kpi-h2">{t.relatedTitle}</h2>
-          <div className="kpi-grid-3 mt-10">
-            {insights.map((post) => {
-              const href = existingHref(post.href, locale) ?? post.href;
-              return (
-                <article key={post.slug} className="kpi-card relative flex flex-col overflow-hidden p-7">
-                  <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-                  <p className="text-xs font-extrabold uppercase tracking-[.14em] text-[#0B6660]">{post.category[locale]}</p>
-                  <h3 className="mt-4 text-xl font-extrabold leading-snug text-[#3B3B3B]">{post.title[locale]}</h3>
-                  <Link href={href} className="mt-auto inline-flex items-center gap-2 pt-8 text-sm font-semibold text-[#0B6660]">
-                    {insightsUi.read} <ArrowUpRight className="h-4 w-4" />
-                  </Link>
-                </article>
-              );
-            })}
-            <article className="kpi-card relative flex flex-col overflow-hidden p-7">
-              <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-              <h3 className="mt-3 text-xl font-extrabold text-[#3B3B3B]">{t.toolName}</h3>
-              <p className="mt-3 text-base leading-7 text-[#555555]">{t.toolBody}</p>
-              <Link href="/tools/hotel-searchability-check" className="mt-auto pt-8 text-sm font-semibold text-[#0B6660]">
-                {t.toolCta}
-              </Link>
-            </article>
-            <article className="kpi-card relative flex flex-col overflow-hidden p-7">
-              <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-              <h3 className="mt-3 text-xl font-extrabold text-[#3B3B3B]">{solutionNavLabel("/solutions/hotel-direct-bookings", locale)}</h3>
-              <p className="mt-3 text-base leading-7 text-[#555555]">{t.conversionBody}</p>
-              <Link href={conversionHref} className="mt-auto pt-8 text-sm font-semibold text-[#0B6660]">
-                {t.details}
-              </Link>
-            </article>
+        <div className="kpi-section kpi-google-ads-related">
+          <h2 className="kpi-h2">
+            {locale === "th" ? (
+              <>
+                <span className="kpi-google-ads-related-line">เรื่องที่เกี่ยวข้องกับการค้นหา</span>
+                <span className="kpi-google-ads-related-br"> </span>
+                <span className="kpi-google-ads-related-line">เว็บไซต์ และการจองตรง</span>
+              </>
+            ) : (
+              t.relatedTitle
+            )}
+          </h2>
+          <div className="kpi-google-ads-related-layout">
+            {insights[0] ? (
+              <article className="kpi-google-ads-related-featured">
+                <span className="kpi-google-ads-related-accent" aria-hidden="true" />
+                <p className="kpi-google-ads-related-kicker">
+                  {locale === "th" ? (
+                    <>
+                      <span className="kpi-latin">SEO</span> และ <span className="kpi-latin">LOCAL SEARCH</span>
+                    </>
+                  ) : (
+                    insights[0].category[locale]
+                  )}
+                </p>
+                <h3>
+                  {locale === "th" ? (
+                    <>
+                      <span className="kpi-latin">SEO vs SEM</span> สำหรับโรงแรม:
+                      <span className="kpi-google-ads-related-br"> </span>
+                      ควรเริ่มจากอะไรและเลือกอย่างไร?
+                    </>
+                  ) : (
+                    insights[0].title[locale]
+                  )}
+                </h3>
+                <Link href={existingHref(insights[0].href, locale) ?? insights[0].href} className="kpi-google-ads-related-cta">
+                  {insightsUi.read} <ArrowUpRight aria-hidden="true" />
+                </Link>
+              </article>
+            ) : null}
+            <div className="kpi-google-ads-related-stack">
+              <article>
+                <h3>{t.toolName}</h3>
+                <p>
+                  {locale === "th" ? (
+                    <>
+                      ดูว่าหน้าเว็บพร้อมให้ลูกค้าจากโฆษณา
+                      <span className="kpi-google-ads-related-br"> </span>
+                      หาข้อมูลห้องพักและเดินทางไปจองต่อหรือไม่
+                    </>
+                  ) : (
+                    t.toolBody
+                  )}
+                </p>
+                <Link href="/tools/hotel-searchability-check" className="kpi-google-ads-related-cta">
+                  {t.toolCta} <ArrowUpRight aria-hidden="true" />
+                </Link>
+              </article>
+              <article>
+                <h3>{solutionNavLabel("/solutions/hotel-direct-bookings", locale)}</h3>
+                <p>
+                  {locale === "th" ? (
+                    <>
+                      เมื่อโฆษณาพาคนมาแล้ว
+                      <span className="kpi-google-ads-related-br"> </span>
+                      เส้นทางจากหน้าเว็บสู่ระบบจอง
+                      <span className="kpi-google-ads-related-br"> </span>
+                      ต้องชัดพอให้เดินต่อได้
+                    </>
+                  ) : (
+                    t.conversionBody
+                  )}
+                </p>
+                <Link href={conversionHref} className="kpi-google-ads-related-cta">
+                  {t.details} <ArrowUpRight aria-hidden="true" />
+                </Link>
+              </article>
+            </div>
           </div>
         </div>
       </section>

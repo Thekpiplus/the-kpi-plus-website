@@ -40,6 +40,48 @@ const b2bGroups = {
   zh: { contact: "Contact details", hotel: "About the hotel", topic: "What you'd like to discuss" },
 } as const;
 
+const googleAdsGroups = {
+  th: { contact: "ข้อมูลติดต่อ", hotel: "ข้อมูลโรงแรม", topic: "เรื่องที่อยากคุย" },
+  en: { contact: "Contact details", hotel: "About the hotel", topic: "What you'd like to discuss" },
+  ru: { contact: "Contact details", hotel: "About the hotel", topic: "What you'd like to discuss" },
+  zh: { contact: "Contact details", hotel: "About the hotel", topic: "What you'd like to discuss" },
+} as const;
+
+const metaAdsGroups = {
+  th: { contact: "ข้อมูลติดต่อ", hotel: "ข้อมูลโรงแรม", topic: "เรื่องที่อยากคุย" },
+  en: { contact: "Contact details", hotel: "About the hotel", topic: "What you'd like to discuss" },
+  ru: { contact: "Contact details", hotel: "About the hotel", topic: "What you'd like to discuss" },
+  zh: { contact: "Contact details", hotel: "About the hotel", topic: "What you'd like to discuss" },
+} as const;
+
+const searchGroups = {
+  th: { contact: "ข้อมูลติดต่อ", hotel: "ข้อมูลธุรกิจ", topic: "เรื่องที่อยากคุย" },
+  en: { contact: "Contact details", hotel: "Business details", topic: "What you'd like to discuss" },
+  ru: { contact: "Contact details", hotel: "Business details", topic: "What you'd like to discuss" },
+  zh: { contact: "Contact details", hotel: "Business details", topic: "What you'd like to discuss" },
+} as const;
+
+const websiteGroups = {
+  th: { contact: "ข้อมูลติดต่อ", hotel: "ข้อมูลโรงแรม", topic: "เรื่องที่อยากคุย" },
+  en: { contact: "Contact details", hotel: "About the hotel", topic: "What you'd like to discuss" },
+  ru: { contact: "Contact details", hotel: "About the hotel", topic: "What you'd like to discuss" },
+  zh: { contact: "Contact details", hotel: "About the hotel", topic: "What you'd like to discuss" },
+} as const;
+
+const conversionGroups = {
+  th: { contact: "ข้อมูลติดต่อ", hotel: "ข้อมูลโรงแรม", topic: "เรื่องที่อยากคุย" },
+  en: { contact: "Contact details", hotel: "About the hotel", topic: "What you'd like to discuss" },
+  ru: { contact: "Contact details", hotel: "About the hotel", topic: "What you'd like to discuss" },
+  zh: { contact: "Contact details", hotel: "About the hotel", topic: "What you'd like to discuss" },
+} as const;
+
+const independentHotelGroups = {
+  th: { contact: "ข้อมูลติดต่อ", hotel: "ข้อมูลโรงแรม", topic: "เรื่องที่อยากคุย" },
+  en: { contact: "Contact details", hotel: "About the hotel", topic: "What you'd like to discuss" },
+  ru: { contact: "Contact details", hotel: "About the hotel", topic: "What you'd like to discuss" },
+  zh: { contact: "Contact details", hotel: "About the hotel", topic: "What you'd like to discuss" },
+} as const;
+
 function ContactNote({ locale, className = "" }: { locale: Locale; className?: string }) {
   const t = ENQUIRY_UI[locale];
   return (
@@ -787,6 +829,1090 @@ export function EnquiryForm({
                 ) : null}
                 <p className="kpi-b2b-enquiry-reply">{auditCopyFor(locale).trustReply}</p>
                 <ContactNote locale={locale} className="kpi-b2b-enquiry-direct" />
+              </form>
+            )}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (service === "meta_ads" && !compact) {
+    const groups = metaAdsGroups[locale];
+    const labelClassName = "kpi-meta-ads-enquiry-label";
+    return (
+      <section id={sectionId} className="kpi-meta-ads-enquiry scroll-mt-28">
+        <div className="kpi-section kpi-meta-ads-enquiry-grid">
+          <div className="kpi-meta-ads-enquiry-intro">
+            <p className="kpi-meta-ads-enquiry-kicker kpi-latin">{kickerText}</p>
+            <h2 className="kpi-h2 kpi-meta-ads-enquiry-heading">
+              {locale === "th" ? (
+                <>
+                  คุยเรื่อง <span className="kpi-latin">Meta Ads</span> สำหรับโรงแรม
+                </>
+              ) : (
+                heading
+              )}
+            </h2>
+            {locale === "th" ? (
+              <p className="kpi-meta-ads-enquiry-lead">
+                <span>ส่งข้อมูลสั้น ๆ เกี่ยวกับโรงแรม</span>
+                <span className="kpi-meta-ads-enquiry-line">แล้วทีมจะช่วยดูว่าควรเริ่มจากตรงไหนก่อน</span>
+              </p>
+            ) : (
+              <p className="kpi-meta-ads-enquiry-lead">{lead}</p>
+            )}
+            {locale === "th" ? (
+              <>
+                <ol className="kpi-meta-ads-enquiry-points">
+                  <li>
+                    <span className="kpi-latin">01</span>
+                    <span>ดูกลุ่มลูกค้าและตลาด</span>
+                  </li>
+                  <li>
+                    <span className="kpi-latin">02</span>
+                    <span>ดูคอนเทนต์และข้อเสนอ</span>
+                  </li>
+                  <li>
+                    <span className="kpi-latin">03</span>
+                    <span>
+                      ดูเส้นทางหลังคลิกจนถึง <span className="kpi-latin">Enquiry</span> /{" "}
+                      <span className="kpi-latin">Booking</span>
+                    </span>
+                  </li>
+                </ol>
+                <p className="kpi-meta-ads-enquiry-note">
+                  ไม่จำเป็นต้องมีแคมเปญ <span className="kpi-latin">Meta Ads</span> อยู่แล้วก็ได้
+                </p>
+              </>
+            ) : null}
+          </div>
+          <div className="kpi-meta-ads-enquiry-panel">
+            {status === "success" ? (
+              <div role="status">
+                <p className="kpi-meta-ads-enquiry-success">{t.success}</p>
+                <ContactNote locale={locale} className="kpi-meta-ads-enquiry-direct" />
+              </div>
+            ) : (
+              <form className="kpi-meta-ads-enquiry-fields" onSubmit={onSubmit} noValidate>
+                <div className="kpi-meta-ads-enquiry-group">
+                  <p className="kpi-meta-ads-enquiry-group-label">{groups.contact}</p>
+                  <div className="kpi-meta-ads-enquiry-pair">
+                    <Field label={t.name} htmlFor={`${formId}-name`} error={errors.name} labelClassName={labelClassName}>
+                      <input
+                        id={`${formId}-name`}
+                        name="name"
+                        autoComplete="name"
+                        className="kpi-field"
+                        value={state.name}
+                        aria-invalid={Boolean(errors.name)}
+                        onBlur={() => validate()}
+                        onChange={(event) => setState((current) => ({ ...current, name: event.target.value }))}
+                      />
+                    </Field>
+                    <Field label={t.contact} htmlFor={`${formId}-contact`} error={errors.contact} labelClassName={labelClassName}>
+                      <input
+                        id={`${formId}-contact`}
+                        name="contact"
+                        autoComplete="tel"
+                        inputMode="email"
+                        className="kpi-field"
+                        value={state.contact}
+                        aria-invalid={Boolean(errors.contact)}
+                        onBlur={() => validate()}
+                        onChange={(event) => setState((current) => ({ ...current, contact: event.target.value }))}
+                      />
+                    </Field>
+                  </div>
+                </div>
+                <div className="kpi-meta-ads-enquiry-group">
+                  <p className="kpi-meta-ads-enquiry-group-label">{groups.hotel}</p>
+                  <Field label={t.business} htmlFor={`${formId}-business`} error={errors.businessName} labelClassName={labelClassName}>
+                    <input
+                      id={`${formId}-business`}
+                      name="organization"
+                      autoComplete="organization"
+                      className="kpi-field"
+                      value={state.businessName}
+                      aria-invalid={Boolean(errors.businessName)}
+                      onBlur={() => validate()}
+                      onChange={(event) => setState((current) => ({ ...current, businessName: event.target.value }))}
+                    />
+                  </Field>
+                </div>
+                <div className="kpi-meta-ads-enquiry-group">
+                  <p className="kpi-meta-ads-enquiry-group-label">{groups.topic}</p>
+                  <Field label={t.message} htmlFor={`${formId}-message`} optional={t.messageOptional} labelClassName={labelClassName}>
+                    <textarea
+                      id={`${formId}-message`}
+                      name="message"
+                      rows={4}
+                      className="kpi-field"
+                      placeholder={t.messageHint}
+                      value={state.message}
+                      onChange={(event) => setState((current) => ({ ...current, message: event.target.value }))}
+                    />
+                  </Field>
+                </div>
+                <input type="hidden" name="serviceInterest" value={preset?.id ?? "meta_ads"} />
+                <div className="kpi-meta-ads-enquiry-privacy">
+                  <FormPrivacyNotice locale={locale} />
+                </div>
+                <label className="kpi-meta-ads-enquiry-consent">
+                  <input
+                    type="checkbox"
+                    checked={state.consent}
+                    aria-invalid={Boolean(errors.consent)}
+                    onChange={(event) => setState((current) => ({ ...current, consent: event.target.checked }))}
+                  />
+                  <span>
+                    {t.consent}{" "}
+                    <Link href={privacyHref} className="font-semibold text-[#0B6660]">
+                      {t.privacy}
+                    </Link>
+                  </span>
+                </label>
+                {errors.consent ? (
+                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                    {errors.consent}
+                  </p>
+                ) : null}
+                <input
+                  type="text"
+                  name="companyWebsite"
+                  value={state.companyWebsite}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  className="absolute left-[-10000px] h-px w-px overflow-hidden"
+                  onChange={(event) => setState((current) => ({ ...current, companyWebsite: event.target.value }))}
+                />
+                <button className="kpi-button" type="submit" disabled={status === "submitting"}>
+                  {status === "submitting" ? (
+                    t.sending
+                  ) : locale === "th" ? (
+                    <>
+                      ดูโอกาสเพิ่ม <span className="kpi-latin">Enquiry</span> และ{" "}
+                      <span className="kpi-latin">Booking</span>
+                      <span className="kpi-meta-ads-enquiry-arrow" aria-hidden="true">
+                        ↗
+                      </span>
+                    </>
+                  ) : (
+                    cta
+                  )}
+                </button>
+                {status === "error" ? (
+                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                    {t.failed}
+                  </p>
+                ) : null}
+                {status === "unavailable" ? (
+                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                    {t.unavailable}
+                  </p>
+                ) : null}
+                <ContactNote locale={locale} className="kpi-meta-ads-enquiry-direct" />
+              </form>
+            )}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (service === "google_ads" && !compact) {
+    const groups = googleAdsGroups[locale];
+    const labelClassName = "kpi-google-ads-enquiry-label";
+    return (
+      <section id={sectionId} className="kpi-google-ads-enquiry scroll-mt-28">
+        <div className="kpi-section kpi-google-ads-enquiry-grid">
+          <div className="kpi-google-ads-enquiry-intro">
+            <p className="kpi-google-ads-enquiry-kicker kpi-latin">{kickerText}</p>
+            <h2 className="kpi-h2 kpi-google-ads-enquiry-heading">
+              {locale === "th" ? (
+                <>
+                  คุยเรื่อง <span className="kpi-latin">Google Ads</span> สำหรับโรงแรม
+                </>
+              ) : (
+                heading
+              )}
+            </h2>
+            {locale === "th" ? (
+              <p className="kpi-google-ads-enquiry-lead">
+                <span>ส่งข้อมูลสั้น ๆ เกี่ยวกับโรงแรม</span>
+                <span className="kpi-google-ads-enquiry-line">
+                  แล้วทีมจะช่วยดูว่า <span className="kpi-latin">Search</span>, <span className="kpi-latin">Website</span> และ{" "}
+                  <span className="kpi-latin">Booking Path</span>
+                </span>
+                <span className="kpi-google-ads-enquiry-line">ควรเริ่มปรับจากจุดไหนก่อน</span>
+              </p>
+            ) : (
+              <p className="kpi-google-ads-enquiry-lead">{lead}</p>
+            )}
+            {locale === "th" ? (
+              <>
+                <ol className="kpi-google-ads-enquiry-points">
+                  <li>
+                    <span className="kpi-latin">01</span>
+                    <span>ดูคำค้นหาและตลาด</span>
+                  </li>
+                  <li>
+                    <span className="kpi-latin">02</span>
+                    <span>ดูเว็บไซต์และระบบจอง</span>
+                  </li>
+                  <li>
+                    <span className="kpi-latin">03</span>
+                    <span>
+                      ดู <span className="kpi-latin">Conversion</span> และต้นทุน
+                    </span>
+                  </li>
+                </ol>
+                <p className="kpi-google-ads-enquiry-note">
+                  ไม่จำเป็นต้องมีแคมเปญ <span className="kpi-latin">Google Ads</span> อยู่แล้วก็ได้
+                </p>
+              </>
+            ) : null}
+          </div>
+          <div className="kpi-google-ads-enquiry-panel">
+            {status === "success" ? (
+              <div role="status">
+                <p className="kpi-google-ads-enquiry-success">{t.success}</p>
+                <ContactNote locale={locale} className="kpi-google-ads-enquiry-direct" />
+              </div>
+            ) : (
+              <form className="kpi-google-ads-enquiry-fields" onSubmit={onSubmit} noValidate>
+                <div className="kpi-google-ads-enquiry-group">
+                  <p className="kpi-google-ads-enquiry-group-label">{groups.contact}</p>
+                  <div className="kpi-google-ads-enquiry-pair">
+                    <Field label={t.name} htmlFor={`${formId}-name`} error={errors.name} labelClassName={labelClassName}>
+                      <input
+                        id={`${formId}-name`}
+                        name="name"
+                        autoComplete="name"
+                        className="kpi-field"
+                        value={state.name}
+                        aria-invalid={Boolean(errors.name)}
+                        onBlur={() => validate()}
+                        onChange={(event) => setState((current) => ({ ...current, name: event.target.value }))}
+                      />
+                    </Field>
+                    <Field label={t.contact} htmlFor={`${formId}-contact`} error={errors.contact} labelClassName={labelClassName}>
+                      <input
+                        id={`${formId}-contact`}
+                        name="contact"
+                        autoComplete="tel"
+                        inputMode="email"
+                        className="kpi-field"
+                        value={state.contact}
+                        aria-invalid={Boolean(errors.contact)}
+                        onBlur={() => validate()}
+                        onChange={(event) => setState((current) => ({ ...current, contact: event.target.value }))}
+                      />
+                    </Field>
+                  </div>
+                </div>
+                <div className="kpi-google-ads-enquiry-group">
+                  <p className="kpi-google-ads-enquiry-group-label">{groups.hotel}</p>
+                  <Field label={t.business} htmlFor={`${formId}-business`} error={errors.businessName} labelClassName={labelClassName}>
+                    <input
+                      id={`${formId}-business`}
+                      name="organization"
+                      autoComplete="organization"
+                      className="kpi-field"
+                      value={state.businessName}
+                      aria-invalid={Boolean(errors.businessName)}
+                      onBlur={() => validate()}
+                      onChange={(event) => setState((current) => ({ ...current, businessName: event.target.value }))}
+                    />
+                  </Field>
+                </div>
+                <div className="kpi-google-ads-enquiry-group">
+                  <p className="kpi-google-ads-enquiry-group-label">{groups.topic}</p>
+                  <Field label={t.message} htmlFor={`${formId}-message`} optional={t.messageOptional} labelClassName={labelClassName}>
+                    <textarea
+                      id={`${formId}-message`}
+                      name="message"
+                      rows={4}
+                      className="kpi-field"
+                      placeholder={t.messageHint}
+                      value={state.message}
+                      onChange={(event) => setState((current) => ({ ...current, message: event.target.value }))}
+                    />
+                  </Field>
+                </div>
+                <input type="hidden" name="serviceInterest" value={preset?.id ?? "google_ads"} />
+                <div className="kpi-google-ads-enquiry-privacy">
+                  <FormPrivacyNotice locale={locale} />
+                </div>
+                <label className="kpi-google-ads-enquiry-consent">
+                  <input
+                    type="checkbox"
+                    checked={state.consent}
+                    aria-invalid={Boolean(errors.consent)}
+                    onChange={(event) => setState((current) => ({ ...current, consent: event.target.checked }))}
+                  />
+                  <span>
+                    {t.consent}{" "}
+                    <Link href={privacyHref} className="font-semibold text-[#0B6660]">
+                      {t.privacy}
+                    </Link>
+                  </span>
+                </label>
+                {errors.consent ? (
+                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                    {errors.consent}
+                  </p>
+                ) : null}
+                <input
+                  type="text"
+                  name="companyWebsite"
+                  value={state.companyWebsite}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  className="absolute left-[-10000px] h-px w-px overflow-hidden"
+                  onChange={(event) => setState((current) => ({ ...current, companyWebsite: event.target.value }))}
+                />
+                <button className="kpi-button" type="submit" disabled={status === "submitting"}>
+                  {status === "submitting" ? (
+                    t.sending
+                  ) : locale === "th" ? (
+                    <>
+                      ดูโอกาสเพิ่ม <span className="kpi-latin">Direct Booking</span>
+                      <span className="kpi-google-ads-enquiry-arrow" aria-hidden="true">
+                        ↗
+                      </span>
+                    </>
+                  ) : (
+                    cta
+                  )}
+                </button>
+                {status === "error" ? (
+                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                    {t.failed}
+                  </p>
+                ) : null}
+                {status === "unavailable" ? (
+                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                    {t.unavailable}
+                  </p>
+                ) : null}
+                <ContactNote locale={locale} className="kpi-google-ads-enquiry-direct" />
+              </form>
+            )}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (service === "conversion" && !compact) {
+    const groups = conversionGroups[locale];
+    const labelClassName = "kpi-website-enquiry-label";
+    return (
+      <section id={sectionId} className="kpi-website-enquiry kpi-conversion-enquiry scroll-mt-28">
+        <div className="kpi-section kpi-website-enquiry-grid">
+          <div className="kpi-website-enquiry-intro">
+            <p className="kpi-website-enquiry-kicker kpi-latin">{kickerText}</p>
+            <h2 className="kpi-h2 kpi-website-enquiry-heading">{heading}</h2>
+            {locale === "th" ? (
+              <p className="kpi-website-enquiry-lead">
+                <span>ส่งลิงก์เว็บไซต์และหน้าจอง</span>
+                <span className="kpi-website-enquiry-line">พร้อมบอกจุดที่กังวล</span>
+                <span className="kpi-website-enquiry-line">ทีมจะช่วยดูว่าลูกค้าหยุดก่อนจองตรงไหน</span>
+              </p>
+            ) : (
+              <p className="kpi-website-enquiry-lead">{lead}</p>
+            )}
+            {locale === "th" ? (
+              <>
+                <ol className="kpi-website-enquiry-points">
+                  <li>
+                    <span className="kpi-latin">01</span>
+                    <span>ดูหน้าที่คนเข้าชมและจุดที่ออก</span>
+                  </li>
+                  <li>
+                    <span className="kpi-latin">02</span>
+                    <span>
+                      ดูปุ่มจองและประสบการณ์บน <span className="kpi-latin">Mobile</span>
+                    </span>
+                  </li>
+                  <li>
+                    <span className="kpi-latin">03</span>
+                    <span>
+                      ดูเส้นทางเข้า <span className="kpi-latin">Booking Engine</span>
+                    </span>
+                  </li>
+                </ol>
+                <p className="kpi-website-enquiry-note">
+                  ไม่จำเป็นต้องสร้างเว็บใหม่ก่อน
+                  <span className="kpi-website-enquiry-line">เริ่มจากเส้นทางจองที่มีอยู่แล้วได้</span>
+                </p>
+              </>
+            ) : null}
+          </div>
+          <div className="kpi-website-enquiry-panel">
+            {status === "success" ? (
+              <div role="status">
+                <p className="kpi-website-enquiry-success">{t.success}</p>
+                <ContactNote locale={locale} className="kpi-website-enquiry-direct" />
+              </div>
+            ) : (
+              <form className="kpi-website-enquiry-fields" onSubmit={onSubmit} noValidate>
+                <div className="kpi-website-enquiry-group">
+                  <p className="kpi-website-enquiry-group-label">{groups.contact}</p>
+                  <div className="kpi-website-enquiry-pair">
+                    <Field label={t.name} htmlFor={`${formId}-name`} error={errors.name} labelClassName={labelClassName}>
+                      <input
+                        id={`${formId}-name`}
+                        name="name"
+                        autoComplete="name"
+                        className="kpi-field"
+                        value={state.name}
+                        aria-invalid={Boolean(errors.name)}
+                        onBlur={() => validate()}
+                        onChange={(event) => setState((current) => ({ ...current, name: event.target.value }))}
+                      />
+                    </Field>
+                    <Field label={t.contact} htmlFor={`${formId}-contact`} error={errors.contact} labelClassName={labelClassName}>
+                      <input
+                        id={`${formId}-contact`}
+                        name="contact"
+                        autoComplete="tel"
+                        inputMode="email"
+                        className="kpi-field"
+                        value={state.contact}
+                        aria-invalid={Boolean(errors.contact)}
+                        onBlur={() => validate()}
+                        onChange={(event) => setState((current) => ({ ...current, contact: event.target.value }))}
+                      />
+                    </Field>
+                  </div>
+                </div>
+                <div className="kpi-website-enquiry-group">
+                  <p className="kpi-website-enquiry-group-label">{groups.hotel}</p>
+                  <Field label={t.business} htmlFor={`${formId}-business`} error={errors.businessName} labelClassName={labelClassName}>
+                    <input
+                      id={`${formId}-business`}
+                      name="organization"
+                      autoComplete="organization"
+                      className="kpi-field"
+                      value={state.businessName}
+                      aria-invalid={Boolean(errors.businessName)}
+                      onBlur={() => validate()}
+                      onChange={(event) => setState((current) => ({ ...current, businessName: event.target.value }))}
+                    />
+                  </Field>
+                </div>
+                <div className="kpi-website-enquiry-group">
+                  <p className="kpi-website-enquiry-group-label">{groups.topic}</p>
+                  <Field label={t.message} htmlFor={`${formId}-message`} optional={t.messageOptional} labelClassName={labelClassName}>
+                    <textarea
+                      id={`${formId}-message`}
+                      name="message"
+                      rows={4}
+                      className="kpi-field"
+                      placeholder={t.messageHint}
+                      value={state.message}
+                      onChange={(event) => setState((current) => ({ ...current, message: event.target.value }))}
+                    />
+                  </Field>
+                </div>
+                <input type="hidden" name="serviceInterest" value={preset?.id ?? "conversion"} />
+                <div className="kpi-website-enquiry-privacy">
+                  <FormPrivacyNotice locale={locale} />
+                </div>
+                <label className="kpi-website-enquiry-consent">
+                  <input
+                    type="checkbox"
+                    checked={state.consent}
+                    aria-invalid={Boolean(errors.consent)}
+                    onChange={(event) => setState((current) => ({ ...current, consent: event.target.checked }))}
+                  />
+                  <span>
+                    {t.consent}{" "}
+                    <Link href={privacyHref} className="font-semibold text-[#0B6660]">
+                      {t.privacy}
+                    </Link>
+                  </span>
+                </label>
+                {errors.consent ? (
+                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                    {errors.consent}
+                  </p>
+                ) : null}
+                <input
+                  type="text"
+                  name="companyWebsite"
+                  value={state.companyWebsite}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  className="absolute left-[-10000px] h-px w-px overflow-hidden"
+                  onChange={(event) => setState((current) => ({ ...current, companyWebsite: event.target.value }))}
+                />
+                <button className="kpi-button" type="submit" disabled={status === "submitting"}>
+                  {status === "submitting" ? (
+                    t.sending
+                  ) : locale === "th" ? (
+                    <>
+                      ให้ทีมตรวจเส้นทางจองบนเว็บไซต์
+                      <span className="kpi-website-enquiry-arrow" aria-hidden="true">
+                        ↗
+                      </span>
+                    </>
+                  ) : (
+                    cta
+                  )}
+                </button>
+                {status === "error" ? (
+                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                    {t.failed}
+                  </p>
+                ) : null}
+                {status === "unavailable" ? (
+                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                    {t.unavailable}
+                  </p>
+                ) : null}
+                <ContactNote locale={locale} className="kpi-website-enquiry-direct" />
+              </form>
+            )}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (service === "website" && !compact) {
+    const groups = websiteGroups[locale];
+    const labelClassName = "kpi-website-enquiry-label";
+    return (
+      <section id={sectionId} className="kpi-website-enquiry scroll-mt-28">
+        <div className="kpi-section kpi-website-enquiry-grid">
+          <div className="kpi-website-enquiry-intro">
+            <p className="kpi-website-enquiry-kicker kpi-latin">{kickerText}</p>
+            <h2 className="kpi-h2 kpi-website-enquiry-heading">{heading}</h2>
+            {locale === "th" ? (
+              <p className="kpi-website-enquiry-lead">
+                <span>ส่งข้อมูลสั้น ๆ เกี่ยวกับโรงแรม</span>
+                <span className="kpi-website-enquiry-line">แล้วทีมจะช่วยดูว่าเว็บไซต์</span>
+                <span className="kpi-website-enquiry-line">ควรเริ่มปรับจากจุดไหนก่อน</span>
+              </p>
+            ) : (
+              <p className="kpi-website-enquiry-lead">{lead}</p>
+            )}
+            {locale === "th" ? (
+              <>
+                <ol className="kpi-website-enquiry-points">
+                  <li>
+                    <span className="kpi-latin">01</span>
+                    <span>ดูโครงสร้างและเนื้อหา</span>
+                  </li>
+                  <li>
+                    <span className="kpi-latin">02</span>
+                    <span>
+                      ดู <span className="kpi-latin">Mobile</span> และประสบการณ์ใช้งาน
+                    </span>
+                  </li>
+                  <li>
+                    <span className="kpi-latin">03</span>
+                    <span>
+                      ดูเส้นทางไปสู่ <span className="kpi-latin">Booking Engine</span> /{" "}
+                      <span className="kpi-latin">Direct Booking</span>
+                    </span>
+                  </li>
+                </ol>
+                <p className="kpi-website-enquiry-note">
+                  ไม่จำเป็นต้องตัดสินใจก่อน
+                  <span className="kpi-website-enquiry-line">ว่าจะสร้างเว็บไซต์ใหม่</span>
+                  <span className="kpi-website-enquiry-line">หรือปรับเว็บไซต์เดิม</span>
+                </p>
+              </>
+            ) : null}
+          </div>
+          <div className="kpi-website-enquiry-panel">
+            {status === "success" ? (
+              <div role="status">
+                <p className="kpi-website-enquiry-success">{t.success}</p>
+                <ContactNote locale={locale} className="kpi-website-enquiry-direct" />
+              </div>
+            ) : (
+              <form className="kpi-website-enquiry-fields" onSubmit={onSubmit} noValidate>
+                <div className="kpi-website-enquiry-group">
+                  <p className="kpi-website-enquiry-group-label">{groups.contact}</p>
+                  <div className="kpi-website-enquiry-pair">
+                    <Field label={t.name} htmlFor={`${formId}-name`} error={errors.name} labelClassName={labelClassName}>
+                      <input
+                        id={`${formId}-name`}
+                        name="name"
+                        autoComplete="name"
+                        className="kpi-field"
+                        value={state.name}
+                        aria-invalid={Boolean(errors.name)}
+                        onBlur={() => validate()}
+                        onChange={(event) => setState((current) => ({ ...current, name: event.target.value }))}
+                      />
+                    </Field>
+                    <Field label={t.contact} htmlFor={`${formId}-contact`} error={errors.contact} labelClassName={labelClassName}>
+                      <input
+                        id={`${formId}-contact`}
+                        name="contact"
+                        autoComplete="tel"
+                        inputMode="email"
+                        className="kpi-field"
+                        value={state.contact}
+                        aria-invalid={Boolean(errors.contact)}
+                        onBlur={() => validate()}
+                        onChange={(event) => setState((current) => ({ ...current, contact: event.target.value }))}
+                      />
+                    </Field>
+                  </div>
+                </div>
+                <div className="kpi-website-enquiry-group">
+                  <p className="kpi-website-enquiry-group-label">{groups.hotel}</p>
+                  <Field label={t.business} htmlFor={`${formId}-business`} error={errors.businessName} labelClassName={labelClassName}>
+                    <input
+                      id={`${formId}-business`}
+                      name="organization"
+                      autoComplete="organization"
+                      className="kpi-field"
+                      value={state.businessName}
+                      aria-invalid={Boolean(errors.businessName)}
+                      onBlur={() => validate()}
+                      onChange={(event) => setState((current) => ({ ...current, businessName: event.target.value }))}
+                    />
+                  </Field>
+                </div>
+                <div className="kpi-website-enquiry-group">
+                  <p className="kpi-website-enquiry-group-label">{groups.topic}</p>
+                  <Field label={t.message} htmlFor={`${formId}-message`} optional={t.messageOptional} labelClassName={labelClassName}>
+                    <textarea
+                      id={`${formId}-message`}
+                      name="message"
+                      rows={4}
+                      className="kpi-field"
+                      placeholder={t.messageHint}
+                      value={state.message}
+                      onChange={(event) => setState((current) => ({ ...current, message: event.target.value }))}
+                    />
+                  </Field>
+                </div>
+                <input type="hidden" name="serviceInterest" value={preset?.id ?? "website"} />
+                <div className="kpi-website-enquiry-privacy">
+                  <FormPrivacyNotice locale={locale} />
+                </div>
+                <label className="kpi-website-enquiry-consent">
+                  <input
+                    type="checkbox"
+                    checked={state.consent}
+                    aria-invalid={Boolean(errors.consent)}
+                    onChange={(event) => setState((current) => ({ ...current, consent: event.target.checked }))}
+                  />
+                  <span>
+                    {t.consent}{" "}
+                    <Link href={privacyHref} className="font-semibold text-[#0B6660]">
+                      {t.privacy}
+                    </Link>
+                  </span>
+                </label>
+                {errors.consent ? (
+                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                    {errors.consent}
+                  </p>
+                ) : null}
+                <input
+                  type="text"
+                  name="companyWebsite"
+                  value={state.companyWebsite}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  className="absolute left-[-10000px] h-px w-px overflow-hidden"
+                  onChange={(event) => setState((current) => ({ ...current, companyWebsite: event.target.value }))}
+                />
+                <button className="kpi-button" type="submit" disabled={status === "submitting"}>
+                  {status === "submitting" ? (
+                    t.sending
+                  ) : locale === "th" ? (
+                    <>
+                      ให้ทีมดูเว็บไซต์โรงแรมของคุณ
+                      <span className="kpi-website-enquiry-arrow" aria-hidden="true">
+                        ↗
+                      </span>
+                    </>
+                  ) : (
+                    cta
+                  )}
+                </button>
+                {status === "error" ? (
+                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                    {t.failed}
+                  </p>
+                ) : null}
+                {status === "unavailable" ? (
+                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                    {t.unavailable}
+                  </p>
+                ) : null}
+                <ContactNote locale={locale} className="kpi-website-enquiry-direct" />
+              </form>
+            )}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (service === "search" && !compact) {
+    const groups = searchGroups[locale];
+    const labelClassName = "kpi-search-enquiry-label";
+    return (
+      <section id={sectionId} className="kpi-search-enquiry scroll-mt-28">
+        <div className="kpi-section kpi-search-enquiry-grid">
+          <div className="kpi-search-enquiry-intro">
+            <p className="kpi-search-enquiry-kicker kpi-latin">{kickerText}</p>
+            <h2 className="kpi-h2 kpi-search-enquiry-heading">
+              {locale === "th" ? (
+                <>
+                  คุยเรื่อง <span className="kpi-latin">SEO</span> และการค้นหาท้องถิ่น
+                </>
+              ) : (
+                heading
+              )}
+            </h2>
+            {locale === "th" ? (
+              <p className="kpi-search-enquiry-lead">
+                <span>ส่งข้อมูลสั้น ๆ เกี่ยวกับธุรกิจ</span>
+                <span className="kpi-search-enquiry-line">แล้วทีมจะช่วยดูว่าควรเริ่มปรับจากจุดไหนก่อน</span>
+              </p>
+            ) : (
+              <p className="kpi-search-enquiry-lead">{lead}</p>
+            )}
+            {locale === "th" ? (
+              <>
+                <ol className="kpi-search-enquiry-points">
+                  <li>
+                    <span className="kpi-latin">01</span>
+                    <span>ดูการค้นพบปัจจุบัน</span>
+                  </li>
+                  <li>
+                    <span className="kpi-latin">02</span>
+                    <span>
+                      ดูเว็บไซต์และ <span className="kpi-latin">Google Maps</span>
+                    </span>
+                  </li>
+                  <li>
+                    <span className="kpi-latin">03</span>
+                    <span>ดูจุดที่ลูกค้าค้นพบแล้วติดต่อไม่ต่อเนื่อง</span>
+                  </li>
+                </ol>
+                <p className="kpi-search-enquiry-note">
+                  ไม่จำเป็นต้องมี <span className="kpi-latin">Search Console</span>
+                  <span className="kpi-search-enquiry-line">หรือข้อมูลครบทุกระบบอยู่แล้วก็ได้</span>
+                </p>
+              </>
+            ) : null}
+          </div>
+          <div className="kpi-search-enquiry-panel">
+            {status === "success" ? (
+              <div role="status">
+                <p className="kpi-search-enquiry-success">{t.success}</p>
+                <ContactNote locale={locale} className="kpi-search-enquiry-direct" />
+              </div>
+            ) : (
+              <form className="kpi-search-enquiry-fields" onSubmit={onSubmit} noValidate>
+                <div className="kpi-search-enquiry-group">
+                  <p className="kpi-search-enquiry-group-label">{groups.contact}</p>
+                  <div className="kpi-search-enquiry-pair">
+                    <Field label={t.name} htmlFor={`${formId}-name`} error={errors.name} labelClassName={labelClassName}>
+                      <input
+                        id={`${formId}-name`}
+                        name="name"
+                        autoComplete="name"
+                        className="kpi-field"
+                        value={state.name}
+                        aria-invalid={Boolean(errors.name)}
+                        onBlur={() => validate()}
+                        onChange={(event) => setState((current) => ({ ...current, name: event.target.value }))}
+                      />
+                    </Field>
+                    <Field label={t.contact} htmlFor={`${formId}-contact`} error={errors.contact} labelClassName={labelClassName}>
+                      <input
+                        id={`${formId}-contact`}
+                        name="contact"
+                        autoComplete="tel"
+                        inputMode="email"
+                        className="kpi-field"
+                        value={state.contact}
+                        aria-invalid={Boolean(errors.contact)}
+                        onBlur={() => validate()}
+                        onChange={(event) => setState((current) => ({ ...current, contact: event.target.value }))}
+                      />
+                    </Field>
+                  </div>
+                </div>
+                <div className="kpi-search-enquiry-group">
+                  <p className="kpi-search-enquiry-group-label">{groups.hotel}</p>
+                  <Field label={t.business} htmlFor={`${formId}-business`} error={errors.businessName} labelClassName={labelClassName}>
+                    <input
+                      id={`${formId}-business`}
+                      name="organization"
+                      autoComplete="organization"
+                      className="kpi-field"
+                      value={state.businessName}
+                      aria-invalid={Boolean(errors.businessName)}
+                      onBlur={() => validate()}
+                      onChange={(event) => setState((current) => ({ ...current, businessName: event.target.value }))}
+                    />
+                  </Field>
+                </div>
+                <div className="kpi-search-enquiry-group">
+                  <p className="kpi-search-enquiry-group-label">{groups.topic}</p>
+                  <Field label={t.message} htmlFor={`${formId}-message`} optional={t.messageOptional} labelClassName={labelClassName}>
+                    <textarea
+                      id={`${formId}-message`}
+                      name="message"
+                      rows={4}
+                      className="kpi-field"
+                      placeholder={t.messageHint}
+                      value={state.message}
+                      onChange={(event) => setState((current) => ({ ...current, message: event.target.value }))}
+                    />
+                  </Field>
+                </div>
+                <input type="hidden" name="serviceInterest" value={preset?.id ?? "search"} />
+                <div className="kpi-search-enquiry-privacy">
+                  <FormPrivacyNotice locale={locale} />
+                </div>
+                <label className="kpi-search-enquiry-consent">
+                  <input
+                    type="checkbox"
+                    checked={state.consent}
+                    aria-invalid={Boolean(errors.consent)}
+                    onChange={(event) => setState((current) => ({ ...current, consent: event.target.checked }))}
+                  />
+                  <span>
+                    {t.consent}{" "}
+                    <Link href={privacyHref} className="font-semibold text-[#0B6660]">
+                      {t.privacy}
+                    </Link>
+                  </span>
+                </label>
+                {errors.consent ? (
+                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                    {errors.consent}
+                  </p>
+                ) : null}
+                <input
+                  type="text"
+                  name="companyWebsite"
+                  value={state.companyWebsite}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  className="absolute left-[-10000px] h-px w-px overflow-hidden"
+                  onChange={(event) => setState((current) => ({ ...current, companyWebsite: event.target.value }))}
+                />
+                <button className="kpi-button" type="submit" disabled={status === "submitting"}>
+                  {status === "submitting" ? (
+                    t.sending
+                  ) : locale === "th" ? (
+                    <>
+                      ให้ทีมดูการค้นพบธุรกิจของคุณ
+                      <span className="kpi-search-enquiry-arrow" aria-hidden="true">
+                        ↗
+                      </span>
+                    </>
+                  ) : (
+                    cta
+                  )}
+                </button>
+                {status === "error" ? (
+                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                    {t.failed}
+                  </p>
+                ) : null}
+                {status === "unavailable" ? (
+                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                    {t.unavailable}
+                  </p>
+                ) : null}
+                <ContactNote locale={locale} className="kpi-search-enquiry-direct" />
+              </form>
+            )}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (service === "independent_hotel" && !compact) {
+    const groups = independentHotelGroups[locale];
+    const labelClassName = "kpi-website-enquiry-label";
+    return (
+      <section id={sectionId} className="kpi-website-enquiry kpi-independent-enquiry scroll-mt-28">
+        <div className="kpi-section kpi-website-enquiry-grid">
+          <div className="kpi-website-enquiry-intro">
+            <p className="kpi-website-enquiry-kicker kpi-latin">{kickerText}</p>
+            <h2 className="kpi-h2 kpi-website-enquiry-heading">{heading}</h2>
+            {locale === "th" ? (
+              <p className="kpi-website-enquiry-lead">
+                <span>ส่งข้อมูลสั้น ๆ เกี่ยวกับโรงแรม</span>
+                <span className="kpi-website-enquiry-line">แล้วทีมจะช่วยดูว่าควรเริ่มจากจุดไหนก่อน</span>
+              </p>
+            ) : (
+              <p className="kpi-website-enquiry-lead">{lead}</p>
+            )}
+            {locale === "th" ? (
+              <>
+                <ol className="kpi-website-enquiry-points">
+                  <li>
+                    <span className="kpi-latin">01</span>
+                    <span>ดูโครงสร้างงานและหน้าที่ของทีม</span>
+                  </li>
+                  <li>
+                    <span className="kpi-latin">02</span>
+                    <span>ดูระบบ เครื่องมือ และขั้นตอนทำงาน</span>
+                  </li>
+                  <li>
+                    <span className="kpi-latin">03</span>
+                    <span>ดูจุดที่เจ้าของยังต้องลงมือเองมากเกินไป</span>
+                  </li>
+                </ol>
+                <p className="kpi-website-enquiry-note">
+                  ไม่จำเป็นต้องรู้ก่อนว่าต้องการบริการแบบไหน
+                  <span className="kpi-website-enquiry-line">ทีมช่วยประเมินขอบเขตที่เหมาะสมได้</span>
+                </p>
+              </>
+            ) : null}
+          </div>
+          <div className="kpi-website-enquiry-panel">
+            {status === "success" ? (
+              <div role="status">
+                <p className="kpi-website-enquiry-success">{t.success}</p>
+                <ContactNote locale={locale} className="kpi-website-enquiry-direct" />
+              </div>
+            ) : (
+              <form className="kpi-website-enquiry-fields" onSubmit={onSubmit} noValidate>
+                <div className="kpi-website-enquiry-group">
+                  <p className="kpi-website-enquiry-group-label">{groups.contact}</p>
+                  <div className="kpi-website-enquiry-pair">
+                    <Field label={t.name} htmlFor={`${formId}-name`} error={errors.name} labelClassName={labelClassName}>
+                      <input
+                        id={`${formId}-name`}
+                        name="name"
+                        autoComplete="name"
+                        className="kpi-field"
+                        value={state.name}
+                        aria-invalid={Boolean(errors.name)}
+                        onBlur={() => validate()}
+                        onChange={(event) => setState((current) => ({ ...current, name: event.target.value }))}
+                      />
+                    </Field>
+                    <Field label={t.contact} htmlFor={`${formId}-contact`} error={errors.contact} labelClassName={labelClassName}>
+                      <input
+                        id={`${formId}-contact`}
+                        name="contact"
+                        autoComplete="tel"
+                        inputMode="email"
+                        className="kpi-field"
+                        value={state.contact}
+                        aria-invalid={Boolean(errors.contact)}
+                        onBlur={() => validate()}
+                        onChange={(event) => setState((current) => ({ ...current, contact: event.target.value }))}
+                      />
+                    </Field>
+                  </div>
+                </div>
+                <div className="kpi-website-enquiry-group">
+                  <p className="kpi-website-enquiry-group-label">{groups.hotel}</p>
+                  <Field label={t.business} htmlFor={`${formId}-business`} error={errors.businessName} labelClassName={labelClassName}>
+                    <input
+                      id={`${formId}-business`}
+                      name="organization"
+                      autoComplete="organization"
+                      className="kpi-field"
+                      value={state.businessName}
+                      aria-invalid={Boolean(errors.businessName)}
+                      onBlur={() => validate()}
+                      onChange={(event) => setState((current) => ({ ...current, businessName: event.target.value }))}
+                    />
+                  </Field>
+                </div>
+                <div className="kpi-website-enquiry-group">
+                  <p className="kpi-website-enquiry-group-label">{groups.topic}</p>
+                  <Field label={t.message} htmlFor={`${formId}-message`} optional={t.messageOptional} labelClassName={labelClassName}>
+                    <textarea
+                      id={`${formId}-message`}
+                      name="message"
+                      rows={4}
+                      className="kpi-field"
+                      placeholder={t.messageHint}
+                      value={state.message}
+                      onChange={(event) => setState((current) => ({ ...current, message: event.target.value }))}
+                    />
+                  </Field>
+                </div>
+                <input type="hidden" name="serviceInterest" value={preset?.id ?? "independent_hotel"} />
+                <div className="kpi-website-enquiry-privacy">
+                  <FormPrivacyNotice locale={locale} />
+                </div>
+                <label className="kpi-website-enquiry-consent">
+                  <input
+                    type="checkbox"
+                    checked={state.consent}
+                    aria-invalid={Boolean(errors.consent)}
+                    onChange={(event) => setState((current) => ({ ...current, consent: event.target.checked }))}
+                  />
+                  <span>
+                    {t.consent}{" "}
+                    <Link href={privacyHref} className="font-semibold text-[#0B6660]">
+                      {t.privacy}
+                    </Link>
+                  </span>
+                </label>
+                {errors.consent ? (
+                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                    {errors.consent}
+                  </p>
+                ) : null}
+                <input
+                  type="text"
+                  name="companyWebsite"
+                  value={state.companyWebsite}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  className="absolute left-[-10000px] h-px w-px overflow-hidden"
+                  onChange={(event) => setState((current) => ({ ...current, companyWebsite: event.target.value }))}
+                />
+                <button className="kpi-button" type="submit" disabled={status === "submitting"}>
+                  {status === "submitting" ? (
+                    t.sending
+                  ) : locale === "th" ? (
+                    <>
+                      นัดพูดคุยเรื่องโรงแรมของคุณ
+                      <span className="kpi-website-enquiry-arrow" aria-hidden="true">
+                        ↗
+                      </span>
+                    </>
+                  ) : (
+                    cta
+                  )}
+                </button>
+                {status === "error" ? (
+                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                    {t.failed}
+                  </p>
+                ) : null}
+                {status === "unavailable" ? (
+                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                    {t.unavailable}
+                  </p>
+                ) : null}
+                <ContactNote locale={locale} className="kpi-website-enquiry-direct" />
               </form>
             )}
           </div>

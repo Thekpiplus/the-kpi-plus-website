@@ -2,15 +2,29 @@ import Link from "next/link";
 import { ArrowUpRight } from "@/components/Icons";
 import { MetaAdsEnquiry } from "@/components/MetaAdsEnquiry";
 import { MetaAdsStickyCta } from "@/components/MetaAdsStickyCta";
-import { PageHero } from "@/components/PageHero";
 import { SiteShell } from "@/components/SiteShell";
 import { insightPosts, insightsIndexCopy } from "@/lib/insights";
 import { solutionNavLabel } from "@/lib/nav";
 import { existingHref, localizePath, type Locale } from "@/lib/seo";
 
-const relatedInsightHrefs = [
-  "/insights/seo-vs-sem-for-hotels-which-one-should-you-focus-on",
-  "/insights/direct-booking-journey-audit",
+const methodPhases = ["Share", "Review", "Plan"] as const;
+
+const thaiMethodSteps = [
+  {
+    num: "01",
+    title: "ส่งข้อมูลเบื้องต้น",
+    lines: ["ชื่อโรงแรม ลิงก์เพจหรือเว็บไซต์", "และสิ่งที่อยากให้ทีมช่วย"],
+  },
+  {
+    num: "02",
+    title: "ทีมดูความพร้อม",
+    lines: ["ตรวจเป้าหมาย ข้อเสนอ ภาพและวิดีโอ", "ช่องทางรับลูกค้า และข้อมูลที่ใช้วัดผล"],
+  },
+  {
+    num: "03",
+    title: "วางแผนร่วมกัน",
+    lines: ["กำหนดแนวทางแคมเปญ", "สิ่งที่ต้องเตรียม", "และวิธีติดตามผลที่เหมาะกับโรงแรม"],
+  },
 ] as const;
 
 const copy = {
@@ -22,7 +36,7 @@ const copy = {
     cta: "ให้ทีมประเมินแนวทาง Meta Ads",
     secondary: "ดูโซลูชันทั้งหมด",
     underCta: "ส่งชื่อโรงแรมและลิงก์เพจหรือเว็บไซต์ เพื่อเริ่มพูดคุยกับทีม",
-    photoAlt: "โรงแรมและทีมที่ทำงานด้านการเข้าพักและการขายห้องพัก",
+    photoAlt: "นักเดินทางดูเนื้อหาโรงแรมบนสมาร์ทโฟนในบรรยากาศที่พัก",
     whyTitle: "ลูกค้าอยู่บนแพลตฟอร์ม แต่การเข้าถึงอย่างเดียวไม่พอ",
     facebookStat: "51.5 ล้าน",
     facebookLabel: "ขนาดกลุ่มเป้าหมายโฆษณา Facebook ในไทย",
@@ -51,9 +65,9 @@ const copy = {
     ],
     methodTitle: "เริ่มจากสถานการณ์จริงของโรงแรม",
     steps: [
-      ["01", "ส่งข้อมูลเบื้องต้น", "ชื่อโรงแรม ลิงก์เพจหรือเว็บไซต์ และสิ่งที่อยากให้โฆษณาช่วย"],
+      ["01", "ส่งข้อมูลเบื้องต้น", "ชื่อโรงแรม ลิงก์เพจหรือเว็บไซต์ และสิ่งที่อยากให้ทีมช่วย"],
       ["02", "ทีมดูความพร้อม", "ตรวจเป้าหมาย ข้อเสนอ ภาพและวิดีโอ ช่องทางรับลูกค้า และข้อมูลที่ใช้วัดผล"],
-      ["03", "วางแผนร่วมกัน", "กำหนดแนวทางแคมเปญ สิ่งที่ต้องเตรียม และวิธีติดตามผลที่เหมาะกับระบบของโรงแรม"],
+      ["03", "วางแผนร่วมกัน", "กำหนดแนวทางแคมเปญ สิ่งที่ต้องเตรียม และวิธีติดตามผลที่เหมาะกับโรงแรม"],
     ],
     measureTitle: "ดูมากกว่ายอด Reach และยอดกดถูกใจ",
     measureBody:
@@ -67,7 +81,8 @@ const copy = {
     toolBody: "ดูว่าหน้าเว็บพร้อมให้ลูกค้าจากโฆษณาหาข้อมูลและเดินทางไปสอบถามหรือจองต่อหรือไม่",
     toolCta: "ใช้เครื่องมือฟรี",
     conversionTitle: "เพิ่มการจองผ่านเว็บไซต์",
-    conversionBody: "เมื่อโฆษณาพาคนมาแล้ว เส้นทางสอบถามและจองบนเว็บต้องชัดพอให้เดินต่อได้",
+    conversionBody:
+      "เมื่อโฆษณาพาคนมาแล้ว เส้นทางจากหน้าเว็บไปสู่การสอบถามหรือระบบจอง ต้องชัดพอให้ลูกค้าเดินต่อได้",
   },
   en: {
     crumb: "Solutions",
@@ -77,7 +92,7 @@ const copy = {
     cta: "Ask the team to review a Meta Ads approach",
     secondary: "All solutions",
     underCta: "Send the hotel name and a page or website link to start the conversation.",
-    photoAlt: "A hotel and its team working on guest stay and room sales",
+    photoAlt: "A traveller viewing hotel content on a smartphone in a hospitality setting",
     whyTitle: "Guests are on the platforms, but reach alone is not the plan",
     facebookStat: "51.5 million",
     facebookLabel: "Facebook advertising audience size in Thailand",
@@ -240,74 +255,184 @@ export function MetaAdsView({ locale }: { locale: Locale }) {
   const t = copy[locale];
   const insightsUi = insightsIndexCopy[locale];
   const solutions = localizePath("/solutions", locale);
-  const insights = insightPosts
-    .filter((post) => relatedInsightHrefs.includes(post.href as (typeof relatedInsightHrefs)[number]))
-    .filter((post) => existingHref(post.href, locale));
+  const featuredInsight = insightPosts.find(
+    (post) => post.href === "/insights/direct-booking-journey-audit" && existingHref(post.href, locale),
+  );
+  const seoInsight = insightPosts.find(
+    (post) =>
+      post.href === "/insights/seo-vs-sem-for-hotels-which-one-should-you-focus-on" &&
+      existingHref(post.href, locale),
+  );
   const conversionHref = localizePath("/solutions/hotel-direct-bookings", locale);
 
   return (
     <SiteShell locale={locale} route={localizePath("/solutions/meta-ads-management", locale)}>
-      <PageHero>
-        <nav aria-label="Breadcrumb" className="text-sm text-white/70">
-          <ol className="flex flex-wrap items-center gap-2">
-            <li>
-              <Link href={solutions} className="hover:text-white">
-                {t.crumb}
-              </Link>
-            </li>
-            <li className="flex items-center gap-2">
-              <span aria-hidden="true">/</span>
-              <span className="text-white">{solutionNavLabel("/solutions/meta-ads-management", locale)}</span>
-            </li>
-          </ol>
-        </nav>
-        <p className="kpi-kicker mt-5 text-[#F2F8E2]">{t.eyebrow}</p>
-        <h1 className="kpi-h1 mt-5">{t.title}</h1>
-        <p className="kpi-lead mt-5 text-white/72">{t.lead}</p>
-        <div className="kpi-actions">
-          <a href="#meta-ads-enquiry" className="kpi-button">
-            {t.cta} <ArrowUpRight className="h-4 w-4" />
-          </a>
-          <Link href={solutions} className="kpi-button-ghost">
-            {t.secondary}
-          </Link>
+      <section className="kpi-hero kpi-home-hero-section kpi-meta-ads-hero">
+        <div className="kpi-wrap">
+          <nav aria-label="Breadcrumb" className="kpi-meta-ads-hero-crumb">
+            <ol>
+              <li>
+                <Link href={solutions}>{t.crumb}</Link>
+              </li>
+              <li>
+                <span aria-hidden="true">/</span>
+                <span>{solutionNavLabel("/solutions/meta-ads-management", locale)}</span>
+              </li>
+            </ol>
+          </nav>
+          <div className="kpi-home-hero">
+            <div className="kpi-home-hero-copy">
+              <p className="kpi-home-eyebrow kpi-latin">Social Demand &amp; Direct Response</p>
+              <h1 className="kpi-h1 kpi-home-h1">
+                {locale === "th" ? (
+                  <>
+                    <span className="kpi-home-h1-lead">ทำให้คนที่ใช่เห็นโรงแรมของคุณ</span>
+                    <span className="kpi-home-h1-rest">แล้วมีเหตุผลที่จะ</span>
+                    <span className="kpi-home-h1-close kpi-home-accent">สอบถามหรือจอง</span>
+                  </>
+                ) : (
+                  t.title
+                )}
+              </h1>
+              {locale === "th" ? (
+                <p className="kpi-lead kpi-home-lead">
+                  <span className="kpi-meta-ads-lead-line">
+                    <span className="kpi-latin">Meta Ads</span> ไม่ควรวัดแค่ยอดเห็น หรือยอดกดถูกใจ
+                  </span>
+                  <span className="kpi-meta-ads-lead-line">
+                    เราวางตั้งแต่กลุ่มลูกค้า คอนเทนต์ และข้อเสนอ ไปจนถึงเส้นทางหลังคลิก เพื่อให้ความสนใจมีโอกาสกลายเป็น การสอบถามหรือยอดจอง
+                  </span>
+                </p>
+              ) : (
+                <p className="kpi-lead kpi-home-lead">{t.lead}</p>
+              )}
+              <div className="kpi-actions">
+                <a href="#meta-ads-enquiry" className="kpi-button">
+                  {locale === "th" ? (
+                    <>
+                      ดูโอกาสเพิ่ม <span className="kpi-latin">Enquiry</span> และ <span className="kpi-latin">Booking</span>
+                    </>
+                  ) : (
+                    t.cta
+                  )}{" "}
+                  <span aria-hidden="true">↗</span>
+                </a>
+                <Link href={solutions} className="kpi-button-ghost">
+                  {t.secondary}
+                </Link>
+              </div>
+              <p className="kpi-meta-ads-hero-note">
+                {locale === "th" ? (
+                  <>
+                    ส่งชื่อโรงแรม เว็บไซต์หรือเพจ
+                    <span className="kpi-meta-ads-hero-note-br"> </span>
+                    เพื่อให้ทีมดูจุดเริ่มต้น
+                  </>
+                ) : (
+                  t.underCta
+                )}
+              </p>
+              <p className="kpi-home-trust kpi-meta-ads-journey">
+                {(locale === "th"
+                  ? (["กลุ่มลูกค้า", "คอนเทนต์", "หน้าเว็บ / แชต", "Enquiry", "Booking"] as const)
+                  : (["Audience", "Content", "Page / Chat", "Enquiry", "Booking"] as const)
+                ).map((step, index) => (
+                  <span key={step}>
+                    <span className="kpi-latin">{String(index + 1).padStart(2, "0")}</span>{" "}
+                    {step === "Enquiry" || step === "Booking" ? <span className="kpi-latin">{step}</span> : step}
+                  </span>
+                ))}
+              </p>
+            </div>
+            <div className="kpi-hero-visual kpi-home-photo">
+              <img src="/media/meta-ads-hero-phone.jpg" alt={t.photoAlt} width={1200} height={900} />
+            </div>
+          </div>
         </div>
-        <p className="mt-4 max-w-xl text-sm leading-6 text-white/64">{t.underCta}</p>
-      </PageHero>
+      </section>
 
-      <section className="kpi-section">
-        <div className="kpi-split">
-          <div>
-            <h2 className="kpi-h2">{t.whyTitle}</h2>
-            <div className="kpi-grid-2 mt-8">
-              <article className="kpi-card p-6">
-                <img src="/brand/meta/facebook.svg" alt="" className="kpi-platform-mark" />
-                <p className="kpi-latin mt-4 text-3xl font-extrabold tracking-[-.04em] text-[#0B1F33]">{t.facebookStat}</p>
-                <p className="mt-2 text-sm leading-6 text-[#555555]">{t.facebookLabel}</p>
+      <section className="kpi-section kpi-meta-ads-audience">
+        <div className="kpi-meta-ads-audience-grid">
+          <div className="kpi-meta-ads-audience-copy">
+            <h2 className="kpi-h2">
+              {locale === "th" ? (
+                <>
+                  <span className="kpi-meta-ads-audience-line">ลูกค้าอยู่บนแพลตฟอร์ม</span>
+                  <span className="kpi-meta-ads-audience-br"> </span>
+                  <span className="kpi-meta-ads-audience-line">
+                    แต่<span className="kpi-meta-ads-audience-em">การเข้าถึงอย่างเดียวไม่พอ</span>
+                  </span>
+                </>
+              ) : (
+                t.whyTitle
+              )}
+            </h2>
+            <div className="kpi-meta-ads-audience-stats">
+              <article>
+                <p className="kpi-meta-ads-audience-platform">
+                  <img src="/brand/meta/facebook.svg" alt="" width={22} height={22} />
+                  <span className="kpi-latin">Facebook</span>
+                </p>
+                <p className="kpi-meta-ads-audience-number kpi-latin">
+                  {locale === "th" ? (
+                    <>
+                      51.5 <span>ล้าน</span>
+                    </>
+                  ) : (
+                    t.facebookStat
+                  )}
+                </p>
+                <p className="kpi-meta-ads-audience-label">
+                  {locale === "th" ? "ขนาดกลุ่มเป้าหมายโฆษณาในไทย" : t.facebookLabel}
+                </p>
               </article>
-              <article className="kpi-card p-6">
-                <img src="/brand/meta/instagram.svg" alt="" className="kpi-platform-mark" />
-                <p className="kpi-latin mt-4 text-3xl font-extrabold tracking-[-.04em] text-[#0B1F33]">{t.instagramStat}</p>
-                <p className="mt-2 text-sm leading-6 text-[#555555]">{t.instagramLabel}</p>
+              <article>
+                <p className="kpi-meta-ads-audience-platform">
+                  <img src="/brand/meta/instagram.svg" alt="" width={22} height={22} />
+                  <span className="kpi-latin">Instagram</span>
+                </p>
+                <p className="kpi-meta-ads-audience-number kpi-latin">
+                  {locale === "th" ? (
+                    <>
+                      20.6 <span>ล้าน</span>
+                    </>
+                  ) : (
+                    t.instagramStat
+                  )}
+                </p>
+                <p className="kpi-meta-ads-audience-label">
+                  {locale === "th" ? "ขนาดกลุ่มเป้าหมายโฆษณาในไทย" : t.instagramLabel}
+                </p>
               </article>
             </div>
-            <p className="mt-6 max-w-2xl text-base leading-8 text-[#555555]">{t.whyBody}</p>
-            <p className="mt-4 text-sm">
-              <a
-                href="https://datareportal.com/reports/digital-2026-thailand"
-                target="_blank"
-                rel="noreferrer"
-                className="font-semibold text-[#0B6660]"
-              >
-                {t.source}
+            {locale === "th" ? (
+              <div className="kpi-meta-ads-audience-body">
+                <p>
+                  <span className="kpi-latin">Reach</span> บอกได้ว่ามีโอกาสเข้าถึงคนมากแค่ไหน
+                </p>
+                <p className="kpi-meta-ads-audience-body-strong">
+                  แต่ผลลัพธ์จริงอยู่ที่ว่า คนที่เห็นแล้วสนใจ คลิก{" "}
+                  <span className="kpi-meta-ads-audience-em">สอบถาม หรือจองต่อ</span> หรือไม่
+                </p>
+              </div>
+            ) : (
+              <p className="kpi-meta-ads-audience-body">{t.whyBody}</p>
+            )}
+            <p className="kpi-meta-ads-audience-source">
+              <a href="https://datareportal.com/reports/digital-2026-thailand" target="_blank" rel="noreferrer">
+                <span className="kpi-latin">Source: DataReportal Digital 2026 Thailand</span>
               </a>
             </p>
-            <p className="mt-3 max-w-2xl text-xs leading-6 text-[#555555]">{t.note}</p>
+            <p className="kpi-meta-ads-audience-note">{t.note}</p>
           </div>
-          <figure className="kpi-home-photo">
+          <figure className="kpi-meta-ads-audience-photo">
             <img
-              src="/media/kpi-plus-thai-hero-performance-corrected_2937c314.jpg"
-              alt={t.photoAlt}
+              src="/media/meta-ads-audience-phone.jpg"
+              alt={
+                locale === "th"
+                  ? "นักเดินทางดูเนื้อหาโรงแรมบนสมาร์ทโฟนในบรรยากาศที่พัก"
+                  : t.photoAlt
+              }
               width={1200}
               height={900}
             />
@@ -316,55 +441,219 @@ export function MetaAdsView({ locale }: { locale: Locale }) {
       </section>
 
       <section className="border-y border-[#E3E8EB] bg-white">
-        <div className="kpi-section">
-          <h2 className="kpi-h2">{t.problemTitle}</h2>
-          <div className="kpi-grid-2 mt-10">
-            {t.problems.map((problem, index) => (
-              <article key={problem} className="kpi-card flex gap-4 p-6">
-                <span className="kpi-latin text-sm font-black tracking-[.14em] text-[#0B6660]">
-                  {String(index + 1).padStart(2, "0")}
+        <div className="kpi-section kpi-meta-ads-problems">
+          <h2 className="kpi-h2">
+            {locale === "th" ? (
+              <>
+                <span className="kpi-meta-ads-problem-line">ลงโฆษณาอยู่แล้ว</span>
+                <span className="kpi-meta-ads-problem-br"> </span>
+                <span className="kpi-meta-ads-problem-line">
+                  แต่รู้หรือไม่ว่า<span className="kpi-meta-ads-problem-em">ลูกค้าไปต่ออย่างไร?</span>
                 </span>
-                <p className="text-base leading-7 text-[#555555]">{problem}</p>
-              </article>
-            ))}
-          </div>
-          <p className="mt-8 max-w-2xl text-base leading-8 text-[#3B3B3B]">{t.problemClose}</p>
-          <a href="#meta-ads-enquiry" className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#0B6660]">
-            {t.problemCta} <ArrowUpRight className="h-4 w-4" />
+              </>
+            ) : (
+              t.problemTitle
+            )}
+          </h2>
+          <ol className="kpi-meta-ads-problems-list">
+            {locale === "th" ? (
+              <>
+                <li>
+                  <span className="kpi-latin">01</span>
+                  <p>
+                    มีคนเห็นโฆษณา
+                    <span className="kpi-meta-ads-problem-br"> </span>
+                    แต่ยังไม่รู้ว่า<span className="kpi-meta-ads-problem-em">กี่คนสอบถามหรือจองต่อ</span>
+                  </p>
+                </li>
+                <li>
+                  <span className="kpi-latin">02</span>
+                  <p>
+                    ใช้ภาพและข้อความแบบเดียว
+                    <span className="kpi-meta-ads-problem-br"> </span>
+                    กับ<span className="kpi-meta-ads-problem-em">ลูกค้าทุกกลุ่ม</span>
+                  </p>
+                </li>
+                <li>
+                  <span className="kpi-latin">03</span>
+                  <p>
+                    มีห้องว่างบางช่วง
+                    <span className="kpi-meta-ads-problem-br"> </span>
+                    แต่ข้อเสนอ<span className="kpi-meta-ads-problem-em">ยังไปไม่ถึงกลุ่มที่เหมาะสม</span>
+                  </p>
+                </li>
+                <li>
+                  <span className="kpi-latin">04</span>
+                  <p>
+                    คนคลิกแล้ว
+                    <span className="kpi-meta-ads-problem-br"> </span>
+                    แต่หาข้อมูล ราคา หรือ<span className="kpi-meta-ads-problem-em">ช่องทางติดต่อไม่เจอ</span>
+                  </p>
+                </li>
+                <li>
+                  <span className="kpi-latin">05</span>
+                  <p>
+                    คนเคยสนใจโรงแรมแล้ว
+                    <span className="kpi-meta-ads-problem-br"> </span>
+                    แต่ยังไม่มี<span className="kpi-meta-ads-problem-em">แผนติดตามที่เหมาะสม</span>
+                  </p>
+                </li>
+              </>
+            ) : (
+              t.problems.map((problem, index) => (
+                <li key={problem}>
+                  <span className="kpi-latin">{String(index + 1).padStart(2, "0")}</span>
+                  <p>{problem}</p>
+                </li>
+              ))
+            )}
+          </ol>
+          {locale === "th" ? (
+            <p className="kpi-meta-ads-problem-close">
+              <span>การเห็นโฆษณาเป็นเพียงจุดเริ่มต้น</span>
+              <span className="kpi-meta-ads-problem-close-strong">
+                สิ่งสำคัญคือรู้ว่า <span className="kpi-meta-ads-problem-em">ลูกค้าเดินต่อไปถึงไหน</span>
+              </span>
+            </p>
+          ) : (
+            <p className="kpi-meta-ads-problem-close">{t.problemClose}</p>
+          )}
+          <a href="#meta-ads-enquiry" className="kpi-button">
+            {locale === "th" ? (
+              <>
+                ให้ทีมดูเส้นทางลูกค้าจาก <span className="kpi-latin">Meta Ads</span>
+              </>
+            ) : (
+              t.problemCta
+            )}{" "}
+            <span aria-hidden="true">↗</span>
           </a>
         </div>
       </section>
 
-      <section className="kpi-section">
-        <h2 className="kpi-h2">{t.helpTitle}</h2>
-        <div className="kpi-grid-2 mt-10">
-          {t.help.map(([num, title, body]) => (
-            <article key={num} className="kpi-card relative overflow-hidden p-7">
-              <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-              <span className="kpi-latin text-sm font-black tracking-[.16em] text-[#0B6660]">{num}</span>
-              <h3 className="mt-5 text-xl font-extrabold text-[#3B3B3B]">{title}</h3>
-              <p className="mt-3 text-base leading-7 text-[#555555]">{body}</p>
-            </article>
-          ))}
-        </div>
-        <a href="#meta-ads-enquiry" className="kpi-button mt-10">
-          {t.cta} <ArrowUpRight className="h-4 w-4" />
+      <section className="kpi-section kpi-meta-ads-help">
+        <h2 className="kpi-h2">
+          {locale === "th" ? (
+            <>
+              เชื่อมโฆษณากับ<span className="kpi-meta-ads-help-em">เป้าหมายการขาย</span>ของโรงแรม
+            </>
+          ) : (
+            t.helpTitle
+          )}
+        </h2>
+        <ol className="kpi-meta-ads-help-steps">
+          {locale === "th" ? (
+            <>
+              <li>
+                <span className="kpi-latin kpi-meta-ads-help-num">01</span>
+                <h3>
+                  วาง<span className="kpi-meta-ads-help-em">เป้าหมายและกลุ่มลูกค้า</span>
+                </h3>
+                <p>
+                  ดูว่าโรงแรมต้องการเพิ่มการรับรู้
+                  <span className="kpi-meta-ads-help-br"> </span>
+                  เติมยอดในช่วงไหน
+                  <span className="kpi-meta-ads-help-br"> </span>
+                  หรือพาลูกค้าเข้าสู่ช่องทางจอง
+                </p>
+              </li>
+              <li>
+                <span className="kpi-latin kpi-meta-ads-help-num">02</span>
+                <h3>
+                  สื่อสาร<span className="kpi-meta-ads-help-em">จุดเด่นและข้อเสนอ</span>
+                </h3>
+                <p>
+                  นำห้องพัก ประสบการณ์
+                  <span className="kpi-meta-ads-help-br"> </span>
+                  และช่วงเวลาที่ต้องการขาย
+                  <span className="kpi-meta-ads-help-br"> </span>
+                  มาจับคู่กับข้อความและกลุ่มลูกค้าที่เหมาะสม
+                </p>
+              </li>
+              <li>
+                <span className="kpi-latin kpi-meta-ads-help-num">03</span>
+                <h3>
+                  ตรวจ<span className="kpi-meta-ads-help-em">เส้นทางหลังคลิก</span>
+                </h3>
+                <p>
+                  ดูว่าหลังจากเห็นโฆษณา
+                  <span className="kpi-meta-ads-help-br"> </span>
+                  ลูกค้าไปต่อที่เว็บไซต์ แชต
+                  <span className="kpi-meta-ads-help-br"> </span>
+                  หรือระบบจองได้สะดวกแค่ไหน
+                </p>
+              </li>
+              <li>
+                <span className="kpi-latin kpi-meta-ads-help-num">04</span>
+                <h3>ทบทวนผลและปรับแผน</h3>
+                <p>
+                  ดูทั้งผลโฆษณา คุณภาพคำถาม
+                  <span className="kpi-meta-ads-help-br"> </span>
+                  และ<span className="kpi-meta-ads-help-em">ยอดจองที่ตรวจสอบได้</span>
+                  <span className="kpi-meta-ads-help-br"> </span>
+                  เพื่อเลือกสิ่งที่ควรทำต่อ
+                </p>
+              </li>
+            </>
+          ) : (
+            t.help.map(([num, title, body]) => (
+              <li key={num}>
+                <span className="kpi-latin kpi-meta-ads-help-num">{num}</span>
+                <h3>{title}</h3>
+                <p>{body}</p>
+              </li>
+            ))
+          )}
+        </ol>
+        <a href="#meta-ads-enquiry" className="kpi-button">
+          {locale === "th" ? (
+            <>
+              ให้ทีมประเมินแนวทาง <span className="kpi-latin">Meta Ads</span>
+            </>
+          ) : (
+            t.cta
+          )}{" "}
+          <span aria-hidden="true">↗</span>
         </a>
       </section>
 
-      <section className="border-y border-[#E3E8EB] bg-white">
+      <section className="kpi-meta-ads-method border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section">
+          <p className="kpi-latin kpi-meta-ads-method-eyebrow">How we start</p>
           <h2 className="kpi-h2">{t.methodTitle}</h2>
-          <ol className="mt-10 grid gap-4">
-            {t.steps.map(([num, title, body]) => (
-              <li key={num} className="kpi-card flex gap-4 p-6 sm:items-start">
-                <span className="kpi-latin text-sm font-black tracking-[.14em] text-[#0B6660]">{num}</span>
-                <div>
-                  <h3 className="text-xl font-extrabold text-[#3B3B3B]">{title}</h3>
-                  <p className="mt-2 text-base leading-7 text-[#555555]">{body}</p>
-                </div>
-              </li>
-            ))}
+          <ol className="kpi-meta-ads-method-list">
+            {locale === "th"
+              ? thaiMethodSteps.map((step, index) => (
+                  <li key={step.num} className="kpi-meta-ads-method-step">
+                    <span className="kpi-latin kpi-meta-ads-method-num">{step.num}</span>
+                    <div className="kpi-meta-ads-method-copy">
+                      <p className="kpi-latin kpi-meta-ads-method-phase">
+                        {step.num} / {methodPhases[index]}
+                      </p>
+                      <h3>{step.title}</h3>
+                      <p className="kpi-meta-ads-method-body">
+                        {step.lines.map((line, lineIndex) => (
+                          <span key={line}>
+                            {lineIndex > 0 ? <span className="kpi-meta-ads-method-br"> </span> : null}
+                            {line}
+                          </span>
+                        ))}
+                      </p>
+                    </div>
+                  </li>
+                ))
+              : t.steps.map(([num, title, body], index) => (
+                  <li key={num} className="kpi-meta-ads-method-step">
+                    <span className="kpi-latin kpi-meta-ads-method-num">{num}</span>
+                    <div className="kpi-meta-ads-method-copy">
+                      <p className="kpi-latin kpi-meta-ads-method-phase">
+                        {num} / {methodPhases[index]}
+                      </p>
+                      <h3>{title}</h3>
+                      <p className="kpi-meta-ads-method-body">{body}</p>
+                    </div>
+                  </li>
+                ))}
           </ol>
         </div>
       </section>
@@ -376,39 +665,109 @@ export function MetaAdsView({ locale }: { locale: Locale }) {
       </section>
 
       <section className="border-t border-[#E3E8EB] bg-white">
-        <div className="kpi-section">
-          <h2 className="kpi-h2">{t.relatedTitle}</h2>
-        <div className="kpi-grid-3 mt-10">
-          {insights.map((post) => {
-            const href = existingHref(post.href, locale) ?? post.href;
-            return (
-              <article key={post.slug} className="kpi-card relative flex flex-col overflow-hidden p-7">
-                <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-                <p className="text-xs font-extrabold uppercase tracking-[.14em] text-[#0B6660]">{post.category[locale]}</p>
-                <h3 className="mt-4 text-xl font-extrabold leading-snug text-[#3B3B3B]">{post.title[locale]}</h3>
-                <Link href={href} className="mt-auto inline-flex items-center gap-2 pt-8 text-sm font-semibold text-[#0B6660]">
-                  {insightsUi.read} <ArrowUpRight className="h-4 w-4" />
+        <div className="kpi-section kpi-meta-ads-related">
+          <h2 className="kpi-h2">
+            {locale === "th" ? (
+              <>
+                <span className="kpi-meta-ads-related-line">เรื่องที่เกี่ยวข้องกับการวัดผล</span>
+                <span className="kpi-meta-ads-related-br"> </span>
+                <span className="kpi-meta-ads-related-line">เว็บไซต์ และการจองตรง</span>
+              </>
+            ) : (
+              t.relatedTitle
+            )}
+          </h2>
+          <div className="kpi-meta-ads-related-layout">
+            {featuredInsight ? (
+              <article className="kpi-meta-ads-related-featured">
+                <span className="kpi-meta-ads-related-accent" aria-hidden="true" />
+                <p className="kpi-meta-ads-related-kicker">{featuredInsight.category[locale]}</p>
+                <h3>
+                  {locale === "th" ? (
+                    <>
+                      วิเคราะห์เส้นทาง <span className="kpi-latin">Direct Booking</span> ของโรงแรม
+                    </>
+                  ) : (
+                    featuredInsight.title[locale]
+                  )}
+                </h3>
+                <Link
+                  href={existingHref(featuredInsight.href, locale) ?? featuredInsight.href}
+                  className="kpi-meta-ads-related-cta"
+                >
+                  {insightsUi.read} <ArrowUpRight aria-hidden="true" />
                 </Link>
               </article>
-            );
-          })}
-          <article className="kpi-card relative flex flex-col overflow-hidden p-7">
-            <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-            <h3 className="mt-3 text-xl font-extrabold text-[#3B3B3B]">{t.toolName}</h3>
-            <p className="mt-3 text-base leading-7 text-[#555555]">{t.toolBody}</p>
-            <Link href="/tools/hotel-searchability-check" className="mt-auto pt-8 text-sm font-semibold text-[#0B6660]">
-              {t.toolCta}
-            </Link>
-          </article>
-          <article className="kpi-card relative flex flex-col overflow-hidden p-7">
-            <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-            <h3 className="mt-3 text-xl font-extrabold text-[#3B3B3B]">{solutionNavLabel("/solutions/hotel-direct-bookings", locale)}</h3>
-            <p className="mt-3 text-base leading-7 text-[#555555]">{t.conversionBody}</p>
-            <Link href={conversionHref} className="mt-auto pt-8 text-sm font-semibold text-[#0B6660]">
-              {t.details}
-            </Link>
-          </article>
-        </div>
+            ) : null}
+            <div className="kpi-meta-ads-related-stack">
+              {seoInsight ? (
+                <article>
+                  <p className="kpi-meta-ads-related-kicker">
+                    {locale === "th" ? (
+                      <>
+                        <span className="kpi-latin">SEO</span> และ <span className="kpi-latin">LOCAL SEARCH</span>
+                      </>
+                    ) : (
+                      seoInsight.category[locale]
+                    )}
+                  </p>
+                  <h3>
+                    {locale === "th" ? (
+                      <>
+                        <span className="kpi-latin">SEO vs SEM</span> สำหรับโรงแรม:
+                        <span className="kpi-meta-ads-related-br"> </span>
+                        ควรเริ่มจากอะไรและเลือกอย่างไร?
+                      </>
+                    ) : (
+                      seoInsight.title[locale]
+                    )}
+                  </h3>
+                  <Link
+                    href={existingHref(seoInsight.href, locale) ?? seoInsight.href}
+                    className="kpi-meta-ads-related-cta"
+                  >
+                    {insightsUi.read} <ArrowUpRight aria-hidden="true" />
+                  </Link>
+                </article>
+              ) : null}
+              <article>
+                <h3>{t.toolName}</h3>
+                <p>
+                  {locale === "th" ? (
+                    <>
+                      ดูว่าหน้าเว็บพร้อมให้ลูกค้าจากโฆษณา
+                      <span className="kpi-meta-ads-related-br"> </span>
+                      หาข้อมูลและเดินทางไปสอบถามหรือจองต่อหรือไม่
+                    </>
+                  ) : (
+                    t.toolBody
+                  )}
+                </p>
+                <Link href="/tools/hotel-searchability-check" className="kpi-meta-ads-related-cta">
+                  {t.toolCta} <ArrowUpRight aria-hidden="true" />
+                </Link>
+              </article>
+              <article>
+                <h3>{t.conversionTitle}</h3>
+                <p>
+                  {locale === "th" ? (
+                    <>
+                      เมื่อโฆษณาพาคนมาแล้ว
+                      <span className="kpi-meta-ads-related-br"> </span>
+                      เส้นทางจากหน้าเว็บไปสู่การสอบถามหรือระบบจอง
+                      <span className="kpi-meta-ads-related-br"> </span>
+                      ต้องชัดพอให้ลูกค้าเดินต่อได้
+                    </>
+                  ) : (
+                    t.conversionBody
+                  )}
+                </p>
+                <Link href={conversionHref} className="kpi-meta-ads-related-cta">
+                  {t.details} <ArrowUpRight aria-hidden="true" />
+                </Link>
+              </article>
+            </div>
+          </div>
         </div>
       </section>
 

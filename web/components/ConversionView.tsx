@@ -1,14 +1,21 @@
 import Link from "next/link";
-import { ArrowUpRight } from "@/components/Icons";
 import { ConversionEnquiry } from "@/components/ConversionEnquiry";
 import { ConversionStickyCta } from "@/components/ConversionStickyCta";
-import { PageHero } from "@/components/PageHero";
 import { SiteShell } from "@/components/SiteShell";
 import { solutionNavLabel } from "@/lib/nav";
 import { existingHref, localizePath, type Locale } from "@/lib/seo";
 
 const googleIpsos = "https://business.google.com/in/think/consumer-insights/insights-apac-traveler-behaviors/";
 const thaiStudy = "https://so03.tci-thaijo.org/index.php/art/article/view/288881";
+
+const journeySteps = [
+  ["01", "Discover"],
+  ["02", "Understand"],
+  ["03", "Trust"],
+  ["04", "Book Direct"],
+] as const;
+
+const methodLabels = ["REVIEW", "PRIORITIZE", "ADJUST", "MEASURE"] as const;
 
 const copy = {
   th: {
@@ -287,133 +294,201 @@ export function ConversionView({ locale }: { locale: Locale }) {
 
   return (
     <SiteShell locale={locale} route={localizePath("/solutions/hotel-direct-bookings", locale)}>
-      <PageHero>
-        <nav aria-label="Breadcrumb" className="text-sm text-white/70">
-          <ol className="flex flex-wrap items-center gap-2">
-            <li>
-              <Link href={solutions} className="hover:text-white">
-                {t.crumb}
-              </Link>
-            </li>
-            <li className="flex items-center gap-2">
-              <span aria-hidden="true">/</span>
-              <span className="text-white">{solutionNavLabel("/solutions/hotel-direct-bookings", locale)}</span>
-            </li>
-          </ol>
-        </nav>
-        <p className="kpi-kicker mt-5 text-[#F2F8E2]">{t.eyebrow}</p>
-        <h1 className="kpi-h1 mt-5">{t.title}</h1>
-        <p className="kpi-lead mt-5 text-white/72">{t.lead}</p>
-        <p className="mt-4 max-w-3xl text-base leading-8 text-white/64">{t.leadClose}</p>
-        <div className="kpi-actions">
-          <a href="#conversion-enquiry" className="kpi-button">
-            {t.cta} <ArrowUpRight className="h-4 w-4" />
-          </a>
-          <Link href={solutions} className="kpi-button-ghost">
-            {t.secondary}
-          </Link>
-        </div>
-        <p className="mt-4 max-w-xl text-sm leading-6 text-white/64">{t.underCta}</p>
-      </PageHero>
-
-      <section className="kpi-section">
-        <div className="kpi-split">
-          <div>
-            <h2 className="kpi-h2">{t.whyTitle}</h2>
-            <p className="mt-6 max-w-2xl text-base leading-8 text-[#555555]">{t.whyBody}</p>
-            <p className="mt-5 max-w-2xl text-base leading-8 text-[#3B3B3B]">{t.whyStudy}</p>
-            <p className="mt-5 max-w-2xl text-sm leading-7 text-[#555555]">{t.whyNote}</p>
-            <p className="mt-5 max-w-2xl text-sm leading-7 text-[#555555]">
-              {t.sourceLabel}:{" "}
-              <a href={googleIpsos} target="_blank" rel="noreferrer" className="font-semibold text-[#0B6660]">
-                {t.sourceGoogle}
-              </a>
-              {" · "}
-              <a href={thaiStudy} target="_blank" rel="noreferrer" className="font-semibold text-[#0B6660]">
-                {t.sourceThai}
-              </a>
-            </p>
+      <section className="kpi-hero kpi-home-hero-section kpi-conversion-hero">
+        <div className="kpi-wrap">
+          <nav aria-label="Breadcrumb" className="kpi-conversion-hero-crumb">
+            <ol>
+              <li>
+                <Link href={solutions}>{t.crumb}</Link>
+              </li>
+              <li>
+                <span aria-hidden="true">/</span>
+                <span>{solutionNavLabel("/solutions/hotel-direct-bookings", locale)}</span>
+              </li>
+            </ol>
+          </nav>
+          <div className="kpi-home-hero">
+            <div className="kpi-home-hero-copy">
+              <p className="kpi-home-eyebrow kpi-latin">{t.eyebrow}</p>
+              <h1 className="kpi-h1 kpi-home-h1">
+                {locale === "th" ? (
+                  <>
+                    <span className="kpi-home-h1-lead">
+                      มีคนเข้าเว็บไซต์แล้ว แต่เขา<span className="kpi-home-accent">หยุดก่อนจอง</span>
+                    </span>
+                    <span className="kpi-home-h1-rest">ตรงไหน?</span>
+                  </>
+                ) : (
+                  t.title
+                )}
+              </h1>
+              <p className="kpi-lead kpi-home-lead">{t.lead}</p>
+              <p className="kpi-conversion-lead-close">{t.leadClose}</p>
+              <div className="kpi-actions">
+                <a href="#conversion-enquiry" className="kpi-button">
+                  {t.cta} <span aria-hidden="true">↗</span>
+                </a>
+                <Link href={solutions} className="kpi-button-ghost">
+                  {t.secondary}
+                </Link>
+              </div>
+              <p className="kpi-conversion-hero-note">{t.underCta}</p>
+              <p className="kpi-home-trust kpi-conversion-journey">
+                {journeySteps.map(([num, step]) => (
+                  <span key={step}>
+                    <span className="kpi-latin">
+                      {num} {step}
+                    </span>
+                  </span>
+                ))}
+              </p>
+            </div>
+            <div className="kpi-hero-visual kpi-home-photo">
+              <img src="/media/hotel-website-hero-laptop.jpg" alt={t.photoAlt} width={1200} height={900} />
+            </div>
           </div>
-          <figure className="kpi-home-photo">
-            <img src="/media/kpi-grow-demand_24299cd0.jpg" alt={t.photoAlt} width={1200} height={900} />
+        </div>
+      </section>
+
+      <section className="kpi-section kpi-conversion-why">
+        <div className="kpi-conversion-why-grid">
+          <div className="kpi-conversion-why-copy">
+            <h2 className="kpi-h2">{t.whyTitle}</h2>
+            {locale === "th" ? (
+              <>
+                <div className="kpi-conversion-why-findings">
+                  <article className="kpi-conversion-why-finding">
+                    <p className="kpi-conversion-why-stat">
+                      <span className="kpi-conversion-why-stat-label">เกือบ </span>
+                      <span className="kpi-latin kpi-conversion-why-number">4</span>
+                      <span className="kpi-conversion-why-stat-mid"> ใน </span>
+                      <span className="kpi-latin kpi-conversion-why-number">5</span>
+                    </p>
+                    <p className="kpi-conversion-why-finding-body">
+                      ผู้เดินทางที่สำรวจในไทยและอินเดียเปลี่ยนตัวเลือกด้านการเดินทางก่อนจอง
+                    </p>
+                  </article>
+                  <article className="kpi-conversion-why-finding">
+                    <h3>ราคาและเงื่อนไขมีผลร่วมกัน</h3>
+                    <p className="kpi-conversion-why-finding-body">
+                      หากหน้าเว็บแสดงราคาแต่ลูกค้าต้องค้นหาเงื่อนไขเอง ความลังเลอาจเกิดในจังหวะสำคัญ
+                    </p>
+                  </article>
+                </div>
+                <p className="kpi-conversion-why-takeaway">
+                  <span>เว็บไซต์จึงมีหน้าที่มากกว่าบอกว่ามีห้องพักอะไร</span>
+                  <span className="kpi-conversion-why-takeaway-strong">
+                    แต่ต้องช่วยให้ลูกค้าเปรียบเทียบและมั่นใจในตัวเลือกนั้น
+                  </span>
+                </p>
+                <p className="kpi-conversion-why-note">{t.whyNote}</p>
+              </>
+            ) : (
+              <>
+                <p className="kpi-conversion-why-fallback">{t.whyBody}</p>
+                <p className="kpi-conversion-why-fallback">{t.whyStudy}</p>
+                <p className="kpi-conversion-why-note">{t.whyNote}</p>
+              </>
+            )}
+            <div className="kpi-conversion-why-sources">
+              <p>
+                <span className="kpi-latin">Source:</span>{" "}
+                <a href={googleIpsos} target="_blank" rel="noreferrer">
+                  Google / Ipsos
+                </a>
+              </p>
+              <p>
+                <span className="kpi-latin">Source:</span>{" "}
+                <a href={thaiStudy} target="_blank" rel="noreferrer">
+                  Thailand hotel booking cancellation research
+                </a>
+              </p>
+            </div>
+          </div>
+          <figure className="kpi-conversion-why-media">
+            <img src="/media/hotel-website-why-phone.jpg" alt={t.photoAlt} width={900} height={1100} />
           </figure>
         </div>
       </section>
 
-      <section className="border-y border-[#E3E8EB] bg-white">
+      <section className="kpi-conversion-stops border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section">
           <h2 className="kpi-h2">{t.stopTitle}</h2>
-          <div className="mt-10 grid gap-4">
+          <ol className="kpi-conversion-stops-list">
             {t.stops.map((item, index) => (
-              <article key={item} className="kpi-card flex gap-4 p-6">
-                <span className="kpi-latin text-sm font-black tracking-[.14em] text-[#0B6660]">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <p className="text-base leading-7 text-[#555555]">{item}</p>
-              </article>
+              <li key={item} className="kpi-conversion-stops-item">
+                <span className="kpi-latin kpi-conversion-stops-num">{String(index + 1).padStart(2, "0")}</span>
+                <p>{item}</p>
+              </li>
             ))}
+          </ol>
+        </div>
+      </section>
+
+      <section className="kpi-section kpi-conversion-help">
+        <h2 className="kpi-h2">{t.helpTitle}</h2>
+        <ol className="kpi-conversion-help-list">
+          {t.help.map(([num, title, body]) => (
+            <li key={num} className={`kpi-conversion-help-item${num === "05" ? " is-outcome" : ""}`}>
+              <span className="kpi-latin kpi-conversion-help-num">{num}</span>
+              <div className="kpi-conversion-help-copy">
+                <h3>{title}</h3>
+                <p>{body}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+        <a href="#conversion-enquiry" className="kpi-button kpi-conversion-help-cta">
+          {t.cta} <span aria-hidden="true">↗</span>
+        </a>
+      </section>
+
+      <section className="kpi-conversion-vs border-y border-[#E3E8EB] bg-white">
+        <div className="kpi-section">
+          <h2 className="kpi-h2">{t.vsTitle}</h2>
+          <div className="kpi-conversion-vs-grid">
+            <p className="kpi-conversion-vs-body">{t.vsBody}</p>
+            <p className="kpi-conversion-vs-close">{t.vsClose}</p>
           </div>
         </div>
       </section>
 
-      <section className="kpi-section">
-        <h2 className="kpi-h2">{t.helpTitle}</h2>
-        <div className="kpi-grid-2 mt-10">
-          {t.help.map(([num, title, body]) => (
-            <article key={num} className="kpi-card relative overflow-hidden p-7">
-              <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-              <span className="kpi-latin text-sm font-black tracking-[.16em] text-[#0B6660]">{num}</span>
-              <h3 className="mt-5 text-xl font-extrabold text-[#3B3B3B]">{title}</h3>
-              <p className="mt-3 text-base leading-7 text-[#555555]">{body}</p>
-            </article>
-          ))}
-        </div>
-        <a href="#conversion-enquiry" className="kpi-button mt-10">
-          {t.cta} <ArrowUpRight className="h-4 w-4" />
-        </a>
-      </section>
-
-      <section className="border-y border-[#E3E8EB] bg-white">
-        <div className="kpi-section">
-          <h2 className="kpi-h2">{t.vsTitle}</h2>
-          <p className="mt-6 max-w-3xl text-base leading-8 text-[#555555]">{t.vsBody}</p>
-          <p className="mt-5 max-w-3xl text-base leading-8 text-[#3B3B3B]">{t.vsClose}</p>
-        </div>
-      </section>
-
-      <section className="kpi-section">
+      <section className="kpi-section kpi-conversion-measure">
         <h2 className="kpi-h2">{t.measureTitle}</h2>
-        <div className="mt-10 overflow-x-auto rounded-[1.5rem] border border-[#E3E8EB] bg-white">
-          <table className="w-full min-w-[36rem] border-collapse text-left">
-            <thead className="bg-[#F2F8E2]">
+        <div className="kpi-conversion-table-wrap">
+          <table className="kpi-conversion-table">
+            <thead>
               <tr>
-                <th className="px-6 py-4 text-sm font-extrabold text-[#0B1F33]">{t.tableStep}</th>
-                <th className="px-6 py-4 text-sm font-extrabold text-[#0B1F33]">{t.tableLook}</th>
+                <th scope="col">{t.tableStep}</th>
+                <th scope="col">{t.tableLook}</th>
               </tr>
             </thead>
             <tbody>
-              {t.stages.map(([step, look], index) => (
-                <tr key={step} className={index % 2 ? "bg-[#F4F4F4]" : "bg-white"}>
-                  <th className="px-6 py-5 align-top text-base font-extrabold text-[#3B3B3B]">{step}</th>
-                  <td className="px-6 py-5 text-base leading-7 text-[#555555]">{look}</td>
+              {t.stages.map(([step, look]) => (
+                <tr key={step}>
+                  <th scope="row">{step}</th>
+                  <td>{look}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <p className="mt-6 max-w-3xl text-base leading-8 text-[#3B3B3B]">{t.measureNote}</p>
+        <p className="kpi-conversion-measure-note">{t.measureNote}</p>
       </section>
 
-      <section className="border-y border-[#E3E8EB] bg-white">
+      <section className="kpi-conversion-method border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section">
           <h2 className="kpi-h2">{t.methodTitle}</h2>
-          <ol className="mt-10 grid gap-4">
-            {t.steps.map(([num, title, body]) => (
-              <li key={num} className="kpi-card flex gap-4 p-6 sm:items-start">
-                <span className="kpi-latin text-sm font-black tracking-[.14em] text-[#0B6660]">{num}</span>
-                <div>
-                  <h3 className="text-xl font-extrabold text-[#3B3B3B]">{title}</h3>
-                  <p className="mt-2 text-base leading-7 text-[#555555]">{body}</p>
+          <ol className="kpi-conversion-method-list">
+            {t.steps.map(([num, title, body], index) => (
+              <li key={num} className="kpi-conversion-method-item">
+                <div className="kpi-conversion-method-meta">
+                  <span className="kpi-latin kpi-conversion-method-num">{num}</span>
+                  <span className="kpi-latin kpi-conversion-method-label">{methodLabels[index]}</span>
+                </div>
+                <div className="kpi-conversion-method-copy">
+                  <h3>{title}</h3>
+                  <p>{body}</p>
                 </div>
               </li>
             ))}
@@ -422,29 +497,32 @@ export function ConversionView({ locale }: { locale: Locale }) {
       </section>
 
       {toolHref || designHref ? (
-        <section className="kpi-section">
-          <h2 className="kpi-h2">{t.relatedTitle}</h2>
-          <div className="kpi-grid-2 mt-10">
-            {toolHref ? (
-              <article className="kpi-card relative flex flex-col overflow-hidden p-7">
-                <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-                <h3 className="mt-3 text-xl font-extrabold text-[#3B3B3B]">{t.toolName}</h3>
-                <p className="mt-3 text-base leading-7 text-[#555555]">{t.toolBody}</p>
-                <Link href={toolHref} className="mt-auto pt-8 text-sm font-semibold text-[#0B6660]">
-                  {t.toolCta}
-                </Link>
-              </article>
-            ) : null}
-            {designHref ? (
-              <article className="kpi-card relative flex flex-col overflow-hidden p-7">
-                <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-                <h3 className="mt-3 text-xl font-extrabold text-[#3B3B3B]">{t.designTitle}</h3>
-                <p className="mt-3 text-base leading-7 text-[#555555]">{t.designBody}</p>
-                <Link href={designHref} className="mt-auto pt-8 text-sm font-semibold text-[#0B6660]">
-                  {t.details}
-                </Link>
-              </article>
-            ) : null}
+        <section className="kpi-conversion-related">
+          <div className="kpi-section">
+            <h2 className="kpi-h2">{t.relatedTitle}</h2>
+            <div className="kpi-conversion-related-layout">
+              {toolHref ? (
+                <article className="kpi-conversion-related-primary">
+                  <span className="kpi-conversion-related-accent" aria-hidden="true" />
+                  <h3>{t.toolName}</h3>
+                  <p>{t.toolBody}</p>
+                  <Link href={toolHref} className="kpi-conversion-related-cta">
+                    {t.toolCta}
+                    <span aria-hidden="true">↗</span>
+                  </Link>
+                </article>
+              ) : null}
+              {designHref ? (
+                <article className="kpi-conversion-related-secondary">
+                  <h3>{t.designTitle}</h3>
+                  <p>{t.designBody}</p>
+                  <Link href={designHref} className="kpi-conversion-related-cta">
+                    {t.details}
+                    <span aria-hidden="true">↗</span>
+                  </Link>
+                </article>
+              ) : null}
+            </div>
           </div>
         </section>
       ) : null}

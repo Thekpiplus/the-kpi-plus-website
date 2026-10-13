@@ -1,19 +1,19 @@
 import Link from "next/link";
-import { ArrowUpRight } from "@/components/Icons";
 import { IndependentHotelEnquiry } from "@/components/IndependentHotelEnquiry";
 import { IndependentHotelStickyCta } from "@/components/IndependentHotelStickyCta";
-import { PageHero } from "@/components/PageHero";
 import { SiteShell } from "@/components/SiteShell";
 import { solutionNavLabel } from "@/lib/nav";
 import { localizePath, type Locale } from "@/lib/seo";
 
-const photo = "/media/kpi-grow-revenue_f786a5a5.jpg";
+const heroPhoto = "/media/b2b-hero-meeting.jpg";
+const needPhoto = "/media/reservations-hero-desk.jpg";
+
+const methodLabels = ["REVIEW", "ALIGN", "START"] as const;
 
 const copy = {
   th: {
     crumb: "โซลูชัน",
-    crumbCurrent: "บริหารโรงแรมอิสระ",
-    eyebrow: "บริหารโรงแรมอิสระ",
+    eyebrow: "Independent Hotel Management",
     title: "บริหารโรงแรมอิสระให้เดินงานได้จริง และเติบโตอย่างมีทิศทาง",
     lead: "โรงแรมที่ดีต้องมีมากกว่าห้องพักที่พร้อมขาย ต้องมีทีมที่เหมาะสม ระบบงานที่ชัดเจน การบริการที่สม่ำเสมอ และแผนสร้างรายได้ที่สอดคล้องกับตลาด",
     leadClose:
@@ -21,7 +21,8 @@ const copy = {
     start: "เราเริ่มจากการพูดคุย เพื่อให้เข้าใจว่าโรงแรมของคุณมีอะไรอยู่แล้ว ต้องการความช่วยเหลือส่วนไหน และควรทำงานร่วมกันอย่างไร",
     cta: "นัดพูดคุยเรื่องโรงแรมของคุณ",
     underCta: "ไม่ต้องเตรียมขอบเขตงานไว้ก่อน เล่าให้เราฟังเกี่ยวกับโรงแรมและเป้าหมาย",
-    photoAlt: "เจ้าของโรงแรมอิสระทบทวนทีม ระบบงาน และแผนรายได้",
+    photoAlt: "เจ้าของและทีมที่ปรึกษาหารือแนวทางบริหารโรงแรม",
+    needPhotoAlt: "ผู้บริหารโรงแรมทบทวนงานดำเนินงานและแผนการทำงาน",
     needTitle: "โรงแรมของคุณต้องการความช่วยเหลือแบบไหน?",
     needLead:
       "บางโรงแรมมีทีมงานพร้อม แต่ต้องการผู้ช่วยวางกลยุทธ์และติดตามผล บางโรงแรมกำลังเปลี่ยนผ่านทีมบริหาร ขณะที่บางแห่งต้องการเริ่มวางระบบใหม่ตั้งแต่ต้น",
@@ -56,7 +57,6 @@ const copy = {
   },
   en: {
     crumb: "Solutions",
-    crumbCurrent: "Independent Hotel Management",
     eyebrow: "Independent Hotel Management",
     title: "Run an independent hotel so the work moves, and growth has a direction",
     lead: "A good hotel needs more than rooms that are ready to sell. It needs the right team, a clear way of working, consistent service, and a revenue plan that fits the market.",
@@ -65,7 +65,8 @@ const copy = {
     start: "We start with a conversation, so we understand what the hotel already has, which part needs help, and how we should work together.",
     cta: "Book a conversation about your hotel",
     underCta: "You do not need a scope in advance. Tell us about the hotel and the goal.",
-    photoAlt: "An independent hotel owner reviewing the team, the way of working, and the revenue plan",
+    photoAlt: "An owner and advisors discussing how to run the hotel",
+    needPhotoAlt: "A hotel manager reviewing operations and the work plan",
     needTitle: "What kind of help does the hotel need?",
     needLead:
       "Some hotels already have a team, but need someone to set the strategy and follow the result. Some are changing the management team. Others need to set a new way of working from the start.",
@@ -100,8 +101,7 @@ const copy = {
   },
   ru: {
     crumb: "Решения",
-    crumbCurrent: "Управление независимым отелем",
-    eyebrow: "Управление независимым отелем",
+    eyebrow: "Independent Hotel Management",
     title: "Управлять независимым отелем так, чтобы работа шла и рост имел направление",
     lead: "Хорошему отелю нужно больше, чем номера, готовые к продаже. Нужна подходящая команда, ясный способ работы, стабильный сервис и план дохода, который соответствует рынку.",
     leadClose:
@@ -109,7 +109,8 @@ const copy = {
     start: "Мы начинаем с разговора, чтобы понять, что у отеля уже есть, какая часть нужна помощь и как нам работать вместе.",
     cta: "Назначить разговор об отеле",
     underCta: "Готовить объём работы заранее не нужно. Расскажите об отеле и цели.",
-    photoAlt: "Владелец независимого отеля разбирает команду, способ работы и план дохода",
+    photoAlt: "Владелец и консультанты обсуждают способ управления отелем",
+    needPhotoAlt: "Управляющий отеля разбирает операции и план работы",
     needTitle: "Какая помощь нужна отелю?",
     needLead:
       "У одних отелей команда уже есть, но нужен человек, который выстроит стратегию и будет следить за результатом. Другие меняют управляющую команду. Третьим нужно выстроить систему работы с нуля.",
@@ -144,8 +145,7 @@ const copy = {
   },
   zh: {
     crumb: "方案",
-    crumbCurrent: "獨立飯店管理",
-    eyebrow: "獨立飯店管理",
+    eyebrow: "Independent Hotel Management",
     title: "讓獨立飯店真正把工作跑起來，成長也有方向",
     lead: "一間好飯店需要的不只是準備好可賣的客房，還要有合適的團隊、清楚的作業系統、穩定的服務，以及符合市場的收益計畫。",
     leadClose:
@@ -153,7 +153,8 @@ const copy = {
     start: "我們從對談開始，先了解飯店已有什麼、需要協助哪一部分，以及雙方該如何合作。",
     cta: "預約談你的飯店",
     underCta: "不必先準備工作範圍。告訴我們飯店情況與目標即可。",
-    photoAlt: "獨立飯店業主檢視團隊、作業系統與收益計畫",
+    photoAlt: "業主與顧問討論飯店管理方式",
+    needPhotoAlt: "飯店管理者檢視營運與工作計畫",
     needTitle: "你的飯店需要哪一種協助？",
     needLead:
       "有的飯店已有團隊，但需要有人協助訂策略並追蹤結果；有的正在轉換管理團隊；也有的需要從頭建立新的作業系統。",
@@ -194,97 +195,120 @@ export function IndependentHotelView({ locale }: { locale: Locale }) {
 
   return (
     <SiteShell locale={locale} route={localizePath("/solutions/independent-hotel-management", locale)}>
-      <PageHero>
-        <nav aria-label="Breadcrumb" className="text-sm text-white/70">
-          <ol className="flex flex-wrap items-center gap-2">
-            <li>
-              <Link href={solutions} className="hover:text-white">
-                {t.crumb}
-              </Link>
-            </li>
-            <li className="flex items-center gap-2">
-              <span aria-hidden="true">/</span>
-              <span className="text-white">{solutionNavLabel("/solutions/independent-hotel-management", locale)}</span>
-            </li>
-          </ol>
-        </nav>
-        <p className="kpi-kicker mt-5 text-[#F2F8E2]">{t.eyebrow}</p>
-        <h1 className="kpi-h1 mt-5">{t.title}</h1>
-        <p className="kpi-lead mt-5 text-white/72">{t.lead}</p>
-        <p className="mt-4 max-w-3xl text-base leading-8 text-white/64">{t.leadClose}</p>
-        <p className="mt-4 max-w-3xl text-base leading-8 text-white/64">{t.start}</p>
-        <div className="kpi-actions">
-          <a href="#independent-hotel-enquiry" className="kpi-button">
-            {t.cta} <ArrowUpRight className="h-4 w-4" />
-          </a>
-        </div>
-        <p className="mt-4 max-w-xl text-sm leading-6 text-white/64">{t.underCta}</p>
-      </PageHero>
-
-      <section className="kpi-section">
-        <div className="kpi-split">
-          <div>
-            <h2 className="kpi-h2">{t.needTitle}</h2>
-            <p className="mt-6 max-w-2xl text-base leading-8 text-[#555555]">{t.needLead}</p>
-            <p className="mt-5 max-w-2xl text-base leading-8 text-[#3B3B3B]">{t.needClose}</p>
+      <section className="kpi-hero kpi-home-hero-section kpi-independent-hero">
+        <div className="kpi-wrap">
+          <nav aria-label="Breadcrumb" className="kpi-independent-hero-crumb">
+            <ol>
+              <li>
+                <Link href={solutions}>{t.crumb}</Link>
+              </li>
+              <li>
+                <span aria-hidden="true">/</span>
+                <span>{solutionNavLabel("/solutions/independent-hotel-management", locale)}</span>
+              </li>
+            </ol>
+          </nav>
+          <div className="kpi-home-hero">
+            <div className="kpi-home-hero-copy">
+              <p className="kpi-home-eyebrow kpi-latin">{t.eyebrow}</p>
+              <h1 className="kpi-h1 kpi-home-h1">
+                {locale === "th" ? (
+                  <>
+                    <span className="kpi-home-h1-lead">
+                      บริหารโรงแรมอิสระให้<span className="kpi-home-accent">เดินงานได้จริง</span>
+                    </span>
+                    <span className="kpi-home-h1-rest">และเติบโตอย่างมีทิศทาง</span>
+                  </>
+                ) : (
+                  t.title
+                )}
+              </h1>
+              <p className="kpi-lead kpi-home-lead">{t.lead}</p>
+              <p className="kpi-independent-lead-close">{t.leadClose}</p>
+              <p className="kpi-independent-lead-start">{t.start}</p>
+              <div className="kpi-actions">
+                <a href="#independent-hotel-enquiry" className="kpi-button">
+                  {t.cta} <span aria-hidden="true">↗</span>
+                </a>
+                <Link href={solutions} className="kpi-button-ghost">
+                  {locale === "th" ? "ดูโซลูชันทั้งหมด" : locale === "zh" ? "查看全部方案" : locale === "ru" ? "Все решения" : "All solutions"}
+                </Link>
+              </div>
+              <p className="kpi-independent-hero-note">{t.underCta}</p>
+            </div>
+            <div className="kpi-hero-visual kpi-home-photo">
+              <img src={heroPhoto} alt={t.photoAlt} width={1200} height={900} />
+            </div>
           </div>
-          <figure className="kpi-home-photo">
-            <img src={photo} alt={t.photoAlt} width={1200} height={900} />
+        </div>
+      </section>
+
+      <section className="kpi-section kpi-independent-need">
+        <div className="kpi-independent-need-grid">
+          <div className="kpi-independent-need-copy">
+            <h2 className="kpi-h2">{t.needTitle}</h2>
+            <p className="kpi-independent-need-lead">{t.needLead}</p>
+            <p className="kpi-independent-need-close">{t.needClose}</p>
+          </div>
+          <figure className="kpi-independent-need-media">
+            <img src={needPhoto} alt={t.needPhotoAlt} width={1200} height={900} />
           </figure>
         </div>
       </section>
 
-      <section className="border-y border-[#E3E8EB] bg-white">
+      <section className="kpi-independent-help border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section">
           <h2 className="kpi-h2">{t.helpTitle}</h2>
-          <div className="kpi-grid-2 mt-10">
+          <ol className="kpi-independent-help-list">
             {t.help.map(([num, title, body]) => (
-              <article key={num} className="kpi-card relative overflow-hidden p-7">
-                <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-                <span className="kpi-latin text-sm font-black tracking-[.16em] text-[#0B6660]">{num}</span>
-                <h3 className="mt-5 text-xl font-extrabold text-[#3B3B3B]">{title}</h3>
-                <p className="mt-3 text-base leading-7 text-[#555555]">{body}</p>
-              </article>
+              <li key={num} className="kpi-independent-help-item">
+                <span className="kpi-latin kpi-independent-help-num">{num}</span>
+                <div className="kpi-independent-help-copy">
+                  <h3>{title}</h3>
+                  <p>{body}</p>
+                </div>
+              </li>
             ))}
-          </div>
+          </ol>
         </div>
       </section>
 
-      <section className="kpi-section">
+      <section className="kpi-section kpi-independent-method">
         <h2 className="kpi-h2">{t.methodTitle}</h2>
-        <ol className="mt-10 grid gap-4">
-          {t.steps.map(([num, title, body]) => (
-            <li key={num} className="kpi-card flex gap-4 p-6 sm:items-start">
-              <span className="kpi-latin text-sm font-black tracking-[.14em] text-[#0B6660]">{num}</span>
-              <div>
-                <h3 className="text-xl font-extrabold text-[#3B3B3B]">{title}</h3>
-                <p className="mt-2 text-base leading-7 text-[#555555]">{body}</p>
+        <ol className="kpi-independent-method-list">
+          {t.steps.map(([num, title, body], index) => (
+            <li key={num} className="kpi-independent-method-item">
+              <div className="kpi-independent-method-meta">
+                <span className="kpi-latin kpi-independent-method-num">{num}</span>
+                <span className="kpi-latin kpi-independent-method-label">{methodLabels[index]}</span>
+              </div>
+              <div className="kpi-independent-method-copy">
+                <h3>{title}</h3>
+                <p>{body}</p>
               </div>
             </li>
           ))}
         </ol>
       </section>
 
-      <section className="border-y border-[#E3E8EB] bg-white">
+      <section className="kpi-independent-fit border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section">
           <h2 className="kpi-h2">{t.fitTitle}</h2>
-          <div className="mt-8 grid gap-4">
+          <ol className="kpi-independent-fit-list">
             {t.fit.map((item, index) => (
-              <article key={item} className="kpi-card flex gap-4 p-6">
-                <span className="kpi-latin text-sm font-black tracking-[.14em] text-[#0B6660]">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <p className="text-base leading-7 text-[#555555]">{item}</p>
-              </article>
+              <li key={item} className="kpi-independent-fit-item">
+                <span className="kpi-latin kpi-independent-fit-num">{String(index + 1).padStart(2, "0")}</span>
+                <p>{item}</p>
+              </li>
             ))}
-          </div>
-          <div className="mt-10 max-w-3xl rounded-[1.5rem] border border-[#E3E8EB] bg-[#F4F4F4] p-6 sm:p-8">
-            <h3 className="text-xl font-extrabold text-[#3B3B3B]">{t.closerTitle}</h3>
-            <p className="mt-4 text-base leading-8 text-[#555555]">{t.closerBody}</p>
-            <a href="#independent-hotel-enquiry" className="kpi-button mt-6">
-              {t.closerCta} <ArrowUpRight className="h-4 w-4" />
+          </ol>
+          <aside className="kpi-independent-closer">
+            <h3>{t.closerTitle}</h3>
+            <p>{t.closerBody}</p>
+            <a href="#independent-hotel-enquiry" className="kpi-button kpi-independent-closer-cta">
+              {t.closerCta} <span aria-hidden="true">↗</span>
             </a>
-          </div>
+          </aside>
         </div>
       </section>
 

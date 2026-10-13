@@ -2,13 +2,120 @@ import Link from "next/link";
 import { ArrowUpRight } from "@/components/Icons";
 import { SeoLocalEnquiry } from "@/components/SeoLocalEnquiry";
 import { SeoLocalStickyCta } from "@/components/SeoLocalStickyCta";
-import { PageHero } from "@/components/PageHero";
 import { SiteShell } from "@/components/SiteShell";
 import { insightPosts, insightsIndexCopy } from "@/lib/insights";
 import { solutionNavLabel } from "@/lib/nav";
 import { existingHref, localizePath, type Locale } from "@/lib/seo";
 
 const relatedInsightHrefs = ["/insights/seo-vs-sem-for-hotels-which-one-should-you-focus-on"] as const;
+
+const methodPhases = ["Audit", "Review", "Prioritize", "Track"] as const;
+
+const thaiMethodSteps = [
+  {
+    num: "01",
+    title: "ดูการค้นพบปัจจุบัน",
+    lines: [
+      "ตรวจเว็บไซต์ Google Search Console",
+      "และ Google Business Profile",
+      "ดูว่าธุรกิจมีข้อมูลอะไรอยู่แล้ว",
+      "และมีสิทธิ์เข้าถึงระบบใดบ้าง",
+    ],
+  },
+  {
+    num: "02",
+    title: "ตรวจข้อมูลที่ลูกค้าใช้ตัดสินใจ",
+    lines: ["ดูบริการ ทำเล ราคา เวลาเปิด", "รูปภาพ รีวิว และช่องทางติดต่อหรือจอง"],
+  },
+  {
+    num: "03",
+    title: "จัดลำดับสิ่งที่ต้องแก้",
+    lines: ["แยก Quick Wins", "ออกจากงานเนื้อหา เว็บไซต์", "และข้อมูลที่ต้องทำต่อเนื่อง"],
+  },
+  {
+    num: "04",
+    title: "ติดตามการเปลี่ยนแปลง",
+    lines: ["ดูการค้นพบ การเข้าชมเว็บไซต์", "การโทร ขอเส้นทาง", "และการสอบถามหรือจองที่ตรวจสอบได้"],
+  },
+] as const;
+
+const thaiMeasureGroups = [
+  {
+    num: "01",
+    title: "Website Search Performance",
+    introLines: ["ดู:"] as const,
+    metrics: ["impressions", "clicks", "landing", "actions"] as const,
+  },
+  {
+    num: "02",
+    title: "Google Business Profile",
+    introLines: ["ดู:"] as const,
+    metrics: ["discovery", "webclicks", "calls", "directions"] as const,
+  },
+  {
+    num: "03",
+    title: "Business Outcomes",
+    introLines: ["หากระบบของธุรกิจเชื่อมต่อและติดตามได้", "ให้ดูต่อถึง:"] as const,
+    metrics: ["enquiry", "direct", "booking"] as const,
+  },
+] as const;
+
+function ThaiMeasureMetric({ id }: { id: (typeof thaiMeasureGroups)[number]["metrics"][number] }) {
+  switch (id) {
+    case "impressions":
+      return <>การแสดงผลจากการค้นหา</>;
+    case "clicks":
+      return (
+        <>
+          จำนวน<span className="kpi-seo-local-measure-em">คลิก</span>
+        </>
+      );
+    case "landing":
+      return (
+        <>
+          หน้า <span className="kpi-latin">Landing Page</span> ที่ลูกค้าเข้าชม
+        </>
+      );
+    case "actions":
+      return <>สิ่งที่ลูกค้าทำต่อหลังเข้าหน้าเว็บ</>;
+    case "discovery":
+      return <>การค้นพบโปรไฟล์</>;
+    case "webclicks":
+      return (
+        <>
+          การ<span className="kpi-seo-local-measure-em">คลิก</span>เข้าเว็บไซต์
+        </>
+      );
+    case "calls":
+      return (
+        <>
+          การกด<span className="kpi-seo-local-measure-em">โทร</span>
+        </>
+      );
+    case "directions":
+      return (
+        <>
+          การขอ<span className="kpi-seo-local-measure-em">เส้นทาง</span>
+        </>
+      );
+    case "enquiry":
+      return (
+        <>
+          การ<span className="kpi-seo-local-measure-em">สอบถาม</span>
+        </>
+      );
+    case "direct":
+      return <>การติดต่อโดยตรง</>;
+    case "booking":
+      return (
+        <>
+          การ<span className="kpi-seo-local-measure-em">จอง</span>ที่ตรวจสอบได้
+        </>
+      );
+    default:
+      return null;
+  }
+}
 
 const sources = {
   aiFeatures: "https://developers.google.com/search/docs/appearance/ai-features",
@@ -20,15 +127,15 @@ const sources = {
 const copy = {
   th: {
     crumb: "โซลูชัน",
-    eyebrow: "SEO, Google Maps และ AI Search",
+    eyebrow: "Search Visibility & Local Discovery",
     title: "ให้ลูกค้าค้นพบธุรกิจของคุณ เข้าใจว่าคุณเหมาะกับเขา และติดต่อได้ทันที",
-    lead: "วันนี้ลูกค้าไม่ได้ค้นหาเพียงชื่อโรงแรมหรือชื่อร้าน แต่อาจถามว่า “สปาใกล้ฉันที่มีนวดคู่” “คาเฟ่เงียบ ๆ ในภูเก็ต” หรือ “โรงแรมใกล้สนามบินที่เช็กอินดึกได้” จากนั้นดูคำตอบจาก AI เปิด Google Maps อ่านรีวิว และเปรียบเทียบเว็บไซต์ก่อนตัดสินใจ",
+    lead: "วันนี้ลูกค้าไม่ได้ค้นหาแค่ชื่อโรงแรมหรือร้าน แต่ค้นหาด้วยความต้องการ เช่น “สปาใกล้ฉันที่มีนวดคู่” หรือ “โรงแรมใกล้สนามบินที่เช็กอินดึกได้”",
     leadClose:
-      "เดอะ เคพีไอ พลัส ช่วยจัดข้อมูลบนเว็บไซต์และ Google Business Profile ให้ถูกต้อง ชัดเจน และตอบคำถามที่ลูกค้าถามจริง เพื่อเพิ่มโอกาสให้ธุรกิจถูกค้นพบและพาลูกค้าไปสู่การโทร ขอเส้นทาง สอบถาม หรือจอง",
+      "เราช่วยทำให้เว็บไซต์ Google Business Profile และข้อมูลสำคัญของธุรกิจชัดเจนและสอดคล้องกัน เพื่อเพิ่มโอกาสให้ลูกค้าค้นพบ เข้าใจ และติดต่อได้ง่ายขึ้น",
     cta: "ให้ทีมดูการค้นพบธุรกิจของคุณ",
     secondary: "ดูโซลูชันทั้งหมด",
-    underCta: "ส่งชื่อธุรกิจ ลิงก์เว็บไซต์หรือ Google Maps และปัญหาที่พบ",
-    photoAlt: "ลูกค้าค้นหาธุรกิจท่องเที่ยวและบริการบน Google ก่อนตัดสินใจติดต่อ",
+    underCta: "ส่งชื่อธุรกิจ เว็บไซต์หรือ Google Maps และปัญหาที่พบ",
+    photoAlt: "นักเดินทางค้นหาโรงแรมหรือธุรกิจในพื้นที่บนสมาร์ทโฟนในบรรยากาศที่พัก",
     changeTitle: "พฤติกรรมการค้นหากำลังเปลี่ยน",
     aiTitle: "AI Search ใช้ภาษาไทยได้แล้ว",
     aiBody:
@@ -65,12 +172,12 @@ const copy = {
       "ไม่ทราบว่าลูกค้าค้นพบธุรกิจผ่านคำค้นใด และกดโทร ขอเส้นทาง หรือเข้าเว็บไซต์ต่อมากน้อยแค่ไหน",
     ],
     problemCta: "ให้ทีมช่วยดูจุดที่ควรปรับก่อน",
-    helpTitle: "เดอะ เคพีไอ พลัส ช่วยอะไร?",
+    helpTitle: "เราช่วยให้ธุรกิจถูกค้นพบ และติดต่อได้อย่างไร?",
     help: [
-      ["01", "ทำให้เว็บไซต์ตอบคำถามของลูกค้า", "ดูว่าลูกค้าค้นหาอะไรในพื้นที่และช่วงตัดสินใจ แล้วจัดหน้าเว็บไซต์ให้ตอบได้ชัด เช่น ห้องพักและทำเลสำหรับโรงแรม ประเภททรีตเมนต์สำหรับสปา หรือเมนูและบรรยากาศสำหรับคาเฟ่"],
-      ["02", "จัดข้อมูลให้ Google และระบบค้นหาเข้าใจ", "ตรวจโครงสร้างเว็บไซต์ หน้าเป้าหมาย การเชื่อมโยงระหว่างหน้า ข้อมูลธุรกิจ และเนื้อหาที่อาจยังไม่ครบ งานด้าน AI Search เริ่มจากข้อมูลที่ถูกต้องและมีประโยชน์ต่อคนอ่าน ไม่ใช่การใส่คำว่า “AI” เพิ่มลงในหน้าเว็บ"],
-      ["03", "ดูแล Google Business Profile อย่างจริงจัง", "ตรวจหมวดหมู่ธุรกิจ ที่อยู่ เวลาเปิด ลิงก์เว็บไซต์ รายการบริการหรือเมนู ภาพถ่าย และข้อมูลที่ลูกค้าใช้ตัดสินใจ รวมถึงวางแนวทางดูแลและตอบรีวิวตามข้อเท็จจริงของธุรกิจ"],
-      ["04", "เชื่อมการค้นพบกับการติดต่อและการจอง", "ตรวจว่าหลังลูกค้าพบธุรกิจแล้วสามารถโทร ขอเส้นทาง ส่งคำถาม หรือจองได้สะดวกหรือไม่ เพราะการถูกค้นพบเป็นเพียงจุดเริ่มต้น"],
+      ["01", "ทำให้เว็บไซต์ตอบคำถามของลูกค้า", "ดูว่าลูกค้าค้นหาอะไร และจัดหน้าเว็บให้ตอบเรื่องทำเล บริการ ราคา และวิธีจองได้ชัด"],
+      ["02", "จัดข้อมูลให้ Search และ AI เข้าใจ", "ปรับโครงสร้างเว็บไซต์ เนื้อหา และข้อมูลธุรกิจให้เชื่อมกัน เพื่อให้ระบบค้นหาเข้าใจธุรกิจได้ง่ายและถูกต้องขึ้น"],
+      ["03", "ดูแล Google Business Profile อย่างจริงจัง", "อัปเดตหมวดหมู่ ที่อยู่ เวลาเปิด เว็บไซต์ บริการ รูปภาพ และรีวิว ให้เป็นปัจจุบัน"],
+      ["04", "เชื่อมการค้นพบกับการติดต่อและการจอง", "ดูว่าหลังจากค้นพบธุรกิจแล้ว ลูกค้าสามารถโทร ขอเส้นทาง ส่งคำถาม หรือจองต่อได้สะดวกหรือไม่"],
     ],
     gbpTitle: "ทำไม Google Business Profile สำคัญกับสปา คาเฟ่ และธุรกิจหน้าร้าน?",
     gbpBody:
@@ -78,12 +185,12 @@ const copy = {
     gbpSource: "ที่มา: Google Business Profile Help",
     gbpExample:
       "ตัวอย่างเช่น สปาที่มีหน้าบริการนวดคู่แต่ไม่ระบุเวลาให้บริการหรือวิธีจอง อาจเสียลูกค้าในขั้นตัดสินใจ ส่วนคาเฟ่ที่เวลาเปิดบน Maps ไม่ตรงกับเวลาจริง อาจทำให้ลูกค้าเดินทางมาเสียเที่ยว เรื่องเล็กบนหน้าจอจึงกลายเป็นประสบการณ์จริงของลูกค้า",
-    methodTitle: "เราเริ่มทำงานอย่างไร?",
+    methodTitle: "เราเริ่มจากข้อมูลจริงของธุรกิจอย่างไร?",
     steps: [
-      ["01", "ดูการค้นพบปัจจุบัน", "ตรวจเว็บไซต์ Google Search Console และ Google Business Profile เท่าที่ธุรกิจมีข้อมูลและสิทธิ์เข้าถึง"],
-      ["02", "ตรวจข้อมูลที่ลูกค้าต้องใช้ตัดสินใจ", "ดูบริการ ทำเล ราคา เวลาเปิด ภาพ รีวิว และช่องทางติดต่อหรือจอง"],
-      ["03", "จัดลำดับงาน", "แยกสิ่งที่ควรแก้ทันทีออกจากงานเนื้อหาและเว็บไซต์ที่ต้องทำต่อเนื่อง"],
-      ["04", "ติดตามการเปลี่ยนแปลง", "ดูการค้นพบ การเข้าชมเว็บไซต์ การกดโทร การขอเส้นทาง และการสอบถามหรือจองที่ติดตามได้"],
+      ["01", "ดูการค้นพบปัจจุบัน", "ตรวจเว็บไซต์ Google Search Console และ Google Business Profile ดูว่าธุรกิจมีข้อมูลอะไรอยู่แล้ว และมีสิทธิ์เข้าถึงระบบใดบ้าง"],
+      ["02", "ตรวจข้อมูลที่ลูกค้าใช้ตัดสินใจ", "ดูบริการ ทำเล ราคา เวลาเปิด รูปภาพ รีวิว และช่องทางติดต่อหรือจอง"],
+      ["03", "จัดลำดับสิ่งที่ต้องแก้", "แยก Quick Wins ออกจากงานเนื้อหา เว็บไซต์ และข้อมูลที่ต้องทำต่อเนื่อง"],
+      ["04", "ติดตามการเปลี่ยนแปลง", "ดูการค้นพบ การเข้าชมเว็บไซต์ การโทร ขอเส้นทาง และการสอบถามหรือจองที่ตรวจสอบได้"],
     ],
     measureTitle: "วัดผลอะไรได้บ้าง?",
     measureWeb: "สำหรับเว็บไซต์ เราดูการแสดงผลและการคลิกจากการค้นหา หน้าเว็บที่ลูกค้าเข้าชม และการกระทำหลังเข้าชม",
@@ -97,7 +204,7 @@ const copy = {
     toolBody: "ดูว่าหน้าเว็บพร้อมให้ลูกค้าจาก Search หรือ Maps หาข้อมูลและเดินทางไปสอบถามหรือจองต่อหรือไม่",
     toolCta: "ใช้เครื่องมือฟรี",
     reviewName: "สร้างลิงก์รีวิว Google",
-    reviewBody: "ให้ลูกค้าจริงเขียนรีวิวจากลิงก์ที่ทีมส่งได้สะดวก เพื่อดูแลข้อมูลบน Google Maps อย่างต่อเนื่อง",
+    reviewBody: "สร้างลิงก์ที่พาลูกค้าไปยังหน้าส่งรีวิว เพื่อให้ขั้นตอนการขอรีวิวสะดวกและตรงจุดมากขึ้น",
     reviewCta: "ใช้เครื่องมือฟรี",
   },
   en: {
@@ -355,222 +462,833 @@ export function SeoLocalView({ locale }: { locale: Locale }) {
   const insights = insightPosts
     .filter((post) => relatedInsightHrefs.includes(post.href as (typeof relatedInsightHrefs)[number]))
     .filter((post) => existingHref(post.href, locale));
+  const featuredInsight = insights[0];
 
   return (
     <SiteShell locale={locale} route={localizePath("/solutions/hotel-seo-google-maps-ai-search", locale)}>
-      <PageHero>
-        <nav aria-label="Breadcrumb" className="text-sm text-white/70">
-          <ol className="flex flex-wrap items-center gap-2">
-            <li>
-              <Link href={solutions} className="hover:text-white">
-                {t.crumb}
-              </Link>
-            </li>
-            <li className="flex items-center gap-2">
-              <span aria-hidden="true">/</span>
-              <span className="text-white">{solutionNavLabel("/solutions/hotel-seo-google-maps-ai-search", locale)}</span>
-            </li>
-          </ol>
-        </nav>
-        <p className="kpi-kicker mt-5 text-[#F2F8E2]">{t.eyebrow}</p>
-        <h1 className="kpi-h1 mt-5">{t.title}</h1>
-        <p className="kpi-lead mt-5 text-white/72">{t.lead}</p>
-        <p className="mt-4 max-w-3xl text-base leading-8 text-white/64">{t.leadClose}</p>
-        <div className="kpi-actions">
-          <a href="#search-enquiry" className="kpi-button">
-            {t.cta} <ArrowUpRight className="h-4 w-4" />
-          </a>
-          <Link href={solutions} className="kpi-button-ghost">
-            {t.secondary}
-          </Link>
+      <section className="kpi-hero kpi-home-hero-section kpi-seo-local-hero">
+        <div className="kpi-wrap">
+          <nav aria-label="Breadcrumb" className="kpi-seo-local-hero-crumb">
+            <ol>
+              <li>
+                <Link href={solutions}>{t.crumb}</Link>
+              </li>
+              <li>
+                <span aria-hidden="true">/</span>
+                <span>{solutionNavLabel("/solutions/hotel-seo-google-maps-ai-search", locale)}</span>
+              </li>
+            </ol>
+          </nav>
+          <div className="kpi-home-hero">
+            <div className="kpi-home-hero-copy">
+              <p className="kpi-home-eyebrow kpi-latin">
+                {locale === "th" ? "Search Visibility & Local Discovery" : t.eyebrow}
+              </p>
+              <h1 className="kpi-h1 kpi-home-h1">
+                {locale === "th" ? (
+                  <>
+                    <span className="kpi-home-h1-lead">
+                      ให้ลูกค้า<span className="kpi-home-accent">ค้นพบธุรกิจของคุณ</span>
+                    </span>
+                    <span className="kpi-home-h1-rest">เข้าใจว่าคุณเหมาะกับเขา และติดต่อได้ทันที</span>
+                  </>
+                ) : (
+                  t.title
+                )}
+              </h1>
+              {locale === "th" ? (
+                <p className="kpi-lead kpi-home-lead">
+                  <span className="kpi-seo-local-lead-line">
+                    วันนี้ลูกค้าไม่ได้ค้นหาแค่ชื่อโรงแรมหรือร้าน แต่ค้นหาด้วยความต้องการ เช่น “สปาใกล้ฉันที่มีนวดคู่” หรือ “โรงแรมใกล้สนามบินที่เช็กอินดึกได้”
+                  </span>
+                  <span className="kpi-seo-local-lead-line">
+                    เราช่วยทำให้เว็บไซต์ <span className="kpi-latin">Google Business Profile</span>{" "}
+                    และข้อมูลสำคัญของธุรกิจชัดเจนและสอดคล้องกัน เพื่อเพิ่มโอกาสให้ลูกค้าค้นพบ เข้าใจ และติดต่อได้ง่ายขึ้น
+                  </span>
+                </p>
+              ) : (
+                <>
+                  <p className="kpi-lead kpi-home-lead">{t.lead}</p>
+                  <p className="kpi-seo-local-lead-close">{t.leadClose}</p>
+                </>
+              )}
+              <div className="kpi-actions">
+                <a href="#search-enquiry" className="kpi-button">
+                  {t.cta} <span aria-hidden="true">↗</span>
+                </a>
+                <Link href={solutions} className="kpi-button-ghost">
+                  {t.secondary}
+                </Link>
+              </div>
+              <p className="kpi-seo-local-hero-note">
+                {locale === "th" ? (
+                  <>
+                    ส่งชื่อธุรกิจ เว็บไซต์หรือ <span className="kpi-latin">Google Maps</span>
+                    <span className="kpi-seo-local-hero-note-br"> </span>
+                    และปัญหาที่พบ
+                  </>
+                ) : (
+                  t.underCta
+                )}
+              </p>
+              <p className="kpi-home-trust kpi-seo-local-journey">
+                {(
+                  [
+                    ["01", "Search"],
+                    ["02", "Maps"],
+                    ["03", "Website"],
+                    ["04", "Contact"],
+                  ] as const
+                ).map(([num, step]) => (
+                  <span key={step}>
+                    <span className="kpi-latin">
+                      {num} {step}
+                    </span>
+                  </span>
+                ))}
+              </p>
+            </div>
+            <div className="kpi-hero-visual kpi-home-photo">
+              <img src="/media/seo-local-hero-phone.jpg" alt={t.photoAlt} width={1200} height={900} />
+            </div>
+          </div>
         </div>
-        <p className="mt-4 max-w-xl text-sm leading-6 text-white/64">{t.underCta}</p>
-      </PageHero>
+      </section>
 
-      <section className="kpi-section">
+      <section className="kpi-section kpi-seo-local-change">
+        <p className="kpi-latin kpi-seo-local-change-eyebrow">Search Behavior</p>
         <h2 className="kpi-h2">{t.changeTitle}</h2>
-        <div className="kpi-grid-3 mt-10">
-          <article className="kpi-card p-6">
-            <img src="/brand/google/google.svg" alt="" className="kpi-platform-mark" />
-            <h3 className="mt-4 text-lg font-extrabold text-[#3B3B3B]">{t.aiTitle}</h3>
-            <p className="mt-3 text-sm leading-7 text-[#555555]">{t.aiBody}</p>
-            <p className="mt-4 text-sm">
-              <a href={sources.aiModeTh} target="_blank" rel="noreferrer" className="font-semibold text-[#0B6660]">
-                {t.aiSource}
+        <div className="kpi-seo-local-change-layout">
+          <article className="kpi-seo-local-change-featured">
+            <h3>
+              {locale === "th" ? (
+                <>
+                  <span className="kpi-latin">AI Search</span> ใช้ภาษาไทยได้แล้ว
+                </>
+              ) : (
+                t.aiTitle
+              )}
+            </h3>
+            {locale === "th" ? (
+              <div className="kpi-seo-local-change-body">
+                <p>
+                  <span className="kpi-latin">Google</span> เปิด <span className="kpi-latin">AI Mode</span> ในประเทศไทย
+                  <span className="kpi-seo-local-change-br"> </span>
+                  และรองรับภาษาไทยแล้ว
+                </p>
+                <p>
+                  ผู้ใช้สามารถถามคำถามยาวขึ้น
+                  <span className="kpi-seo-local-change-br"> </span>
+                  เปรียบเทียบตัวเลือก และถามต่อเนื่อง
+                  <span className="kpi-seo-local-change-br"> </span>
+                  โดยไม่ต้องเริ่มค้นหาใหม่ทุกครั้ง
+                </p>
+              </div>
+            ) : (
+              <p className="kpi-seo-local-change-body">{t.aiBody}</p>
+            )}
+            <p className="kpi-seo-local-change-source">
+              <a href={sources.aiModeTh} target="_blank" rel="noreferrer">
+                <span className="kpi-latin">Source: blog.google</span>
               </a>
             </p>
           </article>
-          <article className="kpi-card p-6">
-            <img src="/brand/google/google.svg" alt="" className="kpi-platform-mark" />
-            <p className="kpi-latin mt-4 text-3xl font-extrabold tracking-[-.04em] text-[#0B1F33]">{t.growthStat}</p>
-            <h3 className="mt-3 text-lg font-extrabold text-[#3B3B3B]">{t.growthTitle}</h3>
-            <p className="mt-3 text-sm leading-7 text-[#555555]">{t.growthLabel}</p>
-            <p className="mt-3 text-xs leading-6 text-[#555555]">{t.growthNote}</p>
-            <p className="mt-4 text-sm">
-              <a href={sources.searchIo} target="_blank" rel="noreferrer" className="font-semibold text-[#0B6660]">
-                {t.growthSource}
+          <div className="kpi-seo-local-change-stack">
+            <article className="kpi-seo-local-change-stat">
+              <p className="kpi-seo-local-change-number">{t.growthStat}</p>
+              <p className="kpi-seo-local-change-stat-label">
+                {locale === "th" ? (
+                  <>
+                    การใช้งาน <span className="kpi-latin">AI Search</span>
+                    <span className="kpi-seo-local-change-br"> </span>
+                    ต่อเดือนทั่วโลก
+                  </>
+                ) : (
+                  t.growthLabel
+                )}
+              </p>
+              <p className="kpi-seo-local-change-body">
+                {locale === "th" ? (
+                  <>
+                    สะท้อนว่าพฤติกรรมการค้นหา
+                    <span className="kpi-seo-local-change-br"> </span>
+                    กำลังเปลี่ยนจากคำค้นสั้น ๆ
+                    <span className="kpi-seo-local-change-br"> </span>
+                    ไปสู่คำถามและการเปรียบเทียบที่ซับซ้อนขึ้น
+                  </>
+                ) : (
+                  t.growthNote
+                )}
+              </p>
+              <p className="kpi-seo-local-change-source">
+                <a href={sources.searchIo} target="_blank" rel="noreferrer">
+                  <span className="kpi-latin">Source: blog.google</span>
+                </a>
+              </p>
+            </article>
+            <article>
+              <h3>
+                {locale === "th" ? (
+                  <>
+                    <span className="kpi-latin">Google Maps</span> ยังสำคัญ
+                    <span className="kpi-seo-local-change-br"> </span>
+                    กับการตัดสินใจในพื้นที่
+                  </>
+                ) : (
+                  t.mapsTitle
+                )}
+              </h3>
+              {locale === "th" ? (
+                <div className="kpi-seo-local-change-body">
+                  <p>
+                    ความเกี่ยวข้อง ระยะทาง
+                    <span className="kpi-seo-local-change-br"> </span>
+                    และความโดดเด่นของธุรกิจ
+                    <span className="kpi-seo-local-change-br"> </span>
+                    ยังเป็นปัจจัยสำคัญในการค้นหาในพื้นที่
+                  </p>
+                  <p>
+                    ข้อมูลบน <span className="kpi-latin">Google Business Profile</span>
+                    <span className="kpi-seo-local-change-br"> </span>
+                    จึงต้องถูกต้อง ชัดเจน และสอดคล้องกับเว็บไซต์
+                  </p>
+                </div>
+              ) : (
+                <p className="kpi-seo-local-change-body">{t.mapsBody}</p>
+              )}
+              <p className="kpi-seo-local-change-source">
+                <a href={sources.localRank} target="_blank" rel="noreferrer">
+                  <span className="kpi-latin">Source: Google Business Profile Help</span>
+                </a>
+              </p>
+            </article>
+          </div>
+          <div className="kpi-seo-local-change-takeaway">
+            {locale === "th" ? (
+              <>
+                <p>
+                  สำหรับโรงแรม สปา และคาเฟ่
+                  <span className="kpi-seo-local-change-br"> </span>
+                  ข้อมูลบนเว็บไซต์และ <span className="kpi-latin">Google Maps</span>
+                  <span className="kpi-seo-local-change-br"> </span>
+                  ต้องตอบคำถามเดียวกันให้ชัด
+                </p>
+                <p className="kpi-seo-local-change-takeaway-strong">
+                  ตั้งแต่บริการ ทำเล ราคา เวลาเปิด
+                  <span className="kpi-seo-local-change-br"> </span>
+                  ไปจนถึงวิธีติดต่อหรือจอง
+                </p>
+              </>
+            ) : (
+              <p>{t.changeClose}</p>
+            )}
+          </div>
+          <div className="kpi-seo-local-change-note">
+            {locale === "th" ? (
+              <>
+                <p>
+                  <span className="kpi-latin">SEO</span> พื้นฐานยังคงสำคัญต่อ
+                  <span className="kpi-seo-local-change-br"> </span>
+                  <span className="kpi-latin">AI Overviews</span> และ <span className="kpi-latin">AI Mode</span>
+                </p>
+                <p>
+                  ยังไม่มีวิธีพิเศษที่รับประกันว่า
+                  <span className="kpi-seo-local-change-br"> </span>
+                  ธุรกิจจะปรากฏในคำตอบ <span className="kpi-latin">AI</span>
+                </p>
+              </>
+            ) : (
+              <p>{t.aiNote}</p>
+            )}
+            <p className="kpi-seo-local-change-source">
+              <a href={sources.aiFeatures} target="_blank" rel="noreferrer">
+                <span className="kpi-latin">Source: Google Search Central</span>
               </a>
             </p>
-          </article>
-          <article className="kpi-card p-6">
-            <img src="/brand/google/business-profile.jpg" alt="" className="h-10 w-auto max-w-[13rem] object-contain" />
-            <h3 className="mt-4 text-lg font-extrabold text-[#3B3B3B]">{t.mapsTitle}</h3>
-            <p className="mt-3 text-sm leading-7 text-[#555555]">{t.mapsBody}</p>
-            <p className="mt-4 text-sm">
-              <a href={sources.localRank} target="_blank" rel="noreferrer" className="font-semibold text-[#0B6660]">
-                {t.mapsSource}
-              </a>
-            </p>
-          </article>
+          </div>
         </div>
-        <p className="mt-8 max-w-3xl text-base leading-8 text-[#555555]">{t.changeClose}</p>
-        <p className="mt-4 max-w-3xl text-sm leading-7 text-[#555555]">{t.aiNote}</p>
-        <p className="mt-2 text-sm">
-          <a href={sources.aiFeatures} target="_blank" rel="noreferrer" className="font-semibold text-[#0B6660]">
-            {t.aiNoteSource}
-          </a>
-        </p>
       </section>
 
       <section className="border-y border-[#E3E8EB] bg-white">
-        <div className="kpi-section">
-          <h2 className="kpi-h2">{t.compareTitle}</h2>
-          <div className="kpi-grid-3 mt-10">
-            {t.compare.map(([title, see, example]) => (
-              <article key={title} className="kpi-card relative overflow-hidden p-7">
-                <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-                <h3 className="mt-3 text-xl font-extrabold text-[#3B3B3B]">{title}</h3>
-                <p className="mt-3 text-base leading-7 text-[#3B3B3B]">{see}</p>
-                <p className="mt-3 text-sm leading-7 text-[#555555]">{example}</p>
-              </article>
-            ))}
-          </div>
-          <p className="mt-8 max-w-3xl text-base leading-8 text-[#555555]">{t.compareClose}</p>
-        </div>
-      </section>
-
-      <section className="kpi-section">
-        <div className="kpi-split">
-          <div>
-            <h2 className="kpi-h2">{t.problemTitle}</h2>
-            <div className="mt-10 grid gap-4">
-              {t.problems.map((problem, index) => (
-                <article key={problem} className="kpi-card flex gap-4 p-6">
-                  <span className="kpi-latin text-sm font-black tracking-[.14em] text-[#0B6660]">
+        <div className="kpi-section kpi-seo-local-compare">
+          <h2 className="kpi-h2">
+            {locale === "th" ? (
+              <>
+                <span className="kpi-seo-local-compare-line">
+                  <span className="kpi-latin">SEO</span>, <span className="kpi-latin">AEO</span> และ{" "}
+                  <span className="kpi-latin">Local SEO</span>
+                </span>
+                <span className="kpi-seo-local-compare-br"> </span>
+                <span className="kpi-seo-local-compare-line">ช่วยต่างกันอย่างไร?</span>
+              </>
+            ) : (
+              t.compareTitle
+            )}
+          </h2>
+          {locale === "th" ? (
+            <p className="kpi-seo-local-compare-lead">
+              ไม่ใช่เลือกอย่างใดอย่างหนึ่ง
+              <span className="kpi-seo-local-compare-br"> </span>
+              แต่ทำให้เว็บไซต์ ข้อมูลธุรกิจ
+              <span className="kpi-seo-local-compare-br"> </span>
+              และคำตอบที่ลูกค้าต้องการสอดคล้องกัน
+            </p>
+          ) : null}
+          <ol className="kpi-seo-local-compare-cols">
+            {locale === "th" ? (
+              <>
+                <li>
+                  <span className="kpi-latin kpi-seo-local-compare-num">01</span>
+                  <h3 className="kpi-latin">SEO</h3>
+                  <p className="kpi-seo-local-compare-role">ทำให้หน้าเว็บไซต์ตอบสิ่งที่ลูกค้าค้นหา</p>
+                  <p className="kpi-seo-local-compare-example">
+                    เช่น ทำเล ห้องพัก การเดินทาง
+                    <span className="kpi-seo-local-compare-br"> </span>
+                    ราคา และวิธีจอง
+                  </p>
+                </li>
+                <li>
+                  <span className="kpi-latin kpi-seo-local-compare-num">02</span>
+                  <h3>
+                    <span className="kpi-latin">AEO</span> / <span className="kpi-latin">AI Search</span>
+                  </h3>
+                  <p className="kpi-seo-local-compare-role">จัดข้อมูลให้ชัดและเป็นคำตอบ</p>
+                  <p className="kpi-seo-local-compare-example">
+                    เพื่อให้ระบบค้นหาและ <span className="kpi-latin">AI</span> เข้าใจว่า
+                    <span className="kpi-seo-local-compare-br"> </span>
+                    ธุรกิจเหมาะกับใคร อยู่ที่ไหน
+                    <span className="kpi-seo-local-compare-br"> </span>
+                    และให้บริการอะไร
+                  </p>
+                </li>
+                <li>
+                  <span className="kpi-latin kpi-seo-local-compare-num">03</span>
+                  <h3 className="kpi-latin">Local SEO</h3>
+                  <p className="kpi-seo-local-compare-role">
+                    ทำให้ข้อมูลบน <span className="kpi-latin">Google Search</span> และ{" "}
+                    <span className="kpi-latin">Maps</span>
+                    <span className="kpi-seo-local-compare-br"> </span>
+                    ถูกต้องและสอดคล้อง
+                  </p>
+                  <p className="kpi-seo-local-compare-example">
+                    เช่น เวลาเปิด เมนู รีวิว รูปจริง
+                    <span className="kpi-seo-local-compare-br"> </span>
+                    เบอร์โทร และเส้นทาง
+                  </p>
+                </li>
+              </>
+            ) : (
+              t.compare.map(([title, see, example], index) => (
+                <li key={title}>
+                  <span className="kpi-latin kpi-seo-local-compare-num">
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  <p className="text-base leading-7 text-[#555555]">{problem}</p>
-                </article>
-              ))}
-            </div>
-            <a href="#search-enquiry" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-[#0B6660]">
-              {t.problemCta} <ArrowUpRight className="h-4 w-4" />
+                  <h3>{title}</h3>
+                  <p className="kpi-seo-local-compare-role">{see}</p>
+                  <p className="kpi-seo-local-compare-example">{example}</p>
+                </li>
+              ))
+            )}
+          </ol>
+          <div className="kpi-seo-local-compare-close">
+            {locale === "th" ? (
+              <>
+                <p className="kpi-seo-local-compare-close-strong">
+                  ทั้งสามส่วนควรใช้ข้อมูลจริงชุดเดียวกัน
+                </p>
+                <p className="kpi-seo-local-compare-close-strong">
+                  เพื่อให้ <span className="kpi-latin">Search</span>, <span className="kpi-latin">AI</span> และ{" "}
+                  <span className="kpi-latin">Maps</span>
+                  <span className="kpi-seo-local-compare-br"> </span>
+                  เข้าใจธุรกิจไปในทิศทางเดียวกัน
+                </p>
+                <p className="kpi-seo-local-compare-close-note">
+                  เวลาเปิด บริการ ราคา รูปภาพ
+                  <span className="kpi-seo-local-compare-br"> </span>
+                  และช่องทางติดต่อควรสอดคล้องกัน
+                  <span className="kpi-seo-local-compare-br"> </span>
+                  ทั้งบนเว็บไซต์และ <span className="kpi-latin">Google Business Profile</span>
+                </p>
+              </>
+            ) : (
+              <p className="kpi-seo-local-compare-close-strong">{t.compareClose}</p>
+            )}
+          </div>
+        </div>
+      </section>
+
+      <section className="kpi-section kpi-seo-local-problems">
+        <h2 className="kpi-h2">
+          {locale === "th" ? (
+            <>
+              <span className="kpi-seo-local-problem-line">ธุรกิจของคุณกำลังเจอ</span>
+              <span className="kpi-seo-local-problem-br"> </span>
+              <span className="kpi-seo-local-problem-line">
+                <span className="kpi-seo-local-problem-em">ปัญหาเหล่านี้</span>หรือไม่?
+              </span>
+            </>
+          ) : (
+            t.problemTitle
+          )}
+        </h2>
+        <div className="kpi-seo-local-problems-grid">
+          <div className="kpi-seo-local-problems-main">
+            <ol className="kpi-seo-local-problems-list">
+              {locale === "th" ? (
+                <>
+                  <li>
+                    <span className="kpi-latin">01</span>
+                    <p>
+                      มีเว็บไซต์
+                      <span className="kpi-seo-local-problem-br"> </span>
+                      แต่ค้นหาบริการหรือทำเลที่เกี่ยวข้องแล้ว<span className="kpi-seo-local-problem-em">ไม่พบหน้าเว็บ</span>
+                    </p>
+                  </li>
+                  <li>
+                    <span className="kpi-latin">02</span>
+                    <p>
+                      ลูกค้าเห็นธุรกิจบน <span className="kpi-latin">Maps</span>
+                      <span className="kpi-seo-local-problem-br"> </span>
+                      แต่ข้อมูลสำคัญ<span className="kpi-seo-local-problem-em">ยังไม่เป็นปัจจุบัน</span>
+                    </p>
+                  </li>
+                  <li>
+                    <span className="kpi-latin">03</span>
+                    <p>
+                      มีคนเข้าชมเว็บไซต์
+                      <span className="kpi-seo-local-problem-br"> </span>
+                      แต่หาราคา บริการ ทำเล หรือ<span className="kpi-seo-local-problem-em">วิธีจองไม่เจอ</span>
+                    </p>
+                  </li>
+                  <li>
+                    <span className="kpi-latin">04</span>
+                    <p>
+                      มีรีวิวอยู่แล้ว
+                      <span className="kpi-seo-local-problem-br"> </span>
+                      แต่ยังไม่ได้ใช้<span className="kpi-seo-local-problem-em">คำถามจริงของลูกค้า</span>มาปรับข้อมูลธุรกิจ
+                    </p>
+                  </li>
+                  <li>
+                    <span className="kpi-latin">05</span>
+                    <p>
+                      ยังไม่รู้ว่าลูกค้าค้นพบธุรกิจผ่าน
+                      <span className="kpi-seo-local-problem-br"> </span>
+                      <span className="kpi-seo-local-problem-em kpi-latin">Search, Maps หรือ AI</span>
+                      <span className="kpi-seo-local-problem-br"> </span>
+                      แล้วติดต่อจากช่องทางไหน
+                    </p>
+                  </li>
+                </>
+              ) : (
+                t.problems.map((problem, index) => (
+                  <li key={problem}>
+                    <span className="kpi-latin">{String(index + 1).padStart(2, "0")}</span>
+                    <p>{problem}</p>
+                  </li>
+                ))
+              )}
+            </ol>
+            <a href="#search-enquiry" className="kpi-seo-local-problems-cta">
+              {t.problemCta} <span aria-hidden="true">↗</span>
             </a>
           </div>
-          <figure className="kpi-home-photo">
-            <img src="/media/kpi-grow-demand_24299cd0.jpg" alt={t.photoAlt} width={1200} height={900} />
-          </figure>
-        </div>
-      </section>
-
-      <section className="border-y border-[#E3E8EB] bg-white">
-        <div className="kpi-section">
-          <h2 className="kpi-h2">{t.helpTitle}</h2>
-          <div className="kpi-grid-2 mt-10">
-            {t.help.map(([num, title, body]) => (
-              <article key={num} className="kpi-card relative overflow-hidden p-7">
-                <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-                <span className="kpi-latin text-sm font-black tracking-[.16em] text-[#0B6660]">{num}</span>
-                <h3 className="mt-5 text-xl font-extrabold text-[#3B3B3B]">{title}</h3>
-                <p className="mt-3 text-base leading-7 text-[#555555]">{body}</p>
-              </article>
-            ))}
-          </div>
-          <a href="#search-enquiry" className="kpi-button mt-10">
-            {t.cta} <ArrowUpRight className="h-4 w-4" />
-          </a>
-        </div>
-      </section>
-
-      <section className="kpi-section">
-        <div className="kpi-split">
-          <div>
-            <h2 className="kpi-h2">{t.gbpTitle}</h2>
-            <p className="mt-6 max-w-2xl text-base leading-8 text-[#555555]">{t.gbpBody}</p>
-            <p className="mt-4 text-sm">
-              <a href={sources.localRank} target="_blank" rel="noreferrer" className="font-semibold text-[#0B6660]">
-                {t.gbpSource}
-              </a>
-            </p>
-            <p className="mt-5 max-w-2xl text-base leading-8 text-[#555555]">{t.gbpExample}</p>
-          </div>
-          <figure className="overflow-hidden rounded-[1.5rem] border border-[#E3E8EB] bg-white p-10">
+          <figure className="kpi-seo-local-problems-photo">
             <img
-              src="/brand/google/business-profile.jpg"
-              alt="Google Business Profile"
-              className="mx-auto w-full max-w-sm object-contain"
+              src="/media/seo-local-problems-phone.jpg"
+              alt={
+                locale === "th"
+                  ? "นักเดินทางค้นหาโรงแรมหรือธุรกิจในพื้นที่บนสมาร์ทโฟน"
+                  : t.photoAlt
+              }
+              width={1200}
+              height={900}
             />
           </figure>
         </div>
       </section>
 
       <section className="border-y border-[#E3E8EB] bg-white">
+        <div className="kpi-section kpi-seo-local-help">
+          <h2 className="kpi-h2">
+            {locale === "th" ? (
+              <>
+                <span className="kpi-seo-local-help-line">
+                  เราช่วยให้ธุรกิจ<span className="kpi-seo-local-help-em">ถูกค้นพบ</span>
+                </span>
+                <span className="kpi-seo-local-help-br"> </span>
+                <span className="kpi-seo-local-help-line">และติดต่อได้อย่างไร?</span>
+              </>
+            ) : (
+              t.helpTitle
+            )}
+          </h2>
+          <ol className="kpi-seo-local-help-cols">
+            {locale === "th" ? (
+              <>
+                <li>
+                  <span className="kpi-latin kpi-seo-local-help-num">01</span>
+                  <h3>
+                    ทำให้เว็บไซต์<span className="kpi-seo-local-help-em">ตอบคำถามของลูกค้า</span>
+                  </h3>
+                  <p>
+                    ดูว่าลูกค้าค้นหาอะไร
+                    <span className="kpi-seo-local-help-br"> </span>
+                    และจัดหน้าเว็บให้ตอบเรื่องทำเล
+                    <span className="kpi-seo-local-help-br"> </span>
+                    บริการ ราคา และวิธีจองได้ชัด
+                  </p>
+                </li>
+                <li>
+                  <span className="kpi-latin kpi-seo-local-help-num">02</span>
+                  <h3>
+                    จัดข้อมูลให้ <span className="kpi-seo-local-help-em kpi-latin">Search และ AI</span> เข้าใจ
+                  </h3>
+                  <p>
+                    ปรับโครงสร้างเว็บไซต์ เนื้อหา
+                    <span className="kpi-seo-local-help-br"> </span>
+                    และข้อมูลธุรกิจให้เชื่อมกัน
+                  </p>
+                  <p>
+                    เพื่อให้ระบบค้นหาเข้าใจธุรกิจ
+                    <span className="kpi-seo-local-help-br"> </span>
+                    ได้ง่ายและถูกต้องขึ้น
+                  </p>
+                </li>
+                <li>
+                  <span className="kpi-latin kpi-seo-local-help-num">03</span>
+                  <h3>
+                    ดูแล <span className="kpi-seo-local-help-em kpi-latin">Google Business Profile</span>{" "}
+                    อย่างจริงจัง
+                  </h3>
+                  <p>
+                    อัปเดตหมวดหมู่ ที่อยู่ เวลาเปิด
+                    <span className="kpi-seo-local-help-br"> </span>
+                    เว็บไซต์ บริการ รูปภาพ และรีวิว
+                    <span className="kpi-seo-local-help-br"> </span>
+                    ให้เป็นปัจจุบัน
+                  </p>
+                </li>
+                <li>
+                  <span className="kpi-latin kpi-seo-local-help-num">04</span>
+                  <h3>
+                    เชื่อมการค้นพบกับการ<span className="kpi-seo-local-help-em">ติดต่อและการจอง</span>
+                  </h3>
+                  <p>
+                    ดูว่าหลังจากค้นพบธุรกิจแล้ว
+                    <span className="kpi-seo-local-help-br"> </span>
+                    ลูกค้าสามารถโทร ขอเส้นทาง
+                    <span className="kpi-seo-local-help-br"> </span>
+                    ส่งคำถาม หรือจองต่อได้สะดวกหรือไม่
+                  </p>
+                </li>
+              </>
+            ) : (
+              t.help.map(([num, title, body]) => (
+                <li key={num}>
+                  <span className="kpi-latin kpi-seo-local-help-num">{num}</span>
+                  <h3>{title}</h3>
+                  <p>{body}</p>
+                </li>
+              ))
+            )}
+          </ol>
+          <a href="#search-enquiry" className="kpi-button">
+            {t.cta} <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </section>
+
+      <section className="kpi-section kpi-seo-local-gbp">
+        <div className="kpi-seo-local-gbp-grid">
+          <div className="kpi-seo-local-gbp-copy">
+            <h2 className="kpi-h2">
+              {locale === "th" ? (
+                <>
+                  ทำไม <span className="kpi-latin kpi-seo-local-gbp-em">Google Business Profile</span> สำคัญกับสปา
+                  คาเฟ่ และธุรกิจหน้าร้าน?
+                </>
+              ) : (
+                t.gbpTitle
+              )}
+            </h2>
+            {locale === "th" ? (
+              <div className="kpi-seo-local-gbp-body">
+                <p>
+                  ลูกค้าของธุรกิจใกล้ตัว
+                  <span className="kpi-seo-local-gbp-br"> </span>
+                  มักตัดสินใจจากข้อมูลไม่กี่อย่าง
+                </p>
+                <p className="kpi-seo-local-gbp-factors">
+                  อยู่ที่ไหน
+                  <span className="kpi-seo-local-gbp-br"> </span>
+                  เปิดกี่โมง
+                  <span className="kpi-seo-local-gbp-br"> </span>
+                  มีบริการอะไร
+                  <span className="kpi-seo-local-gbp-br"> </span>
+                  และคนอื่นรีวิวอย่างไร
+                </p>
+                <p>
+                  <span className="kpi-latin">Google Business Profile</span>
+                  <span className="kpi-seo-local-gbp-br"> </span>
+                  ช่วยให้ข้อมูลเหล่านี้ปรากฏบน <span className="kpi-latin">Search</span> และ{" "}
+                  <span className="kpi-latin">Maps</span>
+                  <span className="kpi-seo-local-gbp-br"> </span>
+                  ในจังหวะที่ลูกค้ากำลังตัดสินใจ
+                </p>
+              </div>
+            ) : (
+              <div className="kpi-seo-local-gbp-body">
+                <p>{t.gbpBody}</p>
+              </div>
+            )}
+            <div className="kpi-seo-local-gbp-signals">
+              <article>
+                <h3 className="kpi-latin">Call</h3>
+                <p>{locale === "th" ? "ลูกค้ากดโทรจากโปรไฟล์" : "Call from the profile"}</p>
+              </article>
+              <article>
+                <h3 className="kpi-latin">Directions</h3>
+                <p>{locale === "th" ? "ลูกค้าขอเส้นทางมายังธุรกิจ" : "Ask for directions"}</p>
+              </article>
+              <article>
+                <h3 className="kpi-latin">Website Visit</h3>
+                <p>{locale === "th" ? "ลูกค้าเข้าเว็บไซต์เพื่อดูข้อมูลเพิ่ม" : "Visit the website"}</p>
+              </article>
+            </div>
+            <div className="kpi-seo-local-gbp-close">
+              {locale === "th" ? (
+                <>
+                  <p>
+                    สำหรับธุรกิจหน้าร้าน
+                    <span className="kpi-seo-local-gbp-br"> </span>
+                    การค้นพบไม่ควรจบที่ “เห็นชื่อ”
+                  </p>
+                  <p className="kpi-seo-local-gbp-close-strong">
+                    แต่ควรพาลูกค้าไปสู่
+                    <span className="kpi-seo-local-gbp-br"> </span>
+                    การเดินทางจริง การโทร หรือการจอง
+                  </p>
+                </>
+              ) : (
+                <p className="kpi-seo-local-gbp-close-strong">{t.gbpExample}</p>
+              )}
+            </div>
+            <p className="kpi-seo-local-gbp-source">
+              <a href={sources.localRank} target="_blank" rel="noreferrer">
+                <span className="kpi-latin">Source: Google Business Profile Help</span>
+              </a>
+            </p>
+          </div>
+          <figure className="kpi-seo-local-gbp-photo">
+            <img
+              src="/media/seo-local-gbp-phone.jpg"
+              alt={
+                locale === "th"
+                  ? "มือถือแสดงข้อมูลธุรกิจบนแผนที่พร้อมเวลาเปิดและรีวิว"
+                  : "A phone showing a local business listing with hours and reviews"
+              }
+              width={1200}
+              height={900}
+            />
+          </figure>
+        </div>
+      </section>
+
+      <section className="kpi-seo-local-method border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section">
           <h2 className="kpi-h2">{t.methodTitle}</h2>
-          <ol className="mt-10 grid gap-4">
-            {t.steps.map(([num, title, body]) => (
-              <li key={num} className="kpi-card flex gap-4 p-6 sm:items-start">
-                <span className="kpi-latin text-sm font-black tracking-[.14em] text-[#0B6660]">{num}</span>
-                <div>
-                  <h3 className="text-xl font-extrabold text-[#3B3B3B]">{title}</h3>
-                  <p className="mt-2 text-base leading-7 text-[#555555]">{body}</p>
-                </div>
-              </li>
-            ))}
+          <ol className="kpi-seo-local-method-list">
+            {locale === "th"
+              ? thaiMethodSteps.map((step, index) => (
+                  <li key={step.num} className="kpi-seo-local-method-step">
+                    <span className="kpi-latin kpi-seo-local-method-num">{step.num}</span>
+                    <div className="kpi-seo-local-method-copy">
+                      <p className="kpi-latin kpi-seo-local-method-phase">
+                        {step.num} / {methodPhases[index]}
+                      </p>
+                      <h3>{step.title}</h3>
+                      <p className="kpi-seo-local-method-body">
+                        {step.lines.map((line, lineIndex) => (
+                          <span key={`${step.num}-${line}`}>
+                            {lineIndex > 0 ? <span className="kpi-seo-local-method-br"> </span> : null}
+                            {line === "แยก Quick Wins" ? (
+                              <>
+                                แยก <span className="kpi-latin">Quick Wins</span>
+                              </>
+                            ) : line === "ตรวจเว็บไซต์ Google Search Console" ? (
+                              <>
+                                ตรวจเว็บไซต์ <span className="kpi-latin">Google Search Console</span>
+                              </>
+                            ) : line === "และ Google Business Profile" ? (
+                              <>
+                                และ <span className="kpi-latin">Google Business Profile</span>
+                              </>
+                            ) : (
+                              line
+                            )}
+                          </span>
+                        ))}
+                      </p>
+                    </div>
+                  </li>
+                ))
+              : t.steps.map(([num, title, body], index) => (
+                  <li key={num} className="kpi-seo-local-method-step">
+                    <span className="kpi-latin kpi-seo-local-method-num">{num}</span>
+                    <div className="kpi-seo-local-method-copy">
+                      <p className="kpi-latin kpi-seo-local-method-phase">
+                        {num} / {methodPhases[index]}
+                      </p>
+                      <h3>{title}</h3>
+                      <p className="kpi-seo-local-method-body">{body}</p>
+                    </div>
+                  </li>
+                ))}
           </ol>
         </div>
       </section>
 
-      <section className="kpi-section">
+      <section className="kpi-section kpi-seo-local-measure">
         <h2 className="kpi-h2">{t.measureTitle}</h2>
-        <p className="kpi-lead mt-5">{t.measureWeb}</p>
-        <p className="mt-5 max-w-3xl text-base leading-8 text-[#555555]">{t.measureMaps}</p>
-        <p className="mt-5 max-w-3xl text-sm leading-7 text-[#555555]">{t.measureNote}</p>
+        {locale === "th" ? (
+          <>
+            <div className="kpi-seo-local-measure-grid">
+              {thaiMeasureGroups.map((group) => (
+                <article key={group.num} className="kpi-seo-local-measure-group">
+                  <p className="kpi-latin kpi-seo-local-measure-num">{group.num}</p>
+                  <h3 className="kpi-latin">{group.title}</h3>
+                  <p className="kpi-seo-local-measure-intro">
+                    {group.introLines.map((line, lineIndex) => (
+                      <span key={line}>
+                        {lineIndex > 0 ? <span className="kpi-seo-local-measure-br"> </span> : null}
+                        {line}
+                      </span>
+                    ))}
+                  </p>
+                  <ul className="kpi-seo-local-measure-metrics">
+                    {group.metrics.map((metric) => (
+                      <li key={metric}>
+                        <ThaiMeasureMetric id={metric} />
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
+            <p className="kpi-seo-local-measure-note">
+              <span>
+                เราไม่รับประกันอันดับบน <span className="kpi-latin">Google Maps</span>
+                <span className="kpi-seo-local-measure-br"> </span>
+                หรือการถูกอ้างอิงในคำตอบ <span className="kpi-latin">AI</span>
+              </span>
+              <span className="kpi-seo-local-measure-note-strong">
+                เป้าหมายคือทำให้ข้อมูลธุรกิจถูกต้อง ชัดเจน
+                <span className="kpi-seo-local-measure-br"> </span>
+                และช่วยให้เห็นว่าการค้นพบ
+                <span className="kpi-seo-local-measure-br"> </span>
+                พาลูกค้าไปสู่การติดต่อจริงอย่างไร
+              </span>
+            </p>
+          </>
+        ) : (
+          <>
+            <p className="kpi-seo-local-measure-fallback">{t.measureWeb}</p>
+            <p className="kpi-seo-local-measure-fallback">{t.measureMaps}</p>
+            <p className="kpi-seo-local-measure-note">{t.measureNote}</p>
+          </>
+        )}
       </section>
 
       <section className="border-t border-[#E3E8EB] bg-white">
-        <div className="kpi-section">
-          <h2 className="kpi-h2">{t.relatedTitle}</h2>
-          <div className="kpi-grid-3 mt-10">
-            {insights.map((post) => {
-              const href = existingHref(post.href, locale) ?? post.href;
-              return (
-                <article key={post.slug} className="kpi-card relative flex flex-col overflow-hidden p-7">
-                  <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-                  <p className="text-xs font-extrabold uppercase tracking-[.14em] text-[#0B6660]">{post.category[locale]}</p>
-                  <h3 className="mt-4 text-xl font-extrabold leading-snug text-[#3B3B3B]">{post.title[locale]}</h3>
-                  <Link href={href} className="mt-auto inline-flex items-center gap-2 pt-8 text-sm font-semibold text-[#0B6660]">
-                    {insightsUi.read} <ArrowUpRight className="h-4 w-4" />
-                  </Link>
-                </article>
-              );
-            })}
-            <article className="kpi-card relative flex flex-col overflow-hidden p-7">
-              <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-              <h3 className="mt-3 text-xl font-extrabold text-[#3B3B3B]">{t.toolName}</h3>
-              <p className="mt-3 text-base leading-7 text-[#555555]">{t.toolBody}</p>
-              <Link href="/tools/hotel-searchability-check" className="mt-auto pt-8 text-sm font-semibold text-[#0B6660]">
-                {t.toolCta}
-              </Link>
-            </article>
-            <article className="kpi-card relative flex flex-col overflow-hidden p-7">
-              <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-              <h3 className="mt-3 text-xl font-extrabold text-[#3B3B3B]">{t.reviewName}</h3>
-              <p className="mt-3 text-base leading-7 text-[#555555]">{t.reviewBody}</p>
-              <Link href="/tools/hotel-review-link" className="mt-auto pt-8 text-sm font-semibold text-[#0B6660]">
-                {t.reviewCta}
-              </Link>
-            </article>
+        <div className="kpi-section kpi-seo-local-related">
+          <h2 className="kpi-h2">
+            {locale === "th" ? (
+              <>
+                <span className="kpi-seo-local-related-line">เรื่องที่เกี่ยวข้องกับการค้นหา</span>
+                <span className="kpi-seo-local-related-br"> </span>
+                <span className="kpi-seo-local-related-line">เว็บไซต์ และการจอง</span>
+              </>
+            ) : (
+              t.relatedTitle
+            )}
+          </h2>
+          <div className="kpi-seo-local-related-layout">
+            {featuredInsight ? (
+              <article className="kpi-seo-local-related-featured">
+                <span className="kpi-seo-local-related-accent" aria-hidden="true" />
+                <p className="kpi-seo-local-related-kicker">
+                  {locale === "th" ? (
+                    <>
+                      <span className="kpi-latin">SEO</span> และ <span className="kpi-latin">LOCAL SEARCH</span>
+                    </>
+                  ) : (
+                    featuredInsight.category[locale]
+                  )}
+                </p>
+                <h3>
+                  {locale === "th" ? (
+                    <>
+                      <span className="kpi-latin">SEO vs SEM</span> สำหรับโรงแรม:
+                      <span className="kpi-seo-local-related-br"> </span>
+                      ควรเริ่มจากอะไรและเลือกอย่างไร?
+                    </>
+                  ) : (
+                    featuredInsight.title[locale]
+                  )}
+                </h3>
+                <Link
+                  href={existingHref(featuredInsight.href, locale) ?? featuredInsight.href}
+                  className="kpi-seo-local-related-cta"
+                >
+                  {insightsUi.read} <ArrowUpRight aria-hidden="true" />
+                </Link>
+              </article>
+            ) : null}
+            <div className="kpi-seo-local-related-stack">
+              <article>
+                <h3>{t.toolName}</h3>
+                <p>
+                  {locale === "th" ? (
+                    <>
+                      ดูว่าหน้าเว็บพร้อมให้ลูกค้าจาก <span className="kpi-latin">Search</span> หรือ{" "}
+                      <span className="kpi-latin">Maps</span>
+                      <span className="kpi-seo-local-related-br"> </span>
+                      หาข้อมูลและเดินทางไปสอบถามหรือจองต่อหรือไม่
+                    </>
+                  ) : (
+                    t.toolBody
+                  )}
+                </p>
+                <Link href="/tools/hotel-searchability-check" className="kpi-seo-local-related-cta">
+                  {t.toolCta} <ArrowUpRight aria-hidden="true" />
+                </Link>
+              </article>
+              <article>
+                <h3>
+                  {locale === "th" ? (
+                    <>
+                      สร้างลิงก์รีวิว <span className="kpi-latin">Google</span>
+                    </>
+                  ) : (
+                    t.reviewName
+                  )}
+                </h3>
+                <p>
+                  {locale === "th" ? (
+                    <>
+                      สร้างลิงก์ที่พาลูกค้าไปยังหน้าส่งรีวิว
+                      <span className="kpi-seo-local-related-br"> </span>
+                      เพื่อให้ขั้นตอนการขอรีวิวสะดวกและตรงจุดมากขึ้น
+                    </>
+                  ) : (
+                    t.reviewBody
+                  )}
+                </p>
+                <Link href="/tools/hotel-review-link" className="kpi-seo-local-related-cta">
+                  {t.reviewCta} <ArrowUpRight aria-hidden="true" />
+                </Link>
+              </article>
+            </div>
           </div>
         </div>
       </section>

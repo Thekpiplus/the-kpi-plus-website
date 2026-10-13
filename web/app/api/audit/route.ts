@@ -11,14 +11,27 @@ export async function POST(request: Request) {
   const email = typeof body.email === "string" ? body.email.trim() : "";
   const contact = phone || lineId || email || (typeof body.contact === "string" ? body.contact : "");
 
+  const businessName =
+    typeof body.hotel === "string"
+      ? body.hotel
+      : typeof body.businessName === "string"
+        ? body.businessName
+        : undefined;
+  const message =
+    typeof body.details === "string"
+      ? body.details
+      : typeof body.message === "string"
+        ? body.message
+        : undefined;
+
   return handleEnquiry({
     ...body,
     form: "hotel_performance_audit",
     serviceInterest: "revenue",
-    businessName: body.hotel ?? body.businessName,
+    businessName,
     contact,
     phone: phone || undefined,
     email: email || undefined,
-    message: body.details ?? body.message,
+    message,
   });
 }
