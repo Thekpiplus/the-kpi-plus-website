@@ -1,11 +1,14 @@
 import Link from "next/link";
-import { ArrowUpRight } from "@/components/Icons";
 import { HotelSystemsEnquiry } from "@/components/HotelSystemsEnquiry";
 import { HotelSystemsStickyCta } from "@/components/HotelSystemsStickyCta";
-import { PageHero } from "@/components/PageHero";
 import { SiteShell } from "@/components/SiteShell";
 import { solutionNavLabel } from "@/lib/nav";
 import { existingHref, localizePath, type Locale } from "@/lib/seo";
+
+const heroPhoto = "/media/reservations-hero-desk.jpg";
+const problemPhoto = "/media/b2b-hero-meeting.jpg";
+
+const methodLabels = ["AUDIT", "MAP", "CONFIGURE", "TEST", "TRAIN", "GO LIVE"] as const;
 
 const platforms = [
   { name: "Cloudbeds", src: "/brand/platforms/cloudbeds.png" },
@@ -19,7 +22,7 @@ const platforms = [
 const copy = {
   th: {
     crumb: "โซลูชัน",
-    eyebrow: "ระบบโรงแรมและการนำไปใช้",
+    eyebrow: "Hotel Systems",
     title: "ระบบเชื่อมกันได้ แต่ทีมและข้อมูลต้องทำงานไปด้วยกัน",
     lead: "PMS, Channel Manager, Booking Engine และ OTA เป็นส่วนสำคัญของการขายห้องพัก หากประเภทห้อง ราคา หรือจำนวนห้องว่างตั้งค่าไม่ตรงกัน ทีมอาจต้องแก้ข้อมูลซ้ำ ตอบลูกค้าลำบาก และใช้รายงานประกอบการตัดสินใจได้ไม่เต็มที่",
     leadClose:
@@ -27,7 +30,8 @@ const copy = {
     cta: "ให้ทีมตรวจโครงสร้างระบบโรงแรม",
     secondary: "ดูโซลูชันทั้งหมด",
     underCta: "ส่งชื่อโรงแรม ระบบที่ใช้อยู่ และปัญหาที่พบ ไม่ต้องส่งรหัสผ่าน",
-    photoAlt: "ทีมโรงแรมตรวจโครงสร้างห้องพัก ราคา และช่องทางขายบนระบบ",
+    photoAlt: "ผู้บริหารโรงแรมตรวจระบบและการดำเนินงานบนคอมพิวเตอร์",
+    problemPhotoAlt: "ทีมโรงแรมหารือการตั้งค่าและเชื่อมต่อระบบ",
     problemTitle: "โรงแรมของคุณกำลังเจอเรื่องนี้หรือไม่?",
     problems: [
       "ประเภทห้องหรือ Rate Plan ในแต่ละระบบจับคู่กันไม่ชัด",
@@ -51,9 +55,9 @@ const copy = {
     existingClose: "หากระบบปัจจุบันมีข้อจำกัด ทีมจะช่วยระบุว่าข้อจำกัดนั้นกระทบงานส่วนใด ก่อนพิจารณาทางเลือกและการย้ายระบบร่วมกับโรงแรม",
     stageTitle: "รองรับทั้งโรงแรมก่อนเปิดและโรงแรมที่ดำเนินงานอยู่",
     stages: [
-      ["โรงแรมก่อนเปิด", "วางประเภทห้อง ราคา ระบบจอง ช่องทาง OTA รายงาน และวิธีทำงานให้พร้อมก่อนเริ่มรับแขก"],
-      ["โรงแรมที่เปิดแล้ว", "ตรวจการตั้งค่าที่ใช้อยู่ แก้ปัญหาการเชื่อมต่อ ลดงานซ้ำ และปรับรายงานให้ช่วยการตัดสินใจมากขึ้น"],
-      ["โรงแรมที่กำลังย้ายระบบ", "วางแผนข้อมูลที่ต้องย้าย ขั้นตอนการเชื่อมต่อ การทดสอบ การอบรม และช่วงส่งต่องานกับผู้ให้บริการระบบ"],
+      ["01", "โรงแรมก่อนเปิด", "วางประเภทห้อง ราคา ระบบจอง ช่องทาง OTA รายงาน และวิธีทำงานให้พร้อมก่อนเริ่มรับแขก"],
+      ["02", "โรงแรมที่เปิดแล้ว", "ตรวจการตั้งค่าที่ใช้อยู่ แก้ปัญหาการเชื่อมต่อ ลดงานซ้ำ และปรับรายงานให้ช่วยการตัดสินใจมากขึ้น"],
+      ["03", "โรงแรมที่กำลังย้ายระบบ", "วางแผนข้อมูลที่ต้องย้าย ขั้นตอนการเชื่อมต่อ การทดสอบ การอบรม และช่วงส่งต่องานกับผู้ให้บริการระบบ"],
     ],
     methodTitle: "เราทำงานอย่างไร?",
     steps: [
@@ -65,7 +69,7 @@ const copy = {
       ["06", "ทบทวนหลังเริ่มใช้", "แก้จุดที่พบจากการใช้งานจริงตามขอบเขตที่ตกลงกัน"],
     ],
     methodNote: "งานเชื่อมต่อบางส่วนต้องดำเนินการหรืออนุมัติโดยผู้ให้บริการระบบ เดอะ เคพีไอ พลัส จะช่วยประสานและตรวจผลร่วมกับโรงแรม",
-    platformsTitle: "ระบบที่ทีมมีประสบการณ์ทำงานร่วมด้วย",
+    platformsTitle: "ระบบโรงแรมที่ทีมมีประสบการณ์ในการติดตั้งและประสานงาน",
     platformsBody:
       "ขอบเขตงานอาจเกี่ยวข้องกับแพลตฟอร์มที่โรงแรมใช้อยู่ เช่น Cloudbeds, SiteMinder, Yanolja Cloud Solution, Oracle Hospitality OPERA Cloud, NAWA และ HotelierGuru รวมถึงระบบอื่นที่ต้องตรวจความสามารถและสิทธิ์การเข้าถึงเป็นรายกรณี",
     platformsNote: "ชื่อและโลโก้ใช้เพื่อระบุแพลตฟอร์มที่เกี่ยวข้องกับงานเท่านั้น ไม่ได้หมายถึงการรับรองหรือความร่วมมืออย่างเป็นทางการจากเจ้าของแพลตฟอร์ม",
@@ -81,14 +85,12 @@ const copy = {
     readyClose: "รายละเอียดการทดสอบจะกำหนดตามระบบและขอบเขตงานของแต่ละโรงแรม",
     relatedTitle: "เรื่องที่เกี่ยวข้องกับรายได้ งานจอง และระบบ",
     details: "ดูรายละเอียด",
-    revenueTitle: "บริหารรายได้และกลยุทธ์การขาย",
     revenueBody: "ระบบที่ตั้งค่าแล้ว ยังต้องดูร่วมกับราคา ช่องทางขาย และการจองตรงในภาพรวมรายได้",
-    reservationsTitle: "บริการทีมรับจองสำหรับโรงแรม",
     reservationsBody: "เมื่อระบบพร้อมแล้ว ทีมยังต้องมีคนดูแลคำถามและการจองจากช่องทางที่ตกลงกัน",
   },
   en: {
     crumb: "Solutions",
-    eyebrow: "Set up hotel systems and put them to work",
+    eyebrow: "Hotel Systems",
     title: "Systems can connect. The team and the data still have to work together.",
     lead: "The PMS, channel manager, booking engine, and OTAs are a core part of selling rooms. If room types, rates, or availability are not set the same way, the team may edit the same facts twice, find it hard to answer guests, and cannot fully use reports to decide.",
     leadClose:
@@ -96,7 +98,8 @@ const copy = {
     cta: "Ask the team to review the hotel system setup",
     secondary: "All solutions",
     underCta: "Send the hotel name, the systems in use, and the problem. Do not send a password.",
-    photoAlt: "A hotel team reviewing room types, rates, and sales channels in their systems",
+    photoAlt: "A hotel manager reviewing systems and operations on a computer",
+    problemPhotoAlt: "A hotel team discussing system setup and connections",
     problemTitle: "Is the hotel meeting one of these?",
     problems: [
       "Room types or rate plans are not clearly mapped across systems",
@@ -120,9 +123,9 @@ const copy = {
     existingClose: "If the current system has a limit, the team will name which part of the work it affects before looking at options and a move with the hotel.",
     stageTitle: "For hotels before opening, and hotels already running",
     stages: [
-      ["Before opening", "Set room types, rates, the booking system, OTA channels, reports, and the way of working before guests arrive."],
-      ["Already operating", "Review the current setup, fix connection problems, reduce repeated work, and make reports more useful for decisions."],
-      ["Moving systems", "Plan the data that must move, the connection steps, testing, training, and the hand-over period with the system provider."],
+      ["01", "Before opening", "Set room types, rates, the booking system, OTA channels, reports, and the way of working before guests arrive."],
+      ["02", "Already operating", "Review the current setup, fix connection problems, reduce repeated work, and make reports more useful for decisions."],
+      ["03", "Moving systems", "Plan the data that must move, the connection steps, testing, training, and the hand-over period with the system provider."],
     ],
     methodTitle: "How we work",
     steps: [
@@ -134,7 +137,7 @@ const copy = {
       ["06", "Review after go-live", "Fix issues found in real use, within the agreed scope."],
     ],
     methodNote: "Some connection work has to be done or approved by the system provider. The KPI Plus helps coordinate and review the result with the hotel.",
-    platformsTitle: "Systems the team has worked with",
+    platformsTitle: "Hotel systems the team has experience implementing and coordinating",
     platformsBody:
       "The work may involve platforms the hotel already uses, such as Cloudbeds, SiteMinder, Yanolja Cloud Solution, Oracle Hospitality OPERA Cloud, NAWA, and HotelierGuru, and other systems that have to be reviewed case by case for capability and access.",
     platformsNote: "Names and logos are used only to name platforms related to the work. They do not mean an endorsement or a formal partnership with the platform owners.",
@@ -150,14 +153,12 @@ const copy = {
     readyClose: "The test detail is set from the systems and the scope of work for each hotel.",
     relatedTitle: "Related reading on revenue, reservations, and systems",
     details: "Read more",
-    revenueTitle: "Revenue & Commercial Management",
     revenueBody: "Once the systems are set, rates, channels, and direct booking still have to sit in one revenue picture.",
-    reservationsTitle: "Outsourced Reservation Management",
     reservationsBody: "When the systems are ready, someone still has to look after questions and bookings on the agreed channels.",
   },
   ru: {
     crumb: "Решения",
-    eyebrow: "Настроить системы отеля и запустить их в работу",
+    eyebrow: "Hotel Systems",
     title: "Системы могут быть связаны. Команда и данные всё равно должны работать вместе.",
     lead: "PMS, channel manager, booking engine и OTA — важная часть продажи номеров. Если типы номеров, цены или наличие настроены по-разному, команда может править одни и те же данные дважды, с трудом отвечать гостям и не полностью использовать отчёты для решений.",
     leadClose:
@@ -165,7 +166,8 @@ const copy = {
     cta: "Попросить команду проверить структуру систем отеля",
     secondary: "Все решения",
     underCta: "Отправьте название отеля, системы и проблему. Пароль отправлять не нужно.",
-    photoAlt: "Команда отеля проверяет типы номеров, цены и каналы продаж в системах",
+    photoAlt: "Управляющий отеля проверяет системы и операции на компьютере",
+    problemPhotoAlt: "Команда отеля обсуждает настройку и связь систем",
     problemTitle: "Отель встречает что-то из этого?",
     problems: [
       "Типы номеров или rate plan в разных системах сопоставлены неясно",
@@ -189,9 +191,9 @@ const copy = {
     existingClose: "Если у текущей системы есть ограничение, команда назовёт, какую часть работы оно бьёт, прежде чем смотреть варианты и переезд вместе с отелем.",
     stageTitle: "И для отелей до открытия, и для уже работающих",
     stages: [
-      ["До открытия", "Задать типы номеров, цены, систему брони, каналы OTA, отчёты и способ работы до приёма гостей."],
-      ["Уже работает", "Проверить текущие настройки, починить связи, снизить повторную работу и сделать отчёты полезнее для решений."],
-      ["Переезд на другую систему", "Спланировать данные для переноса, шаги связи, тесты, обучение и период передачи работы с провайдером системы."],
+      ["01", "До открытия", "Задать типы номеров, цены, систему брони, каналы OTA, отчёты и способ работы до приёма гостей."],
+      ["02", "Уже работает", "Проверить текущие настройки, починить связи, снизить повторную работу и сделать отчёты полезнее для решений."],
+      ["03", "Переезд на другую систему", "Спланировать данные для переноса, шаги связи, тесты, обучение и период передачи работы с провайдером системы."],
     ],
     methodTitle: "Как мы работаем",
     steps: [
@@ -203,7 +205,7 @@ const copy = {
       ["06", "Проверить после запуска", "Править то, что всплыло в реальном использовании, в согласованном объёме."],
     ],
     methodNote: "Часть работ по связи должна сделать или утвердить провайдер системы. The KPI Plus помогает согласовать и проверить результат вместе с отелем.",
-    platformsTitle: "Системы, с которыми команда уже работала",
+    platformsTitle: "Системы отеля, с которыми команда имеет опыт внедрения и координации",
     platformsBody:
       "Работа может касаться платформ, которые отель уже использует: Cloudbeds, SiteMinder, Yanolja Cloud Solution, Oracle Hospitality OPERA Cloud, NAWA и HotelierGuru, а также других систем, которые нужно смотреть отдельно по возможностям и доступу.",
     platformsNote: "Названия и логотипы используем только чтобы назвать платформы, связанные с работой. Это не означает одобрение или официальное партнёрство с владельцами платформ.",
@@ -219,14 +221,12 @@ const copy = {
     readyClose: "Детали теста задаём по системам и объёму работы каждого отеля.",
     relatedTitle: "Материалы про доход, бронь и системы",
     details: "Подробнее",
-    revenueTitle: "Revenue & Commercial Management",
     revenueBody: "Когда системы настроены, цену, каналы и прямое бронирование всё равно нужно смотреть в общей картине дохода.",
-    reservationsTitle: "Outsourced Reservation Management",
     reservationsBody: "Когда системы готовы, кто-то всё равно должен вести вопросы и брони по согласованным каналам.",
   },
   zh: {
     crumb: "解決方案",
-    eyebrow: "把飯店系統規劃好，並真正用起來",
+    eyebrow: "Hotel Systems",
     title: "系統可以串起來，但團隊和資料仍須一起運作",
     lead: "PMS、Channel Manager、Booking Engine 與 OTA 是賣房的核心。若房型、價格或空房設定不一致，團隊可能重複改同一筆資料、難以回覆客人，也無法充分利用報表做決定。",
     leadClose:
@@ -234,7 +234,8 @@ const copy = {
     cta: "請團隊檢查飯店系統結構",
     secondary: "查看全部方案",
     underCta: "留下飯店名稱、目前系統與問題。不必傳送密碼。",
-    photoAlt: "飯店團隊在系統中檢查房型、價格與銷售通路",
+    photoAlt: "飯店管理者在電腦上檢查系統與營運",
+    problemPhotoAlt: "飯店團隊討論系統設定與串接",
     problemTitle: "飯店正在遇到這些事嗎？",
     problems: [
       "各系統的房型或 Rate Plan 對應不清楚",
@@ -257,9 +258,9 @@ const copy = {
     existingClose: "若現有系統有限制，團隊會先指出它影響哪一段工作，再與飯店一起考慮選項與換系統。",
     stageTitle: "開幕前的飯店，與已在營運的飯店都適用",
     stages: [
-      ["開幕前", "在開始接待客人前，把房型、價格、預訂系統、OTA 通路、報表與作業方式準備好。"],
-      ["已在營運", "檢查現有設定、處理串接問題、減少重複作業，並讓報表更能協助決策。"],
-      ["正在換系統", "規劃要搬的資料、串接步驟、測試、培訓，以及與系統供應商交接的期間。"],
+      ["01", "開幕前", "在開始接待客人前，把房型、價格、預訂系統、OTA 通路、報表與作業方式準備好。"],
+      ["02", "已在營運", "檢查現有設定、處理串接問題、減少重複作業，並讓報表更能協助決策。"],
+      ["03", "正在換系統", "規劃要搬的資料、串接步驟、測試、培訓，以及與系統供應商交接的期間。"],
     ],
     methodTitle: "我們怎麼做？",
     steps: [
@@ -271,7 +272,7 @@ const copy = {
       ["06", "上線後再檢視", "依談好的範圍，修正實際使用後發現的點。"],
     ],
     methodNote: "部分串接必須由系統供應商執行或核准。The KPI Plus 會與飯店一起協調並檢查結果。",
-    platformsTitle: "團隊有合作經驗的系統",
+    platformsTitle: "團隊有導入與協調經驗的飯店系統",
     platformsBody:
       "工作範圍可能涉及飯店現有平台，例如 Cloudbeds、SiteMinder、Yanolja Cloud Solution、Oracle Hospitality OPERA Cloud、NAWA 與 HotelierGuru，以及其他需依能力與權限個案檢查的系統。",
     platformsNote: "名稱與標誌僅用來標示與工作相關的平台，不代表平台擁有者的背書或正式合作。",
@@ -287,9 +288,7 @@ const copy = {
     readyClose: "測試細節會依各飯店的系統與工作範圍決定。",
     relatedTitle: "與收益、訂房和系統相關的內容",
     details: "查看詳情",
-    revenueTitle: "Revenue & Commercial Management",
     revenueBody: "系統設定好之後，價格、銷售通路與直銷預訂仍須放在同一張收益全貌裡看。",
-    reservationsTitle: "Outsourced Reservation Management",
     reservationsBody: "系統就緒後，仍需要有人依談好的通路照顧詢問與預訂。",
   },
 } as const;
@@ -302,166 +301,189 @@ export function HotelSystemsView({ locale }: { locale: Locale }) {
 
   return (
     <SiteShell locale={locale} route={localizePath("/solutions/hotel-systems-implementation", locale)}>
-      <PageHero>
-        <nav aria-label="Breadcrumb" className="text-sm text-white/70">
-          <ol className="flex flex-wrap items-center gap-2">
-            <li>
-              <Link href={solutions} className="hover:text-white">
-                {t.crumb}
-              </Link>
-            </li>
-            <li className="flex items-center gap-2">
-              <span aria-hidden="true">/</span>
-              <span className="text-white">{solutionNavLabel("/solutions/hotel-systems-implementation", locale)}</span>
-            </li>
-          </ol>
-        </nav>
-        <p className="kpi-kicker mt-5 text-[#F2F8E2]">{t.eyebrow}</p>
-        <h1 className="kpi-h1 mt-5">{t.title}</h1>
-        <p className="kpi-lead mt-5 text-white/72">{t.lead}</p>
-        <p className="mt-4 max-w-3xl text-base leading-8 text-white/64">{t.leadClose}</p>
-        <div className="kpi-actions">
-          <a href="#hotel-systems-enquiry" className="kpi-button">
-            {t.cta} <ArrowUpRight className="h-4 w-4" />
-          </a>
-          <Link href={solutions} className="kpi-button-ghost">
-            {t.secondary}
-          </Link>
-        </div>
-        <p className="mt-4 max-w-xl text-sm leading-6 text-white/64">{t.underCta}</p>
-      </PageHero>
-
-      <section className="kpi-section">
-        <div className="kpi-split">
-          <div>
-            <h2 className="kpi-h2">{t.problemTitle}</h2>
-            <div className="mt-10 grid gap-4">
-              {t.problems.map((item, index) => (
-                <article key={item} className="kpi-card flex gap-4 p-6">
-                  <span className="kpi-latin text-sm font-black tracking-[.14em] text-[#0B6660]">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <p className="text-base leading-7 text-[#555555]">{item}</p>
-                </article>
-              ))}
+      <section className="kpi-hero kpi-home-hero-section kpi-systems-hero">
+        <div className="kpi-wrap">
+          <nav aria-label="Breadcrumb" className="kpi-systems-hero-crumb">
+            <ol>
+              <li>
+                <Link href={solutions}>{t.crumb}</Link>
+              </li>
+              <li>
+                <span aria-hidden="true">/</span>
+                <span>{solutionNavLabel("/solutions/hotel-systems-implementation", locale)}</span>
+              </li>
+            </ol>
+          </nav>
+          <div className="kpi-home-hero">
+            <div className="kpi-home-hero-copy">
+              <p className="kpi-home-eyebrow kpi-latin">{t.eyebrow}</p>
+              <h1 className="kpi-h1 kpi-home-h1">
+                {locale === "th" ? (
+                  <>
+                    <span className="kpi-home-h1-lead">ระบบเชื่อมกันได้ แต่ทีมและข้อมูลต้อง</span>
+                    <span className="kpi-home-h1-rest">
+                      <span className="kpi-home-accent">ทำงานไปด้วยกัน</span>
+                    </span>
+                  </>
+                ) : (
+                  t.title
+                )}
+              </h1>
+              <p className="kpi-lead kpi-home-lead">{t.lead}</p>
+              <p className="kpi-systems-lead-close">{t.leadClose}</p>
+              <div className="kpi-actions">
+                <a href="#hotel-systems-enquiry" className="kpi-button">
+                  {t.cta} <span aria-hidden="true">↗</span>
+                </a>
+                <Link href={solutions} className="kpi-button-ghost">
+                  {t.secondary}
+                </Link>
+              </div>
+              <p className="kpi-systems-hero-note">{t.underCta}</p>
+            </div>
+            <div className="kpi-hero-visual kpi-home-photo">
+              <img src={heroPhoto} alt={t.photoAlt} width={1200} height={900} />
             </div>
           </div>
-          <figure className="kpi-home-photo">
-            <img src="/media/kpi-grow-capability_7bba9d6e.jpg" alt={t.photoAlt} width={1200} height={900} />
+        </div>
+      </section>
+
+      <section className="kpi-section kpi-systems-problems">
+        <div className="kpi-systems-problems-grid">
+          <div className="kpi-systems-problems-copy">
+            <h2 className="kpi-h2">{t.problemTitle}</h2>
+            <ol className="kpi-systems-problems-list">
+              {t.problems.map((item, index) => (
+                <li key={item} className="kpi-systems-problems-item">
+                  <span className="kpi-latin kpi-systems-num">{String(index + 1).padStart(2, "0")}</span>
+                  <p>{item}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+          <figure className="kpi-systems-problems-media">
+            <img src={problemPhoto} alt={t.problemPhotoAlt} width={1200} height={900} />
           </figure>
         </div>
       </section>
 
-      <section className="border-y border-[#E3E8EB] bg-white">
+      <section className="kpi-systems-help border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section">
           <h2 className="kpi-h2">{t.helpTitle}</h2>
-          <div className="kpi-grid-2 mt-10">
+          <ol className="kpi-systems-help-list">
             {t.help.map(([num, title, body]) => (
-              <article key={num} className="kpi-card relative overflow-hidden p-7">
-                <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-                <span className="kpi-latin text-sm font-black tracking-[.16em] text-[#0B6660]">{num}</span>
-                <h3 className="mt-5 text-xl font-extrabold text-[#3B3B3B]">{title}</h3>
-                <p className="mt-3 text-base leading-7 text-[#555555]">{body}</p>
-              </article>
+              <li key={num} className="kpi-systems-help-item">
+                <span className="kpi-latin kpi-systems-num">{num}</span>
+                <div className="kpi-systems-help-copy">
+                  <h3>{title}</h3>
+                  <p>{body}</p>
+                </div>
+              </li>
             ))}
-          </div>
-          <a href="#hotel-systems-enquiry" className="kpi-button mt-10">
-            {t.cta} <ArrowUpRight className="h-4 w-4" />
+          </ol>
+          <a href="#hotel-systems-enquiry" className="kpi-button kpi-systems-help-cta">
+            {t.cta} <span aria-hidden="true">↗</span>
           </a>
         </div>
       </section>
 
-      <section className="kpi-section">
+      <section className="kpi-section kpi-systems-existing">
         <h2 className="kpi-h2">{t.existingTitle}</h2>
-        <p className="mt-6 max-w-3xl text-base leading-8 text-[#555555]">{t.existingBody}</p>
-        <p className="mt-5 max-w-3xl text-base leading-8 text-[#3B3B3B]">{t.existingClose}</p>
+        <p className="kpi-systems-existing-body">{t.existingBody}</p>
+        <p className="kpi-systems-existing-close">{t.existingClose}</p>
       </section>
 
-      <section className="border-y border-[#E3E8EB] bg-white">
+      <section className="kpi-systems-stages border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section">
           <h2 className="kpi-h2">{t.stageTitle}</h2>
-          <div className="kpi-grid-3 mt-10">
-            {t.stages.map(([title, body]) => (
-              <article key={title} className="kpi-card relative overflow-hidden p-7">
-                <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-                <h3 className="mt-3 text-xl font-extrabold text-[#3B3B3B]">{title}</h3>
-                <p className="mt-3 text-base leading-7 text-[#555555]">{body}</p>
-              </article>
+          <ol className="kpi-systems-stages-list">
+            {t.stages.map(([num, title, body]) => (
+              <li key={num} className="kpi-systems-stages-item">
+                <span className="kpi-latin kpi-systems-num">{num}</span>
+                <div className="kpi-systems-stages-copy">
+                  <h3>{title}</h3>
+                  <p>{body}</p>
+                </div>
+              </li>
             ))}
-          </div>
+          </ol>
         </div>
       </section>
 
-      <section className="kpi-section">
+      <section className="kpi-section kpi-systems-method">
         <h2 className="kpi-h2">{t.methodTitle}</h2>
-        <ol className="mt-10 grid gap-4">
-          {t.steps.map(([num, title, body]) => (
-            <li key={num} className="kpi-card flex gap-4 p-6 sm:items-start">
-              <span className="kpi-latin text-sm font-black tracking-[.14em] text-[#0B6660]">{num}</span>
-              <div>
-                <h3 className="text-xl font-extrabold text-[#3B3B3B]">{title}</h3>
-                <p className="mt-2 text-base leading-7 text-[#555555]">{body}</p>
+        <ol className="kpi-systems-method-list">
+          {t.steps.map(([num, title, body], index) => (
+            <li key={num} className="kpi-systems-method-item">
+              <div className="kpi-systems-method-meta">
+                <span className="kpi-latin kpi-systems-method-num">{num}</span>
+                <span className="kpi-latin kpi-systems-method-label">{methodLabels[index]}</span>
+              </div>
+              <div className="kpi-systems-method-copy">
+                <h3>{title}</h3>
+                <p>{body}</p>
               </div>
             </li>
           ))}
         </ol>
-        <p className="mt-8 max-w-3xl text-sm leading-7 text-[#555555]">{t.methodNote}</p>
+        <p className="kpi-systems-method-note">{t.methodNote}</p>
+      </section>
 
-        <div className="mt-12 rounded-[1.5rem] border border-[#E3E8EB] bg-[#F4F4F4] p-6 sm:p-8">
-          <h3 className="text-lg font-extrabold text-[#3B3B3B]">{t.platformsTitle}</h3>
-          <p className="mt-3 max-w-3xl text-sm leading-7 text-[#555555]">{t.platformsBody}</p>
-          <div className="kpi-tool-grid kpi-tool-grid-3 mt-6">
+      <section className="kpi-systems-platforms border-y border-[#E3E8EB] bg-white">
+        <div className="kpi-section">
+          <h2 className="kpi-h2">{t.platformsTitle}</h2>
+          <p className="kpi-systems-platforms-body">{t.platformsBody}</p>
+          <ul className="kpi-systems-platforms-list">
             {platforms.map((platform) => (
-              <article key={platform.name} className="kpi-tool-card overflow-hidden">
-                <div className="kpi-platform-logo">
-                  {platform.src ? <img src={platform.src} alt="" /> : null}
-                </div>
-                <p className="kpi-latin text-base font-extrabold text-[#3B3B3B]">{platform.name}</p>
-              </article>
+              <li key={platform.name} className="kpi-systems-platforms-item">
+                <span className="kpi-systems-platforms-logo">
+                  <img src={platform.src} alt="" width={160} height={40} />
+                </span>
+                <span className="kpi-latin kpi-systems-platforms-name">{platform.name}</span>
+              </li>
             ))}
-          </div>
-          <p className="mt-6 max-w-3xl text-sm leading-7 text-[#555555]">{t.platformsNote}</p>
+          </ul>
+          <p className="kpi-systems-platforms-note">{t.platformsNote}</p>
         </div>
       </section>
 
-      <section className="kpi-section">
+      <section className="kpi-section kpi-systems-ready">
         <h2 className="kpi-h2">{t.readyTitle}</h2>
-        <p className="mt-6 max-w-3xl text-base leading-8 text-[#555555]">{t.readyBody}</p>
-        <div className="mt-8 grid gap-4">
+        <p className="kpi-systems-ready-body">{t.readyBody}</p>
+        <ol className="kpi-systems-ready-list">
           {t.ready.map((item, index) => (
-            <article key={item} className="kpi-card flex gap-4 p-6">
-              <span className="kpi-latin text-sm font-black tracking-[.14em] text-[#0B6660]">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <p className="text-base leading-7 text-[#555555]">{item}</p>
-            </article>
+            <li key={item} className="kpi-systems-ready-item">
+              <span className="kpi-latin kpi-systems-num">{String(index + 1).padStart(2, "0")}</span>
+              <p>{item}</p>
+            </li>
           ))}
-        </div>
-        <p className="mt-6 max-w-3xl text-base leading-8 text-[#3B3B3B]">{t.readyClose}</p>
+        </ol>
+        <p className="kpi-systems-ready-close">{t.readyClose}</p>
       </section>
 
       {revenueHref || reservationsHref ? (
-        <section className="border-t border-[#E3E8EB] bg-white">
+        <section className="kpi-systems-related border-t border-[#E3E8EB] bg-white">
           <div className="kpi-section">
             <h2 className="kpi-h2">{t.relatedTitle}</h2>
-            <div className="kpi-grid-2 mt-10">
+            <div className="kpi-systems-related-layout">
               {revenueHref ? (
-                <article className="kpi-card relative flex flex-col overflow-hidden p-7">
-                  <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-                  <h3 className="mt-3 text-xl font-extrabold text-[#3B3B3B]">{solutionNavLabel("/solutions/revenue-commercial-management", locale)}</h3>
-                  <p className="mt-3 text-base leading-7 text-[#555555]">{t.revenueBody}</p>
-                  <Link href={revenueHref} className="mt-auto pt-8 text-sm font-semibold text-[#0B6660]">
+                <article className="kpi-systems-related-primary">
+                  <span className="kpi-systems-related-accent" aria-hidden="true" />
+                  <h3>{solutionNavLabel("/solutions/revenue-commercial-management", locale)}</h3>
+                  <p>{t.revenueBody}</p>
+                  <Link href={revenueHref} className="kpi-systems-related-cta">
                     {t.details}
+                    <span aria-hidden="true">↗</span>
                   </Link>
                 </article>
               ) : null}
               {reservationsHref ? (
-                <article className="kpi-card relative flex flex-col overflow-hidden p-7">
-                  <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-                  <h3 className="mt-3 text-xl font-extrabold text-[#3B3B3B]">{solutionNavLabel("/solutions/outsourced-hotel-reservations", locale)}</h3>
-                  <p className="mt-3 text-base leading-7 text-[#555555]">{t.reservationsBody}</p>
-                  <Link href={reservationsHref} className="mt-auto pt-8 text-sm font-semibold text-[#0B6660]">
+                <article className="kpi-systems-related-secondary">
+                  <h3>{solutionNavLabel("/solutions/outsourced-hotel-reservations", locale)}</h3>
+                  <p>{t.reservationsBody}</p>
+                  <Link href={reservationsHref} className="kpi-systems-related-cta">
                     {t.details}
+                    <span aria-hidden="true">↗</span>
                   </Link>
                 </article>
               ) : null}

@@ -4,36 +4,37 @@ import { PageHero } from "@/components/PageHero";
 import { SiteShell } from "@/components/SiteShell";
 import {
   caseStudies,
-  caseStudyDisclaimer,
+  caseStudyDisclaimerFor,
   getCaseStudy,
+  localizeCaseStudy,
   type CaseStudy,
 } from "@/lib/case-studies";
 import { auditHref, localizePath, type Locale } from "@/lib/seo";
 
 const chrome = {
   th: {
-    back: "กลับไป Case Studies",
-    introduction: "Introduction",
-    keyMetrics: "Key Metrics",
-    results: "Results",
-    before: "Before",
-    after: "After",
-    change: "Change",
-    breakdown: "Revenue Growth Breakdown",
-    whatChanged: "What We Changed",
-    keyInsight: "Key Insight",
-    keyTakeaway: "Key Takeaway",
-    property: "Property",
-    location: "Location",
-    started: "Management start",
-    period: "Period",
-    next: "Next case study",
-    primaryCta: "ขอวิเคราะห์ Performance โรงแรม",
+    back: "กลับไปหน้าผลงาน",
+    introduction: "บทนำ",
+    keyMetrics: "ตัวชี้วัดสำคัญ",
+    results: "ผลลัพธ์",
+    before: "ก่อน",
+    after: "หลัง",
+    change: "เปลี่ยนแปลง",
+    breakdown: "สัดส่วนการเติบโตของรายได้",
+    whatChanged: "สิ่งที่เราปรับ",
+    keyInsight: "ข้อสังเกตสำคัญ",
+    keyTakeaway: "บทเรียนสำคัญ",
+    property: "ประเภทที่พัก",
+    location: "ที่ตั้ง",
+    started: "เริ่มบริหาร",
+    period: "ช่วงเวลา",
+    next: "ผลงานถัดไป",
+    primaryCta: "ประเมิน Performance โรงแรม",
     secondaryCta: "คุยกับทีม เดอะ เคพีไอ พลัส",
-    closerEyebrow: "Hotel Performance Review",
-    closerTitle: "What Could Your Hotel Be Leaving on the Table?",
+    closerEyebrow: "ทบทวน Performance โรงแรม",
+    closerTitle: "โรงแรมของคุณอาจพลาดรายได้ตรงไหนอยู่?",
     closerBody:
-      "We review your pricing, distribution, booking pace and commercial performance to identify where additional revenue opportunities may exist.",
+      "เราทบทวนราคา Distribution Booking Pace และผลการดำเนินงานเชิงพาณิชย์ เพื่อหาจุดที่มีโอกาสสร้างรายได้เพิ่ม",
   },
   en: {
     back: "Back to Case Studies",
@@ -115,15 +116,17 @@ function nextStudy(current: CaseStudy) {
 }
 
 export function CaseStudyDetailView({ locale, slug }: { locale: Locale; slug: string }) {
-  const study = getCaseStudy(slug);
-  if (!study) notFound();
+  const base = getCaseStudy(slug);
+  if (!base) notFound();
 
+  const study = localizeCaseStudy(base, locale);
   const t = chrome[locale];
   const audit = auditHref(locale);
   const contact = localizePath("/contact", locale);
   const indexHref = localizePath("/case-studies", locale);
   const route = localizePath(`/case-studies/${study.slug}`, locale);
-  const next = nextStudy(study);
+  const next = localizeCaseStudy(nextStudy(base), locale);
+  const disclaimer = caseStudyDisclaimerFor(locale);
 
   return (
     <SiteShell locale={locale} route={route}>
@@ -267,7 +270,7 @@ export function CaseStudyDetailView({ locale, slug }: { locale: Locale; slug: st
             <p className="mt-4 text-xl font-extrabold leading-8 text-white">{study.keyTakeaway}</p>
           </article>
         </div>
-        <p className="mt-10 max-w-3xl text-sm leading-7 text-[#555555]">{caseStudyDisclaimer}</p>
+        <p className="mt-10 max-w-3xl text-sm leading-7 text-[#555555]">{disclaimer}</p>
         <Link
           href={localizePath(`/case-studies/${next.slug}`, locale)}
           className="mt-8 inline-flex text-sm font-semibold text-[#0B6660]"

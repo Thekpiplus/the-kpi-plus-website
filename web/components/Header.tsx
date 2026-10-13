@@ -279,10 +279,10 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
           >
             {locale === "th" ? (
               <>
-                <span className="kpi-header-cta-line">ขอวิเคราะห์</span>
-                <span className="kpi-header-cta-line">
-                  <span className="kpi-latin">Performance</span> โรงแรม
+                <span className="kpi-header-cta-full">
+                  ขอวิเคราะห์ <span className="kpi-latin">Performance</span>
                 </span>
+                <span className="kpi-header-cta-short">ขอวิเคราะห์</span>
               </>
             ) : (
               t.audit

@@ -1,46 +1,49 @@
 import Link from "next/link";
 import { ClientLogoMarquee } from "@/components/ClientLogoMarquee";
-import { PageHero } from "@/components/PageHero";
 import { SiteShell } from "@/components/SiteShell";
 import {
   caseStudies,
-  caseStudyDisclaimer,
-  caseStudyHeroStats,
+  caseStudyDisclaimerFor,
+  caseStudyHeroStatsFor,
+  localizeCaseStudy,
 } from "@/lib/case-studies";
 import { auditHref, localizePath, type Locale } from "@/lib/seo";
+
+/** Soft break between Thai phrases for body copy. */
+const br = "\u200B";
 
 const chrome = {
   th: {
     pageTitle: "ผลงานลูกค้า",
-    heroEyebrow: "Real Hotel Performance",
-    heroHeadline: "Results Measured in Revenue, Not Vanity Metrics.",
-    heroDescription:
-      "From pricing and distribution to direct-booking campaigns, we focus on measurable commercial performance — including Room Revenue, ADR, Occupancy, RevPAR, Direct Booking Revenue and ROAS.",
-    viewGrid: "ดู Case Studies",
-    viewStudy: "ดู Case Study",
-    clientsLabel: "โรงแรมและธุรกิจที่เราได้ร่วมงานด้วย",
-    gridEyebrow: "Case Studies",
-    gridTitle: "Measurable commercial results",
-    closerEyebrow: "Hotel Performance Review",
-    closerTitle: "What Could Your Hotel Be Leaving on the Table?",
-    closerBody:
-      "We review your pricing, distribution, booking pace and commercial performance to identify where additional revenue opportunities may exist.",
-    primaryCta: "ขอวิเคราะห์ Performance โรงแรม",
+    heroEyebrow: "ผลลัพธ์โรงแรมจริง",
+    heroHeadlineLines: ["วัดผลจากรายได้", "ไม่ใช่ตัวเลขที่ดูดี", "แต่ไม่สร้างผล"] as const,
+    heroDescription: `ตั้งแต่การบริหารราคาและช่องทางการขาย${br} ไปจนถึงแคมเปญจองตรง${br} เราโฟกัสผลลัพธ์เชิงพาณิชย์ที่วัดได้${br} เช่น Room Revenue, ADR, Occupancy, RevPAR และ ROAS`,
+    viewGrid: "ดูผลงาน",
+    viewStudy: "ดูรายละเอียดผลงาน",
+    clientsLabelLines: ["โรงแรมและที่พักที่เราเคยร่วมงานด้วย"] as const,
+    clientsEyebrow: "โรงแรมและที่พักที่คัดสรร",
+    gridEyebrow: "ผลงาน",
+    gridTitleLines: ["ผลลัพธ์เชิงพาณิชย์ที่วัดได้"] as const,
+    closerEyebrow: "ทบทวน Performance",
+    closerTitleLines: [`โรงแรมของคุณ${br}อาจพลาดรายได้ตรงไหนอยู่?`] as const,
+    closerBody: `เราทบทวนราคา Distribution Booking Pace${br} และผลการดำเนินงานเชิงพาณิชย์${br} เพื่อหาจุดที่มีโอกาสสร้างรายได้เพิ่ม`,
+    primaryCta: "ประเมิน Performance โรงแรม",
     secondaryCta: "คุยกับทีม เดอะ เคพีไอ พลัส",
   },
   en: {
     pageTitle: "Case Studies",
     heroEyebrow: "Real Hotel Performance",
-    heroHeadline: "Results Measured in Revenue, Not Vanity Metrics.",
+    heroHeadlineLines: ["Results Measured in Revenue, Not Vanity Metrics."] as const,
     heroDescription:
       "From pricing and distribution to direct-booking campaigns, we focus on measurable commercial performance — including Room Revenue, ADR, Occupancy, RevPAR, Direct Booking Revenue and ROAS.",
     viewGrid: "View Case Studies",
     viewStudy: "View Case Study",
-    clientsLabel: "Hotels and businesses we've worked with",
+    clientsLabelLines: ["Selected hotels and properties we've worked with"] as const,
+    clientsEyebrow: "Selected Hotels & Properties",
     gridEyebrow: "Case Studies",
-    gridTitle: "Measurable commercial results",
+    gridTitleLines: ["Measurable commercial results"] as const,
     closerEyebrow: "Hotel Performance Review",
-    closerTitle: "What Could Your Hotel Be Leaving on the Table?",
+    closerTitleLines: ["Where Could Your Hotel Be Leaving Revenue on the Table?"] as const,
     closerBody:
       "We review your pricing, distribution, booking pace and commercial performance to identify where additional revenue opportunities may exist.",
     primaryCta: "Request a Hotel Performance Review",
@@ -49,16 +52,17 @@ const chrome = {
   ru: {
     pageTitle: "Кейсы",
     heroEyebrow: "Real Hotel Performance",
-    heroHeadline: "Results Measured in Revenue, Not Vanity Metrics.",
+    heroHeadlineLines: ["Results Measured in Revenue, Not Vanity Metrics."] as const,
     heroDescription:
       "From pricing and distribution to direct-booking campaigns, we focus on measurable commercial performance — including Room Revenue, ADR, Occupancy, RevPAR, Direct Booking Revenue and ROAS.",
     viewGrid: "View Case Studies",
     viewStudy: "View Case Study",
-    clientsLabel: "Hotels and businesses we've worked with",
+    clientsLabelLines: ["Selected hotels and properties we've worked with"] as const,
+    clientsEyebrow: "Selected Hotels & Properties",
     gridEyebrow: "Case Studies",
-    gridTitle: "Measurable commercial results",
+    gridTitleLines: ["Measurable commercial results"] as const,
     closerEyebrow: "Hotel Performance Review",
-    closerTitle: "What Could Your Hotel Be Leaving on the Table?",
+    closerTitleLines: ["Where Could Your Hotel Be Leaving Revenue on the Table?"] as const,
     closerBody:
       "We review your pricing, distribution, booking pace and commercial performance to identify where additional revenue opportunities may exist.",
     primaryCta: "Запросить аудит Performance отеля",
@@ -67,16 +71,17 @@ const chrome = {
   zh: {
     pageTitle: "客戶案例",
     heroEyebrow: "Real Hotel Performance",
-    heroHeadline: "Results Measured in Revenue, Not Vanity Metrics.",
+    heroHeadlineLines: ["Results Measured in Revenue, Not Vanity Metrics."] as const,
     heroDescription:
       "From pricing and distribution to direct-booking campaigns, we focus on measurable commercial performance — including Room Revenue, ADR, Occupancy, RevPAR, Direct Booking Revenue and ROAS.",
     viewGrid: "View Case Studies",
     viewStudy: "View Case Study",
-    clientsLabel: "Hotels and businesses we've worked with",
+    clientsLabelLines: ["Selected hotels and properties we've worked with"] as const,
+    clientsEyebrow: "Selected Hotels & Properties",
     gridEyebrow: "Case Studies",
-    gridTitle: "Measurable commercial results",
+    gridTitleLines: ["Measurable commercial results"] as const,
     closerEyebrow: "Hotel Performance Review",
-    closerTitle: "What Could Your Hotel Be Leaving on the Table?",
+    closerTitleLines: ["Where Could Your Hotel Be Leaving Revenue on the Table?"] as const,
     closerBody:
       "We review your pricing, distribution, booking pace and commercial performance to identify where additional revenue opportunities may exist.",
     primaryCta: "申請飯店 Performance 分析",
@@ -91,85 +96,160 @@ export const caseStudiesHeading = {
   zh: chrome.zh.pageTitle,
 } as const;
 
+function PrimaryCtaLabel({ locale, fallback }: { locale: Locale; fallback: string }) {
+  if (locale !== "th") return <>{fallback}</>;
+  return (
+    <>
+      ประเมิน <span className="kpi-latin">Performance</span> โรงแรม
+    </>
+  );
+}
+
+function StackedLines({
+  lines,
+  stacked,
+}: {
+  lines: readonly string[];
+  stacked: boolean;
+}) {
+  if (!stacked || lines.length === 1) return <>{lines.join(" ")}</>;
+  return (
+    <>
+      {lines.map((line) => (
+        <span key={line} className="kpi-cs-line">
+          {line}
+        </span>
+      ))}
+    </>
+  );
+}
+
 export function CaseStudiesView({ locale }: { locale: Locale }) {
   const t = chrome[locale];
   const audit = auditHref(locale);
   const contact = localizePath("/contact", locale);
   const indexHref = localizePath("/case-studies", locale);
+  const localizedStudies = caseStudies.map((study) => localizeCaseStudy(study, locale));
+  const [featured, ...supporting] = localizedStudies;
+  const heroStats = caseStudyHeroStatsFor(locale);
+  const disclaimer = caseStudyDisclaimerFor(locale);
+  const stackTh = locale === "th";
+  const clientsLabel = t.clientsLabelLines.join(" ");
 
   return (
     <SiteShell locale={locale} route={indexHref}>
-      <PageHero>
-        <p className="kpi-kicker text-[#F2F8E2]">{t.heroEyebrow}</p>
-        <h1 className="kpi-h1 mt-4">{t.heroHeadline}</h1>
-        <p className="kpi-lead mt-5 max-w-3xl text-white">{t.heroDescription}</p>
-        <div className="kpi-cs-hero-stats kpi-latin mt-10">
-          {caseStudyHeroStats.map((stat) => (
-            <div key={stat.label} className="kpi-cs-hero-stat">
-              <p className="kpi-cs-stat-value text-[#E6E81F]">{stat.value}</p>
-              <p className="mt-2 text-sm font-semibold text-white">{stat.label}</p>
-            </div>
-          ))}
-        </div>
-        <div className="kpi-actions">
-          <a href="#case-studies" className="kpi-button">
-            {t.viewGrid}
-          </a>
-          <Link href={audit} className="kpi-button-ghost">
-            {t.primaryCta}
-          </Link>
-        </div>
-      </PageHero>
-
-      <section className="border-y border-[#E3E8EB] bg-white">
-        <div className="kpi-section pb-0">
-          <p className="kpi-kicker text-[#0B6660]">{t.clientsLabel}</p>
-        </div>
-        <ClientLogoMarquee label={t.clientsLabel} className="mt-6 mb-10" />
-      </section>
-
-      <section id="case-studies" className="kpi-section scroll-mt-28">
-        <p className="kpi-kicker text-[#0B6660]">{t.gridEyebrow}</p>
-        <h2 className="kpi-h2 mt-4">{t.gridTitle}</h2>
-        <div className="kpi-grid-2 mt-10">
-          {caseStudies.map((study) => (
-            <article key={study.slug} className="kpi-cs-card flex flex-col">
-              <div className="flex items-start justify-between gap-4">
-                <span className="kpi-latin text-sm font-black tracking-[.16em] text-[#0B6660]">{study.number}</span>
-                <span className="text-right text-xs font-bold uppercase tracking-[.08em] text-[#0B6660]">
-                  {study.category}
-                </span>
-              </div>
-              <p className="mt-6 text-sm font-semibold text-[#3B3B3B]">
-                {study.location}
-                <span className="mx-2 text-[#0B6660]">·</span>
-                {study.propertyType}
-              </p>
-              <p className="kpi-latin mt-5 text-3xl font-extrabold tracking-[-.04em] text-[#0B1F33] sm:text-4xl">
-                {study.mainResult}
-              </p>
-              <p className="mt-3 text-sm font-semibold text-[#0B6660]">{study.supportingResult}</p>
-              <p className="mt-5 flex-1 text-base leading-7 text-[#555555]">{study.cardDescription}</p>
-              <Link
-                href={localizePath(`/case-studies/${study.slug}`, locale)}
-                className="mt-8 inline-flex text-sm font-semibold text-[#0B6660]"
+      <section className="kpi-hero kpi-home-hero-section kpi-cs-hero">
+        <div className="kpi-wrap">
+          <p className={`kpi-home-eyebrow${locale === "th" ? "" : " kpi-latin"}`}>{t.heroEyebrow}</p>
+          <h1 className="kpi-h1 kpi-home-h1 kpi-cs-hero-title">
+            <StackedLines lines={t.heroHeadlineLines} stacked={stackTh} />
+          </h1>
+          <p className="kpi-lead kpi-home-lead kpi-cs-hero-lead">{t.heroDescription}</p>
+          <div className="kpi-cs-hero-stats" aria-label={locale === "th" ? "ไฮไลต์ผลลัพธ์" : "Performance highlights"}>
+            {heroStats.map((stat, index) => (
+              <div
+                key={`${stat.value}-${stat.label}`}
+                className={`kpi-cs-hero-stat${index === 0 ? " is-primary" : ""}`}
               >
-                {t.viewStudy}
-              </Link>
-            </article>
-          ))}
+                <p className="kpi-cs-stat-value kpi-latin">{stat.value}</p>
+                <p className={`kpi-cs-stat-label${/[A-Za-z]/.test(stat.label) ? " kpi-latin" : ""}`}>{stat.label}</p>
+              </div>
+            ))}
+          </div>
+          <div className="kpi-actions kpi-cs-hero-actions">
+            <a href="#case-studies" className="kpi-button">
+              {t.viewGrid} <span aria-hidden="true">↗</span>
+            </a>
+            <Link href={audit} className="kpi-button-ghost">
+              <PrimaryCtaLabel locale={locale} fallback={t.primaryCta} />
+            </Link>
+          </div>
         </div>
-        <p className="mt-10 max-w-3xl text-sm leading-7 text-[#555555]">{caseStudyDisclaimer}</p>
       </section>
 
-      <section className="bg-[#0B1F33] text-white">
+      <section className="kpi-cs-logos border-y border-[#E3E8EB] bg-white">
+        <div className="kpi-section pb-0">
+          <p className={`kpi-cs-logos-eyebrow${locale === "th" ? "" : " kpi-latin"}`}>{t.clientsEyebrow}</p>
+          <h2 className="kpi-cs-logos-title">
+            <StackedLines lines={t.clientsLabelLines} stacked={stackTh} />
+          </h2>
+        </div>
+        <ClientLogoMarquee label={clientsLabel} className="kpi-cs-marquee mt-5 mb-10" />
+      </section>
+
+      <section id="case-studies" className="kpi-section kpi-cs-grid scroll-mt-28">
+        <p className={`kpi-cs-grid-eyebrow${locale === "th" ? "" : " kpi-latin"}`}>{t.gridEyebrow}</p>
+        <h2 className="kpi-h2">
+          <StackedLines lines={t.gridTitleLines} stacked={stackTh} />
+        </h2>
+        <div className="kpi-cs-layout">
+          {featured ? (
+            <article className="kpi-cs-featured">
+              <div className="kpi-cs-meta">
+                <span className="kpi-latin kpi-cs-num">{featured.number}</span>
+                <span className="kpi-latin kpi-cs-category">{featured.category}</span>
+              </div>
+              <p className="kpi-cs-place">
+                {featured.location}
+                <span aria-hidden="true"> · </span>
+                {featured.propertyType}
+              </p>
+              <div className="kpi-cs-featured-metric">
+                <p className="kpi-latin kpi-cs-result is-featured">{featured.mainResult}</p>
+                <p className="kpi-cs-support">{featured.supportingResult}</p>
+              </div>
+              <div className="kpi-cs-featured-copy">
+                <p className="kpi-cs-desc">{featured.cardDescription}</p>
+                <Link
+                  href={localizePath(`/case-studies/${featured.slug}`, locale)}
+                  className="kpi-cs-study-cta"
+                >
+                  {t.viewStudy}
+                  <span aria-hidden="true">↗</span>
+                </Link>
+              </div>
+            </article>
+          ) : null}
+          <div className="kpi-cs-support-stack">
+            {supporting.map((study) => (
+              <article key={study.slug} className="kpi-cs-support-item">
+                <div className="kpi-cs-meta">
+                  <span className="kpi-latin kpi-cs-num">{study.number}</span>
+                  <span className="kpi-latin kpi-cs-category">{study.category}</span>
+                </div>
+                <p className="kpi-cs-place">
+                  {study.location}
+                  <span aria-hidden="true"> · </span>
+                  {study.propertyType}
+                </p>
+                <p className="kpi-latin kpi-cs-result">{study.mainResult}</p>
+                <p className="kpi-cs-support">{study.supportingResult}</p>
+                <p className="kpi-cs-desc">{study.cardDescription}</p>
+                <Link
+                  href={localizePath(`/case-studies/${study.slug}`, locale)}
+                  className="kpi-cs-study-cta"
+                >
+                  {t.viewStudy}
+                  <span aria-hidden="true">↗</span>
+                </Link>
+              </article>
+            ))}
+          </div>
+        </div>
+        <p className="kpi-cs-disclaimer">{disclaimer}</p>
+      </section>
+
+      <section className="kpi-cs-closer">
         <div className="kpi-section">
-          <p className="kpi-kicker text-[#F2F8E2]">{t.closerEyebrow}</p>
-          <h2 className="kpi-h2 mt-4 text-white">{t.closerTitle}</h2>
-          <p className="kpi-lead mt-5 max-w-3xl text-white">{t.closerBody}</p>
-          <div className="kpi-actions">
+          <p className={`kpi-cs-closer-eyebrow${locale === "th" ? "" : " kpi-latin"}`}>{t.closerEyebrow}</p>
+          <h2 className="kpi-h2 kpi-cs-closer-title">
+            <StackedLines lines={t.closerTitleLines} stacked={stackTh} />
+          </h2>
+          <p className="kpi-cs-closer-body">{t.closerBody}</p>
+          <div className="kpi-actions kpi-cs-closer-actions">
             <Link href={audit} className="kpi-button">
-              {t.primaryCta}
+              <PrimaryCtaLabel locale={locale} fallback={t.primaryCta} />
+              <span aria-hidden="true">↗</span>
             </Link>
             <Link href={contact} className="kpi-button-ghost">
               {t.secondaryCta}

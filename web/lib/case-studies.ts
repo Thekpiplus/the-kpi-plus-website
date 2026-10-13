@@ -230,7 +230,7 @@ export function getCaseStudy(slug: string) {
 
 export const caseStudySlugs = caseStudies.map((study) => study.slug);
 
-/** Listing hero stats (shared across locales — source content is English). */
+/** Listing hero stats (English source; Thai labels via caseStudyHeroStatsFor). */
 export const caseStudyHeroStats: CaseStudyMetric[] = [
   { value: "+34.7%", label: "Room Revenue" },
   { value: "+฿5.57M", label: "Additional Revenue" },
@@ -238,8 +238,208 @@ export const caseStudyHeroStats: CaseStudyMetric[] = [
   { value: "+11.0%", label: "ADR" },
 ];
 
+const caseStudyHeroStatsTh: CaseStudyMetric[] = [
+  { value: "+34.7%", label: "Room Revenue" },
+  { value: "+5.57M", label: "รายได้เพิ่ม" },
+  { value: "17.29×", label: "ROAS" },
+  { value: "+11.0%", label: "ADR" },
+];
+
+/** Soft break between Thai phrases for balanced wrapping. */
+const thBr = "\u200B";
+
+export function caseStudyHeroStatsFor(locale: Locale): CaseStudyMetric[] {
+  return locale === "th" ? caseStudyHeroStatsTh : caseStudyHeroStats;
+}
+
 export const caseStudyDisclaimer =
   "Results shown are based on individual hotel performance during the stated periods. Results vary depending on property, market conditions, product, pricing, distribution and operational factors and do not guarantee future performance.";
+
+const caseStudyDisclaimerTh =
+  `ผลลัพธ์ที่แสดงอ้างอิงจากผลการดำเนินงานของโรงแรมแต่ละแห่งในช่วงเวลาที่ระบุ${thBr} ผลลัพธ์อาจแตกต่างกันตามลักษณะโรงแรม สภาวะตลาด ผลิตภัณฑ์ ราคา Distribution และปัจจัยด้านการดำเนินงาน${thBr} และไม่ได้เป็นการรับประกันผลลัพธ์ในอนาคต`;
+
+export function caseStudyDisclaimerFor(locale: Locale) {
+  return locale === "th" ? caseStudyDisclaimerTh : caseStudyDisclaimer;
+}
+
+type CaseStudyLocaleOverlay = Partial<
+  Pick<
+    CaseStudy,
+    | "location"
+    | "propertyType"
+    | "category"
+    | "mainResult"
+    | "supportingResult"
+    | "cardDescription"
+    | "eyebrow"
+    | "headline"
+    | "managementStart"
+    | "period"
+    | "introduction"
+    | "keyInsight"
+    | "keyTakeaway"
+    | "whatWeChanged"
+  >
+> & {
+  metrics?: CaseStudyMetric[];
+  resultsTable?: CaseStudy["resultsTable"];
+  breakdown?: CaseStudy["breakdown"];
+};
+
+const caseStudyTh: Record<string, CaseStudyLocaleOverlay> = {
+  "layan-revenue-management": {
+    location: "ลายัน ภูเก็ต",
+    propertyType: "พูลวิลล่าพรีเมียม",
+    category: "Revenue & Distribution",
+    mainResult: "+34.7% Room Revenue",
+    supportingResult: `รายได้ห้องพักเพิ่ม +฿5.57M${thBr} ใน 6 เดือนแรก`,
+    cardDescription: `การเติบโตของรายได้มาจากปริมาณห้องคืนและการเข้าพักที่แข็งขึ้นเป็นหลัก${thBr} ผ่านการบริหารราคาแบบไดนามิก${thBr} การควบคุม Inventory และการปรับ Distribution`,
+    eyebrow: "Case Study · Revenue & Distribution Management",
+    headline: "+34.7% Room Revenue ใน 6 เดือนแรก",
+    managementStart: "ตุลาคม 2025",
+    introduction: [
+      "โรงแรมเริ่มอยู่ภายใต้การบริหารรายได้และช่องทางการขายก่อนเข้าสู่ช่วงไฮซีซันของภูเก็ต",
+      "โอกาสทางธุรกิจคือการเพิ่มปริมาณห้องคืน การเข้าพัก และรายได้ห้องพักโดยรวม ผ่านการตัดสินใจด้านราคา Inventory และ Distribution ที่ชัดขึ้น",
+    ],
+    metrics: [
+      { value: "+34.7%", label: "Room Revenue" },
+      { value: "+฿5.57M", label: "รายได้ห้องพักเพิ่ม" },
+      { value: "+710", label: "ห้องคืนเพิ่ม" },
+      { value: "+14.1 pts", label: "Occupancy เฉลี่ย" },
+    ],
+    resultsTable: [
+      { label: "Room Revenue", before: "฿16.03M", after: "฿21.60M", change: "+34.7%", bar: 100 },
+      { label: "ห้องคืนที่ขายได้", before: "1,949", after: "2,659", change: "+36.4%", bar: 100 },
+      { label: "Occupancy เฉลี่ย", before: "59.5%", after: "73.6%", change: "+14.1 pts", bar: 74 },
+    ],
+    whatWeChanged: [
+      "ปรับการบริหารรายได้และราคา",
+      "ควบคุมเรทและ Inventory แบบไดนามิก",
+      "ปรับ OTA และ Distribution",
+      "ติดตาม Demand และ Booking Pace",
+      "Yield management สำหรับวันพีค",
+      "มาตรการเฉพาะสำหรับวันที่ยอดอ่อน",
+      "วิเคราะห์ Pickup เป็นประจำ",
+      "ปรับตามตลาดอย่างต่อเนื่อง",
+    ],
+    keyInsight:
+      "การเติบโตมาจากการขายห้องคืนได้มากขึ้นและการเข้าพักที่แข็งขึ้นเป็นหลัก ไม่ใช่แค่การขึ้นราคาอย่างเดียว",
+    keyTakeaway:
+      "การบริหารรายได้ที่ดีไม่ใช่แค่การขึ้นราคา แต่คือการจับคู่ราคา Inventory และ Demand ให้ถูกจังหวะ",
+  },
+  "patong-boutique-hotel-revenue": {
+    location: "ป่าตอง ภูเก็ต",
+    propertyType: "โรงแรมบูติกอิสระ",
+    category: "Revenue & Distribution",
+    mainResult: "+12.8% Room Revenue",
+    supportingResult: `รายได้ห้องพักเพิ่ม +฿1.85M${thBr} ต่อปี`,
+    cardDescription: `โรงแรมมี Occupancy สูงกว่า 80% อยู่แล้ว${thBr} โอกาสจึงอยู่ที่การเพิ่มมูลค่าต่อห้องที่ขายได้${thBr} ผ่านการบริหารราคาและการบริหารเชิงพาณิชย์ที่แข็งขึ้น`,
+    eyebrow: "Case Study · Revenue & Distribution Management",
+    headline: "ห้องเต็มอยู่แล้ว ตอนนี้ทำกำไรได้มากขึ้น",
+    introduction: [
+      "โรงแรมมี Occupancy สูงกว่า 80% อยู่แล้ว",
+      "โจทย์จึงไม่ใช่แค่ขายห้องให้มากขึ้น แต่คือการเพิ่มมูลค่าจากทุกห้องที่ขายได้อยู่แล้ว",
+    ],
+    metrics: [
+      { value: "+12.8%", label: "Room Revenue" },
+      { value: "+฿1.85M", label: "รายได้ห้องพักเพิ่มต่อปี" },
+      { value: "+11.0%", label: "ADR" },
+      { value: "+4.7 pts", label: "Occupancy" },
+    ],
+    resultsTable: [
+      { label: "Room Revenue", before: "฿14.40M", after: "฿16.25M", change: "+12.8%", bar: 100 },
+      { label: "Blended ADR", before: "฿1,880", after: "฿2,087", change: "+11.0%", bar: 100 },
+      { label: "Occupancy", before: "81.0%", after: "85.7%", change: "+4.7 pts", bar: 86 },
+      { label: "ห้องคืน", before: "7,659", after: "7,787", change: "+128 ห้องคืน", bar: 100 },
+    ],
+    breakdown: {
+      totalLabel: "รายได้ห้องพักที่เพิ่มขึ้น",
+      totalValue: "฿1.85M",
+      parts: [
+        { label: "จาก ADR ที่สูงขึ้น", value: "฿1.61M", share: "87%", percent: 87 },
+        { label: "จากห้องคืนที่เพิ่มขึ้น", value: "฿0.24M", share: "13%", percent: 13 },
+      ],
+    },
+    whatWeChanged: [
+      "Dynamic pricing",
+      "ปรับเรทรายวัน",
+      "ปรับ Inventory",
+      "บริหาร OTA",
+      "ติดตาม Pickup",
+      "กลยุทธ์วันที่มีดีมานด์สูง",
+      "ปรับราคาเชิงยุทธวิธีในช่วงที่ยอดอ่อน",
+    ],
+    keyInsight: "รายได้ส่วนใหญ่ที่เพิ่มขึ้นมาจาก ADR ที่แข็งขึ้น ไม่ใช่จากการเพิ่มปริมาณห้องอย่างมาก",
+    keyTakeaway: "โรงแรมเดิม ห้องเดิม แต่ขายแต่ละห้องได้มีประสิทธิภาพมากขึ้น",
+  },
+  "coconut-island-digital-performance": {
+    location: "เกาะมะพร้าว ภูเก็ต",
+    propertyType: "รีสอร์ท 5 ดาว",
+    category: "Digital Performance",
+    mainResult: "14.89× ROAS",
+    supportingResult: `งบโฆษณา ฿60K →${thBr} รายได้การจอง ฿1.80M`,
+    cardDescription: `แคมเปญ Google Search ที่มีโครงสร้างชัด${thBr} ใช้ข้อมูล CRM ย้อนหลังและกลยุทธ์ค้นหาที่มีเจตนาจองสูง${thBr} เพื่อสร้างรายได้จองตรงที่วัดผลได้`,
+    eyebrow: "Case Study · Digital Performance",
+    headline: "14.89× ROAS จากแคมเปญ Direct Booking",
+    period: "กรกฎาคม 2026",
+    introduction: [
+      "เป้าหมายคือเปลี่ยนงบ Paid Search ที่ควบคุมได้ให้กลายเป็นรายได้จองตรงที่วัดผลได้ ไม่ใช่โฟกัสแค่ Impressions, Clicks หรือ Traffic",
+    ],
+    metrics: [
+      { value: "14.89×", label: "Return on Ad Spend" },
+      { value: "฿1.80M", label: "รายได้จากการจอง" },
+      { value: "฿60K", label: "งบโฆษณา" },
+      { value: "23", label: "การจองตรง" },
+      { value: "2,100", label: "Clicks" },
+    ],
+    whatWeChanged: [
+      "ใช้ข้อมูล CRM ย้อนหลัง 5 ปี",
+      "สร้างแคมเปญ Google Search ที่มีโครงสร้างชัด",
+      "เจาะกลุ่มค้นหาที่มีเจตนาจองสูง",
+      "วัดผลแคมเปญเทียบกับรายได้จากการจอง",
+      "ให้ความสำคัญกับการแปลงเป็นจองตรงมากกว่าปริมาณ Traffic",
+    ],
+    keyTakeaway:
+      "งบโฆษณาที่ไม่มากสามารถสร้างรายได้ตรงได้ดี เมื่อข้อมูลลูกค้าย้อนหลัง โครงสร้างแคมเปญ และเจตนาจองสอดคล้องกัน",
+  },
+  "patong-direct-booking-performance": {
+    location: "ป่าตอง ภูเก็ต",
+    propertyType: "โรงแรมบูติกและเรสซิเดนซ์",
+    category: "Digital Performance",
+    mainResult: "17.29× ROAS",
+    supportingResult: `งบโฆษณา ฿62K →${thBr} รายได้การจอง ฿1.07M`,
+    cardDescription: `ปรับระบบ Attribution ผ่าน Google Tag Manager${thBr} และปรับโครงสร้างแคมเปญ${thBr} เพื่อเสริมการมองเห็นบนการค้นหาแบรนด์และผลลัพธ์การจองตรง`,
+    eyebrow: "Case Study · Digital Performance",
+    headline: "17.29× ROAS หลังปรับ Tracking และกลยุทธ์การค้นหา",
+    period: "มิถุนายน 2026",
+    introduction: [
+      "โรงแรมต้องการการวัดผลที่ชัดขึ้น และการมองเห็นที่ดีขึ้นในการค้นหาชื่อโรงแรมและคำค้นหาที่มีเจตนาจองสูง",
+    ],
+    metrics: [
+      { value: "17.29×", label: "Return on Ad Spend" },
+      { value: "฿1.07M", label: "รายได้จากการจอง" },
+      { value: "฿62K", label: "งบโฆษณา" },
+      { value: "27", label: "การจองตรง" },
+      { value: "12,000", label: "Clicks" },
+    ],
+    whatWeChanged: [
+      "สร้าง Attribution ใหม่ผ่าน Google Tag Manager",
+      "ปรับโครงสร้างแคมเปญ",
+      "เสริมตำแหน่งบนการค้นหาแบรนด์",
+      "ปรับปรุงการวัด Conversion",
+      "เชื่อมกิจกรรมแคมเปญกับรายได้จากการจอง",
+    ],
+    keyTakeaway:
+      "การ Tracking และโครงสร้างแคมเปญที่ชัดขึ้น ทำให้วัดและปรับปรุงผลเทียบกับรายได้จากการจองจริงได้",
+  },
+};
+
+export function localizeCaseStudy(study: CaseStudy, locale: Locale): CaseStudy {
+  if (locale !== "th") return study;
+  const overlay = caseStudyTh[study.slug];
+  if (!overlay) return study;
+  return { ...study, ...overlay };
+}
 
 export function caseStudyMetadata(slug: string, locale: Locale) {
   const study = getCaseStudy(slug);

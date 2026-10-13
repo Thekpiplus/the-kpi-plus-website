@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { ClientLogoMarquee } from "@/components/ClientLogoMarquee";
-import { PageHero } from "@/components/PageHero";
 import { SiteShell } from "@/components/SiteShell";
 import { auditHref, localizePath, type Locale } from "@/lib/seo";
+
+const foundersPhoto = "/media/the-kpi-plus-founders_f4c8516e.webp";
 
 const copy = {
   th: {
@@ -11,7 +12,8 @@ const copy = {
     highlight: "รายได้กำลังหายไปตรงไหน โอกาสอยู่ตรงไหน และอะไรคือสิ่งที่ควรทำก่อน",
     heroBody:
       "ผลประกอบการของโรงแรมไม่ได้เกิดจาก Revenue Management, OTA, Website, Direct Booking หรือ Marketing เพียงเรื่องใดเรื่องหนึ่ง ทุกส่วนเชื่อมโยงกัน เราจึงนำข้อมูลด้าน Revenue, Demand, Pricing, Distribution และ Direct Booking มามองเป็นภาพเดียวกัน เพื่อเปลี่ยนข้อมูลให้เป็น Action และเปลี่ยน Action ให้เป็นผลลัพธ์ที่วัดได้",
-    auditCta: "ขอวิเคราะห์ Performance โรงแรม",
+    heroAlt: "ผู้ก่อตั้ง เดอะ เคพีไอ พลัส",
+    auditCta: "ประเมิน Performance โรงแรม",
     partnerEyebrow: "Hospitality Performance Partner",
     partnerTitle: "เราทำงานร่วมกับโรงแรมตั้งแต่ต้นจนจบกระบวนการ และติดตามผลลัพธ์ต่อเนื่อง",
     partnerLead:
@@ -63,14 +65,15 @@ const copy = {
     experienceBody:
       "เราทำงานร่วมกับธุรกิจ Hospitality มาแล้วกว่า 100 แห่ง ตั้งแต่โรงแรมอิสระขนาดเล็กไปจนถึงธุรกิจที่มีความซับซ้อนมากขึ้น หลักการของเรายังคงเหมือนเดิม: เข้าใจธุรกิจ อ่านข้อมูล เลือกสิ่งที่ควรทำ ลงมือทำ และวัดผล",
     experienceMetric: "ธุรกิจ Hospitality ที่เราได้ร่วมงานด้วย",
+    clientsEyebrow: "โรงแรมและที่พักที่คัดสรร",
     valuesTitle: "สิ่งที่เราให้ความสำคัญ",
     values: [
-      ["มองแบบธุรกิจ", "เรามองมากกว่ายอดขาย ทุกคำแนะนำคำนึงถึงราคา ช่องทาง ต้นทุน และรายได้ที่โรงแรมเหลือจริง"],
-      ["พูดให้เข้าใจง่าย", "เรื่อง Revenue หรือ Distribution อาจซับซ้อน แต่เราไม่จำเป็นต้องพูดให้ซับซ้อน"],
-      ["ใช้ได้จริง", "ทุก Analysis ต้องนำไปสู่คำถามว่า “แล้วเราจะทำอะไรต่อ?”"],
-      ["วัดผลได้", "เราไม่ใช้คำว่า “ดีขึ้น” โดยไม่มีตัววัด"],
-      ["เข้าใจโรงแรม", "เราเข้าใจทั้งมุมของเจ้าของ GM ทีม Commercial และหน้างานของโรงแรม เพราะเรามาจากธุรกิจนี้"],
-      ["ใช้เทคโนโลยีเมื่อช่วยได้จริง", "ถ้าเทคโนโลยีช่วยลดงานซ้ำ ทำให้ทีมเห็นข้อมูลเร็วขึ้น และมีเวลาดูแลรายได้กับลูกค้ามากขึ้น เราจะนำมาใช้ ถ้าไม่ ก็ไม่จำเป็นต้องใช้"],
+      ["01", "มองแบบธุรกิจ", "เรามองมากกว่ายอดขาย ทุกคำแนะนำคำนึงถึงราคา ช่องทาง ต้นทุน และรายได้ที่โรงแรมเหลือจริง"],
+      ["02", "พูดให้เข้าใจง่าย", "เรื่อง Revenue หรือ Distribution อาจซับซ้อน แต่เราไม่จำเป็นต้องพูดให้ซับซ้อน"],
+      ["03", "ใช้ได้จริง", "ทุก Analysis ต้องนำไปสู่คำถามว่า “แล้วเราจะทำอะไรต่อ?”"],
+      ["04", "วัดผลได้", "เราไม่ใช้คำว่า “ดีขึ้น” โดยไม่มีตัววัด"],
+      ["05", "เข้าใจโรงแรม", "เราเข้าใจทั้งมุมของเจ้าของ GM ทีม Commercial และหน้างานของโรงแรม เพราะเรามาจากธุรกิจนี้"],
+      ["06", "ใช้เทคโนโลยีเมื่อช่วยได้จริง", "ถ้าเทคโนโลยีช่วยลดงานซ้ำ ทำให้ทีมเห็นข้อมูลเร็วขึ้น และมีเวลาดูแลรายได้กับลูกค้ามากขึ้น เราจะนำมาใช้ ถ้าไม่ ก็ไม่จำเป็นต้องใช้"],
     ],
     foundersEyebrow: "Our Founders",
     foundersTitle: "สองประสบการณ์ หนึ่งเป้าหมาย",
@@ -102,6 +105,7 @@ const copy = {
     highlight: "Where revenue is being lost, where the opportunities are, and what to do first.",
     heroBody:
       "Hotel performance doesn't come from revenue management, OTAs, the website, direct booking, or marketing alone. Every part is connected. That's why we bring revenue, demand, pricing, distribution, and direct booking data into one view, so data becomes action, and action becomes measurable results.",
+    heroAlt: "The KPI Plus founders",
     auditCta: "Request a Hotel Performance Audit",
     partnerEyebrow: "Hospitality Performance Partner",
     partnerTitle: "We work alongside your team from start to finish, and stay with the results.",
@@ -154,14 +158,16 @@ const copy = {
     experienceBody:
       "We've worked with more than 100 hospitality businesses, from small independent hotels to more complex operations. Our approach stays the same: understand the business, read the data, choose what to do, act, and measure.",
     experienceMetric: "Hospitality businesses we've worked with",
+    clientsEyebrow: "Selected Hotels & Hospitality Clients",
     valuesTitle: "What we stand for",
     values: [
-      ["Commercial", "We look beyond sales. Every recommendation considers price, channel, cost, and the revenue your hotel actually keeps."],
-      ["Clear", "Revenue and distribution can be complex, but the way we explain them doesn't have to be."],
-      ["Practical", "Every analysis should lead to one question: “So what do we do next?”"],
-      ["Measured", "We don't say “better” without something to measure it by."],
-      ["Hospitality", "We understand the owner, the GM, the commercial team, and the front line, because we come from this industry."],
+      ["01", "Commercial", "We look beyond sales. Every recommendation considers price, channel, cost, and the revenue your hotel actually keeps."],
+      ["02", "Clear", "Revenue and distribution can be complex, but the way we explain them doesn't have to be."],
+      ["03", "Practical", "Every analysis should lead to one question: “So what do we do next?”"],
+      ["04", "Measured", "We don't say “better” without something to measure it by."],
+      ["05", "Hospitality", "We understand the owner, the GM, the commercial team, and the front line, because we come from this industry."],
       [
+        "06",
         "Technology when it truly helps",
         "If technology cuts repetitive work, gets data to your team faster, and frees up time for revenue and guests, we'll use it. If not, there's no need.",
       ],
@@ -184,7 +190,7 @@ const copy = {
     closerBody:
       "Traveler behavior, search, OTAs, and digital marketing change quickly. What matters is knowing what the numbers are telling you, what the real problem is, and whether what you're doing is actually delivering results for your hotel.",
     closerLine: "Find the opportunity · Act where it matters · Measure what changes",
-    closerSecondary: "Review Your Hotel Performance",
+    closerSecondary: "Talk to Our Team",
     joinTitle: "Join The KPI Plus",
     joinBody:
       "We're looking for people who love the hotel business, enjoy learning, are curious about technology, and keep asking, “Is there a better way?” If you want to do work that makes a real difference for businesses and people, we'd love to hear from you.",
@@ -196,6 +202,7 @@ const copy = {
     highlight: "где теряется доход, где возможность и что делать сначала.",
     heroBody:
       "Результат отеля не складывается из Revenue Management, OTA, сайта, прямого бронирования или маркетинга по отдельности. Всё связано. Поэтому мы собираем данные по доходу, спросу, ценам, дистрибуции и прямому бронированию в одну картину: данные становятся действием, а действие — измеримым результатом.",
+    heroAlt: "Основатели The KPI Plus",
     auditCta: "Запросить аудит Performance отеля",
     partnerEyebrow: "Hospitality Performance Partner",
     partnerTitle: "Мы работаем с командой отеля от начала до конца и остаёмся с результатом.",
@@ -248,14 +255,16 @@ const copy = {
     experienceBody:
       "Мы работали с более чем 100 hospitality-бизнесами: от небольших независимых отелей до более сложных операций. Подход тот же: понять бизнес, прочитать данные, выбрать действие, сделать и измерить.",
     experienceMetric: "Hospitality-бизнесы, с которыми мы работали",
+    clientsEyebrow: "Selected Hotels & Hospitality Clients",
     valuesTitle: "Что для нас важно",
     values: [
-      ["Коммерческий взгляд", "Мы смотрим дальше продаж. Каждая рекомендация учитывает цену, канал, затраты и доход, который отель реально оставляет себе."],
-      ["Ясно", "Revenue и дистрибуция могут быть сложными, но объяснять их не обязательно сложно."],
-      ["Практично", "Каждый анализ должен вести к одному вопросу: «Что делаем дальше?»"],
-      ["Измеримо", "Мы не говорим «лучше», если нечем это измерить."],
-      ["Hospitality", "Мы понимаем владельца, GM, коммерческую команду и линейный персонал, потому что пришли из этой отрасли."],
+      ["01", "Коммерческий взгляд", "Мы смотрим дальше продаж. Каждая рекомендация учитывает цену, канал, затраты и доход, который отель реально оставляет себе."],
+      ["02", "Ясно", "Revenue и дистрибуция могут быть сложными, но объяснять их не обязательно сложно."],
+      ["03", "Практично", "Каждый анализ должен вести к одному вопросу: «Что делаем дальше?»"],
+      ["04", "Измеримо", "Мы не говорим «лучше», если нечем это измерить."],
+      ["05", "Hospitality", "Мы понимаем владельца, GM, коммерческую команду и линейный персонал, потому что пришли из этой отрасли."],
       [
+        "06",
         "Технологии, когда они реально помогают",
         "Если технология сокращает повторяющуюся работу, быстрее даёт команде данные и освобождает время для дохода и гостей — мы её используем. Если нет, в ней нет нужды.",
       ],
@@ -278,7 +287,7 @@ const copy = {
     closerBody:
       "Поведение путешественников, поиск, OTA и digital-маркетинг меняются быстро. Важно понимать, что говорят цифры, в чём реальная проблема и даёт ли то, что вы делаете, результат отелю.",
     closerLine: "Найти возможность · Действовать в нужной точке · Измерить изменение",
-    closerSecondary: "Разобрать Performance отеля",
+    closerSecondary: "Поговорить с командой The KPI Plus",
     joinTitle: "Присоединиться к The KPI Plus",
     joinBody:
       "Мы ищем людей, которые любят гостиничный бизнес, любят учиться, интересуются технологиями и не перестают спрашивать: «Есть ли способ лучше?» Если вы хотите делать работу, которая реально меняет бизнес и людей, мы будем рады познакомиться.",
@@ -290,6 +299,7 @@ const copy = {
     highlight: "收益流失在哪、機會在哪，以及該先做什麼。",
     heroBody:
       "飯店績效不是只靠 Revenue Management、OTA、網站、直銷預訂或行銷任何單一環節。每一部分都連在一起。因此我們把收益、需求、定價、通路與直銷預訂資料看成同一張圖，讓資料變成行動，行動變成可衡量的結果。",
+    heroAlt: "The KPI Plus 創辦人",
     auditCta: "申請飯店 Performance 分析",
     partnerEyebrow: "Hospitality Performance Partner",
     partnerTitle: "我們從開始到結束與飯店團隊一起做，並持續跟進結果。",
@@ -342,14 +352,16 @@ const copy = {
     experienceBody:
       "我們已與超過 100 家旅宿事業合作，從小型獨立飯店到較複雜的營運都有。做法始終一樣：理解事業、讀資料、選擇該做的事、執行，並衡量。",
     experienceMetric: "曾合作的旅宿事業",
+    clientsEyebrow: "精選飯店與旅宿客戶",
     valuesTitle: "我們看重的事",
     values: [
-      ["商業視角", "我們看的不只是銷售。每一項建議都會考慮價格、通路、成本，以及飯店真正留下的收益。"],
-      ["說得清楚", "收益與通路可以很複雜，但我們不必說得複雜。"],
-      ["用得上", "每一次分析都應回到一個問題：「那下一步要做什麼？」"],
-      ["能量得到", "沒有衡量標準，我們不會說「變好了」。"],
-      ["懂飯店", "我們理解業主、總經理、Commercial 團隊與第一線，因為我們來自這個產業。"],
+      ["01", "商業視角", "我們看的不只是銷售。每一項建議都會考慮價格、通路、成本，以及飯店真正留下的收益。"],
+      ["02", "說得清楚", "收益與通路可以很複雜，但我們不必說得複雜。"],
+      ["03", "用得上", "每一次分析都應回到一個問題：「那下一步要做什麼？」"],
+      ["04", "能量得到", "沒有衡量標準，我們不會說「變好了」。"],
+      ["05", "懂飯店", "我們理解業主、總經理、Commercial 團隊與第一線，因為我們來自這個產業。"],
       [
+        "06",
         "科技要真的有幫助才用",
         "如果科技能減少重複工作、讓團隊更快看到資料，並把時間留給收益與客人，我們會用。如果不能，就不必用。",
       ],
@@ -372,7 +384,7 @@ const copy = {
     closerBody:
       "旅客行為、搜尋、OTA 與數位行銷變化很快。重要的是知道數字在說什麼、真正的問題是什麼，以及現在做的事是否真的為飯店帶來結果。",
     closerLine: "找到機會 · 做在對的點 · 把變化量清楚",
-    closerSecondary: "檢視飯店績效",
+    closerSecondary: "與 The KPI Plus 團隊談談",
     joinTitle: "加入 The KPI Plus",
     joinBody:
       "我們尋找熱愛飯店事業、喜歡學習、對科技好奇，並持續問「有沒有更好的方法？」的人。如果你想做真正影響事業與人的工作，我們很樂意認識你。",
@@ -384,132 +396,161 @@ export function AboutView({ locale }: { locale: Locale }) {
   const t = copy[locale];
   const audit = auditHref(locale);
   const contact = localizePath("/contact", locale);
+  const isTh = locale === "th";
 
   return (
     <SiteShell locale={locale} route={localizePath("/about", locale)}>
-      <PageHero>
-        <p className="kpi-kicker text-[#F2F8E2]">{t.kicker}</p>
-        <h1 className="kpi-h1 mt-5">{t.h1}</h1>
-        <p className="mt-5 max-w-4xl text-xl font-semibold leading-8 text-[#E6E81F] sm:text-2xl">{t.highlight}</p>
-        <div className="kpi-actions">
-          <Link href={audit} className="kpi-button">
-            {t.auditCta}
-          </Link>
-        </div>
-      </PageHero>
-
-      <section className="kpi-section">
-        <p className="kpi-kicker text-[#0B6660]">{t.partnerEyebrow}</p>
-        <h2 className="kpi-h2 mt-4">{t.partnerTitle}</h2>
-        <p className="mt-6 max-w-3xl text-base leading-8 text-[#555555]">{t.heroBody}</p>
-        <p className="mt-6 max-w-3xl text-base leading-8 text-[#555555]">{t.partnerLead}</p>
-        <p className="mt-6 max-w-3xl text-base leading-8 text-[#555555]">{t.partnerGoal}</p>
-        <p className="mt-4 max-w-3xl text-2xl font-extrabold leading-9 text-[#0B1F33]">{t.partnerAccent}</p>
-        <div className="kpi-grid-2 mt-12">
-          <article className="kpi-card p-7">
-            <p className="text-xs font-extrabold uppercase tracking-[.14em] text-[#0B6660]">{t.visionLabel}</p>
-            <p className="mt-4 text-base leading-8 text-[#555555]">{t.vision}</p>
-          </article>
-          <article className="kpi-card p-7">
-            <p className="text-xs font-extrabold uppercase tracking-[.14em] text-[#0B6660]">{t.missionLabel}</p>
-            <p className="mt-4 text-base leading-8 text-[#555555]">{t.mission}</p>
-          </article>
-        </div>
-      </section>
-
-      <section className="border-y border-[#E3E8EB] bg-white">
-        <div className="kpi-section">
-          <h2 className="kpi-h2">{t.methodTitle}</h2>
-          <div className="kpi-grid-3 mt-10">
-            {t.methods.map(([num, title]) => (
-              <article key={num} className="kpi-card p-6">
-                <span className="text-sm font-black tracking-[.16em] text-[#0B6660]">{num}</span>
-                <h3 className="mt-4 text-xl font-extrabold text-[#3B3B3B]">{title}</h3>
-              </article>
-            ))}
-          </div>
-          <p className="mt-8 max-w-3xl text-base leading-8 text-[#555555]">{t.methodNote}</p>
-        </div>
-      </section>
-
-      <section className="kpi-section">
-        <h2 className="kpi-h2">{t.pillarsTitle}</h2>
-        <div className="kpi-grid-3 mt-10">
-          {t.pillars.map((pillar) => (
-            <article key={pillar.num} className="kpi-card relative overflow-hidden p-7">
-              <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-              <span className="text-sm font-black tracking-[.16em] text-[#0B6660]">{pillar.num}</span>
-              <h3 className="mt-6 text-2xl font-extrabold tracking-[-.04em] text-[#3B3B3B]">{pillar.title}</h3>
-              <p className="mt-3 text-sm font-bold text-[#0B6660]">{pillar.subtitle}</p>
-              <p className="mt-4 text-base leading-7 text-[#555555]">{pillar.body}</p>
-              <p className="mt-6 text-sm leading-7 text-[#555555]">{pillar.tags}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="border-y border-[#E3E8EB] bg-white">
-        <div className="kpi-section">
-          <h2 className="kpi-h2">{t.experienceTitle}</h2>
-          <p className="mt-5 max-w-3xl text-base leading-8 text-[#555555]">{t.experienceBody}</p>
-          <div className="mt-10 kpi-card p-8">
-            <p className="text-6xl font-extrabold tracking-[-.06em] text-[#0B1F33]">100+</p>
-            <p className="mt-3 text-base font-semibold text-[#3B3B3B]">{t.experienceMetric}</p>
-          </div>
-          <ClientLogoMarquee label={t.experienceMetric} />
-        </div>
-      </section>
-
-      <section className="kpi-section">
-        <h2 className="kpi-h2">{t.valuesTitle}</h2>
-        <div className="kpi-grid-2 mt-10">
-          {t.values.map(([title, body]) => (
-            <article key={title} className="kpi-card p-7">
-              <h3 className="text-xl font-extrabold text-[#3B3B3B]">{title}</h3>
-              <p className="mt-4 text-base leading-7 text-[#555555]">{body}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="border-y border-[#E3E8EB] bg-white">
-        <div className="kpi-section">
-          <p className="kpi-kicker text-[#0B6660]">{t.foundersEyebrow}</p>
-          <h2 className="kpi-h2 mt-4">{t.foundersTitle}</h2>
-          <p className="kpi-lead mt-5">{t.foundersLead}</p>
-          <div className="kpi-split-founders mt-10">
-            <img
-              src="/media/the-kpi-plus-founders_f4c8516e.webp"
-              alt={t.foundersAlt}
-              width={705}
-              height={1024}
-              className="w-full rounded-[1.25rem] object-cover object-[50%_18%]"
-            />
-            <div className="grid gap-4">
-              <article className="kpi-card p-7">
-                <h3 className="text-2xl font-extrabold text-[#3B3B3B]">{t.founderAName}</h3>
-                <p className="mt-2 text-sm font-bold text-[#0B6660]">{t.founderARole}</p>
-                <p className="mt-4 text-base leading-7 text-[#555555]">{t.founderABody}</p>
-              </article>
-              <article className="kpi-card p-7">
-                <h3 className="text-2xl font-extrabold text-[#3B3B3B]">{t.founderBName}</h3>
-                <p className="mt-2 text-sm font-bold text-[#0B6660]">{t.founderBRole}</p>
-                <p className="mt-4 text-base leading-7 text-[#555555]">{t.founderBBody}</p>
-              </article>
+      <section className="kpi-hero kpi-home-hero-section kpi-about-hero">
+        <div className="kpi-wrap">
+          <div className="kpi-home-hero">
+            <div className="kpi-home-hero-copy">
+              <p className={`kpi-home-eyebrow${isTh ? "" : " kpi-latin"}`}>{t.kicker}</p>
+              <h1 className="kpi-h1 kpi-home-h1 kpi-about-hero-title">{t.h1}</h1>
+              <p className="kpi-about-hero-highlight">{t.highlight}</p>
+              <p className="kpi-lead kpi-home-lead kpi-about-hero-lead">{t.heroBody}</p>
+              <div className="kpi-actions">
+                <Link href={audit} className="kpi-button">
+                  {t.auditCta} <span aria-hidden="true">↗</span>
+                </Link>
+                <Link href={contact} className="kpi-button-ghost">
+                  {t.closerSecondary}
+                </Link>
+              </div>
+            </div>
+            <div className="kpi-hero-visual kpi-home-photo kpi-about-hero-photo">
+              <img src={foundersPhoto} alt={t.heroAlt} width={705} height={1024} />
             </div>
           </div>
         </div>
       </section>
 
-      <section className="bg-[#0B1F33] text-white">
+      <section className="kpi-about-band kpi-about-philosophy">
         <div className="kpi-section">
-          <p className="kpi-kicker text-[#F2F8E2]">{t.closerEyebrow}</p>
-          <h2 className="kpi-h2 mt-5 text-white">{t.closerTitle}</h2>
-          <p className="kpi-lead mt-6 text-white/72">{t.closerBody}</p>
-          <p className="mt-6 text-base font-semibold text-[#E6E81F]">{t.closerLine}</p>
+          <p className={`kpi-about-eyebrow${isTh ? "" : " kpi-latin"}`}>{t.partnerEyebrow}</p>
+          <h2 className="kpi-h2 kpi-about-h2">{t.partnerTitle}</h2>
+          <p className="kpi-about-lead">{t.partnerLead}</p>
+          <p className="kpi-about-goal">
+            {t.partnerGoal}{" "}
+            <span className="kpi-about-accent">{t.partnerAccent}</span>
+          </p>
+          <div className="kpi-about-vm">
+            <div className="kpi-about-vm-item">
+              <p className="kpi-latin kpi-about-vm-label">{t.visionLabel}</p>
+              <p className="kpi-about-vm-body">{t.vision}</p>
+            </div>
+            <div className="kpi-about-vm-item">
+              <p className="kpi-latin kpi-about-vm-label">{t.missionLabel}</p>
+              <p className="kpi-about-vm-body">{t.mission}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="kpi-about-method">
+        <div className="kpi-section">
+          <h2 className="kpi-h2 kpi-about-h2">{t.methodTitle}</h2>
+          <ol className="kpi-about-steps">
+            {t.methods.map(([num, title], index) => (
+              <li key={num} className="kpi-about-step">
+                {index < t.methods.length - 1 ? (
+                  <span className="kpi-about-step-connector" aria-hidden="true" />
+                ) : null}
+                <span className="kpi-latin kpi-about-num">{num}</span>
+                <h3>{title}</h3>
+              </li>
+            ))}
+          </ol>
+          <p className="kpi-about-note">{t.methodNote}</p>
+        </div>
+      </section>
+
+      <section className="kpi-about-band kpi-about-pillars">
+        <div className="kpi-section">
+          <h2 className="kpi-h2 kpi-about-h2">{t.pillarsTitle}</h2>
+          <div className="kpi-about-pillar-list">
+            {t.pillars.map((pillar) => (
+              <article key={pillar.num} className="kpi-about-pillar">
+                <span className="kpi-latin kpi-about-num">{pillar.num}</span>
+                <h3>{pillar.title}</h3>
+                <p className="kpi-latin kpi-about-pillar-sub">{pillar.subtitle}</p>
+                <p className="kpi-about-pillar-body">{pillar.body}</p>
+                <p className="kpi-latin kpi-about-pillar-tags">{pillar.tags}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="kpi-about-experience">
+        <div className="kpi-section">
+          <h2 className="kpi-h2 kpi-about-h2">{t.experienceTitle}</h2>
+          <div className="kpi-about-experience-row">
+            <p className="kpi-latin kpi-about-experience-num" aria-hidden="true">
+              100+
+            </p>
+            <div className="kpi-about-experience-copy">
+              <p className="kpi-about-experience-label">{t.experienceMetric}</p>
+              <p className="kpi-about-lead">{t.experienceBody}</p>
+            </div>
+          </div>
+          <p className={`kpi-about-clients-eyebrow${isTh ? "" : " kpi-latin"}`}>{t.clientsEyebrow}</p>
+          <ClientLogoMarquee label={t.experienceMetric} className="kpi-about-marquee" />
+        </div>
+      </section>
+
+      <section className="kpi-about-band kpi-about-values">
+        <div className="kpi-section">
+          <h2 className="kpi-h2 kpi-about-h2">{t.valuesTitle}</h2>
+          <ul className="kpi-about-values-list">
+            {t.values.map(([num, title, body]) => (
+              <li key={num} className="kpi-about-value">
+                <span className="kpi-latin kpi-about-num">{num}</span>
+                <div className="kpi-about-value-copy">
+                  <h3>{title}</h3>
+                  <p>{body}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section className="kpi-about-leadership">
+        <div className="kpi-section">
+          <div className="kpi-about-leadership-intro">
+            <figure className="kpi-about-leadership-photo">
+              <img src={foundersPhoto} alt={t.foundersAlt} width={705} height={1024} />
+            </figure>
+            <div className="kpi-about-leadership-copy">
+              <p className="kpi-latin kpi-about-eyebrow">{t.foundersEyebrow}</p>
+              <h2 className="kpi-h2 kpi-about-h2">{t.foundersTitle}</h2>
+              <p className="kpi-about-lead">{t.foundersLead}</p>
+            </div>
+          </div>
+          <div className="kpi-about-leadership-bios">
+            <article className="kpi-about-bio">
+              <h3>{t.founderAName}</h3>
+              <p className="kpi-about-bio-role">{t.founderARole}</p>
+              <p className="kpi-about-bio-body">{t.founderABody}</p>
+            </article>
+            <article className="kpi-about-bio">
+              <h3>{t.founderBName}</h3>
+              <p className="kpi-about-bio-role">{t.founderBRole}</p>
+              <p className="kpi-about-bio-body">{t.founderBBody}</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section className="kpi-about-closer">
+        <div className="kpi-section">
+          <p className="kpi-latin kpi-about-closer-eyebrow">{t.closerEyebrow}</p>
+          <h2 className="kpi-h2 kpi-about-closer-title">{t.closerTitle}</h2>
+          <p className="kpi-about-closer-body">{t.closerBody}</p>
+          <p className="kpi-about-closer-line">{t.closerLine}</p>
           <div className="kpi-actions">
             <Link href={audit} className="kpi-button">
-              {t.auditCta}
+              {t.auditCta} <span aria-hidden="true">↗</span>
             </Link>
             <Link href={contact} className="kpi-button-ghost">
               {t.closerSecondary}
@@ -518,12 +559,17 @@ export function AboutView({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <section className="kpi-section">
-        <h2 className="kpi-h2">{t.joinTitle}</h2>
-        <p className="mt-5 max-w-3xl text-base leading-8 text-[#555555]">{t.joinBody}</p>
-        <Link href="mailto:info@thekpiplus.com?subject=Join%20The%20KPI%20Plus" className="kpi-button mt-8">
-          {t.joinCta}
-        </Link>
+      <section className="kpi-about-band kpi-about-join">
+        <div className="kpi-section">
+          <h2 className="kpi-h2 kpi-about-h2">{t.joinTitle}</h2>
+          <p className="kpi-about-lead">{t.joinBody}</p>
+          <Link
+            href="mailto:info@thekpiplus.com?subject=Join%20The%20KPI%20Plus"
+            className="kpi-button kpi-about-join-cta"
+          >
+            {t.joinCta} <span aria-hidden="true">↗</span>
+          </Link>
+        </div>
       </section>
     </SiteShell>
   );

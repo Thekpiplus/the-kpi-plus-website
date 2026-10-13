@@ -1,28 +1,29 @@
 import Link from "next/link";
-import { ArrowUpRight } from "@/components/Icons";
-import { PageHero } from "@/components/PageHero";
 import { SiteShell } from "@/components/SiteShell";
 import { TechnologyEnquiry } from "@/components/TechnologyEnquiry";
 import { TechnologyStickyCta } from "@/components/TechnologyStickyCta";
 import { solutionNavLabel } from "@/lib/nav";
 import { auditHref, existingHref, localizePath, type Locale } from "@/lib/seo";
 
+const heroPhoto = "/media/reservations-hero-desk.jpg";
+const problemsPhoto = "/media/b2b-hero-meeting.jpg";
 const academyDiscover = "https://thekpiplus.co.th/discover";
 const studyUrl = "https://repozitorij.upr.si/IzpisGradiva.php?id=22208&lang=eng";
-const photo = "/media/kpi-grow-capability_7bba9d6e.jpg";
+
+const methodLabels = ["MAP", "SIMPLIFY", "AUTOMATE", "CONNECT", "REVIEW"] as const;
 
 const copy = {
   th: {
     crumb: "โซลูชัน",
-    crumbCurrent: "AI และ Automation",
-    eyebrow: "วางและนำระบบไปใช้จริง",
+    eyebrow: "AI & Automation",
     title: "นำ AI และ Automation ไปใช้จริงในโรงแรมและองค์กร",
     lead: "ลดเวลาที่ทีมใช้กับงานซ้ำ ทำให้ข้อมูลพร้อมใช้เร็วขึ้น และส่งต่องานได้ชัดเจนกว่าเดิม เดอะ เคพีไอ พลัส ช่วยสำรวจขั้นตอนงาน ออกแบบและติดตั้งระบบ AI หรือ Automation ที่เหมาะ ทดลองใช้กับทีม และปรับปรุงจนเป็นส่วนหนึ่งของวิธีทำงานประจำวัน",
     leadClose: "เราเริ่มจากสิ่งที่องค์กรอยากแก้ แล้วจึงเลือกเครื่องมือและขอบเขตการนำไปใช้",
     cta: "ปรึกษาเรื่อง AI และ Automation",
     secondary: "ขอให้ทีมช่วยทบทวนระบบโรงแรม",
     underCta: "ส่งงานที่ทีมอยากแก้ ไม่ต้องส่งรหัสผ่านหรือสิทธิ์เข้าระบบ",
-    photoAlt: "ทีมโรงแรมทบทวนขั้นตอนงานและข้อมูลก่อนเลือกใช้ AI หรือ Automation",
+    photoAlt: "ผู้บริหารโรงแรมทบทวนขั้นตอนงานบนคอมพิวเตอร์",
+    problemsPhotoAlt: "ทีมหารือ workflow ก่อนเลือกใช้ Automation",
     problemsTitle: "มีเครื่องมือแล้ว แต่งานยังติดขัดอยู่ตรงไหน?",
     problemsLead:
       "ทีมอาจคัดลอกข้อมูลระหว่างหลายระบบทุกวัน ใช้เวลาทำรายงานจนข้อมูลไม่ทันการตัดสินใจ หรือต้องตอบคำถามเดิมซ้ำ ๆ ทั้งที่อยากมีเวลาดูแลลูกค้ามากขึ้น ปัญหาเหล่านี้ต้องมองทั้งขั้นตอนงาน ข้อมูล และคนที่รับผิดชอบ ก่อนเริ่มพัฒนาระบบ",
@@ -46,24 +47,41 @@ const copy = {
     methodCta: "เล่างานที่คุณอยากให้ระบบช่วย",
     casesTitle: "ตัวอย่างงานที่สามารถเริ่มพิจารณา",
     cases: [
-      ["รายงานและการตัดสินใจ", "รวบรวมข้อมูลจากแหล่งที่มี จัดรูปแบบรายงาน และช่วยสรุปประเด็นให้ทีม Revenue, Sales หรือผู้บริหารตรวจทานก่อนตัดสินใจ"],
-      ["การรับ Enquiry และการส่งต่องาน", "จัดข้อมูลจากช่องทางติดต่อให้ครบขึ้น แยกประเภทคำถาม แจ้งผู้รับผิดชอบ และติดตามว่างานใดได้รับการตอบกลับแล้ว โดยให้ทีมดูแลการสนทนาที่ต้องใช้วิจารณญาณหรือความใส่ใจเป็นพิเศษ"],
-      ["ข้อมูลสำหรับทีมบริการ", "ช่วยให้พนักงานค้นหานโยบาย ขั้นตอน คำตอบที่ใช้บ่อย หรือข้อมูลสินค้าได้เร็วขึ้น พร้อมกำหนดวิธีตรวจสอบว่าข้อมูลยังเป็นปัจจุบัน"],
-      ["Marketing และการทำงานภายใน", "ช่วยเตรียมข้อมูลสำหรับแคมเปญ ร่างเนื้อหา จัดงานที่ทำซ้ำเป็นประจำ หรือสรุปการประชุมเพื่อให้เจ้าของงานนำไปตรวจและทำต่อ"],
+      ["01", "รายงานและการตัดสินใจ", "รวบรวมข้อมูลจากแหล่งที่มี จัดรูปแบบรายงาน และช่วยสรุปประเด็นให้ทีม Revenue, Sales หรือผู้บริหารตรวจทานก่อนตัดสินใจ"],
+      ["02", "การรับ Enquiry และการส่งต่องาน", "จัดข้อมูลจากช่องทางติดต่อให้ครบขึ้น แยกประเภทคำถาม แจ้งผู้รับผิดชอบ และติดตามว่างานใดได้รับการตอบกลับแล้ว โดยให้ทีมดูแลการสนทนาที่ต้องใช้วิจารณญาณหรือความใส่ใจเป็นพิเศษ"],
+      ["03", "ข้อมูลสำหรับทีมบริการ", "ช่วยให้พนักงานค้นหานโยบาย ขั้นตอน คำตอบที่ใช้บ่อย หรือข้อมูลสินค้าได้เร็วขึ้น พร้อมกำหนดวิธีตรวจสอบว่าข้อมูลยังเป็นปัจจุบัน"],
+      ["04", "Marketing และการทำงานภายใน", "ช่วยเตรียมข้อมูลสำหรับแคมเปญ ร่างเนื้อหา จัดงานที่ทำซ้ำเป็นประจำ หรือสรุปการประชุมเพื่อให้เจ้าของงานนำไปตรวจและทำต่อ"],
     ],
     casesNote: "แต่ละตัวอย่างต้องประเมินจากระบบ สิทธิ์เข้าถึงข้อมูล และกระบวนการที่องค์กรใช้อยู่ก่อนกำหนดสิ่งที่จะติดตั้งจริง",
     studyTitle: "ทำไมต้องทดลองกับงานจริงก่อนขยายผล",
+    studyPrinciples: [
+      ["01", "เริ่มจากงานที่ขอบเขตชัด"],
+      ["02", "ทดลองกับ Workflow จริง"],
+      ["03", "ขยายเมื่อผลลัพธ์และความเสี่ยงยอมรับได้"],
+    ],
+    studyTakeawayLead: "Automation ที่ดีไม่ควรเริ่มจาก “อะไรทำได้บ้าง”",
+    studyTakeawayClose: "แต่ควรเริ่มจาก “งานไหนควรทำให้ง่ายขึ้น”",
     studyBody:
       "กรณีศึกษาของโรงแรมสี่ดาวหนึ่งแห่งในอ่าวนาง จังหวัดกระบี่ รายงานว่า หลังนำ AI ไปใช้ในกระบวนการทำงานที่ศึกษา เวลาเฉลี่ยในการเช็กอินลดจาก 3.3 นาทีเป็น 2.7 นาที ผู้วิจัยยังระบุว่าการอบรมและการทยอยนำระบบมาใช้มีส่วนสำคัญต่อการปรับตัวของพนักงาน ตัวเลขนี้เป็นผลของโรงแรมที่ศึกษาเพียงแห่งเดียว จึงใช้เป็นตัวอย่างของสิ่งที่ควรวัด ไม่ใช่ผลลัพธ์ที่ทุกโรงแรมจะได้รับ",
     sourceLabel: "ที่มา",
     sourceStudy: "University of Primorska – AI in hotel operations, Ao Nang case study",
     measureTitle: "วัดผลจากงานที่เปลี่ยนไป",
-    measureBody:
-      "ก่อนเริ่ม เราตกลงสิ่งที่จะวัดร่วมกัน อาจเป็นเวลาที่ใช้ต่อหนึ่งงาน จำนวนขั้นตอนที่ทีมต้องทำเอง ความครบถ้วนและความถูกต้องของข้อมูล งานที่ส่งต่อสำเร็จ หรือจำนวนครั้งที่ต้องให้คนเข้ามาแก้ไข",
+    measureLead: "ก่อนเริ่ม เราตกลงสิ่งที่จะวัดร่วมกัน จากงานที่ทีมต้องใช้จริง",
+    measures: [
+      ["01", "Time Saved", "เวลาที่ใช้ต่อหนึ่งงาน"],
+      ["02", "Manual Steps", "จำนวนขั้นตอนที่ทีมยังต้องทำเอง"],
+      ["03", "Data Quality", "ความครบถ้วนและความถูกต้องของข้อมูล"],
+      ["04", "Handover", "งานที่ส่งต่อสำเร็จ"],
+      ["05", "Human Review", "จำนวนครั้งที่ต้องให้คนเข้ามาแก้ไข"],
+    ],
     measureClose: "หลังทดลองใช้ เราดูด้วยว่าทีมใช้ระบบได้จริงหรือไม่ และลูกค้ายังได้รับการดูแลในจุดที่ต้องการคนรับผิดชอบหรือไม่",
     ownershipTitle: "ใช้ข้อมูลอย่างมีเจ้าของงาน",
-    ownershipBody:
-      "ทุก Workflow ควรกำหนดว่าข้อมูลใดจำเป็น ใครเข้าถึงได้ เก็บไว้ที่ไหน และผลลัพธ์แบบใดต้องให้คนอนุมัติก่อนนำไปใช้ โดยเฉพาะข้อมูลลูกค้า ราคา ข้อเสนอ และข้อความที่ส่งออกไปภายนอก",
+    ownershipItems: [
+      ["01", "ใช้ข้อมูลเท่าที่จำเป็น"],
+      ["02", "กำหนดว่าใครเข้าถึงได้"],
+      ["03", "เก็บและส่งต่อข้อมูลให้เหมาะสมกับงาน"],
+      ["04", "มีคนตรวจก่อนใช้ผลลัพธ์ในงานสำคัญ"],
+    ],
     ownershipClose: "แนวทางและเครื่องมือที่ใช้จะต้องตรวจตามลักษณะข้อมูล ระบบ และข้อกำหนดขององค์กรแต่ละแห่งก่อนเริ่มใช้งาน",
     audienceTitle: "เหมาะกับโรงแรมและองค์กรบริการอื่น",
     audienceHotel:
@@ -75,6 +93,8 @@ const copy = {
     closerCta: "ปรึกษาเรื่องการนำ AI ไปใช้จริง",
     relatedTitle: "อ่านและลองใช้ต่อ",
     details: "ดูรายละเอียด",
+    readArticle: "อ่านบทความ",
+    useTool: "ใช้เครื่องมือ",
     insightTech: "ทำไมการนำเทคโนโลยีโรงแรมมาใช้จึงเป็นส่วนหนึ่งของการบริหารรายได้และการเติบโต",
     insightMeetings: "ประชุม Revenue อย่างไรให้จบด้วยการตัดสินใจที่นำไปใช้ได้จริง",
     toolSearch: "ตรวจสุขภาพการค้นหาเว็บไซต์โรงแรม",
@@ -82,15 +102,15 @@ const copy = {
   },
   en: {
     crumb: "Solutions",
-    crumbCurrent: "Technology, AI & Automation",
-    eyebrow: "Design the system and put it into use",
+    eyebrow: "AI & Automation",
     title: "Put AI and automation into real hotel and organisation work",
     lead: "Cut the time a team spends on repeated work, get facts ready faster, and hand work on more clearly. The KPI Plus helps review the work steps, design and set up a suitable AI or automation system, try it with the team, and improve it until it is part of daily work.",
     leadClose: "We start from what the organisation wants to fix, then choose the tool and the scope of use.",
     cta: "Talk about AI and automation",
     secondary: "Ask the team to review the hotel systems",
     underCta: "Send the work the team wants to fix. Do not send a password or system access.",
-    photoAlt: "A hotel team reviewing work steps and data before choosing AI or automation",
+    photoAlt: "A hotel manager reviewing work steps on a computer",
+    problemsPhotoAlt: "A team discussing the workflow before choosing automation",
     problemsTitle: "You already have tools. Where is the work still stuck?",
     problemsLead:
       "A team may copy facts between several systems every day, spend so long on reports that the numbers miss the decision, or answer the same questions again and again when they would rather look after guests. These problems need a look at the work step, the data, and the person who owns it, before a system is built.",
@@ -114,24 +134,41 @@ const copy = {
     methodCta: "Tell us the work you want the system to help with",
     casesTitle: "Examples of work that can be considered first",
     cases: [
-      ["Reports and decisions", "Gather facts from the sources you have, shape the report, and help summarise the points for Revenue, Sales, or executives to review before they decide."],
-      ["Enquiries and hand-over", "Make contact-channel facts more complete, sort the question type, notify the owner, and follow which work has been answered, while the team still looks after conversations that need judgement or extra care."],
-      ["Information for the service team", "Help staff find policy, steps, frequent answers, or product facts faster, and set a way to check that the facts are still current."],
-      ["Marketing and internal work", "Help prepare campaign facts, draft copy, organise repeated tasks, or summarise a meeting so the owner can review and continue."],
+      ["01", "Reports and decisions", "Gather facts from the sources you have, shape the report, and help summarise the points for Revenue, Sales, or executives to review before they decide."],
+      ["02", "Enquiries and hand-over", "Make contact-channel facts more complete, sort the question type, notify the owner, and follow which work has been answered, while the team still looks after conversations that need judgement or extra care."],
+      ["03", "Information for the service team", "Help staff find policy, steps, frequent answers, or product facts faster, and set a way to check that the facts are still current."],
+      ["04", "Marketing and internal work", "Help prepare campaign facts, draft copy, organise repeated tasks, or summarise a meeting so the owner can review and continue."],
     ],
     casesNote: "Each example still has to be judged from the systems, data access, and process the organisation already uses, before anything is installed.",
     studyTitle: "Why try it on real work before you scale",
+    studyPrinciples: [
+      ["01", "Start with work that has a clear scope"],
+      ["02", "Try it on a real workflow"],
+      ["03", "Scale when the result and the risk are acceptable"],
+    ],
+    studyTakeawayLead: "Good automation should not start from “what can we build?”",
+    studyTakeawayClose: "It should start from “which work should become easier?”",
     studyBody:
       "A case study of one four-star hotel in Ao Nang, Krabi, reported that after AI was used in the process under study, average check-in time fell from 3.3 minutes to 2.7 minutes. The researchers also noted that training and a staged roll-out mattered for staff adaptation. These figures are the result of that one hotel, so they are an example of what to measure, not a result every hotel will get.",
     sourceLabel: "Source",
     sourceStudy: "University of Primorska – AI in hotel operations, Ao Nang case study",
     measureTitle: "Measure the work that changed",
-    measureBody:
-      "Before we start, we agree what will be measured. It may be time per task, how many steps the team still has to do by hand, completeness and accuracy of the facts, work handed on successfully, or how often a person has to step in to correct it.",
+    measureLead: "Before we start, we agree what will be measured from the work the team actually needs.",
+    measures: [
+      ["01", "Time Saved", "Time spent per task"],
+      ["02", "Manual Steps", "How many steps the team still does by hand"],
+      ["03", "Data Quality", "Completeness and accuracy of the facts"],
+      ["04", "Handover", "Work handed on successfully"],
+      ["05", "Human Review", "How often a person has to step in to correct it"],
+    ],
     measureClose: "After the trial, we also look at whether the team actually uses the system, and whether guests still get care at the points that need a person.",
     ownershipTitle: "Use data with a clear owner",
-    ownershipBody:
-      "Every workflow should name which facts are needed, who can see them, where they are kept, and which results a person must approve before they are used — especially guest data, rates, offers, and messages that go outside.",
+    ownershipItems: [
+      ["01", "Use only the facts that are needed"],
+      ["02", "Name who can access them"],
+      ["03", "Keep and hand on facts in a way that fits the work"],
+      ["04", "Have a person review before results are used in important work"],
+    ],
     ownershipClose: "The approach and the tools still have to be checked against the data type, the systems, and each organisation’s rules before use starts.",
     audienceTitle: "For hotels and other hospitality organisations",
     audienceHotel:
@@ -143,6 +180,8 @@ const copy = {
     closerCta: "Talk about putting AI into real work",
     relatedTitle: "Read and try next",
     details: "See details",
+    readArticle: "Read article",
+    useTool: "Use tool",
     insightTech: "Why hotel technology adoption is part of revenue and growth work",
     insightMeetings: "How a revenue meeting can end with a decision the team can use",
     toolSearch: "Hotel website searchability check",
@@ -150,15 +189,15 @@ const copy = {
   },
   ru: {
     crumb: "Решения",
-    crumbCurrent: "Технологии, ИИ и автоматизация",
-    eyebrow: "Спроектировать систему и внедрить её в работу",
+    eyebrow: "AI & Automation",
     title: "Внедрить ИИ и автоматизацию в реальную работу отеля и организации",
     lead: "Сократить время на повторную работу, быстрее готовить данные и яснее передавать задачи. The KPI Plus помогает разобрать шаги, спроектировать и установить подходящую систему ИИ или автоматизации, попробовать её с командой и довести до ежедневного способа работы.",
     leadClose: "Мы начинаем с того, что организация хочет исправить, затем выбираем инструмент и границы внедрения.",
     cta: "Обсудить ИИ и автоматизацию",
     secondary: "Попросить команду проверить системы отеля",
     underCta: "Отправьте работу, которую команда хочет исправить. Не отправляйте пароль или доступ к системам.",
-    photoAlt: "Команда отеля разбирает шаги работы и данные до выбора ИИ или автоматизации",
+    photoAlt: "Управляющий отеля разбирает шаги работы на компьютере",
+    problemsPhotoAlt: "Команда обсуждает workflow до выбора автоматизации",
     problemsTitle: "Инструменты уже есть. Где работа всё ещё буксует?",
     problemsLead:
       "Команда может каждый день копировать данные между системами, так долго делать отчёты, что цифры опаздывают к решению, или снова отвечать на одни и те же вопросы, хотя хотела бы больше времени на гостя. Эти проблемы нужно смотреть через шаг работы, данные и ответственного человека, прежде чем строить систему.",
@@ -182,24 +221,41 @@ const copy = {
     methodCta: "Расскажите, какую работу должна помочь система",
     casesTitle: "Примеры работы, с которой можно начать",
     cases: [
-      ["Отчёты и решения", "Собрать данные из доступных источников, оформить отчёт и помочь коротко назвать суть для Revenue, Sales или руководства до решения."],
-      ["Enquiry и передача работы", "Сделать данные с каналов обращения полнее, разделить тип вопроса, уведомить ответственного и следить, какая работа уже получила ответ, оставляя команде разговоры, где нужны суждение или особое внимание."],
-      ["Данные для сервисной команды", "Помочь сотрудникам быстрее находить политику, шаги, частые ответы или факты о продукте и задать способ проверки, что данные ещё актуальны."],
-      ["Маркетинг и внутренняя работа", "Помочь подготовить данные для кампании, черновик текста, повторяющиеся задачи или итог совещания, чтобы владелец работы проверил и продолжил."],
+      ["01", "Отчёты и решения", "Собрать данные из доступных источников, оформить отчёт и помочь коротко назвать суть для Revenue, Sales или руководства до решения."],
+      ["02", "Enquiry и передача работы", "Сделать данные с каналов обращения полнее, разделить тип вопроса, уведомить ответственного и следить, какая работа уже получила ответ, оставляя команде разговоры, где нужны суждение или особое внимание."],
+      ["03", "Данные для сервисной команды", "Помочь сотрудникам быстрее находить политику, шаги, частые ответы или факты о продукте и задать способ проверки, что данные ещё актуальны."],
+      ["04", "Маркетинг и внутренняя работа", "Помочь подготовить данные для кампании, черновик текста, повторяющиеся задачи или итог совещания, чтобы владелец работы проверил и продолжил."],
     ],
     casesNote: "Каждый пример всё равно нужно оценить по системам, доступу к данным и процессу организации, прежде чем что-то устанавливать.",
     studyTitle: "Почему сначала пробовать на реальной работе",
+    studyPrinciples: [
+      ["01", "Начать с работы с ясными границами"],
+      ["02", "Пробовать на реальном Workflow"],
+      ["03", "Масштабировать, когда результат и риск приемлемы"],
+    ],
+    studyTakeawayLead: "Хорошую автоматизацию не стоит начинать с «что можно сделать»",
+    studyTakeawayClose: "А с «какую работу стоит сделать проще»",
     studyBody:
       "В кейсе одного четырёхзвёздочного отеля в Ао Нанге, Краби, после внедрения ИИ в изучаемый процесс среднее время check-in снизилось с 3,3 до 2,7 минуты. Исследователи также отметили, что обучение и поэтапное внедрение важны для адаптации сотрудников. Эти цифры — результат одного отеля, поэтому это пример того, что стоит измерять, а не результат, который получит каждый отель.",
     sourceLabel: "Источник",
     sourceStudy: "University of Primorska – ИИ в операциях отеля, кейс Ao Nang",
     measureTitle: "Измерять работу, которая изменилась",
-    measureBody:
-      "До старта договариваемся, что измеряем: время на одну задачу, сколько шагов команда всё ещё делает сама, полноту и точность данных, успешно переданную работу или сколько раз человеку нужно вмешиваться и править.",
+    measureLead: "До старта договариваемся, что измеряем по работе, которая команде реально нужна.",
+    measures: [
+      ["01", "Time Saved", "Время на одну задачу"],
+      ["02", "Manual Steps", "Сколько шагов команда всё ещё делает сама"],
+      ["03", "Data Quality", "Полнота и точность данных"],
+      ["04", "Handover", "Успешно переданная работа"],
+      ["05", "Human Review", "Сколько раз человеку нужно вмешиваться"],
+    ],
     measureClose: "После пробы смотрим и то, пользуется ли команда системой на деле, и получает ли гость внимание там, где нужен человек.",
     ownershipTitle: "Использовать данные с ясным владельцем",
-    ownershipBody:
-      "В каждом Workflow нужно назвать, какие данные нужны, кто к ним имеет доступ, где они хранятся и какой результат человек должен одобрить до использования — особенно данные гостя, цены, предложения и исходящие сообщения.",
+    ownershipItems: [
+      ["01", "Использовать только нужные данные"],
+      ["02", "Определить, кто имеет доступ"],
+      ["03", "Хранить и передавать данные в соответствии с работой"],
+      ["04", "Проверять результат человеком перед важным использованием"],
+    ],
     ownershipClose: "Подход и инструменты всё равно нужно проверить по типу данных, системам и правилам каждой организации до начала использования.",
     audienceTitle: "Для отелей и других организаций сферы услуг",
     audienceHotel:
@@ -211,6 +267,8 @@ const copy = {
     closerCta: "Обсудить внедрение ИИ в реальную работу",
     relatedTitle: "Читать и пробовать дальше",
     details: "Подробнее",
+    readArticle: "Читать статью",
+    useTool: "Использовать инструмент",
     insightTech: "Почему внедрение отельных технологий — часть работы с доходом и ростом",
     insightMeetings: "Как совещание по Revenue заканчивается решением, которое можно использовать",
     toolSearch: "Проверка поисковой готовности сайта отеля",
@@ -218,15 +276,15 @@ const copy = {
   },
   zh: {
     crumb: "方案",
-    crumbCurrent: "科技、AI 與自動化",
-    eyebrow: "規劃系統並真正用起來",
+    eyebrow: "AI & Automation",
     title: "把 AI 與 Automation 用回飯店與組織的實際工作",
     lead: "減少團隊花在重複工作上的時間，讓資料更快能用，交接也更清楚。The KPI Plus 協助檢視工作步驟、設計並安裝合適的 AI 或 Automation 系統，與團隊試用，再調整到成為日常做法的一部分。",
     leadClose: "我們從組織想解決的事開始，再選擇工具與導入範圍。",
     cta: "諮詢 AI 與 Automation",
     secondary: "請團隊協助檢視飯店系統",
     underCta: "先送出團隊想改善的工作。請不要傳送密碼或系統權限。",
-    photoAlt: "飯店團隊在選擇 AI 或 Automation 前，先檢視工作步驟與資料",
+    photoAlt: "飯店管理者在電腦上檢視工作步驟",
+    problemsPhotoAlt: "團隊在選擇 Automation 前討論 workflow",
     problemsTitle: "已經有工具了，工作卡在哪裡？",
     problemsLead:
       "團隊可能每天在多個系統之間複製資料、做報表做到數字趕不上決策，或反覆回答同一組問題，但其實更想把時間留給客人。這些問題要先看工作步驟、資料，以及誰負責，才能開始做系統。",
@@ -250,24 +308,41 @@ const copy = {
     methodCta: "告訴我們，你希望系統幫忙哪一件工作",
     casesTitle: "可以先考慮的工作例子",
     cases: [
-      ["報表與決策", "從既有來源彙整資料、整理報表格式，並協助摘要重點，讓 Revenue、Sales 或高階主管在決策前檢查。"],
-      ["接收 Enquiry 與交接", "把各聯絡管道的資料整理得更完整、分類問題、通知負責人，並追蹤哪些工作已回覆；需要判斷或特別照顧的對話仍由團隊處理。"],
-      ["服務團隊所需資料", "協助員工更快找到政策、步驟、常用答覆或商品資料，並約定如何檢查資料是否仍是最新。"],
-      ["行銷與內部作業", "協助準備活動資料、草擬內容、整理重複工作，或整理會議重點，讓負責人檢查後繼續做。"],
+      ["01", "報表與決策", "從既有來源彙整資料、整理報表格式，並協助摘要重點，讓 Revenue、Sales 或高階主管在決策前檢查。"],
+      ["02", "接收 Enquiry 與交接", "把各聯絡管道的資料整理得更完整、分類問題、通知負責人，並追蹤哪些工作已回覆；需要判斷或特別照顧的對話仍由團隊處理。"],
+      ["03", "服務團隊所需資料", "協助員工更快找到政策、步驟、常用答覆或商品資料，並約定如何檢查資料是否仍是最新。"],
+      ["04", "行銷與內部作業", "協助準備活動資料、草擬內容、整理重複工作，或整理會議重點，讓負責人檢查後繼續做。"],
     ],
     casesNote: "每個例子都還必須依組織現有系統、資料存取權與流程評估，才能決定實際要安裝什麼。",
     studyTitle: "為什麼要先用真實工作試過，再擴大",
+    studyPrinciples: [
+      ["01", "從範圍清楚的工作開始"],
+      ["02", "用真實 Workflow 試用"],
+      ["03", "在結果與風險可接受時再擴大"],
+    ],
+    studyTakeawayLead: "好的 Automation 不該從「能做什麼」開始",
+    studyTakeawayClose: "而該從「哪一件工作該變得更簡單」開始",
     studyBody:
       "甲米府 Ao Nang 一間四星飯店的案例研究指出，在所研究的流程導入 AI 後，平均 check-in 時間從 3.3 分鐘降到 2.7 分鐘。研究也提到，培訓與分階段導入對員工適應很重要。這些數字只是該飯店的結果，因此是「該量什麼」的例子，不是每間飯店都會得到的結果。",
     sourceLabel: "來源",
     sourceStudy: "University of Primorska – 飯店營運中的 AI，Ao Nang 案例",
     measureTitle: "從改變了的工作來衡量",
-    measureBody:
-      "開始前，我們會一起約定要量什麼。可能是一件工作花多少時間、團隊還必須自己做幾個步驟、資料是否完整正確、交接是否成功，或必須由人進來修正的次數。",
+    measureLead: "開始前，我們會一起約定要量什麼，依據團隊實際需要的工作。",
+    measures: [
+      ["01", "Time Saved", "一件工作花多少時間"],
+      ["02", "Manual Steps", "團隊還必須自己做幾個步驟"],
+      ["03", "Data Quality", "資料是否完整正確"],
+      ["04", "Handover", "交接是否成功"],
+      ["05", "Human Review", "必須由人進來修正的次數"],
+    ],
     measureClose: "試用之後，也會看團隊是否真的在用系統，以及客人在需要有人負責的地方是否仍被照顧到。",
     ownershipTitle: "使用資料時要有明確負責人",
-    ownershipBody:
-      "每個 Workflow 都應約定哪些資料必要、誰能存取、存在哪裡，以及哪類結果必須先由人核准才能使用——尤其是客人資料、價格、方案，以及對外送出的訊息。",
+    ownershipItems: [
+      ["01", "只用必要的資料"],
+      ["02", "約定誰能存取"],
+      ["03", "依工作妥善保存與交接資料"],
+      ["04", "重要工作使用結果前先由人檢查"],
+    ],
     ownershipClose: "做法與工具仍須依資料性質、系統，以及各組織規定檢查後，才能開始使用。",
     audienceTitle: "適合飯店，也適合其他服務業組織",
     audienceHotel:
@@ -279,6 +354,8 @@ const copy = {
     closerCta: "諮詢如何把 AI 用回實際工作",
     relatedTitle: "接著閱讀與試用",
     details: "查看詳情",
+    readArticle: "閱讀文章",
+    useTool: "使用工具",
     insightTech: "為什麼導入飯店科技是收益與成長工作的一部分",
     insightMeetings: "Revenue 會議如何以可執行的決定作結",
     toolSearch: "飯店網站搜尋健康檢查",
@@ -296,176 +373,233 @@ export function TechnologyView({ locale }: { locale: Locale }) {
 
   return (
     <SiteShell locale={locale} route={localizePath("/solutions/hotel-ai-automation", locale)}>
-      <PageHero>
-        <nav aria-label="Breadcrumb" className="text-sm text-white/70">
-          <ol className="flex flex-wrap items-center gap-2">
-            <li>
-              <Link href={solutions} className="hover:text-white">
-                {t.crumb}
-              </Link>
-            </li>
-            <li className="flex items-center gap-2">
-              <span aria-hidden="true">/</span>
-              <span className="text-white">{solutionNavLabel("/solutions/hotel-ai-automation", locale)}</span>
-            </li>
-          </ol>
-        </nav>
-        <p className="kpi-kicker mt-5 text-[#F2F8E2]">{t.eyebrow}</p>
-        <h1 className="kpi-h1 mt-5">{t.title}</h1>
-        <p className="kpi-lead mt-5 text-white/72">{t.lead}</p>
-        <p className="mt-4 max-w-3xl text-base leading-8 text-white/64">{t.leadClose}</p>
-        <div className="kpi-actions">
-          <a href="#technology-enquiry" className="kpi-button">
-            {t.cta} <ArrowUpRight className="h-4 w-4" />
-          </a>
-          <Link href={audit} className="kpi-button-ghost">
-            {t.secondary}
-          </Link>
-        </div>
-        <p className="mt-4 max-w-xl text-sm leading-6 text-white/64">{t.underCta}</p>
-      </PageHero>
-
-      <section className="kpi-section">
-        <div className="kpi-split">
-          <div>
-            <h2 className="kpi-h2">{t.problemsTitle}</h2>
-            <p className="mt-6 max-w-2xl text-base leading-8 text-[#555555]">{t.problemsLead}</p>
-            <p className="mt-8 text-sm font-extrabold uppercase tracking-[.12em] text-[#0B6660]">{t.fitTitle}</p>
-            <div className="mt-5 grid gap-4">
-              {t.problems.map((item, index) => (
-                <article key={item} className="kpi-card flex gap-4 p-6">
-                  <span className="kpi-latin text-sm font-black tracking-[.14em] text-[#0B6660]">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <p className="text-base leading-7 text-[#555555]">{item}</p>
-                </article>
-              ))}
+      <section className="kpi-hero kpi-home-hero-section kpi-tech-hero">
+        <div className="kpi-wrap">
+          <nav aria-label="Breadcrumb" className="kpi-tech-hero-crumb">
+            <ol>
+              <li>
+                <Link href={solutions}>{t.crumb}</Link>
+              </li>
+              <li>
+                <span aria-hidden="true">/</span>
+                <span>{solutionNavLabel("/solutions/hotel-ai-automation", locale)}</span>
+              </li>
+            </ol>
+          </nav>
+          <div className="kpi-home-hero">
+            <div className="kpi-home-hero-copy">
+              <p className="kpi-home-eyebrow kpi-latin">{t.eyebrow}</p>
+              <h1 className="kpi-h1 kpi-home-h1">
+                {locale === "th" ? (
+                  <>
+                    <span className="kpi-home-h1-lead">
+                      นำ <span className="kpi-latin">AI</span> และ{" "}
+                      <span className="kpi-latin">Automation</span>
+                    </span>
+                    <span className="kpi-home-h1-rest">
+                      <span className="kpi-home-accent">ไปใช้จริง</span>ในโรงแรมและองค์กร
+                    </span>
+                  </>
+                ) : (
+                  t.title
+                )}
+              </h1>
+              <p className="kpi-lead kpi-home-lead">{t.lead}</p>
+              <p className="kpi-tech-lead-close">{t.leadClose}</p>
+              <div className="kpi-actions">
+                <a href="#technology-enquiry" className="kpi-button">
+                  {t.cta} <span aria-hidden="true">↗</span>
+                </a>
+                <Link href={audit} className="kpi-button-ghost">
+                  {t.secondary}
+                </Link>
+              </div>
+              <p className="kpi-tech-hero-note">{t.underCta}</p>
+            </div>
+            <div className="kpi-hero-visual kpi-home-photo">
+              <img src={heroPhoto} alt={t.photoAlt} width={1200} height={900} />
             </div>
           </div>
-          <figure className="kpi-home-photo">
-            <img src={photo} alt={t.photoAlt} width={1200} height={900} />
+        </div>
+      </section>
+
+      <section className="kpi-section kpi-tech-problems">
+        <div className="kpi-tech-problems-grid">
+          <div className="kpi-tech-problems-copy">
+            <h2 className="kpi-h2">{t.problemsTitle}</h2>
+            <p className="kpi-tech-problems-lead">{t.problemsLead}</p>
+            <p className="kpi-tech-fit-label">{t.fitTitle}</p>
+            <ol className="kpi-tech-problems-list">
+              {t.problems.map((item, index) => (
+                <li key={item} className="kpi-tech-problems-item">
+                  <span className="kpi-latin kpi-tech-num">{String(index + 1).padStart(2, "0")}</span>
+                  <p>{item}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+          <figure className="kpi-tech-problems-media">
+            <img src={problemsPhoto} alt={t.problemsPhotoAlt} width={1200} height={900} />
           </figure>
         </div>
       </section>
 
-      <section className="border-y border-[#E3E8EB] bg-white">
+      <section className="kpi-tech-method border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section">
           <h2 className="kpi-h2">{t.methodTitle}</h2>
-          <ol className="mt-10 grid gap-4">
-            {t.steps.map(([num, title, body]) => (
-              <li key={num} className="kpi-card flex gap-4 p-6 sm:items-start">
-                <span className="kpi-latin text-sm font-black tracking-[.14em] text-[#0B6660]">{num}</span>
-                <div>
-                  <h3 className="text-xl font-extrabold text-[#3B3B3B]">{title}</h3>
-                  <p className="mt-2 text-base leading-7 text-[#555555]">{body}</p>
+          <ol className="kpi-tech-method-list">
+            {t.steps.map(([num, title, body], index) => (
+              <li key={num} className="kpi-tech-method-item">
+                <div className="kpi-tech-method-meta">
+                  <span className="kpi-latin kpi-tech-method-num">{num}</span>
+                  <span className="kpi-latin kpi-tech-method-label">{methodLabels[index]}</span>
+                </div>
+                <div className="kpi-tech-method-copy">
+                  <h3>{title}</h3>
+                  <p>{body}</p>
                 </div>
               </li>
             ))}
           </ol>
-          <a href="#technology-enquiry" className="kpi-button mt-10">
-            {t.methodCta} <ArrowUpRight className="h-4 w-4" />
+          <a href="#technology-enquiry" className="kpi-button kpi-tech-method-cta">
+            {t.methodCta} <span aria-hidden="true">↗</span>
           </a>
         </div>
       </section>
 
-      <section className="kpi-section">
+      <section className="kpi-section kpi-tech-cases">
         <h2 className="kpi-h2">{t.casesTitle}</h2>
-        <div className="kpi-grid-2 mt-10">
-          {t.cases.map(([title, body]) => (
-            <article key={title} className="kpi-card relative overflow-hidden p-7">
-              <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-              <h3 className="mt-3 text-xl font-extrabold text-[#3B3B3B]">{title}</h3>
-              <p className="mt-3 text-base leading-7 text-[#555555]">{body}</p>
-            </article>
+        <ol className="kpi-tech-cases-list">
+          {t.cases.map(([num, title, body]) => (
+            <li key={num} className="kpi-tech-cases-item">
+              <span className="kpi-latin kpi-tech-num">{num}</span>
+              <div className="kpi-tech-cases-copy">
+                <h3>{title}</h3>
+                <p>{body}</p>
+              </div>
+            </li>
           ))}
-        </div>
-        <p className="mt-8 max-w-3xl text-base leading-8 text-[#3B3B3B]">{t.casesNote}</p>
+        </ol>
+        <p className="kpi-tech-cases-note">{t.casesNote}</p>
       </section>
 
-      <section className="border-y border-[#E3E8EB] bg-white">
+      <section className="kpi-tech-study border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section">
           <h2 className="kpi-h2">{t.studyTitle}</h2>
-          <p className="mt-6 max-w-3xl text-base leading-8 text-[#555555]">{t.studyBody}</p>
-          <p className="mt-5 max-w-3xl text-sm leading-7 text-[#555555]">
+          <ol className="kpi-tech-study-principles">
+            {t.studyPrinciples.map(([num, text]) => (
+              <li key={num}>
+                <span className="kpi-latin kpi-tech-num">{num}</span>
+                <p>{text}</p>
+              </li>
+            ))}
+          </ol>
+          <p className="kpi-tech-study-takeaway">
+            {t.studyTakeawayLead}
+            <span className="kpi-tech-study-takeaway-close">{t.studyTakeawayClose}</span>
+          </p>
+          <p className="kpi-tech-study-body">{t.studyBody}</p>
+          <p className="kpi-tech-study-source">
             {t.sourceLabel}:{" "}
-            <a href={studyUrl} target="_blank" rel="noreferrer" className="font-semibold text-[#0B6660]">
+            <a href={studyUrl} target="_blank" rel="noreferrer">
               {t.sourceStudy}
             </a>
           </p>
         </div>
       </section>
 
-      <section className="kpi-section">
+      <section className="kpi-section kpi-tech-measure">
         <h2 className="kpi-h2">{t.measureTitle}</h2>
-        <p className="mt-6 max-w-3xl text-base leading-8 text-[#555555]">{t.measureBody}</p>
-        <p className="mt-5 max-w-3xl text-base leading-8 text-[#3B3B3B]">{t.measureClose}</p>
+        <p className="kpi-tech-measure-lead">{t.measureLead}</p>
+        <ol className="kpi-tech-measure-list">
+          {t.measures.map(([num, label, body]) => (
+            <li key={num} className="kpi-tech-measure-item">
+              <span className="kpi-latin kpi-tech-num">{num}</span>
+              <div>
+                <h3 className="kpi-latin">{label}</h3>
+                <p>{body}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+        <p className="kpi-tech-measure-close">{t.measureClose}</p>
       </section>
 
-      <section className="border-y border-[#E3E8EB] bg-white">
+      <section className="kpi-tech-ownership border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section">
           <h2 className="kpi-h2">{t.ownershipTitle}</h2>
-          <p className="mt-6 max-w-3xl text-base leading-8 text-[#555555]">{t.ownershipBody}</p>
-          <p className="mt-5 max-w-3xl text-base leading-8 text-[#3B3B3B]">{t.ownershipClose}</p>
+          <ol className="kpi-tech-ownership-list">
+            {t.ownershipItems.map(([num, text]) => (
+              <li key={num}>
+                <span className="kpi-latin kpi-tech-num">{num}</span>
+                <p>{text}</p>
+              </li>
+            ))}
+          </ol>
+          <p className="kpi-tech-ownership-close">{t.ownershipClose}</p>
         </div>
       </section>
 
-      <section className="kpi-section">
+      <section className="kpi-section kpi-tech-audience">
         <h2 className="kpi-h2">{t.audienceTitle}</h2>
-        <p className="mt-6 max-w-3xl text-base leading-8 text-[#555555]">{t.audienceHotel}</p>
-        <p className="mt-5 max-w-3xl text-base leading-8 text-[#3B3B3B]">{t.audienceOther}</p>
-        <div className="mt-10 max-w-3xl rounded-[1.5rem] border border-[#E3E8EB] bg-white p-6 sm:p-8">
-          <h3 className="text-xl font-extrabold text-[#3B3B3B]">{t.closerTitle}</h3>
-          <p className="mt-4 text-base leading-8 text-[#555555]">{t.closerBody}</p>
-          <div className="kpi-actions mt-6">
+        <p className="kpi-tech-audience-body">{t.audienceHotel}</p>
+        <p className="kpi-tech-audience-body">{t.audienceOther}</p>
+        <aside className="kpi-tech-closer">
+          <h3>{t.closerTitle}</h3>
+          <p>{t.closerBody}</p>
+          <div className="kpi-tech-closer-actions">
             <a href="#technology-enquiry" className="kpi-button">
-              {t.closerCta} <ArrowUpRight className="h-4 w-4" />
+              {t.closerCta} <span aria-hidden="true">↗</span>
             </a>
-            <Link href={audit} className="text-sm font-semibold text-[#0B6660]">
+            <Link href={audit} className="kpi-tech-closer-link">
               {t.secondary}
             </Link>
           </div>
-        </div>
+        </aside>
       </section>
 
       {techHref || meetingsHref || searchHref ? (
-        <section className="border-t border-[#E3E8EB] bg-white">
+        <section className="kpi-tech-related border-t border-[#E3E8EB] bg-white">
           <div className="kpi-section">
             <h2 className="kpi-h2">{t.relatedTitle}</h2>
-            <div className="kpi-grid-2 mt-10">
+            <div className="kpi-tech-related-layout">
               {techHref ? (
-                <article className="kpi-card relative flex flex-col overflow-hidden p-7">
-                  <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-                  <h3 className="mt-3 text-xl font-extrabold text-[#3B3B3B]">{t.insightTech}</h3>
-                  <Link href={techHref} className="mt-auto pt-8 text-sm font-semibold text-[#0B6660]">
-                    {t.details}
+                <article className="kpi-tech-related-primary">
+                  <span className="kpi-tech-related-accent" aria-hidden="true" />
+                  <h3>{t.insightTech}</h3>
+                  <Link href={techHref} className="kpi-tech-related-cta">
+                    {t.readArticle}
+                    <span aria-hidden="true">↗</span>
                   </Link>
                 </article>
               ) : null}
-              {meetingsHref ? (
-                <article className="kpi-card relative flex flex-col overflow-hidden p-7">
-                  <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-                  <h3 className="mt-3 text-xl font-extrabold text-[#3B3B3B]">{t.insightMeetings}</h3>
-                  <Link href={meetingsHref} className="mt-auto pt-8 text-sm font-semibold text-[#0B6660]">
+              <div className="kpi-tech-related-stack">
+                {meetingsHref ? (
+                  <article className="kpi-tech-related-secondary">
+                    <h3>{t.insightMeetings}</h3>
+                    <Link href={meetingsHref} className="kpi-tech-related-cta">
+                      {t.readArticle}
+                      <span aria-hidden="true">↗</span>
+                    </Link>
+                  </article>
+                ) : null}
+                {searchHref ? (
+                  <article className="kpi-tech-related-secondary">
+                    <h3>{t.toolSearch}</h3>
+                    <Link href={searchHref} className="kpi-tech-related-cta">
+                      {t.useTool}
+                      <span aria-hidden="true">↗</span>
+                    </Link>
+                  </article>
+                ) : null}
+                <article className="kpi-tech-related-secondary">
+                  <h3>{t.academyLink}</h3>
+                  <a href={academyDiscover} target="_blank" rel="noreferrer" className="kpi-tech-related-cta">
                     {t.details}
-                  </Link>
+                    <span aria-hidden="true">↗</span>
+                  </a>
                 </article>
-              ) : null}
-              {searchHref ? (
-                <article className="kpi-card relative flex flex-col overflow-hidden p-7">
-                  <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-                  <h3 className="mt-3 text-xl font-extrabold text-[#3B3B3B]">{t.toolSearch}</h3>
-                  <Link href={searchHref} className="mt-auto pt-8 text-sm font-semibold text-[#0B6660]">
-                    {t.details}
-                  </Link>
-                </article>
-              ) : null}
-              <article className="kpi-card relative flex flex-col overflow-hidden p-7">
-                <div className="kpi-lime-bar absolute left-0 right-0 top-0 h-1" />
-                <h3 className="mt-3 text-xl font-extrabold text-[#3B3B3B]">{t.academyLink}</h3>
-                <a href={academyDiscover} target="_blank" rel="noreferrer" className="mt-auto pt-8 text-sm font-semibold text-[#0B6660]">
-                  {t.details}
-                </a>
-              </article>
+              </div>
             </div>
           </div>
         </section>

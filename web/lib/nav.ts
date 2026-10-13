@@ -48,7 +48,7 @@ export const copy = {
     caseStudies: "ผลงานลูกค้า",
     about: "เกี่ยวกับเรา",
     contact: "ติดต่อเรา",
-    audit: "ขอวิเคราะห์ Performance โรงแรม",
+    audit: "ขอวิเคราะห์ Performance",
     footerAudit: "ขอวิเคราะห์ประสิทธิภาพและโอกาสของโรงแรม",
     follow: "ติดตาม เดอะ เคพีไอ พลัส",
     statement: "พันธมิตรด้าน Revenue Management และการเติบโตของธุรกิจโรงแรม",
