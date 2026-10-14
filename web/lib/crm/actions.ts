@@ -147,9 +147,9 @@ export async function createLeadAndOpen(formData: FormData) {
   const result = await createManualLead(formData);
   if (result.ok && result.id) redirect(`/crm/leads/${result.id}`);
   if (result.error === "duplicate" && result.duplicateId) {
-    redirect(`/crm/leads/new?duplicate=${result.duplicateId}`);
+    redirect(`/crm/leads?newLead=1&duplicate=${result.duplicateId}`);
   }
-  redirect("/crm/leads/new?error=1");
+  redirect("/crm/leads?newLead=1&error=1");
 }
 
 export async function assignLeadOwner(formData: FormData) {
@@ -228,6 +228,37 @@ export async function setLeadArchiveState(formData: FormData) {
   revalidatePath("/crm/activities");
   revalidatePath(`/crm/leads/${leadId}`);
   redirect(archived ? "/crm/leads" : `/crm/leads/${leadId}`);
+}
+
+/** Archive lead from a list/table row and return to a CRM path. */
+export async function archiveLeadFromList(formData: FormData) {
+  const user = await requireUser();
+  const leadId = String(formData.get("leadId") ?? "");
+  const returnToRaw = String(formData.get("returnTo") ?? "/crm/leads");
+  const returnTo = returnToRaw.startsWith("/crm/") ? returnToRaw : "/crm/leads";
+  if (!leadId) return;
+  await setLeadArchived(leadId, true);
+  await prisma().leadEvent.create({
+    data: {
+      leadId,
+      userId: user.id,
+      type: "archived",
+      detail: "เก็บลีดออกจากรายการหลัก",
+    },
+  });
+  revalidatePath("/crm");
+  revalidatePath("/crm/leads");
+  revalidatePath("/crm/sales");
+  revalidatePath("/crm/pipeline");
+  revalidatePath("/crm/activities");
+  revalidatePath(`/crm/leads/${leadId}`);
+  redirect(returnTo);
+}
+
+/** @deprecated use archiveLeadFromList */
+export async function archiveLeadFromPipeline(formData: FormData) {
+  if (!formData.get("returnTo")) formData.set("returnTo", "/crm/pipeline?view=table");
+  await archiveLeadFromList(formData);
 }
 
 export async function addNote(leadId: string, note: string) {

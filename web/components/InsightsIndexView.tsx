@@ -11,7 +11,7 @@ import {
   type InsightPost,
 } from "@/lib/insights";
 import { blogSchema } from "@/lib/schema";
-import { auditHref, homeHref, localizePath, SITE, type Locale } from "@/lib/seo";
+import { auditHref, localizePath, SITE, type Locale } from "@/lib/seo";
 
 function PostMeta({
   post,
@@ -33,8 +33,8 @@ function PostMeta({
 
 export function InsightsIndexView({ locale, extraPosts = [] }: { locale: Locale; extraPosts?: InsightPost[] }) {
   const t = insightsIndexCopy[locale];
+  const isTh = locale === "th";
   const insightsHref = localizePath("/insights", locale);
-  const home = homeHref(locale);
   const posts = [...insightPosts, ...extraPosts.filter((post) => !insightPosts.some((item) => item.slug === post.slug))].sort((a, b) =>
     b.published.localeCompare(a.published),
   );
@@ -49,43 +49,33 @@ export function InsightsIndexView({ locale, extraPosts = [] }: { locale: Locale;
 
       <header className="kpi-insight-index-header">
         <div className="kpi-wrap">
-          <nav aria-label="Breadcrumb" className="text-sm text-[#555555]">
-            <ol className="flex flex-wrap items-center gap-2">
-              <li>
-                <Link href={home} className="hover:text-[#0B6660]">
-                  {t.home}
-                </Link>
-              </li>
-              <li className="flex items-center gap-2">
-                <span aria-hidden="true">/</span>
-                <span className="text-[#3B3B3B]">{t.insights}</span>
-              </li>
-            </ol>
-          </nav>
-          <h1 className="kpi-insight-index-title">{t.title}</h1>
+          <p className={`kpi-insight-index-eyebrow${isTh ? "" : " kpi-latin"}`}>{t.eyebrow}</p>
+          <h1 className="kpi-h1 kpi-insight-index-title">{t.title}</h1>
           <p className="kpi-insight-index-lead">{t.lead}</p>
         </div>
       </header>
 
       {featured ? (
-        <section className="kpi-insight-index-block" aria-labelledby="insight-featured-heading">
+        <section className="kpi-insight-index-block kpi-insight-index-featured" aria-labelledby="insight-featured-heading">
           <div className="kpi-wrap">
             <h2 id="insight-featured-heading" className="sr-only">
               {t.featured}
             </h2>
             <article className="kpi-insight-featured">
               <Link href={featured.href} className="kpi-insight-featured-link">
-                <img
-                  src={insightCardImage(featured)}
-                  alt={featured.imageAlt}
-                  width={960}
-                  height={640}
-                  className="kpi-insight-featured-image"
-                />
+                <div className="kpi-insight-featured-media">
+                  <img
+                    src={insightCardImage(featured)}
+                    alt={featured.imageAlt}
+                    width={960}
+                    height={640}
+                    className="kpi-insight-featured-image"
+                  />
+                </div>
                 <div className="kpi-insight-featured-body">
                   <p className="kpi-insight-category">{featured.category[locale]}</p>
                   <h3 className="kpi-insight-featured-title">{featured.title[locale]}</h3>
-                  <p className="kpi-insight-summary">{featured.description[locale]}</p>
+                  <p className="kpi-insight-summary kpi-insight-featured-summary">{featured.description[locale]}</p>
                   <PostMeta post={featured} locale={locale} minutesLabel={t.minutes} />
                   <span className="kpi-insight-read">
                     {t.read} <ArrowUpRight className="h-4 w-4" aria-hidden="true" />
@@ -107,15 +97,17 @@ export function InsightsIndexView({ locale, extraPosts = [] }: { locale: Locale;
               {listing.map((post) => (
                 <article key={post.href} className="kpi-insight-card">
                   <Link href={post.href} className="kpi-insight-card-link">
-                    <img
-                      src={insightCardImage(post)}
-                      alt={post.imageAlt}
-                      width={640}
-                      height={400}
-                      loading="lazy"
-                      decoding="async"
-                      className="kpi-insight-card-image"
-                    />
+                    <div className="kpi-insight-card-media">
+                      <img
+                        src={insightCardImage(post)}
+                        alt={post.imageAlt}
+                        width={640}
+                        height={400}
+                        loading="lazy"
+                        decoding="async"
+                        className="kpi-insight-card-image"
+                      />
+                    </div>
                     <div className="kpi-insight-card-body">
                       <p className="kpi-insight-category">{post.category[locale]}</p>
                       <h3 className="kpi-insight-card-title">{post.title[locale]}</h3>
@@ -135,7 +127,7 @@ export function InsightsIndexView({ locale, extraPosts = [] }: { locale: Locale;
 
       <section className="kpi-insight-index-cta" aria-labelledby="insight-cta-heading">
         <div className="kpi-wrap">
-          <h2 id="insight-cta-heading" className="kpi-insight-cta-title">
+          <h2 id="insight-cta-heading" className="kpi-h2 kpi-insight-cta-title">
             {t.ctaTitle}
           </h2>
           <p className="kpi-insight-cta-body">{t.ctaBody}</p>

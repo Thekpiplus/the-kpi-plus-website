@@ -11,9 +11,20 @@ export default async function AdminLoginPage({
 }) {
   if (!crmEnabled()) {
     return (
-      <div className="crm-card mx-auto mt-16 max-w-md">
-        <h1 className="text-2xl font-extrabold text-[#3B3B3B]">ยังไม่ได้ตั้งค่าฐานข้อมูล</h1>
-        <p className="mt-3">ตั้ง `DATABASE_URL` แล้วรีสตาร์ทเซิร์ฟเวอร์</p>
+      <div className="crm-auth">
+        <aside className="crm-auth-brand" aria-hidden="true">
+          <div className="crm-auth-brand-inner">
+            <p className="crm-auth-kicker">The KPI Plus</p>
+            <h2 className="crm-auth-headline">Admin Workspace</h2>
+            <p className="crm-auth-copy">ต้องตั้งค่าฐานข้อมูลก่อนเข้าใช้งานระบบแอดมิน</p>
+          </div>
+        </aside>
+        <div className="crm-auth-panel">
+          <div className="crm-auth-card">
+            <h1 className="crm-auth-title">ยังไม่ได้ตั้งค่าฐานข้อมูล</h1>
+            <p className="crm-auth-lead">ตั้ง `DATABASE_URL` แล้วรีสตาร์ทเซิร์ฟเวอร์</p>
+          </div>
+        </div>
       </div>
     );
   }
@@ -24,7 +35,7 @@ export default async function AdminLoginPage({
     // Show the form even if seed is incomplete; login action will retry.
   }
   const user = await currentUser().catch(() => null);
-  if (user) redirect(user.role === "partner" ? "/partners" : "/crm");
+  if (user) redirect(user.role === "partner" || user.role === "partners" ? "/partners" : "/crm");
   const { error } = await searchParams;
   return <LoginForm error={error} />;
 }

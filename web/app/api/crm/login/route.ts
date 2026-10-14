@@ -13,19 +13,19 @@ export async function POST(request: Request) {
   }
 
   const contentType = request.headers.get("content-type") ?? "";
-  let email = "";
+  let login = "";
   let password = "";
   if (contentType.includes("application/json")) {
     const body = await request.json().catch(() => ({}));
-    email = String(body.email ?? "");
+    login = String(body.email ?? body.username ?? body.login ?? "");
     password = String(body.password ?? "");
   } else {
     const form = await request.formData();
-    email = String(form.get("email") ?? "");
+    login = String(form.get("email") ?? form.get("username") ?? form.get("login") ?? "");
     password = String(form.get("password") ?? "");
   }
 
-  const result = await startLogin(email, password);
+  const result = await startLogin(login, password);
   if (contentType.includes("application/json")) {
     return NextResponse.json(result, { status: result.ok ? 200 : 400 });
   }

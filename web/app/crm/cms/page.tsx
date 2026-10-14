@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PageHeader } from "@/components/crm/ui/PageHeader";
 import { cmsOverview, listDocuments, listMedia, listRedirects } from "@/lib/cms/queries";
 import { lockedPageList } from "@/lib/cms/locked";
 
@@ -14,10 +15,16 @@ export default async function CmsHomePage() {
 
   return (
     <div className="crm-grid">
-      <div>
-        <h1 className="text-3xl font-extrabold text-[#3B3B3B]">Content Management System</h1>
-        <p className="mt-2">สร้างหน้าและบทความใหม่ จัดการสื่อ SEO เมนู และ redirect หน้าเดิมของเว็บยังออกแบบจากโค้ด</p>
-      </div>
+      <PageHeader
+        eyebrow="Content"
+        title="Content Management"
+        description="สร้างหน้าและบทความใหม่ จัดการสื่อ SEO และ redirect — หน้าเดิมของเว็บยังออกแบบจากโค้ด"
+        actions={
+          <Link href="/crm/cms/insights/new" className="kpi-button">
+            สร้างบทความ
+          </Link>
+        }
+      />
       <div className="crm-split-cards">
         <Link href="/crm/cms/pages" className="crm-card no-underline">
           <h2 className="text-xl font-extrabold">หน้า</h2>

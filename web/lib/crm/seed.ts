@@ -7,10 +7,18 @@ import { prisma } from "./db";
 import { hashSecret, verifySecret } from "./security";
 
 const ADMIN_EMAIL = "isara@thekpiplus.com";
+const ADMIN_USERNAME = "isara";
 const ADMIN_PASSWORD = "4202";
+
+export async function ensureUsernameColumn() {
+  const db = prisma();
+  await db.$executeRawUnsafe(`ALTER TABLE "User" ADD COLUMN "username" TEXT`).catch(() => undefined);
+  await db.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "User_username_key" ON "User"("username")`).catch(() => undefined);
+}
 
 export async function ensureCrmSeed() {
   const db = prisma();
+  await ensureUsernameColumn().catch(() => undefined);
   const count = await db.stage.count();
   if (count === 0) {
     await db.stage.createMany({ data: STAGES.map((stage) => ({ ...stage })) });
@@ -39,7 +47,7 @@ async function ensureDemoLeads() {
   const db = prisma();
   if ((await db.lead.count()) > 0) return;
   const stages = await db.stage.findMany({ orderBy: { sortOrder: "asc" } });
-  const owner = await db.user.findFirst({ where: { role: { not: "partner" } } });
+  const owner = await db.user.findFirst({ where: { role: { notIn: ["partner", "partners"] } } });
   const stage = (order: number) => stages.find((item) => item.sortOrder === order) ?? stages[0];
   if (!stage(1)) return;
 
@@ -147,6 +155,7 @@ async function ensureDemoLeads() {
 
 export async function ensureAdminUser() {
   const db = prisma();
+  await ensureUsernameColumn().catch(() => undefined);
   const hashed = hashSecret(ADMIN_PASSWORD);
   const existing = await db.user.findUnique({ where: { email: ADMIN_EMAIL } });
   if (existing) {
@@ -155,39 +164,49 @@ export async function ensureAdminUser() {
       where: { id: existing.id },
       data: {
         name: existing.name || "Isara",
-        role: existing.role === "partner" ? "owner" : existing.role || "owner",
+        role:
+          existing.role === "partner" || existing.role === "partners"
+            ? "superadmin"
+            : existing.role === "owner"
+              ? "superadmin"
+              : existing.role || "superadmin",
         ...(passwordOk ? {} : { pinHash: hashed.hash, pinSalt: hashed.salt }),
         failedAttempts: 0,
         lockedUntil: null,
       },
     });
+    await db
+      .$executeRawUnsafe(`UPDATE "User" SET "username" = ? WHERE "id" = ? AND ("username" IS NULL OR "username" = '')`, ADMIN_USERNAME, existing.id)
+      .catch(() => undefined);
     return;
   }
   try {
-    await db.user.create({
+    const created = await db.user.create({
       data: {
         name: "Isara",
         email: ADMIN_EMAIL,
         phone: "66000000001",
-        role: "owner",
+        role: "superadmin",
         pinHash: hashed.hash,
         pinSalt: hashed.salt,
       },
     });
+    await db.$executeRawUnsafe(`UPDATE "User" SET "username" = ? WHERE "id" = ?`, ADMIN_USERNAME, created.id).catch(() => undefined);
   } catch {
-    const fallback = await db.user.findFirst({ where: { role: { not: "partner" } } });
+    const fallback = await db.user.findFirst({ where: { role: { notIn: ["partner", "partners"] } } });
     if (!fallback) throw new Error("admin_seed_failed");
     await db.user.update({
       where: { id: fallback.id },
       data: {
         email: ADMIN_EMAIL,
         name: fallback.name || "Isara",
-        role: "owner",
+        role: "superadmin",
         pinHash: hashed.hash,
         pinSalt: hashed.salt,
         failedAttempts: 0,
         lockedUntil: null,
       },
     });
+    await db.$executeRawUnsafe(`UPDATE "User" SET "username" = ? WHERE "id" = ?`, ADMIN_USERNAME, fallback.id).catch(() => undefined);
   }
 }

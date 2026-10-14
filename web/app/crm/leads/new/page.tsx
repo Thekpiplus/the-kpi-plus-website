@@ -1,7 +1,4 @@
-import { NewLeadForm } from "@/components/crm/NewLeadForm";
-import { currentUser } from "@/lib/crm/auth";
-import { prisma } from "@/lib/crm/db";
-import { staffDirectory } from "@/lib/crm/queries";
+import { redirect } from "next/navigation";
 
 export default async function NewLeadPage({
   searchParams,
@@ -9,24 +6,8 @@ export default async function NewLeadPage({
   searchParams: Promise<{ duplicate?: string; error?: string }>;
 }) {
   const { duplicate, error } = await searchParams;
-  const [partners, owners, user] = await Promise.all([
-    prisma()
-      .partner.findMany({
-        where: { status: { in: ["active", "pending"] } },
-        orderBy: { displayName: "asc" },
-        select: { id: true, displayName: true, tier: true },
-      })
-      .catch(() => []),
-    staffDirectory(),
-    currentUser(),
-  ]);
-  return (
-    <NewLeadForm
-      partners={partners}
-      owners={owners}
-      currentUserId={user?.id}
-      duplicateId={duplicate}
-      error={error}
-    />
-  );
+  const query = new URLSearchParams({ newLead: "1" });
+  if (duplicate) query.set("duplicate", duplicate);
+  if (error) query.set("error", error);
+  redirect(`/crm/leads?${query.toString()}`);
 }

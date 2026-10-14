@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { EmptyState } from "@/components/crm/ui/EmptyState";
+import { PageHeader } from "@/components/crm/ui/PageHeader";
 import { listDocuments } from "@/lib/cms/queries";
 import { documentPath } from "@/lib/cms/body";
 
@@ -12,15 +14,16 @@ export default async function CmsInsightsPage({
 
   return (
     <div className="crm-grid">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-3xl font-extrabold text-[#3B3B3B]">Insights</h1>
-          <p className="mt-2">บทความใหม่จะไปอยู่ที่ /insights/[slug] คู่กับบทความที่เขียนในโค้ด</p>
-        </div>
-        <Link href="/crm/cms/insights/new" className="kpi-button">
-          สร้างบทความ
-        </Link>
-      </div>
+      <PageHeader
+        eyebrow="Content"
+        title="Insights"
+        description="บทความใหม่จะไปอยู่ที่ /insights/[slug] คู่กับบทความที่เขียนในโค้ด"
+        actions={
+          <Link href="/crm/cms/insights/new" className="kpi-button">
+            สร้างบทความ
+          </Link>
+        }
+      />
       {params.deleted === "1" ? <p className="font-semibold text-[#0B1F33]">ย้ายเข้าถังขยะแล้ว</p> : null}
       <form className="crm-card grid gap-3 md:grid-cols-3" method="get">
         <label className="text-sm font-bold">
@@ -42,18 +45,30 @@ export default async function CmsInsightsPage({
       </form>
       <section className="crm-card">
         <p className="text-sm">{posts.length} บทความจาก CMS</p>
-        <ul className="mt-3 grid gap-3">
-          {posts.map((post) => (
-            <li key={post.id} className="rounded-xl border border-[#E3E8EB] p-3">
-              <Link href={`/crm/cms/insights/${post.id}`} className="font-semibold text-[#0B6660]">
-                {post.title}
+        {posts.length === 0 ? (
+          <EmptyState
+            title="ยังไม่มีบทความ"
+            body="สร้างบทความใหม่เพื่อเผยแพร่ที่ /insights/[slug]"
+            action={
+              <Link href="/crm/cms/insights/new" className="kpi-button">
+                สร้างบทความ
               </Link>
-              <p className="mt-1 text-sm">
-                {post.status} · {documentPath(post)}
-              </p>
-            </li>
-          ))}
-        </ul>
+            }
+          />
+        ) : (
+          <ul className="mt-3 grid gap-3">
+            {posts.map((post) => (
+              <li key={post.id} className="rounded-xl border border-[#E3E8EB] p-3">
+                <Link href={`/crm/cms/insights/${post.id}`} className="font-semibold text-[#0B6660]">
+                  {post.title}
+                </Link>
+                <p className="mt-1 text-sm">
+                  {post.status} · {documentPath(post)}
+                </p>
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
     </div>
   );

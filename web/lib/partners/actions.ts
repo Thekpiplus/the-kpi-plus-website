@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { currentUser, requireUser } from "@/lib/crm/auth";
 import { prisma } from "@/lib/crm/db";
 import { hashSecret, normalizePhone } from "@/lib/crm/security";
+import { isFullAccessRole, isSuperadminRole } from "@/lib/crm/roles";
 import { can, isPartnerRole, isStaff, maskAccount, writeAudit } from "./access";
 import { draftCommissions, looksLikeDuplicate } from "./calculate";
 import { ALLOWED_DOC_TYPES, MAX_DOC_BYTES, encryptText, last4, privateDir, storePrivateFile } from "./crypto";
@@ -18,7 +19,7 @@ function revalidatePartners(extra: string[] = []) {
 
 async function staff(action?: string) {
   const user = await requireUser();
-  if (!isStaff(user) || (action && !can(user, action) && user.role !== "owner")) {
+  if (!isStaff(user) || (action && !can(user, action) && !isFullAccessRole(user.role))) {
     throw new Error("forbidden");
   }
   return user;
@@ -526,7 +527,7 @@ export async function decideCredit(formData: FormData) {
 
 export async function saveRule(formData: FormData) {
   const user = await staff();
-  if (user.role !== "owner") throw new Error("forbidden");
+  if (!isSuperadminRole(user.role)) throw new Error("forbidden");
   const current = await prisma().commissionRule.findFirst({ orderBy: { version: "desc" } });
   const version = (current?.version ?? 0) + 1;
   const payload = {

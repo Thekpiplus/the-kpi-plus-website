@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { logoutPartnerAction } from "@/lib/crm/actions";
+import { CrmThemeToggle } from "@/components/crm/CrmThemeToggle";
 
 const links = [
   { href: "/partners", label: "แดชบอร์ด" },
@@ -27,6 +28,7 @@ export function PartnerShell({
             <p className="text-sm text-[#555555]">{userName}</p>
           </div>
           <nav className="crm-nav" aria-label="Partner Portal">
+            <CrmThemeToggle />
             {links.map((item) => (
               <Link key={item.href} href={item.href} aria-current={pathname === item.href ? "page" : undefined}>
                 {item.label}

@@ -2,8 +2,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { currentUser } from "@/lib/crm/auth";
 import { userById } from "@/lib/crm/queries";
-import { roleLabel } from "@/lib/crm/roles";
-import { ADMIN_MODULES, MODULE_LABEL, hasModule, inferredModules } from "@/lib/crm/modules";
+import { assignableInternalRoles, isFullAccessRole, isPartnerRoleValue, normalizeRole, ROLE_LABEL, roleLabel } from "@/lib/crm/roles";
+import { ADMIN_MODULES, MODULE_LABEL, canManageUsers, inferredModules } from "@/lib/crm/modules";
 import { deleteStaffUser, unlockStaffUser, updateStaffUser } from "@/lib/crm/user-admin";
 
 export default async function UserDetailPage({
@@ -17,9 +17,16 @@ export default async function UserDetailPage({
   const { error, saved } = await searchParams;
   const [user, me] = await Promise.all([userById(id), currentUser()]);
   if (!user) notFound();
-  const canEdit = Boolean(me && (me.role === "owner" || hasModule(me, "users")));
+  const canEdit = canManageUsers(me);
   const locked = Boolean(user.lockedUntil && user.lockedUntil > new Date());
   const selected = inferredModules(user);
+  const normalized = normalizeRole(user.role);
+  const roles = me ? assignableInternalRoles(me.role) : [];
+  const roleOptions = roles.includes(normalized as (typeof roles)[number])
+    ? roles
+    : normalized !== "partner"
+      ? [normalized as (typeof roles)[number], ...roles.filter((role) => role !== normalized)]
+      : roles;
 
   return (
     <div className="crm-grid">
@@ -36,10 +43,12 @@ export default async function UserDetailPage({
           </Link>
         </p>
         {saved === "1" ? <p className="mt-4 font-semibold text-[#0B1F33]">บันทึกแล้ว</p> : null}
-        {error === "invalid" ? <p className="mt-4 font-semibold text-[#0B1F33]">ข้อมูลไม่ครบหรือบทบาทไม่ถูกต้อง</p> : null}
-        {error === "last_owner" ? <p className="mt-4 font-semibold text-[#0B1F33]">ต้องเหลือเจ้าของระบบอย่างน้อย 1 คน</p> : null}
+        {error === "invalid" ? <p className="mt-4 font-semibold text-[#0B1F33]">ข้อมูลไม่ครบ ชื่อผู้ใช้ไม่ถูกต้อง หรือบทบาทไม่ถูกต้อง</p> : null}
+        {error === "exists" ? <p className="mt-4 font-semibold text-[#0B1F33]">อีเมล ชื่อผู้ใช้ หรือเบอร์นี้มีในระบบแล้ว</p> : null}
+        {error === "last_owner" ? <p className="mt-4 font-semibold text-[#0B1F33]">ต้องเหลือ Superadmin อย่างน้อย 1 คน</p> : null}
         {error === "self_role" ? <p className="mt-4 font-semibold text-[#0B1F33]">เปลี่ยนบทบาทของตัวเองเป็นอย่างอื่นไม่ได้</p> : null}
-        {error === "partner" ? <p className="mt-4 font-semibold text-[#0B1F33]">บัญชีพาร์ตเนอร์จัดการจาก Partner Management</p> : null}
+        {error === "partner" ? <p className="mt-4 font-semibold text-[#0B1F33]">บัญชี Partners จัดการจาก Partner Management</p> : null}
+        {error === "forbidden" ? <p className="mt-4 font-semibold text-[#0B1F33]">ไม่มีสิทธิ์เปลี่ยนบทบาทนี้</p> : null}
         {locked ? <p className="mt-4 font-semibold text-[#0B1F33]">บัญชีนี้ถูกล็อกจากการลองรหัสผิดหลายครั้ง</p> : null}
 
         {canEdit ? (
@@ -51,6 +60,17 @@ export default async function UserDetailPage({
                 <input className="crm-field" name="name" defaultValue={user.name} required />
               </label>
               <label className="text-sm font-bold">
+                ชื่อผู้ใช้ (Username)
+                <input
+                  className="crm-field"
+                  name="username"
+                  defaultValue={user.username ?? ""}
+                  pattern="[a-zA-Z0-9._-]{3,32}"
+                  autoComplete="username"
+                  required
+                />
+              </label>
+              <label className="text-sm font-bold">
                 อีเมล
                 <input className="crm-field" type="email" name="email" defaultValue={user.email} required />
               </label>
@@ -58,28 +78,41 @@ export default async function UserDetailPage({
                 เบอร์โทร
                 <input className="crm-field" name="phone" defaultValue={user.phone} required />
               </label>
-              {user.role === "partner" ? (
-                <p className="text-sm">บทบาทพาร์ตเนอร์เปลี่ยนจากหน้าอนุมัติพาร์ตเนอร์</p>
-              ) : user.role === "owner" ? (
-                <p className="text-sm">เจ้าของระบบเข้าได้ทุกฟังก์ชัน</p>
+              {isPartnerRoleValue(user.role) ? (
+                <p className="text-sm">บทบาท Partners เปลี่ยนจากหน้าอนุมัติพาร์ตเนอร์</p>
               ) : (
-                <fieldset>
-                  <legend className="text-sm font-bold">ฟังก์ชันที่เข้าได้</legend>
-                  <div className="mt-2 grid gap-2">
-                    {ADMIN_MODULES.map((module) => (
-                      <label key={module} className="flex items-start gap-3 text-sm font-normal">
-                        <input
-                          type="checkbox"
-                          name="modules"
-                          value={module}
-                          defaultChecked={selected.includes(module)}
-                          className="mt-1 h-4 w-4 accent-[#0B6660]"
-                        />
-                        <span>{MODULE_LABEL[module]}</span>
-                      </label>
-                    ))}
-                  </div>
-                </fieldset>
+                <>
+                  <label className="text-sm font-bold">
+                    บทบาท (User Role)
+                    <select className="crm-select" name="role" defaultValue={normalized} required>
+                      {roleOptions.map((role) => (
+                        <option key={role} value={role}>
+                          {ROLE_LABEL[role]}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                  {isFullAccessRole(user.role) ? (
+                    <p className="text-sm">Superadmin / Admin เข้าได้ทุกฟังก์ชัน</p>
+                  ) : null}
+                  <fieldset>
+                    <legend className="text-sm font-bold">ฟังก์ชันที่เข้าได้</legend>
+                    <div className="mt-2 grid gap-2">
+                      {ADMIN_MODULES.map((module) => (
+                        <label key={module} className="flex items-start gap-3 text-sm font-normal">
+                          <input
+                            type="checkbox"
+                            name="modules"
+                            value={module}
+                            defaultChecked={selected.includes(module)}
+                            className="mt-1 h-4 w-4 accent-[#0B6660]"
+                          />
+                          <span>{MODULE_LABEL[module]}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </fieldset>
+                </>
               )}
               <label className="text-sm font-bold">
                 รหัสผ่านใหม่
@@ -97,7 +130,7 @@ export default async function UserDetailPage({
                 </button>
               </form>
             ) : null}
-            {user.role !== "partner" && user.id !== me?.id ? (
+            {!isPartnerRoleValue(user.role) && user.id !== me?.id ? (
               <form action={deleteStaffUser} className="mt-6">
                 <input type="hidden" name="userId" value={user.id} />
                 <button className="kpi-button" type="submit">

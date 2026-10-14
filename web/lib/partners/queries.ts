@@ -12,7 +12,9 @@ export function statusLabel(status: string) {
 
 export async function partnerOverview() {
   const db = prisma();
-  const [applications, referrals, commissions, payouts, audits] = await Promise.all([
+  const [total, active, applications, referrals, commissions, payouts, audits] = await Promise.all([
+    db.partner.count(),
+    db.partner.count({ where: { status: "active" } }),
     db.partner.count({ where: { status: "pending" } }),
     db.referral.count({ where: { status: { in: ["submitted", "under_review"] } } }),
     db.commissionItem.count({ where: { status: { in: ["calculated", "pending_review"] } } }),
@@ -22,7 +24,7 @@ export async function partnerOverview() {
   const overdue = await db.payout.count({
     where: { status: "ready", dueDate: { lt: new Date() } },
   });
-  return { applications, referrals, commissions, payouts, overdue, audits };
+  return { total, active, applications, referrals, commissions, payouts, overdue, audits };
 }
 
 export async function partnerList(filters?: { q?: string; tier?: string; status?: string; kyc?: string }) {
@@ -102,5 +104,5 @@ export async function partnerPortalData(userId: string) {
 }
 
 export async function usersForAssign() {
-  return prisma().user.findMany({ where: { role: { not: "partner" } }, orderBy: { name: "asc" } });
+  return prisma().user.findMany({ where: { role: { notIn: ["partner", "partners"] } }, orderBy: { name: "asc" } });
 }

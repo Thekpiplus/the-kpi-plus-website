@@ -13,7 +13,8 @@
   --kpi-kpi-lime-end: #A3CE39;
   --kpi-accent: #C7F000;
   --kpi-kpi-teal: #0B6660;
-  --kpi-deep-teal: #0B1F33;
+  --kpi-text-accent: #0A2472;
+  --kpi-deep-teal: #1F3F63;
   --kpi-charcoal: #3B3B3B;
   --kpi-white: #FFFFFF;
   --kpi-light-lime: #F2F8E2;
@@ -21,11 +22,12 @@
   --kpi-line-grey: #E3E8EB;
   --kpi-body-text: #555555;
   --kpi-lime-gradient: linear-gradient(135deg, #E6E81F 0%, #A3CE39 100%);
-  --kpi-teal-gradient: linear-gradient(135deg, #0B6660 0%, #0B1F33 100%);
+  --kpi-teal-gradient: linear-gradient(160deg, #1F3F63 0%, #356F9C 100%);
+  --kpi-hero-gradient: linear-gradient(160deg, #1F3F63 0%, #356F9C 100%);
   --kpi-font-display: "Poppins", sans-serif;
   --kpi-font-thai: "Noto Sans Thai", Tahoma, Arial, sans-serif;
   --kpi-font-body: "Noto Sans Thai", "Poppins", Tahoma, Arial, sans-serif;
-  --kpi-wrap: 72rem;
+  --kpi-wrap: 68rem;
   --kpi-gutter: 1.25rem;
   --kpi-hero-y: 3.25rem;
   --kpi-section-y: 3.5rem;
@@ -60,7 +62,7 @@
 
 @media (min-width: 80rem) {
   :root {
-    --kpi-wrap: 76rem;
+    --kpi-wrap: 68rem;
     --kpi-gutter: 2.5rem;
     --kpi-hero-y: 5.25rem;
     --kpi-section-y: 5.75rem;

@@ -1,3 +1,4 @@
+import { CrmThemeScript } from "@/components/crm/CrmThemeScript";
 import "../crm/crm.css";
 
 export const metadata = {
@@ -6,5 +7,10 @@ export const metadata = {
 };
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  return <div className="crm-shell kpi-locale-th">{children}</div>;
+  return (
+    <>
+      <CrmThemeScript />
+      <div className="crm-shell kpi-locale-th">{children}</div>
+    </>
+  );
 }

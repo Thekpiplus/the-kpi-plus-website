@@ -1,4 +1,5 @@
 import type { User } from "@prisma/client";
+import { isFullAccessRole, isPartnerRoleValue, normalizeRole } from "@/lib/crm/roles";
 
 export const ADMIN_MODULES = ["leads", "partners", "users", "cms"] as const;
 export type AdminModule = (typeof ADMIN_MODULES)[number];
@@ -39,19 +40,25 @@ export function modulesFromForm(formData: FormData) {
 }
 
 export function inferredModules(user: AccessUser): AdminModule[] {
-  if (user.role === "partner") return [];
-  if (user.role === "owner") return [...ADMIN_MODULES];
+  if (isPartnerRoleValue(user.role)) return [];
+  if (isFullAccessRole(user.role)) return [...ADMIN_MODULES];
   const stored = parseModules(user.modules);
   if (stored.length) return stored;
-  if (user.role === "crm") return ["leads"];
-  if (user.role === "reviewer" || user.role === "approver" || user.role === "payout") return ["partners"];
-  if (user.role === "staff") return [];
+  const legacy = String(user.role).toLowerCase();
+  if (legacy === "crm") return ["leads"];
+  if (legacy === "reviewer" || legacy === "approver" || legacy === "payout") return ["partners"];
+  if (normalizeRole(user.role) === "staff" || normalizeRole(user.role) === "user") return [];
   return [];
 }
 
 export function hasModule(user: AccessUser | null | undefined, module: AdminModule) {
-  if (!user || user.role === "partner") return false;
+  if (!user || isPartnerRoleValue(user.role)) return false;
   return inferredModules(user).includes(module);
+}
+
+export function canManageUsers(user: AccessUser | null | undefined) {
+  if (!user || isPartnerRoleValue(user.role)) return false;
+  return isFullAccessRole(user.role) || hasModule(user, "users");
 }
 
 export function allowedModules(user: AccessUser | null | undefined) {

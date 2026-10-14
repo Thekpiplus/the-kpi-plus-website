@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/crm/auth";
 import { hasModule } from "@/lib/crm/modules";
+import { isFullAccessRole } from "@/lib/crm/roles";
 import { randomToken } from "@/lib/crm/security";
 import { SITE } from "@/lib/seo";
 import { bodyFromMarkdown, documentPath, slugify } from "./body";
@@ -14,7 +15,7 @@ import { cmsDb, documentById, refreshCmsFiles } from "./queries";
 
 async function requireCms() {
   const user = await requireUser();
-  if (user.role !== "owner" && !hasModule(user, "cms")) redirect("/crm?error=forbidden");
+  if (!isFullAccessRole(user.role) && !hasModule(user, "cms")) redirect("/crm?error=forbidden");
   return user;
 }
 

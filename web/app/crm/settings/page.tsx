@@ -1,3 +1,4 @@
+import { PageHeader } from "@/components/crm/ui/PageHeader";
 import { renameStage, retryFailedNotification } from "@/lib/crm/actions";
 import { requireUser } from "@/lib/crm/auth";
 import { notificationEmail, smtpConfigured } from "@/lib/crm/mail";
@@ -12,7 +13,7 @@ export default async function SettingsPage() {
 
   return (
     <div className="crm-grid">
-      <h1 className="text-3xl font-extrabold text-[#3B3B3B]">ตั้งค่า</h1>
+      <PageHeader eyebrow="Workspace" title="ตั้งค่า" description="บัญชี การแจ้งเตือน และชื่อขั้นใน Pipeline" />
       <section className="crm-card">
         <h2 className="text-xl font-extrabold">บัญชีที่เข้าใช้อยู่</h2>
         <p className="mt-2">{user.name}</p>

@@ -11,8 +11,9 @@ model User {
   id             String    @id @default(cuid())
   phone          String    @unique
   email          String    @unique
+  username       String?   @unique
   name           String
-  role           String    @default("owner")
+  role           String    @default("superadmin")
   modules        String    @default("")
   pinHash        String
   pinSalt        String

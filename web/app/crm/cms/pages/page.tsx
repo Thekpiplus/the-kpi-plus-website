@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PageHeader } from "@/components/crm/ui/PageHeader";
 import { listDocuments } from "@/lib/cms/queries";
 import { lockedPageList } from "@/lib/cms/locked";
 import { documentPath } from "@/lib/cms/body";
@@ -14,15 +15,16 @@ export default async function CmsPagesPage({
 
   return (
     <div className="crm-grid">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-3xl font-extrabold text-[#3B3B3B]">Pages</h1>
-          <p className="mt-2">สร้างหน้าใหม่ด้วย slug ที่ยังไม่มีบนเว็บ</p>
-        </div>
-        <Link href="/crm/cms/pages/new" className="kpi-button">
-          สร้างหน้า
-        </Link>
-      </div>
+      <PageHeader
+        eyebrow="Content"
+        title="Pages"
+        description="สร้างหน้าใหม่ด้วย slug ที่ยังไม่มีบนเว็บ"
+        actions={
+          <Link href="/crm/cms/pages/new" className="kpi-button">
+            สร้างหน้า
+          </Link>
+        }
+      />
       {params.deleted === "1" ? <p className="font-semibold text-[#0B1F33]">ย้ายเข้าถังขยะแล้ว</p> : null}
       <form className="crm-card grid gap-3 md:grid-cols-3" method="get">
         <label className="text-sm font-bold">

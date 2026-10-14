@@ -52,7 +52,7 @@ export function authRequired() {
 
 async function shopForUser(user: { id: string; email: string; role: string } | null | undefined) {
   if (!user) return "";
-  if (user.role === "partner") {
+  if (user.role === "partner" || user.role === "partners") {
     const partner = await prisma().partner.findFirst({
       where: { OR: [{ userId: user.id }, { email: user.email }] },
       select: { displayName: true },
@@ -122,7 +122,7 @@ export async function requireUser() {
 export async function requirePartner() {
   const user = await currentUser();
   if (!user) redirect("/partners/login");
-  if (user.role !== "partner") redirect("/crm");
+  if (user.role !== "partner" && user.role !== "partners") redirect("/crm");
   return user;
 }
 
@@ -133,33 +133,66 @@ export async function startPartnerLogin(emailRaw: string, pin: string) {
   return startLogin(emailRaw, pin, "partner");
 }
 
-export async function startLogin(emailRaw: string, password: string, expectedRole?: string) {
+function normalizeLoginId(raw: string) {
+  return raw.trim().toLowerCase();
+}
+
+async function findUserByLogin(login: string) {
+  const db = prisma();
+  if (login.includes("@")) {
+    return db.user.findUnique({ where: { email: login } });
+  }
+  try {
+    const rows = await db.$queryRawUnsafe<{ id: string }[]>(
+      `SELECT "id" FROM "User" WHERE lower("username") = ? LIMIT 1`,
+      login,
+    );
+    if (rows[0]?.id) return db.user.findUnique({ where: { id: rows[0].id } });
+  } catch {
+    // username column may be missing on older DBs until seed runs.
+  }
+  return null;
+}
+
+export async function startLogin(loginRaw: string, password: string, expectedRole?: string) {
   const { ip, userAgent } = await requestContext();
-  const email = emailRaw.trim().toLowerCase();
+  const login = normalizeLoginId(loginRaw);
   const db = prisma();
 
   const ipLimit = await bumpRateLimit(`login-ip:${ip}`);
   if (ipLimit.blocked) {
-    await recordLogin({ email, ip, userAgent, success: false, reason: "ip_rate_limit" });
+    await recordLogin({ email: login, ip, userAgent, success: false, reason: "ip_rate_limit" });
     return { ok: false as const, error: "rate_limited" };
   }
 
-  if (!email.includes("@") || !password) {
-    await recordLogin({ email, ip, userAgent, success: false, reason: "invalid_input" });
+  if (!login || !password) {
+    await recordLogin({ email: login, ip, userAgent, success: false, reason: "invalid_input" });
     return { ok: false as const, error: "invalid" };
   }
 
-  const user = await db.user.findUnique({ where: { email } });
+  // Partners keep email-only login; admin/staff accept email or username.
+  if (expectedRole === "partner" && !login.includes("@")) {
+    await recordLogin({ email: login, ip, userAgent, success: false, reason: "invalid_input" });
+    return { ok: false as const, error: "invalid" };
+  }
+
+  const user = await findUserByLogin(login);
   if (!user) {
-    await recordLogin({ email, ip, userAgent, success: false, reason: "unknown_user" });
+    await recordLogin({ email: login, ip, userAgent, success: false, reason: "unknown_user" });
     return { ok: false as const, error: "invalid" };
   }
   if (user.lockedUntil && user.lockedUntil > new Date()) {
-    await recordLogin({ email, ip, userAgent, success: false, reason: "locked", user });
+    await recordLogin({ email: user.email, ip, userAgent, success: false, reason: "locked", user });
     return { ok: false as const, error: "locked" };
   }
-  if (expectedRole && user.role !== expectedRole) {
-    await recordLogin({ email, ip, userAgent, success: false, reason: "wrong_portal", user });
+  if (
+    expectedRole &&
+    !(
+      user.role === expectedRole ||
+      (expectedRole === "partner" && (user.role === "partner" || user.role === "partners"))
+    )
+  ) {
+    await recordLogin({ email: user.email, ip, userAgent, success: false, reason: "wrong_portal", user });
     return { ok: false as const, error: "invalid" };
   }
 
@@ -170,14 +203,18 @@ export async function startLogin(emailRaw: string, password: string, expectedRol
       where: { id: user.id },
       data: { failedAttempts, lockedUntil: lock ? new Date(Date.now() + lock) : null },
     });
-    await recordLogin({ email, ip, userAgent, success: false, reason: "bad_password", user });
+    await recordLogin({ email: user.email, ip, userAgent, success: false, reason: "bad_password", user });
     return { ok: false as const, error: lock ? "locked" : "invalid" };
   }
 
   await db.user.update({ where: { id: user.id }, data: { failedAttempts: 0, lockedUntil: null } });
   const sessionToken = await createSession(user.id, ip, userAgent);
-  await recordLogin({ email, ip, userAgent, success: true, reason: "ok", user });
-  return { ok: true as const, next: user.role === "partner" ? "/partners" : "/crm", sessionToken };
+  await recordLogin({ email: user.email, ip, userAgent, success: true, reason: "ok", user });
+  return {
+    ok: true as const,
+    next: user.role === "partner" || user.role === "partners" ? "/partners" : "/crm",
+    sessionToken,
+  };
 }
 
 export async function verifyDevice(challengeId: string, code: string) {
@@ -217,7 +254,10 @@ export async function verifyDevice(challengeId: string, code: string) {
   if (user) {
     await recordLogin({ email: user.email, ip, userAgent, success: true, reason: "device_verified", user });
   }
-  return { ok: true as const, next: user?.role === "partner" ? "/partners" : "/crm" };
+  return {
+    ok: true as const,
+    next: user?.role === "partner" || user?.role === "partners" ? "/partners" : "/crm",
+  };
 }
 
 async function createSession(userId: string, ip: string, userAgent: string) {

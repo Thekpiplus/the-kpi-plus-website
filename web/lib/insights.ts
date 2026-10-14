@@ -162,7 +162,7 @@ export const insightPosts: InsightPost[] = [
 export const FEATURED_INSIGHT_SLUG = "hotel-marketing";
 
 const cardImages: Record<string, string> = {
-  "hotel-marketing": "/media/kpi-grow-demand_24299cd0.jpg",
+  "hotel-marketing": "/media/hotel-website-hero-laptop.jpg",
   "hotel-revenue-meetings-that-lead-to-decisions": "/media/the-kpi-plus-revenue-scene_4932d3c7.jpg",
   "hotel-technology-adoption-commercial-project": "/media/kpi-grow-capability_7bba9d6e.jpg",
   "direct-booking-journey-audit": "/media/kpi-grow-revenue_f786a5a5.jpg",

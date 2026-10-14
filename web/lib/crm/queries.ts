@@ -1,5 +1,6 @@
 import { archiveWhere, leadArchiveMap, leadArchivedAt, leadIdsByArchive, type LeadArchiveView } from "./archive";
 import { prisma } from "./db";
+import { roleQueryValues } from "./roles";
 import type { LeadOrigin } from "./sources";
 
 function startOfDay(date = new Date()) {
@@ -27,7 +28,7 @@ export function formatMoney(value: number | null | undefined) {
 
 export async function staffDirectory() {
   return prisma().user.findMany({
-    where: { role: { not: "partner" } },
+    where: { role: { notIn: ["partner", "partners"] } },
     select: { id: true, name: true, email: true },
     orderBy: { name: "asc" },
   });
@@ -35,29 +36,94 @@ export async function staffDirectory() {
 
 export async function listUsers(filters: { q?: string; role?: string } = {}) {
   const q = filters.q?.trim();
+  const roleValues = roleQueryValues(filters.role);
   const users = await prisma().user.findMany({
     where: {
-      role: filters.role || undefined,
+      role: roleValues ? { in: roleValues } : undefined,
       OR: q
-        ? [{ name: { contains: q } }, { email: { contains: q } }, { phone: { contains: q } }]
+        ? [
+            { name: { contains: q } },
+            { email: { contains: q } },
+            { phone: { contains: q } },
+            { username: { contains: q } },
+          ]
         : undefined,
     },
     orderBy: { name: "asc" },
   });
   const extras = await prisma()
-    .$queryRawUnsafe<{ id: string; modules: string | null }[]>(`SELECT "id", "modules" FROM "User"`)
-    .catch(() => [] as { id: string; modules: string | null }[]);
-  const map = new Map(extras.map((item) => [item.id, item.modules ?? ""]));
-  return users.map((user) => ({ ...user, modules: map.get(user.id) ?? (user as { modules?: string }).modules ?? "" }));
+    .$queryRawUnsafe<{ id: string; modules: string | null; username: string | null }[]>(
+      `SELECT "id", "modules", "username" FROM "User"`,
+    )
+    .catch(() => [] as { id: string; modules: string | null; username: string | null }[]);
+  const map = new Map(extras.map((item) => [item.id, item]));
+  const lastLogin = await lastLoginAtByUsers(
+    users.map((user) => ({ id: user.id, email: user.email })),
+  ).catch(() => new Map<string, Date>());
+  return users.map((user) => {
+    const extra = map.get(user.id);
+    return {
+      ...user,
+      modules: extra?.modules ?? (user as { modules?: string }).modules ?? "",
+      username: extra?.username ?? (user as { username?: string | null }).username ?? null,
+      lastLoginAt: lastLogin.get(user.id) ?? null,
+    };
+  });
+}
+
+/** Latest successful login (LoginAttempt) or session create time per user. */
+export async function lastLoginAtByUsers(users: Array<{ id: string; email: string }>) {
+  const result = new Map<string, Date>();
+  if (!users.length) return result;
+  const ids = users.map((user) => user.id);
+  const emails = users.map((user) => user.email.toLowerCase()).filter(Boolean);
+  const emailToId = new Map(users.map((user) => [user.email.toLowerCase(), user.id]));
+
+  const attempts = await prisma().loginAttempt.findMany({
+    where: {
+      success: true,
+      OR: [{ userId: { in: ids } }, ...(emails.length ? [{ email: { in: emails } }] : [])],
+    },
+    select: { userId: true, email: true, createdAt: true },
+    orderBy: { createdAt: "desc" },
+  });
+
+  for (const row of attempts) {
+    const userId = row.userId || emailToId.get(row.email.toLowerCase()) || "";
+    if (!userId || result.has(userId)) continue;
+    result.set(userId, row.createdAt);
+  }
+
+  const missing = ids.filter((id) => !result.has(id));
+  if (missing.length) {
+    const sessions = await prisma().session.findMany({
+      where: { userId: { in: missing } },
+      select: { userId: true, createdAt: true },
+      orderBy: { createdAt: "desc" },
+    });
+    for (const row of sessions) {
+      if (result.has(row.userId)) continue;
+      result.set(row.userId, row.createdAt);
+    }
+  }
+
+  return result;
 }
 
 export async function userById(id: string) {
   const user = await prisma().user.findUnique({ where: { id } });
   if (!user) return null;
   const extra = await prisma()
-    .$queryRawUnsafe<{ modules: string | null }[]>(`SELECT "modules" FROM "User" WHERE "id" = ?`, id)
-    .catch(() => [] as { modules: string | null }[]);
-  return { ...user, modules: extra[0]?.modules ?? (user as { modules?: string }).modules ?? "" };
+    .$queryRawUnsafe<{ modules: string | null; username: string | null }[]>(
+      `SELECT "modules", "username" FROM "User" WHERE "id" = ?`,
+      id,
+    )
+    .catch(() => [] as { modules: string | null; username: string | null }[]);
+  return {
+    ...user,
+    modules: extra[0]?.modules ?? (user as { modules?: string }).modules ?? "",
+    username: extra[0]?.username ?? (user as { username?: string | null }).username ?? null,
+  };
 }
 
 export type LoginLogRow = {
@@ -151,8 +217,8 @@ export async function userCounts() {
   const db = prisma();
   const [total, staff, partners] = await Promise.all([
     db.user.count(),
-    db.user.count({ where: { role: { not: "partner" } } }),
-    db.user.count({ where: { role: "partner" } }),
+    db.user.count({ where: { role: { notIn: ["partner", "partners"] } } }),
+    db.user.count({ where: { role: { in: ["partner", "partners"] } } }),
   ]);
   return { total, staff, partners };
 }

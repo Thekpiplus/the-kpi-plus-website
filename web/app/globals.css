@@ -314,7 +314,7 @@ form .kpi-button {
 
 .kpi-shell .kpi-footer-follow {
   margin: 1.35rem 0 0;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0;
@@ -343,9 +343,9 @@ form .kpi-button {
 }
 
 .kpi-footer-social:hover {
-  border-color: #0b6660;
+  border-color: #0B6660;
   background: transparent;
-  color: #0b6660;
+  color: #0A2472;
 }
 
 .kpi-footer-social svg {
@@ -410,7 +410,7 @@ form .kpi-button {
   align-items: center;
   gap: 0.35rem;
   margin-top: 0.95rem;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.9375rem;
   font-weight: 500;
   letter-spacing: 0;
@@ -456,7 +456,7 @@ form .kpi-button {
   height: 1rem;
   margin-top: 0.2rem;
   flex: 0 0 auto;
-  color: #0b6660;
+  color: #0A2472;
 }
 
 .kpi-footer-contact-label {
@@ -485,7 +485,7 @@ form .kpi-button {
 }
 
 .kpi-footer-contact-channels a {
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.75rem !important;
   font-weight: 500 !important;
   text-decoration: none;
@@ -638,7 +638,7 @@ form .kpi-button {
 .kpi-hero-pad {
   position: relative;
   overflow: hidden;
-  background: var(--kpi-deep-teal);
+  background: var(--kpi-hero-gradient);
   color: #fff;
   padding-inline: var(--kpi-gutter);
   padding-block: var(--kpi-hero-y);
@@ -1197,7 +1197,7 @@ form .kpi-button {
   font-weight: 600;
   letter-spacing: 0.02em;
   line-height: 1.2;
-  color: #0b6660;
+  color: #0A2472;
   transition: color 220ms ease;
 }
 
@@ -1366,7 +1366,7 @@ form .kpi-button {
   font-weight: 600;
   letter-spacing: 0.02em;
   line-height: 1.2;
-  color: #0b6660;
+  color: #0A2472;
   transition: color 220ms ease;
 }
 
@@ -1468,7 +1468,7 @@ form .kpi-button {
 .kpi-b2b-method-num {
   position: relative;
   z-index: 1;
-  color: #0b6660;
+  color: #0A2472;
   font-family: Poppins, sans-serif !important;
   font-size: 13px;
   font-weight: 600;
@@ -1731,7 +1731,7 @@ form .kpi-button {
   align-items: center;
   gap: 0.35rem;
   margin-top: 1rem;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.875rem;
   font-weight: 600;
   line-height: 1.4;
@@ -1900,7 +1900,7 @@ form .kpi-button {
 
 .kpi-shell .kpi-reservations-problem-num {
   padding-top: 0.28rem;
-  color: #0b6660;
+  color: #0A2472;
   font-family: Poppins, sans-serif !important;
   font-size: 0.8125rem;
   font-weight: 600;
@@ -2061,7 +2061,7 @@ form .kpi-button {
 
 .kpi-shell .kpi-reservations-help-num {
   padding-top: 0.35rem;
-  color: #0b6660;
+  color: #0A2472;
   font-family: Poppins, sans-serif !important;
   font-size: 0.8125rem;
   font-weight: 600;
@@ -2278,7 +2278,7 @@ form .kpi-button {
 
 .kpi-shell .kpi-reservations-direct-num {
   padding-top: 0.28rem;
-  color: #0b6660;
+  color: #0A2472;
   font-family: Poppins, sans-serif !important;
   font-size: 0.8125rem;
   font-weight: 600;
@@ -2385,7 +2385,7 @@ form .kpi-button {
 
 .kpi-reservations-split-role {
   margin: 0;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0;
@@ -2544,7 +2544,7 @@ form .kpi-button {
 .kpi-shell .kpi-reservations-method-num {
   position: relative;
   z-index: 1;
-  color: #0b6660;
+  color: #0A2472;
   font-family: Poppins, sans-serif !important;
   font-size: 0.8125rem;
   font-weight: 600;
@@ -2837,7 +2837,7 @@ form .kpi-button {
   align-items: center;
   gap: 0.4rem;
   margin-top: 1.05rem;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.875rem;
   font-weight: 600;
   line-height: 1.4;
@@ -2993,7 +2993,7 @@ form .kpi-button {
 
 .kpi-revenue-diagnostic-num {
   padding-top: 0.2rem;
-  color: #0b6660;
+  color: #0A2472;
   font-family: Poppins, sans-serif !important;
   font-size: 0.8125rem;
   font-weight: 600;
@@ -3121,7 +3121,7 @@ form .kpi-button {
 
 .kpi-revenue-framework-num {
   display: block;
-  color: #0b6660;
+  color: #0A2472;
   font-family: Poppins, sans-serif !important;
   font-size: 0.8125rem;
   font-weight: 600;
@@ -3337,7 +3337,7 @@ form .kpi-button {
 .kpi-revenue-method-num {
   position: relative;
   z-index: 1;
-  color: #0b6660;
+  color: #0A2472;
   font-family: Poppins, sans-serif !important;
   font-size: 0.8125rem;
   font-weight: 600;
@@ -3654,7 +3654,7 @@ form .kpi-button {
 
 .kpi-revenue-related-kicker {
   margin: 0;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.75rem;
   font-weight: 600;
   line-height: 1.4;
@@ -3799,7 +3799,7 @@ form .kpi-button {
 
 .kpi-revenue-enquiry-kicker {
   font-family: Poppins, sans-serif !important;
-  color: #0b6660;
+  color: #0A2472;
   letter-spacing: 0.14em !important;
 }
 
@@ -3865,7 +3865,7 @@ form .kpi-button {
 
 .kpi-revenue-enquiry-group-label {
   margin: 0 0 0.75rem;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.75rem;
   font-weight: 600;
   line-height: 1.4;
@@ -3924,7 +3924,7 @@ form .kpi-button {
 
 .kpi-revenue-enquiry-privacy a,
 .kpi-revenue-enquiry-consent a {
-  color: #0b6660;
+  color: #0A2472;
   font-weight: 600;
 }
 
@@ -3945,7 +3945,7 @@ form .kpi-button {
   height: 1.15rem;
   margin-top: 0.15rem;
   flex-shrink: 0;
-  accent-color: #0b6660;
+  accent-color: #0B6660;
 }
 
 .kpi-revenue-enquiry .kpi-button {
@@ -3983,7 +3983,7 @@ form .kpi-button {
 }
 
 .kpi-revenue-enquiry-direct a {
-  color: #0b6660;
+  color: #0A2472;
   font-weight: 500;
   text-decoration: none;
 }
@@ -4039,7 +4039,7 @@ form .kpi-button {
 
 .kpi-reservations-enquiry-kicker {
   margin: 0;
-  color: #0b6660;
+  color: #0A2472;
   font-family: Poppins, sans-serif !important;
   font-size: 0.72rem;
   font-weight: 600;
@@ -4106,7 +4106,7 @@ form .kpi-button {
 }
 
 .kpi-shell .kpi-reservations-enquiry-num {
-  color: #0b6660;
+  color: #0A2472;
   font-family: Poppins, sans-serif !important;
   font-size: 0.8125rem;
   font-weight: 600;
@@ -4144,7 +4144,7 @@ form .kpi-button {
 
 .kpi-reservations-enquiry-group-label {
   margin: 0 0 0.7rem;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.8125rem;
   font-weight: 600;
   line-height: 1.45;
@@ -4185,7 +4185,7 @@ form .kpi-button {
 
 .kpi-reservations-enquiry .kpi-field:focus {
   outline: none;
-  border-color: #0b6660;
+  border-color: #0B6660;
   box-shadow: none;
 }
 
@@ -4203,7 +4203,7 @@ form .kpi-button {
 
 .kpi-reservations-enquiry-privacy a,
 .kpi-reservations-enquiry-consent a {
-  color: #0b6660;
+  color: #0A2472;
   font-weight: 600;
 }
 
@@ -4224,7 +4224,7 @@ form .kpi-button {
   height: 1.15rem;
   margin-top: 0.2rem;
   flex-shrink: 0;
-  accent-color: #0b6660;
+  accent-color: #0B6660;
 }
 
 .kpi-reservations-enquiry .kpi-button {
@@ -4262,7 +4262,7 @@ form .kpi-button {
 }
 
 .kpi-reservations-enquiry-direct a {
-  color: #0b6660;
+  color: #0A2472;
   font-weight: 500;
   text-decoration: none;
 }
@@ -4328,7 +4328,7 @@ form .kpi-button {
 
 .kpi-b2b-enquiry-kicker {
   margin: 0;
-  color: #0b6660;
+  color: #0A2472;
   font-family: Poppins, sans-serif !important;
   font-size: 0.72rem;
   font-weight: 600;
@@ -4470,7 +4470,7 @@ form .kpi-button {
 
 .kpi-b2b-enquiry .kpi-field:focus {
   outline: none;
-  border-color: #0b6660;
+  border-color: #0B6660;
   box-shadow: none;
 }
 
@@ -4488,7 +4488,7 @@ form .kpi-button {
 
 .kpi-b2b-enquiry-privacy a,
 .kpi-b2b-enquiry-consent a {
-  color: #0b6660;
+  color: #0A2472;
   font-weight: 600;
 }
 
@@ -4511,7 +4511,7 @@ form .kpi-button {
   height: 1.05rem;
   margin-top: 0.15rem;
   flex-shrink: 0;
-  accent-color: #0b6660;
+  accent-color: #0B6660;
 }
 
 .kpi-b2b-enquiry .kpi-button {
@@ -4554,7 +4554,7 @@ form .kpi-button {
 }
 
 .kpi-b2b-enquiry-direct a {
-  color: #0b6660;
+  color: #0A2472;
   font-weight: 500;
   text-decoration: none;
 }
@@ -4620,7 +4620,7 @@ form .kpi-button {
 
 .kpi-google-ads-enquiry-kicker {
   margin: 0;
-  color: #0b6660;
+  color: #0A2472;
   font-family: Poppins, sans-serif !important;
   font-size: 0.75rem;
   font-weight: 600;
@@ -4685,7 +4685,7 @@ form .kpi-button {
 }
 
 .kpi-google-ads-enquiry-points .kpi-latin {
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0;
@@ -4766,7 +4766,7 @@ form .kpi-button {
 
 .kpi-google-ads-enquiry .kpi-field:focus {
   outline: none;
-  border-color: #0b6660;
+  border-color: #0B6660;
   box-shadow: none;
 }
 
@@ -4786,7 +4786,7 @@ form .kpi-button {
 
 .kpi-google-ads-enquiry-privacy a,
 .kpi-google-ads-enquiry-consent a {
-  color: #0b6660;
+  color: #0A2472;
   font-weight: 600;
 }
 
@@ -4808,7 +4808,7 @@ form .kpi-button {
   height: 1rem;
   margin-top: 0.18rem;
   flex-shrink: 0;
-  accent-color: #0b6660;
+  accent-color: #0B6660;
 }
 
 .kpi-google-ads-enquiry .kpi-button {
@@ -4860,7 +4860,7 @@ form .kpi-button {
 }
 
 .kpi-google-ads-enquiry-direct a {
-  color: #0b6660;
+  color: #0A2472;
   font-size: inherit;
   font-weight: 500;
   text-decoration: none;
@@ -4925,7 +4925,7 @@ form .kpi-button {
 
 .kpi-search-enquiry-kicker {
   margin: 0;
-  color: #0b6660;
+  color: #0A2472;
   font-family: Poppins, sans-serif !important;
   font-size: 0.75rem;
   font-weight: 600;
@@ -4990,7 +4990,7 @@ form .kpi-button {
 }
 
 .kpi-search-enquiry-points .kpi-latin {
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0;
@@ -5071,7 +5071,7 @@ form .kpi-button {
 
 .kpi-search-enquiry .kpi-field:focus {
   outline: none;
-  border-color: #0b6660;
+  border-color: #0B6660;
   box-shadow: none;
 }
 
@@ -5091,7 +5091,7 @@ form .kpi-button {
 
 .kpi-search-enquiry-privacy a,
 .kpi-search-enquiry-consent a {
-  color: #0b6660;
+  color: #0A2472;
   font-weight: 600;
 }
 
@@ -5113,7 +5113,7 @@ form .kpi-button {
   height: 1rem;
   margin-top: 0.18rem;
   flex-shrink: 0;
-  accent-color: #0b6660;
+  accent-color: #0B6660;
 }
 
 .kpi-search-enquiry .kpi-button {
@@ -5155,7 +5155,7 @@ form .kpi-button {
 }
 
 .kpi-search-enquiry-direct a {
-  color: #0b6660;
+  color: #0A2472;
   font-size: inherit;
   font-weight: 500;
   text-decoration: none;
@@ -5220,7 +5220,7 @@ form .kpi-button {
 
 .kpi-website-enquiry-kicker {
   margin: 0;
-  color: #0b6660;
+  color: #0A2472;
   font-family: Poppins, sans-serif !important;
   font-size: 0.75rem;
   font-weight: 600;
@@ -5285,7 +5285,7 @@ form .kpi-button {
 }
 
 .kpi-website-enquiry-points .kpi-latin {
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0;
@@ -5366,7 +5366,7 @@ form .kpi-button {
 
 .kpi-website-enquiry .kpi-field:focus {
   outline: none;
-  border-color: #0b6660;
+  border-color: #0B6660;
   box-shadow: none;
 }
 
@@ -5386,7 +5386,7 @@ form .kpi-button {
 
 .kpi-website-enquiry-privacy a,
 .kpi-website-enquiry-consent a {
-  color: #0b6660;
+  color: #0A2472;
   font-weight: 600;
 }
 
@@ -5408,7 +5408,7 @@ form .kpi-button {
   height: 1rem;
   margin-top: 0.18rem;
   flex-shrink: 0;
-  accent-color: #0b6660;
+  accent-color: #0B6660;
 }
 
 .kpi-website-enquiry .kpi-button {
@@ -5450,7 +5450,7 @@ form .kpi-button {
 }
 
 .kpi-website-enquiry-direct a {
-  color: #0b6660;
+  color: #0A2472;
   font-size: inherit;
   font-weight: 500;
   text-decoration: none;
@@ -5515,7 +5515,7 @@ form .kpi-button {
 
 .kpi-meta-ads-enquiry-kicker {
   margin: 0;
-  color: #0b6660;
+  color: #0A2472;
   font-family: Poppins, sans-serif !important;
   font-size: 0.75rem;
   font-weight: 600;
@@ -5580,7 +5580,7 @@ form .kpi-button {
 }
 
 .kpi-meta-ads-enquiry-points .kpi-latin {
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0;
@@ -5661,7 +5661,7 @@ form .kpi-button {
 
 .kpi-meta-ads-enquiry .kpi-field:focus {
   outline: none;
-  border-color: #0b6660;
+  border-color: #0B6660;
   box-shadow: none;
 }
 
@@ -5681,7 +5681,7 @@ form .kpi-button {
 
 .kpi-meta-ads-enquiry-privacy a,
 .kpi-meta-ads-enquiry-consent a {
-  color: #0b6660;
+  color: #0A2472;
   font-weight: 600;
 }
 
@@ -5703,7 +5703,7 @@ form .kpi-button {
   height: 1rem;
   margin-top: 0.18rem;
   flex-shrink: 0;
-  accent-color: #0b6660;
+  accent-color: #0B6660;
 }
 
 .kpi-meta-ads-enquiry .kpi-button {
@@ -5745,7 +5745,7 @@ form .kpi-button {
 }
 
 .kpi-meta-ads-enquiry-direct a {
-  color: #0b6660;
+  color: #0A2472;
   font-size: inherit;
   font-weight: 500;
   text-decoration: none;
@@ -6061,7 +6061,7 @@ form .kpi-button {
 
 .kpi-home-audit .kpi-audit-kicker {
   margin: 0 0 0.75rem;
-  color: #0b6660;
+  color: #0A2472;
   font-family: Poppins, sans-serif;
   font-size: 0.75rem;
   font-weight: 500;
@@ -6120,7 +6120,7 @@ form .kpi-button {
 }
 
 .kpi-home-audit .kpi-audit-steps span {
-  color: #0b6660;
+  color: #0A2472;
   font-family: Poppins, sans-serif;
   font-size: 0.8rem;
   font-weight: 600;
@@ -6163,7 +6163,7 @@ form .kpi-button {
   margin: 0.35rem 0 0;
   padding-top: 0.85rem;
   border-top: 1px solid rgba(59, 59, 59, 0.08);
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.78rem;
   font-weight: 600;
   letter-spacing: 0;
@@ -6462,50 +6462,84 @@ form .kpi-button {
 
 .kpi-insight-index-header {
   background: #fff;
-  border-bottom: 1px solid var(--kpi-line-grey, #e3e8eb);
+  border-bottom: 0;
   padding-inline: var(--kpi-gutter);
-  padding-block: 1.5rem 1.35rem;
+  padding-block: 2rem 0.35rem;
 }
 
 @media (min-width: 48rem) {
   .kpi-insight-index-header {
-    padding-block: 1.85rem 1.6rem;
+    padding-block: 2.5rem 0.5rem;
   }
 }
 
-.kpi-insight-index-title {
-  margin-top: 0.85rem;
-  max-width: 18em;
-  color: var(--kpi-charcoal);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.2;
-  font-size: clamp(1.85rem, 1.15rem + 2.1vw, 3.15rem) !important;
+.kpi-insight-index-eyebrow {
+  margin: 0;
+  color: #0A2472;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
-.kpi-insight-index-lead {
-  margin-top: 0.7rem;
+.kpi-shell :lang(th) .kpi-insight-index-eyebrow:not(.kpi-latin) {
+  letter-spacing: 0 !important;
+  text-transform: none;
+  font-size: 0.8125rem;
+}
+
+.kpi-shell .kpi-insight-index-title,
+.kpi-shell :lang(th) .kpi-insight-index-title {
+  margin-top: 0.55rem;
+  max-width: 16rem;
+  color: #3b3b3b;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.25 !important;
+  text-wrap: balance;
+  font-size: clamp(1.75rem, 1.2rem + 1.8vw, 2.65rem) !important;
+}
+
+.kpi-insight-index-lead,
+.kpi-shell :lang(th) .kpi-insight-index-lead {
+  margin-top: 0.85rem;
   max-width: 38rem;
-  color: var(--kpi-body-text);
-  font-size: 1.02rem;
-  line-height: 1.7;
+  color: #555555;
+  font-size: 0.975rem;
+  letter-spacing: 0 !important;
+  line-height: 1.75 !important;
+  text-wrap: pretty;
 }
 
 .kpi-insight-index-block {
   padding-inline: var(--kpi-gutter);
-  padding-block: 1.35rem 0.35rem;
+  padding-block: 1.75rem 0.5rem;
+}
+
+.kpi-insight-index-featured {
+  padding-top: 2rem;
+  padding-bottom: 1rem;
 }
 
 .kpi-insight-index-list {
-  padding-bottom: 0.5rem;
+  padding-top: 1.25rem;
+  padding-bottom: 1rem;
 }
 
-.kpi-insight-featured,
+.kpi-insight-featured {
+  overflow: visible;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+}
+
 .kpi-insight-card {
   overflow: hidden;
+  align-self: start;
   background: #fff;
-  border: 1px solid var(--kpi-line-grey, #e3e8eb);
-  border-radius: 1.25rem;
+  border: 1px solid #e3e8eb;
+  border-radius: 0.625rem;
+  box-shadow: none;
 }
 
 .kpi-insight-featured-link,
@@ -6515,17 +6549,34 @@ form .kpi-button {
   height: 100%;
   color: inherit;
   text-decoration: none;
+  transition: border-color 0.15s ease;
 }
 
 .kpi-insight-featured-link:hover,
 .kpi-insight-card-link:hover {
-  background: var(--kpi-light-lime, #f2f8e2);
+  background: transparent;
+}
+
+.kpi-insight-card:has(.kpi-insight-card-link:hover),
+.kpi-insight-card:has(.kpi-insight-card-link:focus-visible) {
+  border-color: #cfd6db;
 }
 
 .kpi-insight-featured-link:focus-visible,
 .kpi-insight-card-link:focus-visible {
-  outline: 2px solid var(--kpi-kpi-teal, #0b6660);
+  outline: 2px solid #0b6660;
   outline-offset: 3px;
+}
+
+.kpi-insight-featured-media,
+.kpi-insight-card-media {
+  overflow: hidden;
+  border-radius: 0.625rem;
+  background: #eef4f5;
+}
+
+.kpi-insight-card-media {
+  border-radius: 0.625rem 0.625rem 0 0;
 }
 
 .kpi-insight-featured-image,
@@ -6533,14 +6584,20 @@ form .kpi-button {
   display: block;
   width: 100%;
   object-fit: cover;
+  transition: transform 0.25s ease;
 }
 
 .kpi-insight-featured-image {
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 16 / 9;
 }
 
 .kpi-insight-card-image {
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 16 / 9;
+}
+
+.kpi-insight-featured-link:hover .kpi-insight-featured-image,
+.kpi-insight-card-link:hover .kpi-insight-card-image {
+  transform: scale(1.015);
 }
 
 .kpi-insight-featured-body,
@@ -6548,64 +6605,103 @@ form .kpi-button {
   display: flex;
   min-width: 0;
   flex-direction: column;
-  padding: 1.25rem 1.2rem 1.35rem;
+}
+
+.kpi-insight-featured-body {
+  padding: 1.35rem 0 0;
+}
+
+.kpi-insight-card-body {
+  padding: 1.15rem 1.15rem 1.25rem;
 }
 
 .kpi-insight-category {
   margin: 0;
-  color: #0b6660;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  color: #0A2472;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.4;
 }
 
-.kpi-insight-featured-title,
-.kpi-insight-card-title {
+.kpi-shell :lang(th) .kpi-insight-category {
+  letter-spacing: 0 !important;
+}
+
+.kpi-shell .kpi-insight-featured-title,
+.kpi-shell :lang(th) .kpi-insight-featured-title {
   margin-top: 0.55rem;
-  color: #3b3b3b;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.3;
+  max-width: 28rem;
+  color: #1f2a33;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+  text-wrap: pretty;
+  font-size: clamp(1.35rem, 1.1rem + 0.85vw, 1.85rem) !important;
 }
 
-.kpi-insight-featured-title {
-  font-size: clamp(1.25rem, 1.05rem + 0.9vw, 1.75rem);
-}
-
-.kpi-insight-card-title {
-  font-size: 1.15rem;
+.kpi-shell .kpi-insight-card-title,
+.kpi-shell :lang(th) .kpi-insight-card-title {
+  margin-top: 0.45rem;
+  color: #1f2a33;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.4 !important;
+  text-wrap: pretty;
+  font-size: clamp(1.125rem, 1.05rem + 0.35vw, 1.35rem) !important;
 }
 
 .kpi-insight-featured-link:hover .kpi-insight-featured-title,
 .kpi-insight-card-link:hover .kpi-insight-card-title {
-  color: #0b6660;
+  color: #0A2472;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
 }
 
-.kpi-insight-summary {
+.kpi-insight-summary,
+.kpi-shell :lang(th) .kpi-insight-summary {
   display: -webkit-box;
-  margin-top: 0.65rem;
+  margin-top: 0.7rem;
   overflow: hidden;
   color: #555555;
-  font-size: 0.98rem;
-  line-height: 1.65;
+  font-size: 0.9375rem;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
 
+.kpi-insight-featured-summary {
+  -webkit-line-clamp: 3;
+  font-size: 0.975rem;
+}
+
 .kpi-insight-meta {
   margin-top: 0.85rem;
-  color: #555555;
-  font-size: 0.875rem;
+  color: #777777;
+  font-size: 0.8125rem;
+  letter-spacing: 0;
+  line-height: 1.5;
 }
 
 .kpi-insight-read {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  margin-top: 1rem;
-  color: #0b6660;
-  font-size: 0.9rem;
-  font-weight: 700;
+  margin-top: 1.1rem;
+  color: #0A2472;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.kpi-insight-read svg {
+  transition: transform 0.15s ease;
+}
+
+.kpi-insight-featured-link:hover .kpi-insight-read svg,
+.kpi-insight-card-link:hover .kpi-insight-read svg {
+  transform: translate(2px, -1px);
 }
 
 .kpi-insight-read-quiet {
@@ -6617,73 +6713,102 @@ form .kpi-button {
 .kpi-insight-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.15rem;
+  gap: 1.35rem;
+  align-items: start;
 }
 
 .kpi-insight-index-cta {
-  margin-top: 1.5rem;
+  margin-top: 2.5rem;
   background: #f2f8e2;
+  border-top: 0;
   padding-inline: var(--kpi-gutter);
-  padding-block: 2.25rem;
+  padding-block: 2.75rem;
 }
 
-.kpi-insight-cta-title {
-  max-width: 22em;
+.kpi-shell .kpi-insight-cta-title,
+.kpi-shell :lang(th) .kpi-insight-cta-title {
+  max-width: 22rem;
+  margin: 0;
   color: #0b1f33;
-  font-size: clamp(1.25rem, 1.05rem + 0.8vw, 1.7rem);
-  font-weight: 800;
-  letter-spacing: -0.025em;
-  line-height: 1.3;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+  text-wrap: pretty;
+  font-size: clamp(1.25rem, 1.05rem + 0.7vw, 1.55rem) !important;
 }
 
-.kpi-insight-cta-body {
-  margin-top: 0.7rem;
-  margin-bottom: 1.15rem;
+.kpi-insight-cta-body,
+.kpi-shell :lang(th) .kpi-insight-cta-body {
+  margin-top: 0.75rem;
+  margin-bottom: 1.25rem;
   max-width: 36rem;
   color: #555555;
-  font-size: 1rem;
-  line-height: 1.7;
+  font-size: 0.975rem;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+  text-wrap: pretty;
+}
+
+.kpi-shell .kpi-insight-index-cta ~ .kpi-faq-home {
+  background: #fff;
+}
+
+.kpi-shell .kpi-insight-index-cta ~ .kpi-faq-home .kpi-faq-item {
+  min-height: 3.25rem;
 }
 
 @media (min-width: 48rem) {
   .kpi-insight-featured-link {
-    grid-template-columns: minmax(0, 1.05fr) minmax(18rem, 1fr);
-    align-items: stretch;
+    grid-template-columns: minmax(0, 1.15fr) minmax(17rem, 0.95fr);
+    column-gap: 2.5rem;
+    align-items: center;
+  }
+
+  .kpi-insight-featured-media {
+    border-radius: 0.625rem;
   }
 
   .kpi-insight-featured-image {
-    height: 100%;
-    max-height: 22rem;
-    aspect-ratio: 4 / 3;
+    height: auto;
+    max-height: none;
+    aspect-ratio: 16 / 10;
   }
 
   .kpi-insight-featured-body {
-    padding: 1.75rem 1.7rem 1.85rem;
+    padding: 0.25rem 0 0;
   }
 
   .kpi-insight-grid {
     grid-template-columns: 1fr 1fr;
-    gap: 1.35rem;
+    gap: 1.5rem 1.35rem;
   }
 
   .kpi-insight-card-body {
-    padding: 1.35rem 1.35rem 1.5rem;
+    padding: 1.2rem 1.2rem 1.35rem;
   }
 
   .kpi-insight-index-cta {
-    padding-block: 2.75rem;
+    padding-block: 3.25rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  .kpi-insight-featured-link {
+    column-gap: 3.25rem;
+  }
+
+  .kpi-insight-index-featured {
+    padding-block: 2.5rem 1.5rem;
+  }
+
+  .kpi-insight-index-list {
+    padding-block: 1.5rem 1.25rem;
   }
 }
 
 @media (max-width: 22.5rem) {
-  .kpi-insight-featured-body,
   .kpi-insight-card-body {
     padding-inline: 1rem;
-  }
-
-  .kpi-insight-featured-title,
-  .kpi-insight-card-title {
-    font-size: 1.08rem;
   }
 }
 
@@ -6734,7 +6859,7 @@ form .kpi-button {
 }
 
 .kpi-article-crumb a {
-  color: #0b6660;
+  color: #0A2472;
   font-weight: 700;
   text-decoration: none;
 }
@@ -6763,7 +6888,7 @@ form .kpi-button {
 }
 
 .kpi-page-crumb a {
-  color: #0b6660;
+  color: #0A2472;
   font-weight: 700;
   text-decoration: none;
 }
@@ -6792,7 +6917,7 @@ form .kpi-button {
 }
 
 .kpi-article-services a {
-  color: #0b6660;
+  color: #0A2472;
   font-weight: 700;
 }
 
@@ -6858,7 +6983,7 @@ form .kpi-button {
 }
 
 .kpi-article-toc a {
-  color: #0b6660;
+  color: #0A2472;
   font-weight: 700;
   text-decoration: none;
 }
@@ -6927,7 +7052,7 @@ form .kpi-button {
 }
 
 .kpi-article-inline-link {
-  color: #0b6660;
+  color: #0A2472;
   font-weight: 800;
 }
 
@@ -6993,7 +7118,7 @@ form .kpi-button {
 }
 
 .kpi-article-related-top a {
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.92rem;
   font-weight: 800;
   text-decoration: none;
@@ -7078,7 +7203,7 @@ form .kpi-button {
 .kpi-solutions-trigger:hover,
 .kpi-solutions-trigger.is-open {
   background: #f3f6ec;
-  color: #0b6660;
+  color: #0A2472;
 }
 
 .kpi-solutions-menu {
@@ -7101,7 +7226,7 @@ form .kpi-button {
 
 .kpi-shell .kpi-solutions-heading {
   margin: 0 0 0.85rem;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.9375rem !important;
   font-weight: 600 !important;
   letter-spacing: 0 !important;
@@ -7140,7 +7265,7 @@ form .kpi-button {
 }
 
 .kpi-shell .kpi-solutions-link:hover {
-  color: #0b6660;
+  color: #0A2472;
   transform: translateX(2px);
 }
 
@@ -7149,7 +7274,7 @@ form .kpi-button {
   align-items: center;
   gap: 0.35rem;
   margin-top: 1.2rem;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.9375rem !important;
   font-weight: 600 !important;
   letter-spacing: 0;
@@ -7728,7 +7853,7 @@ form .kpi-button {
 }
 
 .kpi-seo-local-change-source a:hover {
-  color: #0b6660;
+  color: #0A2472;
   text-decoration: underline;
   text-underline-offset: 0.16em;
 }
@@ -7939,7 +8064,7 @@ form .kpi-button {
 
 .kpi-seo-local-compare-num {
   display: block;
-  color: #0b6660;
+  color: #0A2472;
   font-family: Poppins, sans-serif !important;
   font-size: 0.75rem;
   font-weight: 600;
@@ -8131,7 +8256,7 @@ form .kpi-button {
 }
 
 .kpi-seo-local-problems-list li > .kpi-latin {
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0;
@@ -8152,7 +8277,7 @@ form .kpi-button {
   align-items: center;
   gap: 0.3rem;
   margin-top: 1.25rem;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.9375rem;
   font-weight: 500;
   line-height: 1.4;
@@ -8265,7 +8390,7 @@ form .kpi-button {
 
 .kpi-seo-local-help-num {
   display: block;
-  color: #0b6660;
+  color: #0A2472;
   font-family: Poppins, sans-serif !important;
   font-size: 0.8125rem;
   font-weight: 600;
@@ -8511,7 +8636,7 @@ form .kpi-button {
 }
 
 .kpi-seo-local-gbp-source a:hover {
-  color: #0b6660;
+  color: #0A2472;
   text-decoration: underline;
   text-underline-offset: 0.16em;
 }
@@ -8630,7 +8755,7 @@ form .kpi-button {
   z-index: 1;
   margin-top: 0.05rem;
   padding-block: 0.1rem;
-  color: #0b6660;
+  color: #0A2472;
   font-family: Poppins, sans-serif !important;
   font-size: 0.8125rem;
   font-weight: 600;
@@ -8829,7 +8954,7 @@ form .kpi-button {
   align-items: center;
   gap: 0.3rem;
   margin-top: 1.05rem;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.875rem;
   font-weight: 500;
   line-height: 1.4;
@@ -9322,7 +9447,7 @@ form .kpi-button {
 
 .kpi-website-why-number {
   display: inline;
-  color: #0b6660;
+  color: #0A2472;
   font-family: Poppins, sans-serif !important;
   font-size: clamp(2.25rem, 1.85rem + 1.2vw, 3rem);
   font-weight: 700;
@@ -9399,7 +9524,7 @@ form .kpi-button {
 }
 
 .kpi-website-why-sources a {
-  color: #0b6660;
+  color: #0A2472;
   font-weight: 500;
   text-decoration: none;
 }
@@ -9508,7 +9633,7 @@ form .kpi-button {
 
 .kpi-website-questions-num {
   margin-top: 0.2rem;
-  color: #0b6660;
+  color: #0A2472;
   font-family: Poppins, sans-serif !important;
   font-size: 0.75rem;
   font-weight: 600;
@@ -9569,7 +9694,7 @@ form .kpi-button {
   align-items: center;
   gap: 0.35rem;
   margin-top: 1.15rem;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.9375rem;
   font-weight: 600;
   line-height: 1.4;
@@ -9678,7 +9803,7 @@ form .kpi-button {
 
 .kpi-website-help-num {
   margin-top: 0.22rem;
-  color: #0b6660;
+  color: #0A2472;
   font-family: Poppins, sans-serif !important;
   font-size: 0.75rem;
   font-weight: 600;
@@ -9847,7 +9972,7 @@ form .kpi-button {
 }
 
 .kpi-website-cms-num {
-  color: #0b6660;
+  color: #0A2472;
   font-family: Poppins, sans-serif !important;
   font-size: 0.75rem;
   font-weight: 600;
@@ -10091,7 +10216,7 @@ form .kpi-button {
   align-items: center;
   gap: 0.3rem;
   margin-top: 1.25rem;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.875rem;
   font-weight: 500;
   letter-spacing: 0;
@@ -10111,7 +10236,7 @@ form .kpi-button {
 
 .kpi-website-related-cta:hover,
 .kpi-website-related-cta:focus-visible {
-  color: #0b6660;
+  color: #0A2472;
   text-decoration: underline;
   text-underline-offset: 0.18em;
 }
@@ -10202,7 +10327,7 @@ form .kpi-button {
 
 .kpi-website-measure-num {
   margin-top: 0.28rem;
-  color: #0b6660;
+  color: #0A2472;
   font-family: Poppins, sans-serif !important;
   font-size: 0.75rem;
   font-weight: 600;
@@ -10549,7 +10674,7 @@ form .kpi-button {
   position: absolute;
   left: 0;
   top: 0.05rem;
-  color: #0b6660;
+  color: #0A2472;
   font-family: Poppins, sans-serif !important;
   font-size: 0.75rem;
   font-weight: 600;
@@ -10927,7 +11052,7 @@ form .kpi-button {
 }
 
 .kpi-conversion-why-number {
-  color: #0b6660;
+  color: #0A2472;
   font-size: 1.75rem;
   font-weight: 600;
 }
@@ -10994,7 +11119,7 @@ form .kpi-button {
 }
 
 .kpi-conversion-why-sources a {
-  color: #0b6660;
+  color: #0A2472;
   text-decoration: none;
 }
 
@@ -11041,7 +11166,7 @@ form .kpi-button {
 .kpi-conversion-help-num,
 .kpi-conversion-method-num {
   margin-top: 0.2rem;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -11302,7 +11427,7 @@ form .kpi-button {
   align-items: center;
   gap: 0.3rem;
   margin-top: 1.25rem;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.875rem;
   font-weight: 500;
   text-decoration: none;
@@ -11608,7 +11733,7 @@ form .kpi-button {
 .kpi-systems-num,
 .kpi-systems-method-num {
   margin-top: 0.2rem;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -11750,7 +11875,7 @@ form .kpi-button {
 }
 
 .kpi-systems-method-label {
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -11898,7 +12023,7 @@ form .kpi-button {
   align-items: center;
   gap: 0.3rem;
   margin-top: 1.25rem;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.875rem;
   font-weight: 500;
   text-decoration: none;
@@ -12197,7 +12322,7 @@ form .kpi-button {
 .kpi-tech-num,
 .kpi-tech-method-num {
   margin-top: 0.2rem;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -12321,7 +12446,7 @@ form .kpi-button {
 }
 
 .kpi-tech-method-label {
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -12450,7 +12575,7 @@ form .kpi-button {
 .kpi-tech-study-takeaway-close {
   display: block;
   margin-top: 0.35rem;
-  color: #0b6660;
+  color: #0A2472;
 }
 
 .kpi-tech-study-body,
@@ -12473,7 +12598,7 @@ form .kpi-button {
 }
 
 .kpi-tech-study-source a {
-  color: #0b6660;
+  color: #0A2472;
   text-decoration: none;
 }
 
@@ -12545,7 +12670,7 @@ form .kpi-button {
 }
 
 .kpi-tech-closer-link {
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.875rem;
   font-weight: 500;
   text-decoration: none;
@@ -12620,7 +12745,7 @@ form .kpi-button {
   align-items: center;
   gap: 0.3rem;
   margin-top: 1.25rem;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.875rem;
   font-weight: 500;
   text-decoration: none;
@@ -12864,7 +12989,7 @@ form .kpi-button {
 }
 
 .kpi-approach-num {
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -12893,7 +13018,7 @@ form .kpi-button {
 
 .kpi-approach-example-eyebrow {
   margin: 0;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -12933,7 +13058,7 @@ form .kpi-button {
 .kpi-approach-check-label {
   display: block;
   margin: 0 0 0.2rem;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -13252,7 +13377,7 @@ form .kpi-button {
 .kpi-train-num,
 .kpi-train-method-num {
   margin-top: 0.2rem;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -13393,7 +13518,7 @@ form .kpi-button {
 }
 
 .kpi-train-formats-link {
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.875rem;
   font-weight: 500;
   text-decoration: none;
@@ -13472,7 +13597,7 @@ form .kpi-button {
 .kpi-train-practice-takeaway-close {
   display: block;
   margin-top: 0.35rem;
-  color: #0b6660;
+  color: #0A2472;
 }
 
 .kpi-train-practice-body,
@@ -13497,7 +13622,7 @@ form .kpi-button {
 }
 
 .kpi-train-practice-source a {
-  color: #0b6660;
+  color: #0A2472;
   text-decoration: none;
 }
 
@@ -13516,7 +13641,7 @@ form .kpi-button {
 
 .kpi-train-nate-eyebrow {
   margin: 0 0 0.65rem;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -13535,7 +13660,7 @@ form .kpi-button {
 
 .kpi-train-nate-name-en {
   margin: 0.25rem 0 0;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.875rem;
   font-weight: 500;
 }
@@ -13620,7 +13745,7 @@ form .kpi-button {
 }
 
 .kpi-train-method-label {
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -13675,7 +13800,7 @@ form .kpi-button {
 }
 
 .kpi-train-closer-link {
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.875rem;
   font-weight: 500;
   text-decoration: none;
@@ -13750,7 +13875,7 @@ form .kpi-button {
   align-items: center;
   gap: 0.3rem;
   margin-top: 1.25rem;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.875rem;
   font-weight: 500;
   text-decoration: none;
@@ -14051,7 +14176,7 @@ form .kpi-button {
 .kpi-independent-method-num,
 .kpi-independent-fit-num {
   margin-top: 0.22rem;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -14126,7 +14251,7 @@ form .kpi-button {
 }
 
 .kpi-independent-method-label {
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -14457,7 +14582,7 @@ form .kpi-button {
   align-items: center;
   gap: 0.45rem;
   margin: 0;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.9375rem;
   font-weight: 600;
   letter-spacing: 0;
@@ -14529,7 +14654,7 @@ form .kpi-button {
 }
 
 .kpi-meta-ads-audience-source a:hover {
-  color: #0b6660;
+  color: #0A2472;
   text-decoration: underline;
   text-underline-offset: 0.15em;
 }
@@ -14650,7 +14775,7 @@ form .kpi-button {
 }
 
 .kpi-meta-ads-problems-list li > .kpi-latin {
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0;
@@ -14794,7 +14919,7 @@ form .kpi-button {
   position: absolute;
   top: 0;
   left: 0;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0;
@@ -14987,7 +15112,7 @@ form .kpi-button {
 .kpi-meta-ads-method-num {
   position: relative;
   z-index: 1;
-  color: #0b6660;
+  color: #0A2472;
   font-family: Poppins, sans-serif !important;
   font-size: 0.8125rem;
   font-weight: 600;
@@ -15227,7 +15352,7 @@ form .kpi-button {
   align-items: center;
   gap: 0.3rem;
   margin-top: 1.05rem;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.875rem;
   font-weight: 500;
   line-height: 1.4;
@@ -15461,7 +15586,7 @@ form .kpi-button {
 }
 
 .kpi-google-ads-compare-source a:hover {
-  color: #0b6660;
+  color: #0A2472;
 }
 
 .kpi-google-ads-compare-photo {
@@ -15564,7 +15689,7 @@ form .kpi-button {
 }
 
 .kpi-google-ads-problems-list li > .kpi-latin {
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0;
@@ -15664,7 +15789,7 @@ form .kpi-button {
   position: absolute;
   top: 0;
   left: 0;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0;
@@ -15910,7 +16035,7 @@ form .kpi-button {
 
 @media (hover: hover) and (pointer: fine) {
   .kpi-google-ads-channels-grid article:hover .kpi-google-ads-channels-kicker {
-    color: #0b6660;
+    color: #0A2472;
   }
 
   .kpi-shell .kpi-google-ads-channels-grid article:hover h3 {
@@ -16047,7 +16172,7 @@ form .kpi-button {
 }
 
 .kpi-google-ads-method-steps li > .kpi-latin {
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0;
@@ -16293,7 +16418,7 @@ form .kpi-button {
   align-items: center;
   gap: 0.3rem;
   margin-top: 1.15rem;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.875rem;
   font-weight: 500;
   line-height: 1.4;
@@ -16515,7 +16640,7 @@ form .kpi-button {
 }
 
 .kpi-shell .kpi-home-problem-kicker {
-  color: #0b6660;
+  color: #0A2472;
 }
 
 .kpi-shell :lang(th) .kpi-home-problem-kicker,
@@ -16607,7 +16732,7 @@ form .kpi-button {
 
 .kpi-shell .kpi-home-problem-num {
   padding-top: 0.28rem;
-  color: #0b6660;
+  color: #0A2472;
   font-family: Poppins, sans-serif;
   font-size: 0.8rem;
   font-weight: 500;
@@ -16666,7 +16791,7 @@ form .kpi-button {
 }
 
 .kpi-home-problem:hover .kpi-home-problem-tag {
-  color: #0b6660;
+  color: #0A2472;
 }
 
 .kpi-home-problem-cta {
@@ -16676,7 +16801,7 @@ form .kpi-button {
   margin-top: 1.6rem;
   padding-bottom: 0.15rem;
   border-bottom: 1px solid transparent;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.95rem;
   font-weight: 600;
   letter-spacing: 0;
@@ -16809,7 +16934,7 @@ form .kpi-button {
 }
 
 .kpi-shell .kpi-home-step-num {
-  color: #0b6660;
+  color: #0A2472;
   font-family: Poppins, sans-serif;
   font-size: 0.8rem;
   font-weight: 500;
@@ -16820,7 +16945,7 @@ form .kpi-button {
 .kpi-home-step-icon {
   width: 18px;
   height: 18px;
-  color: #0b6660;
+  color: #0A2472;
   stroke-width: 1.75;
 }
 
@@ -16917,7 +17042,7 @@ form .kpi-button {
 
 .kpi-shell .kpi-home-pillar-kicker {
   margin: 0;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 1.5rem;
   font-weight: 600;
   letter-spacing: 0;
@@ -17066,7 +17191,7 @@ form .kpi-button {
 
 .kpi-shell .kpi-home-insight-kicker {
   margin: 0;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.8125rem;
   font-weight: 500;
   letter-spacing: 0.02em;
@@ -17141,7 +17266,7 @@ form .kpi-button {
 
 .kpi-shell .kpi-home-note-num {
   padding-top: 0.12rem;
-  color: #0b6660;
+  color: #0A2472;
   font-family: Poppins, sans-serif;
   font-size: 0.8125rem;
   font-weight: 600;
@@ -17152,7 +17277,7 @@ form .kpi-button {
 
 .kpi-shell .kpi-home-note-cat {
   margin: 0;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.8125rem;
   font-weight: 500;
   letter-spacing: 0;
@@ -17220,7 +17345,7 @@ form .kpi-button {
   align-items: center;
   gap: 0.35rem;
   width: fit-content;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.875rem;
   font-weight: 500;
   letter-spacing: 0;
@@ -17392,7 +17517,7 @@ form .kpi-button {
 }
 
 .kpi-faq-home .kpi-faq-plus {
-  color: #0b6660;
+  color: #0A2472;
 }
 
 .kpi-faq-home .kpi-faq-trigger:hover .kpi-faq-plus {
@@ -17677,7 +17802,7 @@ article [class~="bg-[#0B1F33]"] address {
  * previously did nothing — white text on the light page.
  */
 [class~="bg-[#0B1F33]"] {
-  background-color: var(--kpi-deep-teal) !important;
+  background: var(--kpi-hero-gradient) !important;
   color: #fff;
 }
 
@@ -17705,8 +17830,10 @@ article [class~="bg-[#0B1F33]"] address {
   color: var(--kpi-body-text) !important;
 }
 
-[class~="text-[#0B6660]"] {
-  color: var(--kpi-kpi-teal) !important;
+[class~="text-[#0B6660]"],
+[class~="text-[#1C23A3]"],
+[class~="text-[#0A2472]"] {
+  color: var(--kpi-text-accent) !important;
 }
 
 [class~="text-[#0B1F33]"] {
@@ -17745,8 +17872,12 @@ article [class~="bg-[#0B1F33]"] address {
 }
 
 [class~="hover:text-[#0B6660]"]:hover,
-.group:hover [class~="group-hover:text-[#0B6660]"] {
-  color: var(--kpi-kpi-teal) !important;
+[class~="hover:text-[#1C23A3]"]:hover,
+[class~="hover:text-[#0A2472]"]:hover,
+.group:hover [class~="group-hover:text-[#0B6660]"],
+.group:hover [class~="group-hover:text-[#1C23A3]"],
+.group:hover [class~="group-hover:text-[#0A2472]"] {
+  color: var(--kpi-text-accent) !important;
 }
 
 /* vendor.css is a frozen dump — pages use sm/md/lg classes that were never compiled. */
@@ -17933,8 +18064,11 @@ article [class~="bg-[#0B1F33]"] address {
 .kpi-consent-inner {
   display: grid;
   gap: 1rem;
-  max-width: 80rem;
-  margin: 0 auto;
+  width: 100%;
+  max-width: var(--kpi-wrap);
+  margin-inline: auto;
+  padding-inline: var(--kpi-gutter);
+  box-sizing: border-box;
 }
 
 .kpi-consent-title {
@@ -17951,7 +18085,7 @@ article [class~="bg-[#0B1F33]"] address {
 }
 
 .kpi-consent-body a {
-  color: #0b6660;
+  color: #0A2472;
   font-weight: 700;
 }
 
@@ -17997,7 +18131,7 @@ article [class~="bg-[#0B1F33]"] address {
 }
 
 .kpi-consent-dialog::backdrop {
-  background: rgba(11, 31, 51, 0.45);
+  background: rgba(31, 63, 99, 0.45);
 }
 
 .kpi-consent-panel {
@@ -18056,7 +18190,7 @@ article [class~="bg-[#0B1F33]"] address {
 .kpi-consent-close {
   display: block;
   margin-top: 1rem;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.9rem;
   font-weight: 700;
   background: none;
@@ -18302,7 +18436,7 @@ html.kpi-consent-open {
 
 .kpi-cs-logos-eyebrow {
   margin: 0;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -18367,7 +18501,7 @@ html.kpi-consent-open {
 
 .kpi-cs-grid-eyebrow {
   margin: 0;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -18412,14 +18546,14 @@ html.kpi-consent-open {
 }
 
 .kpi-cs-num {
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.04em;
 }
 
 .kpi-cs-category {
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.06em;
@@ -18458,7 +18592,7 @@ html.kpi-consent-open {
 .kpi-cs-support {
   margin: 0.4rem 0 0;
   max-width: 36rem;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.875rem;
   font-weight: 500;
   letter-spacing: 0;
@@ -18482,7 +18616,7 @@ html.kpi-consent-open {
   align-items: center;
   gap: 0.3rem;
   margin-top: 1.15rem;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.875rem;
   font-weight: 500;
   text-decoration: none;
@@ -18516,7 +18650,7 @@ html.kpi-consent-open {
 }
 
 .kpi-cs-closer {
-  background: #0b1f33;
+  background: var(--kpi-hero-gradient);
   color: #fff;
 }
 
@@ -18784,7 +18918,7 @@ html.kpi-consent-open {
 
 .kpi-cs-callout-dark {
   border-color: transparent;
-  background: #0b1f33;
+  background: var(--kpi-hero-gradient);
   color: #fff;
 }
 
@@ -18905,7 +19039,7 @@ h1 {
 .kpi-about-eyebrow,
 .kpi-about-clients-eyebrow {
   margin: 0;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -18964,7 +19098,7 @@ h1 {
 
 .kpi-about-vm-label {
   margin: 0;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -19024,7 +19158,7 @@ h1 {
 }
 
 .kpi-about-num {
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -19078,7 +19212,7 @@ h1 {
 
 .kpi-about-pillar-sub {
   margin: 0.35rem 0 0;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0;
@@ -19126,7 +19260,7 @@ h1 {
 
 .kpi-about-experience-label {
   margin: 0;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 1rem;
   font-weight: 600;
   letter-spacing: 0;
@@ -19260,7 +19394,7 @@ h1 {
 
 .kpi-about-bio-role {
   margin: 0.35rem 0 0;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: 0;
@@ -19278,7 +19412,7 @@ h1 {
 }
 
 .kpi-about-closer {
-  background: #0b1f33;
+  background: var(--kpi-hero-gradient);
   color: #fff;
 }
 
@@ -19647,7 +19781,7 @@ h1 {
 
 .kpi-contact-eyebrow {
   margin: 0;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -19679,7 +19813,7 @@ h1 {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: 0;
@@ -19731,7 +19865,7 @@ h1 {
 
 .kpi-contact-direct-label {
   margin: 0 0 0.15rem;
-  color: #0b6660;
+  color: #0A2472;
   font-size: 0.8125rem;
   font-weight: 600;
   letter-spacing: 0;
@@ -19748,7 +19882,7 @@ h1 {
 
 .kpi-contact-direct a:hover,
 .kpi-contact-direct a:focus-visible {
-  color: #0b6660;
+  color: #0A2472;
   text-decoration: underline;
   outline: none;
 }

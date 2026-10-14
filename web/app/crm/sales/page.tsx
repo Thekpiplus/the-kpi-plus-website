@@ -1,121 +1,228 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
+import { EmptyState } from "@/components/crm/ui/EmptyState";
+import { NewLeadOpenButton } from "@/components/crm/ui/NewLeadModal";
+import { PageHeader } from "@/components/crm/ui/PageHeader";
+import { StatusBadge } from "@/components/crm/ui/StatusBadge";
 import { completeActivity } from "@/lib/crm/actions";
 import { formatThaiDateTime, leadOriginCounts, todayLists } from "@/lib/crm/queries";
 import { sourceLabel } from "@/lib/crm/sources";
 
 export default async function SalesHomePage() {
   const [lists, origins] = await Promise.all([todayLists(), leadOriginCounts()]);
+  const dueToday = lists.dueToday.length;
+  const overdue = lists.overdue.length;
 
   return (
-    <div className="crm-grid">
-      <div>
-        <h1 className="text-3xl font-extrabold text-[#3B3B3B]">Sales · Lead Management</h1>
-        <p className="mt-2">งานขายวันนี้ ลีดจากเว็บไซต์และลีดที่คีย์เองอยู่ในระบบเดียวกัน</p>
+    <div className="crm-leads">
+      <PageHeader
+        eyebrow="Lead Management"
+        title="งานวันนี้"
+        description="ติดตามงานขายวันนี้ ลีดจากเว็บและลีดที่คีย์เองอยู่ในคิวเดียวกัน"
+        actions={
+          <div className="crm-leads-actions">
+            <Link href="/crm/pipeline" className="crm-users-secondary">
+              Pipeline
+            </Link>
+            <NewLeadOpenButton className="kpi-button">คีย์ลีด</NewLeadOpenButton>
+          </div>
+        }
+      />
+
+      <section className="crm-leads-stats" aria-label="สรุป Lead">
+        <Link href="/crm/leads?origin=web" className="crm-leads-stat is-web">
+          <p>ลีดจากเว็บไซต์</p>
+          <strong>{origins.web}</strong>
+        </Link>
+        <Link href="/crm/leads?origin=manual" className="crm-leads-stat is-manual">
+          <p>ลีดที่คีย์เอง</p>
+          <strong>{origins.manual}</strong>
+        </Link>
+        <div className="crm-leads-stat is-today">
+          <p>ครบกำหนดวันนี้</p>
+          <strong>{dueToday}</strong>
+        </div>
+        <Link href="/crm/activities" className="crm-leads-stat is-overdue">
+          <p>เกินกำหนด</p>
+          <strong>{overdue}</strong>
+        </Link>
+      </section>
+
+      <section className="crm-leads-toolbar">
+        <form className="crm-leads-search" method="get" action="/crm/leads">
+          <label className="crm-leads-search-field">
+            <span className="sr-only">ค้นหาลีด</span>
+            <span aria-hidden="true">⌕</span>
+            <input name="q" placeholder="ค้นหาชื่อ กิจการ เบอร์ หรืออีเมล" />
+          </label>
+          <button className="kpi-button" type="submit">
+            ค้นหา
+          </button>
+        </form>
+        <div className="crm-leads-quick">
+          <Link href="/crm/leads">ลีดทั้งหมด</Link>
+          <Link href="/crm/leads?origin=web">จากเว็บ</Link>
+          <Link href="/crm/leads?origin=manual">คีย์เอง</Link>
+          <Link href="/crm/activities">กิจกรรม</Link>
+        </div>
+      </section>
+
+      <div className="crm-leads-boards">
+        <TaskPanel
+          title="เกินกำหนด"
+          hint="ต้องติดตามก่อน"
+          tone="overdue"
+          items={lists.overdue}
+          empty="ไม่มีงานเกินกำหนด"
+        />
+        <TaskPanel
+          title="ครบกำหนดวันนี้"
+          hint="คิวงานวันนี้"
+          tone="today"
+          items={lists.dueToday}
+          empty="ไม่มีงานครบกำหนดวันนี้"
+        />
       </div>
 
-      <div className="kpi-grid-3">
-        <Link href="/crm/leads?origin=web" className="crm-card no-underline">
-          <p className="text-sm">ลีดจากเว็บไซต์</p>
-          <p className="mt-2 text-3xl font-extrabold text-[#3B3B3B]">{origins.web}</p>
-        </Link>
-        <Link href="/crm/leads?origin=manual" className="crm-card no-underline">
-          <p className="text-sm">ลีดที่คีย์เอง / แหล่งอื่น</p>
-          <p className="mt-2 text-3xl font-extrabold text-[#3B3B3B]">{origins.manual}</p>
-        </Link>
-        <Link href="/crm/activities" className="crm-card no-underline">
-          <p className="text-sm">กิจกรรมเกินกำหนด</p>
-          <p className="mt-2 text-3xl font-extrabold text-[#3B3B3B]">{lists.overdue.length}</p>
-        </Link>
-      </div>
-
-      <form className="crm-card grid gap-3 md:grid-cols-[1fr_auto]" method="get" action="/crm/leads">
-        <label className="text-sm font-bold">
-          ค้นหาลีด
-          <input className="crm-field" name="q" placeholder="ชื่อ กิจการ เบอร์ อีเมล" />
-        </label>
-        <button className="kpi-button self-end" type="submit">
-          ค้นหา
-        </button>
-      </form>
-
-      <div className="flex flex-wrap gap-2">
-        <Link href="/crm/leads/new" className="kpi-button">
-          คีย์ลีด
-        </Link>
-        <Link href="/crm/pipeline" className="kpi-button">
-          เปิด Pipeline
-        </Link>
-        <Link href="/crm/leads" className="kpi-button">
-          ลีดทั้งหมด
-        </Link>
-      </div>
-
-      <Section title="เกินกำหนด" items={lists.overdue} overdue />
-      <Section title="ครบกำหนดวันนี้" items={lists.dueToday} />
-      <section className="crm-card">
-        <h2 className="text-xl font-extrabold">ลีดใหม่ที่รอตอบ</h2>
-        <ul className="mt-3 grid gap-2">
-          {lists.firstResponse.length === 0 ? <li>ไม่มีรายการ</li> : null}
+      <div className="crm-leads-boards">
+        <ListPanel
+          title="ลีดใหม่ที่รอตอบ"
+          hint="ควรตอบกลับครั้งแรก"
+          empty="ไม่มีลีดรอตอบ"
+          actionHref="/crm/leads?origin=web"
+          actionLabel="ดูลีดจากเว็บ"
+          count={lists.firstResponse.length}
+        >
           {lists.firstResponse.map((item) => (
-            <li key={item.id}>
-              <Link href={`/crm/leads/${item.lead.id}`} className="font-semibold text-[#0B6660]">
-                {item.lead.contactName} · {item.lead.businessName || item.lead.formName}
+            <li key={item.id} className="crm-leads-simple-row">
+              <Link href={`/crm/leads/${item.lead.id}`}>
+                <strong>{item.lead.contactName}</strong>
+                <em>{item.lead.businessName || item.lead.formName || "ไม่มีชื่อกิจการ"}</em>
               </Link>
-              <span className="ml-2 text-sm">{sourceLabel(item.lead.source)}</span>
+              <StatusBadge label={sourceLabel(item.lead.source)} tone="info" />
             </li>
           ))}
-        </ul>
-      </section>
-      <section className="crm-card">
-        <h2 className="text-xl font-extrabold">ลีดที่ยังไม่มีกิจกรรมถัดไป</h2>
-        <ul className="mt-3 grid gap-2">
-          {lists.noNext.length === 0 ? <li>ไม่มีรายการ</li> : null}
+        </ListPanel>
+
+        <ListPanel
+          title="ยังไม่มีกิจกรรมถัดไป"
+          hint="ตั้งนัดติดตามต่อ"
+          empty="ลีดทุกตัวมีกิจกรรมถัดไปแล้ว"
+          actionHref="/crm/leads"
+          actionLabel="ดูลีดทั้งหมด"
+          count={lists.noNext.length}
+        >
           {lists.noNext.map((lead) => (
-            <li key={lead.id}>
-              <Link href={`/crm/leads/${lead.id}`} className="font-semibold text-[#0B6660]">
-                {lead.contactName} · {lead.businessName || lead.formName}
+            <li key={lead.id} className="crm-leads-simple-row">
+              <Link href={`/crm/leads/${lead.id}`}>
+                <strong>{lead.contactName}</strong>
+                <em>{lead.businessName || lead.formName || "ไม่มีชื่อกิจการ"}</em>
               </Link>
-              <span className="ml-2 text-sm">{lead.stage.nameTh}</span>
+              <StatusBadge label={lead.stage.nameTh} tone="neutral" />
             </li>
           ))}
-        </ul>
-      </section>
+        </ListPanel>
+      </div>
     </div>
   );
 }
 
-function Section({
+function ListPanel({
   title,
-  items,
-  overdue,
+  hint,
+  empty,
+  actionHref,
+  actionLabel,
+  count,
+  children,
 }: {
   title: string;
-  items: { id: string; title: string; dueAt: Date; lead: { id: string; contactName: string; businessName: string; formName?: string } }[];
-  overdue?: boolean;
+  hint: string;
+  empty: string;
+  actionHref: string;
+  actionLabel: string;
+  count: number;
+  children: ReactNode;
 }) {
   return (
-    <section className={`crm-card ${overdue && items.length ? "crm-overdue" : ""}`}>
-      <h2 className="text-xl font-extrabold">{title}</h2>
-      <ul className="mt-3 grid gap-2">
-        {items.length === 0 ? <li>ไม่มีรายการ</li> : null}
-        {items.map((item) => (
-          <li key={item.id}>
-            <Link href={`/crm/leads/${item.lead.id}`} className="font-semibold text-[#0B6660]">
-              {item.lead.contactName} · {item.title}
-            </Link>
-            <span className="ml-2 text-sm">{formatThaiDateTime(item.dueAt)}</span>
-            <form action={completeActivity} className="mt-2 grid gap-2 max-w-lg">
-              <input type="hidden" name="activityId" value={item.id} />
-              <input className="crm-field" name="outcome" placeholder="ผลลัพธ์การติดตาม" />
-              <input className="crm-field" type="datetime-local" name="nextDueAt" />
-              <input className="crm-field" name="nextTitle" placeholder="นัดติดตามครั้งถัดไป" />
-              <button className="kpi-button" type="submit">
-                ปิดแล้วตั้งติดตามต่อ
-              </button>
-            </form>
-          </li>
-        ))}
-      </ul>
+    <section className="crm-leads-panel">
+      <div className="crm-leads-panel-head">
+        <div>
+          <h2>{title}</h2>
+          <p>{hint}</p>
+        </div>
+        <Link href={actionHref} className="crm-leads-panel-link">
+          {actionLabel}
+        </Link>
+      </div>
+      {count === 0 ? <EmptyState title={empty} /> : <ul className="crm-leads-simple-list">{children}</ul>}
+    </section>
+  );
+}
+
+function TaskPanel({
+  title,
+  hint,
+  tone,
+  items,
+  empty,
+}: {
+  title: string;
+  hint: string;
+  tone: "overdue" | "today";
+  items: {
+    id: string;
+    title: string;
+    dueAt: Date;
+    lead: { id: string; contactName: string; businessName: string; formName?: string };
+  }[];
+  empty: string;
+}) {
+  return (
+    <section className={`crm-leads-panel${tone === "overdue" && items.length ? " is-overdue" : ""}`}>
+      <div className="crm-leads-panel-head">
+        <div>
+          <h2>
+            {title}
+            {items.length ? <span className="crm-leads-count">{items.length}</span> : null}
+          </h2>
+          <p>{hint}</p>
+        </div>
+      </div>
+      {items.length === 0 ? (
+        <EmptyState title={empty} />
+      ) : (
+        <ul className="crm-leads-task-list">
+          {items.map((item) => (
+            <li key={item.id} className={`crm-leads-task${tone === "overdue" ? " is-overdue" : ""}`}>
+              <div className="crm-leads-task-top">
+                <div>
+                  <Link href={`/crm/leads/${item.lead.id}`} className="crm-leads-task-name">
+                    {item.lead.contactName}
+                  </Link>
+                  <p className="crm-leads-task-meta">
+                    {item.title}
+                    <span>· {formatThaiDateTime(item.dueAt)}</span>
+                  </p>
+                </div>
+                <StatusBadge
+                  label={tone === "overdue" ? "เกินกำหนด" : "วันนี้"}
+                  tone={tone === "overdue" ? "danger" : "warning"}
+                />
+              </div>
+              <form action={completeActivity} className="crm-leads-task-form">
+                <input type="hidden" name="activityId" value={item.id} />
+                <input className="crm-field" name="outcome" placeholder="ผลลัพธ์การติดตาม" />
+                <input className="crm-field" type="datetime-local" name="nextDueAt" />
+                <input className="crm-field" name="nextTitle" placeholder="นัดติดตามครั้งถัดไป" />
+                <button className="kpi-button" type="submit">
+                  ปิดแล้วตั้งติดตามต่อ
+                </button>
+              </form>
+            </li>
+          ))}
+        </ul>
+      )}
     </section>
   );
 }
