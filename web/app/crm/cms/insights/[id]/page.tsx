@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CmsDocumentForm } from "@/components/cms/CmsDocumentForm";
+import { ConfirmDeleteButton } from "@/components/crm/ui/ConfirmDeleteButton";
+import { PageHeader } from "@/components/crm/ui/PageHeader";
 import { trashDocument } from "@/lib/cms/actions";
 import { documentById } from "@/lib/cms/queries";
 import { documentPath } from "@/lib/cms/body";
@@ -17,30 +19,45 @@ export default async function EditCmsInsightPage({
   const document = await documentById(id);
   if (!document || document.kind !== "insight") notFound();
 
+  const path = documentPath(document);
+
   return (
-    <div className="crm-grid">
-      <Link href="/crm/cms/insights" className="text-sm font-semibold text-[#0B6660]">
-        ← บทความทั้งหมด
-      </Link>
-      <p className="text-sm">
-        เส้นทางสาธารณะ: {documentPath(document)}
-        {document.status === "published" ? (
-          <>
-            {" "}
-            ·{" "}
-            <a href={documentPath(document)} className="font-semibold text-[#0B6660]" target="_blank" rel="noreferrer">
-              เปิดดู
-            </a>
-          </>
-        ) : null}
-      </p>
+    <div className="crm-cms">
+      <PageHeader
+        eyebrow="Content Management"
+        title={document.title}
+        description={path}
+        actions={
+          <div className="crm-cms-actions">
+            <Link href="/crm/cms/insights" className="crm-users-secondary">
+              ← บทความทั้งหมด
+            </Link>
+            {document.status === "published" ? (
+              <a href={path} className="crm-users-secondary" target="_blank" rel="noreferrer">
+                เปิดดู
+              </a>
+            ) : null}
+          </div>
+        }
+      />
       <CmsDocumentForm kind="insight" document={document} error={error} saved={saved === "1"} />
-      <form action={trashDocument} className="crm-card mx-auto max-w-3xl">
-        <input type="hidden" name="id" value={document.id} />
-        <button className="kpi-button" type="submit">
-          ย้ายเข้าถังขยะ
-        </button>
-      </form>
+      <div className="crm-cms-editor-danger">
+        <div>
+          <p>ลบบทความ</p>
+          <span>ย้ายเข้าถังขยะ บทความจะไม่แสดงบนเว็บ</span>
+        </div>
+        <ConfirmDeleteButton
+          action={trashDocument}
+          fields={{ id: document.id, returnTo: "/crm/cms/insights" }}
+          itemName={document.title}
+          eyebrow="Content"
+          title="ย้ายเข้าถังขยะ"
+          message={`ยืนยันย้าย “${document.title}” เข้าถังขยะ?`}
+          buttonLabel="ลบบทความ"
+          confirmLabel="ลบบทความ"
+          className="kpi-button crm-users-delete-btn"
+        />
+      </div>
     </div>
   );
 }

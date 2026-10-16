@@ -74,7 +74,11 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
               WhatsApp
             </a>
           ) : null}
-          <LeadArchiveButton leadId={lead.id} archived={Boolean(lead.archivedAt)} />
+          <LeadArchiveButton
+            leadId={lead.id}
+            archived={Boolean(lead.archivedAt)}
+            leadName={lead.contactName || lead.businessName || "ลีดนี้"}
+          />
         </div>
         <form action={addNoteFromForm} className="mt-4 grid max-w-lg gap-2">
           <input type="hidden" name="leadId" value={lead.id} />

@@ -9,9 +9,14 @@ import { hasModule } from "@/lib/crm/modules";
 import { isFullAccessRole } from "@/lib/crm/roles";
 import { randomToken } from "@/lib/crm/security";
 import { SITE } from "@/lib/seo";
-import { bodyFromMarkdown, documentPath, slugify } from "./body";
+import { blocksToMarkdown, bodyFromMarkdown, documentPath, slugify } from "./body";
+import { loadHandoff } from "@/lib/handoff";
+import { insightBySlug, insightPosts } from "@/lib/insights";
+import { pages } from "@/lib/seo";
 import { isLockedRoute } from "./locked";
-import { cmsDb, documentById, refreshCmsFiles } from "./queries";
+import { resolveInsightOrder, saveInsightOrder } from "./insight-order";
+import { cmsDb, documentById, insightDocumentBySlug, pageDocumentBySlug, refreshCmsFiles } from "./queries";
+import { siteMenuLabel } from "@/lib/nav";
 
 async function requireCms() {
   const user = await requireUser();
@@ -60,6 +65,7 @@ function formDocument(formData: FormData, kind: "page" | "insight") {
     noindex: formData.get("noindex") === "1",
     showInMenu: formData.get("showInMenu") === "1",
     menu: String(formData.get("menu") ?? "none"),
+    menuLabel: String(formData.get("menuLabel") ?? "").trim(),
     menuParent: String(formData.get("menuParent") ?? ""),
     menuPosition: Number(formData.get("menuPosition") ?? 0) || 0,
     scheduledAt: status === "scheduled" ? scheduledAt : null,
@@ -80,19 +86,148 @@ function collisionPath(kind: "page" | "insight", slug: string, locale: string) {
   return documentPath({ kind, slug, locale });
 }
 
+function isSitePagePath(path: string) {
+  return pages.some((page) => page.route === path);
+}
+
+function blocksCmsRoute(kind: "page" | "insight", path: string, mode: "create" | "update") {
+  if (kind === "insight" && insightPosts.some((post) => post.href === path)) return false;
+  if (mode === "update" && kind === "page" && isSitePagePath(path)) return false;
+  return (
+    isLockedRoute(path) ||
+    (path.startsWith("/insights") && kind === "page") ||
+    /^(?:\/admin|\/crm|\/partners|\/api)(?:\/|$)/.test(path)
+  );
+}
+
+function routeToPageSlug(route: string) {
+  if (route === "/" || route === "") return "";
+  return route.replace(/^\//, "");
+}
+
+export async function ensureInsightFromSite(slug: string) {
+  const user = await requireCms();
+  const post = insightBySlug(slug);
+  if (!post) redirect("/crm/cms/insights?error=missing");
+  const existing = await insightDocumentBySlug(post.slug, "th");
+  const db = await cmsDb();
+  if (existing) {
+    if (existing.trashedAt) {
+      await db.cmsDocument.update({
+        where: { id: existing.id },
+        data: { trashedAt: null, status: existing.status === "draft" ? "published" : existing.status, updatedBy: user.email },
+      });
+    }
+    return existing.id;
+  }
+  const markdown = blocksToMarkdown(loadHandoff(post.href));
+  const created = await db.cmsDocument.create({
+    data: {
+      kind: "insight",
+      title: post.title.th,
+      slug: post.slug,
+      locale: "th",
+      status: "published",
+      template: "insight",
+      excerpt: post.description.th,
+      body: bodyFromMarkdown(markdown),
+      featuredImage: post.image,
+      imageAlt: post.imageAlt,
+      category: post.category.th,
+      seoTitle: post.title.th,
+      metaDescription: post.description.th,
+      publishedAt: new Date(`${post.published}T00:00:00.000Z`),
+      updatedBy: user.email,
+    },
+  });
+  await refreshCmsFiles();
+  revalidatePublic(post.href);
+  return created.id;
+}
+
+export async function ensurePageFromSite(route: string) {
+  const user = await requireCms();
+  const normalized = route === "" ? "/" : route.startsWith("/") ? route : `/${route}`;
+  const sitePage = pages.find((page) => page.route === normalized && page.language === "th");
+  if (!sitePage) redirect("/crm/cms?error=missing");
+  if (/^(?:\/admin|\/crm|\/partners|\/api)(?:\/|$)/.test(normalized)) redirect("/crm/cms?error=locked");
+
+  const slug = routeToPageSlug(normalized);
+  const existing = await pageDocumentBySlug(slug, "th");
+  const db = await cmsDb();
+  if (existing) {
+    if (existing.trashedAt) {
+      await db.cmsDocument.update({
+        where: { id: existing.id },
+        data: {
+          trashedAt: null,
+          status: existing.status === "draft" ? "published" : existing.status,
+          updatedBy: user.email,
+        },
+      });
+    }
+    return existing.id;
+  }
+
+  let markdown = "";
+  try {
+    markdown = blocksToMarkdown(loadHandoff(normalized));
+  } catch {
+    markdown = `# ${sitePage.title}\n\n${sitePage.description || ""}`;
+  }
+
+  const menuLabel = (() => {
+    const label = siteMenuLabel(normalized, "th");
+    return label === "—" ? "" : label;
+  })();
+  const created = await db.cmsDocument.create({
+    data: {
+      kind: "page",
+      title: sitePage.title,
+      slug,
+      locale: "th",
+      status: "published",
+      template: "general",
+      excerpt: sitePage.description || "",
+      body: bodyFromMarkdown(markdown),
+      seoTitle: sitePage.title,
+      metaDescription: sitePage.description || "",
+      menuLabel,
+      publishedAt: new Date(),
+      updatedBy: user.email,
+    },
+  });
+  await refreshCmsFiles();
+  revalidatePublic(normalized);
+  return created.id;
+}
+
+export async function trashSiteInsight(formData: FormData) {
+  await requireCms();
+  const slug = String(formData.get("slug") ?? "");
+  const id = await ensureInsightFromSite(slug);
+  const db = await cmsDb();
+  const existing = await documentById(id);
+  if (!existing) redirect("/crm/cms/insights?error=missing");
+  await db.cmsDocument.update({
+    where: { id },
+    data: { trashedAt: new Date(), status: "draft", showInMenu: false },
+  });
+  await refreshCmsFiles();
+  revalidatePublic(documentPath(existing));
+  revalidatePath("/crm/cms/trash");
+  redirect("/crm/cms/insights?deleted=1");
+}
+
 export async function createDocument(formData: FormData) {
   const user = await requireCms();
   const kind = String(formData.get("kind") ?? "page") === "insight" ? "insight" : "page";
   const data = formDocument(formData, kind);
-  const listPath = kind === "insight" ? "/crm/cms/insights" : "/crm/cms/pages";
-  if (!data.title || !data.slug) redirect(`${listPath}/new?error=invalid`);
+  const editorBase = kind === "insight" ? "/crm/cms/insights" : "/crm/cms/pages";
+  if (!data.title || (kind === "insight" && !data.slug)) redirect(`${editorBase}/new?error=invalid`);
   const path = collisionPath(kind, data.slug, data.locale);
-  if (
-    isLockedRoute(path) ||
-    (path.startsWith("/insights") && kind === "page") ||
-    /^(?:\/admin|\/crm|\/partners|\/api)(?:\/|$)/.test(path)
-  ) {
-    redirect(`${listPath}/new?error=locked`);
+  if (blocksCmsRoute(kind, path, "create")) {
+    redirect(`${editorBase}/new?error=locked`);
   }
   const db = await cmsDb();
   try {
@@ -101,10 +236,10 @@ export async function createDocument(formData: FormData) {
     });
     await refreshCmsFiles();
     revalidatePublic(path);
-    redirect(`${listPath}/${created.id}`);
+    redirect(`${editorBase}/${created.id}`);
   } catch (error) {
     if (isNextRedirect(error)) throw error;
-    redirect(`${listPath}/new?error=exists`);
+    redirect(`${editorBase}/new?error=exists`);
   }
 }
 
@@ -115,11 +250,11 @@ export async function updateDocument(formData: FormData) {
   if (!existing) redirect("/crm/cms?error=missing");
   const kind = existing.kind === "insight" ? "insight" : "page";
   const data = formDocument(formData, kind);
-  const listPath = kind === "insight" ? "/crm/cms/insights" : "/crm/cms/pages";
-  if (!data.title || !data.slug) redirect(`${listPath}/${id}?error=invalid`);
+  const editorBase = kind === "insight" ? "/crm/cms/insights" : "/crm/cms/pages";
+  if (!data.title || (kind === "insight" && !data.slug)) redirect(`${editorBase}/${id}?error=invalid`);
   const path = collisionPath(kind, data.slug, data.locale);
-  if (isLockedRoute(path) || (path.startsWith("/insights") && kind === "page") || /^(?:\/admin|\/crm|\/partners|\/api)(?:\/|$)/.test(path)) {
-    redirect(`${listPath}/${id}?error=locked`);
+  if (blocksCmsRoute(kind, path, "update")) {
+    redirect(`${editorBase}/${id}?error=locked`);
   }
   const db = await cmsDb();
   const publishedAt =
@@ -134,12 +269,13 @@ export async function updateDocument(formData: FormData) {
   });
   await refreshCmsFiles();
   revalidatePublic(path);
-  redirect(`${listPath}/${id}?saved=1`);
+  redirect(`${editorBase}/${id}?saved=1`);
 }
 
 export async function trashDocument(formData: FormData) {
   await requireCms();
   const id = String(formData.get("id") ?? "");
+  const returnTo = String(formData.get("returnTo") ?? "").trim();
   const existing = await documentById(id);
   if (!existing) redirect("/crm/cms?error=missing");
   const db = await cmsDb();
@@ -149,7 +285,193 @@ export async function trashDocument(formData: FormData) {
   });
   await refreshCmsFiles();
   revalidatePublic(documentPath(existing));
-  redirect(existing.kind === "insight" ? "/crm/cms/insights?deleted=1" : "/crm/cms/pages?deleted=1");
+  revalidatePath("/crm/cms/trash");
+  if (returnTo.startsWith("/crm/cms")) {
+    redirect(returnTo.includes("?") ? `${returnTo}&deleted=1` : `${returnTo}?deleted=1`);
+  }
+  redirect(existing.kind === "insight" ? "/crm/cms/insights?deleted=1" : "/crm/cms?deleted=1");
+}
+
+export async function restoreDocument(formData: FormData) {
+  const user = await requireCms();
+  const id = String(formData.get("id") ?? "");
+  const publish = String(formData.get("publish") ?? "") === "1";
+  const existing = await documentById(id);
+  if (!existing?.trashedAt) redirect("/crm/cms/trash?error=missing");
+  const db = await cmsDb();
+  await db.cmsDocument.update({
+    where: { id },
+    data: {
+      trashedAt: null,
+      status: publish ? "published" : existing.status === "scheduled" ? "draft" : existing.status || "draft",
+      publishedAt: publish ? existing.publishedAt ?? new Date() : existing.publishedAt,
+      updatedBy: user.email,
+    },
+  });
+  await refreshCmsFiles();
+  revalidatePublic(documentPath(existing));
+  revalidatePath("/crm/cms/trash");
+  revalidatePath(existing.kind === "insight" ? "/crm/cms/insights" : "/crm/cms");
+  redirect("/crm/cms/trash?restored=1");
+}
+
+export async function purgeDocument(formData: FormData) {
+  await requireCms();
+  const id = String(formData.get("id") ?? "");
+  const existing = await documentById(id);
+  if (!existing?.trashedAt) redirect("/crm/cms/trash?error=missing");
+  const path = documentPath(existing);
+  const db = await cmsDb();
+  await db.cmsDocument.delete({ where: { id } });
+  await refreshCmsFiles();
+  revalidatePublic(path);
+  revalidatePath("/crm/cms/trash");
+  redirect("/crm/cms/trash?purged=1");
+}
+
+export async function trashSitePage(formData: FormData) {
+  await requireCms();
+  const route = String(formData.get("route") ?? "").trim();
+  if (!route) redirect("/crm/cms?error=missing");
+  const id = await ensurePageFromSite(route);
+  const db = await cmsDb();
+  const existing = await documentById(id);
+  if (!existing) redirect("/crm/cms?error=missing");
+  await db.cmsDocument.update({
+    where: { id },
+    data: { trashedAt: new Date(), status: "draft", showInMenu: false },
+  });
+  await refreshCmsFiles();
+  revalidatePublic(documentPath(existing));
+  revalidatePath("/crm/cms/trash");
+  redirect("/crm/cms?deleted=1");
+}
+
+async function ensureInsightDocFast(slug: string, online: boolean, updatedBy: string) {
+  const post = insightBySlug(slug);
+  if (!post) throw new Error("missing insight");
+  const existing = await insightDocumentBySlug(post.slug, "th");
+  const db = await cmsDb();
+  if (existing) {
+    if (existing.trashedAt) {
+      await db.cmsDocument.update({
+        where: { id: existing.id },
+        data: {
+          trashedAt: null,
+          status: online ? "published" : "draft",
+          updatedBy,
+        },
+      });
+    }
+    return existing.id;
+  }
+  const created = await db.cmsDocument.create({
+    data: {
+      kind: "insight",
+      title: post.title.th,
+      slug: post.slug,
+      locale: "th",
+      status: online ? "published" : "draft",
+      template: "insight",
+      excerpt: post.description.th,
+      body: bodyFromMarkdown(`# ${post.title.th}\n\n${post.description.th}`),
+      featuredImage: post.image,
+      imageAlt: post.imageAlt,
+      category: post.category.th,
+      seoTitle: post.title.th,
+      metaDescription: post.description.th,
+      publishedAt: online ? new Date(`${post.published}T00:00:00.000Z`) : null,
+      updatedBy,
+    },
+  });
+  return created.id;
+}
+
+export async function togglePageOnline(formData: FormData) {
+  const user = await requireCms();
+  const kind = String(formData.get("kind") ?? "page") === "insight" ? "insight" : "page";
+  const route = String(formData.get("route") ?? "").trim();
+  const slug = String(formData.get("slug") ?? "").trim();
+  const online = String(formData.get("online") ?? "") === "1";
+  let id = String(formData.get("id") ?? "").trim();
+
+  if (!id) {
+    if (kind === "insight") {
+      const insightSlug = slug || route.replace(/^\/insights\//, "");
+      if (!insightSlug) throw new Error("missing slug");
+      id = await ensureInsightDocFast(insightSlug, online, user.email);
+    } else {
+      if (!route) throw new Error("missing route");
+      id = await ensurePageFromSite(route);
+    }
+  }
+
+  const existing = await documentById(id);
+  if (!existing || existing.kind !== kind) throw new Error("missing document");
+
+  const db = await cmsDb();
+  await db.cmsDocument.update({
+    where: { id },
+    data: {
+      status: online ? "published" : "draft",
+      publishedAt: online ? existing.publishedAt ?? new Date() : existing.publishedAt,
+      scheduledAt: null,
+      updatedBy: user.email,
+    },
+  });
+
+  const path = documentPath(existing);
+  if (kind === "page" && existing.showInMenu) {
+    await refreshCmsFiles();
+  }
+
+  if (kind === "insight") {
+    revalidatePath("/crm/cms/insights");
+    revalidatePath("/insights");
+    revalidatePath("/");
+    revalidatePath(path);
+  } else {
+    revalidatePublic(path);
+    revalidatePath(path, "page");
+    revalidatePath(path, "layout");
+  }
+  return { id, online, path };
+}
+
+export async function moveInsightOrder(formData: FormData) {
+  await requireCms();
+  const slug = String(formData.get("slug") ?? "").trim();
+  const direction = String(formData.get("direction") ?? "").trim();
+  const orderRaw = String(formData.get("order") ?? "").trim();
+
+  let next: string[] | null = null;
+  if (orderRaw) {
+    try {
+      const parsed = JSON.parse(orderRaw) as unknown;
+      if (Array.isArray(parsed) && parsed.every((item) => typeof item === "string")) {
+        next = parsed.map((item) => item.trim()).filter(Boolean);
+      }
+    } catch {
+      next = null;
+    }
+  }
+
+  if (!next) {
+    if (!slug || (direction !== "up" && direction !== "down")) return;
+    const order = await resolveInsightOrder();
+    const index = order.indexOf(slug);
+    if (index < 0) return;
+    const target = direction === "up" ? index - 1 : index + 1;
+    if (target < 0 || target >= order.length) return;
+    next = [...order];
+    [next[index], next[target]] = [next[target], next[index]];
+  }
+
+  if (!next.length) return;
+  await saveInsightOrder(next);
+  // Public pages only — CRM list already updated optimistically on the client.
+  revalidatePath("/insights");
+  revalidatePath("/");
 }
 
 export async function uploadMedia(formData: FormData) {

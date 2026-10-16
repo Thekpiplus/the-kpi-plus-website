@@ -1,3 +1,4 @@
+import { ConfirmDeleteButton } from "@/components/crm/ui/ConfirmDeleteButton";
 import { createRedirect, deleteRedirect, toggleRedirect } from "@/lib/cms/actions";
 import { listRedirects } from "@/lib/cms/queries";
 
@@ -56,12 +57,17 @@ export default async function CmsRedirectsPage({
                     {item.active ? "ปิด" : "เปิด"}
                   </button>
                 </form>
-                <form action={deleteRedirect}>
-                  <input type="hidden" name="id" value={item.id} />
-                  <button className="kpi-button" type="submit">
-                    ลบ
-                  </button>
-                </form>
+                <ConfirmDeleteButton
+                  action={deleteRedirect}
+                  fields={{ id: item.id }}
+                  itemName={`${item.fromPath} → ${item.toPath}`}
+                  eyebrow="Redirect"
+                  title="ลบ Redirect"
+                  message={`ยืนยันลบ redirect “${item.fromPath} → ${item.toPath}”?`}
+                  buttonLabel="ลบ"
+                  confirmLabel="ลบ"
+                  className="kpi-button crm-users-delete-btn"
+                />
               </div>
             </li>
           ))}

@@ -3209,6 +3209,12 @@ html[data-crm-theme="dark"] .crm-dash-panel,
 .crm-users-table th:nth-child(1),
 .crm-users-table td:nth-child(1) {
   width: 18%;
+  text-align: left;
+}
+
+.crm-users-table td:nth-child(1) .crm-users-identity {
+  display: grid;
+  width: 100%;
 }
 
 .crm-users-table th:nth-child(2),
@@ -3352,8 +3358,9 @@ html[data-crm-theme="dark"] .crm-dash-panel,
 }
 
 .crm-users-icon-btn.is-disabled {
-  opacity: 0.35;
+  opacity: 0.55;
   cursor: not-allowed;
+  pointer-events: none;
 }
 
 .crm-users-delete-btn {
@@ -7167,4 +7174,948 @@ html[data-crm-theme="dark"] .crm-partners-mini-list li,
 .crm-shell[data-theme="dark"] .crm-partners-facts > div,
 .crm-shell[data-theme="dark"] .crm-partners-mini-list li {
   background: var(--crm-surface-2);
+}
+
+/* —— Content Management —— */
+.crm-cms {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+  container-type: inline-size;
+  container-name: cms-panel;
+}
+
+.crm-cms-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.crm-cms-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-width: 0;
+  padding: 0.95rem 1.05rem;
+  border: 1px solid var(--crm-border);
+  border-radius: 1.15rem;
+  background: var(--crm-surface);
+  box-shadow: var(--crm-shadow);
+}
+
+.crm-cms-search,
+.crm-cms-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 0.55rem;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.crm-cms-filters {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 12rem) auto;
+  width: 100%;
+}
+
+.crm-cms-filters label {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+  color: var(--crm-text-muted);
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.crm-cms-filters-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.crm-cms-search-field {
+  flex: 1 1 12rem;
+  min-width: 0;
+}
+
+.crm-cms-search-field input {
+  width: 100%;
+  min-height: 2.55rem;
+  padding: 0.55rem 0.85rem;
+  border: 1px solid var(--crm-border);
+  border-radius: 0.85rem;
+  background: var(--crm-field-bg, var(--crm-surface));
+  color: var(--crm-heading);
+  font: inherit;
+}
+
+.crm-cms-count {
+  margin: 0;
+  color: var(--crm-text-muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.crm-cms-panel {
+  display: grid;
+  gap: 0.85rem;
+  min-width: 0;
+  width: 100%;
+  padding: 1.05rem;
+  border: 1px solid var(--crm-border);
+  border-radius: 1.2rem;
+  background: var(--crm-surface);
+  box-shadow: var(--crm-shadow);
+}
+
+.crm-cms-table-wrap {
+  min-width: 0;
+  width: 100%;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--crm-border);
+  border-radius: 1.05rem;
+  background: var(--crm-surface);
+}
+
+.crm-cms-table {
+  width: 100%;
+  min-width: 58rem;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.crm-cms-table th {
+  padding: 0.7rem 0.85rem;
+  border-bottom: 1px solid var(--crm-border);
+  color: var(--crm-text-muted);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--crm-surface-2);
+  white-space: nowrap;
+}
+
+.crm-cms-table th:nth-child(1),
+.crm-cms-table td:nth-child(1) {
+  width: 11%;
+  text-align: left;
+}
+
+.crm-cms-table th:nth-child(2),
+.crm-cms-table td:nth-child(2) {
+  width: 16%;
+  text-align: left;
+}
+
+.crm-cms-table th:nth-child(3),
+.crm-cms-table td:nth-child(3) {
+  width: 11%;
+  text-align: left;
+}
+
+.crm-cms-table th:nth-child(4),
+.crm-cms-table td:nth-child(4) {
+  width: 16%;
+  text-align: left;
+}
+
+.crm-cms-table th:nth-child(5),
+.crm-cms-table td:nth-child(5) {
+  width: 18%;
+  text-align: left;
+}
+
+.crm-cms-table th:nth-child(6),
+.crm-cms-table td:nth-child(6) {
+  width: 9.5rem;
+  text-align: center;
+}
+
+.crm-cms-table th:nth-child(7),
+.crm-cms-table td:nth-child(7) {
+  width: 7.5rem;
+  text-align: center;
+}
+
+/* บทความ: ลำดับ + ชื่อ / slug / meta / desc + สถานะ + ดำเนินการ */
+.crm-cms-table--insights {
+  min-width: 58rem;
+}
+
+.crm-cms-table--insights th:nth-child(1),
+.crm-cms-table--insights td:nth-child(1) {
+  width: 5.75rem;
+  text-align: center;
+}
+
+.crm-cms-table--insights th:nth-child(2),
+.crm-cms-table--insights td:nth-child(2) {
+  width: 20%;
+  text-align: left;
+}
+
+.crm-cms-table--insights th:nth-child(3),
+.crm-cms-table--insights td:nth-child(3) {
+  width: 16%;
+  text-align: left;
+}
+
+.crm-cms-table--insights th:nth-child(4),
+.crm-cms-table--insights td:nth-child(4) {
+  width: 18%;
+  text-align: left;
+}
+
+.crm-cms-table--insights th:nth-child(5),
+.crm-cms-table--insights td:nth-child(5) {
+  width: 20%;
+  text-align: left;
+}
+
+.crm-cms-table--insights th:nth-child(6),
+.crm-cms-table--insights td:nth-child(6) {
+  width: 9.5rem;
+  text-align: center;
+}
+
+.crm-cms-table--insights th:nth-child(7),
+.crm-cms-table--insights td:nth-child(7) {
+  width: 7.5rem;
+  text-align: center;
+}
+
+.crm-cms-order {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.crm-cms-order.is-pending {
+  opacity: 0.55;
+}
+
+.crm-cms-order-num {
+  min-width: 1.5rem;
+  color: var(--crm-heading);
+  font-size: 0.82rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.crm-cms-order-btns {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.crm-cms-order-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.65rem;
+  height: 1.35rem;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--crm-border);
+  border-radius: 0.4rem;
+  background: var(--crm-surface);
+  color: var(--crm-heading);
+  cursor: pointer;
+}
+
+.crm-cms-order-btn svg {
+  width: 0.95rem;
+  height: 0.95rem;
+}
+
+.crm-cms-order-btn:hover:not(:disabled) {
+  border-color: #0b6660;
+  color: #0b6660;
+  background: color-mix(in srgb, #0b6660 8%, var(--crm-surface));
+}
+
+.crm-cms-order-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.crm-cms-order-btn:focus-visible {
+  outline: 2px solid #0b6660;
+  outline-offset: 2px;
+}
+
+.crm-cms-inline-link {
+  color: inherit;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.crm-cms-inline-link:hover {
+  color: #0b6660;
+}
+
+.crm-cms-table--trash {
+  min-width: 42rem;
+}
+
+.crm-cms-table--trash th:nth-child(1),
+.crm-cms-table--trash td:nth-child(1) {
+  width: 7rem;
+}
+
+.crm-cms-table--trash th:nth-child(2),
+.crm-cms-table--trash td:nth-child(2) {
+  width: 28%;
+  text-align: left;
+}
+
+.crm-cms-table--trash th:nth-child(3),
+.crm-cms-table--trash td:nth-child(3) {
+  width: 24%;
+  text-align: left;
+}
+
+.crm-cms-table--trash th:nth-child(4),
+.crm-cms-table--trash td:nth-child(4) {
+  width: 12rem;
+  text-align: left;
+}
+
+.crm-cms-table--trash th:nth-child(5),
+.crm-cms-table--trash td:nth-child(5) {
+  width: 11rem;
+  text-align: center;
+}
+
+.crm-cms-trash-kind {
+  display: inline-block;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.4rem;
+  background: var(--crm-surface-2);
+  color: var(--crm-heading);
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.crm-cms-trash-actions {
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.crm-cms-trash-restore {
+  min-height: 2.1rem;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.78rem;
+}
+
+.crm-cms-menu-name {
+  color: var(--crm-heading);
+  font-weight: 700;
+}
+
+.crm-cms-online-toggle {
+  display: inline-flex;
+  justify-content: center;
+}
+
+.crm-cms-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0.15rem 0.2rem;
+  border: 0;
+  background: transparent;
+  color: var(--crm-heading);
+  cursor: pointer;
+  font: inherit;
+}
+
+.crm-cms-switch-track {
+  position: relative;
+  display: inline-block;
+  width: 2.55rem;
+  height: 1.4rem;
+  border-radius: 999px;
+  background: #d7dde3;
+  transition: background 0.18s ease;
+}
+
+.crm-cms-switch-thumb {
+  position: absolute;
+  top: 0.15rem;
+  left: 0.15rem;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(11, 31, 51, 0.22);
+  transition: transform 0.18s ease;
+}
+
+.crm-cms-switch.is-on .crm-cms-switch-track {
+  background: #0b6660;
+}
+
+.crm-cms-switch.is-on .crm-cms-switch-thumb {
+  transform: translateX(1.15rem);
+}
+
+.crm-cms-switch-label {
+  min-width: 3.6rem;
+  color: var(--crm-muted, #6b7280);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-align: left;
+}
+
+.crm-cms-switch.is-on .crm-cms-switch-label {
+  color: #0b6660;
+}
+
+.crm-cms-switch:focus-visible {
+  outline: 2px solid #0b6660;
+  outline-offset: 3px;
+  border-radius: 0.55rem;
+}
+
+.crm-cms-switch.is-pending {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.crm-cms-switch:disabled {
+  cursor: wait;
+}
+
+.crm-cms-table td {
+  padding: 0.85rem 0.85rem;
+  border-bottom: 1px solid var(--crm-border);
+  vertical-align: middle;
+  color: var(--crm-heading);
+  font-size: 0.88rem;
+}
+
+.crm-cms-table tbody tr:hover {
+  background: color-mix(in srgb, var(--crm-surface-2) 70%, transparent);
+}
+
+.crm-cms-name {
+  display: block;
+  min-width: 0;
+  color: var(--crm-heading);
+  font-weight: 800;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.crm-cms-name:hover {
+  color: #1e4db7;
+}
+
+.crm-cms-name.is-static {
+  cursor: default;
+}
+
+.crm-cms-name.is-static:hover {
+  color: var(--crm-heading);
+}
+
+.crm-cms-slug {
+  display: inline-block;
+  max-width: 100%;
+  padding: 0.2rem 0.45rem;
+  border-radius: 0.45rem;
+  background: var(--crm-surface-2);
+  color: var(--crm-text-muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.78rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.crm-cms-meta,
+.crm-cms-desc {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  min-width: 0;
+  color: var(--crm-heading);
+  font-size: 0.84rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.crm-cms-desc {
+  color: var(--crm-text-muted);
+  font-weight: 600;
+}
+
+.crm-cms-row-actions {
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+/* Tablet / sidebar-narrow: card rows, no page overflow */
+@container cms-panel (max-width: 56rem) {
+  .crm-cms-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .crm-cms-search,
+  .crm-cms-filters {
+    width: 100%;
+  }
+
+  .crm-cms-filters {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .crm-cms-filters > label:first-child,
+  .crm-cms-filters-actions {
+    grid-column: 1 / -1;
+  }
+
+  .crm-cms-count {
+    white-space: normal;
+  }
+
+  .crm-cms-panel {
+    padding: 0.85rem;
+  }
+
+  .crm-cms-table-wrap {
+    overflow: visible;
+    border: 0;
+    background: transparent;
+  }
+
+  .crm-cms-table {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    table-layout: auto;
+  }
+
+  .crm-cms-table thead {
+    display: none;
+  }
+
+  .crm-cms-table tbody {
+    display: grid;
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  .crm-cms-table tr {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.55rem 0.75rem;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 0.95rem 1rem;
+    border: 1px solid var(--crm-border);
+    border-radius: 1rem;
+    background: var(--crm-surface-2);
+    box-shadow: var(--crm-shadow);
+  }
+
+  .crm-cms-table th,
+  .crm-cms-table td,
+  .crm-cms-table th:nth-child(n),
+  .crm-cms-table td:nth-child(n) {
+    display: grid;
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+    align-items: start;
+    gap: 0.4rem;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    padding: 0;
+    border: 0;
+    text-align: left;
+    justify-self: stretch;
+  }
+
+  .crm-cms-table td::before {
+    content: attr(data-label);
+    color: var(--crm-text-muted);
+    font-size: 0.68rem;
+    font-weight: 800;
+  }
+
+  .crm-cms-table td[data-label="ลำดับ"],
+  .crm-cms-table td[data-label="ชื่อเมนู"],
+  .crm-cms-table td[data-label="ชื่อหน้า"],
+  .crm-cms-table td[data-label="ชื่อบทความ"],
+  .crm-cms-table td[data-label="ประเภท"],
+  .crm-cms-table td[data-label="ชื่อ"],
+  .crm-cms-table td[data-label="Slug"],
+  .crm-cms-table td[data-label="Meta Tag"],
+  .crm-cms-table td[data-label="Description"],
+  .crm-cms-table td[data-label="ลบเมื่อ"],
+  .crm-cms-table td[data-label="สถานะ"],
+  .crm-cms-table td[data-label="การดำเนินการ"] {
+    grid-column: 1 / -1;
+  }
+
+  .crm-cms-table td[data-label="ลำดับ"] {
+    justify-items: start;
+  }
+
+  .crm-cms-order {
+    flex-direction: row;
+    gap: 0.55rem;
+  }
+
+  .crm-cms-order-btns {
+    flex-direction: row;
+  }
+
+  .crm-cms-table td[data-label="สถานะ"] {
+    justify-items: start;
+  }
+
+  .crm-cms-table td[data-label="ชื่อเมนู"] {
+    grid-template-columns: 1fr;
+    padding-bottom: 0.15rem;
+    margin-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .crm-cms-table td[data-label="ชื่อหน้า"],
+  .crm-cms-table td[data-label="ชื่อบทความ"] {
+    grid-template-columns: 1fr;
+    padding-bottom: 0.35rem;
+    margin-bottom: 0.1rem;
+    border-bottom: 1px solid var(--crm-border);
+  }
+
+  .crm-cms-table td[data-label="ชื่อเมนู"]::before,
+  .crm-cms-table td[data-label="ชื่อหน้า"]::before,
+  .crm-cms-table td[data-label="ชื่อบทความ"]::before {
+    content: none;
+  }
+
+  .crm-cms-table td[data-label="การดำเนินการ"] {
+    grid-template-columns: 1fr;
+    padding-top: 0.55rem;
+    border-top: 1px solid var(--crm-border);
+    text-align: center;
+  }
+
+  .crm-cms-table td[data-label="การดำเนินการ"]::before {
+    text-align: center;
+  }
+
+  .crm-cms-row-actions {
+    justify-content: center;
+  }
+
+  .crm-cms-row-actions .crm-users-icon-btn {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .crm-cms-meta,
+  .crm-cms-desc {
+    -webkit-line-clamp: 3;
+  }
+}
+
+/* Phone: single column fields, stacked search */
+@container cms-panel (max-width: 30rem) {
+  .crm-cms {
+    gap: 0.75rem;
+  }
+
+  .crm-cms-toolbar {
+    padding: 0.8rem;
+  }
+
+  .crm-cms-search {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .crm-cms-search-field {
+    flex: 1 1 auto;
+    width: 100%;
+  }
+
+  .crm-cms-search .kpi-button,
+  .crm-cms-search .crm-users-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .crm-cms-filters {
+    grid-template-columns: 1fr;
+  }
+
+  .crm-cms-panel {
+    padding: 0.65rem;
+  }
+
+  .crm-cms-table tr {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    padding: 0.85rem 0.9rem;
+  }
+
+  .crm-cms-table th,
+  .crm-cms-table td {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
+  }
+
+  .crm-cms-table td[data-label="ชื่อหน้า"],
+  .crm-cms-table td[data-label="ชื่อบทความ"] {
+    border-bottom: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .crm-cms-slug {
+    display: block;
+    width: fit-content;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 70rem) {
+  .crm-cms .crm-page-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.85rem;
+  }
+
+  .crm-cms-actions {
+    width: 100%;
+  }
+
+  .crm-cms-actions > * {
+    flex: 1 1 auto;
+    justify-content: center;
+    min-height: 2.55rem;
+  }
+}
+
+@media (max-width: 40rem) {
+  .crm-cms .crm-page-title {
+    font-size: 1.45rem;
+  }
+
+  .crm-cms .crm-page-desc {
+    font-size: 0.9rem;
+  }
+}
+
+html[data-crm-theme="dark"] .crm-cms-toolbar,
+html[data-crm-theme="dark"] .crm-cms-panel,
+html[data-crm-theme="dark"] .crm-cms-table tr,
+.crm-shell[data-theme="dark"] .crm-cms-toolbar,
+.crm-shell[data-theme="dark"] .crm-cms-panel,
+.crm-shell[data-theme="dark"] .crm-cms-table tr {
+  background: var(--crm-surface);
+}
+
+html[data-crm-theme="dark"] .crm-cms-table th,
+html[data-crm-theme="dark"] .crm-cms-slug,
+.crm-shell[data-theme="dark"] .crm-cms-table th,
+.crm-shell[data-theme="dark"] .crm-cms-slug {
+  background: var(--crm-surface-2);
+}
+
+.crm-cms-editor {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(16rem, 20rem);
+  gap: 1.15rem;
+  align-items: start;
+}
+
+.crm-cms-editor-main,
+.crm-cms-editor-side {
+  display: grid;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.crm-cms-editor-side {
+  position: sticky;
+  top: 1rem;
+}
+
+.crm-cms-editor-panel {
+  display: grid;
+  gap: 0.85rem;
+  padding: 1.15rem 1.2rem 1.25rem;
+  border: 1px solid var(--crm-border);
+  border-radius: 1rem;
+  background: var(--crm-surface);
+  box-shadow: var(--crm-shadow);
+}
+
+.crm-cms-editor-panel-head h2,
+.crm-cms-editor-panel h3 {
+  margin: 0;
+  color: var(--crm-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.crm-cms-editor-note {
+  margin: 0;
+  color: var(--crm-muted, #6b7280);
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+
+.crm-cms-editor-kicker {
+  margin: 0 0 0.2rem;
+  color: var(--kpi-kpi-teal, #0b6660);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.crm-cms-field {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.crm-cms-field > span {
+  color: var(--crm-heading);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.crm-cms-field small {
+  color: var(--crm-muted, #6b7280);
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+
+.crm-cms-editor-body {
+  min-height: 22rem;
+  resize: vertical;
+  line-height: 1.7;
+}
+
+.crm-cms-editor-save {
+  width: 100%;
+  margin-top: 0.15rem;
+}
+
+.crm-cms-check {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: var(--crm-heading);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.crm-cms-check input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: #0b6660;
+}
+
+.crm-cms-editor-details {
+  padding: 0;
+}
+
+.crm-cms-editor-details summary {
+  padding: 1rem 1.2rem;
+  color: var(--crm-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+}
+
+.crm-cms-editor-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.crm-cms-editor-details[open] summary {
+  border-bottom: 1px solid var(--crm-border);
+}
+
+.crm-cms-editor-details > :not(summary) {
+  margin-inline: 1.2rem;
+}
+
+.crm-cms-editor-details > :last-child {
+  margin-bottom: 1.15rem;
+}
+
+.crm-cms-editor-details summary::after {
+  content: "+";
+  float: right;
+  color: #0b6660;
+  font-weight: 600;
+}
+
+.crm-cms-editor-details[open] summary::after {
+  content: "–";
+}
+
+.crm-cms-editor-danger {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.85rem;
+  padding: 1rem 1.15rem;
+  border: 1px solid #f0d4d4;
+  border-radius: 1rem;
+  background: #fff8f8;
+}
+
+.crm-cms-editor-danger p {
+  margin: 0;
+  color: #8a2b2b;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.crm-cms-editor-danger span {
+  display: block;
+  margin-top: 0.15rem;
+  color: #7a5a5a;
+  font-size: 0.82rem;
+}
+
+@media (max-width: 64rem) {
+  .crm-cms-editor {
+    grid-template-columns: 1fr;
+  }
+
+  .crm-cms-editor-side {
+    position: static;
+  }
 }

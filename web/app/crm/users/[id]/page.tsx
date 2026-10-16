@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ConfirmDeleteButton } from "@/components/crm/ui/ConfirmDeleteButton";
 import { currentUser } from "@/lib/crm/auth";
 import { userById } from "@/lib/crm/queries";
 import { assignableInternalRoles, isFullAccessRole, isPartnerRoleValue, normalizeRole, ROLE_LABEL, roleLabel } from "@/lib/crm/roles";
@@ -131,12 +132,19 @@ export default async function UserDetailPage({
               </form>
             ) : null}
             {!isPartnerRoleValue(user.role) && user.id !== me?.id ? (
-              <form action={deleteStaffUser} className="mt-6">
-                <input type="hidden" name="userId" value={user.id} />
-                <button className="kpi-button" type="submit">
-                  ลบผู้ใช้ทีม
-                </button>
-              </form>
+              <div className="mt-6">
+                <ConfirmDeleteButton
+                  action={deleteStaffUser}
+                  fields={{ userId: user.id }}
+                  itemName={user.name}
+                  eyebrow="Users"
+                  title="ลบผู้ใช้ทีม"
+                  message={`ยืนยันลบ “${user.name}” ออกจากระบบ? การดำเนินการนี้ย้อนกลับไม่ได้`}
+                  buttonLabel="ลบผู้ใช้ทีม"
+                  confirmLabel="ลบผู้ใช้ทีม"
+                  className="kpi-button crm-users-delete-btn"
+                />
+              </div>
             ) : null}
           </>
         ) : (

@@ -35,9 +35,9 @@ const partnerLinks: ContextLink[] = [
 const userLinks: { href: string; label: string }[] = [];
 
 const cmsLinks = [
-  { href: "/crm/cms", label: "ภาพรวม" },
-  { href: "/crm/cms/pages", label: "หน้า" },
+  { href: "/crm/cms", label: "หน้าเพจทั้งหมด" },
   { href: "/crm/cms/insights", label: "บทความ" },
+  { href: "/crm/cms/trash", label: "ถังขยะ" },
   { href: "/crm/cms/media", label: "สื่อ" },
   { href: "/crm/cms/redirects", label: "Redirect" },
   { href: "/crm/cms/globals", label: "ตั้งค่าเว็บ" },

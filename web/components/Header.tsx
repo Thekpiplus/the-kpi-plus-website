@@ -127,33 +127,29 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
       suppressHydrationWarning
       className="kpi-header sticky top-0 z-50 overflow-visible border-b border-[#E3E8EB] bg-white text-[#3B3B3B] shadow-[0_2px_16px_rgba(11,31,58,.04)]"
     >
-      <div className="kpi-wrap kpi-header-bar overflow-visible">
-        <Link href={homeHref(locale)} aria-label={locale === "th" ? `${brandName(locale)} หน้าแรก` : `${brandName(locale)} home`} className="shrink-0 px-1 py-1">
+      <div className="kpi-header-bar overflow-visible">
+        <Link
+          href={homeHref(locale)}
+          aria-label={locale === "th" ? `${brandName(locale)} หน้าแรก` : `${brandName(locale)} home`}
+          className="kpi-header-brand"
+        >
           <img
             src="/brand/KPIPlus_Horizontal_FullColor.png"
             alt={brandName(locale)}
-            className="h-9 w-auto min-w-[108px] object-contain object-left sm:h-10 md:h-12"
+            className="kpi-header-logo"
           />
         </Link>
 
-        <nav
-          aria-label="Primary navigation"
-          className="kpi-thai-nav kpi-nav-desktop items-center gap-1 overflow-visible text-[0.94rem] font-normal leading-6 tracking-normal text-[#555555]"
-        >
+        <nav aria-label="Primary navigation" className="kpi-thai-nav kpi-nav-desktop">
           {groups.length ? (
             <div
               ref={solutionsRef}
-              className="relative"
+              className="kpi-solutions-root"
               onMouseEnter={openSolutionsMenu}
               onMouseLeave={scheduleCloseSolutions}
             >
-              <div
-                className={`kpi-solutions-trigger inline-flex h-11 items-center rounded-xl ${openSolutions ? "is-open" : ""}`}
-              >
-                <Link
-                  href={solutionsIndexHref(locale)}
-                  className="inline-flex h-11 items-center rounded-l-xl pl-3 pr-1.5 outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0B6660]"
-                >
+              <div className={`kpi-solutions-trigger ${openSolutions ? "is-open" : ""}`}>
+                <Link href={solutionsIndexHref(locale)} className="kpi-solutions-label">
                   {t.solutions}
                 </Link>
                 <button
@@ -172,7 +168,7 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
                     setPinnedSolutions(true);
                     setOpenSolutions(true);
                   }}
-                  className="inline-flex h-11 items-center rounded-r-xl pl-1 pr-3 outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0B6660]"
+                  className="kpi-solutions-chevron"
                 >
                   <ChevronDown className={`h-4 w-4 transition-transform duration-150 ${openSolutions ? "rotate-180" : ""}`} />
                 </button>
@@ -180,7 +176,7 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
               <div
                 id="solutions-menu"
                 role="menu"
-                className="kpi-solutions-menu absolute left-0 top-full"
+                className="kpi-solutions-menu"
                 style={{
                   display: openSolutions ? "block" : "none",
                   zIndex: 80,
@@ -211,59 +207,48 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
             </div>
           ) : null}
           {primaryLinks.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="inline-flex h-11 items-center rounded-xl px-3 transition hover:bg-[#F2F8E2] hover:text-[#0B6660]"
-            >
+            <Link key={item.href} href={item.href} className="kpi-nav-link">
               {item.label}
             </Link>
           ))}
           {extraLinks.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="inline-flex h-11 items-center rounded-xl px-3 transition hover:bg-[#F2F8E2] hover:text-[#0B6660]"
-            >
+            <Link key={item.href} href={item.href} className="kpi-nav-link">
               {item.label}
             </Link>
           ))}
         </nav>
 
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="kpi-header-actions">
           <button
             type="button"
             aria-label={t.openMenu}
-            className="kpi-nav-toggle inline-flex h-11 w-11 items-center justify-center rounded-xl border border-[#E3E8EB] text-[#555555]"
+            className="kpi-nav-toggle"
             onClick={() => setOpenMenu((value) => !value)}
           >
             <MenuIcon className="h-5 w-5" />
           </button>
-          <div ref={langRef} className="relative hidden sm:block">
+          <div ref={langRef} className="kpi-header-lang">
             <button
               type="button"
               aria-expanded={openLang}
               aria-haspopup="menu"
-              className="kpi-thai-nav inline-flex h-11 items-center gap-2 rounded-xl border border-[#E3E8EB] px-3 text-[0.94rem] font-normal text-[#555555] transition hover:border-[#0B6660] hover:text-[#0B6660]"
+              className="kpi-thai-nav kpi-header-lang-btn"
               onClick={() => {
                 setOpenSolutions(false);
                 setOpenLang((value) => !value);
               }}
             >
               <Earth className="h-4 w-4" />
-              {currentLang}
+              <span>{currentLang}</span>
               <ChevronDown className={`h-3.5 w-3.5 transition-transform ${openLang ? "rotate-180" : ""}`} />
             </button>
-            <div
-              className="absolute right-0 top-full min-w-40 pt-2"
-              style={{ display: openLang ? "block" : "none", zIndex: 80 }}
-            >
-              <div className="rounded-xl border border-[#E3E8EB] bg-white p-2 shadow-lg">
+            <div className="kpi-header-lang-menu" style={{ display: openLang ? "block" : "none", zIndex: 80 }}>
+              <div className="kpi-header-lang-panel">
                 {locales.map((item) => (
                   <Link
                     key={item.id}
                     href={switchLocale(pathname, item.id)}
-                    className="block rounded-lg px-3 py-2 text-sm text-[#555555] hover:bg-[#F2F8E2] hover:text-[#0B6660]"
+                    className="kpi-header-lang-option"
                     onClick={() => setOpenLang(false)}
                   >
                     {item.label}
@@ -277,16 +262,16 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
             href={auditHref(locale)}
             className="kpi-cta kpi-header-cta kpi-thai-nav"
           >
-            {locale === "th" ? (
-              <>
-                <span className="kpi-header-cta-full">
+            <span className="kpi-header-cta-full">
+              {locale === "th" ? (
+                <>
                   ขอวิเคราะห์ <span className="kpi-latin">Performance</span>
-                </span>
-                <span className="kpi-header-cta-short">ขอวิเคราะห์</span>
-              </>
-            ) : (
-              t.audit
-            )}
+                </>
+              ) : (
+                t.audit
+              )}
+            </span>
+            <span className="kpi-header-cta-short">{t.auditShort ?? t.audit}</span>
           </Link>
         </div>
       </div>

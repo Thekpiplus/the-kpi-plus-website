@@ -36,6 +36,7 @@ function mapDoc(row: Record<string, unknown>): CmsDocumentRow {
     noindex: asBool(row.noindex),
     showInMenu: asBool(row.showInMenu),
     menu: String(row.menu ?? "none"),
+    menuLabel: String(row.menuLabel ?? ""),
     menuParent: String(row.menuParent ?? ""),
     menuPosition: Number(row.menuPosition ?? 0),
     publishedAt: toDate(row.publishedAt),
@@ -93,8 +94,8 @@ export function rawCmsClient(db: ReturnType<typeof prisma>) {
         const rowId = String(data.id ?? id());
         const now = new Date();
         await db.$executeRawUnsafe(
-          `INSERT INTO "CmsDocument" ("id","kind","title","slug","locale","status","template","excerpt","body","featuredImage","imageAlt","category","tags","author","seoTitle","metaDescription","canonical","ogImage","noindex","showInMenu","menu","menuParent","menuPosition","publishedAt","scheduledAt","trashedAt","updatedBy","createdAt","updatedAt")
-           VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+          `INSERT INTO "CmsDocument" ("id","kind","title","slug","locale","status","template","excerpt","body","featuredImage","imageAlt","category","tags","author","seoTitle","metaDescription","canonical","ogImage","noindex","showInMenu","menu","menuLabel","menuParent","menuPosition","publishedAt","scheduledAt","trashedAt","updatedBy","createdAt","updatedAt")
+           VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
           rowId,
           String(data.kind),
           String(data.title),
@@ -116,6 +117,7 @@ export function rawCmsClient(db: ReturnType<typeof prisma>) {
           data.noindex ? 1 : 0,
           data.showInMenu ? 1 : 0,
           String(data.menu ?? "none"),
+          String(data.menuLabel ?? ""),
           String(data.menuParent ?? ""),
           Number(data.menuPosition ?? 0),
           iso(data.publishedAt as Date | null),
@@ -132,7 +134,7 @@ export function rawCmsClient(db: ReturnType<typeof prisma>) {
         if (!current) throw new Error("missing");
         const next = { ...current, ...args.data, updatedAt: new Date() } as CmsDocumentRow;
         await db.$executeRawUnsafe(
-          `UPDATE "CmsDocument" SET "kind"=?, "title"=?, "slug"=?, "locale"=?, "status"=?, "template"=?, "excerpt"=?, "body"=?, "featuredImage"=?, "imageAlt"=?, "category"=?, "tags"=?, "author"=?, "seoTitle"=?, "metaDescription"=?, "canonical"=?, "ogImage"=?, "noindex"=?, "showInMenu"=?, "menu"=?, "menuParent"=?, "menuPosition"=?, "publishedAt"=?, "scheduledAt"=?, "trashedAt"=?, "updatedBy"=?, "updatedAt"=? WHERE "id"=?`,
+          `UPDATE "CmsDocument" SET "kind"=?, "title"=?, "slug"=?, "locale"=?, "status"=?, "template"=?, "excerpt"=?, "body"=?, "featuredImage"=?, "imageAlt"=?, "category"=?, "tags"=?, "author"=?, "seoTitle"=?, "metaDescription"=?, "canonical"=?, "ogImage"=?, "noindex"=?, "showInMenu"=?, "menu"=?, "menuLabel"=?, "menuParent"=?, "menuPosition"=?, "publishedAt"=?, "scheduledAt"=?, "trashedAt"=?, "updatedBy"=?, "updatedAt"=? WHERE "id"=?`,
           next.kind,
           next.title,
           next.slug,
@@ -153,6 +155,7 @@ export function rawCmsClient(db: ReturnType<typeof prisma>) {
           next.noindex ? 1 : 0,
           next.showInMenu ? 1 : 0,
           next.menu,
+          next.menuLabel,
           next.menuParent,
           next.menuPosition,
           iso(next.publishedAt),

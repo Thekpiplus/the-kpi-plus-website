@@ -23,6 +23,7 @@ export function lockedPageList() {
     .map((page) => ({
       route: page.route,
       title: page.title,
+      description: page.description,
       language: page.language,
     }));
 }

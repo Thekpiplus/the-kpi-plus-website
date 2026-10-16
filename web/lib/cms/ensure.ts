@@ -26,6 +26,7 @@ export async function ensureCmsSchema() {
       "noindex" BOOLEAN NOT NULL DEFAULT false,
       "showInMenu" BOOLEAN NOT NULL DEFAULT false,
       "menu" TEXT NOT NULL DEFAULT 'none',
+      "menuLabel" TEXT NOT NULL DEFAULT '',
       "menuParent" TEXT NOT NULL DEFAULT '',
       "menuPosition" INTEGER NOT NULL DEFAULT 0,
       "publishedAt" DATETIME,
@@ -36,6 +37,7 @@ export async function ensureCmsSchema() {
       "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
     )
   `);
+  await db.$executeRawUnsafe(`ALTER TABLE "CmsDocument" ADD COLUMN "menuLabel" TEXT NOT NULL DEFAULT ''`).catch(() => undefined);
   await db.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "CmsDocument_kind_slug_locale_key" ON "CmsDocument"("kind", "slug", "locale")`);
   await db.$executeRawUnsafe(`
     CREATE TABLE IF NOT EXISTS "CmsMedia" (

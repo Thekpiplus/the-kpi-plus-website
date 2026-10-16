@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { CmsDocumentForm } from "@/components/cms/CmsDocumentForm";
+import { PageHeader } from "@/components/crm/ui/PageHeader";
 
 export default async function NewCmsInsightPage({
   searchParams,
@@ -6,5 +8,19 @@ export default async function NewCmsInsightPage({
   searchParams: Promise<{ error?: string }>;
 }) {
   const { error } = await searchParams;
-  return <CmsDocumentForm kind="insight" error={error} />;
+  return (
+    <div className="crm-cms">
+      <PageHeader
+        eyebrow="Content Management"
+        title="สร้างบทความใหม่"
+        description="เขียนชื่อ เนื้อหา และตั้งค่าการเผยแพร่ แล้วบันทึกเป็นฉบับร่างหรือเผยแพร่ได้ทันที"
+        actions={
+          <Link href="/crm/cms/insights" className="crm-users-secondary">
+            ← บทความทั้งหมด
+          </Link>
+        }
+      />
+      <CmsDocumentForm kind="insight" error={error} />
+    </div>
+  );
 }

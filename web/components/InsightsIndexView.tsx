@@ -10,6 +10,8 @@ import {
   insightsIndexCopy,
   type InsightPost,
 } from "@/lib/insights";
+import { getStoredInsightOrder, resolveInsightOrder, sortByInsightOrder } from "@/lib/cms/insight-order";
+import { hiddenInsightSlugs } from "@/lib/cms/queries";
 import { blogSchema } from "@/lib/schema";
 import { auditHref, localizePath, SITE, type Locale } from "@/lib/seo";
 
@@ -31,15 +33,24 @@ function PostMeta({
   );
 }
 
-export function InsightsIndexView({ locale, extraPosts = [] }: { locale: Locale; extraPosts?: InsightPost[] }) {
+export async function InsightsIndexView({ locale, extraPosts = [] }: { locale: Locale; extraPosts?: InsightPost[] }) {
   const t = insightsIndexCopy[locale];
   const isTh = locale === "th";
   const insightsHref = localizePath("/insights", locale);
-  const posts = [...insightPosts, ...extraPosts.filter((post) => !insightPosts.some((item) => item.slug === post.slug))].sort((a, b) =>
-    b.published.localeCompare(a.published),
-  );
-  const featured = posts.find((post) => post.slug === FEATURED_INSIGHT_SLUG) ?? posts[0];
-  const listing = posts.filter((post) => post.slug !== featured.slug);
+  const hidden = new Set(await hiddenInsightSlugs());
+  const bySlug = new Map(insightPosts.map((post) => [post.slug, post]));
+  for (const post of extraPosts) bySlug.set(post.slug, post);
+  const visible = [...bySlug.values()].filter((post) => !hidden.has(post.slug));
+  const storedOrder = await getStoredInsightOrder();
+  const posts =
+    storedOrder.length > 0
+      ? sortByInsightOrder(visible, await resolveInsightOrder(visible.map((post) => post.slug)))
+      : [...visible].sort((a, b) => b.published.localeCompare(a.published));
+  const featured =
+    storedOrder.length > 0
+      ? posts[0]
+      : (posts.find((post) => post.slug === FEATURED_INSIGHT_SLUG) ?? posts[0]);
+  const listing = posts.filter((post) => post.slug !== featured?.slug);
 
   return (
     <SiteShell locale={locale} route={insightsHref}>

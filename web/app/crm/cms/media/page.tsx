@@ -1,3 +1,4 @@
+import { ConfirmDeleteButton } from "@/components/crm/ui/ConfirmDeleteButton";
 import { deleteMedia, updateMedia, uploadMedia } from "@/lib/cms/actions";
 import { listMedia } from "@/lib/cms/queries";
 
@@ -53,13 +54,19 @@ export default async function CmsMediaPage({
                   บันทึกคำอธิบาย
                 </button>
               </form>
-              <form action={deleteMedia} className="mt-2">
-                <input type="hidden" name="id" value={item.id} />
-                <input type="hidden" name="path" value={item.path} />
-                <button className="kpi-button" type="submit">
-                  ลบไฟล์
-                </button>
-              </form>
+              <div className="mt-2">
+                <ConfirmDeleteButton
+                  action={deleteMedia}
+                  fields={{ id: item.id, path: item.path }}
+                  itemName={item.filename}
+                  eyebrow="Media"
+                  title="ลบไฟล์"
+                  message={`ยืนยันลบไฟล์ “${item.filename}”? การดำเนินการนี้ย้อนกลับไม่ได้`}
+                  buttonLabel="ลบไฟล์"
+                  confirmLabel="ลบไฟล์"
+                  className="kpi-button crm-users-delete-btn"
+                />
+              </div>
             </li>
           ))}
         </ul>

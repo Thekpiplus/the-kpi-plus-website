@@ -37,8 +37,8 @@ type CmsClient = {
 
 export async function cmsDb() {
   await ensureCmsSchema();
-  const db = prisma() as unknown as CmsClient;
-  if (typeof db.cmsDocument?.count === "function") return db;
+  // Prefer the raw SQLite client so schema columns added via ensureCmsSchema
+  // (e.g. menuLabel) work without requiring a regenerated Prisma client.
   return rawCmsClient(prisma()) as unknown as CmsClient;
 }
 
@@ -84,9 +84,121 @@ export async function listDocuments(kind: "page" | "insight", filters: { q?: str
   }
 }
 
+export async function listTrashedDocuments(filters: { kind?: "page" | "insight"; q?: string } = {}) {
+  try {
+    await ensureCmsSchema();
+    const params: unknown[] = [];
+    let sql = `SELECT "id" FROM "CmsDocument" WHERE "trashedAt" IS NOT NULL`;
+    if (filters.kind) {
+      sql += ` AND "kind" = ?`;
+      params.push(filters.kind);
+    }
+    sql += ` ORDER BY "trashedAt" DESC`;
+    const rows = await prisma().$queryRawUnsafe<{ id: string }[]>(sql, ...params);
+    const db = await cmsDb();
+    const docs = (
+      await Promise.all(rows.map((row) => db.cmsDocument.findUnique({ where: { id: String(row.id) } })))
+    ).filter((doc): doc is NonNullable<typeof doc> => Boolean(doc?.trashedAt));
+    const q = filters.q?.trim().toLowerCase();
+    if (!q) return docs;
+    return docs.filter(
+      (doc) =>
+        doc.title.toLowerCase().includes(q) ||
+        doc.slug.toLowerCase().includes(q) ||
+        doc.seoTitle.toLowerCase().includes(q) ||
+        doc.metaDescription.toLowerCase().includes(q),
+    );
+  } catch {
+    return [];
+  }
+}
+
+export async function countTrashedDocuments() {
+  try {
+    await ensureCmsSchema();
+    const rows = await prisma().$queryRawUnsafe<{ count: number }[]>(
+      `SELECT COUNT(*) as count FROM "CmsDocument" WHERE "trashedAt" IS NOT NULL`,
+    );
+    return Number(rows[0]?.count ?? 0);
+  } catch {
+    return 0;
+  }
+}
+
 export async function documentById(id: string) {
   const db = await cmsDb();
   return db.cmsDocument.findUnique({ where: { id } });
+}
+
+export async function insightDocumentBySlug(slug: string, locale = "th") {
+  try {
+    await ensureCmsSchema();
+    const rows = await prisma().$queryRawUnsafe<Record<string, unknown>[]>(
+      `SELECT * FROM "CmsDocument" WHERE "kind" = ? AND "slug" = ? AND "locale" = ? LIMIT 1`,
+      "insight",
+      slug,
+      locale,
+    );
+    if (!rows[0]) return null;
+    const db = await cmsDb();
+    return db.cmsDocument.findUnique({ where: { id: String(rows[0].id) } });
+  } catch {
+    return null;
+  }
+}
+
+export async function pageDocumentBySlug(slug: string, locale = "th") {
+  try {
+    await ensureCmsSchema();
+    const rows = await prisma().$queryRawUnsafe<Record<string, unknown>[]>(
+      `SELECT * FROM "CmsDocument" WHERE "kind" = ? AND "slug" = ? AND "locale" = ? LIMIT 1`,
+      "page",
+      slug,
+      locale,
+    );
+    if (!rows[0]) return null;
+    const db = await cmsDb();
+    return db.cmsDocument.findUnique({ where: { id: String(rows[0].id) } });
+  } catch {
+    return null;
+  }
+}
+
+export async function trashedInsightSlugs() {
+  try {
+    await ensureCmsSchema();
+    const rows = await prisma().$queryRawUnsafe<{ slug: string }[]>(
+      `SELECT "slug" FROM "CmsDocument" WHERE "kind" = ? AND "trashedAt" IS NOT NULL`,
+      "insight",
+    );
+    return rows.map((row) => String(row.slug));
+  } catch {
+    return [];
+  }
+}
+
+/** Slugs that must not appear on the public insights index (trashed or offline). */
+export async function hiddenInsightSlugs() {
+  try {
+    await ensureCmsSchema();
+    const rows = await prisma().$queryRawUnsafe<
+      { slug: string; status: string; scheduledAt: string | null; trashedAt: string | null }[]
+    >(
+      `SELECT "slug", "status", "scheduledAt", "trashedAt" FROM "CmsDocument" WHERE "kind" = ?`,
+      "insight",
+    );
+    const now = Date.now();
+    return rows
+      .filter((row) => {
+        if (row.trashedAt) return true;
+        if (row.status === "published") return false;
+        if (row.status === "scheduled" && row.scheduledAt && new Date(row.scheduledAt).getTime() <= now) return false;
+        return true;
+      })
+      .map((row) => String(row.slug));
+  } catch {
+    return [];
+  }
 }
 
 export async function publishedDocumentByPath(pathname: string) {
@@ -146,7 +258,7 @@ export async function refreshCmsFiles() {
     .filter((doc) => asBool(doc.showInMenu) && (doc.menu === "header" || doc.menu === "footer"))
     .map((doc) => ({
       href: documentPath(doc),
-      label: doc.title,
+      label: doc.menuLabel?.trim() || doc.title,
       locale: doc.locale,
       menu: doc.menu as "header" | "footer",
       position: doc.menuPosition,

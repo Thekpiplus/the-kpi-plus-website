@@ -49,6 +49,7 @@ export const copy = {
     about: "เกี่ยวกับเรา",
     contact: "ติดต่อเรา",
     audit: "ขอวิเคราะห์ Performance",
+    auditShort: "ขอวิเคราะห์",
     footerAudit: "ขอวิเคราะห์ประสิทธิภาพและโอกาสของโรงแรม",
     follow: "ติดตาม เดอะ เคพีไอ พลัส",
     statement: "พันธมิตรด้าน Revenue Management และการเติบโตของธุรกิจโรงแรม",
@@ -97,6 +98,7 @@ export const copy = {
     about: "About",
     contact: "Contact",
     audit: "Request a Hotel Performance Audit",
+    auditShort: "Request Audit",
     footerAudit: "Request a performance and opportunity review",
     follow: "Follow The KPI Plus",
     statement: "Hotel revenue management and commercial growth partner",
@@ -143,6 +145,7 @@ export const copy = {
     about: "О нас",
     contact: "Контакты",
     audit: "Запросить аудит",
+    auditShort: "Аудит",
     footerAudit: "Запросить аудит эффективности отеля",
     follow: "The KPI Plus в соцсетях",
     statement: "Партнёр по управлению доходами и коммерческому росту отелей",
@@ -189,6 +192,7 @@ export const copy = {
     about: "關於我們",
     contact: "聯絡我們",
     audit: "申請評估",
+    auditShort: "申請評估",
     footerAudit: "申請酒店績效評估",
     follow: "追蹤 The KPI Plus",
     statement: "酒店收益管理與商業成長夥伴",
@@ -366,6 +370,29 @@ export function visiblePrimaryLinks(locale: Locale) {
     ],
     locale,
   );
+}
+
+export function siteMenuLabel(route: string, locale: Locale = "th") {
+  const path = route || "/";
+  if (path === "/") return locale === "th" ? "หน้าแรก" : "Home";
+  const t = uiCopy(locale);
+  const primary: Record<string, string> = {
+    "/approach": t.approach,
+    "/insights": t.insights,
+    "/case-studies": t.caseStudies,
+    "/about": t.about,
+    "/contact": t.contact,
+    "/associations": t.partners,
+    "/partner": locale === "th" ? "สมัครเป็น Partner" : "Partner",
+  };
+  if (primary[path]) return primary[path];
+  const solution = solutionNavLabel(path, locale);
+  if (solution !== path) return solution;
+  const tool = t.toolLinks.find((item) => item.href === path);
+  if (tool) return tool.label;
+  const know = t.knowLinks.find((item) => item.href === path);
+  if (know) return know.label;
+  return "—";
 }
 
 export function visibleKnowLinks(locale: Locale) {

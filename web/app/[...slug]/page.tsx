@@ -4,7 +4,7 @@ import { ContentPage } from "@/components/ContentPage";
 import { CookiePolicyView } from "@/components/CookiePolicyView";
 import { PrivacyNoticeView } from "@/components/PrivacyNoticeView";
 import { matchCmsRedirect } from "@/lib/cms/files";
-import { cmsMetadata, cmsPageByPath } from "@/lib/cms/public";
+import { cmsMetadata, isCmsPageLive, storedPageByPath } from "@/lib/cms/public";
 import { handoffRoutes } from "@/lib/handoff";
 import { localeFromPath, metadataFor, pageByRoute } from "@/lib/seo";
 
@@ -120,9 +120,12 @@ function followCmsRedirect(route: string) {
 export async function generateMetadata({ params }: { params: Promise<Params> }) {
   const { slug } = await params;
   const route = `/${slug.join("/")}`;
+  const stored = await storedPageByPath(route);
+  if (stored) {
+    if (!isCmsPageLive(stored)) return {};
+    return cmsMetadata(stored);
+  }
   if (pageByRoute.has(route)) return metadataFor(route);
-  const cms = await cmsPageByPath(route);
-  if (cms) return cmsMetadata(cms);
   return {};
 }
 
@@ -130,13 +133,18 @@ export default async function CatchAllPage({ params }: { params: Promise<Params>
   const { slug } = await params;
   const route = `/${slug.join("/")}`;
   followCmsRedirect(route);
-  if (pageByRoute.has(route)) {
-    const locale = localeFromPath(route);
-    if (route.endsWith("/privacy")) return <PrivacyNoticeView locale={locale} route={route} />;
-    if (route.endsWith("/cookies")) return <CookiePolicyView locale={locale} route={route} />;
-    return <ContentPage route={route} />;
+  const locale = localeFromPath(route);
+  if (route.endsWith("/privacy")) {
+    if (pageByRoute.has(route)) return <PrivacyNoticeView locale={locale} route={route} />;
   }
-  const cms = await cmsPageByPath(route);
-  if (cms) return <CmsDocumentView doc={cms} />;
+  if (route.endsWith("/cookies")) {
+    if (pageByRoute.has(route)) return <CookiePolicyView locale={locale} route={route} />;
+  }
+  const stored = await storedPageByPath(route);
+  if (stored) {
+    if (!isCmsPageLive(stored)) notFound();
+    return <CmsDocumentView doc={stored} />;
+  }
+  if (pageByRoute.has(route)) return <ContentPage route={route} />;
   notFound();
 }

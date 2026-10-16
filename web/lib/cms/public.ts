@@ -1,7 +1,7 @@
 import { insightPosts, type InsightPost } from "@/lib/insights";
-import { SITE, type Locale } from "@/lib/seo";
+import { SITE, barePath, localeFromPath, type Locale } from "@/lib/seo";
 import { documentPath, estimateMinutes, parseCmsBody } from "./body";
-import { publishedDocumentByPath, publishedDocuments } from "./queries";
+import { pageDocumentBySlug, publishedDocumentByPath, publishedDocuments } from "./queries";
 import type { CmsDocumentRow } from "./types";
 
 function localeCopy(value: string): Record<Locale, string> {
@@ -38,6 +38,22 @@ export async function allInsightPosts() {
   const extra = await cmsInsightPosts();
   const seen = new Set(insightPosts.map((post) => post.slug));
   return [...insightPosts, ...extra.filter((post) => !seen.has(post.slug))];
+}
+
+export function isCmsPageLive(doc: CmsDocumentRow) {
+  if (doc.trashedAt) return false;
+  if (doc.status === "published") return true;
+  if (doc.status === "scheduled" && doc.scheduledAt && doc.scheduledAt <= new Date()) return true;
+  return false;
+}
+
+export async function storedPageByPath(pathname: string) {
+  const locale = localeFromPath(pathname);
+  const bare = barePath(pathname);
+  const slug = bare === "/" ? "" : bare.replace(/^\//, "");
+  const doc = await pageDocumentBySlug(slug, locale).catch(() => null);
+  // Include trashed docs so public routes can 404 instead of falling back to code pages.
+  return doc;
 }
 
 export async function cmsPageByPath(pathname: string) {

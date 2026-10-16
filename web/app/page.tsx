@@ -1,8 +1,12 @@
+import { notFound } from "next/navigation";
 import { HomeView } from "@/components/HomeView";
+import { isCmsPageLive, storedPageByPath } from "@/lib/cms/public";
 import { metadataFor } from "@/lib/seo";
 
 export const metadata = metadataFor("/");
 
-export default function HomePage() {
+export default async function HomePage() {
+  const stored = await storedPageByPath("/");
+  if (stored && !isCmsPageLive(stored)) notFound();
   return <HomeView locale="th" />;
 }

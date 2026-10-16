@@ -2,6 +2,9 @@ import Link from "next/link";
 import { ArrowUpRight, InsightIcon, OpportunityIcon, OptimizeIcon, PlanIcon } from "@/components/Icons";
 import { AuditSectionHost } from "@/components/AuditSection";
 import { SiteShell } from "@/components/SiteShell";
+import { getStoredInsightOrder, resolveInsightOrder, sortByInsightOrder } from "@/lib/cms/insight-order";
+import { cmsInsightPosts } from "@/lib/cms/public";
+import { hiddenInsightSlugs } from "@/lib/cms/queries";
 import { insightPosts, insightsIndexCopy } from "@/lib/insights";
 import { homeCopy } from "@/lib/localized-ui";
 import { auditHref, existingHref, localizePath, type Locale } from "@/lib/seo";
@@ -67,15 +70,25 @@ function insightTitle(title: string) {
 
 const heroTrust = ["100+ Hotels Managed", "Revenue · OTA · Digital", "Hospitality Focused Team"];
 
-export function HomeView({ locale }: { locale: Locale }) {
+export async function HomeView({ locale }: { locale: Locale }) {
   const t = homeCopy[locale];
   const insightsUi = insightsIndexCopy[locale];
   const solutionsHref = localizePath("/solutions", locale);
   const insightsHref = localizePath("/insights", locale);
   const audit = auditHref(locale);
-  const featuredInsights = insightPosts
-    .filter((post) => existingHref(post.href, locale))
-    .slice(0, 3);
+  const hidden = new Set(await hiddenInsightSlugs());
+  const extraPosts = await cmsInsightPosts().catch(() => []);
+  const bySlug = new Map(insightPosts.map((post) => [post.slug, post]));
+  for (const post of extraPosts) bySlug.set(post.slug, post);
+  const visible = [...bySlug.values()].filter(
+    (post) => existingHref(post.href, locale) && !hidden.has(post.slug),
+  );
+  const storedOrder = await getStoredInsightOrder();
+  const ordered =
+    storedOrder.length > 0
+      ? sortByInsightOrder(visible, await resolveInsightOrder(visible.map((post) => post.slug)))
+      : [...visible].sort((a, b) => b.published.localeCompare(a.published));
+  const featuredInsights = ordered.slice(0, 3);
 
   return (
     <SiteShell locale={locale} route={locale === "th" ? "/" : `/${locale}`}>

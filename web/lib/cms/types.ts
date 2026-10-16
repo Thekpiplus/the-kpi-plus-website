@@ -20,6 +20,7 @@ export type CmsDocumentRow = {
   noindex: boolean;
   showInMenu: boolean;
   menu: string;
+  menuLabel: string;
   menuParent: string;
   menuPosition: number;
   publishedAt: Date | null;

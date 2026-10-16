@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -410,6 +410,7 @@ model CmsDocument {
   noindex          Boolean   @default(false)
   showInMenu       Boolean   @default(false)
   menu             String    @default("none")
+  menuLabel        String    @default("")
   menuParent       String    @default("")
   menuPosition     Int       @default(0)
   publishedAt      DateTime?
