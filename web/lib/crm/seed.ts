@@ -23,7 +23,9 @@ export async function ensureCrmSeed() {
   if (count === 0) {
     await db.stage.createMany({ data: STAGES.map((stage) => ({ ...stage })) });
   }
-  const partnerDb = db as { commissionRule?: { count: () => Promise<number>; create: (args: { data: object }) => Promise<unknown> } };
+  const partnerDb = db as unknown as {
+    commissionRule?: { count: () => Promise<number>; create: (args: { data: object }) => Promise<unknown> };
+  };
   if (typeof partnerDb.commissionRule?.count === "function") {
     try {
       const rules = await partnerDb.commissionRule.count();

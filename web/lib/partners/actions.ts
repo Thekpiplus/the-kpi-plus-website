@@ -611,4 +611,26 @@ export async function portalUploadDocument(formData: FormData) {
   redirect("/partners/profile?saved=1");
 }
 
+/** Staff CRM <form action> wrappers — FormData only, Promise<void>. */
+export async function staffSubmitBankAccount(formData: FormData): Promise<void> {
+  await submitBankAccount(formData, false);
+}
+
+/** CRM staff upload form — asPartner=false (partnerId from FormData + staff kyc.review). */
+export async function uploadPartnerDocumentFormAction(formData: FormData): Promise<void> {
+  await uploadPartnerDocument(formData, false);
+}
+
+export async function staffReviewReferral(formData: FormData): Promise<void> {
+  await reviewReferral(formData);
+}
+
+export async function staffCreatePayoutBatch(formData: FormData): Promise<void> {
+  await createPayoutBatch(formData);
+}
+
+export async function staffMarkPayoutPaid(formData: FormData): Promise<void> {
+  await markPayoutPaid(formData);
+}
+
 void currentUser;

@@ -1,5 +1,4 @@
-import { NextResponse } from "next/server";
-import type { NextRequest } from "next/request";
+import { NextResponse, type NextRequest } from "next/server";
 
 const publicExact = new Set(["/admin", "/admin/forgot", "/crm/login", "/crm/forgot", "/partners/login", "/partners/apply"]);
 

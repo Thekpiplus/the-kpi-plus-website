@@ -3,7 +3,7 @@ import { EmptyState } from "@/components/crm/ui/EmptyState";
 import { PageHeader } from "@/components/crm/ui/PageHeader";
 import { StatusBadge } from "@/components/crm/ui/StatusBadge";
 import { formatThaiDateTime } from "@/lib/crm/queries";
-import { findReferralMatches, reviewReferral } from "@/lib/partners/actions";
+import { findReferralMatches, staffReviewReferral } from "@/lib/partners/actions";
 import { referralQueue, statusLabel, usersForAssign } from "@/lib/partners/queries";
 
 function referralTone(status: string): "success" | "warning" | "danger" | "info" | "neutral" {
@@ -91,7 +91,7 @@ export default async function ReferralReviewPage() {
               ) : null}
 
               {row.status === "submitted" || row.status === "under_review" ? (
-                <form action={reviewReferral} className="crm-partners-form is-compact">
+                <form action={staffReviewReferral} className="crm-partners-form is-compact">
                   <input type="hidden" name="referralId" value={row.id} />
                   <label>
                     มอบหมายให้

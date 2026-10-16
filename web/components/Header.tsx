@@ -271,7 +271,7 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
                 t.audit
               )}
             </span>
-            <span className="kpi-header-cta-short">{t.auditShort ?? t.audit}</span>
+            <span className="kpi-header-cta-short">{t.auditShort}</span>
           </Link>
         </div>
       </div>

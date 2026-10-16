@@ -18,6 +18,8 @@ import { relatedServiceLinks } from "@/lib/insight-links";
 import { articleSchema } from "@/lib/schema";
 import { auditHref, homeHref, htmlLang, localizePath, resolvePageHref, SITE, type Locale } from "@/lib/seo";
 
+type HandoffTextBlock = { type: "h1" | "h2" | "h3" | "p"; text: string };
+
 const EMPHASIS_TERMS = [
   "Revenue Management",
   "Google Business Profile",
@@ -122,9 +124,10 @@ function ArticleBlocks({
   const nodes: ReactNode[] = [];
 
   if (preface.length) {
-    const prefaceParagraphs = preface
-      .filter((block): block is Extract<HandoffBlock, { type: "p" }> => block.type === "p")
-      .filter((block) => !leadText || block.text.trim() !== leadText.trim());
+    const prefaceParagraphs = preface.filter(
+      (block): block is HandoffTextBlock & { type: "p" } =>
+        block.type === "p" && (!leadText || block.text.trim() !== leadText.trim()),
+    );
     if (prefaceParagraphs.length) {
       nodes.push(
         <aside key="takeaway" className="kpi-article-takeaway">
@@ -150,7 +153,7 @@ function ArticleBlocks({
         );
         if (duplicatedLater) return;
         const headingTexts = new Set(
-          rest.filter((later): later is Extract<HandoffBlock, { type: "h2" }> => later.type === "h2").map((later) => later.text),
+          rest.filter((later): later is HandoffTextBlock & { type: "h2" } => later.type === "h2").map((later) => later.text),
         );
         const looksLikeMiniToc = block.items.every((item) => headingTexts.has(item));
         if (looksLikeMiniToc) return;
@@ -202,10 +205,10 @@ function ArticleBlocks({
       );
 
       if (isCompareHeading(block.text)) {
-        const paragraphs: Extract<HandoffBlock, { type: "p" }>[] = [];
+        const paragraphs: Array<HandoffTextBlock & { type: "p" }> = [];
         let cursor = index + 1;
         while (cursor < rest.length && rest[cursor].type === "p" && paragraphs.length < 2) {
-          paragraphs.push(rest[cursor] as Extract<HandoffBlock, { type: "p" }>);
+          paragraphs.push(rest[cursor] as HandoffTextBlock & { type: "p" });
           cursor += 1;
         }
         if (paragraphs.length) {
@@ -228,7 +231,7 @@ function ArticleBlocks({
       if (isStartHeading(block.text)) {
         let cursor = index + 1;
         if (rest[cursor]?.type === "p") {
-          nodes.push(<Paragraph key={`start-intro-${index}`} text={(rest[cursor] as Extract<HandoffBlock, { type: "p" }>).text} />);
+          nodes.push(<Paragraph key={`start-intro-${index}`} text={(rest[cursor] as HandoffTextBlock & { type: "p" }).text} />);
           cursor += 1;
         }
         const list = rest[cursor];
@@ -394,7 +397,7 @@ export function InsightArticle({
     { name: title, href: post.href },
   ];
   const canonical = `${SITE}${post.href}`;
-  const headings = body.filter((block): block is Extract<HandoffBlock, { type: "h2" }> => block.type === "h2");
+  const headings = body.filter((block): block is HandoffTextBlock & { type: "h2" } => block.type === "h2");
   const showToc = post.minutes >= 8 || headings.length >= 7;
   const updated = post.modified !== post.published;
 

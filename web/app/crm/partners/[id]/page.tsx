@@ -6,8 +6,8 @@ import { formatThaiDateTime } from "@/lib/crm/queries";
 import {
   reviewBankAccount,
   reviewPartner,
-  submitBankAccount,
-  uploadPartnerDocument,
+  staffSubmitBankAccount,
+  uploadPartnerDocumentFormAction,
 } from "@/lib/partners/actions";
 import { maskAccount, maskTaxId } from "@/lib/partners/access";
 import { formatBaht } from "@/lib/partners/money";
@@ -135,7 +135,7 @@ export default async function PartnerDetailPage({ params }: { params: Promise<{ 
               </li>
             ))}
           </ul>
-          <form action={submitBankAccount} className="crm-partners-form is-compact">
+          <form action={staffSubmitBankAccount} className="crm-partners-form is-compact">
             <input type="hidden" name="partnerId" value={partner.id} />
             <label>
               ธนาคาร
@@ -164,7 +164,7 @@ export default async function PartnerDetailPage({ params }: { params: Promise<{ 
               <p>อัปโหลดเอกสาร KYC แบบส่วนตัว</p>
             </div>
           </div>
-          <form action={uploadPartnerDocument} className="crm-partners-form is-compact">
+          <form action={uploadPartnerDocumentFormAction} className="crm-partners-form is-compact">
             <input type="hidden" name="partnerId" value={partner.id} />
             <label>
               ประเภทเอกสาร

@@ -52,6 +52,8 @@ const copy = {
     ],
     measureTitle: "เราดูผลอย่างไร?",
     measureIntro: "เริ่มจากตัวเลขที่บอกสุขภาพของธุรกิจ\nไม่ใช่ดูแค่ยอดขายรวม",
+    measureBody:
+      "เริ่มจากตัวเลขที่บอกสุขภาพของธุรกิจ ไม่ใช่ดูแค่ยอดขายรวม จากนั้นจึงดูต่อว่ารายได้มาจากช่องทางไหน ต้นทุนเท่าไร และการจองตรงโตขึ้นหรือไม่",
     measureNext: "จากนั้นจึงดูต่อว่า\nรายได้มาจากช่องทางไหน ต้นทุนเท่าไร\nและการจองตรงโตขึ้นหรือไม่",
     measureClose: "เป้าหมายคือให้เจ้าของโรงแรมเห็นมากกว่า\n“เดือนนี้ขายได้เท่าไร”\nแต่เข้าใจว่า\nรายได้มาจากไหน อะไรทำกำไร และอะไรควรทำต่อ",
     relatedTitle: "เรื่องที่เกี่ยวข้องกับรายได้ ช่องทาง และการจองตรง",
@@ -293,7 +295,7 @@ export function RevenueView({ locale }: { locale: Locale }) {
               )}
             </h2>
             <ol className="kpi-revenue-diagnostic-list">
-              {(locale === "th" ? diagnosticTh : t.problems.map((text) => [{ before: text }])).map((lines, index) => (
+              {(locale === "th" ? diagnosticTh : t.problems.map((text): DiagnosticLine[] => [{ before: text }])).map((lines, index) => (
                 <li key={index} className="kpi-revenue-diagnostic-item">
                   <span className="kpi-revenue-diagnostic-num">{String(index + 1).padStart(2, "0")}</span>
                   <p className="kpi-revenue-diagnostic-text">

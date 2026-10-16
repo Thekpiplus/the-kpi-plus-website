@@ -2,7 +2,7 @@ import Link from "next/link";
 import { EmptyState } from "@/components/crm/ui/EmptyState";
 import { PageHeader } from "@/components/crm/ui/PageHeader";
 import { StatusBadge } from "@/components/crm/ui/StatusBadge";
-import { createPayoutBatch, markPayoutPaid } from "@/lib/partners/actions";
+import { staffCreatePayoutBatch, staffMarkPayoutPaid } from "@/lib/partners/actions";
 import { maskAccount } from "@/lib/partners/access";
 import { formatBaht } from "@/lib/partners/money";
 import { partnerList, payoutQueue, statusLabel } from "@/lib/partners/queries";
@@ -60,7 +60,7 @@ export default async function PayoutsPage() {
             <p>เลือกพาร์ตเนอร์จากรายการที่อนุมัติแล้ว</p>
           </div>
         </div>
-        <form action={createPayoutBatch} className="crm-partners-form is-compact">
+        <form action={staffCreatePayoutBatch} className="crm-partners-form is-compact">
           <label>
             พาร์ตเนอร์
             <select className="crm-select" name="partnerId" required>
@@ -113,7 +113,7 @@ export default async function PayoutsPage() {
                 ) : null}
 
                 {payout.status === "ready" ? (
-                  <form action={markPayoutPaid} className="crm-partners-form is-compact">
+                  <form action={staffMarkPayoutPaid} className="crm-partners-form is-compact">
                     <input type="hidden" name="payoutId" value={payout.id} />
                     <label>
                       วิธีจ่าย
