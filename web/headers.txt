@@ -1,0 +1,8 @@
+HTTP/1.1 303 See Other
+vary: rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch
+location: http://localhost:3000/admin?error=invalid
+Date: Mon, 19 Oct 2026 03:17:41 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+Transfer-Encoding: chunked
+
