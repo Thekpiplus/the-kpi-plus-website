@@ -2,7 +2,6 @@ import { prisma } from "@/lib/crm/db";
 import { documentPath, parseCmsBody } from "./body";
 import { ensureCmsSchema } from "./ensure";
 import { loadCmsNav, saveCmsNav, saveCmsRedirects, type CmsNavLink } from "./files";
-import { rawCmsClient } from "./sql";
 import type { CmsDocumentRow, CmsMediaRow, CmsRedirectRow, CmsSettingRow } from "./types";
 import { asBool } from "./types";
 
@@ -37,9 +36,7 @@ type CmsClient = {
 
 export async function cmsDb() {
   await ensureCmsSchema();
-  // Prefer the raw SQLite client so schema columns added via ensureCmsSchema
-  // (e.g. menuLabel) work without requiring a regenerated Prisma client.
-  return rawCmsClient(prisma()) as unknown as CmsClient;
+  return prisma() as unknown as CmsClient;
 }
 
 function liveNowFilter() {
@@ -74,8 +71,12 @@ export async function listDocuments(kind: "page" | "insight", filters: { q?: str
       where: {
         kind,
         trashedAt: null,
-        status: filters.status || undefined,
-        OR: q ? [{ title: { contains: q } }, { slug: { contains: q } }] : undefined,
+        ...(filters.status ? { status: filters.status } : {}),
+        ...(q
+          ? {
+              OR: [{ title: { contains: q } }, { slug: { contains: q } }],
+            }
+          : {}),
       },
       orderBy: { updatedAt: "desc" },
     });
@@ -86,22 +87,18 @@ export async function listDocuments(kind: "page" | "insight", filters: { q?: str
 
 export async function listTrashedDocuments(filters: { kind?: "page" | "insight"; q?: string } = {}) {
   try {
-    await ensureCmsSchema();
-    const params: unknown[] = [];
-    let sql = `SELECT "id" FROM "CmsDocument" WHERE "trashedAt" IS NOT NULL`;
-    if (filters.kind) {
-      sql += ` AND "kind" = ?`;
-      params.push(filters.kind);
-    }
-    sql += ` ORDER BY "trashedAt" DESC`;
-    const rows = await prisma().$queryRawUnsafe<{ id: string }[]>(sql, ...params);
     const db = await cmsDb();
-    const docs = (
-      await Promise.all(rows.map((row) => db.cmsDocument.findUnique({ where: { id: String(row.id) } })))
-    ).filter((doc): doc is NonNullable<typeof doc> => Boolean(doc?.trashedAt));
     const q = filters.q?.trim().toLowerCase();
-    if (!q) return docs;
-    return docs.filter(
+    const docs = await db.cmsDocument.findMany({
+      where: {
+        trashedAt: { not: null },
+        kind: filters.kind || undefined,
+      },
+      orderBy: { updatedAt: "desc" },
+    });
+    const trashed = docs.filter((doc) => Boolean(doc.trashedAt));
+    if (!q) return trashed;
+    return trashed.filter(
       (doc) =>
         doc.title.toLowerCase().includes(q) ||
         doc.slug.toLowerCase().includes(q) ||
@@ -115,11 +112,8 @@ export async function listTrashedDocuments(filters: { kind?: "page" | "insight";
 
 export async function countTrashedDocuments() {
   try {
-    await ensureCmsSchema();
-    const rows = await prisma().$queryRawUnsafe<{ count: number }[]>(
-      `SELECT COUNT(*) as count FROM "CmsDocument" WHERE "trashedAt" IS NOT NULL`,
-    );
-    return Number(rows[0]?.count ?? 0);
+    const db = await cmsDb();
+    return db.cmsDocument.count({ where: { trashedAt: { not: null } } });
   } catch {
     return 0;
   }
@@ -132,16 +126,8 @@ export async function documentById(id: string) {
 
 export async function insightDocumentBySlug(slug: string, locale = "th") {
   try {
-    await ensureCmsSchema();
-    const rows = await prisma().$queryRawUnsafe<Record<string, unknown>[]>(
-      `SELECT * FROM "CmsDocument" WHERE "kind" = ? AND "slug" = ? AND "locale" = ? LIMIT 1`,
-      "insight",
-      slug,
-      locale,
-    );
-    if (!rows[0]) return null;
     const db = await cmsDb();
-    return db.cmsDocument.findUnique({ where: { id: String(rows[0].id) } });
+    return db.cmsDocument.findFirst({ where: { kind: "insight", slug, locale } });
   } catch {
     return null;
   }
@@ -149,16 +135,8 @@ export async function insightDocumentBySlug(slug: string, locale = "th") {
 
 export async function pageDocumentBySlug(slug: string, locale = "th") {
   try {
-    await ensureCmsSchema();
-    const rows = await prisma().$queryRawUnsafe<Record<string, unknown>[]>(
-      `SELECT * FROM "CmsDocument" WHERE "kind" = ? AND "slug" = ? AND "locale" = ? LIMIT 1`,
-      "page",
-      slug,
-      locale,
-    );
-    if (!rows[0]) return null;
     const db = await cmsDb();
-    return db.cmsDocument.findUnique({ where: { id: String(rows[0].id) } });
+    return db.cmsDocument.findFirst({ where: { kind: "page", slug, locale } });
   } catch {
     return null;
   }
@@ -166,11 +144,10 @@ export async function pageDocumentBySlug(slug: string, locale = "th") {
 
 export async function trashedInsightSlugs() {
   try {
-    await ensureCmsSchema();
-    const rows = await prisma().$queryRawUnsafe<{ slug: string }[]>(
-      `SELECT "slug" FROM "CmsDocument" WHERE "kind" = ? AND "trashedAt" IS NOT NULL`,
-      "insight",
-    );
+    const db = await cmsDb();
+    const rows = await db.cmsDocument.findMany({
+      where: { kind: "insight", trashedAt: { not: null } },
+    });
     return rows.map((row) => String(row.slug));
   } catch {
     return [];
@@ -180,13 +157,8 @@ export async function trashedInsightSlugs() {
 /** Slugs that must not appear on the public insights index (trashed or offline). */
 export async function hiddenInsightSlugs() {
   try {
-    await ensureCmsSchema();
-    const rows = await prisma().$queryRawUnsafe<
-      { slug: string; status: string; scheduledAt: string | null; trashedAt: string | null }[]
-    >(
-      `SELECT "slug", "status", "scheduledAt", "trashedAt" FROM "CmsDocument" WHERE "kind" = ?`,
-      "insight",
-    );
+    const db = await cmsDb();
+    const rows = await db.cmsDocument.findMany({ where: { kind: "insight" } });
     const now = Date.now();
     return rows
       .filter((row) => {

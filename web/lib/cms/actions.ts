@@ -9,7 +9,7 @@ import { hasModule } from "@/lib/crm/modules";
 import { isFullAccessRole } from "@/lib/crm/roles";
 import { randomToken } from "@/lib/crm/security";
 import { SITE } from "@/lib/seo";
-import { blocksToMarkdown, bodyFromMarkdown, documentPath, slugify } from "./body";
+import { blocksToMarkdown, bodyFromMarkdown, documentPath, slugify, unwrapCmsBody } from "./body";
 import { loadHandoff } from "@/lib/handoff";
 import { insightBySlug, insightPosts } from "@/lib/insights";
 import { pages } from "@/lib/seo";
@@ -24,6 +24,8 @@ async function requireCms() {
   return user;
 }
 
+const LOCALE_PREFIXED_CMS_SLUGS = new Set(["about", "approach", "associations"]);
+
 function revalidatePublic(path: string) {
   revalidatePath("/crm/cms");
   revalidatePath("/crm/cms/pages");
@@ -33,7 +35,21 @@ function revalidatePublic(path: string) {
   revalidatePath("/crm/cms/globals");
   revalidatePath("/", "layout");
   revalidatePath(path);
+  revalidatePath(path, "page");
+  revalidatePath(path, "layout");
   if (path.startsWith("/insights")) revalidatePath("/insights");
+
+  // Locale variants share the same markdown/CMS body pipelines for these pages.
+  const bare = path.replace(/^\/(en|ru|zh)(?=\/|$)/, "") || "/";
+  const slug = bare.replace(/^\//, "").split("/")[0] ?? "";
+  if (LOCALE_PREFIXED_CMS_SLUGS.has(slug)) {
+    for (const localePath of [`/${slug}`, `/en/${slug}`, `/ru/${slug}`, `/zh/${slug}`]) {
+      if (localePath === path) continue;
+      revalidatePath(localePath);
+      revalidatePath(localePath, "page");
+      revalidatePath(localePath, "layout");
+    }
+  }
 }
 
 function formDocument(formData: FormData, kind: "page" | "insight") {
@@ -52,7 +68,7 @@ function formDocument(formData: FormData, kind: "page" | "insight") {
     status: published && status === "scheduled" ? "published" : status,
     template: String(formData.get("template") ?? (kind === "insight" ? "insight" : "general")),
     excerpt: String(formData.get("excerpt") ?? "").trim(),
-    body: bodyFromMarkdown(String(formData.get("body") ?? "")),
+    body: bodyFromMarkdown(unwrapCmsBody(String(formData.get("body") ?? ""))),
     featuredImage: String(formData.get("featuredImage") ?? "").trim(),
     imageAlt: String(formData.get("imageAlt") ?? "").trim(),
     category: String(formData.get("category") ?? "").trim(),
@@ -134,6 +150,7 @@ export async function ensureInsightFromSite(slug: string) {
       featuredImage: post.image,
       imageAlt: post.imageAlt,
       category: post.category.th,
+      tags: "",
       seoTitle: post.title.th,
       metaDescription: post.description.th,
       publishedAt: new Date(`${post.published}T00:00:00.000Z`),
@@ -190,6 +207,7 @@ export async function ensurePageFromSite(route: string) {
       template: "general",
       excerpt: sitePage.description || "",
       body: bodyFromMarkdown(markdown),
+      tags: "",
       seoTitle: sitePage.title,
       metaDescription: sitePage.description || "",
       menuLabel,
@@ -224,7 +242,10 @@ export async function createDocument(formData: FormData) {
   const kind = String(formData.get("kind") ?? "page") === "insight" ? "insight" : "page";
   const data = formDocument(formData, kind);
   const editorBase = kind === "insight" ? "/crm/cms/insights" : "/crm/cms/pages";
-  if (!data.title || (kind === "insight" && !data.slug)) redirect(`${editorBase}/new?error=invalid`);
+  // Insights and pages need a slug. Thai-only titles slugify to "" — require a latin slug for pages.
+  if (!data.title || !data.slug) {
+    redirect(`${editorBase}/new?error=invalid`);
+  }
   const path = collisionPath(kind, data.slug, data.locale);
   if (blocksCmsRoute(kind, path, "create")) {
     redirect(`${editorBase}/new?error=locked`);
@@ -251,7 +272,10 @@ export async function updateDocument(formData: FormData) {
   const kind = existing.kind === "insight" ? "insight" : "page";
   const data = formDocument(formData, kind);
   const editorBase = kind === "insight" ? "/crm/cms/insights" : "/crm/cms/pages";
-  if (!data.title || (kind === "insight" && !data.slug)) redirect(`${editorBase}/${id}?error=invalid`);
+  // Insights need a slug. Homepage keeps slug ""; other pages must keep a non-empty slug.
+  if (!data.title || (kind === "insight" && !data.slug) || (kind === "page" && !data.slug && existing.slug !== "")) {
+    redirect(`${editorBase}/${id}?error=invalid`);
+  }
   const path = collisionPath(kind, data.slug, data.locale);
   if (blocksCmsRoute(kind, path, "update")) {
     redirect(`${editorBase}/${id}?error=locked`);
@@ -378,6 +402,7 @@ async function ensureInsightDocFast(slug: string, online: boolean, updatedBy: st
       featuredImage: post.image,
       imageAlt: post.imageAlt,
       category: post.category.th,
+      tags: "",
       seoTitle: post.title.th,
       metaDescription: post.description.th,
       publishedAt: online ? new Date(`${post.published}T00:00:00.000Z`) : null,

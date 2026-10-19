@@ -17,6 +17,16 @@ import {
 const SESSION_COOKIE = "crm_session";
 const DEVICE_COOKIE = "crm_device";
 
+/** Secure cookies only over HTTPS (CRM_BASE_URL), so `next start` on localhost still works. */
+export function sessionCookieSecure() {
+  const base = process.env.CRM_BASE_URL ?? "http://localhost:3000";
+  try {
+    return new URL(base).protocol === "https:";
+  } catch {
+    return false;
+  }
+}
+
 function clientIp(headerList: Headers) {
   return headerList.get("x-forwarded-for")?.split(",")[0]?.trim() || headerList.get("x-real-ip") || "local";
 }
@@ -107,10 +117,7 @@ export async function currentUser() {
   if (!session || session.expiresAt < new Date()) return null;
   const user = await db.user.findUnique({ where: { id: session.userId } });
   if (!user) return null;
-  const extra = await db
-    .$queryRawUnsafe<{ modules: string | null }[]>(`SELECT "modules" FROM "User" WHERE "id" = ?`, user.id)
-    .catch(() => [] as { modules: string | null }[]);
-  return { ...user, modules: extra[0]?.modules ?? (user as { modules?: string }).modules ?? "" };
+  return { ...user, modules: user.modules ?? "" };
 }
 
 export async function requireUser() {
@@ -142,16 +149,9 @@ async function findUserByLogin(login: string) {
   if (login.includes("@")) {
     return db.user.findUnique({ where: { email: login } });
   }
-  try {
-    const rows = await db.$queryRawUnsafe<{ id: string }[]>(
-      `SELECT "id" FROM "User" WHERE lower("username") = ? LIMIT 1`,
-      login,
-    );
-    if (rows[0]?.id) return db.user.findUnique({ where: { id: rows[0].id } });
-  } catch {
-    // username column may be missing on older DBs until seed runs.
-  }
-  return null;
+  return db.user.findFirst({
+    where: { username: login },
+  });
 }
 
 export async function startLogin(loginRaw: string, password: string, expectedRole?: string) {
@@ -244,7 +244,7 @@ export async function verifyDevice(challengeId: string, code: string) {
   jar.set(DEVICE_COOKIE, deviceToken, {
     httpOnly: true,
     sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    secure: sessionCookieSecure(),
     path: "/",
     maxAge: 60 * 60 * 24 * 180,
   });
@@ -277,7 +277,7 @@ async function createSession(userId: string, ip: string, userAgent: string) {
     jar.set(SESSION_COOKIE, token, {
       httpOnly: true,
       sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
+      secure: sessionCookieSecure(),
       path: "/",
       maxAge: SESSION_HOURS * 60 * 60,
     });
@@ -359,7 +359,7 @@ export async function bootstrapOwner(input: { name: string; phone: string; email
   jar.set(DEVICE_COOKIE, deviceToken, {
     httpOnly: true,
     sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    secure: sessionCookieSecure(),
     path: "/",
     maxAge: 60 * 60 * 24 * 180,
   });

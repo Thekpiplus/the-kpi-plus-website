@@ -47,7 +47,9 @@ export function CmsDocumentForm({
           </header>
           {isInsight ? null : (
             <p className="crm-cms-editor-note">
-              เลย์เอาต์ของหน้าเดิมยังอยู่ที่โค้ด ช่องนี้แก้เนื้อหา SEO รูป และเมนู หน้าที่มีอยู่แล้วถูกล็อกไว้ สร้างได้เฉพาะ slug ใหม่
+              หน้าที่มีเลย์เอาต์ออกแบบในโค้ด (เช่น about / approach / case-studies) คงดีไซน์เดิม — จาก CMS
+              แก้ได้เฉพาะ SEO รูป เมนู และเปิด/ปิดออนไลน์ เนื้อหา markdown ด้านล่างใช้กับหน้าที่สร้างใหม่ใน CMS
+              และบทความเท่านั้น
             </p>
           )}
           {saved ? <p className="crm-users-alert is-ok">บันทึกแล้ว</p> : null}

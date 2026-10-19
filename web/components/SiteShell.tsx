@@ -41,9 +41,12 @@ export async function SiteShell({
   if (stored && !isCmsPageLive(stored)) notFound();
 
   const page = pageByRoute.get(route);
-  const title = titleOverride || page?.title || brandName(locale);
-  const description = descriptionOverride || page?.description || "";
-  const canonical = page?.canonical ?? `https://thekpiplus.com${route === "/" ? "" : route}`;
+  const cmsLive = stored && isCmsPageLive(stored) ? stored : null;
+  const title = titleOverride || cmsLive?.seoTitle || cmsLive?.title || page?.title || brandName(locale);
+  const description =
+    descriptionOverride || cmsLive?.metaDescription || cmsLive?.excerpt || page?.description || "";
+  const canonical =
+    cmsLive?.canonical || page?.canonical || `https://thekpiplus.com${route === "/" ? "" : route}`;
   const kind = pageKind(route);
   // Article FAQs belong in the article itself when written for that post — not via shared SiteShell append.
   const faqs = kind === "article" ? [] : faqsForRoute(route);

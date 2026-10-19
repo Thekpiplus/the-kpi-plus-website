@@ -8,6 +8,8 @@ import { cmsMetadata, isCmsPageLive, storedPageByPath } from "@/lib/cms/public";
 import { handoffRoutes } from "@/lib/handoff";
 import { localeFromPath, metadataFor, pageByRoute } from "@/lib/seo";
 
+export const dynamic = "force-dynamic";
+
 type Params = { slug: string[] };
 
 export function generateStaticParams() {
@@ -104,7 +106,9 @@ export function generateStaticParams() {
         !dedicated.has(route) &&
         !route.startsWith("/en/solutions/") &&
         !route.startsWith("/en/hotel-") &&
-        !route.startsWith("/insights/"),
+        !route.startsWith("/insights/") &&
+        // Case-study details are served by app/*/case-studies/[slug], not markdown handoff.
+        !/^\/(en\/|ru\/|zh\/)?case-studies\//.test(route),
     )
     .map((route) => ({ slug: route.replace(/^\//, "").split("/") }))
     .filter((params) => !reserved.has(params.slug[0] ?? "") || params.slug.length > 1);

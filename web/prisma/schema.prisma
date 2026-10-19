@@ -391,22 +391,22 @@ model LeadCreditDecision {
 model CmsDocument {
   id               String    @id @default(cuid())
   kind             String
-  title            String
-  slug             String
+  title            String    @db.VarChar(500)
+  slug             String    @db.VarChar(255)
   locale           String    @default("th")
   status           String    @default("draft")
   template         String    @default("general")
-  excerpt          String    @default("")
-  body             String    @default("[]")
-  featuredImage    String    @default("")
-  imageAlt         String    @default("")
+  excerpt          String    @default("") @db.Text
+  body             String    @db.LongText
+  featuredImage    String    @default("") @db.VarChar(500)
+  imageAlt         String    @default("") @db.VarChar(500)
   category         String    @default("")
-  tags             String    @default("")
+  tags             String    @default("") @db.Text
   author           String    @default("")
-  seoTitle         String    @default("")
-  metaDescription  String    @default("")
-  canonical        String    @default("")
-  ogImage          String    @default("")
+  seoTitle         String    @default("") @db.VarChar(500)
+  metaDescription  String    @default("") @db.Text
+  canonical        String    @default("") @db.VarChar(500)
+  ogImage          String    @default("") @db.VarChar(500)
   noindex          Boolean   @default(false)
   showInMenu       Boolean   @default(false)
   menu             String    @default("none")
@@ -445,6 +445,6 @@ model CmsRedirect {
 
 model CmsSetting {
   id        String   @id
-  value     String   @default("{}")
+  value     String   @db.LongText
   updatedAt DateTime @updatedAt
 }

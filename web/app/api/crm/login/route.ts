@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { startLogin } from "@/lib/crm/auth";
+import { sessionCookieSecure, startLogin } from "@/lib/crm/auth";
 import { SESSION_HOURS } from "@/lib/crm/constants";
 import { crmEnabled } from "@/lib/crm/db";
 import { ensureCrmSeed } from "@/lib/crm/seed";
@@ -35,7 +35,7 @@ export async function POST(request: Request) {
     response.cookies.set("crm_session", result.sessionToken, {
       httpOnly: true,
       sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
+      secure: sessionCookieSecure(),
       path: "/",
       maxAge: SESSION_HOURS * 60 * 60,
     });

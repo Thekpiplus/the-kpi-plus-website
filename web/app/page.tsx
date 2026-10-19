@@ -3,6 +3,8 @@ import { HomeView } from "@/components/HomeView";
 import { isCmsPageLive, storedPageByPath } from "@/lib/cms/public";
 import { metadataFor } from "@/lib/seo";
 
+export const dynamic = "force-dynamic";
+
 export const metadata = metadataFor("/");
 
 export default async function HomePage() {

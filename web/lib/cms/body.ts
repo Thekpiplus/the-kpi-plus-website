@@ -2,13 +2,42 @@ import type { HandoffBlock } from "@/lib/handoff";
 import { parseMain } from "@/lib/handoff";
 import { localizePath, type Locale } from "@/lib/seo";
 
+function isBlockArray(value: unknown): value is HandoffBlock[] {
+  return Array.isArray(value) && value.every((item) => item && typeof item === "object" && "type" in item);
+}
+
+/** Undo accidental JSON-in-paragraph nesting from earlier CMS saves. */
+export function unwrapCmsBody(raw: string): string {
+  let current = raw.trim();
+  for (let i = 0; i < 6; i += 1) {
+    if (!current.startsWith("[")) return current;
+    try {
+      const parsed = JSON.parse(current) as unknown;
+      if (!isBlockArray(parsed)) return current;
+      if (
+        parsed.length === 1 &&
+        parsed[0].type === "p" &&
+        typeof (parsed[0] as { text?: string }).text === "string" &&
+        (parsed[0] as { text: string }).text.trim().startsWith("[")
+      ) {
+        current = (parsed[0] as { text: string }).text.trim();
+        continue;
+      }
+      return JSON.stringify(parsed);
+    } catch {
+      return current;
+    }
+  }
+  return current;
+}
+
 export function parseCmsBody(raw: string): HandoffBlock[] {
-  const trimmed = raw.trim();
+  const trimmed = unwrapCmsBody(raw);
   if (!trimmed) return [];
   if (trimmed.startsWith("[")) {
     try {
       const parsed = JSON.parse(trimmed) as unknown;
-      if (Array.isArray(parsed)) return parsed as HandoffBlock[];
+      if (isBlockArray(parsed)) return parsed;
     } catch {
       // Fall through to markdown.
     }
@@ -38,6 +67,16 @@ export function blocksToMarkdown(blocks: HandoffBlock[]) {
 }
 
 export function bodyFromMarkdown(raw: string) {
+  const trimmed = raw.trim();
+  // If the editor somehow still holds CMS JSON, keep/normalize it instead of nesting again.
+  if (trimmed.startsWith("[")) {
+    try {
+      const parsed = JSON.parse(unwrapCmsBody(trimmed)) as unknown;
+      if (isBlockArray(parsed)) return JSON.stringify(parsed);
+    } catch {
+      // Fall through to markdown parse.
+    }
+  }
   return JSON.stringify(parseMain(raw));
 }
 

@@ -77,18 +77,23 @@ export async function createStaffUser(formData: FormData) {
   const taken = await db.user.findFirst({
     where: { OR: [{ email }, { phone }] },
   });
-  const usernameTaken = await db
-    .$queryRawUnsafe<{ id: string }[]>(`SELECT "id" FROM "User" WHERE lower("username") = ? LIMIT 1`, username)
-    .catch(() => [] as { id: string }[]);
-  if (taken || usernameTaken[0]) redirect("/crm/users?new=1&error=exists");
+  const usernameTaken = await db.user.findFirst({ where: { username } });
+  if (taken || usernameTaken) redirect("/crm/users?new=1&error=exists");
 
   const hashed = hashSecret(password);
-  const created = await db.user.create({
-    data: { name, email, phone, role, pinHash: hashed.hash, pinSalt: hashed.salt },
-  });
   const modulePayload = isFullAccessRole(role) ? JSON.stringify(["leads", "partners", "users", "cms"]) : modules;
-  await db.$executeRawUnsafe(`UPDATE "User" SET "modules" = ? WHERE "id" = ?`, modulePayload, created.id).catch(() => undefined);
-  await db.$executeRawUnsafe(`UPDATE "User" SET "username" = ? WHERE "id" = ?`, username, created.id).catch(() => undefined);
+  const created = await db.user.create({
+    data: {
+      name,
+      email,
+      username,
+      phone,
+      role,
+      modules: modulePayload,
+      pinHash: hashed.hash,
+      pinSalt: hashed.salt,
+    },
+  });
   revalidateUsers(created.id);
   redirect(`/crm/users?created=1`);
 }
@@ -109,14 +114,8 @@ export async function updateStaffUser(formData: FormData) {
   const taken = await db.user.findFirst({
     where: { OR: [{ email }, { phone }], NOT: { id } },
   });
-  const usernameTaken = await db
-    .$queryRawUnsafe<{ id: string }[]>(
-      `SELECT "id" FROM "User" WHERE lower("username") = ? AND "id" != ? LIMIT 1`,
-      username,
-      id,
-    )
-    .catch(() => [] as { id: string }[]);
-  if (taken || usernameTaken[0]) redirect(`/crm/users/${id}?error=exists`);
+  const usernameTaken = await db.user.findFirst({ where: { username, NOT: { id } } });
+  if (taken || usernameTaken) redirect(`/crm/users/${id}?error=exists`);
 
   if (isPartnerRoleValue(target.role)) {
     const hashed = password.length >= 4 ? hashSecret(password) : null;
@@ -125,11 +124,11 @@ export async function updateStaffUser(formData: FormData) {
       data: {
         name,
         email,
+        username,
         phone,
         ...(hashed ? { pinHash: hashed.hash, pinSalt: hashed.salt, failedAttempts: 0, lockedUntil: null } : {}),
       },
     });
-    await db.$executeRawUnsafe(`UPDATE "User" SET "username" = ? WHERE "id" = ?`, username, id).catch(() => undefined);
     revalidateUsers(id);
     redirect(formData.get("returnTo") === "list" ? "/crm/users?saved=1" : `/crm/users/${id}?saved=1`);
   }
@@ -150,20 +149,19 @@ export async function updateStaffUser(formData: FormData) {
   }
 
   const hashed = password.length >= 4 ? hashSecret(password) : null;
+  const modulePayload = isFullAccessRole(nextRole) ? JSON.stringify(["leads", "partners", "users", "cms"]) : modules;
   await db.user.update({
     where: { id },
     data: {
       name,
       email,
+      username,
       phone,
       role: nextRole,
+      modules: modulePayload,
       ...(hashed ? { pinHash: hashed.hash, pinSalt: hashed.salt, failedAttempts: 0, lockedUntil: null } : {}),
     },
   });
-
-  const modulePayload = isFullAccessRole(nextRole) ? JSON.stringify(["leads", "partners", "users", "cms"]) : modules;
-  await db.$executeRawUnsafe(`UPDATE "User" SET "modules" = ? WHERE "id" = ?`, modulePayload, id).catch(() => undefined);
-  await db.$executeRawUnsafe(`UPDATE "User" SET "username" = ? WHERE "id" = ?`, username, id).catch(() => undefined);
 
   revalidateUsers(id);
   redirect(formData.get("returnTo") === "list" ? "/crm/users?saved=1" : `/crm/users/${id}?saved=1`);

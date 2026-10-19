@@ -1,8 +1,16 @@
 import { ApproachView } from "@/components/ApproachView";
-import { metadataFor } from "@/lib/seo";
+import { CmsAwarePage, cmsAwareMetadata } from "@/components/CmsAwarePage";
 
-export const metadata = metadataFor("/approach");
+export const dynamic = "force-dynamic";
 
-export default function Page() {
-  return <ApproachView locale="th" />;
+export async function generateMetadata() {
+  return cmsAwareMetadata("/approach");
+}
+
+export default async function Page() {
+  return (
+    <CmsAwarePage route="/approach">
+      <ApproachView locale="th" />
+    </CmsAwarePage>
+  );
 }

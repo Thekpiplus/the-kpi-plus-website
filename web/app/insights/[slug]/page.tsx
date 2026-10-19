@@ -8,6 +8,8 @@ import { loadHandoff } from "@/lib/handoff";
 import { insightBySlug, insightPosts } from "@/lib/insights";
 import { metadataFor, pageByRoute } from "@/lib/seo";
 
+export const dynamic = "force-dynamic";
+
 type Params = { slug: string };
 
 export function generateStaticParams() {

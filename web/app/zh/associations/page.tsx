@@ -1,8 +1,16 @@
 import { AssociationsView } from "@/components/AssociationsView";
-import { metadataFor } from "@/lib/seo";
+import { CmsAwarePage, cmsAwareMetadata } from "@/components/CmsAwarePage";
 
-export const metadata = metadataFor("/zh/associations");
+export const dynamic = "force-dynamic";
 
-export default function Page() {
-  return <AssociationsView locale="zh" />;
+export async function generateMetadata() {
+  return cmsAwareMetadata("/zh/associations");
+}
+
+export default async function Page() {
+  return (
+    <CmsAwarePage route="/zh/associations">
+      <AssociationsView locale="zh" />
+    </CmsAwarePage>
+  );
 }

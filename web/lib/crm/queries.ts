@@ -51,24 +51,15 @@ export async function listUsers(filters: { q?: string; role?: string } = {}) {
     },
     orderBy: { name: "asc" },
   });
-  const extras = await prisma()
-    .$queryRawUnsafe<{ id: string; modules: string | null; username: string | null }[]>(
-      `SELECT "id", "modules", "username" FROM "User"`,
-    )
-    .catch(() => [] as { id: string; modules: string | null; username: string | null }[]);
-  const map = new Map(extras.map((item) => [item.id, item]));
   const lastLogin = await lastLoginAtByUsers(
     users.map((user) => ({ id: user.id, email: user.email })),
   ).catch(() => new Map<string, Date>());
-  return users.map((user) => {
-    const extra = map.get(user.id);
-    return {
-      ...user,
-      modules: extra?.modules ?? (user as { modules?: string }).modules ?? "",
-      username: extra?.username ?? (user as { username?: string | null }).username ?? null,
-      lastLoginAt: lastLogin.get(user.id) ?? null,
-    };
-  });
+  return users.map((user) => ({
+    ...user,
+    modules: user.modules ?? "",
+    username: user.username ?? null,
+    lastLoginAt: lastLogin.get(user.id) ?? null,
+  }));
 }
 
 /** Latest successful login (LoginAttempt) or session create time per user. */
@@ -113,16 +104,10 @@ export async function lastLoginAtByUsers(users: Array<{ id: string; email: strin
 export async function userById(id: string) {
   const user = await prisma().user.findUnique({ where: { id } });
   if (!user) return null;
-  const extra = await prisma()
-    .$queryRawUnsafe<{ modules: string | null; username: string | null }[]>(
-      `SELECT "modules", "username" FROM "User" WHERE "id" = ?`,
-      id,
-    )
-    .catch(() => [] as { modules: string | null; username: string | null }[]);
   return {
     ...user,
-    modules: extra[0]?.modules ?? (user as { modules?: string }).modules ?? "",
-    username: extra[0]?.username ?? (user as { username?: string | null }).username ?? null,
+    modules: user.modules ?? "",
+    username: user.username ?? null,
   };
 }
 

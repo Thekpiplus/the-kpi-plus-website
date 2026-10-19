@@ -3,39 +3,28 @@ import { prisma } from "./db";
 export type LeadArchiveView = "active" | "archived" | "all";
 
 export async function ensureLeadArchiveColumn() {
-  await prisma()
-    .$executeRawUnsafe(`ALTER TABLE "Lead" ADD COLUMN "archivedAt" DATETIME`)
-    .catch(() => undefined);
+  // archivedAt is part of the Prisma Lead model.
 }
 
 export async function leadIdsByArchive(view: LeadArchiveView) {
-  await ensureLeadArchiveColumn();
   if (view === "all") return null;
-  const sql =
-    view === "archived"
-      ? `SELECT "id" FROM "Lead" WHERE "archivedAt" IS NOT NULL`
-      : `SELECT "id" FROM "Lead" WHERE "archivedAt" IS NULL`;
-  const rows = await prisma().$queryRawUnsafe<{ id: string }[]>(sql);
+  const rows = await prisma().lead.findMany({
+    where: view === "archived" ? { archivedAt: { not: null } } : { archivedAt: null },
+    select: { id: true },
+  });
   return rows.map((row) => row.id);
 }
 
 export async function leadArchivedAt(id: string) {
-  await ensureLeadArchiveColumn();
-  const rows = await prisma()
-    .$queryRawUnsafe<{ archivedAt: string | Date | null }[]>(`SELECT "archivedAt" FROM "Lead" WHERE "id" = ?`, id)
-    .catch(() => [] as { archivedAt: string | Date | null }[]);
-  const value = rows[0]?.archivedAt;
-  if (!value) return null;
-  return value instanceof Date ? value : new Date(value);
+  const row = await prisma().lead.findUnique({ where: { id }, select: { archivedAt: true } });
+  return row?.archivedAt ?? null;
 }
 
 export async function setLeadArchived(id: string, archived: boolean) {
-  await ensureLeadArchiveColumn();
-  if (archived) {
-    await prisma().$executeRawUnsafe(`UPDATE "Lead" SET "archivedAt" = ? WHERE "id" = ?`, new Date().toISOString(), id);
-  } else {
-    await prisma().$executeRawUnsafe(`UPDATE "Lead" SET "archivedAt" = NULL WHERE "id" = ?`, id);
-  }
+  await prisma().lead.update({
+    where: { id },
+    data: { archivedAt: archived ? new Date() : null },
+  });
 }
 
 export function archiveWhere(ids: string[] | null) {
@@ -45,22 +34,12 @@ export function archiveWhere(ids: string[] | null) {
 }
 
 export async function leadArchiveMap(ids: string[]) {
-  await ensureLeadArchiveColumn();
   if (!ids.length) return new Map<string, Date | null>();
-  const placeholders = ids.map(() => "?").join(",");
-  const rows = await prisma()
-    .$queryRawUnsafe<{ id: string; archivedAt: string | Date | null }[]>(
-      `SELECT "id", "archivedAt" FROM "Lead" WHERE "id" IN (${placeholders})`,
-      ...ids,
-    )
-    .catch(() => [] as { id: string; archivedAt: string | Date | null }[]);
-  return new Map(
-    rows.map((row) => {
-      const value = row.archivedAt;
-      const archivedAt = !value ? null : value instanceof Date ? value : new Date(value);
-      return [row.id, archivedAt] as const;
-    }),
-  );
+  const rows = await prisma().lead.findMany({
+    where: { id: { in: ids } },
+    select: { id: true, archivedAt: true },
+  });
+  return new Map(rows.map((row) => [row.id, row.archivedAt] as const));
 }
 
 export async function leadArchiveCounts() {

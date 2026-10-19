@@ -1,8 +1,16 @@
 import { AboutView } from "@/components/AboutView";
-import { metadataFor } from "@/lib/seo";
+import { CmsAwarePage, cmsAwareMetadata } from "@/components/CmsAwarePage";
 
-export const metadata = metadataFor("/about");
+export const dynamic = "force-dynamic";
 
-export default function Page() {
-  return <AboutView locale="th" />;
+export async function generateMetadata() {
+  return cmsAwareMetadata("/about");
+}
+
+export default async function Page() {
+  return (
+    <CmsAwarePage route="/about">
+      <AboutView locale="th" />
+    </CmsAwarePage>
+  );
 }

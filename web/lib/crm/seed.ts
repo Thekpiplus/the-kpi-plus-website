@@ -11,9 +11,7 @@ const ADMIN_USERNAME = "isara";
 const ADMIN_PASSWORD = "4202";
 
 export async function ensureUsernameColumn() {
-  const db = prisma();
-  await db.$executeRawUnsafe(`ALTER TABLE "User" ADD COLUMN "username" TEXT`).catch(() => undefined);
-  await db.$executeRawUnsafe(`CREATE UNIQUE INDEX IF NOT EXISTS "User_username_key" ON "User"("username")`).catch(() => undefined);
+  // username is part of the Prisma schema; keep this as a no-op for older DBs.
 }
 
 export async function ensureCrmSeed() {
@@ -166,6 +164,7 @@ export async function ensureAdminUser() {
       where: { id: existing.id },
       data: {
         name: existing.name || "Isara",
+        username: existing.username || ADMIN_USERNAME,
         role:
           existing.role === "partner" || existing.role === "partners"
             ? "superadmin"
@@ -177,23 +176,20 @@ export async function ensureAdminUser() {
         lockedUntil: null,
       },
     });
-    await db
-      .$executeRawUnsafe(`UPDATE "User" SET "username" = ? WHERE "id" = ? AND ("username" IS NULL OR "username" = '')`, ADMIN_USERNAME, existing.id)
-      .catch(() => undefined);
     return;
   }
   try {
-    const created = await db.user.create({
+    await db.user.create({
       data: {
         name: "Isara",
         email: ADMIN_EMAIL,
+        username: ADMIN_USERNAME,
         phone: "66000000001",
         role: "superadmin",
         pinHash: hashed.hash,
         pinSalt: hashed.salt,
       },
     });
-    await db.$executeRawUnsafe(`UPDATE "User" SET "username" = ? WHERE "id" = ?`, ADMIN_USERNAME, created.id).catch(() => undefined);
   } catch {
     const fallback = await db.user.findFirst({ where: { role: { notIn: ["partner", "partners"] } } });
     if (!fallback) throw new Error("admin_seed_failed");
@@ -201,6 +197,7 @@ export async function ensureAdminUser() {
       where: { id: fallback.id },
       data: {
         email: ADMIN_EMAIL,
+        username: ADMIN_USERNAME,
         name: fallback.name || "Isara",
         role: "superadmin",
         pinHash: hashed.hash,
@@ -209,6 +206,5 @@ export async function ensureAdminUser() {
         lockedUntil: null,
       },
     });
-    await db.$executeRawUnsafe(`UPDATE "User" SET "username" = ? WHERE "id" = ?`, ADMIN_USERNAME, fallback.id).catch(() => undefined);
   }
 }

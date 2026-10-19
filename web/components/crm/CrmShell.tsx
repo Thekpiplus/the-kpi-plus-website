@@ -38,7 +38,7 @@ const cmsLinks = [
   { href: "/crm/cms", label: "หน้าเพจทั้งหมด" },
   { href: "/crm/cms/insights", label: "บทความ" },
   { href: "/crm/cms/trash", label: "ถังขยะ" },
-  { href: "/crm/cms/media", label: "สื่อ" },
+  { href: "/crm/cms/media", label: "สื่อ/ไฟล์รูปภาพ" },
   { href: "/crm/cms/redirects", label: "Redirect" },
   { href: "/crm/cms/globals", label: "ตั้งค่าเว็บ" },
 ];
