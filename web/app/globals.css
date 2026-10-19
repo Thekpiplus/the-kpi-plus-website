@@ -661,6 +661,24 @@ form .kpi-button {
   z-index: 1;
 }
 
+/* Subtle technical grid — low opacity, fades toward the right */
+.kpi-hero::after,
+.kpi-hero-pad::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(210, 228, 242, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(210, 228, 242, 0.035) 1px, transparent 1px);
+  background-size: 4.5rem 4.5rem;
+  background-position: center top;
+  -webkit-mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.28) 52%, transparent 90%);
+  mask-image: linear-gradient(90deg, rgba(0, 0, 0, 0.55) 0%, rgba(0, 0, 0, 0.28) 52%, transparent 90%);
+  opacity: 0.85;
+}
+
 .kpi-hero > .kpi-wrap,
 .kpi-hero-pad > .mx-auto,
 .kpi-hero-pad > .relative {
@@ -8320,6 +8338,10 @@ form .kpi-button {
 
 .kpi-home-hero .kpi-home-photo {
   border-radius: 0.4rem;
+  /* Soft brand glow behind the hero visual — atmospheric, not a flat fill */
+  box-shadow:
+    0 0 4.5rem 1.25rem rgba(162, 220, 37, 0.16),
+    0 1.5rem 3rem rgba(6, 24, 43, 0.35);
 }
 
 .kpi-home-photo img {

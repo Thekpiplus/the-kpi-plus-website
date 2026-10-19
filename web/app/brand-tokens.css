@@ -23,7 +23,23 @@
   --kpi-body-text: #555555;
   --kpi-lime-gradient: linear-gradient(135deg, #E6E81F 0%, #A3CE39 100%);
   --kpi-teal-gradient: linear-gradient(160deg, #1F3F63 0%, #356F9C 100%);
-  --kpi-hero-gradient: linear-gradient(160deg, #1F3F63 0%, #356F9C 100%);
+  /* Premium hospitality / B2B SaaS hero: deep navy + soft brand glows */
+  --kpi-hero-gradient:
+    radial-gradient(
+      circle at 78% 42%,
+      rgba(162, 220, 37, 0.18) 0%,
+      rgba(162, 220, 37, 0.07) 24%,
+      transparent 48%
+    ),
+    radial-gradient(
+      circle at 18% 88%,
+      rgba(235, 231, 34, 0.1) 0%,
+      transparent 30%
+    ),
+    linear-gradient(120deg, #06182b 0%, #092441 44%, #0f3559 100%);
+  --kpi-hero-navy-deep: #06182b;
+  --kpi-hero-navy: #092441;
+  --kpi-hero-navy-mid: #0f3559;
   --kpi-font-display: "Poppins", sans-serif;
   --kpi-font-thai: "Noto Sans Thai", Tahoma, Arial, sans-serif;
   --kpi-font-body: "Noto Sans Thai", "Poppins", Tahoma, Arial, sans-serif;
