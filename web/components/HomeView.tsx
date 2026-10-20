@@ -38,6 +38,116 @@ const problemAnchors = [
 
 const pillarAnchors = ["grow-revenue", "grow-demand", "grow-capability"] as const;
 const pillarCats = ["Revenue", "Marketing", "Operations"] as const;
+const pillarOutputs = {
+  th: [
+    "ปฏิทินรายได้ Occupancy forecast และคำแนะนำราคา",
+    "รายงานช่องทางจอง แคมเปญ และผลการจองตรง",
+    "รายงานระบบ งานหลังบ้าน และแผนพัฒนาทีม",
+  ],
+  en: [
+    "Revenue calendar and pricing recommendations",
+    "Campaign and direct booking performance report",
+    "Systems, operations, and team development report",
+  ],
+} as const;
+
+function PillarPreview({ index, sampleLabel }: { index: number; sampleLabel: string }) {
+  if (index === 0) {
+    return (
+      <div className="kpi-home-pillar-preview">
+        <span className="kpi-home-pillar-sample">{sampleLabel}</span>
+        <div className="kpi-home-pillar-cal" aria-hidden="true">
+          {["M", "T", "W", "T", "F", "S", "S"].map((day, dayIndex) => (
+            <span
+              key={`${day}-${dayIndex}`}
+              className={`kpi-home-pillar-cal-cell${dayIndex === 3 ? " is-accent" : ""}`}
+              style={{ ["--kpi-cal-fill" as string]: `${[42, 55, 63, 78, 70, 48, 36][dayIndex]}%` }}
+            >
+              {day}
+            </span>
+          ))}
+        </div>
+        <div className="kpi-home-pillar-kpis" aria-hidden="true">
+          <div>
+            <span>Occ. forecast</span>
+            <strong className="kpi-latin">72%</strong>
+          </div>
+          <div className="is-up">
+            <span>RevPAR trend</span>
+            <strong className="kpi-latin">Up</strong>
+          </div>
+          <div>
+            <span>Pricing</span>
+            <strong>Review</strong>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (index === 1) {
+    return (
+      <div className="kpi-home-pillar-preview">
+        <span className="kpi-home-pillar-sample">{sampleLabel}</span>
+        <div className="kpi-home-pillar-funnel" aria-hidden="true">
+          <span style={{ width: "100%" }}>Visit</span>
+          <span style={{ width: "68%" }}>Enquiry</span>
+          <span className="is-accent" style={{ width: "34%" }}>
+            Direct book
+          </span>
+        </div>
+        <div className="kpi-home-pillar-kpis" aria-hidden="true">
+          <div>
+            <span>Direct</span>
+            <strong className="kpi-latin">31%</strong>
+          </div>
+          <div>
+            <span>OTA mix</span>
+            <strong className="kpi-latin">54%</strong>
+          </div>
+          <div className="is-up">
+            <span>Conv.</span>
+            <strong className="kpi-latin">Up</strong>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="kpi-home-pillar-preview">
+      <span className="kpi-home-pillar-sample">{sampleLabel}</span>
+      <div className="kpi-home-pillar-ops" aria-hidden="true">
+        {[
+          ["Systems", 72],
+          ["Workflow", 58],
+          ["Team", 64],
+        ].map(([label, value]) => (
+          <div key={label} className="kpi-home-pillar-ops-row">
+            <span>{label}</span>
+            <span className="kpi-home-pillar-ops-track">
+              <span className="kpi-home-pillar-ops-fill" style={{ width: `${value}%` }} />
+            </span>
+          </div>
+        ))}
+      </div>
+      <div className="kpi-home-pillar-kpis" aria-hidden="true">
+        <div>
+          <span>Manual work</span>
+          <strong>Review</strong>
+        </div>
+        <div className="is-up">
+          <span>Reporting</span>
+          <strong>Ready</strong>
+        </div>
+        <div>
+          <span>Training</span>
+          <strong>Plan</strong>
+        </div>
+      </div>
+    </div>
+  );
+}
 const stepIcons = [InsightIcon, OpportunityIcon, PlanIcon, OptimizeIcon] as const;
 
 const homeInsightCopy = {
@@ -68,7 +178,12 @@ function insightTitle(title: string) {
   );
 }
 
-const heroTrust = ["100+ Hotels Managed", "Revenue · OTA · Digital", "Hospitality Focused Team"];
+const heroTrust = [
+  "100+ Hotels Managed",
+  "Revenue · OTA · Digital",
+  "Hospitality Focused Team",
+  "Based in Phuket",
+] as const;
 
 export async function HomeView({ locale }: { locale: Locale }) {
   const t = homeCopy[locale];
@@ -110,12 +225,44 @@ export async function HomeView({ locale }: { locale: Locale }) {
                 {t.allSolutions}
               </Link>
             </div>
-            <p className="kpi-home-trust kpi-latin">
-              {heroTrust.map((item) => (
-                <span key={item}>{item}</span>
-              ))}
-            </p>
           </div>
+          <figure className="kpi-home-hero-visual">
+            {/* TODO: replace with a real hotel photograph of a team reviewing rates or a performance report. Current file is a styled placeholder, not a client shoot. */}
+            <div className="kpi-home-photo kpi-home-frame">
+              <img
+                src="/media/kpi-plus-hero-header-homepage_e8b808be.jpg"
+                alt={t.heroAlt}
+                width={1600}
+                height={1200}
+              />
+            </div>
+            <figcaption className="kpi-home-hero-caption">
+              {locale === "th" ? "ตัวอย่างข้อมูล · Performance Review: Jan–Jun 2026" : "Sample data · Performance Review: Jan–Jun 2026"}
+            </figcaption>
+            <ul className="kpi-home-hero-samples" aria-label={locale === "th" ? "ตัวอย่างข้อมูล" : "Sample data"}>
+              <li className="kpi-home-hero-sample">
+                <span className="kpi-home-hero-sample-name kpi-latin">Occupancy</span>
+                <strong className="kpi-home-hero-sample-value kpi-latin">82.4%</strong>
+              </li>
+              <li className="kpi-home-hero-sample">
+                <span className="kpi-home-hero-sample-name kpi-latin">RevPAR</span>
+                <strong className="kpi-home-hero-sample-value kpi-latin">+18.6%</strong>
+              </li>
+            </ul>
+          </figure>
+        </div>
+      </section>
+
+      <section className="kpi-home-trustbar" aria-label={locale === "th" ? "จุดยืนของ The KPI Plus" : "The KPI Plus at a glance"}>
+        <div className="kpi-wrap">
+          <ul className="kpi-home-trustbar-list">
+            {heroTrust.map((item) => (
+              <li key={item} className="kpi-home-trustbar-item">
+                <span className="kpi-home-trustbar-mark" aria-hidden="true" />
+                <span className="kpi-home-trustbar-label kpi-latin">{item}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
@@ -134,40 +281,93 @@ export async function HomeView({ locale }: { locale: Locale }) {
       </section>
 
       <section id="solutions" className="kpi-section kpi-home-problems-section scroll-mt-28">
-        <p className="kpi-kicker kpi-home-problem-kicker">{t.problemEyebrow}</p>
-        <h2 className="kpi-h2 kpi-home-problem-title">
-          {locale === "th" ? (
-            <>
-              {"เริ่มจากหาสาเหตุที่ทำให้ "}
-              <span className="kpi-home-problem-em">รายได้</span>
-              <span className="kpi-home-problem-break"> </span>
-              {"หรือ "}
-              <span className="kpi-home-problem-em">ยอดจอง</span>
-              {" ยังไปไม่ถึงเป้าหมาย"}
-            </>
-          ) : (
-            t.problemTitle
-          )}
-        </h2>
-        <p className="kpi-home-problem-lead">{t.problemLead}</p>
-        <div className="kpi-home-problems">
-          {t.problems.map((problem, index) => (
-            <Link
-              key={problem}
-              href={`${solutionsHref}#${problemAnchors[index]}`}
-              className={`kpi-home-problem${index < 2 ? " is-lead" : ""}`}
+        <div className="kpi-home-problems-layout">
+          <div className="kpi-home-problems-intro">
+            <p className="kpi-kicker kpi-home-problem-kicker">{t.problemEyebrow}</p>
+            <h2 className="kpi-h2 kpi-home-problem-title">
+              {locale === "th" ? (
+                <>
+                  {"เริ่มจากหาสาเหตุที่ทำให้ "}
+                  <span className="kpi-home-problem-em">รายได้</span>
+                  <span className="kpi-home-problem-break"> </span>
+                  {"หรือ "}
+                  <span className="kpi-home-problem-em">ยอดจอง</span>
+                  {" ยังไปไม่ถึงเป้าหมาย"}
+                </>
+              ) : (
+                t.problemTitle
+              )}
+            </h2>
+            <p className="kpi-home-problem-lead">{t.problemLead}</p>
+          </div>
+
+          <aside className="kpi-home-opportunity" aria-label={locale === "th" ? "ตัวอย่างรูปแบบการวิเคราะห์" : "Sample analysis format"}>
+            <p className="kpi-home-opportunity-badge">{locale === "th" ? "ตัวอย่างข้อมูล" : "Sample data"}</p>
+            <h3 className="kpi-home-opportunity-title">
+              {locale === "th" ? "ตัวอย่าง Revenue Opportunity" : "Sample Revenue Opportunity"}
+            </h3>
+            <p className="kpi-home-opportunity-period kpi-latin">Occupancy forecast · Jan–Jun 2026</p>
+            <dl className="kpi-home-opportunity-kpis">
+              <div>
+                <dt>{locale === "th" ? "Occupancy forecast" : "Occupancy forecast"}</dt>
+                <dd className="kpi-latin">72%</dd>
+              </div>
+              <div className="is-accent">
+                <dt>{locale === "th" ? "ราคาเทียบคู่แข่ง" : "Rate vs competitor"}</dt>
+                <dd className="kpi-latin">−8%</dd>
+              </div>
+              <div>
+                <dt>{locale === "th" ? "สัดส่วน OTA" : "OTA mix"}</dt>
+                <dd className="kpi-latin">61%</dd>
+              </div>
+            </dl>
+            <div
+              className="kpi-home-opportunity-chart"
+              role="img"
+              aria-label={locale === "th" ? "กราฟแนวโน้ม Occupancy เดือนมกราคมถึงมิถุนายน 2026 ข้อมูลตัวอย่าง" : "Sample occupancy trend from January to June 2026"}
             >
-              <span className="kpi-home-problem-num">{String(index + 1).padStart(2, "0")}</span>
-              <span className="kpi-home-problem-copy">
-                <span className="kpi-home-problem-q">{problem}</span>
-                <span className="kpi-home-problem-tag">{problemTags[index]}</span>
-              </span>
-            </Link>
-          ))}
+              {(
+                [
+                  ["Jan", 52],
+                  ["Feb", 58],
+                  ["Mar", 64],
+                  ["Apr", 70],
+                  ["May", 76],
+                  ["Jun", 72],
+                ] as const
+              ).map(([month, value], index) => (
+                <div key={month} className={`kpi-home-opportunity-col${index === 4 ? " is-accent" : ""}`}>
+                  <span className="kpi-home-opportunity-bar" style={{ height: `${value}%` }} />
+                  <span className="kpi-home-opportunity-month kpi-latin">{month}</span>
+                </div>
+              ))}
+            </div>
+            <p className="kpi-home-opportunity-note">
+              {locale === "th"
+                ? "ก่อนปรับราคาหรือช่องทางขาย ทีมดู Occupancy forecast เทียบราคาคู่แข่งแล้วจึงตัดสินใจว่าควรยกราคาในเดือนที่ Demand สูง หรือลดพึ่งพา OTA"
+                : "Before changing a rate or channel, the team reviews the occupancy forecast against competitor rates, then decides whether to lift price in stronger demand months or reduce OTA mix."}
+            </p>
+          </aside>
+
+          <div className="kpi-home-problems">
+            {t.problems.map((problem, index) => (
+              <Link
+                key={problem}
+                href={`${solutionsHref}#${problemAnchors[index]}`}
+                className={`kpi-home-problem${index < 2 ? " is-lead" : ""}`}
+              >
+                <span className="kpi-home-problem-num">{String(index + 1).padStart(2, "0")}</span>
+                <span className="kpi-home-problem-copy">
+                  <span className="kpi-home-problem-q">{problem}</span>
+                  <span className="kpi-home-problem-tag">{problemTags[index]}</span>
+                </span>
+              </Link>
+            ))}
+          </div>
+          <Link href={solutionsHref} className="kpi-home-problem-cta">
+            {t.allSolutions} <ArrowUpRight className="h-4 w-4" />
+          </Link>
         </div>
-        <Link href={solutionsHref} className="kpi-home-problem-cta">
-          {t.allSolutions} <ArrowUpRight className="h-4 w-4" />
-        </Link>
       </section>
 
       <section className="bg-white">
@@ -202,6 +402,10 @@ export async function HomeView({ locale }: { locale: Locale }) {
                 </span>
                 <h3>{title}</h3>
                 <p className="kpi-home-pillar-body">{body}</p>
+                <PillarPreview index={index} sampleLabel={locale === "th" ? "ตัวอย่าง" : "Sample"} />
+                <p className="kpi-home-pillar-output">
+                  {locale === "th" ? pillarOutputs.th[index] : pillarOutputs.en[index]}
+                </p>
               </Link>
             ))}
           </div>
@@ -246,9 +450,24 @@ export async function HomeView({ locale }: { locale: Locale }) {
 
       <section className="kpi-home-performance bg-[#0B1F33] text-white">
         <div className="kpi-section kpi-split">
-          <div className="kpi-home-photo kpi-home-frame">
-            <img src="/media/the-kpi-plus-revenue-scene_4932d3c7.jpg" alt="Hospitality revenue-management workspace" />
-          </div>
+          <figure className="kpi-home-performance-visual">
+            <div className="kpi-home-photo kpi-home-frame">
+              <img
+                src="/media/kpi-plus-hotel-revenue-tablet_16ce8ace.jpg"
+                alt={
+                  locale === "th"
+                    ? "ผู้บริหารโรงแรมกำลังดูแดชบอร์ดรายได้บนแท็บเล็ตในล็อบบี้"
+                    : "Hotel manager reviewing a revenue dashboard on a tablet in a lobby"
+                }
+                width={1600}
+                height={1000}
+                loading="lazy"
+              />
+            </div>
+            <figcaption className="kpi-home-performance-caption">
+              {locale === "th" ? "ตัวอย่างรูปแบบการวิเคราะห์" : "Sample dashboard"}
+            </figcaption>
+          </figure>
           <div className="kpi-home-performance-copy">
             <p className="kpi-home-metric-kicker">{t.metricEyebrow}</p>
             <h2 className="kpi-h2 kpi-home-metric-heading">

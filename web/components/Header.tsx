@@ -35,6 +35,7 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
   const skipScrollReset = useRef(true);
   const fromHistory = useRef(false);
   const currentLang = locales.find((item) => item.id === locale)?.label ?? "ไทย";
+  const isHome = pathname === homeHref(locale);
 
   const clearCloseTimer = () => {
     if (closeTimer.current !== null) {
@@ -125,7 +126,7 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
     <header
       lang={htmlLang(locale)}
       suppressHydrationWarning
-      className="kpi-header sticky top-0 z-50 overflow-visible border-b border-[#E3E8EB] bg-white text-[#3B3B3B] shadow-[0_2px_16px_rgba(11,31,58,.04)]"
+      className={`kpi-header sticky top-0 z-50 overflow-visible border-b border-[#E3E8EB] bg-white text-[#3B3B3B] shadow-[0_2px_16px_rgba(11,31,58,.04)]${isHome ? " kpi-header-home" : ""}`}
     >
       <div className="kpi-header-bar overflow-visible">
         <Link
