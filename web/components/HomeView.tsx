@@ -92,16 +92,14 @@ export async function HomeView({ locale }: { locale: Locale }) {
 
   return (
     <SiteShell locale={locale} route={locale === "th" ? "/" : `/${locale}`}>
-      <section className="kpi-hero kpi-home-hero-section">
+      <section className="kpi-hero kpi-home-hero-section kpi-home-landing-hero" aria-label={t.heroAlt}>
         <div className="kpi-wrap kpi-home-hero">
           <div className="kpi-home-hero-copy">
             <p className="kpi-home-eyebrow kpi-latin">{t.kicker}</p>
             <h1 className="kpi-h1 kpi-home-h1">
-              <span className="kpi-home-h1-lead">{t.h1a}</span>
-              <span className="kpi-home-h1-rest">
-                {t.h1b}
-                <span className="kpi-home-h1-close kpi-home-accent">{t.h1c}</span>
-              </span>
+              <span className="kpi-home-h1-line">{t.h1a}</span>
+              <span className="kpi-home-h1-line">{t.h1b}</span>
+              <span className="kpi-home-h1-line kpi-home-accent">{t.h1c}</span>
             </h1>
             <p className="kpi-lead kpi-home-lead">{t.lead}</p>
             <div className="kpi-actions">
@@ -117,9 +115,6 @@ export async function HomeView({ locale }: { locale: Locale }) {
                 <span key={item}>{item}</span>
               ))}
             </p>
-          </div>
-          <div className="kpi-hero-visual kpi-home-photo">
-            <img src="/media/kpi-plus-thai-hero-performance-corrected_2937c314.jpg" alt={t.heroAlt} />
           </div>
         </div>
       </section>

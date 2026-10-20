@@ -8201,6 +8201,271 @@ form .kpi-button {
   background: var(--kpi-accent);
 }
 
+/* Homepage: smaller centered photo + soft fade into navy on all 4 sides */
+.kpi-home-landing-hero {
+  --kpi-landing-hero-img: url("/media/kpi-plus-hero-header-homepage_e8b808be.jpg");
+  --kpi-landing-hero-size: cover;
+  --kpi-landing-hero-navy: #06182b;
+  --kpi-landing-hero-scrim: linear-gradient(
+    90deg,
+    rgba(6, 24, 43, 0.46) 0%,
+    rgba(6, 24, 43, 0.22) 34%,
+    rgba(6, 24, 43, 0.06) 56%,
+    transparent 68%
+  );
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: clamp(24rem, 64svh, 38rem);
+  background-color: var(--kpi-landing-hero-navy);
+  background-repeat: no-repeat;
+  background-position:
+    center center,
+    center center,
+    center center,
+    center center,
+    center center,
+    center center,
+    center center;
+  background-size:
+    auto,
+    auto,
+    auto,
+    auto,
+    auto,
+    auto,
+    var(--kpi-landing-hero-size);
+  background-image:
+    /* Left + right — opaque past the photo edge, then fade in */
+    linear-gradient(
+      90deg,
+      var(--kpi-landing-hero-navy) 0%,
+      var(--kpi-landing-hero-navy) 4%,
+      rgba(6, 24, 43, 0.88) 10%,
+      rgba(6, 24, 43, 0.58) 16%,
+      rgba(6, 24, 43, 0.28) 22%,
+      rgba(6, 24, 43, 0.08) 28%,
+      transparent 36%,
+      transparent 64%,
+      rgba(6, 24, 43, 0.08) 72%,
+      rgba(6, 24, 43, 0.28) 78%,
+      rgba(6, 24, 43, 0.58) 84%,
+      rgba(6, 24, 43, 0.88) 90%,
+      var(--kpi-landing-hero-navy) 96%,
+      var(--kpi-landing-hero-navy) 100%
+    ),
+    /* Top + bottom — hide the crop line */
+    linear-gradient(
+      180deg,
+      var(--kpi-landing-hero-navy) 0%,
+      var(--kpi-landing-hero-navy) 3%,
+      rgba(6, 24, 43, 0.85) 9%,
+      rgba(6, 24, 43, 0.45) 16%,
+      rgba(6, 24, 43, 0.12) 24%,
+      transparent 34%,
+      transparent 70%,
+      rgba(6, 24, 43, 0.12) 80%,
+      rgba(6, 24, 43, 0.45) 88%,
+      rgba(6, 24, 43, 0.85) 95%,
+      var(--kpi-landing-hero-navy) 100%
+    ),
+    /* Ellipse vignette — dissolve corners where edges meet */
+    radial-gradient(
+      ellipse 72% 68% at 50% 48%,
+      transparent 0%,
+      transparent 42%,
+      rgba(6, 24, 43, 0.22) 64%,
+      rgba(6, 24, 43, 0.62) 86%,
+      var(--kpi-landing-hero-navy) 100%
+    ),
+    /* Soft readability wash — stronger on phone/tablet via --kpi-landing-hero-scrim */
+    var(--kpi-landing-hero-scrim),
+    radial-gradient(
+      circle at 62% 48%,
+      rgba(162, 220, 37, 0.05) 0%,
+      rgba(162, 220, 37, 0.015) 28%,
+      transparent 52%
+    ),
+    radial-gradient(
+      circle at 24% 88%,
+      rgba(235, 231, 34, 0.03) 0%,
+      transparent 28%
+    ),
+    var(--kpi-landing-hero-img);
+}
+
+.kpi-home-landing-hero::after {
+  opacity: 0.08;
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.18) 42%, rgba(0, 0, 0, 0.18) 58%, transparent 100%),
+    linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.18) 32%, rgba(0, 0, 0, 0.18) 68%, transparent 100%);
+  mask-image:
+    linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.18) 42%, rgba(0, 0, 0, 0.18) 58%, transparent 100%),
+    linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.18) 32%, rgba(0, 0, 0, 0.18) 68%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+.kpi-home-landing-hero .kpi-home-hero {
+  align-items: center;
+  width: 100%;
+  min-height: 0;
+}
+
+.kpi-home-landing-hero .kpi-home-hero-copy {
+  max-width: min(36rem, 100%);
+}
+
+/* Force headline into exactly 3 visual lines (same copy, stable breaks) */
+.kpi-home-landing-hero .kpi-home-h1 {
+  display: grid;
+  gap: 0.12em;
+  max-width: none;
+  margin-top: 1.2rem;
+  line-height: 1.12 !important;
+}
+
+.kpi-home-landing-hero .kpi-home-h1-line {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  font-size: 1em;
+  font-weight: 700;
+  letter-spacing: inherit;
+  line-height: inherit;
+  white-space: nowrap;
+}
+
+.kpi-home-landing-hero .kpi-home-h1-line.kpi-home-accent {
+  color: var(--kpi-accent);
+}
+
+/* Phone */
+@media (max-width: 39.99rem) {
+  .kpi-home-landing-hero {
+    --kpi-landing-hero-size: cover;
+    --kpi-landing-hero-scrim: linear-gradient(
+      180deg,
+      rgba(6, 24, 43, 0.64) 0%,
+      rgba(6, 24, 43, 0.56) 42%,
+      rgba(6, 24, 43, 0.5) 100%
+    );
+    min-height: clamp(22rem, 68svh, 30rem);
+    padding-block: 2.15rem 1.9rem;
+    background-position:
+      center center,
+      center center,
+      center center,
+      center center,
+      center center,
+      center center,
+      center 46%;
+  }
+
+  .kpi-home-landing-hero::after {
+    opacity: 0.1;
+  }
+
+  .kpi-home-landing-hero .kpi-home-hero-copy {
+    max-width: 100%;
+  }
+
+  .kpi-home-landing-hero .kpi-home-h1 {
+    font-size: clamp(1.55rem, 7.2vw, 2.15rem);
+  }
+
+  .kpi-home-landing-hero .kpi-home-h1-line {
+    white-space: nowrap;
+  }
+
+  .kpi-home-landing-hero .kpi-home-lead {
+    max-width: 34rem;
+  }
+
+  .kpi-home-landing-hero .kpi-actions {
+    width: 100%;
+  }
+
+  .kpi-home-landing-hero .kpi-actions .kpi-button,
+  .kpi-home-landing-hero .kpi-actions .kpi-button-ghost {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+}
+
+/* Large phone / small tablet */
+@media (min-width: 40rem) and (max-width: 47.99rem) {
+  .kpi-home-landing-hero {
+    --kpi-landing-hero-scrim: linear-gradient(
+      180deg,
+      rgba(6, 24, 43, 0.56) 0%,
+      rgba(6, 24, 43, 0.46) 50%,
+      rgba(6, 24, 43, 0.4) 100%
+    );
+    min-height: clamp(23rem, 62svh, 32rem);
+  }
+
+  .kpi-home-landing-hero .kpi-home-h1 {
+    font-size: clamp(1.85rem, 4.6vw, 2.35rem);
+  }
+}
+
+/* Tablet */
+@media (min-width: 48rem) and (max-width: 63.99rem) {
+  .kpi-home-landing-hero {
+    --kpi-landing-hero-scrim: linear-gradient(
+      90deg,
+      rgba(6, 24, 43, 0.58) 0%,
+      rgba(6, 24, 43, 0.4) 38%,
+      rgba(6, 24, 43, 0.22) 68%,
+      rgba(6, 24, 43, 0.12) 100%
+    );
+    min-height: clamp(25rem, 60svh, 34rem);
+  }
+
+  .kpi-home-landing-hero .kpi-home-hero-copy {
+    max-width: min(34rem, 100%);
+  }
+}
+
+/* Desktop */
+@media (min-width: 64rem) {
+  .kpi-home-landing-hero {
+    min-height: clamp(27rem, 62svh, 40rem);
+  }
+
+  .kpi-home-landing-hero .kpi-home-hero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .kpi-home-landing-hero .kpi-home-hero-copy {
+    max-width: min(36rem, 48%);
+  }
+
+  .kpi-home-landing-hero .kpi-home-hero h1.kpi-home-h1 {
+    max-width: none;
+    display: grid;
+    gap: 0.1em;
+  }
+
+  .kpi-home-landing-hero .kpi-home-h1-line {
+    display: block;
+    white-space: nowrap;
+  }
+}
+
+/* Wide */
+@media (min-width: 80rem) {
+  .kpi-home-landing-hero {
+    min-height: clamp(28rem, 60svh, 42rem);
+  }
+
+  .kpi-home-landing-hero .kpi-home-hero-copy {
+    max-width: min(38rem, 44%);
+  }
+}
+
 .kpi-home-hero {
   display: grid;
   gap: 2rem;
@@ -8232,7 +8497,8 @@ form .kpi-button {
 
 .kpi-home-h1-lead,
 .kpi-home-h1-rest,
-.kpi-home-h1-close {
+.kpi-home-h1-close,
+.kpi-home-h1-line {
   font-size: 1em;
   font-weight: 700;
   letter-spacing: inherit;
@@ -8313,6 +8579,15 @@ form .kpi-button {
     grid-template-columns: minmax(0, 1.05fr) minmax(18rem, 0.9fr);
     align-items: start;
     column-gap: 4rem;
+  }
+
+  .kpi-home-landing-hero.kpi-home-hero-section {
+    padding-block: 4.25rem 4rem;
+  }
+
+  .kpi-home-landing-hero .kpi-home-hero {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: center;
   }
 
   .kpi-home-hero .kpi-home-photo {
@@ -19761,6 +20036,13 @@ h1 {
   font-weight: 700 !important;
   letter-spacing: 0 !important;
   line-height: 1.4 !important;
+}
+
+/* Landing hero: keep 3 tight headline lines on desktop/Thai */
+.kpi-shell :lang(th) .kpi-home-landing-hero h1.kpi-home-h1,
+.kpi-shell :lang(th) .kpi-home-landing-hero .kpi-home-h1-line {
+  line-height: 1.2 !important;
+  letter-spacing: 0 !important;
 }
 
 .kpi-shell :lang(th) h2,
