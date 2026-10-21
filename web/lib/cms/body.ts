@@ -93,6 +93,7 @@ export function slugify(value: string) {
 export function documentPath(input: { kind: string; slug: string; locale: string }) {
   let slug = slugify(input.slug);
   if (input.kind !== "insight" && slug === "about") slug = "about-us";
+  if (input.kind !== "insight" && slug === "contact") slug = "contact-us";
   const bare = input.kind === "insight" ? `/insights/${slug}` : `/${slug}`;
   const locale = (["th", "en", "ru", "zh"].includes(input.locale) ? input.locale : "th") as Locale;
   return locale === "th" ? bare : localizePath(bare, locale);

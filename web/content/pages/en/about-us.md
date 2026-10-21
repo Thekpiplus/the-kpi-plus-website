@@ -83,7 +83,7 @@ What happens next
 - Identify the first area worth analysing
 - Explain the next recommended step
 [Request a Hotel Performance Audit](/en#audit)
-[Talk to Our Team](/en/contact)
+[Talk to Our Team](/en/contact-us)
 No fee for the initial review · Hotel information is kept confidential · We reply within 2 business days
 Join The KPI Plus
 We're looking for people who love the hotel business, enjoy learning, are curious about technology, and keep asking, "Is there a better way?" If you want to do work that makes a real difference for businesses and people, we'd love to hear from you.

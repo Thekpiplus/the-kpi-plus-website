@@ -1,9 +1,9 @@
-# /contact
+# /contact-us
 **Source:** `contact.html`
 **Language:** th
 **Title:** ติดต่อ เดอะ เคพีไอ พลัส | ภูเก็ต | เดอะ เคพีไอ พลัส
 **Description:** ติดต่อ เดอะ เคพีไอ พลัส ที่ภูเก็ตสำหรับรายได้ การเติบโตดิจิทัล และผลการดำเนินงานโรงแรม
-**Canonical:** https://thekpiplus.com/contact
+**Canonical:** https://thekpiplus.com/contact-us
 
 ## Page content and controls
 
@@ -14,7 +14,7 @@
 [บทความและมุมมอง](insights.html)
 [ผลงานลูกค้า](case-studies.html)
 [เกี่ยวกับเรา](about-us.html)
-[ติดต่อเรา](contact.html)
+[ติดต่อเรา](contact-us.html)
 ไทย
 [ขอรับการวิเคราะห์โรงแรม](index.html#audit)
 
@@ -58,7 +58,7 @@
 [ผลงานลูกค้า](case-studies.html)
 [เรื่องราวของ เดอะ เคพีไอ พลัส](about-us.html)
 [พันธมิตรของเรา](associations.html)
-[ติดต่อเรา](contact.html)
+[ติดต่อเรา](contact-us.html)
 ## เครื่องมือฟรีสำหรับโรงแรม
 [ตรวจสุขภาพการค้นหาเว็บไซต์](tools/hotel-searchability-check.html)
 [คำนวณรายได้และกำไรโรงแรม](tools/hotel-profit-calculator.html)
@@ -101,7 +101,7 @@
 [ผลงานลูกค้า](case-studies.html)
 [เรื่องราวของ เดอะ เคพีไอ พลัส](about-us.html)
 [พันธมิตรของเรา](associations.html)
-[ติดต่อเรา](contact.html)
+[ติดต่อเรา](contact-us.html)
 
 ### SECTION
 

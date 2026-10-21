@@ -337,7 +337,7 @@ const table: Record<string, FaqItem[]> = {
       a: "上述公司是合作網絡，不是客戶推薦、案例研究、關係企業，也不是酒店績效證明。",
     },
   ],
-  "/contact": [
+  "/contact-us": [
     {
       q: "ถ้ายังไม่แน่ใจว่าควรเริ่มจากบริการไหน ทำอย่างไร?",
       a: "บอกเราเพียงว่าโรงแรมกำลังเจออะไร ทีม เดอะ เคพีไอ พลัส จะช่วยดูว่าควรเริ่มจากจุดไหนก่อน",
@@ -347,7 +347,7 @@ const table: Record<string, FaqItem[]> = {
       a: "โทร +66 82 635 6266 อีเมล info@thekpiplus.com หรือส่งแบบฟอร์มวิเคราะห์โรงแรม สำนักงานอยู่ที่ภูเก็ต",
     },
   ],
-  "/en/contact": [
+  "/en/contact-us": [
     {
       q: "What if the hotel is not sure where to start?",
       a: "Tell us what the hotel is facing. The KPI Plus team will help identify the most useful place to begin.",
@@ -357,13 +357,13 @@ const table: Record<string, FaqItem[]> = {
       a: "Call +66 82 635 6266, email info@thekpiplus.com, or send the hotel performance form. The office is in Phuket.",
     },
   ],
-  "/ru/contact": [
+  "/ru/contact-us": [
     {
       q: "Как связаться с The KPI Plus?",
       a: "Позвоните +66 82 635 6266, напишите info@thekpiplus.com или отправьте форму. Офис находится на Пхукете.",
     },
   ],
-  "/zh/contact": [
+  "/zh/contact-us": [
     {
       q: "要怎麼聯絡 The KPI Plus？",
       a: "致電 +66 82 635 6266、寄信 info@thekpiplus.com，或送出表單。辦公室在普吉。",
@@ -1581,6 +1581,9 @@ export function faqsForRoute(route: string): FaqItem[] {
   if (route.endsWith("/cookies")) return table["/en/cookies"] ?? table["/cookies"] ?? [];
   if (route === "/about" || route.endsWith("/about")) {
     return table[route.replace(/\/about$/, "/about-us")] ?? [];
+  }
+  if (route === "/contact" || route.endsWith("/contact")) {
+    return table[route.replace(/\/contact$/, "/contact-us")] ?? [];
   }
   return [];
 }

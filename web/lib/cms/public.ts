@@ -55,6 +55,7 @@ export async function storedPageByPath(pathname: string) {
   // Include trashed docs so public routes can 404 instead of falling back to code pages.
   if (doc) return doc;
   if (slug === "about-us") return pageDocumentBySlug("about", locale).catch(() => null);
+  if (slug === "contact-us") return pageDocumentBySlug("contact", locale).catch(() => null);
   return null;
 }
 
@@ -73,7 +74,9 @@ export function cmsMetadata(doc: CmsDocumentRow) {
   const route = documentPath(doc);
   const title = doc.seoTitle || doc.title;
   const description = doc.metaDescription || doc.excerpt;
-  const canonical = (doc.canonical || `${SITE}${route}`).replace(/\/about$/, "/about-us");
+  const canonical = (doc.canonical || `${SITE}${route}`)
+    .replace(/\/about$/, "/about-us")
+    .replace(/\/contact$/, "/contact-us");
   const image = doc.ogImage || doc.featuredImage;
   return {
     title,

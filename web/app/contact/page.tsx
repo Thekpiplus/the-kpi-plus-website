@@ -1,8 +1,5 @@
-import { ContactView } from "@/components/ContactView";
-import { metadataFor } from "@/lib/seo";
+import { permanentRedirect } from "next/navigation";
 
-export const metadata = metadataFor("/contact");
-
-export default function ContactPage() {
-  return <ContactView locale="th" />;
+export default function Page() {
+  permanentRedirect("/contact-us");
 }

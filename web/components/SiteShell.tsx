@@ -8,6 +8,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { LangSync } from "@/components/LangSync";
 import { PageFaqs } from "@/components/PageFaqs";
 import { cmsFooterLinks, cmsHeaderLinks } from "@/lib/cms/files";
+import { getPublicCompany } from "@/lib/company-public";
 import { isCmsPageLive, storedPageByPath } from "@/lib/cms/public";
 import { faqsForRoute, howToStepsForRoute } from "@/lib/faqs";
 import { pageKind } from "@/lib/page-types";
@@ -55,13 +56,14 @@ export async function SiteShell({
   const howToSteps = howToStepsForRoute(route);
   const extraHeader = cmsHeaderLinks(locale);
   const extraFooter = cmsFooterLinks(locale);
+  const company = await getPublicCompany();
 
   return (
     <div lang={htmlLang(locale)} className="contents kpi-public">
       <LangSync locale={locale} />
-      <JsonLd data={organizationSchema(locale)} />
+      <JsonLd data={organizationSchema(locale, company)} />
       <JsonLd data={webSiteSchema(locale)} />
-      {kind === "home" || kind === "contact" ? <JsonLd data={localBusinessSchema(locale)} /> : null}
+      {kind === "home" || kind === "contact" ? <JsonLd data={localBusinessSchema(locale, company)} /> : null}
       {page || titleOverride ? <JsonLd data={webPageSchema({ route, title, description, canonical, locale })} /> : null}
       {crumbs.length > 1 ? <JsonLd data={breadcrumbSchema(crumbs)} /> : null}
       {faqJson ? <JsonLd data={faqJson} /> : null}
@@ -78,7 +80,7 @@ export async function SiteShell({
           {children}
           <PageFaqs items={faqs} locale={locale} />
         </main>
-        <Footer extraLinks={extraFooter} />
+        <Footer extraLinks={extraFooter} company={company} />
         <CookieConsent />
       </div>
     </div>

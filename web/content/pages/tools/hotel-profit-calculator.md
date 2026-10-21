@@ -14,7 +14,7 @@
 [บทความและมุมมอง](../insights.html)
 [ผลงานลูกค้า](../case-studies.html)
 [เกี่ยวกับเรา](../about-us.html)
-[ติดต่อเรา](../contact.html)
+[ติดต่อเรา](../contact-us.html)
 ไทย
 [ขอรับการวิเคราะห์โรงแรม](../index.html#audit)
 
@@ -107,7 +107,7 @@ GOP ช่วยให้ทีมเห็นว่า หลังหักต
 [ผลงานลูกค้า](../case-studies.html)
 [เรื่องราวของ เดอะ เคพีไอ พลัส](../about-us.html)
 [พันธมิตรของเรา](../associations.html)
-[ติดต่อเรา](../contact.html)
+[ติดต่อเรา](../contact-us.html)
 ## เครื่องมือฟรีสำหรับโรงแรม
 [ตรวจสุขภาพการค้นหาเว็บไซต์](hotel-searchability-check.html)
 [คำนวณรายได้และกำไรโรงแรม](hotel-profit-calculator.html)
@@ -150,7 +150,7 @@ GOP ช่วยให้ทีมเห็นว่า หลังหักต
 [ผลงานลูกค้า](../case-studies.html)
 [เรื่องราวของ เดอะ เคพีไอ พลัส](../about-us.html)
 [พันธมิตรของเรา](../associations.html)
-[ติดต่อเรา](../contact.html)
+[ติดต่อเรา](../contact-us.html)
 
 ### SECTION
 

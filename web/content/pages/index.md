@@ -14,7 +14,7 @@
 [บทความและมุมมอง](insights.html)
 [ผลงานลูกค้า](case-studies.html)
 [เกี่ยวกับเรา](about-us.html)
-[ติดต่อเรา](contact.html)
+[ติดต่อเรา](contact-us.html)
 ไทย
 [ขอรับการวิเคราะห์โรงแรม](index.html#audit)
 Hotel Revenue & Commercial Management
@@ -167,7 +167,7 @@ By submitting, you agree that The KPI Plus may contact you about this enquiry.
 [ผลงานลูกค้า](case-studies.html)
 [เรื่องราวของ เดอะ เคพีไอ พลัส](about-us.html)
 [พันธมิตรของเรา](associations.html)
-[ติดต่อเรา](contact.html)
+[ติดต่อเรา](contact-us.html)
 ## เครื่องมือฟรีสำหรับโรงแรม
 [ตรวจสุขภาพการค้นหาเว็บไซต์](tools/hotel-searchability-check.html)
 [คำนวณรายได้และกำไรโรงแรม](tools/hotel-profit-calculator.html)
@@ -210,7 +210,7 @@ By submitting, you agree that The KPI Plus may contact you about this enquiry.
 [ผลงานลูกค้า](case-studies.html)
 [เรื่องราวของ เดอะ เคพีไอ พลัส](about-us.html)
 [พันธมิตรของเรา](associations.html)
-[ติดต่อเรา](contact.html)
+[ติดต่อเรา](contact-us.html)
 
 ### SECTION
 

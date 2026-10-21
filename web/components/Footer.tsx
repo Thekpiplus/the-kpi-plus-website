@@ -3,9 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ArrowUpRight, Earth, Mail, MapPin, Phone } from "@/components/Icons";
-import { AUDIT_CONTACTS } from "@/lib/audit";
+import { COMPANY, companyAddress, type CompanyContact } from "@/lib/company";
 import { locales, uiCopy, visibleSolutionGroups } from "@/lib/nav";
-import { PRIVACY_CONTACT } from "@/lib/privacy";
 import {
   auditHref,
   barePath,
@@ -21,14 +20,6 @@ import {
 } from "@/lib/seo";
 
 const ACADEMY_HREF = "https://thekpiplus.co.th/";
-const OFFICE_MAPS_HREF =
-  "https://www.google.com/maps/search/?api=1&query=58%2F15%20E%20Chaofah%20Rd%2C%20Talat%20Nuea%2C%20Mueang%20Phuket%2C%20Phuket%2083000";
-const SECOND_PHONE_DISPLAY = "+66 62 635 6646";
-const SECOND_PHONE_HREF = "tel:+66626356646";
-const FACEBOOK_HREF = "https://www.facebook.com/thekpiplus/";
-const INSTAGRAM_HREF = "https://www.instagram.com/thekpiplus/";
-const LINKEDIN_HREF = "https://www.linkedin.com/company/thekpiplus/";
-const TIKTOK_HREF = "https://www.tiktok.com/@thekpiplus";
 
 function existingNav(items: readonly { href: string; label: string }[], locale: Locale) {
   return items.flatMap((item) => {
@@ -65,7 +56,13 @@ function FooterMore({ href, children }: { href: string; children: React.ReactNod
   );
 }
 
-export function Footer({ extraLinks = [] }: { extraLinks?: { href: string; label: string }[] }) {
+export function Footer({
+  extraLinks = [],
+  company = COMPANY,
+}: {
+  extraLinks?: { href: string; label: string }[];
+  company?: CompanyContact;
+}) {
   const pathname = usePathname() || "/";
   const locale = localeFromPath(pathname);
   const t = uiCopy(locale);
@@ -74,16 +71,24 @@ export function Footer({ extraLinks = [] }: { extraLinks?: { href: string; label
   const solutionsHref = solutionsIndexHref(locale);
   const privacyHref = existingHref("/privacy", locale);
   const cookiesHref = existingHref("/cookies", locale);
-  const contactHref = existingHref("/contact", locale);
+  const contactHref = existingHref("/contact-us", locale);
   const isAbout = barePath(pathname) === "/about-us";
-  const primaryPaths = new Set(["/approach", "/insights", "/case-studies", "/about-us", "/contact"]);
+  const address = companyAddress(company, locale);
+  const email = company.email;
+  const socials = [
+    { href: company.social.facebook, name: "Facebook", src: "/brand/meta/facebook.svg", track: "footer_facebook_click" },
+    { href: company.social.instagram, name: "Instagram", src: "/brand/meta/instagram.svg", track: "footer_instagram_click" },
+    { href: company.social.linkedin, name: "LinkedIn", src: "/brand/linkedin/linkedin.svg", track: "footer_linkedin_click" },
+    { href: company.social.tiktok, name: "TikTok", src: "/brand/tiktok/tiktok.svg", track: "footer_tiktok_click" },
+  ].filter((item) => item.href);
+  const primaryPaths = new Set(["/approach", "/insights", "/case-studies", "/about-us", "/contact-us"]);
   const mainLinks = existingNav(
     [
       { href: "/approach", label: t.approach },
       { href: "/insights", label: t.insights },
       { href: "/case-studies", label: t.caseStudies },
       { href: "/about-us", label: t.about },
-      { href: "/contact", label: t.contact },
+      { href: "/contact-us", label: t.contact },
     ],
     locale,
   );
@@ -114,46 +119,18 @@ export function Footer({ extraLinks = [] }: { extraLinks?: { href: string; label
               {t.audit} <ArrowUpRight className="h-4 w-4" />
             </Link>
             <nav className="kpi-footer-socials" aria-label={t.follow}>
-              <a
-                href={FACEBOOK_HREF}
-                target="_blank"
-                rel="noreferrer"
-                data-track="footer_facebook_click"
-                className="kpi-footer-channel"
-                aria-label={channelLabel("Facebook", locale)}
-              >
-                <img src="/brand/meta/facebook.svg" alt="" width={26} height={26} />
-              </a>
-              <a
-                href={INSTAGRAM_HREF}
-                target="_blank"
-                rel="noreferrer"
-                data-track="footer_instagram_click"
-                className="kpi-footer-channel"
-                aria-label={channelLabel("Instagram", locale)}
-              >
-                <img src="/brand/meta/instagram.svg" alt="" width={26} height={26} />
-              </a>
-              <a
-                href={LINKEDIN_HREF}
-                target="_blank"
-                rel="noreferrer"
-                data-track="footer_linkedin_click"
-                className="kpi-footer-channel"
-                aria-label={channelLabel("LinkedIn", locale)}
-              >
-                <img src="/brand/linkedin/linkedin.svg" alt="" width={26} height={26} />
-              </a>
-              <a
-                href={TIKTOK_HREF}
-                target="_blank"
-                rel="noreferrer"
-                data-track="footer_tiktok_click"
-                className="kpi-footer-channel"
-                aria-label={channelLabel("TikTok", locale)}
-              >
-                <img src="/brand/tiktok/tiktok.svg" alt="" width={26} height={26} />
-              </a>
+              {socials.map((item) => (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  rel="noopener noreferrer"
+                  data-track={item.track}
+                  className="kpi-footer-channel"
+                  aria-label={channelLabel(item.name, locale)}
+                >
+                  <img src={item.src} alt="" width={26} height={26} />
+                </a>
+              ))}
             </nav>
           </section>
 
@@ -197,64 +174,60 @@ export function Footer({ extraLinks = [] }: { extraLinks?: { href: string; label
             <section className="kpi-footer-column" aria-label={t.contactTitle}>
               <FooterHeading>{t.contactTitle}</FooterHeading>
               <div className="kpi-footer-contact">
-                <a
-                  href={OFFICE_MAPS_HREF}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="kpi-footer-contact-row"
-                  aria-label={`${t.officeLabel}: ${t.address}`}
-                >
-                  <MapPin aria-hidden="true" />
-                  <span>
-                    <span className="kpi-footer-contact-label">{t.officeLabel}</span>
-                    <span className="kpi-footer-address">{t.address}</span>
-                  </span>
-                </a>
-                <a
-                  href={`mailto:${AUDIT_CONTACTS.email}`}
-                  className="kpi-footer-contact-row"
-                  aria-label={`Email ${AUDIT_CONTACTS.email}`}
-                >
-                  <Mail aria-hidden="true" />
-                  <span className="kpi-latin">{AUDIT_CONTACTS.email}</span>
-                </a>
-                <a
-                  href={AUDIT_CONTACTS.phoneHref}
-                  className="kpi-footer-contact-row"
-                  aria-label={`${locale === "th" ? "โทร" : "Phone"} ${AUDIT_CONTACTS.phoneDisplay}`}
-                >
-                  <Phone aria-hidden="true" />
-                  <span className="kpi-latin">{AUDIT_CONTACTS.phoneDisplay}</span>
-                </a>
-                <a
-                  href={SECOND_PHONE_HREF}
-                  className="kpi-footer-contact-row"
-                  aria-label={`${locale === "th" ? "โทร" : "Phone"} ${SECOND_PHONE_DISPLAY}`}
-                >
-                  <Phone aria-hidden="true" />
-                  <span className="kpi-latin">{SECOND_PHONE_DISPLAY}</span>
-                </a>
+                {address && company.mapsShare ? (
+                  <a
+                    href={company.mapsShare}
+                    rel="noopener noreferrer"
+                    className="kpi-footer-contact-row"
+                    aria-label={`${t.officeLabel}: ${address}`}
+                  >
+                    <MapPin aria-hidden="true" />
+                    <span>
+                      <span className="kpi-footer-contact-label">{t.officeLabel}</span>
+                      <span className="kpi-footer-address">{address}</span>
+                    </span>
+                  </a>
+                ) : null}
+                {email ? (
+                  <a href={`mailto:${email}`} className="kpi-footer-contact-row" aria-label={`Email ${email}`}>
+                    <Mail aria-hidden="true" />
+                    <span className="kpi-latin">{email}</span>
+                  </a>
+                ) : null}
+                {company.phones.map((item) => (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    className="kpi-footer-contact-row"
+                    aria-label={`${locale === "th" ? "โทร" : "Phone"} ${item.display}`}
+                  >
+                    <Phone aria-hidden="true" />
+                    <span className="kpi-latin">{item.display}</span>
+                  </a>
+                ))}
                 <p className="kpi-footer-contact-channels">
-                  <a
-                    href={PRIVACY_CONTACT.whatsapp}
-                    target="_blank"
-                    rel="noreferrer"
-                    data-track="footer_whatsapp_click"
-                    className="kpi-footer-channel"
-                    aria-label={channelLabel("WhatsApp", locale)}
-                  >
-                    <img src="/brand/meta/whatsapp.svg" alt="" width={26} height={26} />
-                  </a>
-                  <a
-                    href={PRIVACY_CONTACT.line}
-                    target="_blank"
-                    rel="noreferrer"
-                    data-track="footer_line_click"
-                    className="kpi-footer-channel"
-                    aria-label={channelLabel("LINE", locale)}
-                  >
-                    <img src="/brand/line/line.svg" alt="" width={26} height={26} />
-                  </a>
+                  {company.whatsappHref ? (
+                    <a
+                      href={company.whatsappHref}
+                      rel="noopener noreferrer"
+                      data-track="footer_whatsapp_click"
+                      className="kpi-footer-channel"
+                      aria-label={channelLabel("WhatsApp", locale)}
+                    >
+                      <img src="/brand/meta/whatsapp.svg" alt="" width={26} height={26} />
+                    </a>
+                  ) : null}
+                  {company.lineHref ? (
+                    <a
+                      href={company.lineHref}
+                      rel="noopener noreferrer"
+                      data-track="footer_line_click"
+                      className="kpi-footer-channel"
+                      aria-label={channelLabel("LINE", locale)}
+                    >
+                      <img src="/brand/line/line.svg" alt="" width={26} height={26} />
+                    </a>
+                  ) : null}
                 </p>
                 {contactHref ? <FooterMore href={contactHref}>{t.contact}</FooterMore> : null}
               </div>
@@ -268,7 +241,7 @@ export function Footer({ extraLinks = [] }: { extraLinks?: { href: string; label
             <span className="kpi-footer-copy-sep" aria-hidden="true">
               ·
             </span>
-            <span className="kpi-latin">Tax ID 0835564008629</span>
+            <span className="kpi-latin">Tax ID {company.taxId}</span>
           </p>
           <div className="kpi-footer-legal-links">
             {privacyHref ? <Link href={privacyHref}>{t.privacy}</Link> : null}

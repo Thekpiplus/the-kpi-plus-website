@@ -16,6 +16,11 @@ const nextConfig: NextConfig = {
         destination: `${prefix}/about-us`,
         permanent: true,
       })),
+      ...LOCALE_PREFIXES.map((prefix) => ({
+        source: `${prefix}/contact`,
+        destination: `${prefix}/contact-us`,
+        permanent: true,
+      })),
       {
         source: "/:path*",
         has: [{ type: "host", value: "www.thekpiplus.com" }],

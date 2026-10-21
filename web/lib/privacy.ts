@@ -1,3 +1,4 @@
+import { COMPANY } from "@/lib/company";
 import { LEGAL_NAME } from "@/lib/seo";
 
 export const POLICY_VERSION = "1.0";
@@ -9,12 +10,12 @@ export const PRIVACY_CONTACT = {
   name: "Isara Isaraniran",
   roleTh: "ผู้ประสานงานด้านข้อมูลส่วนบุคคล",
   roleEn: "privacy contact",
-  addressTh: "58/15 ถนนเจ้าฟ้าตะวันออก ตำบลตลาดเหนือ อำเภอเมืองภูเก็ต จังหวัดภูเก็ต 83000 ประเทศไทย",
-  addressEn: "58/15 Chao Fa East Road, Talat Nuea, Mueang Phuket, Phuket 83000, Thailand",
-  email: "info@thekpiplus.com",
-  phone: "+66 82 635 6266",
-  whatsapp: "https://wa.me/66826356266",
-  line: "https://lin.ee/TQibLMD",
+  addressTh: COMPANY.addressTh,
+  addressEn: COMPANY.addressEn,
+  email: COMPANY.email,
+  phone: COMPANY.phones[0]?.display ?? "",
+  whatsapp: COMPANY.whatsappHref,
+  line: COMPANY.lineHref,
 } as const;
 
 export const CONTROLLER = {

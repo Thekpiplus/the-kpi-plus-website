@@ -14,7 +14,7 @@ Solutions
 [Insights](/en/insights)
 [Case Studies](/en/case-studies)
 [About](/en/about-us)
-[Contact](contact.html)
+[Contact](contact-us.html)
 English
 [Request an audit](../index.html#audit)
 
@@ -82,7 +82,7 @@ Follow The KPI Plus
 [Case Studies](/en/case-studies)
 [Company story](/en/about-us)
 [Associations](/en/associations)
-[Contact](contact.html)
+[Contact](contact-us.html)
 ## Free Hotel Tools
 [Hotel Searchability Check](/en/tools/hotel-searchability-check)
 [Profit & Revenue](/en/tools/hotel-profit-calculator)
@@ -125,7 +125,7 @@ Language : English
 [Case Studies](/en/case-studies)
 [Company story](/en/about-us)
 [Associations](/en/associations)
-[Contact](contact.html)
+[Contact](contact-us.html)
 
 ### SECTION
 

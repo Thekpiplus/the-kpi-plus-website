@@ -1,3 +1,4 @@
+import { COMPANY } from "./company";
 import { existingHref, localizePath, type Locale } from "./seo";
 
 export const solutionGroups = [
@@ -67,8 +68,7 @@ export const copy = {
     academyCta: "ดูหลักสูตรและกิจกรรม",
     contactTitle: "ติดต่อ เดอะ เคพีไอ พลัส",
     officeLabel: "สำนักงาน",
-    address:
-      "58/15 ถนนเจ้าฟ้าตะวันออก ตำบลตลาดเหนือ อำเภอเมืองภูเก็ต จังหวัดภูเก็ต 83000 ประเทศไทย",
+    address: COMPANY.addressTh,
     privacy: "นโยบายความเป็นส่วนตัว",
     cookies: "นโยบายคุกกี้",
     cookieSettings: "ตั้งค่าคุกกี้",
@@ -87,7 +87,7 @@ export const copy = {
       { href: "/about-us", label: "เรื่องราวของ เดอะ เคพีไอ พลัส" },
       { href: "/associations", label: "พันธมิตรของเรา" },
       { href: "/partner", label: "สมัครเป็น Partner" },
-      { href: "/contact", label: "ติดต่อเรา" },
+      { href: "/contact-us", label: "ติดต่อเรา" },
     ],
   },
   en: {
@@ -116,7 +116,7 @@ export const copy = {
     academyCta: "See programmes",
     contactTitle: "Contact The KPI Plus",
     officeLabel: "Office",
-    address: "58/15 E Chaofah Rd, Talat Nuea, Mueang Phuket, Phuket 83000, Thailand",
+    address: COMPANY.addressEn,
     privacy: "Privacy Notice",
     cookies: "Cookie Policy",
     cookieSettings: "Cookie settings",
@@ -134,7 +134,7 @@ export const copy = {
       { href: "/case-studies", label: "Case studies" },
       { href: "/about-us", label: "Our story" },
       { href: "/associations", label: "Companies in association" },
-      { href: "/contact", label: "Contact" },
+      { href: "/contact-us", label: "Contact" },
     ],
   },
   ru: {
@@ -163,7 +163,7 @@ export const copy = {
     academyCta: "Смотреть программы",
     contactTitle: "Связаться с The KPI Plus",
     officeLabel: "Офис",
-    address: "58/15 E Chaofah Rd, Talat Nuea, Mueang Phuket, Phuket 83000, Thailand",
+    address: COMPANY.addressEn,
     privacy: "Политика конфиденциальности",
     cookies: "Политика cookie",
     cookieSettings: "Cookie settings",
@@ -181,7 +181,7 @@ export const copy = {
       { href: "/case-studies", label: "Кейсы" },
       { href: "/about-us", label: "О компании" },
       { href: "/associations", label: "Партнёры" },
-      { href: "/contact", label: "Контакты" },
+      { href: "/contact-us", label: "Контакты" },
     ],
   },
   zh: {
@@ -209,7 +209,7 @@ export const copy = {
     academyCta: "查看課程",
     contactTitle: "聯絡 The KPI Plus",
     officeLabel: "辦公室",
-    address: "58/15 E Chaofah Rd, Talat Nuea, Mueang Phuket, Phuket 83000, Thailand",
+    address: COMPANY.addressEn,
     privacy: "隱私權政策",
     cookies: "Cookie 政策",
     cookieSettings: "Cookie settings",
@@ -227,7 +227,7 @@ export const copy = {
       { href: "/case-studies", label: "客戶案例" },
       { href: "/about-us", label: "公司故事" },
       { href: "/associations", label: "合作夥伴" },
-      { href: "/contact", label: "聯絡我們" },
+      { href: "/contact-us", label: "聯絡我們" },
     ],
   },
 } as const;
@@ -366,7 +366,7 @@ export function visiblePrimaryLinks(locale: Locale) {
       { href: "/insights", label: t.insights },
       { href: "/case-studies", label: t.caseStudies },
       { href: "/about-us", label: t.about },
-      { href: "/contact", label: t.contact },
+      { href: "/contact-us", label: t.contact },
     ],
     locale,
   );
@@ -381,7 +381,7 @@ export function siteMenuLabel(route: string, locale: Locale = "th") {
     "/insights": t.insights,
     "/case-studies": t.caseStudies,
     "/about-us": t.about,
-    "/contact": t.contact,
+    "/contact-us": t.contact,
     "/associations": t.partners,
     "/partner": locale === "th" ? "สมัครเป็น Partner" : "Partner",
   };

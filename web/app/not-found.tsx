@@ -18,7 +18,7 @@ export default function NotFound() {
           <Link href="/insights" className="kpi-button-ghost">
             บทความและมุมมอง
           </Link>
-          <Link href="/contact" className="kpi-button-ghost">
+          <Link href="/contact-us" className="kpi-button-ghost">
             ติดต่อเรา
           </Link>
         </div>

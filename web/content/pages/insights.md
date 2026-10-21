@@ -14,7 +14,7 @@
 [บทความและมุมมอง](insights.html)
 [ผลงานลูกค้า](case-studies.html)
 [เกี่ยวกับเรา](about-us.html)
-[ติดต่อเรา](contact.html)
+[ติดต่อเรา](contact-us.html)
 ไทย
 [ขอรับการวิเคราะห์โรงแรม](index.html#audit)
 
@@ -86,7 +86,7 @@ The KPI Plus Performance Path
 [ผลงานลูกค้า](case-studies.html)
 [เรื่องราวของ เดอะ เคพีไอ พลัส](about-us.html)
 [พันธมิตรของเรา](associations.html)
-[ติดต่อเรา](contact.html)
+[ติดต่อเรา](contact-us.html)
 ## เครื่องมือฟรีสำหรับโรงแรม
 [ตรวจสุขภาพการค้นหาเว็บไซต์](tools/hotel-searchability-check.html)
 [คำนวณรายได้และกำไรโรงแรม](tools/hotel-profit-calculator.html)
@@ -129,7 +129,7 @@ The KPI Plus Performance Path
 [ผลงานลูกค้า](case-studies.html)
 [เรื่องราวของ เดอะ เคพีไอ พลัส](about-us.html)
 [พันธมิตรของเรา](associations.html)
-[ติดต่อเรา](contact.html)
+[ติดต่อเรา](contact-us.html)
 
 ### SECTION
 

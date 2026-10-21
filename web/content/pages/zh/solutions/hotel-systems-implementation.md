@@ -14,7 +14,7 @@
 [洞察](/zh/insights)
 [客戶案例](/zh/case-studies)
 [關於我們](/zh/about-us)
-[聯絡我們](../contact.html)
+[聯絡我們](../contact-us.html)
 中文
 [申請評估](../../index.html#audit)
 
@@ -28,7 +28,7 @@ Every PMS, Channel Manager, Booking Engine, and distribution platform works diff
 Revenue · Direct Booking · Commercial Growth
 Connect revenue, direct booking, and commercial-growth priorities so the hotel team can choose the next move and measure what changes.
 [Review My Hotel Systems](../../index.html#audit)
-[Talk to Our Team](../../contact.html)
+[Talk to Our Team](../../contact-us.html)
 ![Hotel systems & implementation for hotels](../../media/kpi-grow-capability_7bba9d6e.jpg)
 PMS, rate, and room mapping
 OTA connectivity and distribution
@@ -124,7 +124,7 @@ Make systems work better
 ## Make Your Hotel Systems Work Better
 Not sure whether the issue is your PMS, Channel Manager, OTA setup, pricing structure, reporting, or distribution? The KPI Plus can review the current environment and identify what should be fixed, simplified, or improved.
 [Review My Hotel Systems](../../index.html#audit)
-[Talk to The KPI Plus](../../contact.html)
+[Talk to The KPI Plus](../../contact-us.html)
 Common questions
 ## A clearer starting point for the next conversation.
 These questions explain the practical scope of this service. If your hotel context needs a more specific answer, request an audit and the team can begin with the relevant commercial question.
@@ -223,7 +223,7 @@ Follow The KPI Plus
 [Case Studies](/zh/case-studies)
 [Company story](/zh/about-us)
 [Associations](/zh/associations)
-[Contact](../contact.html)
+[Contact](../contact-us.html)
 ## Free Hotel Tools
 [Hotel Searchability Check](/zh/tools/hotel-searchability-check)
 [Profit & Revenue](/zh/tools/hotel-profit-calculator)
@@ -266,7 +266,7 @@ Language : 中文
 [Case Studies](/zh/case-studies)
 [Company story](/zh/about-us)
 [Associations](/zh/associations)
-[Contact](../contact.html)
+[Contact](../contact-us.html)
 
 ### SECTION
 

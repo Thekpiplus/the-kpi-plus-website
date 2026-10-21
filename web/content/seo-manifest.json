@@ -135,31 +135,31 @@
     "ogUrl": "https://thekpiplus.com/case-studies"
   },
   {
-    "route": "/contact",
+    "route": "/contact-us",
     "language": "th",
     "title": "ติดต่อ เดอะ เคพีไอ พลัส | ภูเก็ต | เดอะ เคพีไอ พลัส",
     "description": "ติดต่อ เดอะ เคพีไอ พลัส ที่ภูเก็ตสำหรับรายได้ การเติบโตดิจิทัล และผลการดำเนินงานโรงแรม",
-    "canonical": "https://thekpiplus.com/contact",
+    "canonical": "https://thekpiplus.com/contact-us",
     "alternates": [
       {
         "hreflang": "en",
-        "href": "https://thekpiplus.com/en/contact"
+        "href": "https://thekpiplus.com/en/contact-us"
       },
       {
         "hreflang": "th",
-        "href": "https://thekpiplus.com/contact"
+        "href": "https://thekpiplus.com/contact-us"
       },
       {
         "hreflang": "zh",
-        "href": "https://thekpiplus.com/zh/contact"
+        "href": "https://thekpiplus.com/zh/contact-us"
       },
       {
         "hreflang": "ru",
-        "href": "https://thekpiplus.com/ru/contact"
+        "href": "https://thekpiplus.com/ru/contact-us"
       }
     ],
     "ogImage": "https://thekpiplus.com/media/the-kpi-plus-performance-hero_2f986b5f.jpg",
-    "ogUrl": "https://thekpiplus.com/contact"
+    "ogUrl": "https://thekpiplus.com/contact-us"
   },
   {
     "route": "/cookies",
@@ -324,31 +324,31 @@
     "ogUrl": "https://thekpiplus.com/en/case-studies"
   },
   {
-    "route": "/en/contact",
+    "route": "/en/contact-us",
     "language": "en",
     "title": "Contact The KPI Plus | Phuket | The KPI Plus",
     "description": "Contact The KPI Plus in Phuket for hotel revenue, digital growth, local search, technology, and commercial performance support.",
-    "canonical": "https://thekpiplus.com/en/contact",
+    "canonical": "https://thekpiplus.com/en/contact-us",
     "alternates": [
       {
         "hreflang": "en",
-        "href": "https://thekpiplus.com/en/contact"
+        "href": "https://thekpiplus.com/en/contact-us"
       },
       {
         "hreflang": "th",
-        "href": "https://thekpiplus.com/contact"
+        "href": "https://thekpiplus.com/contact-us"
       },
       {
         "hreflang": "zh",
-        "href": "https://thekpiplus.com/zh/contact"
+        "href": "https://thekpiplus.com/zh/contact-us"
       },
       {
         "hreflang": "ru",
-        "href": "https://thekpiplus.com/ru/contact"
+        "href": "https://thekpiplus.com/ru/contact-us"
       }
     ],
     "ogImage": "https://thekpiplus.com/media/the-kpi-plus-performance-hero_2f986b5f.jpg",
-    "ogUrl": "https://thekpiplus.com/en/contact"
+    "ogUrl": "https://thekpiplus.com/en/contact-us"
   },
   {
     "route": "/en/cookies",
@@ -1379,31 +1379,31 @@
     "ogUrl": "https://thekpiplus.com/ru/case-studies"
   },
   {
-    "route": "/ru/contact",
+    "route": "/ru/contact-us",
     "language": "ru",
     "title": "Связаться с The KPI Plus | Пхукет | The KPI Plus",
     "description": "Свяжитесь с The KPI Plus на Пхукете для управления доходами, цифрового роста и коммерческой эффективности отеля.",
-    "canonical": "https://thekpiplus.com/ru/contact",
+    "canonical": "https://thekpiplus.com/ru/contact-us",
     "alternates": [
       {
         "hreflang": "en",
-        "href": "https://thekpiplus.com/en/contact"
+        "href": "https://thekpiplus.com/en/contact-us"
       },
       {
         "hreflang": "th",
-        "href": "https://thekpiplus.com/contact"
+        "href": "https://thekpiplus.com/contact-us"
       },
       {
         "hreflang": "zh",
-        "href": "https://thekpiplus.com/zh/contact"
+        "href": "https://thekpiplus.com/zh/contact-us"
       },
       {
         "hreflang": "ru",
-        "href": "https://thekpiplus.com/ru/contact"
+        "href": "https://thekpiplus.com/ru/contact-us"
       }
     ],
     "ogImage": "https://thekpiplus.com/media/the-kpi-plus-performance-hero_2f986b5f.jpg",
-    "ogUrl": "https://thekpiplus.com/ru/contact"
+    "ogUrl": "https://thekpiplus.com/ru/contact-us"
   },
   {
     "route": "/ru/cookies",
@@ -2638,31 +2638,31 @@
     "ogUrl": "https://thekpiplus.com/zh/case-studies"
   },
   {
-    "route": "/zh/contact",
+    "route": "/zh/contact-us",
     "language": "zh-Hant",
     "title": "联系 The KPI Plus | 普吉 | The KPI Plus",
     "description": "联系位于普吉的 The KPI Plus，获取酒店收益、数字增长和商业绩效支持。",
-    "canonical": "https://thekpiplus.com/zh/contact",
+    "canonical": "https://thekpiplus.com/zh/contact-us",
     "alternates": [
       {
         "hreflang": "en",
-        "href": "https://thekpiplus.com/en/contact"
+        "href": "https://thekpiplus.com/en/contact-us"
       },
       {
         "hreflang": "th",
-        "href": "https://thekpiplus.com/contact"
+        "href": "https://thekpiplus.com/contact-us"
       },
       {
         "hreflang": "zh",
-        "href": "https://thekpiplus.com/zh/contact"
+        "href": "https://thekpiplus.com/zh/contact-us"
       },
       {
         "hreflang": "ru",
-        "href": "https://thekpiplus.com/ru/contact"
+        "href": "https://thekpiplus.com/ru/contact-us"
       }
     ],
     "ogImage": "https://thekpiplus.com/media/the-kpi-plus-performance-hero_2f986b5f.jpg",
-    "ogUrl": "https://thekpiplus.com/zh/contact"
+    "ogUrl": "https://thekpiplus.com/zh/contact-us"
   },
   {
     "route": "/zh/cookies",

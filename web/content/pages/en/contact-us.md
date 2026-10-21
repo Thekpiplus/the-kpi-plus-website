@@ -1,22 +1,22 @@
-# /zh/contact
-**Source:** `zh/contact.html`
-**Language:** zh-Hant
-**Title:** 联系 The KPI Plus | 普吉 | The KPI Plus
-**Description:** 联系位于普吉的 The KPI Plus，获取酒店收益、数字增长和商业绩效支持。
-**Canonical:** https://thekpiplus.com/zh/contact
+# /en/contact-us
+**Source:** `en/contact.html`
+**Language:** en
+**Title:** Contact The KPI Plus | Phuket | The KPI Plus
+**Description:** Contact The KPI Plus in Phuket for hotel revenue, digital growth, local search, technology, and commercial performance support.
+**Canonical:** https://thekpiplus.com/en/contact-us
 
 ## Page content and controls
 
 ### HEADER
 
-解決方案
-[服務方式](/zh/approach)
-[洞察](/zh/insights)
-[客戶案例](/zh/case-studies)
-[關於我們](/zh/about-us)
-[聯絡我們](contact.html)
-中文
-[申請評估](../index.html#audit)
+Solutions
+[Approach](/en/approach)
+[Insights](/en/insights)
+[Case Studies](/en/case-studies)
+[About](/en/about-us)
+[Contact](contact-us.html)
+English
+[Request an audit](../index.html#audit)
 
 ### MAIN
 
@@ -45,28 +45,28 @@ Request a Hotel Performance Audit
 
 Commercial clarity for independent hotels.
 Revenue, demand, technology, and commercial capability—connected to a practical next action.
-[Request a hotel performance audit](/zh#audit)
+[Request a hotel performance audit](/en#audit)
 Follow The KPI Plus
 ## Solutions
-[Grow Revenue](/zh/solutions)
-[Grow Demand](/zh/solutions)
-[Grow Capability](/zh/solutions)
-[Explore all solutions](/zh/solutions)
+[Grow Revenue](/en/solutions)
+[Grow Demand](/en/solutions)
+[Grow Capability](/en/solutions)
+[Explore all solutions](/en/solutions)
 ## Explore
-[Commercial approach](/zh/approach)
-[Insights](/zh/insights)
-[Case Studies](/zh/case-studies)
-[Company story](/zh/about-us)
-[Associations](/zh/associations)
-[Contact](contact.html)
+[Commercial approach](/en/approach)
+[Insights](/en/insights)
+[Case Studies](/en/case-studies)
+[Company story](/en/about-us)
+[Associations](/en/associations)
+[Contact](contact-us.html)
 ## Free Hotel Tools
-[Hotel Searchability Check](/zh/tools/hotel-searchability-check)
-[Profit & Revenue](/zh/tools/hotel-profit-calculator)
-[Hotel Budget](/zh/tools/hotel-budget-calculator)
-[OTA Commission](/zh/tools/ota-commission-calculator)
-[VAT & Service Charge](/zh/tools/hotel-vat-service-charge-calculator)
-[RevPAR, ADR & Occupancy](/zh/tools/revpar-calculator)
-[View all tools](/zh/tools)
+[Hotel Searchability Check](/en/tools/hotel-searchability-check)
+[Profit & Revenue](/en/tools/hotel-profit-calculator)
+[Hotel Budget](/en/tools/hotel-budget-calculator)
+[OTA Commission](/en/tools/ota-commission-calculator)
+[VAT & Service Charge](/en/tools/hotel-vat-service-charge-calculator)
+[RevPAR, ADR & Occupancy](/en/tools/revpar-calculator)
+[View all tools](/en/tools)
 ## The KPI Plus Academy
 Corporate AI Training Program
 - AI Mindset & Security
@@ -81,38 +81,38 @@ Corporate AI Training Program
 [WhatsApp](https://wa.me/66826356266)
 [LINE](https://lin.ee/TQibLMD)
 © 2026 The KPI Plus Co., Ltd. · Tax ID 0835564008629
-[Privacy](/zh/privacy)
-[Cookies](/zh/cookies)
-Language : 中文
+[Privacy](/en/privacy)
+[Cookies](/en/cookies)
+Language : English
 
 ### SECTION
 
 ## Solutions
-[Grow Revenue](/zh/solutions)
-[Grow Demand](/zh/solutions)
-[Grow Capability](/zh/solutions)
-[Explore all solutions](/zh/solutions)
+[Grow Revenue](/en/solutions)
+[Grow Demand](/en/solutions)
+[Grow Capability](/en/solutions)
+[Explore all solutions](/en/solutions)
 
 ### SECTION
 
 ## Explore
-[Commercial approach](/zh/approach)
-[Insights](/zh/insights)
-[Case Studies](/zh/case-studies)
-[Company story](/zh/about-us)
-[Associations](/zh/associations)
-[Contact](contact.html)
+[Commercial approach](/en/approach)
+[Insights](/en/insights)
+[Case Studies](/en/case-studies)
+[Company story](/en/about-us)
+[Associations](/en/associations)
+[Contact](contact-us.html)
 
 ### SECTION
 
 ## Free Hotel Tools
-[Hotel Searchability Check](/zh/tools/hotel-searchability-check)
-[Profit & Revenue](/zh/tools/hotel-profit-calculator)
-[Hotel Budget](/zh/tools/hotel-budget-calculator)
-[OTA Commission](/zh/tools/ota-commission-calculator)
-[VAT & Service Charge](/zh/tools/hotel-vat-service-charge-calculator)
-[RevPAR, ADR & Occupancy](/zh/tools/revpar-calculator)
-[View all tools](/zh/tools)
+[Hotel Searchability Check](/en/tools/hotel-searchability-check)
+[Profit & Revenue](/en/tools/hotel-profit-calculator)
+[Hotel Budget](/en/tools/hotel-budget-calculator)
+[OTA Commission](/en/tools/ota-commission-calculator)
+[VAT & Service Charge](/en/tools/hotel-vat-service-charge-calculator)
+[RevPAR, ADR & Occupancy](/en/tools/revpar-calculator)
+[View all tools](/en/tools)
 
 ### SECTION
 

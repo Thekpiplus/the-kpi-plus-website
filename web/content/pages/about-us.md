@@ -14,7 +14,7 @@
 [บทความและมุมมอง](insights.html)
 [ผลงานลูกค้า](case-studies.html)
 [เกี่ยวกับเรา](about-us.html)
-[ติดต่อเรา](contact.html)
+[ติดต่อเรา](contact-us.html)
 ไทย
 [ขอรับการวิเคราะห์โรงแรม](index.html#audit)
 
@@ -57,7 +57,7 @@ Team, Systems & Ways of Working
 ### คุณอิศรา อิสรนิรันดร์
 ผู้ร่วมก่อตั้ง และประธานเจ้าหน้าที่บริหาร
 [ขอวิเคราะห์ Performance โรงแรม](/#audit)
-[คุยกับทีม เดอะ เคพีไอ พลัส](/contact)
+[คุยกับทีม เดอะ เคพีไอ พลัส](/contact-us)
 [ติดต่อเรา](mailto:info@thekpiplus.com?subject=Join%20The%20KPI%20Plus)
 
 ### FOOTER
@@ -77,7 +77,7 @@ Team, Systems & Ways of Working
 [ผลงานลูกค้า](case-studies.html)
 [เรื่องราวของ เดอะ เคพีไอ พลัส](about-us.html)
 [พันธมิตรของเรา](associations.html)
-[ติดต่อเรา](contact.html)
+[ติดต่อเรา](contact-us.html)
 ## เครื่องมือฟรีสำหรับโรงแรม
 [ตรวจสุขภาพการค้นหาเว็บไซต์](tools/hotel-searchability-check.html)
 [คำนวณรายได้และกำไรโรงแรม](tools/hotel-profit-calculator.html)
@@ -120,7 +120,7 @@ Team, Systems & Ways of Working
 [ผลงานลูกค้า](case-studies.html)
 [เรื่องราวของ เดอะ เคพีไอ พลัส](about-us.html)
 [พันธมิตรของเรา](associations.html)
-[ติดต่อเรา](contact.html)
+[ติดต่อเรา](contact-us.html)
 
 ### SECTION
 

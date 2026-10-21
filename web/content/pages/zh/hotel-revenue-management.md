@@ -14,7 +14,7 @@
 [洞察](/zh/insights)
 [客戶案例](/zh/case-studies)
 [關於我們](/zh/about-us)
-[聯絡我們](contact.html)
+[聯絡我們](contact-us.html)
 中文
 [申請評估](../index.html#audit)
 
@@ -77,7 +77,7 @@ Follow The KPI Plus
 [Case Studies](/zh/case-studies)
 [Company story](/zh/about-us)
 [Associations](/zh/associations)
-[Contact](contact.html)
+[Contact](contact-us.html)
 ## Free Hotel Tools
 [Hotel Searchability Check](/zh/tools/hotel-searchability-check)
 [Profit & Revenue](/zh/tools/hotel-profit-calculator)
@@ -120,7 +120,7 @@ Language : 中文
 [Case Studies](/zh/case-studies)
 [Company story](/zh/about-us)
 [Associations](/zh/associations)
-[Contact](contact.html)
+[Contact](contact-us.html)
 
 ### SECTION
 

@@ -28,7 +28,15 @@ export function ClickToLoadMap({
 
   return (
     <div className="kpi-contact-map kpi-contact-map-inline">
-      <iframe title={title} src={embedSrc} loading="lazy" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen />
+      <iframe
+        title={title}
+        src={embedSrc}
+        width={640}
+        height={384}
+        loading="lazy"
+        referrerPolicy="strict-origin-when-cross-origin"
+        allowFullScreen
+      />
     </div>
   );
 }

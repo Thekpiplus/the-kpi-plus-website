@@ -6068,6 +6068,7 @@ form .kpi-button {
   display: block;
   width: 100%;
   height: 18rem;
+  aspect-ratio: 16 / 10;
   border: 0;
 }
 
@@ -6108,6 +6109,27 @@ form .kpi-button {
   border-radius: 0.75rem;
   background: #fff;
   box-shadow: none;
+}
+
+.kpi-contact-photo {
+  margin: 1.35rem 0 0;
+  overflow: hidden;
+  border: 1px solid #e3e8eb;
+  border-radius: 0.75rem;
+  background: #eef4f5;
+}
+
+.kpi-contact-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+.kpi-contact-direct-links {
+  display: grid;
+  gap: 0.45rem;
 }
 
 @media (min-width: 64rem) {

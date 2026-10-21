@@ -24,7 +24,7 @@ async function requireCms() {
   return user;
 }
 
-const LOCALE_PREFIXED_CMS_SLUGS = new Set(["about-us", "about", "approach", "associations"]);
+const LOCALE_PREFIXED_CMS_SLUGS = new Set(["about-us", "about", "approach", "associations", "contact-us", "contact"]);
 
 function revalidatePublic(path: string) {
   revalidatePath("/crm/cms");
@@ -601,6 +601,22 @@ export async function saveGlobals(formData: FormData) {
     defaultOg: String(formData.get("defaultOg") ?? "").trim(),
     siteLine: String(formData.get("siteLine") ?? "").trim(),
     canonicalHost: String(formData.get("canonicalHost") ?? SITE).trim() || SITE,
+    email: String(formData.get("email") ?? "").trim(),
+    phone1: String(formData.get("phone1") ?? "").trim(),
+    phone2: String(formData.get("phone2") ?? "").trim(),
+    whatsappHref: String(formData.get("whatsappHref") ?? "").trim(),
+    lineHref: String(formData.get("lineHref") ?? "").trim(),
+    addressTh: String(formData.get("addressTh") ?? "").trim(),
+    addressEn: String(formData.get("addressEn") ?? "").trim(),
+    mapsShare: String(formData.get("mapsShare") ?? "").trim(),
+    mapsEmbed: String(formData.get("mapsEmbed") ?? "").trim(),
+    hoursTh: String(formData.get("hoursTh") ?? "").trim(),
+    hoursEn: String(formData.get("hoursEn") ?? "").trim(),
+    officePhoto: String(formData.get("officePhoto") ?? "").trim(),
+    facebook: String(formData.get("facebook") ?? "").trim(),
+    instagram: String(formData.get("instagram") ?? "").trim(),
+    linkedin: String(formData.get("linkedin") ?? "").trim(),
+    tiktok: String(formData.get("tiktok") ?? "").trim(),
   });
   const db = await cmsDb();
   await db.cmsSetting.upsert({
@@ -609,5 +625,10 @@ export async function saveGlobals(formData: FormData) {
     update: { value },
   });
   revalidatePath("/crm/cms/globals");
+  revalidatePath("/", "layout");
+  revalidatePath("/contact-us");
+  revalidatePath("/en/contact-us");
+  revalidatePath("/ru/contact-us");
+  revalidatePath("/zh/contact-us");
   redirect("/crm/cms/globals?saved=1");
 }

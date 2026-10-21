@@ -1,3 +1,4 @@
+import { COMPANY, type CompanyContact } from "./company";
 import type { FaqItem } from "./faqs";
 import type { InsightPost } from "./insights";
 import { uiCopy } from "./nav";
@@ -6,8 +7,21 @@ import { SITE, brandName, htmlLang, legalName, localizePath, type Locale } from 
 
 const ORG_ID = `${SITE}/#organization`;
 
-export function organizationSchema(locale: Locale = "en") {
+function postalAddress(company: CompanyContact) {
+  return {
+    "@type": "PostalAddress",
+    streetAddress: "58/15 E Chaofah Rd, Talat Nuea",
+    addressLocality: "Mueang Phuket",
+    addressRegion: "Phuket",
+    postalCode: "83000",
+    addressCountry: "TH",
+    name: company.addressEn,
+  };
+}
+
+export function organizationSchema(locale: Locale = "en", company: CompanyContact = COMPANY) {
   const name = brandName(locale);
+  const telephone = company.phones[0]?.display.replace(/\s+/g, "-") ?? "";
   return {
     "@context": "https://schema.org",
     "@type": ["Organization", "ProfessionalService"],
@@ -18,8 +32,8 @@ export function organizationSchema(locale: Locale = "en") {
     url: SITE,
     logo: `${SITE}/brand/KPIPlus_Symbol_FullColor.png`,
     image: `${SITE}/media/the-kpi-plus-founders_f4c8516e.webp`,
-    email: "info@thekpiplus.com",
-    telephone: "+66-82-635-6266",
+    email: company.email,
+    telephone,
     slogan: "Better Decisions. Better Hotel Performance.",
     description:
       "Hospitality Performance Partner helping hotels in Thailand grow through revenue management, demand, distribution, and direct booking.",
@@ -31,24 +45,13 @@ export function organizationSchema(locale: Locale = "en") {
       "Hotel digital marketing",
       "Hospitality technology",
     ],
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "58/15 E Chaofah Rd, Talat Nuea",
-      addressLocality: "Mueang Phuket",
-      addressRegion: "Phuket",
-      postalCode: "83000",
-      addressCountry: "TH",
-    },
-    sameAs: [
-      "https://www.facebook.com/thekpiplus/",
-      "https://www.instagram.com/thekpiplus/",
-      "https://www.linkedin.com/company/thekpiplus/",
-      "https://www.tiktok.com/@thekpiplus",
-    ],
+    address: postalAddress(company),
+    sameAs: Object.values(company.social).filter(Boolean),
   };
 }
 
-export function localBusinessSchema(locale: Locale = "th") {
+export function localBusinessSchema(locale: Locale = "th", company: CompanyContact = COMPANY) {
+  const telephone = company.phones[0]?.display.replace(/\s+/g, "-") ?? "";
   return {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
@@ -56,21 +59,14 @@ export function localBusinessSchema(locale: Locale = "th") {
     name: brandName(locale),
     url: SITE,
     image: `${SITE}/media/the-kpi-plus-founders_f4c8516e.webp`,
-    email: "info@thekpiplus.com",
-    telephone: "+66-82-635-6266",
+    email: company.email,
+    telephone,
     parentOrganization: { "@id": ORG_ID },
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "58/15 E Chaofah Rd, Talat Nuea",
-      addressLocality: "Mueang Phuket",
-      addressRegion: "Phuket",
-      postalCode: "83000",
-      addressCountry: "TH",
-    },
+    address: postalAddress(company),
     geo: {
       "@type": "GeoCoordinates",
-      latitude: 7.8769536,
-      longitude: 98.3797642,
+      latitude: company.geo.latitude,
+      longitude: company.geo.longitude,
     },
     areaServed: { "@type": "Country", name: "Thailand" },
   };
@@ -169,7 +165,7 @@ function crumbLabel(path: string, locale: Locale, fallback: string) {
     "/insights": t.insights,
     "/case-studies": t.caseStudies,
     "/about-us": t.about,
-    "/contact": t.contact,
+    "/contact-us": t.contact,
     "/approach": t.approach,
     "/associations": t.partners,
     "/tools": t.tools,

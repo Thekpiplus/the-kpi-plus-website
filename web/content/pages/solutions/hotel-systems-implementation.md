@@ -14,7 +14,7 @@
 [บทความและมุมมอง](../insights.html)
 [ผลงานลูกค้า](../case-studies.html)
 [เกี่ยวกับเรา](../about-us.html)
-[ติดต่อเรา](../contact.html)
+[ติดต่อเรา](../contact-us.html)
 ไทย
 [ขอรับการวิเคราะห์โรงแรม](../index.html#audit)
 
@@ -28,7 +28,7 @@ Revenue · Direct Booking · Commercial Growth
 รายได้ · การจองตรง · การเติบโตของโรงแรม
 เชื่อมรายได้ การจองตรง และการเติบโตของโรงแรมให้เป็นแผนที่ทีมลงมือทำและวัดผลได้จริง
 [ให้ทีมช่วยทบทวนระบบ](../index.html#audit)
-[พูดคุยกับทีม เดอะ เคพีไอ พลัส](../contact.html)
+[พูดคุยกับทีม เดอะ เคพีไอ พลัส](../contact-us.html)
 ![ระบบโรงแรมและการนำระบบไปใช้งาน เพื่อผลการดำเนินงานที่ดีขึ้นของโรงแรม](../media/kpi-grow-capability_7bba9d6e.jpg)
 จุดที่งานนี้ให้ความสำคัญ
 PMS การจับคู่ห้องพัก และโครงสร้างราคา
@@ -159,7 +159,7 @@ PMS โครงสร้างราคา Channel Manager Booking Engine ก�
 ## ทำให้ระบบโรงแรมของคุณทำงานได้ดียิ่งขึ้น
 ยังไม่แน่ใจว่าประเด็นอยู่ที่ PMS, Channel Manager, การตั้งค่า OTA, โครงสร้างราคา, รายงาน หรือ Distribution หรือไม่? เดอะ เคพีไอ พลัส สามารถช่วยทบทวนสิ่งที่ใช้อยู่ และระบุสิ่งที่ควรแก้ไข ทำให้ง่ายขึ้น หรือต่อยอดให้ดีขึ้น
 [ให้ทีมช่วยทบทวนระบบ](../index.html#audit)
-[พูดคุยกับ เดอะ เคพีไอ พลัส](../contact.html)
+[พูดคุยกับ เดอะ เคพีไอ พลัส](../contact-us.html)
 Related Solutions
 ## โซลูชันที่เกี่ยวข้อง
 [ดูทั้งหมด](../solutions.html)
@@ -207,7 +207,7 @@ Revenue · Direct Booking · Commercial Growth
 [ผลงานลูกค้า](../case-studies.html)
 [เรื่องราวของ เดอะ เคพีไอ พลัส](../about-us.html)
 [พันธมิตรของเรา](../associations.html)
-[ติดต่อเรา](../contact.html)
+[ติดต่อเรา](../contact-us.html)
 ## เครื่องมือฟรีสำหรับโรงแรม
 [ตรวจสุขภาพการค้นหาเว็บไซต์](../tools/hotel-searchability-check.html)
 [คำนวณรายได้และกำไรโรงแรม](../tools/hotel-profit-calculator.html)
@@ -250,7 +250,7 @@ Revenue · Direct Booking · Commercial Growth
 [ผลงานลูกค้า](../case-studies.html)
 [เรื่องราวของ เดอะ เคพีไอ พลัส](../about-us.html)
 [พันธมิตรของเรา](../associations.html)
-[ติดต่อเรา](../contact.html)
+[ติดต่อเรา](../contact-us.html)
 
 ### SECTION
 

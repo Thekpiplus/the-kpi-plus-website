@@ -14,7 +14,7 @@
 [Инсайты](/ru/insights)
 [Кейсы](/ru/case-studies)
 [О нас](/ru/about-us)
-[Контакты](../contact.html)
+[Контакты](../contact-us.html)
 Русский
 [Запросить аудит](../../index.html#audit)
 
@@ -139,7 +139,7 @@ Follow The KPI Plus
 [Case Studies](/ru/case-studies)
 [Company story](/ru/about-us)
 [Associations](/ru/associations)
-[Contact](../contact.html)
+[Contact](../contact-us.html)
 ## Free Hotel Tools
 [Hotel Searchability Check](/ru/tools/hotel-searchability-check)
 [Profit & Revenue](/ru/tools/hotel-profit-calculator)
@@ -182,7 +182,7 @@ Language : Русский
 [Case Studies](/ru/case-studies)
 [Company story](/ru/about-us)
 [Associations](/ru/associations)
-[Contact](../contact.html)
+[Contact](../contact-us.html)
 
 ### SECTION
 

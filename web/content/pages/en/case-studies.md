@@ -26,6 +26,6 @@ From pricing and distribution to direct-booking campaigns, we focus on measurabl
 HOTEL PERFORMANCE REVIEW
 What Could Your Hotel Be Leaving on the Table?
 [Request a Hotel Performance Review](/en#audit)
-[Talk to Our Team](/en/contact)
+[Talk to Our Team](/en/contact-us)
 
 ### FOOTER

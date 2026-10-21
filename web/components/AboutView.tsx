@@ -621,7 +621,7 @@ const copy = {
 export function AboutView({ locale }: { locale: Locale }) {
   const t = copy[locale];
   const audit = auditHref(locale);
-  const contact = localizePath("/contact", locale);
+  const contact = localizePath("/contact-us", locale);
   const approach = localizePath("/approach", locale);
   const isTh = locale === "th";
 

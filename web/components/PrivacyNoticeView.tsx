@@ -68,7 +68,7 @@ function ContactBlock({ locale }: { locale: "th" | "en" }) {
 export function PrivacyNoticeView({ locale, route }: { locale: Locale; route: string }) {
   const lang = policyLocale(locale);
   const cookiesHref = existingHref("/cookies", locale) ?? (lang === "th" ? "/cookies" : "/en/cookies");
-  const contactHref = existingHref("/contact", locale) ?? (lang === "th" ? "/contact" : "/en/contact");
+  const contactHref = existingHref("/contact-us", locale) ?? (lang === "th" ? "/contact-us" : "/en/contact-us");
   const date = formatPolicyDate(lang);
 
   const purposeRows =

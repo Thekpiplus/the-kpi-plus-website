@@ -122,7 +122,7 @@ export function CaseStudyDetailView({ locale, slug }: { locale: Locale; slug: st
   const study = localizeCaseStudy(base, locale);
   const t = chrome[locale];
   const audit = auditHref(locale);
-  const contact = localizePath("/contact", locale);
+  const contact = localizePath("/contact-us", locale);
   const indexHref = localizePath("/case-studies", locale);
   const route = localizePath(`/case-studies/${study.slug}`, locale);
   const next = localizeCaseStudy(nextStudy(base), locale);

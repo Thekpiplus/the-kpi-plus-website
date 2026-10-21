@@ -127,7 +127,7 @@ function StackedLines({
 export function CaseStudiesView({ locale }: { locale: Locale }) {
   const t = chrome[locale];
   const audit = auditHref(locale);
-  const contact = localizePath("/contact", locale);
+  const contact = localizePath("/contact-us", locale);
   const indexHref = localizePath("/case-studies", locale);
   const localizedStudies = caseStudies.map((study) => localizeCaseStudy(study, locale));
   const [featured, ...supporting] = localizedStudies;

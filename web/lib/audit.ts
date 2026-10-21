@@ -1,3 +1,5 @@
+import { COMPANY } from "./company";
+
 export const AUDIT_FOCUS_VALUES = [
   "occupancy",
   "pricing",
@@ -14,10 +16,10 @@ export const AUDIT_ROLES = ["owner", "gm", "revenue", "sales", "other"] as const
 export type AuditRole = (typeof AUDIT_ROLES)[number];
 
 export const AUDIT_CONTACTS = {
-  phoneDisplay: "+66 82 635 6266",
-  phoneHref: "tel:+66826356266",
-  lineHref: "https://lin.ee/TQibLMD",
-  email: "info@thekpiplus.com",
+  phoneDisplay: COMPANY.phones[0]?.display ?? "",
+  phoneHref: COMPANY.phones[0]?.href ?? "",
+  lineHref: COMPANY.lineHref,
+  email: COMPANY.email,
 } as const;
 
 export const AUDIT_RESPONSE_DAYS = 2;

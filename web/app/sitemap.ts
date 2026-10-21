@@ -6,10 +6,14 @@ import { SITE, pages } from "@/lib/seo";
 
 const PRIVATE = [/^\/admin/, /^\/crm/, /^\/partners/, /^\/login/, /^\/dashboard/];
 
-function isRedirectedAbout(url: string) {
+function isRedirectedLegacy(url: string) {
   try {
     const path = new URL(url).pathname.replace(/\/$/, "") || "/";
-    return path === "/about" || /^\/(en|ru|zh)\/about$/.test(path);
+    return (
+      path === "/about" ||
+      path === "/contact" ||
+      /^\/(en|ru|zh)\/(about|contact)$/.test(path)
+    );
   } catch {
     return false;
   }
@@ -18,7 +22,7 @@ function isRedirectedAbout(url: string) {
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const codePages = pages
     .filter((page) => !PRIVATE.some((pattern) => pattern.test(page.route)))
-    .filter((page) => !isRedirectedAbout(page.canonical))
+    .filter((page) => !isRedirectedLegacy(page.canonical))
     .map((page) => {
       const insight = insightByHref(page.route);
       const isHome = page.route === "/" || page.route === "/en" || page.route === "/ru" || page.route === "/zh";
@@ -39,7 +43,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .map((doc) => {
       const path = documentPath(doc);
       return {
-        url: (doc.canonical || `${SITE}${path}`).replace(/\/about$/, "/about-us"),
+        url: (doc.canonical || `${SITE}${path}`)
+          .replace(/\/about$/, "/about-us")
+          .replace(/\/contact$/, "/contact-us"),
         lastModified: doc.updatedAt.toISOString().slice(0, 10),
         changeFrequency: "monthly" as const,
         priority: doc.kind === "insight" ? 0.7 : 0.6,
@@ -49,6 +55,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const seen = new Set(codePages.map((item) => item.url));
   return [
     ...codePages,
-    ...cmsPages.filter((item) => !seen.has(item.url) && !isRedirectedAbout(item.url)),
+    ...cmsPages.filter((item) => !seen.has(item.url) && !isRedirectedLegacy(item.url)),
   ];
 }
