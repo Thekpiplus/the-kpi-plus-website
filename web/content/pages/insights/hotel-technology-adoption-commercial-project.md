@@ -13,7 +13,7 @@
 [แนวทางการทำงาน](../approach.html)
 [บทความและมุมมอง](../insights.html)
 [ผลงานลูกค้า](../case-studies.html)
-[เกี่ยวกับเรา](../about.html)
+[เกี่ยวกับเรา](../about-us.html)
 [ติดต่อเรา](../contact.html)
 ไทย
 [ขอรับการวิเคราะห์โรงแรม](../index.html#audit)
@@ -34,7 +34,7 @@ The KPI Plus Editorial Team
 อัปเดต 31 ส.ค. 2569
 อ่านประมาณ 5 นาที
 เรียบเรียงโดย
-[The KPI Plus Editorial Team](../about.html)
+[The KPI Plus Editorial Team](../about-us.html)
 Hospitality Performance & Revenue Management
 19 สิงหาคม 2569 · อัปเดต 31 ส.ค. 2569
 คำตอบสั้น ๆ
@@ -115,7 +115,7 @@ Revenue · Direct Booking · Commercial Growth
 [แนวทางการทำงาน](../approach.html)
 [บทความและมุมมอง](../insights.html)
 [ผลงานลูกค้า](../case-studies.html)
-[เรื่องราวของ เดอะ เคพีไอ พลัส](../about.html)
+[เรื่องราวของ เดอะ เคพีไอ พลัส](../about-us.html)
 [พันธมิตรของเรา](../associations.html)
 [ติดต่อเรา](../contact.html)
 ## เครื่องมือฟรีสำหรับโรงแรม
@@ -158,7 +158,7 @@ Revenue · Direct Booking · Commercial Growth
 [แนวทางการทำงาน](../approach.html)
 [บทความและมุมมอง](../insights.html)
 [ผลงานลูกค้า](../case-studies.html)
-[เรื่องราวของ เดอะ เคพีไอ พลัส](../about.html)
+[เรื่องราวของ เดอะ เคพีไอ พลัส](../about-us.html)
 [พันธมิตรของเรา](../associations.html)
 [ติดต่อเรา](../contact.html)
 

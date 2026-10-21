@@ -15,6 +15,7 @@ type Params = { slug: string[] };
 export function generateStaticParams() {
   const reserved = new Set([
     "about",
+    "about-us",
     "approach",
     "associations",
     "case-studies",
@@ -48,7 +49,7 @@ export function generateStaticParams() {
     "/en/associations",
     "/ru/associations",
     "/zh/associations",
-    "/en/about",
+    "/en/about-us",
     "/en/case-studies",
     "/en/approach",
     "/en/insights",
@@ -91,8 +92,8 @@ export function generateStaticParams() {
     "/solutions/independent-hotel-management",
     "/ru/solutions/independent-hotel-management",
     "/zh/solutions/independent-hotel-management",
-    "/ru/about",
-    "/zh/about",
+    "/ru/about-us",
+    "/zh/about-us",
     "/ru/approach",
     "/zh/approach",
     "/ru/case-studies",

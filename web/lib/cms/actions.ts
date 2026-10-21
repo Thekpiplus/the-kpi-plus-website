@@ -24,7 +24,7 @@ async function requireCms() {
   return user;
 }
 
-const LOCALE_PREFIXED_CMS_SLUGS = new Set(["about", "approach", "associations"]);
+const LOCALE_PREFIXED_CMS_SLUGS = new Set(["about-us", "about", "approach", "associations"]);
 
 function revalidatePublic(path: string) {
   revalidatePath("/crm/cms");

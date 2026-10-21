@@ -1,9 +1,9 @@
-# /about
+# /about-us
 **Source:** `about.html`
 **Language:** th
 **Title:** เกี่ยวกับเรา | พาร์ตเนอร์ด้านการบริหารรายได้และการเติบโตของธุรกิจโรงแรม | เดอะ เคพีไอ พลัส
 **Description:** เดอะ เคพีไอ พลัส ทำงานร่วมกับเจ้าของโรงแรม ผู้บริหาร และทีม Commercial ทั่วประเทศไทย เพื่อช่วยให้เห็นว่ารายได้กำลังหายไปตรงไหน โอกาสอยู่ตรงไหน และอะไรคือสิ่งที่ควรทำก่อน
-**Canonical:** https://thekpiplus.com/about
+**Canonical:** https://thekpiplus.com/about-us
 
 ## Page content and controls
 
@@ -13,7 +13,7 @@
 [แนวทางการทำงาน](approach.html)
 [บทความและมุมมอง](insights.html)
 [ผลงานลูกค้า](case-studies.html)
-[เกี่ยวกับเรา](about.html)
+[เกี่ยวกับเรา](about-us.html)
 [ติดต่อเรา](contact.html)
 ไทย
 [ขอรับการวิเคราะห์โรงแรม](index.html#audit)
@@ -75,7 +75,7 @@ Team, Systems & Ways of Working
 [แนวทางการทำงาน](approach.html)
 [บทความและมุมมอง](insights.html)
 [ผลงานลูกค้า](case-studies.html)
-[เรื่องราวของ เดอะ เคพีไอ พลัส](about.html)
+[เรื่องราวของ เดอะ เคพีไอ พลัส](about-us.html)
 [พันธมิตรของเรา](associations.html)
 [ติดต่อเรา](contact.html)
 ## เครื่องมือฟรีสำหรับโรงแรม
@@ -118,7 +118,7 @@ Team, Systems & Ways of Working
 [แนวทางการทำงาน](approach.html)
 [บทความและมุมมอง](insights.html)
 [ผลงานลูกค้า](case-studies.html)
-[เรื่องราวของ เดอะ เคพีไอ พลัส](about.html)
+[เรื่องราวของ เดอะ เคพีไอ พลัส](about-us.html)
 [พันธมิตรของเรา](associations.html)
 [ติดต่อเรา](contact.html)
 

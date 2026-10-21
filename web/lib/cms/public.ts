@@ -53,7 +53,9 @@ export async function storedPageByPath(pathname: string) {
   const slug = bare === "/" ? "" : bare.replace(/^\//, "");
   const doc = await pageDocumentBySlug(slug, locale).catch(() => null);
   // Include trashed docs so public routes can 404 instead of falling back to code pages.
-  return doc;
+  if (doc) return doc;
+  if (slug === "about-us") return pageDocumentBySlug("about", locale).catch(() => null);
+  return null;
 }
 
 export async function cmsPageByPath(pathname: string) {
@@ -71,7 +73,7 @@ export function cmsMetadata(doc: CmsDocumentRow) {
   const route = documentPath(doc);
   const title = doc.seoTitle || doc.title;
   const description = doc.metaDescription || doc.excerpt;
-  const canonical = doc.canonical || `${SITE}${route}`;
+  const canonical = (doc.canonical || `${SITE}${route}`).replace(/\/about$/, "/about-us");
   const image = doc.ogImage || doc.featuredImage;
   return {
     title,

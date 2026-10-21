@@ -13,7 +13,7 @@
 [Подход](/ru/approach)
 [Инсайты](/ru/insights)
 [Кейсы](/ru/case-studies)
-[О нас](/ru/about)
+[О нас](/ru/about-us)
 [Контакты](../contact.html)
 Русский
 [Запросить аудит](../../index.html#audit)
@@ -221,7 +221,7 @@ Follow The KPI Plus
 [Commercial approach](/ru/approach)
 [Insights](/ru/insights)
 [Case Studies](/ru/case-studies)
-[Company story](/ru/about)
+[Company story](/ru/about-us)
 [Associations](/ru/associations)
 [Contact](../contact.html)
 ## Free Hotel Tools
@@ -264,7 +264,7 @@ Language : Русский
 [Commercial approach](/ru/approach)
 [Insights](/ru/insights)
 [Case Studies](/ru/case-studies)
-[Company story](/ru/about)
+[Company story](/ru/about-us)
 [Associations](/ru/associations)
 [Contact](../contact.html)
 

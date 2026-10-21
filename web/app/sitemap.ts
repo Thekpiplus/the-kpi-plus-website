@@ -6,9 +6,19 @@ import { SITE, pages } from "@/lib/seo";
 
 const PRIVATE = [/^\/admin/, /^\/crm/, /^\/partners/, /^\/login/, /^\/dashboard/];
 
+function isRedirectedAbout(url: string) {
+  try {
+    const path = new URL(url).pathname.replace(/\/$/, "") || "/";
+    return path === "/about" || /^\/(en|ru|zh)\/about$/.test(path);
+  } catch {
+    return false;
+  }
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const codePages = pages
     .filter((page) => !PRIVATE.some((pattern) => pattern.test(page.route)))
+    .filter((page) => !isRedirectedAbout(page.canonical))
     .map((page) => {
       const insight = insightByHref(page.route);
       const isHome = page.route === "/" || page.route === "/en" || page.route === "/ru" || page.route === "/zh";
@@ -29,12 +39,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .map((doc) => {
       const path = documentPath(doc);
       return {
-        url: doc.canonical || `${SITE}${path}`,
+        url: (doc.canonical || `${SITE}${path}`).replace(/\/about$/, "/about-us"),
         lastModified: doc.updatedAt.toISOString().slice(0, 10),
         changeFrequency: "monthly" as const,
         priority: doc.kind === "insight" ? 0.7 : 0.6,
       };
     });
 
-  return [...codePages, ...cmsPages];
+  const seen = new Set(codePages.map((item) => item.url));
+  return [
+    ...codePages,
+    ...cmsPages.filter((item) => !seen.has(item.url) && !isRedirectedAbout(item.url)),
+  ];
 }

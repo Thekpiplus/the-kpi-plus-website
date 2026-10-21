@@ -27,31 +27,31 @@
     "ogUrl": "https://thekpiplus.com/"
   },
   {
-    "route": "/about",
+    "route": "/about-us",
     "language": "th",
     "title": "เกี่ยวกับเรา | พาร์ตเนอร์ด้านการบริหารรายได้และการเติบโตของธุรกิจโรงแรม | เดอะ เคพีไอ พลัส",
     "description": "เดอะ เคพีไอ พลัส ทำงานร่วมกับเจ้าของโรงแรม ผู้บริหาร และทีม Commercial ทั่วประเทศไทย เพื่อช่วยให้เห็นว่ารายได้กำลังหายไปตรงไหน โอกาสอยู่ตรงไหน และอะไรคือสิ่งที่ควรทำก่อน",
-    "canonical": "https://thekpiplus.com/about",
+    "canonical": "https://thekpiplus.com/about-us",
     "alternates": [
       {
         "hreflang": "en",
-        "href": "https://thekpiplus.com/en/about"
+        "href": "https://thekpiplus.com/en/about-us"
       },
       {
         "hreflang": "th",
-        "href": "https://thekpiplus.com/about"
+        "href": "https://thekpiplus.com/about-us"
       },
       {
         "hreflang": "zh",
-        "href": "https://thekpiplus.com/zh/about"
+        "href": "https://thekpiplus.com/zh/about-us"
       },
       {
         "hreflang": "ru",
-        "href": "https://thekpiplus.com/ru/about"
+        "href": "https://thekpiplus.com/ru/about-us"
       }
     ],
     "ogImage": "https://thekpiplus.com/media/the-kpi-plus-performance-hero_2f986b5f.jpg",
-    "ogUrl": "https://thekpiplus.com/about"
+    "ogUrl": "https://thekpiplus.com/about-us"
   },
   {
     "route": "/approach",
@@ -216,31 +216,31 @@
     "ogUrl": "https://thekpiplus.com/en"
   },
   {
-    "route": "/en/about",
+    "route": "/en/about-us",
     "language": "en",
     "title": "About | Your partner in hotel revenue and growth | The KPI Plus",
     "description": "The KPI Plus works with hotel owners, executives, and commercial teams across Thailand to see where revenue is being lost, where the opportunities are, and what to do first.",
-    "canonical": "https://thekpiplus.com/en/about",
+    "canonical": "https://thekpiplus.com/en/about-us",
     "alternates": [
       {
         "hreflang": "en",
-        "href": "https://thekpiplus.com/en/about"
+        "href": "https://thekpiplus.com/en/about-us"
       },
       {
         "hreflang": "th",
-        "href": "https://thekpiplus.com/about"
+        "href": "https://thekpiplus.com/about-us"
       },
       {
         "hreflang": "zh",
-        "href": "https://thekpiplus.com/zh/about"
+        "href": "https://thekpiplus.com/zh/about-us"
       },
       {
         "hreflang": "ru",
-        "href": "https://thekpiplus.com/ru/about"
+        "href": "https://thekpiplus.com/ru/about-us"
       }
     ],
     "ogImage": "https://thekpiplus.com/media/the-kpi-plus-performance-hero_2f986b5f.jpg",
-    "ogUrl": "https://thekpiplus.com/en/about"
+    "ogUrl": "https://thekpiplus.com/en/about-us"
   },
   {
     "route": "/en/approach",
@@ -1271,31 +1271,31 @@
     "ogUrl": "https://thekpiplus.com/ru"
   },
   {
-    "route": "/ru/about",
+    "route": "/ru/about-us",
     "language": "ru",
     "title": "О The KPI Plus | The KPI Plus",
     "description": "The KPI Plus — партнёр по доходам и росту отелей с офисом на Пхукете.",
-    "canonical": "https://thekpiplus.com/ru/about",
+    "canonical": "https://thekpiplus.com/ru/about-us",
     "alternates": [
       {
         "hreflang": "en",
-        "href": "https://thekpiplus.com/en/about"
+        "href": "https://thekpiplus.com/en/about-us"
       },
       {
         "hreflang": "th",
-        "href": "https://thekpiplus.com/about"
+        "href": "https://thekpiplus.com/about-us"
       },
       {
         "hreflang": "zh",
-        "href": "https://thekpiplus.com/zh/about"
+        "href": "https://thekpiplus.com/zh/about-us"
       },
       {
         "hreflang": "ru",
-        "href": "https://thekpiplus.com/ru/about"
+        "href": "https://thekpiplus.com/ru/about-us"
       }
     ],
     "ogImage": "https://thekpiplus.com/media/the-kpi-plus-performance-hero_2f986b5f.jpg",
-    "ogUrl": "https://thekpiplus.com/ru/about"
+    "ogUrl": "https://thekpiplus.com/ru/about-us"
   },
   {
     "route": "/ru/approach",
@@ -2530,31 +2530,31 @@
     "ogUrl": "https://thekpiplus.com/zh"
   },
   {
-    "route": "/zh/about",
+    "route": "/zh/about-us",
     "language": "zh-Hant",
     "title": "關於 The KPI Plus | The KPI Plus",
     "description": "認識 The KPI Plus：總部位於普吉、由創辦人帶領的酒店績效與成長夥伴。",
-    "canonical": "https://thekpiplus.com/zh/about",
+    "canonical": "https://thekpiplus.com/zh/about-us",
     "alternates": [
       {
         "hreflang": "en",
-        "href": "https://thekpiplus.com/en/about"
+        "href": "https://thekpiplus.com/en/about-us"
       },
       {
         "hreflang": "th",
-        "href": "https://thekpiplus.com/about"
+        "href": "https://thekpiplus.com/about-us"
       },
       {
         "hreflang": "zh",
-        "href": "https://thekpiplus.com/zh/about"
+        "href": "https://thekpiplus.com/zh/about-us"
       },
       {
         "hreflang": "ru",
-        "href": "https://thekpiplus.com/ru/about"
+        "href": "https://thekpiplus.com/ru/about-us"
       }
     ],
     "ogImage": "https://thekpiplus.com/media/the-kpi-plus-performance-hero_2f986b5f.jpg",
-    "ogUrl": "https://thekpiplus.com/zh/about"
+    "ogUrl": "https://thekpiplus.com/zh/about-us"
   },
   {
     "route": "/zh/approach",

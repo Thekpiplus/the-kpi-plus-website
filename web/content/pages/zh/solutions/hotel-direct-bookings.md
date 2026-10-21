@@ -13,7 +13,7 @@
 [服務方式](/zh/approach)
 [洞察](/zh/insights)
 [客戶案例](/zh/case-studies)
-[關於我們](/zh/about)
+[關於我們](/zh/about-us)
 [聯絡我們](../contact.html)
 中文
 [申請評估](../../index.html#audit)
@@ -137,7 +137,7 @@ Follow The KPI Plus
 [Commercial approach](/zh/approach)
 [Insights](/zh/insights)
 [Case Studies](/zh/case-studies)
-[Company story](/zh/about)
+[Company story](/zh/about-us)
 [Associations](/zh/associations)
 [Contact](../contact.html)
 ## Free Hotel Tools
@@ -180,7 +180,7 @@ Language : 中文
 [Commercial approach](/zh/approach)
 [Insights](/zh/insights)
 [Case Studies](/zh/case-studies)
-[Company story](/zh/about)
+[Company story](/zh/about-us)
 [Associations](/zh/associations)
 [Contact](../contact.html)
 

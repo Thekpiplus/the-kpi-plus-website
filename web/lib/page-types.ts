@@ -16,7 +16,7 @@ export type PageKind =
 export function pageKind(route: string): PageKind {
   const bare = barePath(route);
   if (bare === "/") return "home";
-  if (bare === "/about") return "about";
+  if (bare === "/about-us" || bare === "/about") return "about";
   if (bare === "/contact") return "contact";
   if (bare === "/solutions") return "solutionsIndex";
   if (bare.startsWith("/solutions/")) return "solution";

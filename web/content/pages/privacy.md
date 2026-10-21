@@ -13,7 +13,7 @@
 [แนวทางการทำงาน](approach.html)
 [บทความและมุมมอง](insights.html)
 [ผลงานลูกค้า](case-studies.html)
-[เกี่ยวกับเรา](about.html)
+[เกี่ยวกับเรา](about-us.html)
 [ติดต่อเรา](contact.html)
 ไทย
 [ขอรับการวิเคราะห์โรงแรม](index.html#audit)
@@ -51,7 +51,7 @@ Last updated: 28 September 2026
 [แนวทางการทำงาน](approach.html)
 [บทความและมุมมอง](insights.html)
 [ผลงานลูกค้า](case-studies.html)
-[เรื่องราวของ เดอะ เคพีไอ พลัส](about.html)
+[เรื่องราวของ เดอะ เคพีไอ พลัส](about-us.html)
 [พันธมิตรของเรา](associations.html)
 [ติดต่อเรา](contact.html)
 ## เครื่องมือฟรีสำหรับโรงแรม
@@ -94,7 +94,7 @@ Last updated: 28 September 2026
 [แนวทางการทำงาน](approach.html)
 [บทความและมุมมอง](insights.html)
 [ผลงานลูกค้า](case-studies.html)
-[เรื่องราวของ เดอะ เคพีไอ พลัส](about.html)
+[เรื่องราวของ เดอะ เคพีไอ พลัส](about-us.html)
 [พันธมิตรของเรา](associations.html)
 [ติดต่อเรา](contact.html)
 

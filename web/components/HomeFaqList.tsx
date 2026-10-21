@@ -10,7 +10,10 @@ export function HomeFaqList({ items }: { items: FaqItem[] }) {
 
   const focusItem = (index: number) => {
     const buttons = listRef.current?.querySelectorAll<HTMLButtonElement>(".kpi-faq-trigger");
-    buttons?.[index]?.focus();
+    buttons?.[index]?.focus({
+      preventScroll: false,
+      focusVisible: true,
+    } as FocusOptions & { focusVisible: boolean });
   };
 
   const onTriggerKeyDown = (event: KeyboardEvent<HTMLButtonElement>, index: number) => {

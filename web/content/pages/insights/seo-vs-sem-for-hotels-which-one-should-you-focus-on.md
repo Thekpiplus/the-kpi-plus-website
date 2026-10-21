@@ -13,7 +13,7 @@
 [แนวทางการทำงาน](../approach.html)
 [บทความและมุมมอง](../insights.html)
 [ผลงานลูกค้า](../case-studies.html)
-[เกี่ยวกับเรา](../about.html)
+[เกี่ยวกับเรา](../about-us.html)
 [ติดต่อเรา](../contact.html)
 ไทย
 [ขอรับการวิเคราะห์โรงแรม](../index.html#audit)
@@ -34,7 +34,7 @@ SEO และ SEM มีบทบาทต่างกันในการส�
 อัปเดต 20 ส.ค. 2569
 อ่านประมาณ 3 นาที
 เรียบเรียงโดย
-[ทีมบรรณาธิการ เดอะ เคพีไอ พลัส](../about.html)
+[ทีมบรรณาธิการ เดอะ เคพีไอ พลัส](../about-us.html)
 Hospitality Knowledge Hub
 1 กุมภาพันธ์ 2568 · อัปเดต 20 ส.ค. 2569
 คำตอบสั้น ๆ
@@ -118,7 +118,7 @@ Revenue · Direct Booking · Commercial Growth
 [แนวทางการทำงาน](../approach.html)
 [บทความและมุมมอง](../insights.html)
 [ผลงานลูกค้า](../case-studies.html)
-[เรื่องราวของ เดอะ เคพีไอ พลัส](../about.html)
+[เรื่องราวของ เดอะ เคพีไอ พลัส](../about-us.html)
 [พันธมิตรของเรา](../associations.html)
 [ติดต่อเรา](../contact.html)
 ## เครื่องมือฟรีสำหรับโรงแรม
@@ -161,7 +161,7 @@ Revenue · Direct Booking · Commercial Growth
 [แนวทางการทำงาน](../approach.html)
 [บทความและมุมมอง](../insights.html)
 [ผลงานลูกค้า](../case-studies.html)
-[เรื่องราวของ เดอะ เคพีไอ พลัส](../about.html)
+[เรื่องราวของ เดอะ เคพีไอ พลัส](../about-us.html)
 [พันธมิตรของเรา](../associations.html)
 [ติดต่อเรา](../contact.html)
 

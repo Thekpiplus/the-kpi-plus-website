@@ -29,6 +29,8 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
   const [pinnedSolutions, setPinnedSolutions] = useState(false);
   const [openLang, setOpenLang] = useState(false);
   const [openMenu, setOpenMenu] = useState(false);
+  const [openMobileSolutions, setOpenMobileSolutions] = useState(false);
+  const [openMobileGroup, setOpenMobileGroup] = useState<string | null>(null);
   const solutionsRef = useRef<HTMLDivElement>(null);
   const langRef = useRef<HTMLDivElement>(null);
   const closeTimer = useRef<number | null>(null);
@@ -74,6 +76,8 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
     closeSolutionsMenu();
     setOpenLang(false);
     setOpenMenu(false);
+    setOpenMobileSolutions(false);
+    setOpenMobileGroup(null);
 
     if (skipScrollReset.current) {
       skipScrollReset.current = false;
@@ -111,6 +115,8 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
         closeSolutionsMenu();
         setOpenLang(false);
         setOpenMenu(false);
+        setOpenMobileSolutions(false);
+        setOpenMobileGroup(null);
       }
     };
     document.addEventListener("pointerdown", onPointerDown);
@@ -223,8 +229,13 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
           <button
             type="button"
             aria-label={t.openMenu}
+            aria-expanded={openMenu}
             className="kpi-nav-toggle"
-            onClick={() => setOpenMenu((value) => !value)}
+            onClick={() => {
+              setOpenMenu((value) => !value);
+              setOpenMobileSolutions(false);
+              setOpenMobileGroup(null);
+            }}
           >
             <MenuIcon className="h-5 w-5" />
           </button>
@@ -278,59 +289,94 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
       </div>
 
       {openMenu ? (
-        <div className="kpi-mobile-drawer border-t border-[#E3E8EB] bg-white px-5 py-4">
-          <div className="kpi-mobile-nav text-sm text-[#555555]">
+        <div className="kpi-mobile-drawer">
+          <nav className="kpi-mobile-nav" aria-label={locale === "th" ? "เมนูหลัก" : "Primary navigation"}>
             {groups.length ? (
-              <div className="grid gap-2">
-                <Link
-                  href={solutionsIndexHref(locale)}
-                  className="font-semibold text-[#0B6660]"
-                  onClick={() => setOpenMenu(false)}
-                >
-                  {t.solutions}
-                </Link>
-                <Link href={solutionsIndexHref(locale)} onClick={() => setOpenMenu(false)}>
-                  {t.allSolutions}
-                </Link>
+              <div className={`kpi-mobile-solutions${openMobileSolutions ? " is-open" : ""}`}>
+                <div className="kpi-mobile-row">
+                  <Link
+                    href={solutionsIndexHref(locale)}
+                    className="kpi-mobile-link kpi-mobile-link-strong"
+                    onClick={() => setOpenMenu(false)}
+                  >
+                    {t.solutions}
+                  </Link>
+                  <button
+                    type="button"
+                    className="kpi-mobile-acc"
+                    aria-expanded={openMobileSolutions}
+                    aria-controls="kpi-mobile-solutions-panel"
+                    aria-label={t.openSolutions}
+                    onClick={() => {
+                      setOpenMobileSolutions((value) => !value);
+                      setOpenMobileGroup(null);
+                    }}
+                  >
+                    <ChevronDown className={`kpi-mobile-chevron${openMobileSolutions ? " is-open" : ""}`} />
+                  </button>
+                </div>
+                {openMobileSolutions ? (
+                  <div id="kpi-mobile-solutions-panel" className="kpi-mobile-solutions-panel">
+                    {groups.map((group) => {
+                      const expanded = openMobileGroup === group.id;
+                      return (
+                        <div key={group.id} className={`kpi-mobile-group${expanded ? " is-open" : ""}`}>
+                          <button
+                            type="button"
+                            className="kpi-mobile-group-btn"
+                            aria-expanded={expanded}
+                            onClick={() => setOpenMobileGroup(expanded ? null : group.id)}
+                          >
+                            <span>{group.title}</span>
+                            <ChevronDown className={`kpi-mobile-chevron${expanded ? " is-open" : ""}`} />
+                          </button>
+                          <div className="kpi-mobile-group-links">
+                            {group.items.map((item) => (
+                              <Link key={item.href} href={item.href} onClick={() => setOpenMenu(false)}>
+                                {item.label}
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })}
+                    <Link
+                      href={solutionsIndexHref(locale)}
+                      className="kpi-mobile-all"
+                      onClick={() => setOpenMenu(false)}
+                    >
+                      {t.allSolutions}
+                      <ArrowUpRight className="h-3.5 w-3.5" />
+                    </Link>
+                  </div>
+                ) : null}
               </div>
             ) : null}
-            {groups.map((group) => (
-              <div key={group.id}>
-                <p className={`text-xs font-extrabold text-[#0B6660] ${locale === "en" ? "uppercase tracking-[.12em]" : "tracking-[.06em]"}`}>{group.title}</p>
-                <div className="mt-2 grid gap-2">
-                  {group.items.map((item) => (
-                    <Link key={item.href} href={item.href} onClick={() => setOpenMenu(false)}>
-                      {item.label}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            ))}
-            <div className="grid gap-2">
+            <div className="kpi-mobile-primary">
               {primaryLinks.map((item) => (
-                <Link key={item.href} href={item.href} onClick={() => setOpenMenu(false)}>
+                <Link key={item.href} href={item.href} className="kpi-mobile-link" onClick={() => setOpenMenu(false)}>
                   {item.label}
                 </Link>
               ))}
               {extraLinks.map((item) => (
-                <Link key={item.href} href={item.href} onClick={() => setOpenMenu(false)}>
+                <Link key={item.href} href={item.href} className="kpi-mobile-link" onClick={() => setOpenMenu(false)}>
                   {item.label}
                 </Link>
               ))}
             </div>
-            <div className="flex flex-wrap gap-3 border-t border-[#E3E8EB] pt-3">
+            <div className="kpi-mobile-langs">
               {locales.map((item) => (
                 <Link
                   key={item.id}
                   href={switchLocale(pathname, item.id)}
-                  className={item.id === locale ? "font-semibold text-[#0B6660]" : ""}
+                  className={`kpi-mobile-lang${item.id === locale ? " is-current" : ""}`}
                   onClick={() => setOpenMenu(false)}
                 >
                   {item.label}
                 </Link>
               ))}
             </div>
-          </div>
+          </nav>
         </div>
       ) : null}
     </header>

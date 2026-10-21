@@ -8,6 +8,7 @@ import { locales, uiCopy, visibleSolutionGroups } from "@/lib/nav";
 import { PRIVACY_CONTACT } from "@/lib/privacy";
 import {
   auditHref,
+  barePath,
   existingHref,
   homeHref,
   htmlLang,
@@ -34,6 +35,14 @@ function existingNav(items: readonly { href: string; label: string }[], locale: 
     const href = existingHref(item.href, locale);
     return href ? [{ href, label: item.label }] : [];
   });
+}
+
+function channelLabel(network: string, locale: Locale) {
+  const brand = brandName(locale);
+  if (locale === "th") return `${network} ของ ${brand}`;
+  if (locale === "zh") return `${brand} 的 ${network}`;
+  if (locale === "ru") return `${network}: ${brand}`;
+  return `${brand} on ${network}`;
 }
 
 function FooterHeading({ children }: { children: React.ReactNode }) {
@@ -66,13 +75,14 @@ export function Footer({ extraLinks = [] }: { extraLinks?: { href: string; label
   const privacyHref = existingHref("/privacy", locale);
   const cookiesHref = existingHref("/cookies", locale);
   const contactHref = existingHref("/contact", locale);
-  const primaryPaths = new Set(["/approach", "/insights", "/case-studies", "/about", "/contact"]);
+  const isAbout = barePath(pathname) === "/about-us";
+  const primaryPaths = new Set(["/approach", "/insights", "/case-studies", "/about-us", "/contact"]);
   const mainLinks = existingNav(
     [
       { href: "/approach", label: t.approach },
       { href: "/insights", label: t.insights },
       { href: "/case-studies", label: t.caseStudies },
-      { href: "/about", label: t.about },
+      { href: "/about-us", label: t.about },
       { href: "/contact", label: t.contact },
     ],
     locale,
@@ -84,7 +94,7 @@ export function Footer({ extraLinks = [] }: { extraLinks?: { href: string; label
   const companyLinks = [...mainLinks, ...extraKnow, ...extraLinks];
 
   return (
-    <footer lang={htmlLang(locale)} className="kpi-footer">
+    <footer lang={htmlLang(locale)} className={isAbout ? "kpi-footer kpi-footer--about" : "kpi-footer"}>
       <div className="kpi-section">
         <div className="kpi-footer-top">
           <section className="kpi-footer-brand">
@@ -110,7 +120,7 @@ export function Footer({ extraLinks = [] }: { extraLinks?: { href: string; label
                 rel="noreferrer"
                 data-track="footer_facebook_click"
                 className="kpi-footer-channel"
-                aria-label="Facebook"
+                aria-label={channelLabel("Facebook", locale)}
               >
                 <img src="/brand/meta/facebook.svg" alt="" width={26} height={26} />
               </a>
@@ -120,7 +130,7 @@ export function Footer({ extraLinks = [] }: { extraLinks?: { href: string; label
                 rel="noreferrer"
                 data-track="footer_instagram_click"
                 className="kpi-footer-channel"
-                aria-label="Instagram"
+                aria-label={channelLabel("Instagram", locale)}
               >
                 <img src="/brand/meta/instagram.svg" alt="" width={26} height={26} />
               </a>
@@ -130,7 +140,7 @@ export function Footer({ extraLinks = [] }: { extraLinks?: { href: string; label
                 rel="noreferrer"
                 data-track="footer_linkedin_click"
                 className="kpi-footer-channel"
-                aria-label="LinkedIn"
+                aria-label={channelLabel("LinkedIn", locale)}
               >
                 <img src="/brand/linkedin/linkedin.svg" alt="" width={26} height={26} />
               </a>
@@ -140,7 +150,7 @@ export function Footer({ extraLinks = [] }: { extraLinks?: { href: string; label
                 rel="noreferrer"
                 data-track="footer_tiktok_click"
                 className="kpi-footer-channel"
-                aria-label="TikTok"
+                aria-label={channelLabel("TikTok", locale)}
               >
                 <img src="/brand/tiktok/tiktok.svg" alt="" width={26} height={26} />
               </a>
@@ -192,6 +202,7 @@ export function Footer({ extraLinks = [] }: { extraLinks?: { href: string; label
                   target="_blank"
                   rel="noreferrer"
                   className="kpi-footer-contact-row"
+                  aria-label={`${t.officeLabel}: ${t.address}`}
                 >
                   <MapPin aria-hidden="true" />
                   <span>
@@ -199,15 +210,27 @@ export function Footer({ extraLinks = [] }: { extraLinks?: { href: string; label
                     <span className="kpi-footer-address">{t.address}</span>
                   </span>
                 </a>
-                <a href={`mailto:${AUDIT_CONTACTS.email}`} className="kpi-footer-contact-row">
+                <a
+                  href={`mailto:${AUDIT_CONTACTS.email}`}
+                  className="kpi-footer-contact-row"
+                  aria-label={`Email ${AUDIT_CONTACTS.email}`}
+                >
                   <Mail aria-hidden="true" />
                   <span className="kpi-latin">{AUDIT_CONTACTS.email}</span>
                 </a>
-                <a href={AUDIT_CONTACTS.phoneHref} className="kpi-footer-contact-row">
+                <a
+                  href={AUDIT_CONTACTS.phoneHref}
+                  className="kpi-footer-contact-row"
+                  aria-label={`${locale === "th" ? "โทร" : "Phone"} ${AUDIT_CONTACTS.phoneDisplay}`}
+                >
                   <Phone aria-hidden="true" />
                   <span className="kpi-latin">{AUDIT_CONTACTS.phoneDisplay}</span>
                 </a>
-                <a href={SECOND_PHONE_HREF} className="kpi-footer-contact-row">
+                <a
+                  href={SECOND_PHONE_HREF}
+                  className="kpi-footer-contact-row"
+                  aria-label={`${locale === "th" ? "โทร" : "Phone"} ${SECOND_PHONE_DISPLAY}`}
+                >
                   <Phone aria-hidden="true" />
                   <span className="kpi-latin">{SECOND_PHONE_DISPLAY}</span>
                 </a>
@@ -218,7 +241,7 @@ export function Footer({ extraLinks = [] }: { extraLinks?: { href: string; label
                     rel="noreferrer"
                     data-track="footer_whatsapp_click"
                     className="kpi-footer-channel"
-                    aria-label="WhatsApp"
+                    aria-label={channelLabel("WhatsApp", locale)}
                   >
                     <img src="/brand/meta/whatsapp.svg" alt="" width={26} height={26} />
                   </a>
@@ -228,7 +251,7 @@ export function Footer({ extraLinks = [] }: { extraLinks?: { href: string; label
                     rel="noreferrer"
                     data-track="footer_line_click"
                     className="kpi-footer-channel"
-                    aria-label="LINE"
+                    aria-label={channelLabel("LINE", locale)}
                   >
                     <img src="/brand/line/line.svg" alt="" width={26} height={26} />
                   </a>

@@ -11,6 +11,11 @@ const nextConfig: NextConfig = {
         destination: "/insights/hotel-marketing",
         permanent: true,
       },
+      ...LOCALE_PREFIXES.map((prefix) => ({
+        source: `${prefix}/about`,
+        destination: `${prefix}/about-us`,
+        permanent: true,
+      })),
       {
         source: "/:path*",
         has: [{ type: "host", value: "www.thekpiplus.com" }],

@@ -89,32 +89,140 @@ const table: Record<string, FaqItem[]> = {
       a: "先找出收益或預訂未達標的原因。把價格、需求、通路與直銷預訂看成同一張圖，再選擇下一步。",
     },
   ],
-  "/about": [
+  "/about-us": [
     {
-      q: "เดอะ เคพีไอ พลัส คือเอเจนซี่การตลาดหรือที่ปรึกษา?",
-      a: "เดอะ เคพีไอ พลัส ไม่ใช่เพียง Digital Marketing Agency และไม่ใช่ที่ปรึกษาที่เข้ามาวิเคราะห์แล้วส่งรายงานให้โรงแรม เราทำงานร่วมกับโรงแรมตั้งแต่ต้นจนจบกระบวนการ และติดตามผลลัพธ์ต่อเนื่อง",
+      q: "เหมาะกับโรงแรมประเภทไหน?",
+      a: "เหมาะกับโรงแรมอิสระ บูทีค และที่พักที่ซับซ้อนกว่า ในประเทศไทย ที่เจ้าของ GM หรือทีม Commercial อยากดูรายได้ ราคา และช่องทางขายเอง ไม่จำเป็นต้องเป็นเชนขนาดใหญ่",
     },
     {
-      q: "เป้าหมายของงานคืออะไร?",
-      a: "เป้าหมายไม่ใช่การทำให้โรงแรมทำมากขึ้น แต่คือการช่วยให้โรงแรมทำสิ่งที่ใช่ ในเวลาที่ใช่ เพื่อผลประกอบการที่ดีขึ้น",
+      q: "ต้องเตรียมข้อมูลอะไร?",
+      a: "เริ่มจากชื่อโรงแรม จังหวัด จำนวนห้องโดยประมาณ และเรื่องที่กังวลตอนนี้ เช่น Occupancy ราคา หรือ OTA ไม่ต้องส่งรายงานครบในวันแรก ทีมจะถามข้อมูลเพิ่มตอนคุย",
     },
     {
-      q: "ทำงานกับโรงแรมกี่แห่งแล้ว?",
-      a: "เราทำงานร่วมกับธุรกิจ Hospitality มาแล้วกว่า 100 แห่ง ตั้งแต่โรงแรมอิสระขนาดเล็กไปจนถึงธุรกิจที่มีความซับซ้อนมากขึ้น",
+      q: "ต้องเชื่อมต่อระบบหรือไม่?",
+      a: "ไม่จำเป็นต้องเชื่อมต่อระบบก่อนเริ่มคุย ทีมดูข้อมูลและระบบที่โรงแรมมีอยู่แล้ว แล้วเสนอวิธีทำงานที่เหมาะกับขนาดและความพร้อม ไม่ต้องเปลี่ยน PMS หรือ RMS ก่อนทุกครั้ง",
+    },
+    {
+      q: "ทำงานร่วมกับทีม Revenue เดิมอย่างไร?",
+      a: "เราไม่ได้เข้าไปแทนที่ทีม Revenue ของโรงแรม ดูข้อมูลร่วมกัน แยกจุดที่รั่วกับโอกาส แล้วให้ทีมโรงแรมมีสิ่งที่ลงมือทำต่อได้",
+    },
+    {
+      q: "ช่วยเรื่อง OTA และ Direct Booking อย่างไร?",
+      a: "ดูสัดส่วนจองจาก OTA กับจองตรง ค่าคอมมิชชัน และราคาในแต่ละช่องทาง แล้วช่วยดูว่าควรปรับตรงไหนก่อน เพื่อไม่ให้พึ่งช่องทางเดียวมากเกินไป",
+    },
+    {
+      q: "ใช้เวลานานแค่ไหนในการเริ่มต้น?",
+      a: "ส่งข้อมูลผ่านฟอร์มได้เลย ใช้เวลาประมาณ 2 นาที ทีมติดต่อกลับภายใน 2 วันทำการ หลังคุยและดูข้อมูลที่มี จะสรุปประเด็นที่ควรโฟกัสก่อน ไม่ใช่เริ่มงานทั้งหมดในวันแรก",
+    },
+    {
+      q: "ข้อมูลโรงแรมจะถูกเก็บเป็นความลับหรือไม่?",
+      a: "ใช่ ข้อมูลที่ใช้ติดต่อและวิเคราะห์เบื้องต้นเก็บเป็นความลับ ใช้เพื่อติดต่อกลับเรื่องคำขอนี้ตามนโยบายความเป็นส่วนตัว ไม่เผยแพร่เป็นเคสโดยไม่ได้รับอนุญาต",
+    },
+    {
+      q: "เริ่มต้นพูดคุยอย่างไร?",
+      a: "กรอกแบบฟอร์มวิเคราะห์โรงแรม หรือคุยกับทีมทางอีเมล info@thekpiplus.com โทร +66 82 635 6266 LINE หรือ WhatsApp ไม่ต้องมีขอบเขตงานครบก่อนเริ่มคุย",
     },
   ],
-  "/en/about": [
+  "/en/about-us": [
     {
-      q: "Is The KPI Plus a marketing agency or a consultancy?",
-      a: "The KPI Plus isn't just a digital marketing agency, and we're not consultants who analyze your hotel, hand over a report, and leave. We work alongside your team from start to finish, and stay with the results.",
+      q: "Which types of hotels is this for?",
+      a: "Independent hotels, boutiques, and more complex operations in Thailand, where the owner, GM, or commercial team wants to look at revenue, pricing, and channels themselves. It does not have to be a large chain.",
     },
     {
-      q: "What is the goal of the work?",
-      a: "The goal isn't to help hotels do more. It's to help hotels do the right things, at the right time, for better performance.",
+      q: "What information should we prepare?",
+      a: "Start with the hotel name, province, an approximate room count, and what is worrying you now — such as occupancy, pricing, or OTAs. You do not need a full report on day one. The team will ask for more when you talk.",
     },
     {
-      q: "How many hospitality businesses have you worked with?",
-      a: "We've worked with more than 100 hospitality businesses, from small independent hotels to more complex operations.",
+      q: "Do we have to connect our systems first?",
+      a: "No. The team looks at the data and systems the hotel already has, then proposes a way of working that fits the size and readiness of the hotel. You do not have to change the PMS or RMS before the first conversation.",
+    },
+    {
+      q: "How do you work with our existing Revenue team?",
+      a: "We do not replace the hotel’s Revenue team. We look at the numbers together, separate the leak from the opportunity, and leave the hotel team with something they can act on.",
+    },
+    {
+      q: "How can you help with OTAs and direct bookings?",
+      a: "We look at the mix of OTA and direct bookings, commission, and rates on each channel, then help decide what to adjust first so the hotel is not relying on one channel too heavily.",
+    },
+    {
+      q: "How long does it take to get started?",
+      a: "You can send the form now; it takes about two minutes. The team replies within two business days. After a conversation and a look at the information you have, they summarise what to focus on first. The full scope of work does not start on day one.",
+    },
+    {
+      q: "Is hotel information kept confidential?",
+      a: "Yes. Contact and review details are kept confidential and used to follow up on this request, as described in the privacy policy. We do not publish a case without permission.",
+    },
+    {
+      q: "How do we start the conversation?",
+      a: "Fill in the hotel performance form, or talk to the team by email at info@thekpiplus.com, phone +66 82 635 6266, LINE, or WhatsApp. You do not need a complete scope before the first conversation.",
+    },
+  ],
+  "/ru/about-us": [
+    {
+      q: "Для каких отелей это подходит?",
+      a: "Для независимых отелей, бутиков и более сложных операций в Таиланде, где владелец, GM или коммерческая команда сами смотрят доход, цены и каналы. Это не обязательно крупная сеть.",
+    },
+    {
+      q: "Какие данные подготовить?",
+      a: "Начните с названия отеля, провинции, примерного числа номеров и того, что беспокоит сейчас — occupancy, цена или OTA. Полный отчёт в первый день не нужен. Команда спросит больше во время разговора.",
+    },
+    {
+      q: "Нужно ли сначала подключать системы?",
+      a: "Нет. Команда смотрит данные и системы, которые у отеля уже есть, и предлагает способ работы по размеру и готовности. Менять PMS или RMS до первого разговора не обязательно.",
+    },
+    {
+      q: "Как вы работаете с существующей Revenue-командой?",
+      a: "Мы не заменяем Revenue-команду отеля. Смотрим цифры вместе, отделяем утечку от возможности и оставляем команде отеля то, что можно сделать дальше.",
+    },
+    {
+      q: "Как вы помогаете с OTA и прямыми бронированиями?",
+      a: "Смотрим долю OTA и прямых броней, комиссию и цены по каналам, затем помогаем решить, что править сначала, чтобы отель не зависел слишком сильно от одного канала.",
+    },
+    {
+      q: "Сколько времени занимает старт?",
+      a: "Форму можно отправить сейчас, это занимает около двух минут. Команда отвечает в течение двух рабочих дней. После разговора и просмотра имеющихся данных суммирует, на чём сфокусироваться сначала. Полный объём работы не начинается в первый день.",
+    },
+    {
+      q: "Данные отеля конфиденциальны?",
+      a: "Да. Контактные данные и материалы для разбора хранятся конфиденциально и используются, чтобы ответить на этот запрос, как описано в политике конфиденциальности. Мы не публикуем кейс без разрешения.",
+    },
+    {
+      q: "Как начать разговор?",
+      a: "Заполните форму анализа отеля или напишите команде на info@thekpiplus.com, позвоните +66 82 635 6266, LINE или WhatsApp. Полный объём работ до первого разговора не нужен.",
+    },
+  ],
+  "/zh/about-us": [
+    {
+      q: "適合哪些類型的飯店？",
+      a: "適合泰國的獨立飯店、精品旅館，以及較複雜的營運。業主、總經理或 Commercial 團隊若想自己看收益、價格與通路，不必是大型連鎖。",
+    },
+    {
+      q: "該準備哪些資料？",
+      a: "先從飯店名稱、府、大約房數，以及現在最擔心的事開始，例如 Occupancy、價格或 OTA。第一天不必交完整報告，團隊會在交談時再問需要的資料。",
+    },
+    {
+      q: "一定要先串接系統嗎？",
+      a: "不必。團隊會先看飯店既有的資料與系統，再提出適合規模與準備程度的做法。第一次交談前不必先換 PMS 或 RMS。",
+    },
+    {
+      q: "如何與現有 Revenue 團隊合作？",
+      a: "我們不會取代飯店的 Revenue 團隊。一起看數字、分開哪裡在流失、哪裡有機會，並留給飯店團隊能接著做的事。",
+    },
+    {
+      q: "如何協助 OTA 與直銷預訂？",
+      a: "看 OTA 與直銷預訂的比重、佣金，以及各通路價格，再一起判斷該先調哪裡，避免過度依賴單一通路。",
+    },
+    {
+      q: "開始要花多久？",
+      a: "現在就能送表單，大約兩分鐘。團隊會在 2 個工作天內回覆。交談並看過現有資料後，會先整理該聚焦的重點，不會第一天就展開全部工作。",
+    },
+    {
+      q: "飯店資料會保密嗎？",
+      a: "會。用來聯絡與初步分析的資料會保密，並依隱私權政策只用於回覆這次詢問。未經同意不會公開成案例。",
+    },
+    {
+      q: "要怎麼開始談？",
+      a: "填寫飯店績效表單，或用 info@thekpiplus.com、電話 +66 82 635 6266、LINE 或 WhatsApp 與團隊談。第一次交談前不必先備齊完整工作範圍。",
     },
   ],
   "/approach": [
@@ -1471,6 +1579,9 @@ export function faqsForRoute(route: string): FaqItem[] {
   if (table[route]) return table[route];
   if (route.endsWith("/privacy")) return table["/en/privacy"] ?? table["/privacy"] ?? [];
   if (route.endsWith("/cookies")) return table["/en/cookies"] ?? table["/cookies"] ?? [];
+  if (route === "/about" || route.endsWith("/about")) {
+    return table[route.replace(/\/about$/, "/about-us")] ?? [];
+  }
   return [];
 }
 

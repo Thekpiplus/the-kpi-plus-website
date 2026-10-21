@@ -13,7 +13,7 @@ Solutions
 [Approach](/en/approach)
 [Insights](/en/insights)
 [Case Studies](/en/case-studies)
-[About](/en/about)
+[About](/en/about-us)
 [Contact](../contact.html)
 English
 [Request an audit](../../index.html#audit)
@@ -221,7 +221,7 @@ Follow The KPI Plus
 [Commercial approach](/en/approach)
 [Insights](/en/insights)
 [Case Studies](/en/case-studies)
-[Company story](/en/about)
+[Company story](/en/about-us)
 [Associations](/en/associations)
 [Contact](../contact.html)
 ## Free Hotel Tools
@@ -264,7 +264,7 @@ Language : English
 [Commercial approach](/en/approach)
 [Insights](/en/insights)
 [Case Studies](/en/case-studies)
-[Company story](/en/about)
+[Company story](/en/about-us)
 [Associations](/en/associations)
 [Contact](../contact.html)
 

@@ -168,7 +168,7 @@ function crumbLabel(path: string, locale: Locale, fallback: string) {
     "/solutions": t.solutions,
     "/insights": t.insights,
     "/case-studies": t.caseStudies,
-    "/about": t.about,
+    "/about-us": t.about,
     "/contact": t.contact,
     "/approach": t.approach,
     "/associations": t.partners,
@@ -262,7 +262,7 @@ export function articleSchema(post: InsightPost, canonical: string, locale: Loca
     author: {
       "@type": "Organization",
       name: authorName,
-      url: `${SITE}${localizePath("/about", locale)}`,
+      url: `${SITE}${localizePath("/about-us", locale)}`,
     },
     publisher: {
       "@type": "Organization",
