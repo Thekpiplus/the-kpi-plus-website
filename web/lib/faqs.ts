@@ -3,42 +3,70 @@ export type FaqItem = { q: string; a: string };
 const table: Record<string, FaqItem[]> = {
   "/": [
     {
-      q: "เดอะ เคพีไอ พลัส ช่วยโรงแรมเรื่องอะไร?",
-      a: "เราช่วยดูภาพรวมด้านรายได้ ราคา ช่องทางขาย การตลาด และการทำงานของทีม เพื่อหาโอกาสที่ควรแก้ก่อน และวางแนวทางที่นำไปใช้ได้จริง",
+      q: "เหมาะกับโรงแรมประเภทไหน?",
+      a: "เหมาะกับโรงแรมอิสระ บูทีค และพูลวิลล่าที่เจ้าของหรือผู้บริหารอยากดูรายได้ ราคา และช่องทางขายเอง ไม่จำเป็นต้องเป็นเชนขนาดใหญ่",
     },
     {
-      q: "ควรเริ่มจากจุดไหนถ้า Occupancy หรือรายได้ยังไม่ถึงเป้า?",
-      a: "เราจะดูทั้งราคา Demand ช่องทางขาย Direct Booking และการตลาด เพื่อหาว่าจุดไหนมีผลต่อผลลัพธ์มากที่สุด",
+      q: "ต้องใช้ข้อมูลอะไรในการเริ่มวิเคราะห์?",
+      a: "เริ่มจากชื่อโรงแรม จังหวัด จำนวนห้องโดยประมาณ และเรื่องที่กังวลตอนนี้ เช่น Occupancy ราคา หรือ OTA ไม่ต้องส่งรายงานครบในวันแรก ทีมจะถามข้อมูลเพิ่มตอนคุย",
     },
     {
-      q: "โรงแรมต้องส่งข้อมูลอะไรเพื่อขอวิเคราะห์?",
-      a: "ส่งรายละเอียดโรงแรมเท่าที่มีในเบื้องต้น แล้วทีมจะติดต่อกลับเพื่อคุยเรื่องราคา Demand ช่องทางขาย หรือ Direct Booking ที่ควรโฟกัสก่อน",
+      q: "ใช้เวลานานแค่ไหนกว่าจะเห็นคำแนะนำ?",
+      a: "ทีมติดต่อกลับภายใน 2 วันทำการ หลังคุยและดูข้อมูลที่มี จะสรุปประเด็นที่ควรโฟกัสก่อน ไม่ใช่รายงานยาวทันทีหลังส่งฟอร์ม",
     },
     {
-      q: "การวิเคราะห์เบื้องต้นมีค่าใช้จ่ายหรือไม่?",
-      a: "การวิเคราะห์เบื้องต้นไม่มีค่าใช้จ่าย",
+      q: "ทำงานร่วมกับทีม Revenue เดิมอย่างไร?",
+      a: "เราไม่ได้เข้าไปแทนที่ทีม Revenue ของโรงแรม ดูข้อมูลร่วมกัน แยกจุดที่รั่วกับโอกาส แล้วให้ทีมโรงแรมมีสิ่งที่ลงมือทำต่อได้",
     },
     {
-      q: "หลังส่งข้อมูลแล้วจะได้รับอะไร?",
-      a: "ทีมจะติดต่อกลับเพื่อพูดคุยสถานการณ์ของโรงแรม ช่วยระบุประเด็นที่ควรโฟกัส และแนะนำแนวทางเบื้องต้นที่สามารถนำไปพิจารณาต่อได้",
+      q: "ช่วยเรื่อง OTA และ Direct Booking ได้อย่างไร?",
+      a: "ดูสัดส่วนจองจาก OTA กับจองตรง ค่าคอมมิชชัน และราคาในแต่ละช่องทาง แล้วช่วยดูว่าควรปรับตรงไหนก่อน เพื่อไม่ให้พึ่งช่องทางเดียวมากเกินไป",
     },
     {
-      q: "ทีมงานจะติดต่อกลับภายในกี่วัน?",
-      a: "ทีมงานจะติดต่อกลับภายใน 2 วันทำการ",
+      q: "มีค่าใช้จ่ายในการวิเคราะห์เบื้องต้นหรือไม่?",
+      a: "การวิเคราะห์เบื้องต้นไม่มีค่าใช้จ่าย ส่งข้อมูลผ่านฟอร์มได้เลย หากโรงแรมต้องการให้ทีมเข้าไปทำงานต่อ ค่อยคุยขอบเขตและค่าใช้จ่ายในขั้นตอนนั้น",
+    },
+    {
+      q: "ข้อมูลโรงแรมจะถูกเก็บเป็นความลับหรือไม่?",
+      a: "ใช่ ข้อมูลที่ใช้ติดต่อและวิเคราะห์เบื้องต้นเก็บเป็นความลับ ใช้เพื่อติดต่อกลับเรื่องคำขอนี้ตามนโยบายความเป็นส่วนตัว ไม่เผยแพร่เป็นเคสโดยไม่ได้รับอนุญาต",
+    },
+    {
+      q: "โรงแรมขนาดเล็กสามารถใช้บริการได้หรือไม่?",
+      a: "ได้ โรงแรมอิสระขนาดเล็กใช้บริการได้ ทีมดูจากสถานการณ์รายได้และช่องทางขายที่มีอยู่ ไม่ได้ตัดออกเพราะจำนวนห้องน้อย",
     },
   ],
   "/en": [
     {
-      q: "What does The KPI Plus help hotels with?",
-      a: "The KPI Plus helps hotels create demand, strengthen distribution, and connect data, technology, and AI to pricing, sales, and marketing so teams decide better, grow bookings, and measure what works.",
+      q: "Which types of hotels is this for?",
+      a: "Independent hotels, boutiques, and pool villas where the owner or operator wants to look at revenue, pricing, and channels themselves. It does not have to be a large chain.",
     },
     {
-      q: "Where should a hotel start if revenue or occupancy is missing the target?",
-      a: "Start with the reason revenue or bookings are missing the target. See price, demand, distribution, and direct booking in one picture, then choose the next move.",
+      q: "What information do you need to start a review?",
+      a: "Hotel name, area, an approximate room count, and what is worrying you now — such as occupancy, pricing, or OTAs. You do not need a full report on day one. The team will ask for more when you talk.",
     },
     {
-      q: "What happens after a hotel performance audit request?",
-      a: "Send basic hotel details first. The KPI Plus team follows up on the price, demand, channel, or direct-booking question that is most useful to start with.",
+      q: "How long before we see recommendations?",
+      a: "The team replies within 2 business days. After a conversation and a look at the information you have, they summarise what to focus on first. It is not a long report the moment the form is sent.",
+    },
+    {
+      q: "How do you work with our existing Revenue team?",
+      a: "We do not replace the hotel’s Revenue team. We look at the numbers together, separate the leak from the opportunity, and leave the hotel team with something they can act on.",
+    },
+    {
+      q: "How can you help with OTAs and direct bookings?",
+      a: "We look at the mix of OTA and direct bookings, commission, and rates on each channel, then help decide what to adjust first so the hotel is not relying on one channel too heavily.",
+    },
+    {
+      q: "Is there a fee for the initial review?",
+      a: "There is no fee for the initial review. Send the form when you are ready. Cost is discussed later, if the hotel wants the team to continue the work.",
+    },
+    {
+      q: "Is hotel information kept confidential?",
+      a: "Yes. Contact and review details are kept confidential and used to follow up on this request, as described in the privacy policy. We do not publish a case without permission.",
+    },
+    {
+      q: "Can a small hotel use this service?",
+      a: "Yes. Small independent hotels can use this service. The team looks at the hotel’s revenue and channel situation, and does not rule a hotel out because it has fewer rooms.",
     },
   ],
   "/ru": [

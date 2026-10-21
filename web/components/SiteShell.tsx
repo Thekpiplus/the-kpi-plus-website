@@ -3,14 +3,14 @@ import { notFound } from "next/navigation";
 import { CookieConsent } from "@/components/CookieConsent";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { PageScroll } from "@/components/PageScroll";
 import { JsonLd } from "@/components/JsonLd";
 import { LangSync } from "@/components/LangSync";
-import { PageBreadcrumbs } from "@/components/PageBreadcrumbs";
 import { PageFaqs } from "@/components/PageFaqs";
 import { cmsFooterLinks, cmsHeaderLinks } from "@/lib/cms/files";
 import { isCmsPageLive, storedPageByPath } from "@/lib/cms/public";
 import { faqsForRoute, howToStepsForRoute } from "@/lib/faqs";
-import { hasOwnBreadcrumbs, pageKind } from "@/lib/page-types";
+import { pageKind } from "@/lib/page-types";
 import {
   breadcrumbSchema,
   crumbsFor,
@@ -72,9 +72,9 @@ export async function SiteShell({
         <JsonLd data={howToSchema({ name: title.split("|")[0].trim(), description, steps: howToSteps })} />
       ) : null}
       <div className={`kpi-shell ${locale === "th" ? "kpi-locale-th" : "kpi-locale-latin"}`}>
+        <PageScroll />
         <Header extraLinks={extraHeader} />
         <main>
-          {!hasOwnBreadcrumbs(route) && crumbs.length > 1 ? <PageBreadcrumbs items={crumbs} /> : null}
           {children}
           <PageFaqs items={faqs} locale={locale} />
         </main>

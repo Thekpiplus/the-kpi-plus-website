@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useId, useMemo, useState, type ReactNode } from "react";
-import { auditCopyFor, auditFocusOrder, auditRoleOrder } from "@/lib/audit-copy";
+import { AUDIT_LAYOUT, auditCopyFor, auditFocusOrder, auditRoleOrder } from "@/lib/audit-copy";
 import { FormPrivacyNotice } from "@/components/FormPrivacyNotice";
 import { AUDIT_CONTACTS, parseAuditFocus, readUtm, type AuditFocus, type AuditRole } from "@/lib/audit";
 import { localizePath, type Locale } from "@/lib/seo";
@@ -124,74 +124,104 @@ export function AuditSection({ locale, leftExtra }: { locale: Locale; leftExtra?
         locale,
       });
       setStatus("success");
+      window.requestAnimationFrame(() => {
+        document.getElementById(`${formId}-success`)?.focus();
+      });
     } catch {
       setStatus("error");
     }
   };
 
   return (
-    <section id="audit" className="kpi-home-audit border-t border-[#E3E8EB] bg-[#F4F4F4]">
+    <section id="audit" data-audit-layout={AUDIT_LAYOUT} className="kpi-home-audit border-t border-[#E3E8EB] bg-[#F4F4F4]">
       <div className={`kpi-section kpi-split-audit${leftExtra ? " kpi-split-audit-fill" : ""}`}>
         <div className="kpi-audit-copy">
-          <p className="kpi-audit-kicker kpi-latin">{t.eyebrow}</p>
-          <h2 className="kpi-h2 kpi-audit-heading">
-            {locale === "th" ? (
-              <>
-                {"ขอวิเคราะห์"}
-                <span className="kpi-audit-break"> </span>
-                {"Performance โรงแรม"}
-              </>
-            ) : (
-              t.heading
-            )}
-          </h2>
-          <p className="kpi-audit-intro">{t.intro}</p>
-          <ol className="kpi-audit-steps">
-            {t.nextSteps.map(([num, body]) => (
-              <li key={num}>
-                <span className="kpi-latin">{num}</span>
-                <p>{body}</p>
-              </li>
-            ))}
-          </ol>
-          <p className="kpi-audit-trust">
-            {t.trustFree}
-            <br />
-            {t.trustReply}
-          </p>
-          {leftExtra}
+          <div className="kpi-audit-lead">
+            <p className="kpi-audit-kicker kpi-latin">{t.eyebrow}</p>
+            <h2 className="kpi-h2 kpi-audit-heading">
+              {locale === "th" ? (
+                <>
+                  <span className="kpi-th-line">ขอวิเคราะห์</span>
+                  <span className="kpi-th-line">Performance โรงแรม</span>
+                </>
+              ) : (
+                t.heading
+              )}
+            </h2>
+            <p className="kpi-audit-intro">{t.intro}</p>
+            <ul className="kpi-audit-points">
+              {t.reassurances.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </div>
+          <aside className="kpi-audit-aside">
+            <figure className="kpi-audit-people">
+              <img
+                src="/media/kpi-plus-team-review_d4af97f6.jpg"
+                alt={
+                  locale === "th"
+                    ? "ทีม The KPI Plus ประชุมรีวิวข้อมูลโรงแรมด้วยกัน"
+                    : "The KPI Plus team reviewing hotel data together"
+                }
+                width={160}
+                height={160}
+                loading="lazy"
+                decoding="async"
+              />
+              <figcaption>
+                <span className="kpi-audit-people-name">{t.teamCaption}</span>
+                <span className="kpi-audit-people-note">{t.teamNote}</span>
+              </figcaption>
+            </figure>
+            <ol className="kpi-audit-steps" aria-label={t.nextTitle}>
+              {t.nextSteps.map(([num, body]) => (
+                <li key={num}>
+                  <span className="kpi-latin">{num}</span>
+                  <p>{body}</p>
+                </li>
+              ))}
+            </ol>
+            {leftExtra}
+          </aside>
         </div>
 
         <div className="kpi-audit-panel">
           {status === "success" ? (
-            <div className="bg-[#F2F8E2] p-6" role="status">
-              <h3 className="text-2xl font-extrabold tracking-[-.04em] text-[#0B1F33]">{t.successTitle}</h3>
-              <p className="mt-4 text-base leading-8 text-[#555555]">{t.successBody}</p>
-              <ContactLinks locale={locale} className="mt-6" />
+            <div className="kpi-audit-success" role="status">
+              <h3 id={`${formId}-success`} tabIndex={-1}>
+                {t.successTitle}
+              </h3>
+              <p>{t.successBody}</p>
+              <ContactLinks locale={locale} />
             </div>
           ) : (
             <form className="kpi-audit-form" onSubmit={onSubmit} noValidate>
               <p className="kpi-audit-group">{t.groupHotel}</p>
               <div className="kpi-audit-row">
-                <Field label={t.name} error={errors.name} htmlFor={`${formId}-name`}>
+                <Field label={t.name} error={errors.name} htmlFor={`${formId}-name`} requiredMark>
                   <input
                     id={`${formId}-name`}
                     name="name"
                     autoComplete="name"
                     className="kpi-field"
                     value={state.name}
+                    aria-required="true"
                     aria-invalid={Boolean(errors.name)}
+                    aria-describedby={errors.name ? `${formId}-name-error` : undefined}
                     onBlur={() => validate()}
                     onChange={(event) => setState((current) => ({ ...current, name: event.target.value }))}
                   />
                 </Field>
-                <Field label={t.role} error={errors.role} htmlFor={`${formId}-role`}>
+                <Field label={t.role} error={errors.role} htmlFor={`${formId}-role`} requiredMark>
                   <select
                     id={`${formId}-role`}
                     name="role"
                     className="kpi-field"
                     value={state.role}
+                    aria-required="true"
                     aria-invalid={Boolean(errors.role)}
+                    aria-describedby={errors.role ? `${formId}-role-error` : undefined}
                     onBlur={() => validate()}
                     onChange={(event) =>
                       setState((current) => ({ ...current, role: event.target.value as AuditRole | "" }))
@@ -207,18 +237,20 @@ export function AuditSection({ locale, leftExtra }: { locale: Locale; leftExtra?
                 </Field>
               </div>
               <div className="kpi-audit-row">
-                <Field label={t.hotel} error={errors.hotel} htmlFor={`${formId}-hotel`}>
+                <Field label={t.hotel} error={errors.hotel} htmlFor={`${formId}-hotel`} requiredMark>
                   <input
                     id={`${formId}-hotel`}
                     name="hotel"
                     className="kpi-field"
                     value={state.hotel}
+                    aria-required="true"
                     aria-invalid={Boolean(errors.hotel)}
+                    aria-describedby={errors.hotel ? `${formId}-hotel-error` : undefined}
                     onBlur={() => validate()}
                     onChange={(event) => setState((current) => ({ ...current, hotel: event.target.value }))}
                   />
                 </Field>
-                <Field label={t.rooms} htmlFor={`${formId}-rooms`}>
+                <Field label={t.rooms} htmlFor={`${formId}-rooms`} optionalLabel={t.optional}>
                   <input
                     id={`${formId}-rooms`}
                     name="rooms"
@@ -229,21 +261,29 @@ export function AuditSection({ locale, leftExtra }: { locale: Locale; leftExtra?
                   />
                 </Field>
               </div>
-              <Field label={t.province} error={errors.province} htmlFor={`${formId}-province`}>
+              <Field label={t.province} error={errors.province} htmlFor={`${formId}-province`} requiredMark>
                 <input
                   id={`${formId}-province`}
                   name="province"
                   className="kpi-field"
                   value={state.province}
+                  aria-required="true"
                   aria-invalid={Boolean(errors.province)}
+                  aria-describedby={errors.province ? `${formId}-province-error` : undefined}
                   onBlur={() => validate()}
                   onChange={(event) => setState((current) => ({ ...current, province: event.target.value }))}
                 />
               </Field>
 
               <p className="kpi-audit-group">{t.groupFocus}</p>
-              <fieldset>
-                <legend className="kpi-label">{t.concernsLegend}</legend>
+              <fieldset aria-describedby={errors.concerns ? `${formId}-concerns-error` : undefined} aria-invalid={Boolean(errors.concerns)}>
+                <legend className="kpi-label">
+                  {t.concernsLegend}
+                  <span className="kpi-audit-req" aria-hidden="true">
+                    {" "}
+                    *
+                  </span>
+                </legend>
                 <div className="kpi-audit-concerns">
                   {auditFocusOrder.map((value) => {
                     const checked = state.concerns.includes(value);
@@ -266,13 +306,13 @@ export function AuditSection({ locale, leftExtra }: { locale: Locale; leftExtra?
                   })}
                 </div>
                 {errors.concerns ? (
-                  <p className="mt-2 text-sm text-[#bd3f3f]" role="alert">
+                  <p id={`${formId}-concerns-error`} className="kpi-audit-error" role="alert">
                     {errors.concerns}
                   </p>
                 ) : null}
               </fieldset>
 
-              <Field label={t.details} htmlFor={`${formId}-details`}>
+              <Field label={t.details} htmlFor={`${formId}-details`} optionalLabel={t.optional}>
                 <textarea
                   id={`${formId}-details`}
                   name="details"
@@ -284,9 +324,11 @@ export function AuditSection({ locale, leftExtra }: { locale: Locale; leftExtra?
               </Field>
 
               <p className="kpi-audit-group">{t.groupContact}</p>
-              <p className="kpi-audit-hint">{t.contactHint}</p>
+              <p className="kpi-audit-hint" id={`${formId}-contact-hint`}>
+                {t.contactHint}
+              </p>
               <div className="kpi-audit-row">
-                <Field label={t.phone} htmlFor={`${formId}-phone`}>
+                <Field label={t.phone} htmlFor={`${formId}-phone`} optionalLabel={t.optional}>
                   <input
                     id={`${formId}-phone`}
                     name="phone"
@@ -294,22 +336,26 @@ export function AuditSection({ locale, leftExtra }: { locale: Locale; leftExtra?
                     autoComplete="tel"
                     className="kpi-field"
                     value={state.phone}
+                    aria-invalid={Boolean(errors.contact)}
+                    aria-describedby={`${formId}-contact-hint${errors.contact ? ` ${formId}-contact-error` : ""}`}
                     onBlur={() => validate()}
                     onChange={(event) => setState((current) => ({ ...current, phone: event.target.value }))}
                   />
                 </Field>
-                <Field label={t.lineId} htmlFor={`${formId}-line`}>
+                <Field label={t.lineId} htmlFor={`${formId}-line`} optionalLabel={t.optional}>
                   <input
                     id={`${formId}-line`}
                     name="lineId"
                     className="kpi-field"
                     value={state.lineId}
+                    aria-invalid={Boolean(errors.contact)}
+                    aria-describedby={errors.contact ? `${formId}-contact-error` : undefined}
                     onBlur={() => validate()}
                     onChange={(event) => setState((current) => ({ ...current, lineId: event.target.value }))}
                   />
                 </Field>
               </div>
-              <Field label={t.email} htmlFor={`${formId}-email`}>
+              <Field label={t.email} htmlFor={`${formId}-email`} optionalLabel={t.optional}>
                 <input
                   id={`${formId}-email`}
                   name="email"
@@ -317,12 +363,14 @@ export function AuditSection({ locale, leftExtra }: { locale: Locale; leftExtra?
                   autoComplete="email"
                   className="kpi-field"
                   value={state.email}
+                  aria-invalid={Boolean(errors.contact)}
+                  aria-describedby={errors.contact ? `${formId}-contact-error` : undefined}
                   onBlur={() => validate()}
                   onChange={(event) => setState((current) => ({ ...current, email: event.target.value }))}
                 />
               </Field>
               {errors.contact ? (
-                <p id={`${formId}-contact-error`} className="text-sm text-[#bd3f3f]" role="alert">
+                <p id={`${formId}-contact-error`} className="kpi-audit-error" role="alert">
                   {errors.contact}
                 </p>
               ) : null}
@@ -336,6 +384,9 @@ export function AuditSection({ locale, leftExtra }: { locale: Locale; leftExtra?
                   name="consent"
                   className="mt-0.5 h-4 w-4 accent-[#0B6660]"
                   checked={state.consent}
+                  aria-required="true"
+                  aria-invalid={Boolean(errors.consent)}
+                  aria-describedby={errors.consent ? `${formId}-consent-error` : undefined}
                   onChange={(event) => setState((current) => ({ ...current, consent: event.target.checked }))}
                 />
                 <span>
@@ -346,7 +397,7 @@ export function AuditSection({ locale, leftExtra }: { locale: Locale; leftExtra?
                 </span>
               </label>
               {errors.consent ? (
-                <p className="text-sm text-[#bd3f3f]" role="alert">
+                <p id={`${formId}-consent-error`} className="kpi-audit-error" role="alert">
                   {errors.consent}
                 </p>
               ) : null}
@@ -358,6 +409,7 @@ export function AuditSection({ locale, leftExtra }: { locale: Locale; leftExtra?
                     name="company_website"
                     tabIndex={-1}
                     autoComplete="off"
+                    aria-hidden="true"
                     value={state.companyWebsite}
                     onChange={(event) => setState((current) => ({ ...current, companyWebsite: event.target.value }))}
                   />
@@ -365,14 +417,13 @@ export function AuditSection({ locale, leftExtra }: { locale: Locale; leftExtra?
               </div>
 
               {status === "error" ? (
-                <div className="border border-[#E3E8EB] bg-[#F4F4F4] p-4" role="alert">
-                  <p className="font-semibold text-[#3B3B3B]">{t.errorTitle}</p>
-                  <p className="mt-2 text-sm leading-7 text-[#555555]">{t.errorBody}</p>
-                  <ContactLinks locale={locale} className="mt-4" />
+                <div className="kpi-audit-error-box" role="alert">
+                  <p className="kpi-audit-error-title">{t.errorTitle}</p>
+                  <p>{t.errorBody}</p>
+                  <ContactLinks locale={locale} />
                 </div>
               ) : null}
 
-              <p className="kpi-audit-time">{t.timeNote}</p>
               <button
                 type="submit"
                 className="kpi-cta w-full"
@@ -395,30 +446,43 @@ function Field({
   label,
   htmlFor,
   error,
+  requiredMark,
+  optionalLabel,
   children,
 }: {
   label: string;
   htmlFor: string;
   error?: string;
+  requiredMark?: boolean;
+  optionalLabel?: string;
   children: React.ReactNode;
 }) {
   return (
-    <label className="kpi-label" htmlFor={htmlFor}>
-      {label}
+    <div className="kpi-audit-field">
+      <label className="kpi-label" htmlFor={htmlFor}>
+        {label}
+        {requiredMark ? (
+          <span className="kpi-audit-req" aria-hidden="true">
+            {" "}
+            *
+          </span>
+        ) : null}
+        {optionalLabel ? <span className="kpi-audit-opt"> {optionalLabel}</span> : null}
+      </label>
       {children}
       {error ? (
-        <span className="mt-2 block text-sm font-medium normal-case tracking-normal text-[#bd3f3f]" role="alert">
+        <p id={`${htmlFor}-error`} className="kpi-audit-error" role="alert">
           {error}
-        </span>
+        </p>
       ) : null}
-    </label>
+    </div>
   );
 }
 
-function ContactLinks({ locale, className = "mt-2" }: { locale: Locale; className?: string }) {
+function ContactLinks({ locale, className = "" }: { locale: Locale; className?: string }) {
   const t = auditCopyFor(locale);
   return (
-    <p className={`text-sm leading-7 text-[#555555] ${className}`}>
+    <p className={`kpi-audit-contacts ${className}`.trim()}>
       {t.orTalk}{" "}
       <a
         href={AUDIT_CONTACTS.lineHref}

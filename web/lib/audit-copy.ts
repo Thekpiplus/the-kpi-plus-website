@@ -10,6 +10,10 @@ type AuditCopy = {
   trustFree: string;
   trustReply: string;
   timeNote: string;
+  reassurances: string[];
+  optional: string;
+  teamCaption: string;
+  teamNote: string;
   groupHotel: string;
   groupFocus: string;
   groupContact: string;
@@ -58,7 +62,16 @@ const th: AuditCopy = {
   ],
   trustFree: "ไม่มีค่าใช้จ่าย",
   trustReply: `ทีมงานจะติดต่อกลับภายใน ${AUDIT_RESPONSE_DAYS} วันทำการ`,
-  timeNote: "ใช้เวลาประมาณ 2–3 นาที · ไม่มีค่าใช้จ่าย",
+  timeNote: "ใช้เวลาประมาณ 2 นาที",
+  reassurances: [
+    "ใช้เวลาประมาณ 2 นาที",
+    "ไม่มีค่าใช้จ่ายในการวิเคราะห์เบื้องต้น",
+    "ข้อมูลของคุณจะถูกเก็บเป็นความลับ",
+    `ทีมงานจะติดต่อกลับภายใน ${AUDIT_RESPONSE_DAYS} วันทำการ`,
+  ],
+  optional: "ไม่บังคับ",
+  teamCaption: "ทีม เดอะ เคพีไอ พลัส",
+  teamNote: "รีวิวข้อมูลโรงแรมด้วยกัน",
   groupHotel: "ข้อมูลโรงแรม",
   groupFocus: "สิ่งที่ต้องการคำปรึกษา",
   groupContact: "ช่องทางติดต่อ",
@@ -121,7 +134,16 @@ const en: AuditCopy = {
   ],
   trustFree: "No fee",
   trustReply: `The team will reply within ${AUDIT_RESPONSE_DAYS} business days`,
-  timeNote: "About 2–3 minutes · No fee",
+  timeNote: "Takes about 2 minutes",
+  reassurances: [
+    "Takes about 2 minutes",
+    "No fee for the initial review",
+    "Your information is kept confidential",
+    `The team will reply within ${AUDIT_RESPONSE_DAYS} business days`,
+  ],
+  optional: "Optional",
+  teamCaption: "The KPI Plus team",
+  teamNote: "Reviewing hotel data together",
   groupHotel: "Hotel details",
   groupFocus: "What to review",
   groupContact: "How to reach you",
@@ -173,6 +195,7 @@ const en: AuditCopy = {
 };
 
 export const auditCopy = { th, en, ru: en, zh: en } as const;
+export const AUDIT_LAYOUT = "split-trust";
 
 export function auditCopyFor(locale: Locale) {
   return auditCopy[locale] ?? en;

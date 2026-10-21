@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowUpRight, InsightIcon, OpportunityIcon, OptimizeIcon, PlanIcon } from "@/components/Icons";
+import { ArrowUpRight } from "@/components/Icons";
 import { AuditSectionHost } from "@/components/AuditSection";
 import { SiteShell } from "@/components/SiteShell";
 import { getStoredInsightOrder, resolveInsightOrder, sortByInsightOrder } from "@/lib/cms/insight-order";
@@ -35,6 +35,26 @@ const problemAnchors = [
   "grow-capability",
   "grow-capability",
 ] as const;
+
+const processOutputs = {
+  th: [
+    "สรุปข้อมูลโรงแรมและการขาย",
+    "บทวิเคราะห์รายได้ Demand และช่องทาง",
+    "คำแนะนำราคา OTA และการตลาด",
+    "รายงานผลและแผนปรับปรุงรอบถัดไป",
+  ],
+  en: [
+    "Hotel and sales data summary",
+    "Revenue, demand, and channel analysis",
+    "Pricing, OTA, and marketing recommendations",
+    "Performance review and next-period plan",
+  ],
+} as const;
+
+const processReceive = {
+  th: ["ทบทวนรายได้", "แผนลงมือทำ", "รายงานผลรายเดือน", "คำแนะนำช่วงถัดไป"],
+  en: ["Revenue review", "Action plan", "Monthly performance report", "Recommendations for next period"],
+} as const;
 
 const pillarAnchors = ["grow-revenue", "grow-demand", "grow-capability"] as const;
 const pillarCats = ["Revenue", "Marketing", "Operations"] as const;
@@ -148,7 +168,6 @@ function PillarPreview({ index, sampleLabel }: { index: number; sampleLabel: str
     </div>
   );
 }
-const stepIcons = [InsightIcon, OpportunityIcon, PlanIcon, OptimizeIcon] as const;
 
 const homeInsightCopy = {
   "hotel-revenue-meetings-that-lead-to-decisions": {
@@ -165,15 +184,32 @@ const homeInsightCopy = {
   },
 } as const;
 
-function insightTitle(title: string) {
-  const mark = ["Hotel Marketing", "Technology และ AI", "Revenue"].find((phrase) => title.includes(phrase));
-  if (!mark) return title;
-  const [before, after] = title.split(mark);
+function paintInsightMarks(text: string) {
+  const mark = ["Hotel Marketing", "Direct Booking", "Technology และ AI", "Revenue", "Action"].find((phrase) =>
+    text.includes(phrase),
+  );
+  if (!mark) return text;
+  const [before, after] = text.split(mark);
   return (
     <>
       {before}
       <span className="kpi-home-note-em">{mark}</span>
       {after}
+    </>
+  );
+}
+
+function insightTitle(title: string) {
+  const splitters = [" ให้จบด้วย ", " ที่ช่วยเพิ่ม", " ของโรงแรม", " ให้ทีมโรงแรม"];
+  const splitter = splitters.find((token) => title.includes(token));
+  if (!splitter) return paintInsightMarks(title);
+  const index = title.indexOf(splitter);
+  const line1 = title.slice(0, index);
+  const line2 = title.slice(splitter.startsWith(" ") ? index + 1 : index);
+  return (
+    <>
+      <span className="kpi-th-line">{paintInsightMarks(line1)}</span>
+      <span className="kpi-th-line">{paintInsightMarks(line2)}</span>
     </>
   );
 }
@@ -207,7 +243,7 @@ export async function HomeView({ locale }: { locale: Locale }) {
 
   return (
     <SiteShell locale={locale} route={locale === "th" ? "/" : `/${locale}`}>
-      <section className="kpi-hero kpi-home-hero-section kpi-home-landing-hero" aria-label={t.heroAlt}>
+      <section className="kpi-hero kpi-home-hero-section kpi-home-landing-hero">
         <div className="kpi-wrap kpi-home-hero">
           <div className="kpi-home-hero-copy">
             <p className="kpi-home-eyebrow kpi-latin">{t.kicker}</p>
@@ -227,28 +263,19 @@ export async function HomeView({ locale }: { locale: Locale }) {
             </div>
           </div>
           <figure className="kpi-home-hero-visual">
-            {/* TODO: replace with a real hotel photograph of a team reviewing rates or a performance report. Current file is a styled placeholder, not a client shoot. */}
             <div className="kpi-home-photo kpi-home-frame">
               <img
-                src="/media/kpi-plus-hero-header-homepage_e8b808be.jpg"
-                alt={t.heroAlt}
-                width={1600}
-                height={1200}
+                src="/media/kpi-plus-performance-metrics-meeting_88bfa3ed.jpg"
+                alt={
+                  locale === "th"
+                    ? "ทีมโรงแรมประชุมร่วมกับแดชบอร์ดตัวเลข Occupancy ADR RevPAR และรายได้"
+                    : "Hotel team reviewing occupancy, ADR, RevPAR, and revenue dashboards together"
+                }
+                width={1024}
+                height={682}
+                fetchPriority="high"
               />
             </div>
-            <figcaption className="kpi-home-hero-caption">
-              {locale === "th" ? "ตัวอย่างข้อมูล · Performance Review: Jan–Jun 2026" : "Sample data · Performance Review: Jan–Jun 2026"}
-            </figcaption>
-            <ul className="kpi-home-hero-samples" aria-label={locale === "th" ? "ตัวอย่างข้อมูล" : "Sample data"}>
-              <li className="kpi-home-hero-sample">
-                <span className="kpi-home-hero-sample-name kpi-latin">Occupancy</span>
-                <strong className="kpi-home-hero-sample-value kpi-latin">82.4%</strong>
-              </li>
-              <li className="kpi-home-hero-sample">
-                <span className="kpi-home-hero-sample-name kpi-latin">RevPAR</span>
-                <strong className="kpi-home-hero-sample-value kpi-latin">+18.6%</strong>
-              </li>
-            </ul>
           </figure>
         </div>
       </section>
@@ -287,12 +314,13 @@ export async function HomeView({ locale }: { locale: Locale }) {
             <h2 className="kpi-h2 kpi-home-problem-title">
               {locale === "th" ? (
                 <>
-                  {"เริ่มจากหาสาเหตุที่ทำให้ "}
-                  <span className="kpi-home-problem-em">รายได้</span>
-                  <span className="kpi-home-problem-break"> </span>
-                  {"หรือ "}
-                  <span className="kpi-home-problem-em">ยอดจอง</span>
-                  {" ยังไปไม่ถึงเป้าหมาย"}
+                  <span className="kpi-th-line">เริ่มจากหาสาเหตุที่ทำให้</span>
+                  <span className="kpi-th-line">
+                    <span className="kpi-home-problem-em">รายได้</span>
+                    {" หรือ "}
+                    <span className="kpi-home-problem-em">ยอดจอง</span>
+                  </span>
+                  <span className="kpi-th-line">ยังไปไม่ถึงเป้าหมาย</span>
                 </>
               ) : (
                 t.problemTitle
@@ -376,11 +404,12 @@ export async function HomeView({ locale }: { locale: Locale }) {
           <h2 className="kpi-h2 kpi-home-pillar-heading">
             {locale === "th" ? (
               <>
-                {"เลือกโฟกัสในจุดที่โรงแรม"}
-                <span className="kpi-home-pillar-break"> </span>
-                {"ต้องการ"}
-                <span className="kpi-home-pillar-em">เติบโต</span>
-                {"มากที่สุด"}
+                <span className="kpi-th-line">เลือกโฟกัสในจุดที่โรงแรม</span>
+                <span className="kpi-th-line">
+                  {"ต้องการ"}
+                  <span className="kpi-home-pillar-em">เติบโต</span>
+                  {"มากที่สุด"}
+                </span>
               </>
             ) : (
               t.pillarTitle
@@ -412,35 +441,58 @@ export async function HomeView({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <section className="border-y border-[#E3E8EB] bg-[#F4F4F4]">
+      <section className="kpi-home-process border-y border-[#E3E8EB] bg-[#F4F4F4]">
         <div className="kpi-section">
-          <p className="kpi-kicker kpi-home-section-kicker text-[#0B6660]">{t.stepEyebrow}</p>
-          <h2 className="kpi-h2 kpi-home-step-heading">
-            {locale === "th" ? (
-              <>
-                {"จากข้อมูล"}
-                <span className="kpi-home-step-break"> </span>
-                {"สู่การตัดสินใจที่ทีมโรงแรม"}
-                <span className="kpi-home-step-em">ลงมือทำได้</span>
-              </>
-            ) : (
-              t.stepTitle
-            )}
-          </h2>
-          <div className="kpi-home-steps">
-            {t.steps.map(([num, title, body], index) => {
-              const StepIcon = stepIcons[index];
-              return (
-                <article key={num} className="kpi-home-step">
-                  <span className="kpi-home-step-mark">
-                    <span className="kpi-home-step-num kpi-latin">{num}</span>
-                    <StepIcon className="kpi-home-step-icon" aria-hidden="true" />
-                  </span>
-                  <h3>{title}</h3>
-                  <p className="kpi-home-step-body">{body}</p>
-                </article>
-              );
-            })}
+          <div className="kpi-home-process-head">
+            <div>
+              <p className="kpi-kicker kpi-home-section-kicker text-[#0B6660]">{t.stepEyebrow}</p>
+              <h2 className="kpi-h2 kpi-home-step-heading">
+                {locale === "th" ? (
+                  <>
+                    <span className="kpi-th-line">จากข้อมูลสู่การตัดสินใจ</span>
+                    <span className="kpi-th-line">
+                      {"ที่ทีมโรงแรม"}
+                      <span className="kpi-home-step-em">ลงมือทำได้</span>
+                    </span>
+                  </>
+                ) : (
+                  t.stepTitle
+                )}
+              </h2>
+            </div>
+            <figure className="kpi-home-process-photo">
+              <img
+                src="/media/kpi-plus-team-review_d4af97f6.jpg"
+                alt={
+                  locale === "th"
+                    ? "ทีม The KPI Plus ประชุมรีวิวข้อมูลโรงแรมด้วยกัน"
+                    : "The KPI Plus team reviewing hotel data together"
+                }
+                width={1600}
+                height={1067}
+                loading="lazy"
+              />
+            </figure>
+          </div>
+          <ol className="kpi-home-steps">
+            {t.steps.map(([num, title, body], index) => (
+              <li key={num} className="kpi-home-step">
+                <span className="kpi-home-step-num kpi-latin">{num}</span>
+                <h3>{title}</h3>
+                <p className="kpi-home-step-body">{body}</p>
+                <p className="kpi-home-step-output">
+                  {locale === "th" ? processOutputs.th[index] : processOutputs.en[index]}
+                </p>
+              </li>
+            ))}
+          </ol>
+          <div className="kpi-home-receive">
+            <p className="kpi-home-receive-label">{locale === "th" ? "สิ่งที่คุณได้รับ" : "What you receive"}</p>
+            <ul className="kpi-home-receive-list">
+              {(locale === "th" ? processReceive.th : processReceive.en).map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
           </div>
           <Link href={audit} className="kpi-button kpi-home-step-cta">
             {t.audit} <ArrowUpRight className="kpi-home-step-arrow" />
@@ -449,34 +501,32 @@ export async function HomeView({ locale }: { locale: Locale }) {
       </section>
 
       <section className="kpi-home-performance bg-[#0B1F33] text-white">
-        <div className="kpi-section kpi-split">
+        <div className="kpi-section kpi-home-performance-inner">
           <figure className="kpi-home-performance-visual">
             <div className="kpi-home-photo kpi-home-frame">
               <img
-                src="/media/kpi-plus-hotel-revenue-tablet_16ce8ace.jpg"
+                src="/media/kpi-plus-hero-hotel-performance_cd74fdd4.jpg"
                 alt={
                   locale === "th"
-                    ? "ผู้บริหารโรงแรมกำลังดูแดชบอร์ดรายได้บนแท็บเล็ตในล็อบบี้"
-                    : "Hotel manager reviewing a revenue dashboard on a tablet in a lobby"
+                    ? "โรงแรมริมน้ำพร้อมแดชบอร์ดผลการดำเนินงานโรงแรม"
+                    : "Waterfront hotel with a hospitality performance dashboard overlay"
                 }
-                width={1600}
-                height={1000}
+                width={1024}
+                height={616}
                 loading="lazy"
               />
             </div>
-            <figcaption className="kpi-home-performance-caption">
-              {locale === "th" ? "ตัวอย่างรูปแบบการวิเคราะห์" : "Sample dashboard"}
-            </figcaption>
           </figure>
           <div className="kpi-home-performance-copy">
             <p className="kpi-home-metric-kicker">{t.metricEyebrow}</p>
             <h2 className="kpi-h2 kpi-home-metric-heading">
               {locale === "th" ? (
                 <>
-                  {"เราโฟกัสที่ตัวเลข"}
-                  <span className="kpi-home-metric-break"> </span>
-                  {"ที่มีผลต่อ"}
-                  <span className="kpi-home-metric-em">รายได้จริง</span>
+                  <span className="kpi-th-line">เราโฟกัสที่ตัวเลข</span>
+                  <span className="kpi-th-line">
+                    {"ที่มีผลต่อ"}
+                    <span className="kpi-home-metric-em">รายได้จริง</span>
+                  </span>
                 </>
               ) : (
                 t.metricTitle
@@ -491,6 +541,11 @@ export async function HomeView({ locale }: { locale: Locale }) {
                 </div>
               ))}
             </div>
+            <p className="kpi-home-metric-use">
+              {locale === "th"
+                ? "เราอธิบายตัวเลขเหล่านี้ร่วมกัน ให้เห็นว่าควรขยับราคา ดึง Demand หรือปรับช่องทางขาย"
+                : "Read together, they show whether to change price, stimulate demand, or shift sales channels."}
+            </p>
           </div>
         </div>
       </section>
@@ -498,7 +553,16 @@ export async function HomeView({ locale }: { locale: Locale }) {
       <section className="kpi-section kpi-home-insights">
         <p className="kpi-home-insight-kicker">{t.insightEyebrow}</p>
         <div className="kpi-home-split kpi-home-insight-head">
-          <h2 className="kpi-h2 kpi-home-insight-heading">{t.insightTitle}</h2>
+          <h2 className="kpi-h2 kpi-home-insight-heading">
+            {locale === "th" ? (
+              <>
+                <span className="kpi-th-line">แนวคิดที่ทีมโรงแรม</span>
+                <span className="kpi-th-line">นำไปใช้ได้จริง</span>
+              </>
+            ) : (
+              t.insightTitle
+            )}
+          </h2>
           <p className="kpi-home-insight-lead">{t.insightBody}</p>
         </div>
         {featuredInsights.length ? (
@@ -529,7 +593,13 @@ export async function HomeView({ locale }: { locale: Locale }) {
         ) : (
           <div className="kpi-home-split mt-12">
             <div className="kpi-home-photo kpi-home-frame">
-              <img src="/media/the-kpi-plus-insights-scene_8a7e72cb.jpg" alt="Hotel industry research materials" />
+              <img
+                src="/media/the-kpi-plus-insights-scene_8a7e72cb.jpg"
+                alt={locale === "th" ? "เอกสารและงานวิจัยด้านโรงแรม" : "Hotel industry research materials"}
+                width={1600}
+                height={1067}
+                loading="lazy"
+              />
             </div>
             <div>
               <Link href={insightsHref} className="kpi-button">

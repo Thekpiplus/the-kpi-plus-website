@@ -4,6 +4,11 @@ import { SiteShell } from "@/components/SiteShell";
 import { auditHref, localizePath, type Locale } from "@/lib/seo";
 
 const foundersPhoto = "/media/the-kpi-plus-founders_f4c8516e.webp";
+const workPhoto = "/media/kpi-plus-team-review_d4af97f6.jpg";
+
+function splitTags(tags: string) {
+  return tags.split(" · ");
+}
 
 const copy = {
   th: {
@@ -13,6 +18,10 @@ const copy = {
     heroBody:
       "ผลประกอบการของโรงแรมไม่ได้เกิดจาก Revenue Management, OTA, Website, Direct Booking หรือ Marketing เพียงเรื่องใดเรื่องหนึ่ง ทุกส่วนเชื่อมโยงกัน เราจึงนำข้อมูลด้าน Revenue, Demand, Pricing, Distribution และ Direct Booking มามองเป็นภาพเดียวกัน เพื่อเปลี่ยนข้อมูลให้เป็น Action และเปลี่ยน Action ให้เป็นผลลัพธ์ที่วัดได้",
     heroAlt: "ผู้ก่อตั้ง เดอะ เคพีไอ พลัส",
+    workAlt: "ทีม The KPI Plus ประชุมรีวิวข้อมูลโรงแรมด้วยกัน",
+    sampleBadge: "ตัวอย่างข้อมูล",
+    sampleFormat: "ตัวอย่างรูปแบบการวิเคราะห์",
+    samplePeriod: "ตัวอย่างการอ่าน Occupancy กับรายได้สุทธิ",
     auditCta: "ประเมิน Performance โรงแรม",
     partnerEyebrow: "Hospitality Performance Partner",
     partnerTitle: "เราทำงานร่วมกับโรงแรมตั้งแต่ต้นจนจบกระบวนการ และติดตามผลลัพธ์ต่อเนื่อง",
@@ -106,6 +115,10 @@ const copy = {
     heroBody:
       "Hotel performance doesn't come from revenue management, OTAs, the website, direct booking, or marketing alone. Every part is connected. That's why we bring revenue, demand, pricing, distribution, and direct booking data into one view, so data becomes action, and action becomes measurable results.",
     heroAlt: "The KPI Plus founders",
+    workAlt: "The KPI Plus team reviewing hotel data together",
+    sampleBadge: "Sample data",
+    sampleFormat: "Sample analysis format",
+    samplePeriod: "Sample occupancy vs net revenue reading",
     auditCta: "Request a Hotel Performance Audit",
     partnerEyebrow: "Hospitality Performance Partner",
     partnerTitle: "We work alongside your team from start to finish, and stay with the results.",
@@ -203,6 +216,10 @@ const copy = {
     heroBody:
       "Результат отеля не складывается из Revenue Management, OTA, сайта, прямого бронирования или маркетинга по отдельности. Всё связано. Поэтому мы собираем данные по доходу, спросу, ценам, дистрибуции и прямому бронированию в одну картину: данные становятся действием, а действие — измеримым результатом.",
     heroAlt: "Основатели The KPI Plus",
+    workAlt: "Команда The KPI Plus вместе разбирает данные отеля",
+    sampleBadge: "Пример данных",
+    sampleFormat: "Формат анализа (пример)",
+    samplePeriod: "Пример чтения Occupancy и чистого дохода",
     auditCta: "Запросить аудит Performance отеля",
     partnerEyebrow: "Hospitality Performance Partner",
     partnerTitle: "Мы работаем с командой отеля от начала до конца и остаёмся с результатом.",
@@ -300,6 +317,10 @@ const copy = {
     heroBody:
       "飯店績效不是只靠 Revenue Management、OTA、網站、直銷預訂或行銷任何單一環節。每一部分都連在一起。因此我們把收益、需求、定價、通路與直銷預訂資料看成同一張圖，讓資料變成行動，行動變成可衡量的結果。",
     heroAlt: "The KPI Plus 創辦人",
+    workAlt: "The KPI Plus 團隊一起檢視飯店資料",
+    sampleBadge: "範例資料",
+    sampleFormat: "分析格式範例",
+    samplePeriod: "住房率與淨收益的讀數範例",
     auditCta: "申請飯店 Performance 分析",
     partnerEyebrow: "Hospitality Performance Partner",
     partnerTitle: "我們從開始到結束與飯店團隊一起做，並持續跟進結果。",
@@ -400,7 +421,7 @@ export function AboutView({ locale }: { locale: Locale }) {
 
   return (
     <SiteShell locale={locale} route={localizePath("/about", locale)}>
-      <section className="kpi-hero kpi-home-hero-section kpi-about-hero">
+      <section className="kpi-hero kpi-home-hero-section kpi-home-landing-hero kpi-about-hero">
         <div className="kpi-wrap">
           <div className="kpi-home-hero">
             <div className="kpi-home-hero-copy">
@@ -417,38 +438,71 @@ export function AboutView({ locale }: { locale: Locale }) {
                 </Link>
               </div>
             </div>
-            <div className="kpi-hero-visual kpi-home-photo kpi-about-hero-photo">
-              <img src={foundersPhoto} alt={t.heroAlt} width={705} height={1024} />
-            </div>
+            <figure className="kpi-home-hero-visual kpi-home-photo kpi-about-hero-photo">
+              <img
+                src={workPhoto}
+                alt={t.workAlt}
+                width={1600}
+                height={1067}
+                fetchPriority="high"
+              />
+            </figure>
           </div>
         </div>
       </section>
 
-      <section className="kpi-about-band kpi-about-philosophy">
+      <section className="kpi-about-band kpi-about-philosophy" aria-labelledby="about-partner-title">
         <div className="kpi-section">
           <p className={`kpi-about-eyebrow${isTh ? "" : " kpi-latin"}`}>{t.partnerEyebrow}</p>
-          <h2 className="kpi-h2 kpi-about-h2">{t.partnerTitle}</h2>
+          <h2 id="about-partner-title" className="kpi-h2 kpi-about-h2">
+            {t.partnerTitle}
+          </h2>
           <p className="kpi-about-lead">{t.partnerLead}</p>
           <p className="kpi-about-goal">
             {t.partnerGoal}{" "}
             <span className="kpi-about-accent">{t.partnerAccent}</span>
           </p>
           <div className="kpi-about-vm">
-            <div className="kpi-about-vm-item">
-              <p className="kpi-latin kpi-about-vm-label">{t.visionLabel}</p>
+            <article className="kpi-about-vm-item">
+              <h3 className="kpi-latin kpi-about-vm-label">{t.visionLabel}</h3>
               <p className="kpi-about-vm-body">{t.vision}</p>
-            </div>
-            <div className="kpi-about-vm-item">
-              <p className="kpi-latin kpi-about-vm-label">{t.missionLabel}</p>
+            </article>
+            <article className="kpi-about-vm-item">
+              <h3 className="kpi-latin kpi-about-vm-label">{t.missionLabel}</h3>
               <p className="kpi-about-vm-body">{t.mission}</p>
-            </div>
+            </article>
           </div>
         </div>
       </section>
 
-      <section className="kpi-about-method">
+      <section className="kpi-about-method" aria-labelledby="about-method-title">
         <div className="kpi-section">
-          <h2 className="kpi-h2 kpi-about-h2">{t.methodTitle}</h2>
+          <div className="kpi-about-method-head">
+            <h2 id="about-method-title" className="kpi-h2 kpi-about-h2">
+              {t.methodTitle}
+            </h2>
+            <aside className="kpi-about-sample" aria-label={t.sampleFormat}>
+              <p className="kpi-about-sample-badge">{t.sampleBadge}</p>
+              <p className="kpi-about-sample-title">{t.sampleFormat}</p>
+              <p className="kpi-latin kpi-about-sample-period">{t.samplePeriod}</p>
+              <dl className="kpi-about-sample-kpis">
+                <div>
+                  <dt className="kpi-latin">Occupancy</dt>
+                  <dd className="kpi-latin">
+                    62% <span aria-hidden="true">→</span> 71%
+                  </dd>
+                </div>
+                <div>
+                  <dt className="kpi-latin">Room revenue</dt>
+                  <dd className="kpi-latin is-up">+8%</dd>
+                </div>
+                <div className="is-accent">
+                  <dt className="kpi-latin">Net after commission</dt>
+                  <dd className="kpi-latin">−3%</dd>
+                </div>
+              </dl>
+            </aside>
+          </div>
           <ol className="kpi-about-steps">
             {t.methods.map(([num, title], index) => (
               <li key={num} className="kpi-about-step">
@@ -464,9 +518,11 @@ export function AboutView({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <section className="kpi-about-band kpi-about-pillars">
+      <section className="kpi-about-band kpi-about-pillars" aria-labelledby="about-pillars-title">
         <div className="kpi-section">
-          <h2 className="kpi-h2 kpi-about-h2">{t.pillarsTitle}</h2>
+          <h2 id="about-pillars-title" className="kpi-h2 kpi-about-h2">
+            {t.pillarsTitle}
+          </h2>
           <div className="kpi-about-pillar-list">
             {t.pillars.map((pillar) => (
               <article key={pillar.num} className="kpi-about-pillar">
@@ -474,18 +530,27 @@ export function AboutView({ locale }: { locale: Locale }) {
                 <h3>{pillar.title}</h3>
                 <p className="kpi-latin kpi-about-pillar-sub">{pillar.subtitle}</p>
                 <p className="kpi-about-pillar-body">{pillar.body}</p>
-                <p className="kpi-latin kpi-about-pillar-tags">{pillar.tags}</p>
+                <ul className="kpi-about-pillar-tags">
+                  {splitTags(pillar.tags).map((tag) => (
+                    <li key={tag} className="kpi-latin">
+                      {tag}
+                    </li>
+                  ))}
+                </ul>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="kpi-about-experience">
+      <section className="kpi-about-experience" aria-labelledby="about-experience-title">
         <div className="kpi-section">
-          <h2 className="kpi-h2 kpi-about-h2">{t.experienceTitle}</h2>
+          <h2 id="about-experience-title" className="kpi-h2 kpi-about-h2">
+            {t.experienceTitle}
+          </h2>
           <div className="kpi-about-experience-row">
-            <p className="kpi-latin kpi-about-experience-num" aria-hidden="true">
+            {/* TODO: add a verified measurement period for the 100+ hospitality businesses figure when available. */}
+            <p className="kpi-latin kpi-about-experience-num" aria-label={`${t.experienceMetric}: 100+`}>
               100+
             </p>
             <div className="kpi-about-experience-copy">
@@ -498,9 +563,11 @@ export function AboutView({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <section className="kpi-about-band kpi-about-values">
+      <section className="kpi-about-band kpi-about-values" aria-labelledby="about-values-title">
         <div className="kpi-section">
-          <h2 className="kpi-h2 kpi-about-h2">{t.valuesTitle}</h2>
+          <h2 id="about-values-title" className="kpi-h2 kpi-about-h2">
+            {t.valuesTitle}
+          </h2>
           <ul className="kpi-about-values-list">
             {t.values.map(([num, title, body]) => (
               <li key={num} className="kpi-about-value">
@@ -515,15 +582,23 @@ export function AboutView({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <section className="kpi-about-leadership">
+      <section className="kpi-about-leadership" aria-labelledby="about-founders-title">
         <div className="kpi-section">
           <div className="kpi-about-leadership-intro">
             <figure className="kpi-about-leadership-photo">
-              <img src={foundersPhoto} alt={t.foundersAlt} width={705} height={1024} />
+              <img
+                src={foundersPhoto}
+                alt={t.foundersAlt}
+                width={705}
+                height={1024}
+                loading="lazy"
+              />
             </figure>
             <div className="kpi-about-leadership-copy">
               <p className="kpi-latin kpi-about-eyebrow">{t.foundersEyebrow}</p>
-              <h2 className="kpi-h2 kpi-about-h2">{t.foundersTitle}</h2>
+              <h2 id="about-founders-title" className="kpi-h2 kpi-about-h2">
+                {t.foundersTitle}
+              </h2>
               <p className="kpi-about-lead">{t.foundersLead}</p>
             </div>
           </div>
@@ -542,10 +617,12 @@ export function AboutView({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <section className="kpi-about-closer">
+      <section className="kpi-about-closer" aria-labelledby="about-closer-title">
         <div className="kpi-section">
           <p className="kpi-latin kpi-about-closer-eyebrow">{t.closerEyebrow}</p>
-          <h2 className="kpi-h2 kpi-about-closer-title">{t.closerTitle}</h2>
+          <h2 id="about-closer-title" className="kpi-h2 kpi-about-closer-title">
+            {t.closerTitle}
+          </h2>
           <p className="kpi-about-closer-body">{t.closerBody}</p>
           <p className="kpi-about-closer-line">{t.closerLine}</p>
           <div className="kpi-actions">
@@ -559,9 +636,11 @@ export function AboutView({ locale }: { locale: Locale }) {
         </div>
       </section>
 
-      <section className="kpi-about-band kpi-about-join">
+      <section className="kpi-about-band kpi-about-join" aria-labelledby="about-join-title">
         <div className="kpi-section">
-          <h2 className="kpi-h2 kpi-about-h2">{t.joinTitle}</h2>
+          <h2 id="about-join-title" className="kpi-h2 kpi-about-h2">
+            {t.joinTitle}
+          </h2>
           <p className="kpi-about-lead">{t.joinBody}</p>
           <Link
             href="mailto:info@thekpiplus.com?subject=Join%20The%20KPI%20Plus"

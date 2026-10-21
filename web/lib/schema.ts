@@ -39,7 +39,12 @@ export function organizationSchema(locale: Locale = "en") {
       postalCode: "83000",
       addressCountry: "TH",
     },
-    sameAs: ["https://www.facebook.com/thekpiplus/", "https://www.linkedin.com/company/thekpiplus/"],
+    sameAs: [
+      "https://www.facebook.com/thekpiplus/",
+      "https://www.instagram.com/thekpiplus/",
+      "https://www.linkedin.com/company/thekpiplus/",
+      "https://www.tiktok.com/@thekpiplus",
+    ],
   };
 }
 

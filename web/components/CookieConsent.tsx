@@ -114,6 +114,7 @@ export function CookieConsent() {
       <dialog
         ref={dialogRef}
         className="kpi-consent-dialog"
+        data-lenis-prevent
         aria-labelledby={titleId}
         aria-modal="true"
         onCancel={(event) => {
