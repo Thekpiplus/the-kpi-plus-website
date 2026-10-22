@@ -41,6 +41,7 @@ const cmsLinks = [
   { href: "/crm/cms/media", label: "สื่อ/ไฟล์รูปภาพ" },
   { href: "/crm/cms/redirects", label: "Redirect" },
   { href: "/crm/cms/globals", label: "ตั้งค่าเว็บ" },
+  { href: "/crm/cms/contacts", label: "ข้อมูลติดต่อ" },
 ];
 
 const contextByWorkspace: Record<Exclude<Workspace, "home">, ContextLink[]> = {

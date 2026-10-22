@@ -17,6 +17,15 @@ import { isLockedRoute } from "./locked";
 import { resolveInsightOrder, saveInsightOrder } from "./insight-order";
 import { cmsDb, documentById, insightDocumentBySlug, pageDocumentBySlug, refreshCmsFiles } from "./queries";
 import { siteMenuLabel } from "@/lib/nav";
+import {
+  CONTACT_IMAGE_TYPES,
+  MAX_CONTACT_IMAGE_BYTES,
+  inputFromForm,
+  publicFieldsFromInput,
+  validateContactInput,
+  type ContactSaveResult,
+} from "./contact";
+import { parseSiteGlobals } from "@/lib/site-globals";
 
 async function requireCms() {
   const user = await requireUser();
@@ -597,28 +606,14 @@ export async function deleteRedirect(formData: FormData) {
 
 export async function saveGlobals(formData: FormData) {
   await requireCms();
+  const db = await cmsDb();
+  const existing = parseSiteGlobals((await db.cmsSetting.findUnique({ where: { id: "site" } }))?.value);
   const value = JSON.stringify({
+    ...existing,
     defaultOg: String(formData.get("defaultOg") ?? "").trim(),
     siteLine: String(formData.get("siteLine") ?? "").trim(),
     canonicalHost: String(formData.get("canonicalHost") ?? SITE).trim() || SITE,
-    email: String(formData.get("email") ?? "").trim(),
-    phone1: String(formData.get("phone1") ?? "").trim(),
-    phone2: String(formData.get("phone2") ?? "").trim(),
-    whatsappHref: String(formData.get("whatsappHref") ?? "").trim(),
-    lineHref: String(formData.get("lineHref") ?? "").trim(),
-    addressTh: String(formData.get("addressTh") ?? "").trim(),
-    addressEn: String(formData.get("addressEn") ?? "").trim(),
-    mapsShare: String(formData.get("mapsShare") ?? "").trim(),
-    mapsEmbed: String(formData.get("mapsEmbed") ?? "").trim(),
-    hoursTh: String(formData.get("hoursTh") ?? "").trim(),
-    hoursEn: String(formData.get("hoursEn") ?? "").trim(),
-    officePhoto: String(formData.get("officePhoto") ?? "").trim(),
-    facebook: String(formData.get("facebook") ?? "").trim(),
-    instagram: String(formData.get("instagram") ?? "").trim(),
-    linkedin: String(formData.get("linkedin") ?? "").trim(),
-    tiktok: String(formData.get("tiktok") ?? "").trim(),
   });
-  const db = await cmsDb();
   await db.cmsSetting.upsert({
     where: { id: "site" },
     create: { id: "site", value },
@@ -626,9 +621,127 @@ export async function saveGlobals(formData: FormData) {
   });
   revalidatePath("/crm/cms/globals");
   revalidatePath("/", "layout");
+  redirect("/crm/cms/globals?saved=1");
+}
+
+function revalidateContactPublic() {
+  revalidatePath("/crm/cms/contacts");
+  revalidatePath("/", "layout");
   revalidatePath("/contact-us");
   revalidatePath("/en/contact-us");
   revalidatePath("/ru/contact-us");
   revalidatePath("/zh/contact-us");
-  redirect("/crm/cms/globals?saved=1");
+}
+
+async function storeContactImage(file: File) {
+  const ext = extname(file.name || "").toLowerCase() || "";
+  if (!CONTACT_IMAGE_TYPES.has(ext) || file.size > MAX_CONTACT_IMAGE_BYTES) return "";
+  const name = `${randomToken(8)}${ext}`;
+  const dir = join(process.cwd(), "public", "media", "cms");
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(join(dir, name), Buffer.from(await file.arrayBuffer()));
+  const path = `/media/cms/${name}`;
+  try {
+    const db = await cmsDb();
+    await db.cmsMedia.create({
+      data: {
+        filename: file.name,
+        path,
+        alt: "",
+        caption: "",
+        mime: file.type || "image/jpeg",
+        size: file.size,
+      },
+    });
+  } catch {
+    // File is on disk even if the media library row cannot be written.
+  }
+  return path;
+}
+
+export async function saveContact(formData: FormData): Promise<ContactSaveResult> {
+  await requireCms();
+  const input = inputFromForm(formData);
+  const locationFile = formData.get("locationImageFile");
+  const consultantFile = formData.get("consultantImageFile");
+  const hasLocationFile = locationFile instanceof File && locationFile.size > 0;
+  const hasConsultantFile = consultantFile instanceof File && consultantFile.size > 0;
+  if (hasLocationFile) {
+    const path = await storeContactImage(locationFile);
+    if (!path) return { ok: false, error: "invalid_image" };
+    input.locationImage = path;
+  }
+  if (hasConsultantFile) {
+    const path = await storeContactImage(consultantFile);
+    if (!path) return { ok: false, error: "invalid_image" };
+    input.consultantImage = path;
+  }
+  if (formData.get("clearLocationImage") === "1" && !hasLocationFile) input.locationImage = "";
+  if (formData.get("clearConsultantImage") === "1" && !hasConsultantFile) input.consultantImage = "";
+
+  const invalid = validateContactInput(input);
+  if (invalid) return { ok: false, error: invalid };
+
+  const {
+    clearPrimaryExcept,
+    contactCount,
+    findContact,
+    findPrimaryContact,
+    insertContact,
+    updateContactRow,
+  } = await import("./contact-store");
+  const count = await contactCount();
+  const makePrimary = input.isPrimary || count === 0 || (Boolean(input.id) && count === 1);
+  const publicData = publicFieldsFromInput({ ...input, isPrimary: makePrimary });
+
+  let id = input.id ?? "";
+  if (id) {
+    const existing = await findContact(id);
+    if (!existing) return { ok: false, error: "missing" };
+    await updateContactRow(id, { ...publicData, adminNotes: input.adminNotes, sortOrder: existing.sortOrder });
+  } else {
+    const created = await insertContact({ ...publicData, adminNotes: input.adminNotes, sortOrder: count });
+    id = created.id;
+  }
+
+  if (makePrimary) {
+    await clearPrimaryExcept(id);
+    await updateContactRow(id, { isPrimary: true });
+  } else if (!(await findPrimaryContact())) {
+    await updateContactRow(id, { isPrimary: true });
+  }
+
+  revalidateContactPublic();
+  return { ok: true, id };
+}
+
+export async function setPrimaryContact(formData: FormData) {
+  await requireCms();
+  const id = String(formData.get("id") ?? "").trim();
+  if (!id) return;
+  const { clearAllPrimary, findContact, updateContactRow } = await import("./contact-store");
+  const existing = await findContact(id);
+  if (!existing) return;
+  await clearAllPrimary();
+  await updateContactRow(id, { isPrimary: true });
+  revalidateContactPublic();
+  redirect(`/crm/cms/contacts?id=${id}&primary=1`);
+}
+
+export async function deleteContact(formData: FormData) {
+  await requireCms();
+  const id = String(formData.get("id") ?? "").trim();
+  const { contactCount, deleteContactRow, findContact, findPrimaryContact, listContactRows, updateContactRow } =
+    await import("./contact-store");
+  const existing = await findContact(id);
+  if (!existing) redirect("/crm/cms/contacts?error=missing");
+  const count = await contactCount();
+  if (existing.isPrimary && count === 1) redirect("/crm/cms/contacts?error=last_primary");
+  await deleteContactRow(id);
+  if (existing.isPrimary) {
+    const next = (await listContactRows())[0] ?? (await findPrimaryContact());
+    if (next) await updateContactRow(next.id, { isPrimary: true });
+  }
+  revalidateContactPublic();
+  redirect("/crm/cms/contacts?deleted=1");
 }

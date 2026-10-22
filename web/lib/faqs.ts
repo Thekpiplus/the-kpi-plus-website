@@ -231,8 +231,36 @@ const table: Record<string, FaqItem[]> = {
       a: "เริ่มจากอ่านสัญญาณ Booking Pace, Pickup, Forecast, Market Demand และ Channel Mix ในภาพเดียวกัน แล้วเลือกสิ่งที่ควรทำต่อ มีเจ้าของงานชัดเจน และวัด ADR Occupancy และรายได้สุทธิหลังหักค่าคอมมิชชัน",
     },
     {
+      q: "แนวทางการทำงานของ The KPI Plus เหมาะกับโรงแรมแบบไหน?",
+      a: "เหมาะกับโรงแรมอิสระ บูทีค และพูลวิลล่าที่เจ้าของ GM หรือทีม Revenue อยากดูราคา Occupancy และช่องทางขายจากข้อมูลชุดเดียวกัน ไม่จำเป็นต้องเป็นเชนขนาดใหญ่",
+    },
+    {
+      q: "ต้องเตรียมข้อมูลอะไรเพื่อเริ่มวิเคราะห์?",
+      a: "เริ่มจากชื่อโรงแรม จังหวัด จำนวนห้องโดยประมาณ และเรื่องที่กังวลตอนนี้ เช่น Occupancy ต่ำกว่าเป้า ราคา หรือสัดส่วน OTA หากมี Booking Pace Pickup หรือ Forecast ที่มีอยู่แล้ว นำมาคุยได้ ไม่ต้องส่งรายงานครบในวันแรก",
+    },
+    {
+      q: "ต้องเชื่อม PMS, RMS หรือ Channel Manager หรือไม่?",
+      a: "ไม่จำเป็นต้องเชื่อมระบบก่อนเริ่มคุย ทีมดูข้อมูลและระบบที่โรงแรมมีอยู่แล้ว แล้วเสนอวิธีที่เหมาะกับความพร้อม การเชื่อม PMS, Channel Manager, RMS และ Booking Engine เป็นขั้นตอนเมื่อต้องให้ราคาและ Inventory ตรงกันทุกช่องทาง ไม่ใช่เงื่อนไขวันแรก",
+    },
+    {
+      q: "ใช้เวลานานแค่ไหนกว่าจะเห็น Action ที่ควรทำ?",
+      a: "ทีมติดต่อกลับภายใน 2 วันทำการ หลังคุยและดูข้อมูลที่มี จะสรุปประเด็นที่ควรทำต่อและมีเจ้าของงานชัดเจน ไม่ใช่รายงานยาวทันทีหลังส่งฟอร์ม",
+    },
+    {
+      q: "ทำงานร่วมกับทีม Revenue เดิมอย่างไร?",
+      a: "เราไม่ได้เข้าไปแทนที่ทีม Revenue ของโรงแรม ดูข้อมูลร่วมกัน แยกจุดที่รั่วกับโอกาส แล้วให้ทีมโรงแรมมีสิ่งที่ลงมือทำต่อได้",
+    },
+    {
       q: "Occupancy ต่ำกว่าเป้า ต้องลดราคาทันทีหรือไม่?",
       a: "ไม่เสมอไป แทนที่จะลดราคาทุกช่องทางในทันที ควรหาต้นเหตุก่อน แล้ววางแผนที่เพิ่มยอดจองโดยยังรักษา ADR และรายได้สุทธิไว้ได้",
+    },
+    {
+      q: "ถ้า Occupancy ต่ำกว่าเป้าควรเริ่มตรวจจากจุดใด?",
+      a: "เริ่มจาก Booking Pace และ Pickup เทียบกับปีก่อนและ Budget แล้วดู Market Demand คู่แข่ง Channel Mix และ Rate Parity ก่อนตัดสินใจเรื่องราคา ช่องทาง หรือ Promotion",
+    },
+    {
+      q: "มีค่าใช้จ่ายในการพูดคุยเบื้องต้นหรือไม่?",
+      a: "การพูดคุยและวิเคราะห์เบื้องต้นไม่มีค่าใช้จ่าย ส่งข้อมูลผ่านฟอร์มได้เลย หากโรงแรมต้องการให้ทีมเข้าไปทำงานต่อ ค่อยคุยขอบเขตและค่าใช้จ่ายในขั้นตอนนั้น",
     },
   ],
   "/en/approach": [
@@ -241,8 +269,36 @@ const table: Record<string, FaqItem[]> = {
       a: "By reading booking pace, pickup, forecast, market demand, and channel mix in one view, then choosing the next move with a clear owner and measuring ADR, occupancy, and net revenue after commission.",
     },
     {
+      q: "Which hotels is The KPI Plus approach for?",
+      a: "Independent hotels, boutiques, and pool villas where the owner, GM, or Revenue team wants to look at price, occupancy, and channels from the same data. It does not have to be a large chain.",
+    },
+    {
+      q: "What information is needed to start the analysis?",
+      a: "Hotel name, area, an approximate room count, and what is worrying you now — such as occupancy below target, pricing, or OTA mix. If you already have booking pace, pickup, or a forecast, bring that to the conversation. You do not need a full report on day one.",
+    },
+    {
+      q: "Do we need to connect PMS, RMS, or a channel manager?",
+      a: "No. You do not need to connect systems before the first conversation. The team looks at the data and systems the hotel already has. Connecting PMS, channel manager, RMS, and booking engine is a later step when rates and inventory need to stay consistent across channels.",
+    },
+    {
+      q: "How long before we see the next actions?",
+      a: "The team replies within 2 business days. After a conversation and a look at the information you have, they summarise what to do next and who should own it. It is not a long report the moment the form is sent.",
+    },
+    {
+      q: "How do you work with our existing Revenue team?",
+      a: "We do not replace the hotel’s Revenue team. We look at the numbers together, separate the leak from the opportunity, and leave the hotel team with something they can act on.",
+    },
+    {
       q: "If occupancy is below target, should the hotel cut rates immediately?",
       a: "Not always. Instead of cutting rates on every channel at once, find the cause first, then plan how to grow bookings while protecting ADR and net revenue.",
+    },
+    {
+      q: "If occupancy is below target, where should we start checking?",
+      a: "Start with booking pace and pickup against last year and budget, then review market demand, competitor rates, channel mix, and rate parity before deciding on price, channel, or promotion.",
+    },
+    {
+      q: "Is there a fee for the initial conversation?",
+      a: "There is no fee for the initial conversation and review. Send the form when you are ready. Cost is discussed later, if the hotel wants the team to continue the work.",
     },
   ],
   "/solutions": [
@@ -339,22 +395,78 @@ const table: Record<string, FaqItem[]> = {
   ],
   "/contact-us": [
     {
+      q: "ต้องการสอบถามเรื่องอะไรได้บ้าง",
+      a: "พูดคุยได้เรื่องรายได้โรงแรม OTA การจองตรง การมองเห็นบนออนไลน์ เทคโนโลยี และการทำงานด้าน Commercial ไม่จำเป็นต้องรู้บริการที่ต้องการตั้งแต่แรก บอกสถานการณ์ของโรงแรมมาก็พอให้ทีมช่วยดูจุดเริ่มต้นได้",
+    },
+    {
+      q: "ต้องเตรียมข้อมูลอะไรก่อนพูดคุย",
+      a: "ใช้ชื่อผู้ติดต่อ ชื่อโรงแรมหรือกิจการ และอีเมลหรือเบอร์โทร หากมีหัวข้อที่อยากคุยหรือข้อความสั้น ๆ จะช่วยให้ทีมเตรียมได้ ยังไม่ต้องมีรายงานครบก่อนเริ่มคุย",
+    },
+    {
+      q: "ใช้เวลานานแค่ไหนกว่าจะได้รับการติดต่อกลับ",
+      a: "ทีมงานจะตรวจสอบข้อมูลและติดต่อกลับโดยเร็วที่สุด ระยะเวลาขึ้นกับช่วงเวลาและรายละเอียดที่ส่งมา หน้านี้ไม่ได้กำหนดเวลารับประกันการตอบกลับ",
+    },
+    {
+      q: "มีค่าใช้จ่ายในการพูดคุยเบื้องต้นหรือไม่",
+      a: "การพูดคุยเบื้องต้นไม่มีค่าใช้จ่าย หากโรงแรมต้องการให้ทีมเข้าไปทำงานต่อ ค่อยคุยขอบเขตและค่าใช้จ่ายในขั้นตอนนั้น",
+    },
+    {
+      q: "ติดต่อผ่าน WhatsApp ได้หรือไม่",
+      a: "ได้ เมื่อมีลิงก์ WhatsApp บนหน้านี้ สามารถใช้ช่องทางนั้นติดต่อทีมได้โดยตรง นอกจากนั้นยังใช้อีเมล โทรศัพท์ หรือแบบฟอร์มในหน้านี้ได้",
+    },
+    {
+      q: "ให้บริการโรงแรมในพื้นที่ใด",
+      a: "สำนักงานอยู่ที่ภูเก็ต ทีมทำงานกับโรงแรมในประเทศไทย รายละเอียดขึ้นกับสถานการณ์ของโรงแรมแต่ละแห่ง",
+    },
+    {
+      q: "ข้อมูลที่ส่งผ่าน Form จะถูกเก็บเป็นความลับหรือไม่",
+      a: "ใช่ ข้อมูลที่ใช้ติดต่อเก็บเป็นความลับ ใช้เพื่อตอบคำถามและติดต่อกลับเรื่องที่สอบถาม ตามนโยบายความเป็นส่วนตัว ไม่เผยแพร่เป็นเคสโดยไม่ได้รับอนุญาต",
+    },
+    {
       q: "ถ้ายังไม่แน่ใจว่าควรเริ่มจากบริการไหน ทำอย่างไร?",
       a: "บอกเราเพียงว่าโรงแรมกำลังเจออะไร ทีม เดอะ เคพีไอ พลัส จะช่วยดูว่าควรเริ่มจากจุดไหนก่อน",
     },
     {
       q: "ติดต่อ เดอะ เคพีไอ พลัส ได้อย่างไร?",
-      a: "โทร +66 82 635 6266 อีเมล info@thekpiplus.com หรือส่งแบบฟอร์มวิเคราะห์โรงแรม สำนักงานอยู่ที่ภูเก็ต",
+      a: "โทร +66 82 635 6266 อีเมล info@thekpiplus.com หรือส่งแบบฟอร์มในหน้านี้ สำนักงานอยู่ที่ภูเก็ต",
     },
   ],
   "/en/contact-us": [
+    {
+      q: "What can I ask about?",
+      a: "You can talk about hotel revenue, OTAs, direct booking, online presence, technology, and commercial work. You do not need to know the service you want first. A short note on what the hotel is facing is enough for the team to suggest a starting point.",
+    },
+    {
+      q: "What should I prepare before we talk?",
+      a: "A contact name, hotel or company name, and an email or phone number. A short note on the topic helps the team prepare. You do not need a full report before the first conversation.",
+    },
+    {
+      q: "How long before someone gets back to me?",
+      a: "The team reviews the details and gets back to you as soon as possible. Timing depends on when the request arrives and how much detail is included. This page does not promise a fixed reply time.",
+    },
+    {
+      q: "Is there a fee for an initial conversation?",
+      a: "An initial conversation has no fee. If the hotel wants the team to take on further work, scope and cost are discussed at that stage.",
+    },
+    {
+      q: "Can I contact you on WhatsApp?",
+      a: "Yes, when a WhatsApp link is shown on this page you can use it to reach the team. You can also use email, phone, or the form on this page.",
+    },
+    {
+      q: "Which areas do you work with hotels in?",
+      a: "The office is in Phuket. The team works with hotels in Thailand. The detail depends on each hotel’s situation.",
+    },
+    {
+      q: "Is information sent through the form kept confidential?",
+      a: "Yes. Contact details are kept confidential and used to reply about this request, under the privacy policy. A case is not published without permission.",
+    },
     {
       q: "What if the hotel is not sure where to start?",
       a: "Tell us what the hotel is facing. The KPI Plus team will help identify the most useful place to begin.",
     },
     {
       q: "How can we contact The KPI Plus?",
-      a: "Call +66 82 635 6266, email info@thekpiplus.com, or send the hotel performance form. The office is in Phuket.",
+      a: "Call +66 82 635 6266, email info@thekpiplus.com, or send the form on this page. The office is in Phuket.",
     },
   ],
   "/ru/contact-us": [

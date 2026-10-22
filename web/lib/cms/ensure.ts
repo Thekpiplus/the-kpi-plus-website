@@ -1,4 +1,45 @@
-/** CMS tables are defined in Prisma schema and created via migrate/db push. */
+import { prisma } from "@/lib/crm/db";
+
+const CONTACT_TABLE = `
+CREATE TABLE IF NOT EXISTS \`CmsContact\` (
+  \`id\` VARCHAR(191) NOT NULL,
+  \`label\` VARCHAR(191) NOT NULL DEFAULT '',
+  \`companyNameTh\` VARCHAR(255) NOT NULL DEFAULT '',
+  \`companyNameEn\` VARCHAR(255) NOT NULL DEFAULT '',
+  \`addressTh\` TEXT NOT NULL,
+  \`addressEn\` TEXT NOT NULL,
+  \`phone\` VARCHAR(191) NOT NULL DEFAULT '',
+  \`secondaryPhone\` VARCHAR(191) NOT NULL DEFAULT '',
+  \`email\` VARCHAR(191) NOT NULL DEFAULT '',
+  \`whatsappNumber\` VARCHAR(191) NOT NULL DEFAULT '',
+  \`googleMapsUrl\` VARCHAR(1000) NOT NULL DEFAULT '',
+  \`googleMapsEmbed\` TEXT NOT NULL,
+  \`hoursTh\` VARCHAR(255) NOT NULL DEFAULT '',
+  \`hoursEn\` VARCHAR(255) NOT NULL DEFAULT '',
+  \`facebook\` VARCHAR(500) NOT NULL DEFAULT '',
+  \`instagram\` VARCHAR(500) NOT NULL DEFAULT '',
+  \`linkedin\` VARCHAR(500) NOT NULL DEFAULT '',
+  \`tiktok\` VARCHAR(500) NOT NULL DEFAULT '',
+  \`lineHref\` VARCHAR(500) NOT NULL DEFAULT '',
+  \`locationImage\` VARCHAR(500) NOT NULL DEFAULT '',
+  \`locationImageAlt\` VARCHAR(500) NOT NULL DEFAULT '',
+  \`consultantImage\` VARCHAR(500) NOT NULL DEFAULT '',
+  \`consultantImageAlt\` VARCHAR(500) NOT NULL DEFAULT '',
+  \`adminNotes\` TEXT NOT NULL,
+  \`isPrimary\` BOOLEAN NOT NULL DEFAULT false,
+  \`sortOrder\` INTEGER NOT NULL DEFAULT 0,
+  \`createdAt\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  \`updatedAt\` DATETIME(3) NOT NULL,
+  PRIMARY KEY (\`id\`),
+  INDEX \`CmsContact_isPrimary_idx\` (\`isPrimary\`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+`;
+
+/** CMS tables are defined in Prisma schema. Contact records also self-heal if migrate has not run yet. */
 export async function ensureCmsSchema() {
-  // no-op on MySQL; kept for call-site compatibility
+  try {
+    await prisma().$executeRawUnsafe(CONTACT_TABLE);
+  } catch {
+    // Database may be unavailable during build.
+  }
 }

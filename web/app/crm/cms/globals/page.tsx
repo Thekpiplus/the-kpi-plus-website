@@ -2,7 +2,6 @@ import Link from "next/link";
 import { PageHeader } from "@/components/crm/ui/PageHeader";
 import { saveGlobals } from "@/lib/cms/actions";
 import { getSetting } from "@/lib/cms/queries";
-import { COMPANY } from "@/lib/company";
 import { parseSiteGlobals } from "@/lib/company-public";
 import { SITE } from "@/lib/seo";
 
@@ -89,75 +88,15 @@ export default async function CmsGlobalsPage({
             <div className="crm-cms-globals-panel-head">
               <div>
                 <p className="crm-cms-globals-kicker">ติดต่อ</p>
-                <h2>ข้อมูลติดต่อที่ใช้ทั้งไซต์</h2>
-                <p>ค่าว่างจะใช้ค่าเริ่มต้นจากโค้ด ช่องที่ไม่มีค่าเริ่มต้น เช่น เวลาทำการและรูปสำนักงาน จะถูกซ่อนบนหน้าเว็บ</p>
+                <h2>ย้ายไปหน้าข้อมูลติดต่อ</h2>
+                <p>เบอร์ อีเมล ที่อยู่ WhatsApp แผนที่ และรูปสถานที่ จัดการได้ที่หน้าข้อมูลติดต่อ โดยไม่ต้องแก้โค้ด</p>
               </div>
             </div>
-
-            <label className="crm-cms-field">
-              <span>อีเมล</span>
-              <input className="crm-field" name="email" defaultValue={value.email} placeholder={COMPANY.email} />
-            </label>
-            <label className="crm-cms-field">
-              <span>โทรศัพท์ 1</span>
-              <input className="crm-field" name="phone1" defaultValue={value.phone1} placeholder={COMPANY.phones[0]?.display} />
-            </label>
-            <label className="crm-cms-field">
-              <span>โทรศัพท์ 2</span>
-              <input className="crm-field" name="phone2" defaultValue={value.phone2} placeholder={COMPANY.phones[1]?.display} />
-            </label>
-            <label className="crm-cms-field">
-              <span>WhatsApp URL</span>
-              <input className="crm-field" name="whatsappHref" defaultValue={value.whatsappHref} placeholder={COMPANY.whatsappHref} />
-            </label>
-            <label className="crm-cms-field">
-              <span>LINE URL</span>
-              <input className="crm-field" name="lineHref" defaultValue={value.lineHref} placeholder={COMPANY.lineHref} />
-            </label>
-            <label className="crm-cms-field">
-              <span>ที่อยู่ (ไทย)</span>
-              <textarea className="crm-area" name="addressTh" rows={3} defaultValue={value.addressTh} placeholder={COMPANY.addressTh} />
-            </label>
-            <label className="crm-cms-field">
-              <span>ที่อยู่ (อังกฤษ)</span>
-              <textarea className="crm-area" name="addressEn" rows={3} defaultValue={value.addressEn} placeholder={COMPANY.addressEn} />
-            </label>
-            <label className="crm-cms-field">
-              <span>Google Maps (ลิงก์เปิด)</span>
-              <input className="crm-field" name="mapsShare" defaultValue={value.mapsShare} placeholder={COMPANY.mapsShare} />
-            </label>
-            <label className="crm-cms-field">
-              <span>Google Maps (embed URL)</span>
-              <textarea className="crm-area" name="mapsEmbed" rows={3} defaultValue={value.mapsEmbed} placeholder={COMPANY.mapsEmbed} />
-            </label>
-            <label className="crm-cms-field">
-              <span>เวลาทำการ (ไทย)</span>
-              <input className="crm-field" name="hoursTh" defaultValue={value.hoursTh} placeholder="เว้นว่างไว้ถ้ายังไม่มีข้อมูลที่ยืนยัน" />
-            </label>
-            <label className="crm-cms-field">
-              <span>เวลาทำการ (อังกฤษ)</span>
-              <input className="crm-field" name="hoursEn" defaultValue={value.hoursEn} placeholder="Leave empty until hours are verified" />
-            </label>
-            <label className="crm-cms-field">
-              <span>รูปสำนักงาน</span>
-              <input className="crm-field" name="officePhoto" defaultValue={value.officePhoto} placeholder="/media/... เว้นว่างถ้ายังไม่มีรูปจริง" />
-            </label>
-            <label className="crm-cms-field">
-              <span>Facebook</span>
-              <input className="crm-field" name="facebook" defaultValue={value.facebook} placeholder={COMPANY.social.facebook} />
-            </label>
-            <label className="crm-cms-field">
-              <span>Instagram</span>
-              <input className="crm-field" name="instagram" defaultValue={value.instagram} placeholder={COMPANY.social.instagram} />
-            </label>
-            <label className="crm-cms-field">
-              <span>LinkedIn</span>
-              <input className="crm-field" name="linkedin" defaultValue={value.linkedin} placeholder={COMPANY.social.linkedin} />
-            </label>
-            <label className="crm-cms-field">
-              <span>TikTok</span>
-              <input className="crm-field" name="tiktok" defaultValue={value.tiktok} placeholder={COMPANY.social.tiktok} />
-            </label>
+            <p>
+              <Link href="/crm/cms/contacts" className="kpi-button">
+                เปิดข้อมูลติดต่อ
+              </Link>
+            </p>
 
             <div className="crm-cms-globals-form-actions">
               <button className="kpi-button" type="submit">
@@ -194,7 +133,7 @@ export default async function CmsGlobalsPage({
             <p className="crm-cms-globals-kicker">ยังอยู่ในโค้ด</p>
             <h2>ฟอร์มและเครื่องมือ</h2>
             <p className="crm-cms-globals-card-body">
-              ฟอร์มบนหน้าโซลูชันยังอยู่ในโค้ด และเครื่องคิดเลขคำนวณในเบราว์เซอร์ ไม่มี backend ปลอม ข้อมูลติดต่อด้านซ้ายใช้ร่วมกันทั้ง Header/Footer และหน้า Contact
+              ฟอร์มบนหน้าโซลูชันยังอยู่ในโค้ด และเครื่องคิดเลขคำนวณในเบราว์เซอร์ ไม่มี backend ปลอม ข้อมูลติดต่ออยู่ที่หน้าข้อมูลติดต่อ
             </p>
             <div className="crm-cms-globals-links">
               <Link href="/crm/cms/pages" className="crm-users-secondary">
@@ -211,6 +150,7 @@ export default async function CmsGlobalsPage({
             <h2>จัดการเนื้อหา</h2>
             <div className="crm-cms-globals-links is-stack">
               <Link href="/crm/cms">หน้าเพจทั้งหมด</Link>
+              <Link href="/crm/cms/contacts">ข้อมูลติดต่อ</Link>
               <Link href="/crm/cms/insights">บทความ</Link>
               <Link href="/crm/cms/media">สื่อ/ไฟล์รูปภาพ</Link>
               <Link href="/crm/cms/trash">ถังขยะ</Link>

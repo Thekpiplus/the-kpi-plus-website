@@ -57,6 +57,37 @@ export type CmsSettingRow = {
   updatedAt: Date;
 };
 
+export type CmsContactRow = {
+  id: string;
+  label: string;
+  companyNameTh: string;
+  companyNameEn: string;
+  addressTh: string;
+  addressEn: string;
+  phone: string;
+  secondaryPhone: string;
+  email: string;
+  whatsappNumber: string;
+  googleMapsUrl: string;
+  googleMapsEmbed: string;
+  hoursTh: string;
+  hoursEn: string;
+  facebook: string;
+  instagram: string;
+  linkedin: string;
+  tiktok: string;
+  lineHref: string;
+  locationImage: string;
+  locationImageAlt: string;
+  consultantImage: string;
+  consultantImageAlt: string;
+  adminNotes: string;
+  isPrimary: boolean;
+  sortOrder: number;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
 export const CMS_LOCALES = ["th", "en", "ru", "zh"] as const;
 export type CmsLocale = (typeof CMS_LOCALES)[number];
 

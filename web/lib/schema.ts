@@ -21,7 +21,7 @@ function postalAddress(company: CompanyContact) {
 
 export function organizationSchema(locale: Locale = "en", company: CompanyContact = COMPANY) {
   const name = brandName(locale);
-  const telephone = company.phones[0]?.display.replace(/\s+/g, "-") ?? "";
+  const telephone = company.phones[0]?.display?.replace(/\s+/g, "-") ?? "";
   return {
     "@context": "https://schema.org",
     "@type": ["Organization", "ProfessionalService"],
@@ -51,7 +51,7 @@ export function organizationSchema(locale: Locale = "en", company: CompanyContac
 }
 
 export function localBusinessSchema(locale: Locale = "th", company: CompanyContact = COMPANY) {
-  const telephone = company.phones[0]?.display.replace(/\s+/g, "-") ?? "";
+  const telephone = company.phones[0]?.display?.replace(/\s+/g, "-") ?? "";
   return {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",

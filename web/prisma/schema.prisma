@@ -448,3 +448,36 @@ model CmsSetting {
   value     String   @db.LongText
   updatedAt DateTime @updatedAt
 }
+
+model CmsContact {
+  id                 String   @id @default(cuid())
+  label              String   @default("")
+  companyNameTh      String   @default("") @db.VarChar(255)
+  companyNameEn      String   @default("") @db.VarChar(255)
+  addressTh          String   @db.Text
+  addressEn          String   @db.Text
+  phone              String   @default("")
+  secondaryPhone     String   @default("")
+  email              String   @default("")
+  whatsappNumber     String   @default("")
+  googleMapsUrl      String   @default("") @db.VarChar(1000)
+  googleMapsEmbed    String   @default("") @db.Text
+  hoursTh            String   @default("") @db.VarChar(255)
+  hoursEn            String   @default("") @db.VarChar(255)
+  facebook           String   @default("") @db.VarChar(500)
+  instagram          String   @default("") @db.VarChar(500)
+  linkedin           String   @default("") @db.VarChar(500)
+  tiktok             String   @default("") @db.VarChar(500)
+  lineHref           String   @default("") @db.VarChar(500)
+  locationImage      String   @default("") @db.VarChar(500)
+  locationImageAlt   String   @default("") @db.VarChar(500)
+  consultantImage    String   @default("") @db.VarChar(500)
+  consultantImageAlt String   @default("") @db.VarChar(500)
+  adminNotes         String   @default("") @db.Text
+  isPrimary          Boolean  @default(false)
+  sortOrder          Int      @default(0)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@index([isPrimary])
+}

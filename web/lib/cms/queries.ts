@@ -2,7 +2,7 @@ import { prisma } from "@/lib/crm/db";
 import { documentPath, parseCmsBody } from "./body";
 import { ensureCmsSchema } from "./ensure";
 import { loadCmsNav, saveCmsNav, saveCmsRedirects, type CmsNavLink } from "./files";
-import type { CmsDocumentRow, CmsMediaRow, CmsRedirectRow, CmsSettingRow } from "./types";
+import type { CmsContactRow, CmsDocumentRow, CmsMediaRow, CmsRedirectRow, CmsSettingRow } from "./types";
 import { asBool } from "./types";
 
 type CmsClient = {
@@ -31,6 +31,16 @@ type CmsClient = {
   cmsSetting: {
     findUnique: (args: { where: { id: string } }) => Promise<CmsSettingRow | null>;
     upsert: (args: { where: { id: string }; create: Record<string, unknown>; update: Record<string, unknown> }) => Promise<CmsSettingRow>;
+  };
+  cmsContact: {
+    findMany: (args?: object) => Promise<CmsContactRow[]>;
+    findUnique: (args: object) => Promise<CmsContactRow | null>;
+    findFirst: (args: object) => Promise<CmsContactRow | null>;
+    create: (args: { data: Record<string, unknown> }) => Promise<CmsContactRow>;
+    update: (args: { where: { id: string }; data: Record<string, unknown> }) => Promise<CmsContactRow>;
+    updateMany: (args: object) => Promise<{ count: number }>;
+    delete: (args: { where: { id: string } }) => Promise<CmsContactRow>;
+    count: (args?: object) => Promise<number>;
   };
 };
 
@@ -222,6 +232,29 @@ export async function listRedirects() {
 export async function getSetting(id: string) {
   const db = await cmsDb();
   return db.cmsSetting.findUnique({ where: { id } });
+}
+
+export async function listContacts() {
+  try {
+    const { listContactRows } = await import("./contact-store");
+    return listContactRows();
+  } catch {
+    return [];
+  }
+}
+
+export async function getContact(id: string) {
+  const { findContact } = await import("./contact-store");
+  return findContact(id);
+}
+
+export async function getPrimaryContact() {
+  try {
+    const { findPrimaryContact } = await import("./contact-store");
+    return findPrimaryContact();
+  } catch {
+    return null;
+  }
 }
 
 export async function refreshCmsFiles() {

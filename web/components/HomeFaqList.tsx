@@ -57,7 +57,13 @@ export function HomeFaqList({ items }: { items: FaqItem[] }) {
                 </span>
               </button>
             </h3>
-            <div id={panelId} role="region" aria-labelledby={buttonId} className="kpi-faq-panel">
+            <div
+              id={panelId}
+              role="region"
+              aria-labelledby={buttonId}
+              aria-hidden={!expanded}
+              className="kpi-faq-panel"
+            >
               <div className="kpi-faq-panel-inner">
                 <p>{item.a}</p>
               </div>

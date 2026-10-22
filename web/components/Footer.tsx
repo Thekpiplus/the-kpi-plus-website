@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowUpRight, Earth, Mail, MapPin, Phone } from "@/components/Icons";
-import { COMPANY, companyAddress, type CompanyContact } from "@/lib/company";
-import { locales, uiCopy, visibleSolutionGroups } from "@/lib/nav";
+import { ContactCard } from "@/components/ContactCard";
+import { ArrowUpRight, Earth } from "@/components/Icons";
+import { COMPANY, contactInfoFromCompany, type CompanyContact } from "@/lib/company";
+import { locales, uiCopy, visibleSolutionGroups, visibleToolLinks } from "@/lib/nav";
 import {
   auditHref,
   barePath,
@@ -26,14 +27,6 @@ function existingNav(items: readonly { href: string; label: string }[], locale: 
     const href = existingHref(item.href, locale);
     return href ? [{ href, label: item.label }] : [];
   });
-}
-
-function channelLabel(network: string, locale: Locale) {
-  const brand = brandName(locale);
-  if (locale === "th") return `${network} ของ ${brand}`;
-  if (locale === "zh") return `${brand} 的 ${network}`;
-  if (locale === "ru") return `${network}: ${brand}`;
-  return `${brand} on ${network}`;
 }
 
 function FooterHeading({ children }: { children: React.ReactNode }) {
@@ -71,16 +64,12 @@ export function Footer({
   const solutionsHref = solutionsIndexHref(locale);
   const privacyHref = existingHref("/privacy", locale);
   const cookiesHref = existingHref("/cookies", locale);
+  const termsHref = existingHref("/terms", locale);
   const contactHref = existingHref("/contact-us", locale);
   const isAbout = barePath(pathname) === "/about-us";
-  const address = companyAddress(company, locale);
-  const email = company.email;
-  const socials = [
-    { href: company.social.facebook, name: "Facebook", src: "/brand/meta/facebook.svg", track: "footer_facebook_click" },
-    { href: company.social.instagram, name: "Instagram", src: "/brand/meta/instagram.svg", track: "footer_instagram_click" },
-    { href: company.social.linkedin, name: "LinkedIn", src: "/brand/linkedin/linkedin.svg", track: "footer_linkedin_click" },
-    { href: company.social.tiktok, name: "TikTok", src: "/brand/tiktok/tiktok.svg", track: "footer_tiktok_click" },
-  ].filter((item) => item.href);
+  const isContact = barePath(pathname) === "/contact-us";
+  const isApproach = barePath(pathname) === "/approach";
+  const contact = contactInfoFromCompany(company, locale);
   const primaryPaths = new Set(["/approach", "/insights", "/case-studies", "/about-us", "/contact-us"]);
   const mainLinks = existingNav(
     [
@@ -97,41 +86,43 @@ export function Footer({
     locale,
   );
   const companyLinks = [...mainLinks, ...extraKnow, ...extraLinks];
+  const toolLinks = visibleToolLinks(locale);
+  const toolsIndexHref = existingHref("/tools", locale);
 
   return (
-    <footer lang={htmlLang(locale)} className={isAbout ? "kpi-footer kpi-footer--about" : "kpi-footer"}>
+    <footer
+      lang={htmlLang(locale)}
+      className={[
+        "kpi-footer",
+        isAbout && "kpi-footer--about",
+        isContact && "kpi-footer--contact",
+        isApproach && "kpi-footer--approach",
+      ]
+        .filter(Boolean)
+        .join(" ")}
+    >
       <div className="kpi-section">
         <div className="kpi-footer-top">
           <section className="kpi-footer-brand">
-            <Link
-              href={homeHref(locale)}
-              aria-label={locale === "th" ? `${brandName(locale)} หน้าแรก` : `${brandName(locale)} home`}
-              className="kpi-footer-brand-mark"
-            >
-              <img
-                src="/brand/KPIPlus_Horizontal_FullColor-Reverse.svg"
-                alt={brandName(locale)}
-                className="object-contain object-left"
-              />
-            </Link>
-            <p className="kpi-footer-statement kpi-thai-nav">{t.statement}</p>
-            <Link data-track="footer_audit_cta" href={auditHref(locale)} className="kpi-button kpi-thai-nav">
-              {t.audit} <ArrowUpRight className="h-4 w-4" />
-            </Link>
-            <nav className="kpi-footer-socials" aria-label={t.follow}>
-              {socials.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  rel="noopener noreferrer"
-                  data-track={item.track}
-                  className="kpi-footer-channel"
-                  aria-label={channelLabel(item.name, locale)}
-                >
-                  <img src={item.src} alt="" width={26} height={26} />
-                </a>
-              ))}
-            </nav>
+            <div className="kpi-footer-brand-copy">
+              <Link
+                href={homeHref(locale)}
+                aria-label={locale === "th" ? `${brandName(locale)} หน้าแรก` : `${brandName(locale)} home`}
+                className="kpi-footer-brand-mark"
+              >
+                <img
+                  src="/brand/KPIPlus_Horizontal_FullColor-Reverse.svg"
+                  alt={brandName(locale)}
+                  className="object-contain object-left"
+                />
+              </Link>
+              <p className="kpi-footer-statement kpi-thai-nav">{t.statement}</p>
+            </div>
+            <div className="kpi-footer-brand-actions">
+              <Link data-track="footer_audit_cta" href={auditHref(locale)} className="kpi-button kpi-thai-nav">
+                {t.audit} <ArrowUpRight className="h-4 w-4" />
+              </Link>
+            </div>
           </section>
 
           <div className="kpi-footer-menus">
@@ -171,66 +162,29 @@ export function Footer({
               </section>
             ) : null}
 
+            {toolLinks.length ? (
+              <section className="kpi-footer-column" aria-label={t.tools}>
+                <FooterHeading>{t.tools}</FooterHeading>
+                <nav className="kpi-footer-links" aria-label={t.tools}>
+                  {toolLinks.map((item) => (
+                    <FooterLink key={item.href} href={item.href}>
+                      {item.label}
+                    </FooterLink>
+                  ))}
+                </nav>
+                {toolsIndexHref ? <FooterMore href={toolsIndexHref}>{t.allTools}</FooterMore> : null}
+              </section>
+            ) : null}
+
             <section className="kpi-footer-column" aria-label={t.contactTitle}>
               <FooterHeading>{t.contactTitle}</FooterHeading>
-              <div className="kpi-footer-contact">
-                {address && company.mapsShare ? (
-                  <a
-                    href={company.mapsShare}
-                    rel="noopener noreferrer"
-                    className="kpi-footer-contact-row"
-                    aria-label={`${t.officeLabel}: ${address}`}
-                  >
-                    <MapPin aria-hidden="true" />
-                    <span>
-                      <span className="kpi-footer-contact-label">{t.officeLabel}</span>
-                      <span className="kpi-footer-address">{address}</span>
-                    </span>
-                  </a>
-                ) : null}
-                {email ? (
-                  <a href={`mailto:${email}`} className="kpi-footer-contact-row" aria-label={`Email ${email}`}>
-                    <Mail aria-hidden="true" />
-                    <span className="kpi-latin">{email}</span>
-                  </a>
-                ) : null}
-                {company.phones.map((item) => (
-                  <a
-                    key={item.href}
-                    href={item.href}
-                    className="kpi-footer-contact-row"
-                    aria-label={`${locale === "th" ? "โทร" : "Phone"} ${item.display}`}
-                  >
-                    <Phone aria-hidden="true" />
-                    <span className="kpi-latin">{item.display}</span>
-                  </a>
-                ))}
-                <p className="kpi-footer-contact-channels">
-                  {company.whatsappHref ? (
-                    <a
-                      href={company.whatsappHref}
-                      rel="noopener noreferrer"
-                      data-track="footer_whatsapp_click"
-                      className="kpi-footer-channel"
-                      aria-label={channelLabel("WhatsApp", locale)}
-                    >
-                      <img src="/brand/meta/whatsapp.svg" alt="" width={26} height={26} />
-                    </a>
-                  ) : null}
-                  {company.lineHref ? (
-                    <a
-                      href={company.lineHref}
-                      rel="noopener noreferrer"
-                      data-track="footer_line_click"
-                      className="kpi-footer-channel"
-                      aria-label={channelLabel("LINE", locale)}
-                    >
-                      <img src="/brand/line/line.svg" alt="" width={26} height={26} />
-                    </a>
-                  ) : null}
-                </p>
-                {contactHref ? <FooterMore href={contactHref}>{t.contact}</FooterMore> : null}
-              </div>
+              <ContactCard
+                locale={locale}
+                variant="footer"
+                contact={contact}
+                showSocials={!isApproach}
+              />
+              {!isContact && contactHref ? <FooterMore href={contactHref}>{t.contact}</FooterMore> : null}
             </section>
           </div>
         </div>
@@ -245,6 +199,7 @@ export function Footer({
           </p>
           <div className="kpi-footer-legal-links">
             {privacyHref ? <Link href={privacyHref}>{t.privacy}</Link> : null}
+            {termsHref ? <Link href={termsHref}>{t.terms}</Link> : null}
             {cookiesHref ? <Link href={cookiesHref}>{t.cookies}</Link> : null}
             <button type="button" onClick={() => window.dispatchEvent(new Event("kpi-open-cookie-settings"))}>
               {t.cookieSettings}
