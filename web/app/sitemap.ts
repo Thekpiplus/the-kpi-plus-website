@@ -31,7 +31,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
       return {
         url: page.canonical,
-        lastModified: insight?.modified ?? "2026-09-26",
+        lastModified: insight?.updatedAt || insight?.publishedAt || "2026-09-26",
         changeFrequency: (isHome ? "weekly" : isInsight || isSolution ? "monthly" : "monthly") as "weekly" | "monthly",
         priority: isHome ? 1 : isSolution ? 0.8 : isInsight ? 0.7 : 0.6,
       };

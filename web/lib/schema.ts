@@ -1,11 +1,18 @@
 import { COMPANY, type CompanyContact } from "./company";
 import type { FaqItem } from "./faqs";
-import type { InsightPost } from "./insights";
+import { insightAuthor, insightExcerpt, insightUpdatedAt, type InsightPost } from "./insights";
+import { existingPublicSrc } from "./insights-media";
 import { uiCopy } from "./nav";
 import { pageKind } from "./page-types";
 import { SITE, brandName, htmlLang, legalName, localizePath, type Locale } from "./seo";
 
 const ORG_ID = `${SITE}/#organization`;
+
+function schemaImageUrl(src: string | undefined) {
+  const next = existingPublicSrc(src);
+  if (!next) return undefined;
+  return next.startsWith("http") ? next : `${SITE}${next}`;
+}
 
 function postalAddress(company: CompanyContact) {
   return {
@@ -233,27 +240,36 @@ export function breadcrumbSchema(items: { name: string; href: string }[]) {
 export function articleSchema(post: InsightPost, canonical: string, locale: Locale = "th") {
   const language = htmlLang(locale);
   const headline = post.title[locale] || post.title.th;
-  const description = post.description[locale] || post.description.th;
-  const authorName = locale === "th" ? "ทีมบรรณาธิการ เดอะ เคพีไอ พลัส" : "The KPI Plus Editorial Team";
+  const description = insightExcerpt(post, locale);
+  const authorName = insightAuthor(post, locale);
   const publisherName = brandName(locale);
-  const imageUrl = post.image.startsWith("http") ? post.image : `${SITE}${post.image}`;
+  const resolvedImage = existingPublicSrc(post.coverImage);
+  const imageUrl = resolvedImage
+    ? resolvedImage.startsWith("http")
+      ? resolvedImage
+      : `${SITE}${resolvedImage}`
+    : undefined;
 
   return {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline,
     description,
-    datePublished: post.published,
-    dateModified: post.modified || post.published,
+    datePublished: post.publishedAt,
+    dateModified: insightUpdatedAt(post) || post.publishedAt,
     inLanguage: language,
-    image: [
-      {
-        "@type": "ImageObject",
-        url: imageUrl,
-        width: 1200,
-        height: 750,
-      },
-    ],
+    ...(imageUrl
+      ? {
+          image: [
+            {
+              "@type": "ImageObject",
+              url: imageUrl,
+              width: 1200,
+              height: 675,
+            },
+          ],
+        }
+      : {}),
     url: canonical,
     author: {
       "@type": "Organization",
@@ -300,11 +316,11 @@ export function blogSchema(
     blogPost: posts.map((post) => ({
       "@type": "BlogPosting",
       headline: post.title[locale] || post.title.th,
-      description: post.description[locale] || post.description.th,
+      description: insightExcerpt(post, locale),
       url: `${SITE}${post.href}`,
-      datePublished: post.published,
-      dateModified: post.modified,
-      image: post.image.startsWith("http") ? post.image : `${SITE}${post.image}`,
+      datePublished: post.publishedAt,
+      dateModified: insightUpdatedAt(post) || post.publishedAt,
+      image: schemaImageUrl(post.coverImage),
       inLanguage: "th",
     })),
   };

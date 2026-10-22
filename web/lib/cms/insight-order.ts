@@ -26,7 +26,7 @@ export async function listInsightSlugsForOrder() {
       slug: doc.slug,
       published: (doc.publishedAt ?? doc.createdAt).toISOString().slice(0, 10),
     })),
-    ...site.map((post) => ({ slug: post.slug, published: post.published })),
+    ...site.map((post) => ({ slug: post.slug, published: post.publishedAt })),
   ].sort((a, b) => b.published.localeCompare(a.published));
   return byDate.map((item) => item.slug);
 }

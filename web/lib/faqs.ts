@@ -1,5 +1,32 @@
 export type FaqItem = { q: string; a: string };
 
+const insightsIndexFaqsEn: FaqItem[] = [
+  {
+    q: "Which types of hotels are the articles for?",
+    a: "Independent hotels, boutiques, and pool villas where the owner, GM, or hotel team wants to look at revenue, marketing, direct booking, and technology themselves. It does not have to be a large chain.",
+  },
+  {
+    q: "If I want to talk to the team after reading, how should I start?",
+    a: "Use Request a Hotel Performance Audit on this page. Send the hotel name, area, an approximate room count, and the issue you are seeing. You do not need a full report on day one. The team replies within 2 business days.",
+  },
+  {
+    q: "Can the team help analyse the hotel’s data?",
+    a: "Yes. The team starts from the information the hotel already has, then helps sequence the next useful move. The initial review has no fee. Scope is discussed later if you want the team to continue the work.",
+  },
+  {
+    q: "Is there a report or checklist to download?",
+    a: "There is no report or checklist to download from this page. Some articles include steps in the text to use directly. If you want the team to review the hotel’s data, send an analysis request.",
+  },
+  {
+    q: "How can I follow new articles?",
+    a: "New articles appear on this Insights page. Use Latest to see the newest first. There is no separate newsletter to subscribe to.",
+  },
+  {
+    q: "Where does the article information come from?",
+    a: "Articles are written by The KPI Plus editorial team from hotel revenue and commercial practice. They do not publish client numbers. If an article has sources, they appear at the end of that article.",
+  },
+];
+
 const table: Record<string, FaqItem[]> = {
   "/": [
     {
@@ -335,32 +362,33 @@ const table: Record<string, FaqItem[]> = {
   ],
   "/insights": [
     {
-      q: "บทความ Insights เหมาะกับใคร?",
-      a: "บทความสำหรับเจ้าของ ผู้จัดการทั่วไป และทีมโรงแรม เชื่อม Revenue, Demand, Technology และการทำงานของทีมเข้ากับสิ่งที่ควรทำต่อ",
+      q: "บทความเหมาะกับโรงแรมประเภทใด",
+      a: "เหมาะกับโรงแรมอิสระ บูทีค และพูลวิลล่า ที่เจ้าของ ผู้จัดการทั่วไป หรือทีมงานอยากดูรายได้ การตลาด การจองตรง และเทคโนโลยีเอง ไม่จำเป็นต้องเป็นเชนขนาดใหญ่",
     },
     {
-      q: "อ่านแล้วเอาไปใช้ได้อย่างไร?",
-      a: "เรียงลำดับจากคำถามสู่การลงมือทำที่มีผู้รับผิดชอบ ไม่ได้หยุดที่ทฤษฎีหรือรายงานอย่างเดียว",
+      q: "ถ้าต้องการคุยกับทีมหลังอ่านบทความควรเริ่มอย่างไร",
+      a: "กดปุ่มขอวิเคราะห์โรงแรมบนหน้านี้ ส่งชื่อโรงแรม จังหวัด จำนวนห้องโดยประมาณ และประเด็นที่กำลังเจอ ไม่ต้องแนบรายงานครบในครั้งแรก ทีมติดต่อกลับภายใน 2 วันทำการ",
     },
-  ],
-  "/en/insights": [
     {
-      q: "Who are the Insights for?",
-      a: "Notes for owners, GMs, and hotel teams on revenue, demand, technology, and the next useful commercial move.",
+      q: "ขอให้ทีมช่วยวิเคราะห์ข้อมูลของโรงแรมได้หรือไม่",
+      a: "ได้ ทีมดูจากข้อมูลที่โรงแรมมีอยู่แล้ว ช่วยจัดลำดับสิ่งที่ควรทำต่อ การวิเคราะห์เบื้องต้นไม่มีค่าใช้จ่าย หากต้องการให้ทีมทำงานต่อ ค่อยคุยขอบเขตในขั้นตอนนั้น",
     },
-  ],
-  "/ru/insights": [
     {
-      q: "Для кого эти материалы?",
-      a: "Материалы для собственников, управляющих и команд отелей о доходе, спросе, технологиях и следующем полезном шаге.",
+      q: "มี Report หรือ Checklist ให้ดาวน์โหลดหรือไม่",
+      a: "ขณะนี้ยังไม่มี Report หรือ Checklist ให้ดาวน์โหลดจากหน้านี้ บางบทความมีขั้นตอนในเนื้อหาให้นำไปใช้เอง หากต้องการให้ทีมดูข้อมูลโรงแรม ส่งคำขอวิเคราะห์ได้",
     },
-  ],
-  "/zh/insights": [
     {
-      q: "這些文章給誰看？",
-      a: "給業主、總經理與酒店團隊的觀點：收益、需求、科技，以及下一步有用的商業行動。",
+      q: "สามารถติดตามบทความใหม่ได้อย่างไร",
+      a: "บทความใหม่ขึ้นบนหน้า Insights นี้ เลือกเรียงตามล่าสุดเพื่อดูชิ้นล่าสุดก่อน ไม่มีจดหมายข่าวให้สมัครแยก",
+    },
+    {
+      q: "ข้อมูลในบทความอ้างอิงจากอะไร",
+      a: "เรียบเรียงโดยทีมบรรณาธิการ The KPI Plus จากวิธีทำงานด้าน Revenue และ Commercial ของโรงแรม ไม่ได้ยกตัวเลขลูกค้ามาแสดง หากบทความนั้นมีแหล่งข้อมูล จะแสดงไว้ท้ายบทความ",
     },
   ],
+  "/en/insights": insightsIndexFaqsEn,
+  "/ru/insights": insightsIndexFaqsEn,
+  "/zh/insights": insightsIndexFaqsEn,
   "/associations": [
     {
       q: "บริษัทในเครือข่ายนี้คือลูกค้าหรือคำรับรองหรือไม่?",

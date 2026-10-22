@@ -33,9 +33,17 @@ function FooterHeading({ children }: { children: React.ReactNode }) {
   return <h2 className="kpi-footer-heading kpi-thai-nav">{children}</h2>;
 }
 
-function FooterLink({ href, children }: { href: string; children: React.ReactNode }) {
+function FooterLink({
+  href,
+  children,
+  current = false,
+}: {
+  href: string;
+  children: React.ReactNode;
+  current?: boolean;
+}) {
   return (
-    <Link href={href} className="kpi-footer-link kpi-thai-nav">
+    <Link href={href} className="kpi-footer-link kpi-thai-nav" aria-current={current ? "page" : undefined}>
       {children}
     </Link>
   );
@@ -66,9 +74,11 @@ export function Footer({
   const cookiesHref = existingHref("/cookies", locale);
   const termsHref = existingHref("/terms", locale);
   const contactHref = existingHref("/contact-us", locale);
-  const isAbout = barePath(pathname) === "/about-us";
-  const isContact = barePath(pathname) === "/contact-us";
-  const isApproach = barePath(pathname) === "/approach";
+  const path = barePath(pathname);
+  const isAbout = path === "/about-us";
+  const isContact = path === "/contact-us";
+  const isApproach = path === "/approach";
+  const isInsights = path === "/insights" || path.startsWith("/insights/");
   const contact = contactInfoFromCompany(company, locale);
   const primaryPaths = new Set(["/approach", "/insights", "/case-studies", "/about-us", "/contact-us"]);
   const mainLinks = existingNav(
@@ -97,6 +107,7 @@ export function Footer({
         isAbout && "kpi-footer--about",
         isContact && "kpi-footer--contact",
         isApproach && "kpi-footer--approach",
+        isInsights && "kpi-footer--insights",
       ]
         .filter(Boolean)
         .join(" ")}
@@ -145,7 +156,11 @@ export function Footer({
                 <FooterHeading>{t.knowUs}</FooterHeading>
                 <nav className="kpi-footer-links" aria-label={t.knowUs}>
                   {companyLinks.map((item) => (
-                    <FooterLink key={item.href} href={item.href}>
+                    <FooterLink
+                      key={item.href}
+                      href={item.href}
+                      current={isInsights && barePath(item.href) === "/insights"}
+                    >
                       {item.label}
                     </FooterLink>
                   ))}

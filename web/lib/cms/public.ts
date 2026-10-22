@@ -1,4 +1,5 @@
-import { insightPosts, type InsightPost } from "@/lib/insights";
+import { insightPosts, isPublishedInsight, type InsightPost } from "@/lib/insights";
+import { existingPublicSrc, parseInsightImageMeta } from "@/lib/insights-media";
 import { SITE, barePath, localeFromPath, type Locale } from "@/lib/seo";
 import { documentPath, estimateMinutes, parseCmsBody } from "./body";
 import { pageDocumentBySlug, publishedDocumentByPath, publishedDocuments } from "./queries";
@@ -10,22 +11,35 @@ function localeCopy(value: string): Record<Locale, string> {
 
 export function documentToInsight(doc: CmsDocumentRow): InsightPost {
   const href = documentPath(doc);
-  const published = (doc.publishedAt ?? doc.createdAt).toISOString().slice(0, 10);
-  const modified = doc.updatedAt.toISOString().slice(0, 10);
+  const publishedAt = (doc.publishedAt ?? doc.createdAt).toISOString().slice(0, 10);
+  const updatedAt = doc.updatedAt.toISOString().slice(0, 10);
   const title = localeCopy(doc.title);
-  const description = localeCopy(doc.excerpt || doc.metaDescription || doc.title);
+  const excerpt = localeCopy(doc.excerpt || doc.metaDescription || doc.title);
   const category = localeCopy(doc.category || "บทความ");
+  const coverImage = doc.featuredImage?.trim() ?? "";
+  const media = parseInsightImageMeta(doc.tags);
   return {
+    id: doc.id || doc.slug,
     slug: doc.slug,
     href,
-    published,
-    modified,
-    minutes: estimateMinutes(parseCmsBody(doc.body)),
-    image: doc.featuredImage || "/media/the-kpi-plus-performance-hero_2f986b5f.jpg",
-    imageAlt: doc.imageAlt || doc.title,
+    publishedAt,
+    updatedAt: updatedAt !== publishedAt ? updatedAt : undefined,
+    readingTimeMinutes: estimateMinutes(parseCmsBody(doc.body)),
+    coverImage,
+    coverImageAlt: doc.imageAlt || doc.title,
+    coverImageFit: media.imageFit,
+    coverImageStatus: media.imageStatus,
+    authorName: doc.author?.trim() || undefined,
+    authorRole: media.authorRole,
+    sources: media.sources,
+    relatedArticleIds: media.relatedArticleIds,
+    isFeatured: media.isFeatured,
+    isPublished: isCmsPageLive(doc),
+    sampleVisual: media.imageStatus === "sample" || media.imageStatus === "placeholder" || !coverImage,
+    content: doc.body,
     category,
     title,
-    description,
+    excerpt,
   };
 }
 
@@ -37,7 +51,7 @@ export async function cmsInsightPosts() {
 export async function allInsightPosts() {
   const extra = await cmsInsightPosts();
   const seen = new Set(insightPosts.map((post) => post.slug));
-  return [...insightPosts, ...extra.filter((post) => !seen.has(post.slug))];
+  return [...insightPosts, ...extra.filter((post) => !seen.has(post.slug))].filter(isPublishedInsight);
 }
 
 export function isCmsPageLive(doc: CmsDocumentRow) {
@@ -77,7 +91,7 @@ export function cmsMetadata(doc: CmsDocumentRow) {
   const canonical = (doc.canonical || `${SITE}${route}`)
     .replace(/\/about$/, "/about-us")
     .replace(/\/contact$/, "/contact-us");
-  const image = doc.ogImage || doc.featuredImage;
+  const image = existingPublicSrc(doc.ogImage) || existingPublicSrc(doc.featuredImage);
   return {
     title,
     description,

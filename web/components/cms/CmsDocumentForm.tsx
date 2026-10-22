@@ -2,6 +2,7 @@ import { blocksToMarkdown, parseCmsBody } from "@/lib/cms/body";
 import { createDocument, updateDocument } from "@/lib/cms/actions";
 import type { CmsDocumentRow } from "@/lib/cms/types";
 import { CMS_LOCALES, CMS_MENUS, CMS_STATUSES } from "@/lib/cms/types";
+import { insightSlotForSlug, parseInsightImageMeta } from "@/lib/insights-media";
 
 const LOCALE_LABEL: Record<(typeof CMS_LOCALES)[number], string> = {
   th: "ไทย",
@@ -30,6 +31,8 @@ export function CmsDocumentForm({
       : document?.scheduledAt
         ? String(document.scheduledAt).slice(0, 16)
         : "";
+  const imageMeta = parseInsightImageMeta(document?.tags);
+  const imageSlot = isInsight ? insightSlotForSlug(document?.slug ?? "") : null;
 
   return (
     <form action={action} className="crm-cms-editor">
@@ -159,14 +162,46 @@ export function CmsDocumentForm({
 
         <section className="crm-cms-editor-panel">
           <h3>รูปหลัก</h3>
+          {isInsight ? (
+            <p className="crm-cms-editor-note">
+              เว้นที่อยู่รูปว่างไว้ถ้าไฟล์ยังไม่มีในเครื่อง ระบบจะไม่สร้างภาพให้อัตโนมัติ และจะแสดงกรอบตัวอย่างแทน
+              {imageSlot ? ` ช่องที่จองไว้: ${imageSlot.reservedSrc} (${imageSlot.sourceWidth}×${imageSlot.sourceHeight}, แสดง ${imageSlot.displayWidth}×${imageSlot.displayHeight}, ${imageSlot.ratio}).` : ""}
+            </p>
+          ) : null}
           <label className="crm-cms-field">
             <span>ที่อยู่รูป</span>
-            <input className="crm-field" name="featuredImage" defaultValue={document?.featuredImage} placeholder="/media/cms/..." />
+            <input
+              className="crm-field"
+              name="featuredImage"
+              defaultValue={document?.featuredImage}
+              placeholder={imageSlot?.reservedSrc ?? "/media/cms/..."}
+            />
           </label>
           <label className="crm-cms-field">
-            <span>คำอธิบายรูป</span>
+            <span>คำอธิบายรูป (alt)</span>
             <input className="crm-field" name="imageAlt" defaultValue={document?.imageAlt} />
+            {isInsight ? <small>แก้ข้อความ alt ได้จากหน้านี้ ใช้กับภาพที่มีความหมาย ไม่ใส่ข้อความถ้าภาพเป็นแค่กรอบตัวอย่าง</small> : null}
           </label>
+          {isInsight ? (
+            <>
+              <label className="crm-cms-field">
+                <span>สถานะภาพ</span>
+                <select className="crm-select" name="imageStatus" defaultValue={imageMeta.imageStatus}>
+                  <option value="placeholder">Placeholder — ตัวอย่างภาพประกอบ</option>
+                  <option value="sample">Sample — ตัวอย่างภาพประกอบ</option>
+                  <option value="approved">Approved — ภาพที่อนุมัติแล้ว</option>
+                  <option value="real">Real — ภาพงานจริง</option>
+                </select>
+              </label>
+              <label className="crm-cms-field">
+                <span>การจัดภาพ</span>
+                <select className="crm-select" name="imageFit" defaultValue={imageMeta.imageFit}>
+                  <option value="cover">Cover — ภาพถ่าย</option>
+                  <option value="contain">Contain — ภาพรายงานหรือสกรีนช็อต</option>
+                </select>
+              </label>
+            </>
+          ) : null}
         </section>
 
         <details className="crm-cms-editor-panel crm-cms-editor-details">

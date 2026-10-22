@@ -5,7 +5,7 @@ import { SiteShell } from "@/components/SiteShell";
 import { getStoredInsightOrder, resolveInsightOrder, sortByInsightOrder } from "@/lib/cms/insight-order";
 import { cmsInsightPosts } from "@/lib/cms/public";
 import { hiddenInsightSlugs } from "@/lib/cms/queries";
-import { insightPosts, insightsIndexCopy } from "@/lib/insights";
+import { insightPosts, insightsIndexCopy, isPublishedInsight } from "@/lib/insights";
 import { homeCopy } from "@/lib/localized-ui";
 import { auditHref, existingHref, localizePath, type Locale } from "@/lib/seo";
 
@@ -232,13 +232,13 @@ export async function HomeView({ locale }: { locale: Locale }) {
   const bySlug = new Map(insightPosts.map((post) => [post.slug, post]));
   for (const post of extraPosts) bySlug.set(post.slug, post);
   const visible = [...bySlug.values()].filter(
-    (post) => existingHref(post.href, locale) && !hidden.has(post.slug),
+    (post) => isPublishedInsight(post) && existingHref(post.href, locale) && !hidden.has(post.slug),
   );
   const storedOrder = await getStoredInsightOrder();
   const ordered =
     storedOrder.length > 0
       ? sortByInsightOrder(visible, await resolveInsightOrder(visible.map((post) => post.slug)))
-      : [...visible].sort((a, b) => b.published.localeCompare(a.published));
+      : [...visible].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
   const featuredInsights = ordered.slice(0, 3);
 
   return (

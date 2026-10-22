@@ -6,9 +6,11 @@ import { ArrowUpRight } from "@/components/Icons";
 import { JsonLd } from "@/components/JsonLd";
 import { SiteShell } from "@/components/SiteShell";
 import type { HandoffBlock } from "@/lib/handoff";
+import { InsightArticleMeta } from "@/components/insights/InsightArticleMeta";
+import { InsightCover } from "@/components/insights/InsightCover";
 import {
-  formatInsightDate,
   insightBody,
+  insightExcerpt,
   insightHeadingId,
   insightsIndexCopy,
   relatedInsights,
@@ -386,11 +388,12 @@ export function InsightArticle({
 }) {
   const t = insightsIndexCopy[locale];
   const body = insightBody(blocks);
-  const related = relatedInsights(post.href, 4);
+  const related = relatedInsights(post, 4);
   const services = relatedServiceLinks(post.slug, locale);
   const insightsHref = localizePath("/insights", locale);
   const title = post.title[locale] || post.title.th;
-  const description = post.description[locale] || post.description.th;
+  const description = insightExcerpt(post, locale);
+  const sources = post.sources?.filter((source) => source.label.trim()) ?? [];
   const crumbs = [
     { name: t.home, href: homeHref(locale) },
     { name: t.insights, href: insightsHref },
@@ -398,8 +401,7 @@ export function InsightArticle({
   ];
   const canonical = `${SITE}${post.href}`;
   const headings = body.filter((block): block is HandoffTextBlock & { type: "h2" } => block.type === "h2");
-  const showToc = post.minutes >= 8 || headings.length >= 7;
-  const updated = post.modified !== post.published;
+  const showToc = post.readingTimeMinutes >= 8 || headings.length >= 7;
 
   return (
     <SiteShell locale={locale} route={post.href}>
@@ -426,32 +428,11 @@ export function InsightArticle({
             <p className="kpi-insight-category">{post.category[locale]}</p>
             <h1>{title}</h1>
             <p className="kpi-article-lead">{description}</p>
-            <p className="kpi-insight-meta">
-              <time dateTime={post.published}>{formatInsightDate(post.published, locale)}</time>
-              {updated ? (
-                <>
-                  <span aria-hidden="true"> · </span>
-                  <span>
-                    {t.updated} <time dateTime={post.modified}>{formatInsightDate(post.modified, locale)}</time>
-                  </span>
-                </>
-              ) : null}
-              <span aria-hidden="true"> · </span>
-              <span>{`${post.minutes} ${t.minutes}`}</span>
-            </p>
+            <InsightArticleMeta post={post} locale={locale} showPublishedLabel />
           </header>
 
           <figure className="kpi-article-hero">
-            <img
-              src={post.image}
-              alt={post.imageAlt}
-              width={1200}
-              height={675}
-              sizes="(max-width: 48rem) 100vw, min(46rem, 100vw)"
-              fetchPriority="high"
-              decoding="async"
-              style={post.imagePosition ? { objectPosition: post.imagePosition } : undefined}
-            />
+            <InsightCover post={post} locale={locale} variant="featured" />
           </figure>
 
           {showToc ? <ArticleToc headings={headings} label={t.toc} openLabel={t.tocOpen} /> : null}
@@ -459,6 +440,25 @@ export function InsightArticle({
           <div className="kpi-article-main">
             <div className="kpi-article-column">
               <ArticleBlocks blocks={body} locale={locale} takeawayLabel={t.takeaway} leadText={description} />
+
+              {sources.length ? (
+                <aside className="kpi-article-services kpi-article-sources">
+                  <h2>{t.sources}</h2>
+                  <ul>
+                    {sources.map((source) => (
+                      <li key={`${source.label}-${source.url ?? ""}`}>
+                        {source.url ? (
+                          <a href={source.url} rel="noopener noreferrer">
+                            {source.label}
+                          </a>
+                        ) : (
+                          source.label
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </aside>
+              ) : null}
 
               {services.length ? (
                 <aside className="kpi-article-services">
@@ -503,7 +503,7 @@ export function InsightArticle({
                   <Link href={related[0].href} className="kpi-article-related-link">
                     <p className="kpi-article-related-category">{related[0].category[locale]}</p>
                     <h3 className="kpi-article-related-feature-title">{related[0].title[locale]}</h3>
-                    <p className="kpi-article-related-excerpt">{related[0].description[locale]}</p>
+                    <p className="kpi-article-related-excerpt">{insightExcerpt(related[0], locale)}</p>
                     <span className="kpi-article-related-read">
                       {t.read}
                       <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -519,7 +519,7 @@ export function InsightArticle({
                       <Link href={item.href} className="kpi-article-related-link">
                         <p className="kpi-article-related-category">{item.category[locale]}</p>
                         <h3 className="kpi-article-related-item-title">{item.title[locale]}</h3>
-                        <p className="kpi-article-related-excerpt is-compact">{item.description[locale]}</p>
+                        <p className="kpi-article-related-excerpt is-compact">{insightExcerpt(item, locale)}</p>
                         <span className="kpi-article-related-read">
                           {t.read}
                           <ArrowUpRight className="h-3.5 w-3.5" aria-hidden="true" />

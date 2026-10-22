@@ -52,7 +52,7 @@ export default async function CmsInsightsPage({
       title: post.title.th,
       path: post.href,
       metaTag: post.title.th,
-      description: post.description.th,
+      description: post.excerpt.th,
       online: true,
     })),
   ];

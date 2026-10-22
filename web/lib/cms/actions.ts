@@ -11,7 +11,8 @@ import { randomToken } from "@/lib/crm/security";
 import { SITE } from "@/lib/seo";
 import { blocksToMarkdown, bodyFromMarkdown, documentPath, slugify, unwrapCmsBody } from "./body";
 import { loadHandoff } from "@/lib/handoff";
-import { insightBySlug, insightPosts } from "@/lib/insights";
+import { insightBySlug, insightPosts, type InsightPost } from "@/lib/insights";
+import { isInsightImageFit, isInsightImageStatus, parseInsightImageMeta, serializeInsightImageMeta } from "@/lib/insights-media";
 import { pages } from "@/lib/seo";
 import { isLockedRoute } from "./locked";
 import { resolveInsightOrder, saveInsightOrder } from "./insight-order";
@@ -61,7 +62,18 @@ function revalidatePublic(path: string) {
   }
 }
 
-function formDocument(formData: FormData, kind: "page" | "insight") {
+function insightSeedTags(post: InsightPost) {
+  return serializeInsightImageMeta({
+    imageFit: post.coverImageFit ?? "cover",
+    imageStatus: post.coverImageStatus ?? "placeholder",
+    authorRole: post.authorRole,
+    sources: post.sources,
+    relatedArticleIds: post.relatedArticleIds,
+    isFeatured: post.isFeatured,
+  });
+}
+
+function formDocument(formData: FormData, kind: "page" | "insight", existingTags?: string) {
   const title = String(formData.get("title") ?? "").trim();
   const slug = slugify(String(formData.get("slug") ?? title));
   const locale = String(formData.get("locale") ?? "th");
@@ -69,6 +81,9 @@ function formDocument(formData: FormData, kind: "page" | "insight") {
   const scheduledRaw = String(formData.get("scheduledAt") ?? "").trim();
   const scheduledAt = scheduledRaw ? new Date(scheduledRaw) : null;
   const published = status === "published" || (status === "scheduled" && scheduledAt && scheduledAt <= new Date());
+  const imageFitRaw = String(formData.get("imageFit") ?? "");
+  const imageStatusRaw = String(formData.get("imageStatus") ?? "");
+  const existingMeta = parseInsightImageMeta(existingTags);
   return {
     kind,
     title,
@@ -81,7 +96,17 @@ function formDocument(formData: FormData, kind: "page" | "insight") {
     featuredImage: String(formData.get("featuredImage") ?? "").trim(),
     imageAlt: String(formData.get("imageAlt") ?? "").trim(),
     category: String(formData.get("category") ?? "").trim(),
-    tags: String(formData.get("tags") ?? "").trim(),
+    tags:
+      kind === "insight"
+        ? serializeInsightImageMeta({
+            imageFit: isInsightImageFit(imageFitRaw) ? imageFitRaw : "cover",
+            imageStatus: isInsightImageStatus(imageStatusRaw) ? imageStatusRaw : "placeholder",
+            authorRole: existingMeta.authorRole,
+            sources: existingMeta.sources,
+            relatedArticleIds: existingMeta.relatedArticleIds,
+            isFeatured: existingMeta.isFeatured,
+          })
+        : String(formData.get("tags") ?? "").trim(),
     author: String(formData.get("author") ?? "").trim(),
     seoTitle: String(formData.get("seoTitle") ?? "").trim(),
     metaDescription: String(formData.get("metaDescription") ?? "").trim(),
@@ -154,15 +179,16 @@ export async function ensureInsightFromSite(slug: string) {
       locale: "th",
       status: "published",
       template: "insight",
-      excerpt: post.description.th,
+      excerpt: post.excerpt.th,
       body: bodyFromMarkdown(markdown),
-      featuredImage: post.image,
-      imageAlt: post.imageAlt,
+      featuredImage: post.coverImage,
+      imageAlt: post.coverImageAlt,
       category: post.category.th,
-      tags: "",
+      tags: insightSeedTags(post),
+      author: post.authorName ?? "",
       seoTitle: post.title.th,
-      metaDescription: post.description.th,
-      publishedAt: new Date(`${post.published}T00:00:00.000Z`),
+      metaDescription: post.excerpt.th,
+      publishedAt: new Date(`${post.publishedAt}T00:00:00.000Z`),
       updatedBy: user.email,
     },
   });
@@ -279,7 +305,7 @@ export async function updateDocument(formData: FormData) {
   const existing = await documentById(id);
   if (!existing) redirect("/crm/cms?error=missing");
   const kind = existing.kind === "insight" ? "insight" : "page";
-  const data = formDocument(formData, kind);
+  const data = formDocument(formData, kind, existing.tags);
   const editorBase = kind === "insight" ? "/crm/cms/insights" : "/crm/cms/pages";
   // Insights need a slug. Homepage keeps slug ""; other pages must keep a non-empty slug.
   if (!data.title || (kind === "insight" && !data.slug) || (kind === "page" && !data.slug && existing.slug !== "")) {
@@ -406,15 +432,16 @@ async function ensureInsightDocFast(slug: string, online: boolean, updatedBy: st
       locale: "th",
       status: online ? "published" : "draft",
       template: "insight",
-      excerpt: post.description.th,
-      body: bodyFromMarkdown(`# ${post.title.th}\n\n${post.description.th}`),
-      featuredImage: post.image,
-      imageAlt: post.imageAlt,
+      excerpt: post.excerpt.th,
+      body: bodyFromMarkdown(`# ${post.title.th}\n\n${post.excerpt.th}`),
+      featuredImage: post.coverImage,
+      imageAlt: post.coverImageAlt,
       category: post.category.th,
-      tags: "",
+      tags: insightSeedTags(post),
+      author: post.authorName ?? "",
       seoTitle: post.title.th,
-      metaDescription: post.description.th,
-      publishedAt: online ? new Date(`${post.published}T00:00:00.000Z`) : null,
+      metaDescription: post.excerpt.th,
+      publishedAt: online ? new Date(`${post.publishedAt}T00:00:00.000Z`) : null,
       updatedBy,
     },
   });

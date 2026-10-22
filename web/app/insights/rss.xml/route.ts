@@ -3,14 +3,14 @@ import { SITE } from "@/lib/seo";
 
 export async function GET() {
   const items = (await allInsightPosts())
-    .sort((a, b) => b.published.localeCompare(a.published))
+    .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
     .map(
       (post) => `    <item>
       <title><![CDATA[${post.title.th}]]></title>
       <link>${SITE}${post.href}</link>
       <guid>${SITE}${post.href}</guid>
-      <pubDate>${new Date(`${post.published}T00:00:00Z`).toUTCString()}</pubDate>
-      <description><![CDATA[${post.description.th}]]></description>
+      <pubDate>${new Date(`${post.publishedAt}T00:00:00Z`).toUTCString()}</pubDate>
+      <description><![CDATA[${post.excerpt.th}]]></description>
     </item>`,
     )
     .join("\n");

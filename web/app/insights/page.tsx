@@ -4,7 +4,12 @@ import { metadataFor } from "@/lib/seo";
 
 export const metadata = metadataFor("/insights");
 
-export default async function Page() {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ topic?: string; sort?: string; q?: string; page?: string }>;
+}) {
   const extraPosts = await cmsInsightPosts();
-  return <InsightsIndexView locale="th" extraPosts={extraPosts} />;
+  const { topic, sort, q, page } = await searchParams;
+  return <InsightsIndexView locale="th" extraPosts={extraPosts} topic={topic} sort={sort} q={q} page={page} />;
 }

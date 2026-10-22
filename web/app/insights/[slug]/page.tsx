@@ -5,7 +5,8 @@ import { matchCmsRedirect } from "@/lib/cms/files";
 import { cmsInsightBySlug, cmsMetadata, isCmsPageLive } from "@/lib/cms/public";
 import { insightDocumentBySlug } from "@/lib/cms/queries";
 import { loadHandoff } from "@/lib/handoff";
-import { insightBySlug, insightPosts } from "@/lib/insights";
+import { insightBySlug, insightPosts, insightUpdatedAt, isPublishedInsight } from "@/lib/insights";
+import { existingPublicSrc } from "@/lib/insights-media";
 import { metadataFor, pageByRoute } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
@@ -13,7 +14,9 @@ export const dynamic = "force-dynamic";
 type Params = { slug: string };
 
 export function generateStaticParams() {
-  return insightPosts.filter((post) => post.href.startsWith("/insights/")).map((post) => ({ slug: post.slug }));
+  return insightPosts
+    .filter((post) => isPublishedInsight(post) && post.href.startsWith("/insights/"))
+    .map((post) => ({ slug: post.slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<Params> }) {
@@ -25,13 +28,13 @@ export async function generateMetadata({ params }: { params: Promise<Params> }) 
   if (cms && isCmsPageLive(cms)) return cmsMetadata(cms);
   const post = insightBySlug(slug);
   const route = `/insights/${slug}`;
-  if (post && pageByRoute.has(route)) {
+  if (post && isPublishedInsight(post) && pageByRoute.has(route)) {
     return metadataFor(route, {
       type: "article",
-      published: post.published,
-      modified: post.modified !== post.published ? post.modified : undefined,
-      image: post.image,
-      imageAlt: post.imageAlt,
+      published: post.publishedAt,
+      modified: insightUpdatedAt(post) || undefined,
+      image: existingPublicSrc(post.coverImage) || undefined,
+      imageAlt: post.coverImageAlt,
     });
   }
   return {};
@@ -52,7 +55,7 @@ export default async function InsightPage({ params }: { params: Promise<Params> 
   if (stored && isCmsPageLive(stored)) {
     return <CmsDocumentView doc={stored} />;
   }
-  if (post && post.href === route) {
+  if (post && post.href === route && isPublishedInsight(post)) {
     return <InsightArticle post={post} blocks={loadHandoff(route)} locale="th" />;
   }
   const cms = await cmsInsightBySlug(slug);
