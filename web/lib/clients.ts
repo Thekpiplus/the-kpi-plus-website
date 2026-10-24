@@ -1,6 +1,9 @@
 export type ClientLogo = {
   name: string;
   src: string;
+  alt?: string;
+  /** Set true only after an admin saves Approved publication permission. */
+  canPublish?: boolean;
 };
 
 /** Hospitality clients shown on About — logos in /public/brand/clients/. */
@@ -53,3 +56,10 @@ export const clientLogos: ClientLogo[] = [
   { name: "Wonder Valley", src: "/brand/clients/wonder-valley.jpg" },
   { name: "Wyndham Grand Nai Harn", src: "/brand/clients/wyndham-grand-nai-harn.jpg" },
 ];
+
+/** Hardcoded fallback only. Public pages load approved CMS logos; this stays empty until a mark has canPublish. */
+export const publishedClientLogos = clientLogos.filter((client) => client.canPublish);
+
+export function clientLogoAlt(client: ClientLogo) {
+  return client.alt?.trim() || `${client.name} logo`;
+}

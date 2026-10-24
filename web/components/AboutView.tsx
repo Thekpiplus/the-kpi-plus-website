@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { SiteShell } from "@/components/SiteShell";
-import { clientLogos } from "@/lib/clients";
 import { AUDIT_RESPONSE_DAYS } from "@/lib/audit";
+import { loadPublishedClientLogos } from "@/lib/cms/client-logo-public";
 import { auditHref, localizePath, type Locale } from "@/lib/seo";
 
 const aboutFeaturedClientNames = [
@@ -12,11 +12,6 @@ const aboutFeaturedClientNames = [
   "Casa de Lipe",
   "Baan 125 Stay",
 ] as const;
-
-const aboutFeaturedClients = aboutFeaturedClientNames.flatMap((name) => {
-  const client = clientLogos.find((item) => item.name === name);
-  return client ? [client] : [];
-});
 
 const foundersPhoto = "/media/the-kpi-plus-founders_f4c8516e.webp";
 const workPhoto = "/media/kpi-plus-team-review_d4af97f6.jpg";
@@ -618,7 +613,12 @@ const copy = {
   },
 } as const;
 
-export function AboutView({ locale }: { locale: Locale }) {
+export async function AboutView({ locale }: { locale: Locale }) {
+  const publishedLogos = await loadPublishedClientLogos();
+  const aboutFeaturedClients = aboutFeaturedClientNames.flatMap((name) => {
+    const client = publishedLogos.find((item) => item.name === name);
+    return client ? [client] : [];
+  });
   const t = copy[locale];
   const audit = auditHref(locale);
   const contact = localizePath("/contact-us", locale);
@@ -833,7 +833,7 @@ export function AboutView({ locale }: { locale: Locale }) {
                   <li key={client.name} className="kpi-about-client">
                     <img
                       src={client.src}
-                      alt={client.name}
+                      alt={client.alt || `${client.name} logo`}
                       width={160}
                       height={64}
                       loading="lazy"

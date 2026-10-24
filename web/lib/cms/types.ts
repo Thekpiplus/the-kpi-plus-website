@@ -88,6 +88,68 @@ export type CmsContactRow = {
   updatedAt: Date;
 };
 
+export type CmsCaseStudyRow = {
+  id: string;
+  department: string;
+  title: string;
+  slug: string;
+  locale: string;
+  shortDescription: string;
+  clientName: string;
+  clientNameApproved: boolean;
+  anonymisedLabel: string;
+  hotelType: string;
+  location: string;
+  serviceArea: string;
+  challenge: string;
+  analysis: string;
+  actionPlan: string;
+  result: string;
+  metricsJson: string;
+  measurementPeriod: string;
+  baselinePeriod: string;
+  dataStatus: string;
+  workflowStatus: string;
+  isPublished: boolean;
+  isFeatured: boolean;
+  coverImage: string;
+  coverImageAlt: string;
+  coverImageStatus: string;
+  reportPreview: string;
+  reportPreviewAlt: string;
+  chartJson: string;
+  testimonialJson: string;
+  methodologyNote: string;
+  sourceNotes: string;
+  relatedArticleIds: string;
+  seoTitle: string;
+  metaDescription: string;
+  clientLogo: string;
+  clientLogoPublishable: boolean;
+  adminNotes: string;
+  publishedAt: Date | null;
+  trashedAt: Date | null;
+  updatedBy: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type CmsClientLogoRow = {
+  id: string;
+  name: string;
+  filePath: string;
+  clientName: string;
+  anonymisedLabel: string;
+  altText: string;
+  sortOrder: number;
+  permission: string;
+  isActive: boolean;
+  adminNotes: string;
+  updatedBy: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
 export const CMS_LOCALES = ["th", "en", "ru", "zh"] as const;
 export type CmsLocale = (typeof CMS_LOCALES)[number];
 

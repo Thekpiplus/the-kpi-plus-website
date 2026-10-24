@@ -1,34 +1,51 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { CaseStudyCta } from "@/components/case-studies/CaseStudyCta";
+import { DummyImage } from "@/components/case-studies/DummyImage";
+import { ResultsChart } from "@/components/case-studies/ResultsChart";
 import { PageHero } from "@/components/PageHero";
 import { SiteShell } from "@/components/SiteShell";
+import { caseStudyOverviewChart, caseStudyResultsChart } from "@/lib/case-study-chart";
 import {
-  caseStudies,
+  caseStudyActionItems,
+  caseStudyComparisonFor,
+  caseStudyDataStatusLabel,
   caseStudyDisclaimerFor,
-  getCaseStudy,
+  caseStudyEyebrow,
+  caseStudyIdentity,
+  caseStudyMethodologyNote,
+  caseStudyMetricLabel,
+  caseStudyParagraphs,
+  caseStudyPrimaryMetric,
+  caseStudyPublicMetricParts,
+  caseStudyRelatedServices,
+  caseStudyResultsNote,
   localizeCaseStudy,
   type CaseStudy,
 } from "@/lib/case-studies";
+import { loadPublishedCaseStudy, loadRelatedCaseStudies } from "@/lib/cms/case-study-public";
+import { caseStudyPropertyEvidence, caseStudyReportEvidence } from "@/lib/case-studies-media";
 import { auditHref, localizePath, type Locale } from "@/lib/seo";
 
 const chrome = {
   th: {
     back: "กลับไปหน้าผลงาน",
-    introduction: "บทนำ",
-    keyMetrics: "ตัวชี้วัดสำคัญ",
-    results: "ผลลัพธ์",
+    overview: "Case overview",
+    challenge: "Challenge",
+    analysis: "Analysis",
+    actionPlan: "Action plan",
+    result: "Result",
     before: "ก่อน",
     after: "หลัง",
     change: "เปลี่ยนแปลง",
     breakdown: "สัดส่วนการเติบโตของรายได้",
-    whatChanged: "สิ่งที่เราปรับ",
-    keyInsight: "ข้อสังเกตสำคัญ",
-    keyTakeaway: "บทเรียนสำคัญ",
-    property: "ประเภทที่พัก",
-    location: "ที่ตั้ง",
-    started: "เริ่มบริหาร",
     period: "ช่วงเวลา",
-    next: "ผลงานถัดไป",
+    measurementPeriod: "Measurement period",
+    methodology: "Methodology note",
+    dataStatus: "Data status",
+    relatedServices: "Related services",
+    relatedCases: "Related case studies",
+    property: "ประเภทที่พัก",
     primaryCta: "ประเมิน Performance โรงแรม",
     secondaryCta: "คุยกับทีม เดอะ เคพีไอ พลัส",
     closerEyebrow: "ทบทวน Performance โรงแรม",
@@ -38,21 +55,22 @@ const chrome = {
   },
   en: {
     back: "Back to Case Studies",
-    introduction: "Introduction",
-    keyMetrics: "Key Metrics",
-    results: "Results",
+    overview: "Case overview",
+    challenge: "Challenge",
+    analysis: "Analysis",
+    actionPlan: "Action plan",
+    result: "Result",
     before: "Before",
     after: "After",
     change: "Change",
     breakdown: "Revenue Growth Breakdown",
-    whatChanged: "What We Changed",
-    keyInsight: "Key Insight",
-    keyTakeaway: "Key Takeaway",
+    period: "Measurement period",
+    measurementPeriod: "Measurement period",
+    methodology: "Methodology note",
+    dataStatus: "Data status",
+    relatedServices: "Related services",
+    relatedCases: "Related case studies",
     property: "Property",
-    location: "Location",
-    started: "Management start",
-    period: "Period",
-    next: "Next case study",
     primaryCta: "Request a Hotel Performance Review",
     secondaryCta: "Talk to Our Team",
     closerEyebrow: "Hotel Performance Review",
@@ -62,21 +80,22 @@ const chrome = {
   },
   ru: {
     back: "Back to Case Studies",
-    introduction: "Introduction",
-    keyMetrics: "Key Metrics",
-    results: "Results",
+    overview: "Case overview",
+    challenge: "Challenge",
+    analysis: "Analysis",
+    actionPlan: "Action plan",
+    result: "Result",
     before: "Before",
     after: "After",
     change: "Change",
     breakdown: "Revenue Growth Breakdown",
-    whatChanged: "What We Changed",
-    keyInsight: "Key Insight",
-    keyTakeaway: "Key Takeaway",
+    period: "Measurement period",
+    measurementPeriod: "Measurement period",
+    methodology: "Methodology note",
+    dataStatus: "Data status",
+    relatedServices: "Related services",
+    relatedCases: "Related case studies",
     property: "Property",
-    location: "Location",
-    started: "Management start",
-    period: "Period",
-    next: "Next case study",
     primaryCta: "Запросить аудит Performance отеля",
     secondaryCta: "Поговорить с командой The KPI Plus",
     closerEyebrow: "Hotel Performance Review",
@@ -86,21 +105,22 @@ const chrome = {
   },
   zh: {
     back: "Back to Case Studies",
-    introduction: "Introduction",
-    keyMetrics: "Key Metrics",
-    results: "Results",
+    overview: "Case overview",
+    challenge: "Challenge",
+    analysis: "Analysis",
+    actionPlan: "Action plan",
+    result: "Result",
     before: "Before",
     after: "After",
     change: "Change",
     breakdown: "Revenue Growth Breakdown",
-    whatChanged: "What We Changed",
-    keyInsight: "Key Insight",
-    keyTakeaway: "Key Takeaway",
+    period: "Measurement period",
+    measurementPeriod: "Measurement period",
+    methodology: "Methodology note",
+    dataStatus: "Data status",
+    relatedServices: "Related services",
+    relatedCases: "Related case studies",
     property: "Property",
-    location: "Location",
-    started: "Management start",
-    period: "Period",
-    next: "Next case study",
     primaryCta: "申請飯店 Performance 分析",
     secondaryCta: "與 The KPI Plus 團隊談談",
     closerEyebrow: "Hotel Performance Review",
@@ -110,13 +130,49 @@ const chrome = {
   },
 } as const;
 
-function nextStudy(current: CaseStudy) {
-  const index = caseStudies.findIndex((item) => item.slug === current.slug);
-  return caseStudies[(index + 1) % caseStudies.length]!;
+function EvidenceFigure({
+  visual,
+  locale,
+}: {
+  visual: {
+    src?: string;
+    alt: string;
+    status: "approved" | "placeholder";
+    label: string;
+    caption: string;
+  };
+  locale: Locale;
+}) {
+  return (
+    <div className="kpi-cs-evidence">
+      <DummyImage
+        src={visual.src}
+        alt={visual.alt}
+        label={visual.label}
+        recommendedSize="1600 × 900 px"
+        ratio="16 / 9"
+        fit="cover"
+        locale={locale}
+        status={visual.status}
+        className="kpi-cs-detail-cover"
+      />
+      <p className="kpi-cs-evidence-caption kpi-latin">{visual.caption}</p>
+    </div>
+  );
 }
 
-export function CaseStudyDetailView({ locale, slug }: { locale: Locale; slug: string }) {
-  const base = getCaseStudy(slug);
+export async function CaseStudyDetailView({
+  locale,
+  slug,
+  previewStudy,
+  embedded = false,
+}: {
+  locale: Locale;
+  slug: string;
+  previewStudy?: CaseStudy;
+  embedded?: boolean;
+}) {
+  const base = previewStudy ?? (await loadPublishedCaseStudy(slug));
   if (!base) notFound();
 
   const study = localizeCaseStudy(base, locale);
@@ -125,71 +181,147 @@ export function CaseStudyDetailView({ locale, slug }: { locale: Locale; slug: st
   const contact = localizePath("/contact-us", locale);
   const indexHref = localizePath("/case-studies", locale);
   const route = localizePath(`/case-studies/${study.slug}`, locale);
-  const next = localizeCaseStudy(nextStudy(base), locale);
   const disclaimer = caseStudyDisclaimerFor(locale);
+  const comparison = study.comparison ?? caseStudyComparisonFor(study.slug, locale);
+  const challengeParagraphs = caseStudyParagraphs(study.challenge);
+  const analysisParagraphs = caseStudyParagraphs(study.analysis);
+  const actionItems = caseStudyActionItems(study);
+  const resultCopy = caseStudyParagraphs(study.result);
+  const identity = caseStudyIdentity(study);
+  const statusLabel = caseStudyDataStatusLabel(study, locale);
+  const methodology = caseStudyMethodologyNote(study, locale);
+  const metric = caseStudyPrimaryMetric(study);
+  const services = caseStudyRelatedServices(study, locale);
+  const related = (await loadRelatedCaseStudies(study)).map((item) => localizeCaseStudy(item, locale));
+  const approvedTestimonial =
+    study.testimonial?.approvalStatus === "approved" ? study.testimonial : null;
+  const propertyVisual = caseStudyPropertyEvidence(study);
+  const reportVisual = caseStudyReportEvidence(study);
+  const overviewChart = caseStudyOverviewChart(study, comparison, locale);
+  const indexedChart = caseStudyResultsChart(study, comparison, locale, {
+    before: t.before,
+    after: t.after,
+  });
+  const chart = overviewChart ?? indexedChart;
 
-  return (
-    <SiteShell locale={locale} route={route}>
+  const content = (
+    <>
       <PageHero>
         <Link href={indexHref} className="text-sm font-semibold text-[#F2F8E2]">
           {t.back}
         </Link>
-        <p className="kpi-kicker mt-6 text-[#F2F8E2]">{study.eyebrow}</p>
-        <h1 className="kpi-h1 mt-4">{study.headline}</h1>
-        <dl className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <div>
-            <dt className="text-xs font-bold uppercase tracking-[.12em] text-[#F2F8E2]">{t.property}</dt>
-            <dd className="mt-2 text-base font-semibold text-white">{study.propertyType}</dd>
-          </div>
-          <div>
-            <dt className="text-xs font-bold uppercase tracking-[.12em] text-[#F2F8E2]">{t.location}</dt>
-            <dd className="mt-2 text-base font-semibold text-white">{study.location}</dd>
-          </div>
-          {study.managementStart ? (
+        <p className="kpi-kicker mt-6 text-[#F2F8E2]">{caseStudyEyebrow(study)}</p>
+        <h1 className="kpi-h1 mt-4">{study.title}</h1>
+        <p className="kpi-cs-hero-status kpi-latin">{statusLabel}</p>
+        <dl className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {identity ? (
             <div>
-              <dt className="text-xs font-bold uppercase tracking-[.12em] text-[#F2F8E2]">{t.started}</dt>
-              <dd className="mt-2 text-base font-semibold text-white">{study.managementStart}</dd>
+              <dt className="text-xs font-bold uppercase tracking-[.12em] text-[#F2F8E2]">{t.property}</dt>
+              <dd className="mt-2 text-base font-semibold text-white">{identity}</dd>
             </div>
           ) : null}
-          {study.period ? (
+          {study.measurementPeriod ? (
             <div>
               <dt className="text-xs font-bold uppercase tracking-[.12em] text-[#F2F8E2]">{t.period}</dt>
-              <dd className="mt-2 text-base font-semibold text-white">{study.period}</dd>
+              <dd className="mt-2 text-base font-semibold text-white">{study.measurementPeriod}</dd>
             </div>
           ) : null}
         </dl>
       </PageHero>
 
-      <section className="kpi-section">
-        <div className="kpi-cs-detail">
-          <div>
-            <h2 className="kpi-h2">{t.introduction}</h2>
-            {study.introduction.map((paragraph) => (
-              <p key={paragraph} className="mt-5 max-w-2xl text-base leading-8 text-[#555555]">
+      <article className="kpi-cs-article">
+        <div className="kpi-section kpi-cs-article-inner">
+        <section aria-labelledby="cs-overview">
+          <h2 id="cs-overview" className="kpi-h2 kpi-latin">
+            {t.overview}
+          </h2>
+          <p className="kpi-cs-article-lead">{study.shortDescription}</p>
+          {propertyVisual ? <EvidenceFigure visual={propertyVisual} locale={locale} /> : null}
+        </section>
+
+        {challengeParagraphs.length ? (
+          <section aria-labelledby="cs-challenge">
+            <h2 id="cs-challenge" className="kpi-h2 kpi-latin">
+              {t.challenge}
+            </h2>
+            {challengeParagraphs.map((paragraph) => (
+              <p key={paragraph} className="kpi-cs-article-copy">
                 {paragraph}
               </p>
             ))}
-          </div>
-          <div>
-            <h2 className="kpi-h2">{t.keyMetrics}</h2>
-            <div className="kpi-cs-metric-grid mt-6">
-              {study.metrics.map((metric) => (
-                <div key={metric.label} className="kpi-cs-metric">
-                  <p className="kpi-cs-stat-value kpi-latin text-[#0B1F33]">{metric.value}</p>
-                  <p className="mt-2 text-sm font-semibold text-[#3B3B3B]">{metric.label}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+          </section>
+        ) : null}
 
-      {study.resultsTable?.length ? (
-        <section className="border-y border-[#E3E8EB] bg-white">
-          <div className="kpi-section">
-            <h2 className="kpi-h2">{t.results}</h2>
-            <div className="mt-8 grid gap-4">
-              {study.resultsTable.map((row) => (
+        {analysisParagraphs.length ? (
+          <section aria-labelledby="cs-analysis">
+            <h2 id="cs-analysis" className="kpi-h2 kpi-latin">
+              {t.analysis}
+            </h2>
+            {analysisParagraphs.map((paragraph) => (
+              <p key={paragraph} className="kpi-cs-article-copy">
+                {paragraph}
+              </p>
+            ))}
+          </section>
+        ) : null}
+
+        {actionItems.length ? (
+          <section aria-labelledby="cs-action">
+            <h2 id="cs-action" className="kpi-h2 kpi-latin">
+              {t.actionPlan}
+            </h2>
+            <ol className="kpi-cs-action-plan">
+              {actionItems.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ol>
+          </section>
+        ) : null}
+
+        <section aria-labelledby="cs-result">
+          <h2 id="cs-result" className="kpi-h2 kpi-latin">
+            {t.result}
+          </h2>
+          {metric ? (
+            <>
+              <p className="kpi-latin kpi-cs-result-lead">
+                {metric.value} {caseStudyMetricLabel(metric)}
+              </p>
+              {caseStudyPublicMetricParts(metric, locale).parts.map((line) => (
+                <p key={line} className="kpi-cs-article-copy">
+                  {line}
+                </p>
+              ))}
+              {metric.definition ? <p className="kpi-cs-article-copy">{metric.definition}</p> : null}
+            </>
+          ) : null}
+          {resultCopy.map((paragraph) => (
+            <p key={paragraph} className="kpi-cs-article-copy">
+              {paragraph}
+            </p>
+          ))}
+
+          {chart ? (
+            <div className="kpi-cs-evidence">
+              <ResultsChart
+                labels={chart.labels}
+                series={chart.series}
+                title={chart.title}
+                subtitle={chart.subtitle}
+                unit={chart.unit}
+                tickSuffix={chart.tickSuffix}
+                axisLabel={chart.axisLabel}
+                statusLabel={chart.statusLabel}
+                valueLabels={chart.valueLabels}
+                baseline={chart.baseline}
+                caption={chart.caption}
+              />
+            </div>
+          ) : null}
+
+          {comparison?.resultsTable?.length ? (
+            <div className="kpi-cs-result-table">
+              {comparison.resultsTable.map((row) => (
                 <div key={row.label} className="kpi-cs-result-row">
                   <div className="flex flex-wrap items-end justify-between gap-3">
                     <h3 className="text-lg font-extrabold text-[#3B3B3B]">{row.label}</h3>
@@ -199,101 +331,139 @@ export function CaseStudyDetailView({ locale, slug }: { locale: Locale; slug: st
                     <div>
                       <p className="text-xs font-bold uppercase tracking-[.12em] text-[#3B3B3B]">{t.before}</p>
                       <p className="kpi-latin mt-1 text-xl font-bold text-[#3B3B3B]">{row.before}</p>
-                      <div className="kpi-cs-bar mt-3" aria-hidden="true">
-                        <span style={{ width: "62%" }} />
-                      </div>
                     </div>
                     <div>
                       <p className="text-xs font-bold uppercase tracking-[.12em] text-[#3B3B3B]">{t.after}</p>
                       <p className="kpi-latin mt-1 text-xl font-bold text-[#0B1F33]">{row.after}</p>
-                      <div className="kpi-cs-bar kpi-cs-bar-after mt-3" aria-hidden="true">
-                        <span style={{ width: `${row.bar ?? 100}%` }} />
-                      </div>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
-          </div>
-        </section>
-      ) : null}
-
-      {study.breakdown ? (
-        <section className="kpi-section">
-          <h2 className="kpi-h2">{t.breakdown}</h2>
-          <div className="mt-8 kpi-cs-breakdown">
-            <div>
-              <p className="text-sm font-semibold text-[#3B3B3B]">{study.breakdown.totalLabel}</p>
-              <p className="kpi-latin mt-2 text-4xl font-extrabold text-[#0B1F33]">{study.breakdown.totalValue}</p>
-            </div>
-            <div className="grid gap-4">
-              {study.breakdown.parts.map((part) => (
-                <div key={part.label}>
-                  <div className="flex items-baseline justify-between gap-3">
-                    <p className="font-semibold text-[#3B3B3B]">{part.label}</p>
-                    <p className="kpi-latin text-sm font-bold text-[#0B6660]">{part.share}</p>
-                  </div>
-                  <p className="kpi-latin mt-1 text-xl font-extrabold text-[#0B1F33]">{part.value}</p>
-                  <div className="kpi-cs-bar kpi-cs-bar-after mt-3" aria-hidden="true">
-                    <span style={{ width: `${part.percent}%` }} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      ) : null}
-
-      <section className={study.breakdown ? "border-y border-[#E3E8EB] bg-white" : "kpi-section"}>
-        <div className={study.breakdown ? "kpi-section" : undefined}>
-          <h2 className="kpi-h2">{t.whatChanged}</h2>
-          <ul className="mt-8 grid gap-3 sm:grid-cols-2">
-            {study.whatWeChanged.map((item) => (
-              <li key={item} className="border-b border-[#E3E8EB] py-3 text-base text-[#555555]">
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <section className="kpi-section">
-        <div className="kpi-grid-2">
-          {study.keyInsight ? (
-            <article className="kpi-cs-callout">
-              <p className="kpi-kicker text-[#0B6660]">{t.keyInsight}</p>
-              <p className="mt-4 text-xl font-extrabold leading-8 text-[#0B1F33]">{study.keyInsight}</p>
-            </article>
           ) : null}
-          <article className="kpi-cs-callout kpi-cs-callout-dark">
-            <p className="kpi-kicker text-[#F2F8E2]">{t.keyTakeaway}</p>
-            <p className="mt-4 text-xl font-extrabold leading-8 text-white">{study.keyTakeaway}</p>
-          </article>
-        </div>
-        <p className="mt-10 max-w-3xl text-sm leading-7 text-[#555555]">{disclaimer}</p>
-        <Link
-          href={localizePath(`/case-studies/${next.slug}`, locale)}
-          className="mt-8 inline-flex text-sm font-semibold text-[#0B6660]"
-        >
-          {t.next}: {next.mainResult}
-        </Link>
-      </section>
 
-      <section className="bg-[#0B1F33] text-white">
-        <div className="kpi-section">
-          <p className="kpi-kicker text-[#F2F8E2]">{t.closerEyebrow}</p>
-          <h2 className="kpi-h2 mt-4 text-white">{t.closerTitle}</h2>
-          <p className="kpi-lead mt-5 max-w-3xl text-white">{t.closerBody}</p>
-          <div className="kpi-actions">
-            <Link href={audit} className="kpi-button">
-              {t.primaryCta}
-            </Link>
-            <Link href={contact} className="kpi-button-ghost">
-              {t.secondaryCta}
-            </Link>
-          </div>
+          {comparison?.breakdown ? (
+            <div className="mt-8 kpi-cs-breakdown">
+              <div>
+                <h3 className="kpi-cs-story-label">{t.breakdown}</h3>
+                <p className="text-sm font-semibold text-[#3B3B3B]">{comparison.breakdown.totalLabel}</p>
+                <p className="kpi-latin mt-2 text-4xl font-extrabold text-[#0B1F33]">{comparison.breakdown.totalValue}</p>
+              </div>
+              <div className="grid gap-4">
+                {comparison.breakdown.parts.map((part) => (
+                  <div key={part.label}>
+                    <div className="flex items-baseline justify-between gap-3">
+                      <p className="font-semibold text-[#3B3B3B]">{part.label}</p>
+                      <p className="kpi-latin text-sm font-bold text-[#0B6660]">{part.share}</p>
+                    </div>
+                    <p className="kpi-latin mt-1 text-xl font-extrabold text-[#0B1F33]">{part.value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : null}
+
+          {reportVisual ? <EvidenceFigure visual={reportVisual} locale={locale} /> : null}
+
+          {approvedTestimonial ? (
+            <blockquote className="kpi-cs-callout">
+              <p className="text-xl font-extrabold leading-8 text-[#0B1F33]">“{approvedTestimonial.quote}”</p>
+              {approvedTestimonial.authorName || approvedTestimonial.authorRole ? (
+                <footer className="mt-4 text-sm font-semibold text-[#3B3B3B]">
+                  {approvedTestimonial.authorName}
+                  {approvedTestimonial.authorName && approvedTestimonial.authorRole ? " · " : null}
+                  {approvedTestimonial.authorRole}
+                </footer>
+              ) : null}
+            </blockquote>
+          ) : null}
+
+          <p className="kpi-cs-results-note">{caseStudyResultsNote(study, locale)}</p>
+        </section>
+
+        <section aria-labelledby="cs-period">
+          <h2 id="cs-period" className="kpi-h2 kpi-latin">
+            {t.measurementPeriod}
+          </h2>
+          <p className="kpi-cs-article-copy">{study.measurementPeriod}</p>
+          {metric?.comparison ? (
+            <p className="kpi-latin kpi-cs-article-copy">{metric.comparison}</p>
+          ) : null}
+        </section>
+
+        <section aria-labelledby="cs-methodology">
+          <h2 id="cs-methodology" className="kpi-h2 kpi-latin">
+            {t.methodology}
+          </h2>
+          <p className="kpi-cs-article-copy">{methodology}</p>
+        </section>
+
+        <section aria-labelledby="cs-status">
+          <h2 id="cs-status" className="kpi-h2 kpi-latin">
+            {t.dataStatus}
+          </h2>
+          <p className="kpi-cs-status-label kpi-latin">{statusLabel}</p>
+          <p className="kpi-cs-article-copy">{disclaimer}</p>
+        </section>
+
+        {services.length ? (
+          <section aria-labelledby="cs-services">
+            <h2 id="cs-services" className="kpi-h2 kpi-latin">
+              {t.relatedServices}
+            </h2>
+            <ul className="kpi-cs-related-links">
+              {services.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href}>{item.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
+
+        {related.length ? (
+          <section aria-labelledby="cs-related">
+            <h2 id="cs-related" className="kpi-h2 kpi-latin">
+              {t.relatedCases}
+            </h2>
+            <ul className="kpi-cs-related-cases">
+              {related.map((item) => {
+                const relatedMetric = caseStudyPrimaryMetric(item);
+                return (
+                  <li key={item.slug}>
+                    <Link href={localizePath(`/case-studies/${item.slug}`, locale)} className="kpi-cs-related-case">
+                      <span className="kpi-cs-related-case-title">{item.title}</span>
+                      <span className="kpi-cs-related-case-meta">
+                        {caseStudyIdentity(item)}
+                        {relatedMetric ? ` · ${relatedMetric.value} ${caseStudyMetricLabel(relatedMetric)}` : ""}
+                      </span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        ) : null}
         </div>
-      </section>
+      </article>
+
+      <CaseStudyCta
+        locale={locale}
+        eyebrow={t.closerEyebrow}
+        title={t.closerTitle}
+        body={t.closerBody}
+        primaryHref={audit}
+        primaryLabel={t.primaryCta}
+        secondaryHref={contact}
+        secondaryLabel={t.secondaryCta}
+      />
+    </>
+  );
+
+  if (embedded) return content;
+  return (
+    <SiteShell locale={locale} route={route}>
+      {content}
     </SiteShell>
   );
 }

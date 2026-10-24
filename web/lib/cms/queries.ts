@@ -234,6 +234,29 @@ export async function getSetting(id: string) {
   return db.cmsSetting.findUnique({ where: { id } });
 }
 
+export async function listCaseStudies() {
+  try {
+    const { listCaseStudyRows } = await import("./case-study-store");
+    return listCaseStudyRows();
+  } catch {
+    return [];
+  }
+}
+
+export async function getCaseStudyRecord(id: string) {
+  const { findCaseStudy } = await import("./case-study-store");
+  return findCaseStudy(id);
+}
+
+export async function listTrashedCaseStudies() {
+  try {
+    const { listTrashedCaseStudyRows } = await import("./case-study-store");
+    return listTrashedCaseStudyRows();
+  } catch {
+    return [];
+  }
+}
+
 export async function listContacts() {
   try {
     const { listContactRows } = await import("./contact-store");
@@ -254,6 +277,15 @@ export async function getPrimaryContact() {
     return findPrimaryContact();
   } catch {
     return null;
+  }
+}
+
+export async function listClientLogos() {
+  try {
+    const { listClientLogoRows } = await import("./client-logo-store");
+    return listClientLogoRows();
+  } catch {
+    return [];
   }
 }
 

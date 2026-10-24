@@ -37,6 +37,8 @@ const userLinks: { href: string; label: string }[] = [];
 const cmsLinks = [
   { href: "/crm/cms", label: "หน้าเพจทั้งหมด" },
   { href: "/crm/cms/insights", label: "บทความ" },
+  { href: "/crm/cms/case-studies", label: "ผลงานลูกค้า" },
+  { href: "/crm/cms/client-logos", label: "โลโก้ลูกค้า" },
   { href: "/crm/cms/trash", label: "ถังขยะ" },
   { href: "/crm/cms/media", label: "สื่อ/ไฟล์รูปภาพ" },
   { href: "/crm/cms/redirects", label: "Redirect" },

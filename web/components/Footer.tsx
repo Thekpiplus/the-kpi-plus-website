@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { ContactCard } from "@/components/ContactCard";
 import { ArrowUpRight, Earth } from "@/components/Icons";
 import { COMPANY, contactInfoFromCompany, type CompanyContact } from "@/lib/company";
-import { locales, uiCopy, visibleSolutionGroups, visibleToolLinks } from "@/lib/nav";
+import { locales, uiCopy, visiblePrimaryLinks, visibleSolutionGroups, visibleToolLinks } from "@/lib/nav";
 import {
   auditHref,
   barePath,
@@ -27,6 +27,12 @@ function existingNav(items: readonly { href: string; label: string }[], locale: 
     const href = existingHref(item.href, locale);
     return href ? [{ href, label: item.label }] : [];
   });
+}
+
+function isCurrentPath(href: string, path: string) {
+  const bare = barePath(href);
+  if (bare === path) return true;
+  return bare !== "/" && path.startsWith(`${bare}/`);
 }
 
 function FooterHeading({ children }: { children: React.ReactNode }) {
@@ -75,22 +81,10 @@ export function Footer({
   const termsHref = existingHref("/terms", locale);
   const contactHref = existingHref("/contact-us", locale);
   const path = barePath(pathname);
-  const isAbout = path === "/about-us";
   const isContact = path === "/contact-us";
-  const isApproach = path === "/approach";
-  const isInsights = path === "/insights" || path.startsWith("/insights/");
   const contact = contactInfoFromCompany(company, locale);
   const primaryPaths = new Set(["/approach", "/insights", "/case-studies", "/about-us", "/contact-us"]);
-  const mainLinks = existingNav(
-    [
-      { href: "/approach", label: t.approach },
-      { href: "/insights", label: t.insights },
-      { href: "/case-studies", label: t.caseStudies },
-      { href: "/about-us", label: t.about },
-      { href: "/contact-us", label: t.contact },
-    ],
-    locale,
-  );
+  const mainLinks = visiblePrimaryLinks(locale);
   const extraKnow = existingNav(
     t.knowLinks.filter((item) => !primaryPaths.has(item.href)),
     locale,
@@ -100,18 +94,7 @@ export function Footer({
   const toolsIndexHref = existingHref("/tools", locale);
 
   return (
-    <footer
-      lang={htmlLang(locale)}
-      className={[
-        "kpi-footer",
-        isAbout && "kpi-footer--about",
-        isContact && "kpi-footer--contact",
-        isApproach && "kpi-footer--approach",
-        isInsights && "kpi-footer--insights",
-      ]
-        .filter(Boolean)
-        .join(" ")}
-    >
+    <footer lang={htmlLang(locale)} className="kpi-footer">
       <div className="kpi-section">
         <div className="kpi-footer-top">
           <section className="kpi-footer-brand">
@@ -156,11 +139,7 @@ export function Footer({
                 <FooterHeading>{t.knowUs}</FooterHeading>
                 <nav className="kpi-footer-links" aria-label={t.knowUs}>
                   {companyLinks.map((item) => (
-                    <FooterLink
-                      key={item.href}
-                      href={item.href}
-                      current={isInsights && barePath(item.href) === "/insights"}
-                    >
+                    <FooterLink key={item.href} href={item.href} current={isCurrentPath(item.href, path)}>
                       {item.label}
                     </FooterLink>
                   ))}
@@ -182,7 +161,7 @@ export function Footer({
                 <FooterHeading>{t.tools}</FooterHeading>
                 <nav className="kpi-footer-links" aria-label={t.tools}>
                   {toolLinks.map((item) => (
-                    <FooterLink key={item.href} href={item.href}>
+                    <FooterLink key={item.href} href={item.href} current={isCurrentPath(item.href, path)}>
                       {item.label}
                     </FooterLink>
                   ))}
@@ -193,12 +172,7 @@ export function Footer({
 
             <section className="kpi-footer-column" aria-label={t.contactTitle}>
               <FooterHeading>{t.contactTitle}</FooterHeading>
-              <ContactCard
-                locale={locale}
-                variant="footer"
-                contact={contact}
-                showSocials={!isApproach}
-              />
+              <ContactCard locale={locale} variant="footer" contact={contact} showSocials />
               {!isContact && contactHref ? <FooterMore href={contactHref}>{t.contact}</FooterMore> : null}
             </section>
           </div>

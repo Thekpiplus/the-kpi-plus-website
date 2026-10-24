@@ -1,5 +1,44 @@
 export type FaqItem = { q: string; a: string };
 
+const caseStudiesFaqsEn: FaqItem[] = [
+  {
+    q: "Are these case studies real data or sample data?",
+    a: "The published figures come from authorised hotel performance for the period shown on each case. They are not invented numbers. Cases on this page are anonymised: they use the property type and area, not the hotel name. If a case were sample data, it would be labelled “Sample data”. Cover images and report previews that are not approved client assets are labelled as samples. Figures without a confirmed period or source stay off the public page.",
+  },
+  {
+    q: "Can you name the hotel?",
+    a: "Only when the hotel has approved the use of its name. Until then, the case stays anonymised — for example a premium pool villa in Layan or an independent boutique hotel in Patong. Information a hotel sends for a performance review is not published as a case study without that permission.",
+  },
+  {
+    q: "Over what period are the results measured?",
+    a: "Each case has its own measurement period, shown on the card and the case page. Current examples include the first six months from October 2025, an annual window, July 2026, and June 2026. Where a comparison exists, it is against the period before Action began. An unconfirmed comparison window is not shown in public.",
+  },
+  {
+    q: "Which metrics are used to assess performance?",
+    a: "The metrics follow the work, not a single set for every hotel. Revenue and Distribution cases use Room Revenue, ADR, occupancy, and room nights sold. Digital Performance cases use ROAS, booking revenue, ad spend, and direct bookings. Each public figure has a name, a value, and its period. A metric with no confirmed unit or definition is not used as a public claim.",
+  },
+  {
+    q: "What factors do the results depend on?",
+    a: "Results depend on the period, season, pricing, channel, and the data available from the hotel, as well as the property, market conditions, product, and operations. The figures shown are that hotel’s performance in the stated period. They do not guarantee future revenue, occupancy, or results.",
+  },
+  {
+    q: "Can the team help analyse the hotel’s performance?",
+    a: "Yes. Use Request a Hotel Performance Review on this page. The team starts from the information the hotel already has, looking for where revenue may be leaking, opportunities in Pricing and Distribution, and an Action plan the hotel can take forward. The initial review has no fee and does not promise higher occupancy or revenue. Scope and fees are discussed later if you want the team to continue. The team replies within 2 business days.",
+  },
+  {
+    q: "What information should we prepare to start?",
+    a: "Hotel name, area, an approximate room count, and the issue you are seeing now — such as occupancy, pricing, OTAs, or direct bookings. If you already have booking pace, pickup, ADR, channel mix, or campaign figures, bring what you have. You do not need a full report on day one.",
+  },
+  {
+    q: "When do you publish a case study?",
+    a: "When the hotel has authorised use of its performance data and the case has a stated measurement period. Some cases use the hotel name after approval. Others stay anonymised. Unconfirmed figures are not shown in public, and sample visuals are labelled as samples.",
+  },
+  {
+    q: "Do these results guarantee future performance?",
+    a: "No. Results vary by property, market conditions, product, pricing, distribution and operations. The figures shown reflect the stated periods for each hotel.",
+  },
+];
+
 const insightsIndexFaqsEn: FaqItem[] = [
   {
     q: "Which types of hotels are the articles for?",
@@ -511,24 +550,45 @@ const table: Record<string, FaqItem[]> = {
   ],
   "/case-studies": [
     {
+      q: "Case Study เป็นข้อมูลจริงหรือข้อมูลตัวอย่าง",
+      a: "ตัวเลขที่เผยแพร่มาจากผลการดำเนินงานของโรงแรมที่ได้รับอนุญาตให้ใช้ และมีช่วงเวลาที่ระบุในแต่ละเคส ไม่ใช่ตัวเลขสมมติ เคสบนหน้านี้เป็นผลงานแบบไม่ระบุชื่อ ใช้ประเภทที่พักและพื้นที่ ไม่เปิดชื่อโรงแรม หากเป็นข้อมูลตัวอย่าง จะติดป้ายว่า “ข้อมูลตัวอย่าง” ภาพปกและตัวอย่างรายงานที่ยังไม่ใช่ไฟล์ที่อนุมัติแล้วก็ติดป้ายว่าเป็นตัวอย่างเช่นกัน ตัวเลขที่ยังยืนยันช่วงเวลาหรือแหล่งข้อมูลไม่ได้ จะไม่แสดงต่อสาธารณะ",
+    },
+    {
+      q: "เปิดเผยชื่อโรงแรมได้หรือไม่",
+      a: "ได้เมื่อโรงแรมอนุมัติให้ใช้ชื่อ ก่อนหน้านั้นเคสจะแสดงแบบไม่ระบุชื่อ เช่น พูลวิลล่าพรีเมียมที่ลายัน หรือโรงแรมบูติกอิสระที่ป่าตอง ข้อมูลที่โรงแรมส่งมาเพื่อขอวิเคราะห์จะไม่ถูกเผยแพร่เป็น Case Study โดยไม่ได้รับอนุญาต",
+    },
+    {
+      q: "วัดผลลัพธ์ในช่วงเวลาใด",
+      a: "แต่ละเคสวัดคนละช่วง และระบุช่วงนั้นบนการ์ดกับหน้ารายละเอียด ตัวอย่างที่ใช้ตอนนี้ ได้แก่ หกเดือนแรกจากตุลาคม 2025, รายปี, กรกฎาคม 2026 และมิถุนายน 2026 เมื่อมีข้อมูลเปรียบเทียบ จะเทียบกับช่วงก่อนเริ่ม Action ช่วงเปรียบเทียบที่ยังไม่ยืนยันจะไม่แสดงต่อสาธารณะ",
+    },
+    {
+      q: "ใช้ตัวชี้วัดอะไรในการประเมิน",
+      a: "ใช้ตัวชี้วัดตามงานที่ทำ ไม่ใช้ชุดเดียวกันทุกโรงแรม งาน Revenue และ Distribution ดู Room Revenue, ADR, Occupancy และจำนวนห้องคืนที่ขาย งาน Digital Performance ดู ROAS, รายได้การจอง, งบโฆษณา และการจองตรง แต่ละตัวเลขบนหน้าสาธารณะมีชื่อ ค่า และช่วงเวลา หากหน่วยหรือนิยามยังไม่ยืนยัน จะไม่นำมาอ้างต่อสาธารณะ",
+    },
+    {
+      q: "ผลลัพธ์ขึ้นอยู่กับปัจจัยใดบ้าง",
+      a: "ผลลัพธ์ขึ้นอยู่กับช่วงเวลา ฤดูกาล ราคา ช่องทาง และข้อมูลที่โรงแรมมี รวมถึงลักษณะโรงแรม สภาวะตลาด ผลิตภัณฑ์ และการดำเนินงาน ตัวเลขที่แสดงเป็นผลของโรงแรมนั้นในช่วงที่ระบุ ไม่ได้รับประกันรายได้ Occupancy หรือผลลัพธ์ในอนาคต",
+    },
+    {
+      q: "ขอให้ทีมช่วยวิเคราะห์ Performance ของโรงแรมได้หรือไม่",
+      a: "ได้ กดขอวิเคราะห์โรงแรมบนหน้านี้ ทีมดูจากข้อมูลที่โรงแรมมีอยู่แล้ว เพื่อหาจุดรั่วไหลของรายได้ โอกาสด้าน Pricing และ Distribution และแนวทาง Action ที่นำไปใช้ต่อได้ การวิเคราะห์เบื้องต้นไม่มีค่าใช้จ่าย และไม่ได้รับประกันว่า Occupancy หรือรายได้จะเพิ่มขึ้น หากต้องการให้ทีมทำงานต่อ ค่อยคุยขอบเขตในขั้นตอนนั้น ทีมติดต่อกลับภายใน 2 วันทำการ",
+    },
+    {
+      q: "ต้องเตรียมข้อมูลอะไรเพื่อเริ่มต้น",
+      a: "เริ่มจากชื่อโรงแรม จังหวัด จำนวนห้องโดยประมาณ และเรื่องที่กังวลตอนนี้ เช่น Occupancy ราคา OTA หรือการจองตรง หากมี Booking Pace, Pickup, ADR, สัดส่วนช่องทาง หรือตัวเลขแคมเปญที่มีอยู่แล้ว นำมาคุยได้ ไม่ต้องส่งรายงานครบในวันแรก",
+    },
+    {
       q: "Case Study เผยแพร่เมื่อไหร่?",
-      a: "Case Study จะเผยแพร่เมื่อได้รับอนุมัติจากโรงแรม และมีข้อมูลรองรับครบถ้วน ทุกตัวเลขจะมาพร้อมช่วงเวลา แหล่งข้อมูล และคำอธิบายว่าเกิดจากอะไร และมีความหมายต่อโรงแรมอย่างไร",
+      a: "เผยแพร่เมื่อโรงแรมอนุญาตให้ใช้ข้อมูลผลการดำเนินงาน และมีช่วงเวลาที่ระบุได้ บางเคสเปิดชื่อเมื่อได้รับอนุมัติ บางเคสเป็นแบบไม่ระบุชื่อ ตัวเลขที่ยังไม่ยืนยันจะไม่แสดงต่อสาธารณะ และภาพตัวอย่างจะติดป้ายว่าเป็นตัวอย่าง",
     },
     {
       q: "ตัวเลขบนหน้านี้รับประกันผลลัพธ์ในอนาคตหรือไม่?",
       a: "ไม่รับประกัน ผลลัพธ์ขึ้นกับโรงแรม สภาวะตลาด ผลิตภัณฑ์ ราคา Distribution และการดำเนินงาน ตัวเลขที่แสดงเป็นผลในช่วงเวลาที่ระบุของแต่ละโรงแรม",
     },
   ],
-  "/en/case-studies": [
-    {
-      q: "When do you publish a case study?",
-      a: "We publish case studies only with the hotel's approval and full supporting data. Every number comes with its time period, its source, and an explanation of what drove it and what it means for the hotel.",
-    },
-    {
-      q: "Do these results guarantee future performance?",
-      a: "No. Results vary by property, market conditions, product, pricing, distribution and operations. The figures shown reflect the stated periods for each hotel.",
-    },
-  ],
+  "/en/case-studies": caseStudiesFaqsEn,
+  "/ru/case-studies": caseStudiesFaqsEn,
+  "/zh/case-studies": caseStudiesFaqsEn,
   "/privacy": [
     {
       q: "The KPI Plus เก็บข้อมูลส่วนบุคคลอะไรบ้าง?",

@@ -481,3 +481,74 @@ model CmsContact {
 
   @@index([isPrimary])
 }
+
+model CmsCaseStudy {
+  id                     String    @id @default(cuid())
+  department             String    @default("revenue")
+  title                  String    @db.VarChar(500)
+  slug                   String    @db.VarChar(255)
+  locale                 String    @default("th")
+  shortDescription       String    @default("") @db.Text
+  clientName             String    @default("")
+  clientNameApproved     Boolean   @default(false)
+  anonymisedLabel        String    @default("")
+  hotelType              String    @default("")
+  location               String    @default("")
+  serviceArea            String    @default("")
+  challenge              String    @default("") @db.Text
+  analysis               String    @default("") @db.Text
+  actionPlan             String    @default("") @db.Text
+  result                 String    @default("") @db.Text
+  metricsJson            String    @default("[]") @db.LongText
+  measurementPeriod      String    @default("")
+  baselinePeriod         String    @default("")
+  dataStatus             String    @default("anonymised")
+  workflowStatus         String    @default("draft")
+  isPublished            Boolean   @default(false)
+  isFeatured             Boolean   @default(false)
+  coverImage             String    @default("") @db.VarChar(500)
+  coverImageAlt          String    @default("") @db.VarChar(500)
+  coverImageStatus       String    @default("placeholder")
+  reportPreview          String    @default("") @db.VarChar(500)
+  reportPreviewAlt       String    @default("") @db.VarChar(500)
+  chartJson              String    @default("") @db.LongText
+  testimonialJson        String    @default("") @db.Text
+  methodologyNote        String    @default("") @db.Text
+  sourceNotes            String    @default("") @db.Text
+  relatedArticleIds      String    @default("[]") @db.Text
+  seoTitle               String    @default("") @db.VarChar(500)
+  metaDescription        String    @default("") @db.Text
+  clientLogo             String    @default("") @db.VarChar(500)
+  clientLogoPublishable  Boolean   @default(false)
+  adminNotes             String    @default("") @db.Text
+  publishedAt            DateTime?
+  trashedAt              DateTime?
+  updatedBy              String    @default("")
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+
+  @@unique([slug, locale])
+  @@index([department])
+  @@index([isPublished])
+  @@index([trashedAt])
+}
+
+model CmsClientLogo {
+  id              String   @id @default(cuid())
+  name            String   @db.VarChar(255)
+  filePath        String   @default("") @db.VarChar(500)
+  clientName      String   @default("") @db.VarChar(255)
+  anonymisedLabel String   @default("") @db.VarChar(255)
+  altText         String   @default("") @db.VarChar(500)
+  sortOrder       Int      @default(0)
+  permission      String   @default("pending")
+  isActive        Boolean  @default(false)
+  adminNotes      String   @default("") @db.Text
+  updatedBy       String   @default("")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([permission])
+  @@index([isActive])
+  @@index([sortOrder])
+}
