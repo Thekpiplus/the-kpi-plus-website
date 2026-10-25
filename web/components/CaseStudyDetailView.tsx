@@ -140,20 +140,27 @@ function EvidenceFigure({
     status: "approved" | "placeholder";
     label: string;
     caption: string;
+    ratio?: string;
+    recommendedSize?: string;
+    width?: number;
+    height?: number;
   };
   locale: Locale;
 }) {
+  const isReport = /report/i.test(visual.label) || /report/i.test(visual.caption);
   return (
     <div className="kpi-cs-evidence">
       <DummyImage
         src={visual.src}
         alt={visual.alt}
         label={visual.label}
-        recommendedSize="1600 × 900 px"
-        ratio="16 / 9"
-        fit="cover"
+        recommendedSize={visual.recommendedSize ?? (isReport ? "1200 × 800 px" : "1600 × 900 px")}
+        ratio={visual.ratio ?? (isReport ? "3 / 2" : "16 / 9")}
+        fit={isReport ? "contain" : "cover"}
         locale={locale}
         status={visual.status}
+        width={visual.width ?? (isReport ? 1200 : 1600)}
+        height={visual.height ?? (isReport ? 800 : 900)}
         className="kpi-cs-detail-cover"
       />
       <p className="kpi-cs-evidence-caption kpi-latin">{visual.caption}</p>

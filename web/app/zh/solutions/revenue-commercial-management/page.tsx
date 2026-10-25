@@ -1,7 +1,9 @@
 import { RevenueView } from "@/components/RevenueView";
-import { metadataFor } from "@/lib/seo";
+import { revenuePublicMetadata } from "@/lib/cms/revenue-page-public";
 
-export const metadata = metadataFor("/zh/solutions/revenue-commercial-management");
+export async function generateMetadata() {
+  return revenuePublicMetadata("/zh/solutions/revenue-commercial-management");
+}
 
 export default function Page() {
   return <RevenueView locale="zh" />;

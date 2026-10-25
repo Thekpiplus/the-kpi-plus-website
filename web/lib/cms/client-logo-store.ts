@@ -69,7 +69,7 @@ export async function listPublishedClientLogoRows() {
     await db()
   ).$queryRawUnsafe<Record<string, unknown>[]>(
     `SELECT ${PUBLIC_LOGO_COLUMNS} FROM \`CmsClientLogo\`
-     WHERE \`permission\` = 'approved' AND \`isActive\` = 1 AND \`filePath\` <> ''
+     WHERE \`permission\` = 'approved' AND \`isActive\` = 1 AND \`filePath\` <> '' AND \`filePath\` <> '/images/client-logo-placeholder.svg'
      ORDER BY \`sortOrder\` ASC, \`createdAt\` ASC`,
   );
   return rows.map(mapRow);

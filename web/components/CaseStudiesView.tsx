@@ -4,7 +4,7 @@ import { CaseStudyCta } from "@/components/case-studies/CaseStudyCta";
 import { DummyImage } from "@/components/case-studies/DummyImage";
 import { MetricCard } from "@/components/case-studies/MetricCard";
 import { ResultsChart } from "@/components/case-studies/ResultsChart";
-import { ClientLogoMarquee } from "@/components/ClientLogoMarquee";
+import { ClientLogoGrid } from "@/components/ClientLogoGrid";
 import { SiteShell } from "@/components/SiteShell";
 import {
   caseStudyComparisonFor,
@@ -14,7 +14,7 @@ import {
   caseStudyResultsNote,
   localizeCaseStudy,
 } from "@/lib/case-studies";
-import { loadPublishedClientLogos } from "@/lib/cms/client-logo-public";
+import { loadVisibleClientLogos } from "@/lib/cms/client-logo-public";
 import { loadPublishedCaseStudies } from "@/lib/cms/case-study-public";
 import { caseStudyOverviewChart } from "@/lib/case-study-chart";
 import {
@@ -36,7 +36,7 @@ const chrome = {
     heroDescription: `ตั้งแต่การบริหารราคาและช่องทางการขาย${br} ไปจนถึงแคมเปญจองตรง${br} เราโฟกัสผลลัพธ์เชิงพาณิชย์ที่วัดได้${br} เช่น Room Revenue, ADR, Occupancy, RevPAR และ ROAS`,
     viewGrid: "ดูผลงาน",
     viewStudy: "ดูรายละเอียดผลงาน",
-    clientsLabelLines: ["โรงแรมและที่พักที่เราเคยร่วมงานด้วย"] as const,
+    clientsLabelLines: ["โรงแรมและที่พักที่เคยร่วมงานกับเรา"] as const,
     clientsEyebrow: "โรงแรมและที่พักที่คัดสรร",
     overviewTitle: "Results Overview",
     gridEyebrow: "ผลงาน",
@@ -155,8 +155,8 @@ export async function CaseStudiesView({ locale }: { locale: Locale }) {
   const heroVisual = caseStudiesHeroVisual();
   const disclaimer = caseStudyDisclaimerFor(locale);
   const stackTh = locale === "th";
-  const partnersLabel = "Selected hospitality partners";
-  const approvedLogos = await loadPublishedClientLogos();
+  const partnerLogos = await loadVisibleClientLogos();
+  const partnersTitle = t.clientsLabelLines.join(" ");
   const overviewChart = featured
     ? caseStudyOverviewChart(featured, featured.comparison ?? caseStudyComparisonFor(featured.slug, locale), locale)
     : null;
@@ -218,18 +218,25 @@ export async function CaseStudiesView({ locale }: { locale: Locale }) {
               fit="cover"
               locale={locale}
               status={heroVisual.status}
+              width={CASE_STUDIES_HERO_VISUAL.sourceWidth}
+              height={CASE_STUDIES_HERO_VISUAL.sourceHeight}
               className="kpi-cs-hero-visual-frame"
             />
           </div>
         </div>
       </section>
 
-      {approvedLogos.length ? (
-        <section className="kpi-cs-logos border-y border-[#E3E8EB] bg-white" aria-label={partnersLabel}>
-          <div className="kpi-section pb-0">
-            <h2 className="kpi-cs-logos-title kpi-latin">{partnersLabel}</h2>
+      {partnerLogos.length ? (
+        <section className="kpi-cs-partners" aria-labelledby="kpi-cs-partners-title">
+          <div className="kpi-section">
+            <header className="kpi-cs-partners-head">
+              <p className={`kpi-cs-partners-eyebrow${locale === "th" ? "" : " kpi-latin"}`}>{t.clientsEyebrow}</p>
+              <h2 id="kpi-cs-partners-title" className={`kpi-cs-partners-title${locale === "th" ? "" : " kpi-latin"}`}>
+                <StackedLines lines={t.clientsLabelLines} stacked={stackTh} />
+              </h2>
+            </header>
+            <ClientLogoGrid logos={partnerLogos} label={partnersTitle} />
           </div>
-          <ClientLogoMarquee logos={approvedLogos} label={partnersLabel} className="kpi-cs-marquee mt-5 mb-10" />
         </section>
       ) : null}
 
@@ -263,6 +270,8 @@ export async function CaseStudiesView({ locale }: { locale: Locale }) {
                 fit="contain"
                 locale={locale}
                 status={overviewFallback.status}
+                width={CASE_STUDIES_RESULTS_CHART.sourceWidth}
+                height={CASE_STUDIES_RESULTS_CHART.sourceHeight}
                 className="kpi-cs-overview-fallback"
               />
             )}

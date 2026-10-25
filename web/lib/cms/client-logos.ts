@@ -95,7 +95,9 @@ export function publicClientAlt(input: Pick<ClientLogoSaveInput, "name" | "clien
 }
 
 export function canPublishClientLogo(input: Pick<ClientLogoSaveInput, "filePath" | "isActive"> & { permission: string }) {
-  return parseClientLogoPermission(input.permission) === "approved" && input.isActive && Boolean(input.filePath.trim());
+  const filePath = input.filePath.trim();
+  if (!filePath || filePath === CLIENT_LOGO_PLACEHOLDER) return false;
+  return parseClientLogoPermission(input.permission) === "approved" && input.isActive;
 }
 
 export function validateClientLogoInput(input: ClientLogoSaveInput) {

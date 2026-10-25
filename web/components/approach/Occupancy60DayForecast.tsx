@@ -1,11 +1,12 @@
+import { OCCUPANCY_SAMPLE, OCCUPANCY_SAMPLE_SERIES } from "@/lib/occupancy-sample";
 import type { Locale } from "@/lib/seo";
 
 const DISPLAY = { width: 640, height: 360 } as const;
 const SOURCE = { width: 1600, height: 900 } as const;
-const WEEKS = ["W1", "W2", "W3", "W4", "W5", "W6", "W7", "W8"] as const;
-const SAMPLE_FORECAST = [74, 72, 70, 68, 66, 64, 63, 62] as const;
-const SAMPLE_PACE = [71, 68, 65, 61, 58, 55, 53, 52] as const;
-const SAMPLE_TARGET = 75;
+const WEEKS = OCCUPANCY_SAMPLE_SERIES.labels;
+const SAMPLE_FORECAST = OCCUPANCY_SAMPLE_SERIES.forecast;
+const SAMPLE_PACE = OCCUPANCY_SAMPLE_SERIES.pace;
+const SAMPLE_TARGET = OCCUPANCY_SAMPLE.target;
 const LOW_DEMAND_FROM = 4;
 const CHART_SCALE = { min: 50, max: 80 } as const;
 const CHART_SIZE = { width: 640, height: 360 } as const;
@@ -14,10 +15,7 @@ const CHART_PAD = { top: 36, right: 22, bottom: 58, left: 68 } as const;
 /** Drop a verified 1600×900 occupancy forecast screenshot here (16:9). */
 export const OCCUPANCY_FORECAST_SRC = "/images/occupancy-60-day-forecast-placeholder.webp";
 
-export const OCCUPANCY_SAMPLE = {
-  latest: SAMPLE_FORECAST[SAMPLE_FORECAST.length - 1],
-  target: SAMPLE_TARGET,
-} as const;
+export { OCCUPANCY_SAMPLE, OCCUPANCY_SAMPLE_SERIES };
 
 const chartCopy = {
   th: {

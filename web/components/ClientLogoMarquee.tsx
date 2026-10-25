@@ -16,17 +16,21 @@ export function ClientLogoMarquee({
   return (
     <div className={`kpi-client-marquee ${className}`.trim()} role="region" aria-label={label}>
       <div className={`kpi-client-marquee-track${logos.length > 3 ? "" : " is-static"}`}>
-        {loop.map((client, index) => (
-          <div key={`${client.src}-${index}`} className="kpi-client-logo">
-            <img
-              src={client.src}
-              alt={clientLogoAlt(client)}
-              width={160}
-              height={48}
-              decoding="async"
-            />
-          </div>
-        ))}
+        {loop.map((client, index) => {
+          const duplicate = index >= logos.length;
+          return (
+            <div key={`${client.src}-${index}`} className="kpi-client-logo" aria-hidden={duplicate || undefined}>
+              <img
+                src={client.src}
+                alt={duplicate ? "" : clientLogoAlt(client)}
+                width={160}
+                height={48}
+                decoding="async"
+                loading="lazy"
+              />
+            </div>
+          );
+        })}
       </div>
     </div>
   );

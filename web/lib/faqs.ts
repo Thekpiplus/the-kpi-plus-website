@@ -768,19 +768,39 @@ const table: Record<string, FaqItem[]> = {
   "/solutions/revenue-commercial-management": [
     {
       q: "Revenue Management กับ Commercial Management ต่างกันอย่างไร?",
-      a: "Revenue Management เน้นการตัดสินใจเรื่องราคา ความต้องการของตลาด ห้องว่าง และรายได้ห้องพัก ส่วน Commercial Management มองกว้างขึ้นถึงช่องทางขาย การจองตรง การตลาด ระบบ และวิธีทำงานร่วมกันเพื่อสร้างรายได้",
+      a: "Revenue Management เน้นการตัดสินใจเรื่องราคา ความต้องการของตลาด ห้องว่าง และรายได้ห้องพัก Commercial Management มองกว้างขึ้นถึงช่องทางขาย การจองตรง การตลาด ระบบ และวิธีที่ทีมทำงานร่วมกันเพื่อสร้างรายได้",
     },
     {
-      q: "ต้องให้ เดอะ เคพีไอ พลัส ดูแลทุกส่วนไหม?",
-      a: "ไม่จำเป็น โรงแรมเลือกเริ่มจากงานที่ต้องการได้ และขยายขอบเขตเมื่อเห็นว่ามีส่วนอื่นที่ควรทำร่วมกัน",
+      q: "ต้องให้ The KPI Plus ดูแลทุกส่วนไหม?",
+      a: "ไม่จำเป็น โรงแรมเลือกเริ่มเฉพาะส่วนที่ต้องการได้ แล้วขยายขอบเขตเมื่อมีส่วนอื่นที่ควรทำร่วมกัน",
     },
     {
-      q: "ต้องมี Revenue Manager หรือระบบ RMS ก่อนไหม?",
-      a: "ไม่จำเป็นต้องมีก่อนเริ่ม ทีมจะดูข้อมูลและระบบที่โรงแรมมี แล้วเสนอวิธีทำงานที่เหมาะกับขนาดและความพร้อมของโรงแรม",
+      q: "ต้องมี Revenue Manager หรือ RMS ก่อนหรือไม่?",
+      a: "ไม่ต้องมีก่อนเริ่ม ทีมดูจากข้อมูลและระบบที่โรงแรมมีอยู่ แล้วเสนอวิธีทำงานที่เหมาะกับขนาดและความพร้อม ไม่ได้บังคับให้ซื้อ RMS ก่อนคุย",
     },
     {
-      q: "ทีมโรงแรมต้องร่วมทำอะไร?",
-      a: "ช่วยยืนยันข้อมูลห้องพัก ราคา ข้อเสนอ สถานการณ์หน้างาน และการตัดสินใจที่กระทบการดำเนินงาน จากนั้นทำงานร่วมกับ เดอะ เคพีไอ พลัส ตามหน้าที่ที่ตกลงกัน",
+      q: "ทีมโรงแรมต้องร่วมทำอะไรบ้าง?",
+      a: "ช่วยยืนยันห้องพัก ราคา ข้อเสนอ สถานการณ์หน้างาน และการตัดสินใจที่กระทบการดำเนินงาน จากนั้นทำงานตามหน้าที่ที่ตกลง ไม่ได้ส่งมอบงานแล้วปล่อยให้ทีมภายนอกตัดสินใจแทนทั้งหมด",
+    },
+    {
+      q: "ต้องเริ่มจากข้อมูลอะไร?",
+      a: "เริ่มจากชื่อโรงแรม จำนวนห้องโดยประมาณ และเรื่องที่อยากให้ดู เช่น ราคา ช่องทางขาย หรือการจองตรง หากมี Occupancy, booking pace หรือสัดส่วนช่องทางอยู่แล้ว ส่งเท่าที่สะดวกแชร์ได้ ไม่ต้องรอรายงานครบก่อนคุย",
+    },
+    {
+      q: "รองรับโรงแรมขนาดเล็กหรือไม่?",
+      a: "รองรับ โรงแรมอิสระขนาดเล็กใช้บริการได้ ขอบเขตงานปรับตามขนาด ความพร้อม และข้อมูลที่มี ไม่ได้ตัดออกเพราะจำนวนห้องน้อย",
+    },
+    {
+      q: "ใช้เวลากี่สัปดาห์จึงจะเริ่มเห็น Action?",
+      a: "หลังได้รับข้อมูลที่โรงแรมสะดวกแชร์ ทีมจะสรุปสิ่งที่ควรทำต่อและผู้รับผิดชอบ ระยะเวลาขึ้นกับข้อมูลที่เข้าถึงได้และขอบเขตที่ตกลงกัน ไม่ใช่การรับประกันว่ารายได้หรือ Occupancy จะเปลี่ยนในจำนวนสัปดาห์ที่กำหนด",
+    },
+    {
+      q: "ข้อมูลจาก PMS และ OTA เชื่อมอย่างไร?",
+      a: "ใช้รายงานและการเข้าถึงที่โรงแรมอนุญาต จาก PMS, Channel Manager หรือ OTA ที่ใช้อยู่ ไม่จำเป็นต้องเปลี่ยนระบบก่อนเริ่ม วิธีจัดข้อมูลให้อยู่ในมุมมองเดียวจะตกลงตามระบบที่มีจริง",
+    },
+    {
+      q: "มีการติดตามผลหลังเริ่มงานหรือไม่?",
+      a: "มี ตามจังหวะที่ตกลง เช่น ทบทวน Occupancy, booking pace และงานที่ทำไปแล้ว แล้วปรับขั้นตอนถัดไปจากสถานการณ์จริง การติดตามเป็นการทบทวนงาน ไม่ใช่การรับประกันผลลัพธ์",
     },
   ],
   "/en/solutions/revenue-commercial-management": [
@@ -790,15 +810,35 @@ const table: Record<string, FaqItem[]> = {
     },
     {
       q: "Does The KPI Plus have to look after every part?",
-      a: "No. The hotel can start with the work it needs, then widen the scope when another part should sit with it.",
+      a: "No. The hotel can start with the parts it needs, then widen the scope when another part should sit with that work.",
     },
     {
       q: "Do we need a Revenue Manager or an RMS first?",
-      a: "No. The team reviews the data and systems the hotel already has, then proposes a way of working that fits the size and readiness of the hotel.",
+      a: "No. The team starts from the data and systems the hotel already has, then proposes a way of working that fits the size and readiness of the hotel. An RMS is not required before the first conversation.",
     },
     {
       q: "What does the hotel team have to do?",
-      a: "Help confirm rooms, rates, offers, the situation on the floor, and decisions that affect operations, then work with The KPI Plus on the roles that were agreed.",
+      a: "Help confirm rooms, rates, offers, the situation on the floor, and decisions that affect operations, then work on the roles that were agreed. The hotel team is not asked to hand every decision to an outside team.",
+    },
+    {
+      q: "What information do we start with?",
+      a: "Start with the hotel name, an approximate room count, and the issue to look at, such as rate, channels, or direct booking. If occupancy, booking pace, or channel mix is already available, share what you can. A complete report is not required before the first conversation.",
+    },
+    {
+      q: "Do you work with small hotels?",
+      a: "Yes. Independent small hotels can use the service. Scope follows the hotel’s size, readiness, and the data available. A low room count does not rule a hotel out.",
+    },
+    {
+      q: "How many weeks before we start seeing Action?",
+      a: "After the hotel shares the information it is comfortable sharing, the team names the next actions and who owns them. Timing depends on data access and the agreed scope. It is not a promise that revenue or occupancy will change in a set number of weeks.",
+    },
+    {
+      q: "How do PMS and OTA data connect?",
+      a: "From the reports and access the hotel allows, using the PMS, channel manager, or OTAs already in place. The hotel does not have to change systems first. How that data sits in one view is agreed from the systems that exist.",
+    },
+    {
+      q: "Do you review results after work starts?",
+      a: "Yes, on the rhythm that was agreed, such as occupancy, booking pace, and the work already done, then the next step is adjusted from the real situation. That review is not a guarantee of a result.",
     },
   ],
   "/ru/solutions/revenue-commercial-management": [

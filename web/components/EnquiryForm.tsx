@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useId, useState } from "react";
 import { FormPrivacyNotice } from "@/components/FormPrivacyNotice";
+import { RevenueEnquiryIntro } from "@/components/revenue-commercial/RevenueEnquiryIntro";
 import { AUDIT_CONTACTS, readUtm } from "@/lib/audit";
 import { auditCopyFor } from "@/lib/audit-copy";
 import {
@@ -19,12 +20,13 @@ type FormState = {
   businessName: string;
   contact: string;
   serviceInterest: EnquiryServiceId | "";
+  topic: string;
   message: string;
   consent: boolean;
   companyWebsite: string;
 };
 
-type FieldError = Partial<Record<"name" | "businessName" | "contact" | "serviceInterest" | "consent", string>>;
+type FieldError = Partial<Record<"name" | "businessName" | "contact" | "serviceInterest" | "topic" | "consent", string>>;
 
 const revenueGroups = {
   th: { contact: "ข้อมูลติดต่อ", hotel: "เกี่ยวกับโรงแรม", topic: "เรื่องที่อยากคุย" },
@@ -32,6 +34,42 @@ const revenueGroups = {
   ru: { contact: "Contact details", hotel: "About the hotel", topic: "What you'd like to discuss" },
   zh: { contact: "Contact details", hotel: "About the hotel", topic: "What you'd like to discuss" },
 } as const;
+
+const revenueTopics = [
+  { id: "revenue", th: "รายได้ ราคา และ Occupancy", en: "Revenue, rates, and occupancy" },
+  { id: "channels", th: "ช่องทางขาย และ OTA", en: "Selling channels and OTAs" },
+  { id: "direct", th: "การจองตรง", en: "Direct booking" },
+  { id: "other", th: "อื่น ๆ", en: "Something else" },
+] as const;
+
+const revenueFormUi = {
+  th: {
+    topic: "เรื่องที่อยากคุย",
+    topicPlaceholder: "เลือกเรื่องที่อยากคุย",
+    loading: "กำลังส่งข้อมูล กรุณารอสักครู่",
+  },
+  en: {
+    topic: "Topic",
+    topicPlaceholder: "Choose a topic",
+    loading: "Sending your message. Please wait.",
+  },
+} as const;
+
+function revenueTopicLabel(id: string, locale: Locale) {
+  const topic = revenueTopics.find((item) => item.id === id);
+  if (!topic) return "";
+  return locale === "th" ? topic.th : topic.en;
+}
+
+function composeRevenueMessage(topicId: string, message: string, locale: Locale) {
+  const topic = revenueTopicLabel(topicId, locale);
+  const prefix = topic
+    ? locale === "th"
+      ? `เรื่องที่อยากคุย: ${topic}`
+      : `Topic: ${topic}`
+    : "";
+  return [prefix, message.trim()].filter(Boolean).join("\n\n");
+}
 
 const b2bGroups = {
   th: { contact: "ข้อมูลติดต่อ", hotel: "ข้อมูลโรงแรม", topic: "สิ่งที่อยากคุย" },
@@ -160,6 +198,10 @@ export function EnquiryForm({
   submitLabel,
   showAssessmentNote = false,
   compact = false,
+  consultantImageSrc,
+  introNextTitle,
+  introSteps,
+  introTrust,
 }: {
   locale: Locale;
   /** When set, service is preselected and the selector is hidden. */
@@ -171,6 +213,10 @@ export function EnquiryForm({
   submitLabel?: string;
   showAssessmentNote?: boolean;
   compact?: boolean;
+  consultantImageSrc?: string;
+  introNextTitle?: string;
+  introSteps?: string[];
+  introTrust?: string[];
 }) {
   const preset = service ? enquiryServiceById(service) : null;
   const t = ENQUIRY_UI[locale];
@@ -181,6 +227,7 @@ export function EnquiryForm({
     businessName: "",
     contact: "",
     serviceInterest: service ?? "",
+    topic: "",
     message: "",
     consent: false,
     companyWebsite: "",
@@ -202,6 +249,7 @@ export function EnquiryForm({
       nextErrors.contact = t.invalidEmail;
     }
     if (!preset && !next.serviceInterest) nextErrors.serviceInterest = t.required;
+    if (service === "revenue" && !next.topic.trim()) nextErrors.topic = t.required;
     if (!next.consent) nextErrors.consent = t.required;
     setErrors(nextErrors);
     return nextErrors;
@@ -221,7 +269,11 @@ export function EnquiryForm({
           businessName: state.businessName.trim(),
           contact: state.contact.trim(),
           serviceInterest: serviceId,
-          message: state.message.trim(),
+          topic: service === "revenue" ? state.topic : undefined,
+          message:
+            service === "revenue"
+              ? composeRevenueMessage(state.topic, state.message, locale)
+              : state.message.trim(),
           consent: state.consent,
           honeypot: state.companyWebsite,
           pageUrl: typeof window === "undefined" ? "" : window.location.href,
@@ -409,30 +461,36 @@ export function EnquiryForm({
 
   if (service === "revenue" && !compact) {
     const groups = revenueGroups[locale];
+    const formUi = locale === "th" ? revenueFormUi.th : revenueFormUi.en;
     const labelClassName = "kpi-revenue-enquiry-label";
+    const sending = status === "submitting";
     return (
       <section id={sectionId} className="kpi-revenue-enquiry scroll-mt-28">
         <div className="kpi-section kpi-revenue-enquiry-grid">
-          <div className="kpi-revenue-enquiry-intro">
-            <p className="kpi-kicker kpi-revenue-enquiry-kicker">{kickerText}</p>
-            <h2 className="kpi-h2 kpi-revenue-enquiry-heading">{heading}</h2>
-            <p className="kpi-revenue-enquiry-lead">
-              {lead.split("\n").map((line, index) => (
-                <span key={line} className={index > 0 ? "kpi-revenue-enquiry-line" : undefined}>
-                  {line}
-                </span>
-              ))}
-            </p>
-          </div>
+          <RevenueEnquiryIntro
+            locale={locale}
+            kicker={kickerText}
+            heading={heading}
+            lead={lead}
+            photoSrc={consultantImageSrc}
+            nextTitle={introNextTitle}
+            steps={introSteps}
+            trust={introTrust}
+          />
           <div className="kpi-revenue-enquiry-panel">
             {status === "success" ? (
-              <div role="status">
+              <div className="kpi-revenue-enquiry-done" role="status" aria-live="polite">
                 <p className="kpi-revenue-enquiry-success">{t.success}</p>
                 <p className="kpi-revenue-enquiry-reply">{auditCopyFor(locale).trustReply}</p>
                 <ContactNote locale={locale} className="kpi-revenue-enquiry-direct" />
               </div>
             ) : (
-              <form className="kpi-revenue-enquiry-fields" onSubmit={onSubmit} noValidate>
+              <form
+                className="kpi-revenue-enquiry-fields"
+                onSubmit={onSubmit}
+                noValidate
+                aria-busy={sending}
+              >
                 <div className="kpi-revenue-enquiry-group">
                   <p className="kpi-revenue-enquiry-group-label">{groups.contact}</p>
                   <div className="kpi-revenue-enquiry-pair">
@@ -443,6 +501,7 @@ export function EnquiryForm({
                         autoComplete="name"
                         className="kpi-field"
                         value={state.name}
+                        disabled={sending}
                         aria-invalid={Boolean(errors.name)}
                         onBlur={() => validate()}
                         onChange={(event) => setState((current) => ({ ...current, name: event.target.value }))}
@@ -456,6 +515,7 @@ export function EnquiryForm({
                         inputMode="email"
                         className="kpi-field"
                         value={state.contact}
+                        disabled={sending}
                         aria-invalid={Boolean(errors.contact)}
                         onBlur={() => validate()}
                         onChange={(event) => setState((current) => ({ ...current, contact: event.target.value }))}
@@ -472,6 +532,7 @@ export function EnquiryForm({
                       autoComplete="organization"
                       className="kpi-field"
                       value={state.businessName}
+                      disabled={sending}
                       aria-invalid={Boolean(errors.businessName)}
                       onBlur={() => validate()}
                       onChange={(event) => setState((current) => ({ ...current, businessName: event.target.value }))}
@@ -479,42 +540,66 @@ export function EnquiryForm({
                   </Field>
                 </div>
                 <div className="kpi-revenue-enquiry-group">
-                  <p className="kpi-revenue-enquiry-group-label">{groups.topic}</p>
+                  <Field label={formUi.topic} htmlFor={`${formId}-topic`} error={errors.topic} labelClassName={labelClassName}>
+                    <select
+                      id={`${formId}-topic`}
+                      name="topic"
+                      className="kpi-field"
+                      value={state.topic}
+                      disabled={sending}
+                      aria-invalid={Boolean(errors.topic)}
+                      onBlur={() => validate()}
+                      onChange={(event) => setState((current) => ({ ...current, topic: event.target.value }))}
+                    >
+                      <option value="">{formUi.topicPlaceholder}</option>
+                      {revenueTopics.map((item) => (
+                        <option key={item.id} value={item.id}>
+                          {locale === "th" ? item.th : item.en}
+                        </option>
+                      ))}
+                    </select>
+                  </Field>
                   <Field label={t.message} htmlFor={`${formId}-message`} optional={t.messageOptional} labelClassName={labelClassName}>
                     <textarea
                       id={`${formId}-message`}
                       name="message"
                       rows={4}
                       className="kpi-field"
-                      placeholder={t.messageHint}
                       value={state.message}
+                      disabled={sending}
                       onChange={(event) => setState((current) => ({ ...current, message: event.target.value }))}
                     />
+                    <p className="kpi-revenue-enquiry-hint">{t.messageHint}</p>
                   </Field>
                 </div>
                 <input type="hidden" name="serviceInterest" value={preset?.id ?? "revenue"} />
                 <div className="kpi-revenue-enquiry-privacy">
                   <FormPrivacyNotice locale={locale} />
                 </div>
-                <label className="kpi-revenue-enquiry-consent">
-                  <input
-                    type="checkbox"
-                    checked={state.consent}
-                    aria-invalid={Boolean(errors.consent)}
-                    onChange={(event) => setState((current) => ({ ...current, consent: event.target.checked }))}
-                  />
-                  <span>
-                    {t.consent}{" "}
-                    <Link href={privacyHref} className="font-semibold text-[#0B6660]">
-                      {t.privacy}
-                    </Link>
-                  </span>
-                </label>
-                {errors.consent ? (
-                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
-                    {errors.consent}
-                  </p>
-                ) : null}
+                <div>
+                  <label className="kpi-revenue-enquiry-consent" htmlFor={`${formId}-consent`}>
+                    <input
+                      id={`${formId}-consent`}
+                      type="checkbox"
+                      checked={state.consent}
+                      disabled={sending}
+                      aria-invalid={Boolean(errors.consent)}
+                      aria-describedby={errors.consent ? `${formId}-consent-error` : undefined}
+                      onChange={(event) => setState((current) => ({ ...current, consent: event.target.checked }))}
+                    />
+                    <span>
+                      {t.consent}{" "}
+                      <Link href={privacyHref} className="font-semibold text-[#0B6660]">
+                        {t.privacy}
+                      </Link>
+                    </span>
+                  </label>
+                  {errors.consent ? (
+                    <p id={`${formId}-consent-error`} className="kpi-revenue-enquiry-error" role="alert">
+                      {errors.consent}
+                    </p>
+                  ) : null}
+                </div>
                 <input
                   type="text"
                   name="companyWebsite"
@@ -525,16 +610,21 @@ export function EnquiryForm({
                   className="absolute left-[-10000px] h-px w-px overflow-hidden"
                   onChange={(event) => setState((current) => ({ ...current, companyWebsite: event.target.value }))}
                 />
-                <button className="kpi-button" type="submit" disabled={status === "submitting"}>
-                  {status === "submitting" ? t.sending : cta}
+                <button className="kpi-button" type="submit" disabled={sending} aria-busy={sending}>
+                  {sending ? t.sending : cta}
                 </button>
+                {sending ? (
+                  <p className="kpi-revenue-enquiry-status" role="status" aria-live="polite">
+                    {formUi.loading}
+                  </p>
+                ) : null}
                 {status === "error" ? (
-                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                  <p className="kpi-revenue-enquiry-error" role="alert">
                     {t.failed}
                   </p>
                 ) : null}
                 {status === "unavailable" ? (
-                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                  <p className="kpi-revenue-enquiry-error" role="alert">
                     {t.unavailable}
                   </p>
                 ) : null}

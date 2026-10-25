@@ -40,7 +40,7 @@ export function HomeFaqList({ items }: { items: FaqItem[] }) {
         const buttonId = `${uid}-button-${index}`;
         const expanded = open === index;
         return (
-          <div key={item.q} className={`kpi-faq-item${expanded ? " is-open" : ""}`}>
+          <div key={`${item.q}-${index}`} className={`kpi-faq-item${expanded ? " is-open" : ""}`}>
             <h3 className="kpi-faq-heading">
               <button
                 id={buttonId}
@@ -62,6 +62,7 @@ export function HomeFaqList({ items }: { items: FaqItem[] }) {
               role="region"
               aria-labelledby={buttonId}
               aria-hidden={!expanded}
+              inert={!expanded || undefined}
               className="kpi-faq-panel"
             >
               <div className="kpi-faq-panel-inner">

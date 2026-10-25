@@ -624,6 +624,7 @@ export const caseStudyHeroStats: CaseStudyHeroStat[] = [
     label: "Additional Revenue",
     currency: "THB",
     period: "First six months from October 2025",
+    comparison: "฿16.03M → ฿21.60M",
     status: ANONYMISED,
     tone: "yellow",
     todo: "TODO: confirm comparison period",

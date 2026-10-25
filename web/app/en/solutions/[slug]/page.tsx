@@ -13,6 +13,7 @@ import { TechnologyView } from "@/components/TechnologyView";
 import { TrainingView } from "@/components/TrainingView";
 import { WebsiteView } from "@/components/WebsiteView";
 import { SOLUTION_SLUGS } from "@/lib/solution-slugs";
+import { revenuePublicMetadata } from "@/lib/cms/revenue-page-public";
 import { metadataFor, pageByRoute } from "@/lib/seo";
 
 type Params = { slug: string };
@@ -25,6 +26,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }) 
   const { slug } = await params;
   const route = `/en/solutions/${slug}`;
   if (!pageByRoute.has(route)) return {};
+  if (slug === "revenue-commercial-management") return revenuePublicMetadata(route);
   return metadataFor(route);
 }
 

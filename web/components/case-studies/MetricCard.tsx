@@ -29,7 +29,7 @@ export function MetricCard({
   const known = lines.filter((line) => line.trim());
   return (
     <article className={`metric-card ${toneClass[tone]}`}>
-      <span className="metric-card__label">{label}</span>
+      <h3 className="metric-card__label">{label}</h3>
       <strong className="metric-card__value kpi-latin">{value}</strong>
       {known.map((line) => (
         <span key={line} className="metric-card__context">

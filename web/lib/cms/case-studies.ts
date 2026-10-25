@@ -404,12 +404,33 @@ export function inputFromForm(formData: FormData): CaseStudySaveInput {
   };
 }
 
-export function metricCanPublish(metric: CaseMetric, studyPeriod: string, sample: boolean) {
-  if (sample || metric.status === "Sample data") return true;
-  if (!metric.label && !metric.value) return true;
+export type CaseStudyListStatus = "draft" | "review" | "approved" | "published";
+
+export function caseStudyListStatus(row: Pick<CmsCaseStudyRow, "isPublished" | "workflowStatus">): CaseStudyListStatus {
+  if (row.isPublished) return "published";
+  if (row.workflowStatus === "review") return "review";
+  if (row.workflowStatus === "approved") return "approved";
+  return "draft";
+}
+
+export function listStatusLabel(status: CaseStudyListStatus) {
+  if (status === "published") return "Published";
+  if (status === "review") return "Review";
+  if (status === "approved") return "Approved";
+  return "Draft";
+}
+
+export function metricIsEmpty(metric: CaseMetric) {
+  return !metric.label.trim() && !metric.value.trim() && !metric.context.trim() && !metric.period.trim() && !metric.comparison?.trim();
+}
+
+export function metricCanPublish(metric: CaseMetric, studyPeriod: string, _sample = false) {
+  if (metricIsEmpty(metric)) return true;
   const unitOk = Boolean(metric.unit?.trim() || metric.currency?.trim());
   const periodOk = Boolean(metric.period?.trim() || studyPeriod.trim());
-  return unitOk && periodOk;
+  const comparisonOk = Boolean(metric.context.trim() || metric.comparison?.trim() || metric.baselinePeriod?.trim());
+  const statusOk = Boolean(metric.status);
+  return Boolean(metric.value.trim()) && unitOk && periodOk && comparisonOk && statusOk;
 }
 
 export function validateCaseStudyInput(input: CaseStudySaveInput, intent: CaseStudyIntent): string | null {
@@ -435,9 +456,10 @@ export function validatePublish(input: CaseStudySaveInput): string | null {
   if (!input.result) return "missing_result";
   if (!input.measurementPeriod) return "missing_period";
   if (!input.dataStatus || input.dataStatus === "draft" || input.dataStatus === "review") return "missing_data_status";
-  if (!input.coverImageAlt) return "missing_alt";
+  if (input.coverImage && !input.coverImageAlt) return "missing_alt";
+  if (input.reportPreview && !input.reportPreviewAlt) return "missing_report_alt";
   const sample = input.dataStatus === "sample";
-  const blockedMetric = input.metrics.find((metric) => (metric.label || metric.value) && !metricCanPublish(metric, input.measurementPeriod, sample));
+  const blockedMetric = input.metrics.find((metric) => !metricCanPublish(metric, input.measurementPeriod, sample));
   if (blockedMetric) return "metric_unit_period";
   if (input.clientName && !input.clientNameApproved) return "client_name_flag";
   if (input.clientLogo && !input.clientLogoPublishable) return "client_logo_flag";
@@ -454,8 +476,9 @@ export function caseStudyErrorMessage(code: string) {
     missing_result: "กรอก Result ก่อนเผยแพร่",
     missing_period: "กรอกช่วงเวลาที่วัดผลก่อนเผยแพร่",
     missing_data_status: "เลือกสถานะข้อมูล (Anonymised / Approved / Sample / Published) ก่อนเผยแพร่",
-    missing_alt: "กรอกคำอธิบายรูปปก (alt text) ก่อนเผยแพร่",
-    metric_unit_period: "ตัวชี้วัดที่เผยแพร่ต้องมีหน่วยหรือสกุลเงิน และช่วงเวลา เว้นแต่เป็นข้อมูลตัวอย่าง",
+    missing_alt: "กรอกคำอธิบายรูปปก (alt text) เมื่อมีรูปปก",
+    missing_report_alt: "กรอกคำอธิบายตัวอย่างรายงานเมื่อมีรูป",
+    metric_unit_period: "ตัวชี้วัดต้องมีค่า หน่วยหรือสกุลเงิน ช่วงเวลา บริบทเปรียบเทียบ และสถานะข้อมูล",
     client_name_flag: "ชื่อลูกค้าต้องมีธงอนุมัติก่อนแสดงหรือเผยแพร่",
     client_logo_flag: "โลโก้ลูกค้าต้องมีธงอนุญาตเผยแพร่",
     exists: "slug นี้มีอยู่แล้ว เลือก slug อื่น",
@@ -465,6 +488,41 @@ export function caseStudyErrorMessage(code: string) {
     not_approved: "อนุมัติเคสก่อนเผยแพร่",
   };
   return table[code] ?? "บันทึกไม่สำเร็จ";
+}
+
+export function adminPreviewFromInput(input: CaseStudySaveInput, metrics: CaseMetric[]) {
+  const hideClient =
+    input.dataStatus === "anonymised" ||
+    input.dataStatus === "sample" ||
+    input.dataStatus === "draft" ||
+    input.dataStatus === "review" ||
+    !input.clientNameApproved;
+  return {
+    title: input.title || "Untitled",
+    slug: input.slug,
+    identity: hideClient ? input.anonymisedLabel || input.hotelType || "ไม่ระบุชื่อลูกค้า" : input.clientName || input.anonymisedLabel,
+    hideClient,
+    sample: input.dataStatus === "sample",
+    dataStatus: input.dataStatus,
+    workflowStatus: input.workflowStatus,
+    publicReady: isPubliclyVisible({
+      isPublished: input.isPublished,
+      workflowStatus: input.workflowStatus,
+      dataStatus: input.dataStatus,
+      trashedAt: null,
+    }),
+    logoPublic: Boolean(input.clientLogo && input.clientLogoPublishable && !hideClient),
+    logoPending: Boolean(input.clientLogo && !input.clientLogoPublishable),
+    challenge: input.challenge,
+    action: input.actionPlan,
+    result: input.result,
+    measurementPeriod: input.measurementPeriod,
+    metrics: metrics.filter((metric) => !metricIsEmpty(metric)),
+    methodologyNote: input.methodologyNote,
+    sourceNotes: input.sourceNotes.filter(Boolean),
+    coverImage: input.coverImage,
+    coverImageAlt: input.coverImageAlt,
+  };
 }
 
 export function isPubliclyVisible(row: Pick<CmsCaseStudyRow, "isPublished" | "workflowStatus" | "dataStatus" | "trashedAt">) {
@@ -500,7 +558,9 @@ export function toPublicCaseStudy(row: CmsCaseStudyRow, options?: { preview?: bo
     analysis: row.analysis,
     action: row.actionPlan,
     result: row.result,
-    metrics: parseMetrics(row.metricsJson),
+    metrics: parseMetrics(row.metricsJson).map((metric) =>
+      dataStatus === "sample" ? { ...metric, status: "Sample data" as const } : metric,
+    ),
     measurementPeriod: row.measurementPeriod,
     baselinePeriod: row.baselinePeriod || undefined,
     dataStatus,

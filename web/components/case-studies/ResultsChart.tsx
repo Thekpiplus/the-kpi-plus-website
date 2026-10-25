@@ -99,7 +99,7 @@ export function ResultsChart({
             y={PAD.top + plotHeight / 2}
             textAnchor="middle"
             fontSize="11"
-            fill="#617487"
+            fill="#555555"
             transform={`rotate(-90 16 ${PAD.top + plotHeight / 2})`}
           >
             {axisLabel}
@@ -119,7 +119,7 @@ export function ResultsChart({
                 y2={y}
                 stroke="rgba(9,36,65,0.12)"
               />
-              <text x={PAD.left - 12} y={y + 4} textAnchor="end" fontSize="11" fill="#617487">
+              <text x={PAD.left - 12} y={y + 4} textAnchor="end" fontSize="11" fill="#555555">
                 {formatTick(value)}
               </text>
             </g>
@@ -129,7 +129,7 @@ export function ResultsChart({
         {labels.map((label, index) => {
           const x = PAD.left + index * xStep;
           return (
-            <text key={`${label}-${index}`} x={x} y={HEIGHT - 18} textAnchor="middle" fontSize="11" fill="#617487">
+            <text key={`${label}-${index}`} x={x} y={HEIGHT - 18} textAnchor="middle" fontSize="11" fill="#555555">
               {label}
             </text>
           );

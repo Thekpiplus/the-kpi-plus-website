@@ -2,7 +2,7 @@ import Link from "next/link";
 import { DummyImage } from "@/components/case-studies/DummyImage";
 import {
   caseStudyActionItems,
-  caseStudyCardStatus,
+  caseStudyDataStatusLabel,
   caseStudyIdentity,
   caseStudyMetricLabel,
   caseStudyParagraphs,
@@ -32,7 +32,6 @@ export function CaseStudyCard({
   ctaLabel: string;
   featured?: boolean;
 }) {
-  const status = caseStudyCardStatus(study);
   const identity = caseStudyIdentity(study);
   const metric = caseStudyPrimaryMetric(study);
   const showMetric = Boolean(metric);
@@ -67,7 +66,7 @@ export function CaseStudyCard({
       <div className="kpi-cs-study-body">
         <div className="kpi-cs-study-meta">
           <p className="kpi-latin kpi-cs-category">{study.serviceArea}</p>
-          <p className="kpi-cs-study-status kpi-latin">{status}</p>
+          <p className="kpi-cs-study-status kpi-latin">{caseStudyDataStatusLabel(study, locale)}</p>
         </div>
 
         <h3 className="kpi-cs-study-title">{study.title}</h3>

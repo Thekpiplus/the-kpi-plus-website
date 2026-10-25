@@ -10,6 +10,7 @@ import { PageFaqs } from "@/components/PageFaqs";
 import { cmsFooterLinks, cmsHeaderLinks } from "@/lib/cms/files";
 import { getPublicCompany } from "@/lib/company-public";
 import { isCmsPageLive, storedPageByPath } from "@/lib/cms/public";
+import { parseRevenuePageBody, REVENUE_CMS_TEMPLATE } from "@/lib/cms/revenue-page";
 import { faqsForRoute, howToStepsForRoute } from "@/lib/faqs";
 import { pageKind } from "@/lib/page-types";
 import {
@@ -31,15 +32,19 @@ export async function SiteShell({
   children,
   title: titleOverride,
   description: descriptionOverride,
+  hideFaqs = false,
 }: {
   locale: Locale;
   route: string;
   children: ReactNode;
   title?: string;
   description?: string;
+  hideFaqs?: boolean;
 }) {
   const stored = await storedPageByPath(route);
-  if (stored && !isCmsPageLive(stored)) notFound();
+  const revenueTemplate = stored?.template === REVENUE_CMS_TEMPLATE;
+  if (stored?.trashedAt) notFound();
+  if (stored && !isCmsPageLive(stored) && !revenueTemplate) notFound();
 
   const page = pageByRoute.get(route);
   const cmsLive = stored && isCmsPageLive(stored) ? stored : null;
@@ -50,7 +55,11 @@ export async function SiteShell({
     cmsLive?.canonical || page?.canonical || `https://thekpiplus.com${route === "/" ? "" : route}`;
   const kind = pageKind(route);
   // Article FAQs belong in the article itself when written for that post — not via shared SiteShell append.
-  const faqs = kind === "article" ? [] : faqsForRoute(route);
+  const cmsFaqs =
+    cmsLive?.template === REVENUE_CMS_TEMPLATE
+      ? parseRevenuePageBody(cmsLive.body, locale)?.faqs.map(({ q, a }) => ({ q, a }))
+      : null;
+  const faqs = kind === "article" ? [] : cmsFaqs?.length ? cmsFaqs : faqsForRoute(route);
   const faqJson = faqSchema(faqs);
   const crumbs = crumbsFor(route, locale, title);
   const howToSteps = howToStepsForRoute(route);
@@ -78,7 +87,7 @@ export async function SiteShell({
         <Header extraLinks={extraHeader} />
         <main>
           {children}
-          <PageFaqs items={faqs} locale={locale} />
+          {hideFaqs ? null : <PageFaqs items={faqs} locale={locale} />}
         </main>
         <Footer extraLinks={extraFooter} company={company} />
         <CookieConsent />

@@ -27,6 +27,8 @@ import {
   type ContactSaveResult,
 } from "./contact";
 import { parseSiteGlobals } from "@/lib/site-globals";
+import { REVENUE_CMS_TEMPLATE, REVENUE_PAGE_ROUTE, serializeRevenuePageBody } from "./revenue-page";
+import { defaultRevenueCms } from "./revenue-page-seed";
 
 async function requireCms() {
   const user = await requireUser();
@@ -218,6 +220,11 @@ export async function ensurePageFromSite(route: string) {
         },
       });
     }
+    if (normalized === REVENUE_PAGE_ROUTE) {
+      const { hydrateRevenueDocument } = await import("./revenue-page-actions");
+      const hydrated = await hydrateRevenueDocument(existing);
+      return hydrated.id;
+    }
     return existing.id;
   }
 
@@ -232,6 +239,7 @@ export async function ensurePageFromSite(route: string) {
     const label = siteMenuLabel(normalized, "th");
     return label === "—" ? "" : label;
   })();
+  const isRevenue = normalized === REVENUE_PAGE_ROUTE;
   const created = await db.cmsDocument.create({
     data: {
       kind: "page",
@@ -239,9 +247,9 @@ export async function ensurePageFromSite(route: string) {
       slug,
       locale: "th",
       status: "published",
-      template: "general",
+      template: isRevenue ? REVENUE_CMS_TEMPLATE : "general",
       excerpt: sitePage.description || "",
-      body: bodyFromMarkdown(markdown),
+      body: isRevenue ? serializeRevenuePageBody(defaultRevenueCms("th")) : bodyFromMarkdown(markdown),
       tags: "",
       seoTitle: sitePage.title,
       metaDescription: sitePage.description || "",
