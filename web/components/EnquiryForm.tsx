@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useId, useState } from "react";
 import { FormPrivacyNotice } from "@/components/FormPrivacyNotice";
+import { ReservationsEnquiryIntro } from "@/components/reservations/ReservationsEnquiryIntro";
 import { RevenueEnquiryIntro } from "@/components/revenue-commercial/RevenueEnquiryIntro";
 import { AUDIT_CONTACTS, readUtm } from "@/lib/audit";
 import { auditCopyFor } from "@/lib/audit-copy";
@@ -21,6 +22,8 @@ type FormState = {
   contact: string;
   serviceInterest: EnquiryServiceId | "";
   topic: string;
+  channels: string;
+  scope: string;
   message: string;
   consent: boolean;
   companyWebsite: string;
@@ -69,6 +72,39 @@ function composeRevenueMessage(topicId: string, message: string, locale: Locale)
       : `Topic: ${topic}`
     : "";
   return [prefix, message.trim()].filter(Boolean).join("\n\n");
+}
+
+const reservationsFormUi = {
+  th: {
+    work: "งานจอง",
+    channels: "ช่องทางงานจองที่ใช้ปัจจุบัน",
+    channelsHint: "เช่น LINE, อีเมล, โทรศัพท์, OTA",
+    scope: "ขอบเขตงานที่ต้องการ",
+    scopeHint: "งานที่อยากให้ทีมช่วยดูแล",
+    loading: "กำลังส่งข้อมูล กรุณารอสักครู่",
+  },
+  en: {
+    work: "Reservation work",
+    channels: "Current reservation channels",
+    channelsHint: "For example LINE, email, phone, OTA",
+    scope: "Requested service scope",
+    scopeHint: "The reservation work you want help with",
+    loading: "Sending your message. Please wait.",
+  },
+} as const;
+
+function composeReservationsMessage(channels: string, scope: string, message: string, locale: Locale) {
+  const thai = locale === "th";
+  const parts = [
+    channels.trim()
+      ? `${thai ? "ช่องทางงานจองที่ใช้ปัจจุบัน" : "Current reservation channels"}: ${channels.trim()}`
+      : "",
+    scope.trim()
+      ? `${thai ? "ขอบเขตงานที่ต้องการ" : "Requested service scope"}: ${scope.trim()}`
+      : "",
+    message.trim(),
+  ];
+  return parts.filter(Boolean).join("\n\n");
 }
 
 const b2bGroups = {
@@ -228,6 +264,8 @@ export function EnquiryForm({
     contact: "",
     serviceInterest: service ?? "",
     topic: "",
+    channels: "",
+    scope: "",
     message: "",
     consent: false,
     companyWebsite: "",
@@ -270,10 +308,14 @@ export function EnquiryForm({
           contact: state.contact.trim(),
           serviceInterest: serviceId,
           topic: service === "revenue" ? state.topic : undefined,
+          channels: service === "reservations" ? state.channels.trim() : undefined,
+          scope: service === "reservations" ? state.scope.trim() : undefined,
           message:
             service === "revenue"
               ? composeRevenueMessage(state.topic, state.message, locale)
-              : state.message.trim(),
+              : service === "reservations"
+                ? composeReservationsMessage(state.channels, state.scope, state.message, locale)
+                : state.message.trim(),
           consent: state.consent,
           honeypot: state.companyWebsite,
           pageUrl: typeof window === "undefined" ? "" : window.location.href,
@@ -640,48 +682,28 @@ export function EnquiryForm({
 
   if (service === "reservations" && !compact) {
     const groups = revenueGroups[locale];
+    const formUi = locale === "th" ? reservationsFormUi.th : reservationsFormUi.en;
     const labelClassName = "kpi-reservations-enquiry-label";
-    const points = [
-      "ดูช่องทางที่ลูกค้าติดต่อ",
-      "ดูขั้นตอนตอบและติดตาม",
-      "ดูจุดที่ทำให้ยอดจองหลุด",
-    ];
+    const sending = status === "submitting";
     return (
       <section id={sectionId} className="kpi-reservations-enquiry scroll-mt-28">
         <div className="kpi-section kpi-reservations-enquiry-grid">
-          <div className="kpi-reservations-enquiry-intro">
-            <p className="kpi-kicker kpi-reservations-enquiry-kicker">{kickerText}</p>
-            <h2 className="kpi-h2 kpi-reservations-enquiry-heading">{heading}</h2>
-            <p className="kpi-reservations-enquiry-lead">
-              {lead.split("\n").map((line, index) => (
-                <span key={line} className={index > 0 ? "kpi-reservations-enquiry-line" : undefined}>
-                  {line}
-                </span>
-              ))}
-            </p>
-            {locale === "th" ? (
-              <>
-                <ol className="kpi-reservations-enquiry-points">
-                  {points.map((point, index) => (
-                    <li key={point}>
-                      <span className="kpi-reservations-enquiry-num kpi-latin">{String(index + 1).padStart(2, "0")}</span>
-                      <span>{point}</span>
-                    </li>
-                  ))}
-                </ol>
-                <p className="kpi-reservations-enquiry-note">พูดคุยเบื้องต้นเพื่อดูแนวทางที่เหมาะกับโรงแรมของคุณ</p>
-              </>
-            ) : null}
-          </div>
+          <ReservationsEnquiryIntro
+            locale={locale}
+            kicker={kickerText}
+            heading={heading}
+            lead={lead}
+            photoSrc={consultantImageSrc}
+          />
           <div className="kpi-reservations-enquiry-panel">
             {status === "success" ? (
-              <div role="status">
+              <div role="status" aria-live="polite">
                 <p className="kpi-reservations-enquiry-success">{t.success}</p>
                 <p className="kpi-reservations-enquiry-reply">{auditCopyFor(locale).trustReply}</p>
                 <ContactNote locale={locale} className="kpi-reservations-enquiry-direct" />
               </div>
             ) : (
-              <form className="kpi-reservations-enquiry-fields" onSubmit={onSubmit} noValidate>
+              <form className="kpi-reservations-enquiry-fields" onSubmit={onSubmit} noValidate aria-busy={sending}>
                 <div className="kpi-reservations-enquiry-group">
                   <p className="kpi-reservations-enquiry-group-label">{groups.contact}</p>
                   <div className="kpi-reservations-enquiry-pair">
@@ -692,6 +714,7 @@ export function EnquiryForm({
                         autoComplete="name"
                         className="kpi-field"
                         value={state.name}
+                        disabled={sending}
                         aria-invalid={Boolean(errors.name)}
                         onBlur={() => validate()}
                         onChange={(event) => setState((current) => ({ ...current, name: event.target.value }))}
@@ -701,10 +724,11 @@ export function EnquiryForm({
                       <input
                         id={`${formId}-contact`}
                         name="contact"
-                        autoComplete="tel"
+                        autoComplete="email"
                         inputMode="email"
                         className="kpi-field"
                         value={state.contact}
+                        disabled={sending}
                         aria-invalid={Boolean(errors.contact)}
                         onBlur={() => validate()}
                         onChange={(event) => setState((current) => ({ ...current, contact: event.target.value }))}
@@ -721,6 +745,7 @@ export function EnquiryForm({
                       autoComplete="organization"
                       className="kpi-field"
                       value={state.businessName}
+                      disabled={sending}
                       aria-invalid={Boolean(errors.businessName)}
                       onBlur={() => validate()}
                       onChange={(event) => setState((current) => ({ ...current, businessName: event.target.value }))}
@@ -728,28 +753,73 @@ export function EnquiryForm({
                   </Field>
                 </div>
                 <div className="kpi-reservations-enquiry-group">
-                  <p className="kpi-reservations-enquiry-group-label">{groups.topic}</p>
-                  <Field label={t.message} htmlFor={`${formId}-message`} optional={t.messageOptional} labelClassName={labelClassName}>
-                    <textarea
-                      id={`${formId}-message`}
-                      name="message"
-                      rows={4}
+                  <p className="kpi-reservations-enquiry-group-label">{formUi.work}</p>
+                  <Field
+                    label={formUi.channels}
+                    htmlFor={`${formId}-channels`}
+                    optional={t.messageOptional}
+                    labelClassName={labelClassName}
+                  >
+                    <input
+                      id={`${formId}-channels`}
+                      name="channels"
                       className="kpi-field"
-                      placeholder={t.messageHint}
-                      value={state.message}
-                      onChange={(event) => setState((current) => ({ ...current, message: event.target.value }))}
+                      placeholder={formUi.channelsHint}
+                      value={state.channels}
+                      disabled={sending}
+                      onChange={(event) => setState((current) => ({ ...current, channels: event.target.value }))}
                     />
                   </Field>
+                  <div className="kpi-reservations-enquiry-stack">
+                    <Field
+                      label={formUi.scope}
+                      htmlFor={`${formId}-scope`}
+                      optional={t.messageOptional}
+                      labelClassName={labelClassName}
+                    >
+                      <input
+                        id={`${formId}-scope`}
+                        name="scope"
+                        className="kpi-field"
+                        placeholder={formUi.scopeHint}
+                        value={state.scope}
+                        disabled={sending}
+                        onChange={(event) => setState((current) => ({ ...current, scope: event.target.value }))}
+                      />
+                    </Field>
+                  </div>
+                  <div className="kpi-reservations-enquiry-stack">
+                    <Field
+                      label={t.message}
+                      htmlFor={`${formId}-message`}
+                      optional={t.messageOptional}
+                      labelClassName={labelClassName}
+                    >
+                      <textarea
+                        id={`${formId}-message`}
+                        name="message"
+                        rows={4}
+                        className="kpi-field"
+                        placeholder={t.messageHint}
+                        value={state.message}
+                        disabled={sending}
+                        onChange={(event) => setState((current) => ({ ...current, message: event.target.value }))}
+                      />
+                    </Field>
+                  </div>
                 </div>
                 <input type="hidden" name="serviceInterest" value={preset?.id ?? "reservations"} />
                 <div className="kpi-reservations-enquiry-privacy">
                   <FormPrivacyNotice locale={locale} />
                 </div>
-                <label className="kpi-reservations-enquiry-consent">
+                <label className="kpi-reservations-enquiry-consent" htmlFor={`${formId}-consent`}>
                   <input
+                    id={`${formId}-consent`}
                     type="checkbox"
                     checked={state.consent}
+                    disabled={sending}
                     aria-invalid={Boolean(errors.consent)}
+                    aria-describedby={errors.consent ? `${formId}-consent-error` : undefined}
                     onChange={(event) => setState((current) => ({ ...current, consent: event.target.checked }))}
                   />
                   <span>
@@ -760,7 +830,7 @@ export function EnquiryForm({
                   </span>
                 </label>
                 {errors.consent ? (
-                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                  <p id={`${formId}-consent-error`} className="kpi-reservations-enquiry-error" role="alert">
                     {errors.consent}
                   </p>
                 ) : null}
@@ -774,16 +844,21 @@ export function EnquiryForm({
                   className="absolute left-[-10000px] h-px w-px overflow-hidden"
                   onChange={(event) => setState((current) => ({ ...current, companyWebsite: event.target.value }))}
                 />
-                <button className="kpi-button" type="submit" disabled={status === "submitting"}>
-                  {status === "submitting" ? t.sending : cta}
+                <button className="kpi-button" type="submit" disabled={sending} aria-busy={sending}>
+                  {sending ? t.sending : cta}
                 </button>
+                {sending ? (
+                  <p className="kpi-reservations-enquiry-status" role="status" aria-live="polite">
+                    {formUi.loading}
+                  </p>
+                ) : null}
                 {status === "error" ? (
-                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                  <p className="kpi-reservations-enquiry-error" role="alert">
                     {t.failed}
                   </p>
                 ) : null}
                 {status === "unavailable" ? (
-                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                  <p className="kpi-reservations-enquiry-error" role="alert">
                     {t.unavailable}
                   </p>
                 ) : null}

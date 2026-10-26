@@ -1028,7 +1028,7 @@ form .kpi-button {
 }
 
 .kpi-reservations-hero-em {
-  color: var(--kpi-accent);
+  color: #A2DC25;
   font-weight: 700;
 }
 
@@ -1076,12 +1076,17 @@ form .kpi-button {
 }
 
 .kpi-reservations-hero .kpi-button {
+  min-height: 2.75rem;
   border-radius: 8px;
   box-shadow: none;
+  background: #A2DC25;
+  color: #1A3A02;
 }
 
 .kpi-reservations-hero .kpi-button:hover,
 .kpi-reservations-hero .kpi-button:active {
+  background: #8fc41c;
+  color: #1A3A02;
   box-shadow: none;
   filter: none;
 }
@@ -1113,26 +1118,95 @@ form .kpi-button {
   line-height: 1.65;
 }
 
+.kpi-reservations-hero-scope-intro {
+  max-width: 36rem;
+  margin: 1.15rem 0 0;
+  color: rgba(247, 251, 255, 0.78);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.55;
+}
+
+.kpi-reservations-hero-scope {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  max-width: 38rem;
+  margin: 0.7rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.kpi-reservations-hero-scope li {
+  padding: 0.28rem 0.55rem;
+  border: 1px solid rgba(162, 220, 37, 0.4);
+  border-radius: 999px;
+  background: rgba(162, 220, 37, 0.12);
+  color: #A2DC25;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.kpi-reservations-hero-visual {
+  margin: 0;
+  min-width: 0;
+  max-width: 560px;
+}
+
 .kpi-reservations-hero-photo {
   margin: 0;
+  min-width: 0;
+  max-width: 100%;
+  max-height: 350px;
+  aspect-ratio: 8 / 5;
+  overflow: hidden;
 }
 
 .kpi-reservations-hero-photo img {
   display: block;
   width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
+  height: 100%;
+  aspect-ratio: 8 / 5;
+  object-fit: contain;
   border-radius: 14px;
   box-shadow: none;
-  filter: saturate(0.88) contrast(0.97);
+}
+
+.kpi-reservations-hero-caption {
+  margin: 0.65rem 0 0;
+  color: rgba(247, 251, 255, 0.72);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.kpi-reservations-hero-photo.reservations-ops-frame img {
+  aspect-ratio: 8 / 5;
+  object-fit: contain;
+  border-radius: 0;
+  filter: none;
 }
 
 .kpi-shell :lang(th) .kpi-reservations-hero-lead,
 .kpi-shell :lang(th) .kpi-reservations-hero-outcome,
 .kpi-shell :lang(th) .kpi-reservations-hero-note,
-.kpi-shell :lang(th) .kpi-reservations-hero-crumb {
+.kpi-shell :lang(th) .kpi-reservations-hero-crumb,
+.kpi-shell :lang(th) .kpi-reservations-hero-scope-intro,
+.kpi-shell :lang(th) .kpi-reservations-hero-caption {
   font-family: "Noto Sans Thai", Tahoma, Arial, sans-serif !important;
   letter-spacing: 0 !important;
+}
+
+.kpi-reservations-hero-photo .reservations-queue {
+  box-sizing: border-box;
+  height: 100%;
+  padding: 0.7rem 0.75rem 0.6rem;
+  gap: 0.4rem;
+}
+
+.kpi-reservations-hero-photo .reservations-queue__row {
+  padding: 0.32rem 0.45rem;
 }
 
 @media (min-width: 64rem) {
@@ -1141,15 +1215,25 @@ form .kpi-button {
   }
 
   .kpi-reservations-hero-grid {
-    grid-template-columns: minmax(0, 0.55fr) minmax(0, 0.45fr);
+    grid-template-columns: minmax(0, 1fr) 560px;
     column-gap: 6%;
-    align-items: center;
+    align-items: start;
   }
 }
 
 @media (max-width: 63.99rem) {
-  .kpi-reservations-hero-photo {
+  .kpi-reservations-hero-visual {
     max-width: 36rem;
+  }
+}
+
+@media (max-width: 39.99rem) {
+  .kpi-reservations-hero-line {
+    white-space: normal;
+  }
+
+  .kpi-shell .kpi-reservations-hero h1.kpi-reservations-hero-title {
+    max-width: none;
   }
 }
 
@@ -2089,7 +2173,15 @@ form .kpi-button {
   line-height: 1.4;
 }
 
-.kpi-shell .kpi-reservations-problem-text {
+.kpi-reservations-problem-body {
+  display: grid;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.kpi-shell .kpi-reservations-problem-text,
+.kpi-shell .kpi-reservations-problem-impact,
+.kpi-shell .kpi-reservations-problem-support {
   margin: 0;
   color: #3b3b3b;
   font-size: 1.0625rem;
@@ -2098,7 +2190,30 @@ form .kpi-button {
   line-height: 1.65;
 }
 
+.kpi-shell .kpi-reservations-problem-impact,
+.kpi-shell .kpi-reservations-problem-support {
+  color: #555555;
+  font-size: 0.9375rem;
+  font-weight: 400;
+}
+
+.kpi-reservations-problem-layer-label {
+  display: block;
+  margin-bottom: 0.12rem;
+  color: #0b6660;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.kpi-reservations-problem-support .kpi-reservations-problem-layer-label {
+  color: #62800f;
+}
+
 .kpi-shell :lang(th) .kpi-reservations-problem-text,
+.kpi-shell :lang(th) .kpi-reservations-problem-impact,
+.kpi-shell :lang(th) .kpi-reservations-problem-support,
 .kpi-shell :lang(th) .kpi-reservations-problem-em {
   font-family: "Noto Sans Thai", Tahoma, Arial, sans-serif !important;
   letter-spacing: 0 !important;
@@ -2109,20 +2224,51 @@ form .kpi-button {
   font-weight: 700;
 }
 
+.kpi-reservations-problem-visual {
+  margin: 0;
+  min-width: 0;
+  max-width: 480px;
+}
+
 .kpi-reservations-problem-photo {
   margin: 0;
   min-width: 0;
+  max-width: 100%;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+}
+
+@media (max-width: 47.99rem) {
+  .kpi-reservations-problem-photo {
+    aspect-ratio: auto;
+    height: auto;
+    max-height: none;
+  }
 }
 
 .kpi-reservations-problem-photo img {
   display: block;
   width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  object-position: 62% 42%;
+  height: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: contain;
   border-radius: 14px;
   box-shadow: none;
-  filter: saturate(0.88) contrast(0.97);
+}
+
+.kpi-reservations-problem-photo-caption {
+  margin: 0.7rem 0 0;
+  color: #8a908c;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
+.kpi-reservations-problem-photo.reservations-ops-frame img {
+  aspect-ratio: 3 / 2;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 0;
+  filter: none;
 }
 
 .kpi-reservations-problem-photo figcaption {
@@ -2134,6 +2280,12 @@ form .kpi-button {
   line-height: 1.6;
 }
 
+.kpi-reservations-problem-photo.reservations-ops-frame figcaption {
+  margin: 0;
+  padding: 0 0.9rem 0.75rem;
+  color: rgba(247, 251, 255, 0.72);
+}
+
 .kpi-shell :lang(th) .kpi-reservations-problem-photo figcaption {
   font-family: "Noto Sans Thai", Tahoma, Arial, sans-serif !important;
   letter-spacing: 0 !important;
@@ -2141,8 +2293,12 @@ form .kpi-button {
 
 @media (min-width: 48rem) {
   .kpi-reservations-problems-grid {
-    grid-template-columns: minmax(0, 0.55fr) minmax(0, 0.45fr);
+    grid-template-columns: minmax(0, 1fr) 480px;
     column-gap: 6%;
+  }
+
+  .kpi-reservations-problem-photo {
+    max-height: 320px;
   }
 
   .kpi-reservations-problem-br {
@@ -2163,9 +2319,9 @@ form .kpi-button {
     line-height: 0;
   }
 
-  .kpi-reservations-problem-photo {
+  .kpi-reservations-problem-visual {
     position: sticky;
-    top: 5.75rem;
+    top: 7.25rem;
     align-self: start;
   }
 }
@@ -2224,6 +2380,175 @@ form .kpi-button {
 .kpi-reservations-help-grid {
   display: grid;
   margin-top: 1.75rem;
+}
+
+.kpi-reservations-scope-grid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.75rem;
+}
+
+.kpi-reservations-scope-card {
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr);
+  column-gap: 0.75rem;
+  min-width: 0;
+  padding: 1rem 0.95rem 1.05rem;
+  border: 1px solid #e3e8eb;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.kpi-reservations-scope-icon {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  color: #0b6660;
+  background: #f2f8e2;
+}
+
+.kpi-reservations-scope-copy {
+  min-width: 0;
+}
+
+.kpi-shell .kpi-reservations-scope-copy h3.kpi-reservations-help-name,
+.kpi-shell :lang(th) .kpi-reservations-scope-copy h3.kpi-reservations-help-name {
+  margin: 0.15rem 0 0;
+  font-size: 1.05rem !important;
+  line-height: 1.35 !important;
+}
+
+.kpi-reservations-scope-copy .kpi-reservations-help-body {
+  grid-column: auto;
+  margin: 0.35rem 0 0;
+}
+
+.kpi-reservations-scope-io {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0.75rem 0 0;
+}
+
+.kpi-reservations-scope-io dt {
+  color: #0b6660;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.kpi-reservations-scope-io dd {
+  margin: 0.12rem 0 0;
+  color: #3b3b3b;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.kpi-reservations-scope-channels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.7rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.kpi-reservations-scope-channels li {
+  padding: 0.18rem 0.5rem;
+  border-radius: 999px;
+  background: #f4f4f4;
+  color: #0b1f33;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.kpi-reservations-hotel-owns {
+  margin-top: 1.5rem;
+  padding: 1rem 1.1rem 1.05rem;
+  border: 1px solid #e3e8eb;
+  border-radius: 14px;
+  background: #f2f8e2;
+}
+
+.kpi-reservations-hotel-owns-title {
+  margin: 0;
+  color: #0b1f33;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.kpi-reservations-hotel-owns ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.7rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.kpi-reservations-hotel-owns li {
+  padding: 0.28rem 0.55rem;
+  border-radius: 999px;
+  background: #fff;
+  color: #1a3a02;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.kpi-reservations-hotel-owns-note {
+  margin: 0.7rem 0 0;
+  color: #555555;
+  font-size: 0.8125rem;
+  line-height: 1.55;
+}
+
+.kpi-reservations-service-map {
+  margin: 1.5rem 0 0;
+  min-width: 0;
+  max-width: 720px;
+}
+
+.kpi-reservations-service-map-photo {
+  margin: 0;
+  min-width: 0;
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.kpi-reservations-service-map-photo.reservations-ops-frame {
+  aspect-ratio: auto;
+  height: auto;
+  min-height: 405px;
+  max-height: none;
+  overflow: visible;
+}
+
+.kpi-reservations-service-map-caption {
+  margin: 0.7rem 0 0;
+  color: #8a908c;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 47.99rem) {
+  .kpi-reservations-service-map-photo {
+    aspect-ratio: auto;
+    height: auto;
+    max-height: none;
+  }
+}
+
+.kpi-shell :lang(th) .kpi-reservations-scope-io dd,
+.kpi-shell :lang(th) .kpi-reservations-hotel-owns-title,
+.kpi-shell :lang(th) .kpi-reservations-hotel-owns-note,
+.kpi-shell :lang(th) .kpi-reservations-hotel-owns li {
+  font-family: "Noto Sans Thai", Tahoma, Arial, sans-serif !important;
+  letter-spacing: 0 !important;
 }
 
 .kpi-reservations-help-step {
@@ -2300,10 +2625,14 @@ form .kpi-button {
   margin-top: 2.15rem;
   border-radius: 9px;
   box-shadow: none;
+  background: #A2DC25;
+  color: #1A3A02;
 }
 
 .kpi-reservations-help .kpi-reservations-help-cta:hover,
 .kpi-reservations-help .kpi-reservations-help-cta:active {
+  background: #8fc41c;
+  color: #1A3A02;
   box-shadow: none;
   transform: none;
   filter: none;
@@ -2328,9 +2657,15 @@ form .kpi-button {
 }
 
 @media (min-width: 48rem) {
-  .kpi-reservations-help-grid {
+  .kpi-reservations-help-grid,
+  .kpi-reservations-scope-grid {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    column-gap: 2.75rem;
+    column-gap: 1.15rem;
+    row-gap: 1rem;
+  }
+
+  .kpi-reservations-service-map-photo {
+    max-height: 405px;
   }
 
   .kpi-reservations-help-step:nth-child(odd):not(.is-outcome) {
@@ -2405,7 +2740,7 @@ form .kpi-button {
 }
 
 .kpi-reservations-direct-inner {
-  max-width: 44rem;
+  max-width: 720px;
 }
 
 .kpi-shell .kpi-reservations-direct h2.kpi-reservations-direct-title {
@@ -2538,6 +2873,201 @@ form .kpi-button {
   }
 }
 
+.kpi-reservations-booking-flow {
+  margin: 1.5rem 0 0;
+  min-width: 0;
+  max-width: 720px;
+}
+
+.kpi-reservations-booking-flow-photo {
+  margin: 0;
+  min-width: 0;
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.kpi-reservations-booking-flow-photo.reservations-ops-frame {
+  aspect-ratio: auto;
+  height: auto;
+  max-height: none;
+}
+
+@media (min-width: 48rem) {
+  .kpi-reservations-booking-flow-photo,
+  .kpi-reservations-booking-flow-photo.reservations-ops-frame {
+    aspect-ratio: 16 / 9;
+    max-height: 405px;
+  }
+}
+
+.reservations-booking-flow-svg {
+  display: none;
+  width: 100%;
+  height: auto;
+}
+
+.reservations-booking-flow-mobile-head {
+  padding: 0.75rem 0.9rem 0;
+  color: #f7fbff;
+}
+
+.reservations-booking-flow-mobile-head strong {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.92rem;
+  line-height: 1.35;
+}
+
+.reservations-booking-flow-stack {
+  display: grid;
+  gap: 0.15rem;
+  margin: 0;
+  padding: 0.85rem 0.9rem 0.85rem;
+  list-style: none;
+  color: #f7fbff;
+}
+
+.reservations-booking-flow-stack li {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  column-gap: 0.55rem;
+  align-items: center;
+  min-width: 0;
+}
+
+.reservations-booking-flow-stack li + li {
+  margin-top: 0.15rem;
+}
+
+.reservations-booking-flow-chevron {
+  grid-column: 1 / -1;
+  justify-self: start;
+  margin: 0.05rem 0 0.15rem 0.35rem;
+  width: 18px;
+  height: 18px;
+}
+
+.reservations-booking-flow-stack__num {
+  display: grid;
+  place-items: center;
+  width: 1.85rem;
+  height: 1.85rem;
+  border-radius: 999px;
+  background: #a2dc25;
+  color: #1a3a02;
+  font-size: 0.68rem;
+  font-weight: 800;
+}
+
+.reservations-booking-flow-stack strong {
+  min-width: 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 48rem) {
+  .reservations-booking-flow-mobile-head,
+  .reservations-booking-flow-stack {
+    display: none;
+  }
+
+  .reservations-booking-flow-svg {
+    display: block;
+  }
+}
+
+.kpi-reservations-booking-flow-caption {
+  margin: 0.7rem 0 0;
+  color: #8a908c;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
+.kpi-reservations-booking-flow-sla {
+  margin: 0.45rem 0 0;
+  color: #555555;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.kpi-reservations-benefits-grid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.kpi-reservations-benefit-group {
+  min-width: 0;
+  padding: 1rem 1.05rem 1.05rem;
+  border: 1px solid #e3e8eb;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.kpi-shell .kpi-reservations-benefit-group h3,
+.kpi-shell :lang(th) .kpi-reservations-benefit-group h3 {
+  margin: 0;
+  color: #0b6660;
+  font-family: Poppins, sans-serif !important;
+  font-size: 0.78rem !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.08em !important;
+  line-height: 1.3 !important;
+  text-transform: uppercase;
+}
+
+.kpi-reservations-benefit-kicker {
+  margin: 0.2rem 0 0;
+  color: #0b1f33;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.kpi-reservations-benefit-group ul {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.kpi-reservations-benefit-group li {
+  position: relative;
+  padding-left: 0.9rem;
+  color: #3b3b3b;
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+.kpi-reservations-benefit-group li::before {
+  content: "";
+  position: absolute;
+  top: 0.55rem;
+  left: 0;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 999px;
+  background: #a2dc25;
+}
+
+.kpi-shell :lang(th) .kpi-reservations-benefit-kicker,
+.kpi-shell :lang(th) .kpi-reservations-benefit-group li,
+.kpi-shell :lang(th) .kpi-reservations-booking-flow-sla {
+  font-family: "Noto Sans Thai", Tahoma, Arial, sans-serif !important;
+  letter-spacing: 0 !important;
+}
+
+@media (min-width: 48rem) {
+  .kpi-reservations-benefits-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-gap: 1rem;
+  }
+}
+
 .kpi-shell .kpi-reservations-split h2.kpi-reservations-split-title {
   max-width: none;
   font-weight: 700;
@@ -2586,6 +3116,37 @@ form .kpi-button {
   font-weight: 600 !important;
   letter-spacing: 0 !important;
   line-height: 1.35 !important;
+}
+
+.kpi-shell .reservations-handoff-step h3,
+.kpi-shell :lang(th) .reservations-handoff-step h3 {
+  margin: 0;
+  color: #0b1f33;
+  font-family: Poppins, sans-serif !important;
+  font-size: 1.125rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+.kpi-shell :lang(th) .reservations-handoff-step__title-th,
+.kpi-shell :lang(th) .reservations-handoff-owner,
+.kpi-shell :lang(th) .reservations-handoff-step dd {
+  font-family: "Noto Sans Thai", Tahoma, Arial, sans-serif !important;
+  letter-spacing: 0 !important;
+}
+
+@media (min-width: 64rem) {
+  .reservations-handoff {
+    grid-template-columns: minmax(0, 1fr) 640px;
+    column-gap: 2rem;
+    align-items: start;
+  }
+
+  .reservations-handoff-visual {
+    position: sticky;
+    top: 7.25rem;
+  }
 }
 
 .kpi-shell :lang(th) .kpi-reservations-split h3 {
@@ -2859,19 +3420,116 @@ form .kpi-button {
   line-height: 1.7;
 }
 
+.kpi-reservations-measure-sample {
+  width: fit-content;
+  max-width: 100%;
+  margin: 1rem 0 0;
+  padding: 0.28rem 0.55rem;
+  border-radius: 999px;
+  background: rgba(162, 220, 37, 0.22);
+  color: #1A3A02;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
 .kpi-reservations-measure-metrics {
   display: grid;
-  margin-top: 1.65rem;
-  border-top: 1px solid #e3e8eb;
-  border-bottom: 1px solid #e3e8eb;
+  gap: 0.75rem;
+  margin-top: 1.15rem;
 }
 
 .kpi-reservations-measure-metric {
-  padding: 0.95rem 0;
+  min-width: 0;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid #e3e8eb;
+  border-radius: 12px;
+  background: #fff;
 }
 
-.kpi-reservations-measure-metric + .kpi-reservations-measure-metric {
-  border-top: 1px solid #e3e8eb;
+.kpi-reservations-kpi-visual {
+  margin: 1.35rem 0 0;
+  min-width: 0;
+  max-width: 720px;
+}
+
+.kpi-reservations-kpi-visual-photo {
+  margin: 0;
+  min-width: 0;
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.kpi-reservations-kpi-visual-photo.reservations-ops-frame {
+  aspect-ratio: auto;
+  height: auto;
+  max-height: none;
+}
+
+@media (min-width: 48rem) {
+  .kpi-reservations-kpi-visual-photo,
+  .kpi-reservations-kpi-visual-photo.reservations-ops-frame {
+    aspect-ratio: 16 / 9;
+    max-height: 405px;
+  }
+}
+
+.kpi-reservations-kpi-visual-caption {
+  margin: 0.7rem 0 0;
+  color: #8a908c;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+
+.kpi-reservations-measure-value {
+  margin: 0.35rem 0 0;
+  color: #0b1f33;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.kpi-reservations-measure-value-label {
+  display: block;
+  margin-bottom: 0.15rem;
+  color: #0b6660;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.kpi-reservations-measure-meta {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0.7rem 0 0;
+}
+
+.kpi-reservations-measure-meta > div {
+  min-width: 0;
+}
+
+.kpi-reservations-measure-meta dt {
+  color: #0b6660;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.kpi-reservations-measure-meta dd {
+  margin: 0.12rem 0 0;
+  color: #555555;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+@media (min-width: 40rem) {
+  .kpi-reservations-measure-metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .kpi-shell .kpi-reservations-measure-name {
@@ -2918,7 +3576,12 @@ form .kpi-button {
 .kpi-shell :lang(th) .kpi-reservations-measure-label,
 .kpi-shell :lang(th) .kpi-reservations-measure-close,
 .kpi-shell :lang(th) .kpi-reservations-measure-close-strong,
+.kpi-shell :lang(th) .kpi-reservations-measure-meta dt,
+.kpi-shell :lang(th) .kpi-reservations-measure-meta dd,
+.kpi-shell :lang(th) .kpi-reservations-kpi-visual-caption,
 .kpi-shell :lang(th) .kpi-reservations-related-cat,
+.kpi-shell :lang(th) .kpi-reservations-related-meta,
+.kpi-shell :lang(th) .kpi-reservations-related-visual-caption,
 .kpi-shell :lang(th) .kpi-reservations-related-item p {
   font-family: "Noto Sans Thai", Tahoma, Arial, sans-serif !important;
   letter-spacing: 0 !important;
@@ -3006,11 +3669,25 @@ form .kpi-button {
 }
 
 .kpi-reservations-related-item .kpi-reservations-related-cat {
-  margin-top: 0.8rem;
+  margin-top: 0;
   color: #7d9a16;
   font-size: 0.75rem;
   font-weight: 600;
   line-height: 1.4;
+}
+
+.kpi-reservations-related-item.is-featured .kpi-reservations-related-cat {
+  margin-top: 0.15rem;
+}
+
+.kpi-reservations-related-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.85rem;
+  margin: 0.7rem 0 0;
+  color: #617487;
+  font-size: 0.75rem;
+  line-height: 1.45;
 }
 
 .kpi-reservations-related-cta {
@@ -3035,27 +3712,6 @@ form .kpi-button {
 }
 
 @media (min-width: 40rem) {
-  .kpi-reservations-measure-metrics {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .kpi-reservations-measure-metric {
-    padding: 1rem 1.15rem 1rem 0;
-  }
-
-  .kpi-reservations-measure-metric + .kpi-reservations-measure-metric {
-    border-top: 0;
-  }
-
-  .kpi-reservations-measure-metric:nth-child(even) {
-    padding-left: 1.15rem;
-    border-left: 1px solid #e3e8eb;
-  }
-
-  .kpi-reservations-measure-metric:nth-child(n + 3) {
-    border-top: 1px solid #e3e8eb;
-  }
-
   .kpi-reservations-measure-br,
   .kpi-reservations-related-br {
     display: block;
@@ -3084,20 +3740,7 @@ form .kpi-button {
 
 @media (min-width: 64rem) {
   .kpi-reservations-measure-metrics {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  .kpi-reservations-measure-metric,
-  .kpi-reservations-measure-metric:nth-child(even),
-  .kpi-reservations-measure-metric:nth-child(n + 3) {
-    padding: 1.15rem 1.2rem 1.15rem 0;
-    border-top: 0;
-    border-left: 0;
-  }
-
-  .kpi-reservations-measure-metric + .kpi-reservations-measure-metric {
-    padding-left: 1.25rem;
-    border-left: 1px solid #e3e8eb;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -4826,7 +5469,9 @@ a.kpi-revenue-related-item {
 .kpi-shell :lang(th) .kpi-reservations-enquiry-heading,
 .kpi-shell :lang(th) .kpi-reservations-enquiry-lead,
 .kpi-shell :lang(th) .kpi-reservations-enquiry-line,
+.kpi-shell :lang(th) .kpi-reservations-enquiry-next-title,
 .kpi-shell :lang(th) .kpi-reservations-enquiry-points,
+.kpi-shell :lang(th) .kpi-reservations-enquiry-trust,
 .kpi-shell :lang(th) .kpi-reservations-enquiry-note,
 .kpi-shell :lang(th) .kpi-reservations-enquiry-group-label,
 .kpi-shell :lang(th) .kpi-reservations-enquiry-label,
@@ -4834,7 +5479,9 @@ a.kpi-revenue-related-item {
 .kpi-shell :lang(th) .kpi-reservations-enquiry-consent,
 .kpi-shell :lang(th) .kpi-reservations-enquiry-reply,
 .kpi-shell :lang(th) .kpi-reservations-enquiry-direct,
-.kpi-shell :lang(th) .kpi-reservations-enquiry-success {
+.kpi-shell :lang(th) .kpi-reservations-enquiry-success,
+.kpi-shell :lang(th) .kpi-reservations-enquiry-status,
+.kpi-shell :lang(th) .kpi-reservations-enquiry-error {
   font-family: "Noto Sans Thai", Tahoma, Arial, sans-serif !important;
   letter-spacing: 0 !important;
 }
@@ -4852,8 +5499,20 @@ a.kpi-revenue-related-item {
   display: block;
 }
 
+.kpi-reservations-enquiry-next {
+  margin-top: 1.35rem;
+}
+
+.kpi-reservations-enquiry-next-title {
+  margin: 0;
+  color: #0b1f33;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
 .kpi-reservations-enquiry-points {
-  margin: 1.25rem 0 0;
+  margin: 0.85rem 0 0;
   padding: 0;
   list-style: none;
 }
@@ -4879,6 +5538,76 @@ a.kpi-revenue-related-item {
   line-height: 1.4;
 }
 
+.kpi-reservations-enquiry-trust {
+  margin: 1.15rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.kpi-reservations-enquiry-trust li {
+  position: relative;
+  margin-top: 0.45rem;
+  padding-left: 1rem;
+  color: #555555;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.kpi-reservations-enquiry-trust li::before {
+  content: "";
+  position: absolute;
+  top: 0.55rem;
+  left: 0;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 999px;
+  background: #a2dc25;
+}
+
+.kpi-reservations-enquiry-photo {
+  width: 100%;
+  max-width: 420px;
+  margin: 1.35rem 0 0;
+}
+
+.kpi-reservations-enquiry-photo img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+  background: #0b1f33;
+}
+
+.kpi-reservations-enquiry-photo figcaption {
+  margin-top: 0.4rem;
+  color: #6a6a6a;
+  font-size: 0.75rem;
+  line-height: 1.45;
+}
+
+.kpi-reservations-enquiry-stack {
+  margin-top: 0.85rem;
+}
+
+.kpi-reservations-enquiry-status {
+  margin: 0.55rem 0 0;
+  color: #0b6660;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.kpi-reservations-enquiry-error {
+  margin: 0.55rem 0 0;
+  color: #c45c26;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
 .kpi-reservations-enquiry-note {
   max-width: 22rem;
   margin: 1.15rem 0 0;
@@ -4886,6 +5615,11 @@ a.kpi-revenue-related-item {
   font-size: 0.8125rem;
   font-weight: 400;
   line-height: 1.65;
+}
+
+.kpi-reservations-enquiry .kpi-button:disabled {
+  opacity: 0.72;
+  cursor: wait;
 }
 
 .kpi-reservations-enquiry-panel {
@@ -4999,13 +5733,28 @@ a.kpi-revenue-related-item {
   border-radius: 9px;
   box-shadow: none;
   font-weight: 600;
+  background: #A2DC25;
+  color: #1A3A02;
 }
 
 .kpi-reservations-enquiry .kpi-button:hover,
 .kpi-reservations-enquiry .kpi-button:active {
+  background: #8fc41c;
+  color: #1A3A02;
   transform: none;
   box-shadow: none;
   filter: none;
+}
+
+.kpi-reservations-sticky .kpi-button {
+  background: #A2DC25;
+  color: #1A3A02;
+}
+
+.kpi-reservations-sticky .kpi-button:hover,
+.kpi-reservations-sticky .kpi-button:active {
+  background: #8fc41c;
+  color: #1A3A02;
 }
 
 .kpi-reservations-enquiry-reply {
@@ -22298,6 +23047,7 @@ a.kpi-revenue-related-item {
 }
 
 .kpi-shell :lang(th) .kpi-faq-home .kpi-faq-trigger,
+.kpi-shell :lang(th) .kpi-faq-home .kpi-faq-lead,
 .kpi-shell :lang(th) .kpi-faq-home .kpi-faq-panel p {
   font-family: "Noto Sans Thai", Tahoma, Arial, sans-serif;
 }
@@ -22364,6 +23114,74 @@ a.kpi-revenue-related-item {
 @media (prefers-reduced-motion: reduce) {
   .kpi-faq-home .kpi-faq-panel {
     transition: none;
+  }
+}
+
+.kpi-shell:has(.kpi-reservations-hero) .kpi-faq-home {
+  scroll-margin-top: 7.25rem;
+}
+
+.kpi-shell:has(.kpi-reservations-hero) .kpi-faq-home .kpi-faq-lead {
+  max-width: 40rem;
+  margin: 0.75rem 0 0;
+  color: #555555;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.kpi-shell:has(.kpi-reservations-hero) .kpi-faq-home .kpi-faq-list {
+  max-width: min(44rem, 100%);
+  padding-inline: 0.2rem;
+}
+
+.kpi-shell:has(.kpi-reservations-hero) .kpi-faq-home .kpi-faq-item.is-open::before {
+  background: #a2dc25;
+}
+
+.kpi-shell:has(.kpi-reservations-hero) .kpi-faq-home .kpi-faq-trigger {
+  min-height: var(--kpi-touch);
+}
+
+.kpi-shell:has(.kpi-reservations-hero) .kpi-faq-home .kpi-faq-trigger:focus,
+.kpi-shell:has(.kpi-reservations-hero) .kpi-faq-home .kpi-faq-trigger:focus-visible {
+  outline: 2px solid #a2dc25;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px #ffffff, 0 0 0 5px #a2dc25;
+}
+
+.kpi-shell:has(.kpi-reservations-hero) .kpi-faq-home .kpi-faq-item.is-open .kpi-faq-mark {
+  color: #0b6660;
+}
+
+.kpi-shell:has(.kpi-reservations-hero) .kpi-faq-home .kpi-faq-q {
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
+
+.kpi-shell:has(.kpi-reservations-hero) .kpi-faq-home .kpi-faq-panel p {
+  max-width: 40rem;
+  text-wrap: pretty;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 39.99rem) {
+  .kpi-shell:has(.kpi-reservations-hero) .kpi-faq-home .kpi-faq-lead {
+    font-size: 0.9375rem;
+    line-height: 1.75;
+  }
+
+  .kpi-shell:has(.kpi-reservations-hero) .kpi-faq-home .kpi-faq-trigger {
+    gap: 0.75rem;
+    padding-top: 0.9rem;
+    padding-bottom: 0.9rem;
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .kpi-shell:has(.kpi-reservations-hero) .kpi-faq-home .kpi-faq-panel p {
+    padding-right: 0;
+    font-size: 0.9375rem;
+    line-height: 1.75;
   }
 }
 

@@ -39,6 +39,92 @@ const caseStudiesFaqsEn: FaqItem[] = [
   },
 ];
 
+const reservationsFaqsTh: FaqItem[] = [
+  {
+    q: "The KPI Plus ดูแลงาน Reservations ส่วนใดบ้าง",
+    a: "ทีมดูแลงาน Reservations ตามขอบเขตที่ตกลงกับโรงแรม งานที่อาจอยู่ในขอบเขต ได้แก่ Inquiry Handling, Booking Entry, Availability / Rate Check, Modification, Cancellation, Confirmation, Channel Coordination และ Reservation Reporting โรงแรมอาจเริ่มจากบางช่องทาง บางช่วงเวลา หรือบางขั้นตอน กลยุทธ์ราคา นโยบายห้องว่าง ข้อยกเว้นการคืนเงิน การชดเชยแขก และนโยบายปฏิบัติงานขั้นสุดท้ายเป็นของโรงแรม",
+  },
+  {
+    q: "รองรับ Email, Phone, Website และ OTA หรือไม่",
+    a: "Email, Phone และ Website อยู่ในช่องทางที่อาจตกลงให้ดูแลได้ รวมถึง LINE และ Social ตามข้อมูลบริการ งานที่เกี่ยวกับ OTA เช่น ตรวจห้องว่างและราคา หรือประสานข้อมูลห้องว่างให้สอดคล้องกัน อาจอยู่ในขอบเขตเมื่อโรงแรมตกลง ช่องทางที่ใช้จริงจะระบุก่อนเริ่มงาน ไม่ได้หมายความว่าทุกช่องทางจะเปิดครบในทุกโรงแรม",
+  },
+  {
+    q: "ใช้ PMS หรือระบบจองเดิมของโรงแรมได้หรือไม่",
+    a: "ไม่จำเป็นต้องเปลี่ยน PMS หรือระบบจองก่อนเริ่ม ทีมจะดูระบบที่ใช้อยู่ สิทธิ์การเข้าถึง และวิธีส่งต่อรายละเอียด แล้วตกลงกระบวนการที่ทำงานได้จริง การเชื่อมต่อระบบจะยืนยันได้ก็ต่อเมื่อตรวจและตกลงกับโรงแรมแล้ว ไม่ได้ระบุเป็นข้อเท็จจริงล่วงหน้า",
+  },
+  {
+    q: "ใครเป็นผู้ยืนยัน Rate และ Availability",
+    a: "โรงแรมเป็นผู้ยืนยันราคาและห้องว่างที่ใช้ตอบลูกค้า เดอะ เคพีไอ พลัส ตรวจและแจ้งตัวเลือกจากข้อมูลที่โรงแรมอนุมัติแล้ว หากราคาหรือห้องอยู่นอกเงื่อนไขที่อนุมัติ จะส่งต่อให้โรงแรมตัดสินใจ",
+  },
+  {
+    q: "กำหนด SLA และเวลาทำงานอย่างไร",
+    a: "ช่วงเวลาที่ดูแลจะระบุในขอบเขตบริการของแต่ละโรงแรม รวมถึงวิธีรับและส่งต่องานนอกเวลาที่ตกลงกัน SLA และเวลาทำงานตกลงก่อนเริ่มงาน หน้านี้ไม่ได้ระบุชั่วโมงตอบกลับหรือค่า SLA เป็นตัวเลข",
+  },
+  {
+    q: "รองรับภาษาไทยและภาษาอังกฤษหรือไม่",
+    a: "ภาษาที่ใช้ตอบลูกค้าจะตกลงในขอบเขตบริการก่อนเริ่มงาน หน้านี้ยังไม่มีรายการภาษาที่อนุมัติเผยแพร่ จึงยังไม่ระบุว่าครอบคลุมภาษาไทยและภาษาอังกฤษในทุกโรงแรม โรงแรมระบุภาษาที่ต้องการใช้ตอนคุยเรื่องขอบเขตงานได้",
+  },
+  {
+    q: "ทีมโรงแรมต้องเตรียมข้อมูลอะไร",
+    a: "เริ่มจากข้อมูลที่โรงแรมสะดวกแชร์ได้ เช่น ช่องทางที่ลูกค้าติดต่อ ระบบจองหรือ PMS ที่ใช้อยู่ ราคาและเงื่อนไขที่อนุมัติ ช่วงเวลาที่ต้องการให้ช่วย และผู้มีสิทธิ์อนุมัติกรณีพิเศษ ไม่ต้องส่งรายงานครบในครั้งแรก รายละเอียดเพิ่มจะคุยตอนกำหนดขอบเขตงาน",
+  },
+  {
+    q: "Modification และ Cancellation จัดการอย่างไร",
+    a: "การแก้ไขและการยกเลิกอาจอยู่ในขอบเขตที่ตกลงกัน ทีมปรับรายละเอียดการจองตามเงื่อนไขที่โรงแรมอนุมัติ และดำเนินการยกเลิกตามนโยบายของโรงแรม พร้อมบันทึกสถานะให้ชัด ข้อยกเว้นการคืนเงินหรือการชดเชยแขกส่งต่อให้โรงแรมตัดสินใจ",
+  },
+  {
+    q: "มีรายงานสรุปให้โรงแรมหรือไม่",
+    a: "เมื่องาน Reservation Reporting อยู่ในขอบเขตที่ตกลงกัน ทีมสรุปข้อเท็จจริงจากงานจองตามช่องทางและระบบที่มีอยู่ เพื่อให้โรงแรมทบทวนร่วมกัน ผลลัพธ์ของงานนี้คือสรุปงานจองรายสัปดาห์ โรงแรมที่ยังไม่ได้ตกลงงานรายงานจะยังไม่ได้รับสรุปนี้",
+  },
+  {
+    q: "ดูแลหลายโรงแรมในระบบเดียวกันได้หรือไม่",
+    a: "แต่ละโรงแรมตกลงขอบเขตงาน ช่องทาง สิทธิ์เข้าถึงระบบ และวิธีส่งต่อของตนเอง หน้านี้ไม่ได้ระบุว่าระบบเดียวใช้ร่วมกันหลายโรงแรมเป็นข้อเท็จจริง หากเป็นกลุ่มโรงแรม รายละเอียดการดูแลหลายแห่งจะคุยตอนกำหนดขอบเขตงาน",
+  },
+];
+
+const reservationsFaqsEn: FaqItem[] = [
+  {
+    q: "Which reservation work does The KPI Plus look after?",
+    a: "The team looks after reservation work in the scope agreed with the hotel. That may include Inquiry Handling, Booking Entry, Availability / Rate Check, Modification, Cancellation, Confirmation, Channel Coordination, and Reservation Reporting. The hotel can start with some channels, hours, or steps. Rate strategy, inventory policy, refund exceptions, guest compensation, and final operating policies stay with the hotel.",
+  },
+  {
+    q: "Can the work cover Email, Phone, Website, and OTA?",
+    a: "Email, Phone, and Website can be among the channels agreed for cover, along with LINE and Social in the service data. OTA work such as checking availability and rates, or keeping availability information consistent, can sit in scope when the hotel agrees. The channels in use are written before work starts. That does not mean every channel is open for every hotel.",
+  },
+  {
+    q: "Can you use the hotel’s existing PMS or booking system?",
+    a: "The hotel does not need to change the PMS or booking system first. The team reviews the current system, access, and how details are handed over, then agrees a process that can actually run. A system integration is not stated as a fact until it has been reviewed and agreed with the hotel.",
+  },
+  {
+    q: "Who confirms rate and availability?",
+    a: "The hotel confirms the rates and availability used in the guest reply. The KPI Plus checks and states options from facts the hotel has already approved. A rate or room outside those approved conditions goes back to the hotel for a decision.",
+  },
+  {
+    q: "How are SLA and working hours set?",
+    a: "The hours of cover are written in each hotel’s service scope, including how work outside those hours is received and handed over. SLA and working hours are agreed before work starts. This page does not publish a reply-time number or a fixed SLA.",
+  },
+  {
+    q: "Is Thai and English supported?",
+    a: "The languages used with guests are agreed in the service scope before work starts. This page does not publish an approved language list, so Thai and English are not stated as a fact for every hotel. The hotel can name the languages it needs when discussing scope.",
+  },
+  {
+    q: "What does the hotel team need to prepare?",
+    a: "Start with what the hotel can share: the channels guests use, the PMS or booking system in place, approved rates and conditions, the hours of help needed, and who can approve exceptions. A complete report is not required on the first enquiry. Further detail is discussed when the service scope is set.",
+  },
+  {
+    q: "How are modifications and cancellations handled?",
+    a: "Modification and cancellation can sit in the agreed scope. The team updates booking details using the hotel’s approved conditions, and runs a cancellation by the hotel’s policy, recording the status clearly. Refund exceptions and guest compensation go back to the hotel.",
+  },
+  {
+    q: "Does the hotel receive a summary report?",
+    a: "When Reservation Reporting sits in the agreed scope, the team shares reservation facts from the channels and systems in place, so the hotel can review them. The output of that work is a weekly reservation summary. A hotel that has not agreed reporting in scope does not receive this summary.",
+  },
+  {
+    q: "Can several hotels be looked after in the same system?",
+    a: "Each hotel agrees its own scope, channels, system access, and hand-over path. This page does not state that several hotels share one system as a fact. If the enquiry is for a hotel group, how several properties are looked after is discussed when the service scope is set.",
+  },
+];
+
 const insightsIndexFaqsEn: FaqItem[] = [
   {
     q: "Which types of hotels are the articles for?",
@@ -877,94 +963,10 @@ const table: Record<string, FaqItem[]> = {
       a: "協助確認客房、價格、方案、現場情況，以及會影響營運的決定，再依談好的職責與 The KPI Plus 一起做。",
     },
   ],
-  "/solutions/outsourced-hotel-reservations": [
-    {
-      q: "เดอะ เคพีไอ พลัส รับจองแทนทีมโรงแรมจริงไหม?",
-      a: "รับดูแลงาน Reservations ตามช่องทาง เวลา และขั้นตอนที่ตกลงกัน ไม่ได้จำกัดอยู่ที่การให้คำแนะนำเรื่อง workflow เท่านั้น",
-    },
-    {
-      q: "ต้องโอนงานจองทั้งหมดมาให้ทีมไหม?",
-      a: "ไม่จำเป็น โรงแรมอาจเริ่มจากบางช่องทาง บางช่วงเวลา หรือบางขั้นตอน เช่น การตอบคำถามและติดตามลูกค้า แล้วกำหนดส่วนที่ทีมโรงแรมจะดูแลต่อ",
-    },
-    {
-      q: "ต้องเปลี่ยน PMS หรือระบบจองก่อนหรือไม่?",
-      a: "ไม่จำเป็นต้องเปลี่ยนก่อนเริ่ม ทีมจะตรวจระบบที่ใช้อยู่ สิทธิ์การเข้าถึง และวิธีส่งต่อข้อมูล แล้วตกลงกระบวนการที่ทำงานได้จริง",
-    },
-    {
-      q: "ใครเป็นผู้กำหนดราคาและอนุมัติข้อเสนอ?",
-      a: "โรงแรมเป็นผู้กำหนดนโยบายและสิทธิ์อนุมัติ เดอะ เคพีไอ พลัส ตอบและดำเนินงานตามข้อมูลที่ตกลงกัน หากมีกรณีนอกเงื่อนไขจะส่งให้ผู้รับผิดชอบของโรงแรมตัดสินใจ",
-    },
-    {
-      q: "บริการตอบลูกค้า 24 ชั่วโมงไหม?",
-      a: "ช่วงเวลาที่ดูแลจะระบุในขอบเขตบริการของแต่ละโรงแรม รวมถึงวิธีรับและส่งต่องานนอกเวลาที่ตกลงกัน",
-    },
-  ],
-  "/en/solutions/outsourced-hotel-reservations": [
-    {
-      q: "Does The KPI Plus actually take bookings for the hotel team?",
-      a: "Yes, within the channels, hours, and steps that were agreed. The work is not limited to advice about the workflow.",
-    },
-    {
-      q: "Do we have to hand over all reservation work?",
-      a: "No. The hotel can start with some channels, some hours, or some steps, such as answering and follow-up, then keep the rest with the hotel team.",
-    },
-    {
-      q: "Do we need to change the PMS or booking system first?",
-      a: "No. The team reviews the current system, access, and how details are handed over, then agrees a process that can actually run.",
-    },
-    {
-      q: "Who sets the rate and approves an offer?",
-      a: "The hotel sets the policy and approval rights. The KPI Plus replies and works from the agreed facts. Anything outside those conditions goes back to the hotel owner of that decision.",
-    },
-    {
-      q: "Is this a 24-hour reply service?",
-      a: "The hours of cover are written in each hotel’s service scope, including how work outside those hours is received and handed over.",
-    },
-  ],
-  "/ru/solutions/outsourced-hotel-reservations": [
-    {
-      q: "The KPI Plus действительно принимает брони вместо команды отеля?",
-      a: "Да, в границах каналов, часов и шагов, которые согласовали. Работа не ограничивается советом по процессу.",
-    },
-    {
-      q: "Нужно ли передавать всю работу брони?",
-      a: "Нет. Отель может начать с части каналов, часов или шагов, например ответов и напоминаний, а остальное оставить команде отеля.",
-    },
-    {
-      q: "Нужно ли сначала менять PMS или систему брони?",
-      a: "Нет. Команда смотрит текущую систему, доступ и способ передачи данных, затем согласовывает процесс, который реально работает.",
-    },
-    {
-      q: "Кто задаёт цену и утверждает предложение?",
-      a: "Отель задаёт правила и право утверждения. The KPI Plus отвечает и работает по согласованным данным. Всё вне условий возвращается ответственному в отеле.",
-    },
-    {
-      q: "Это круглосуточные ответы?",
-      a: "Часы работы пишутся в объёме услуги каждого отеля, включая как принимать и передавать работу вне этих часов.",
-    },
-  ],
-  "/zh/solutions/outsourced-hotel-reservations": [
-    {
-      q: "The KPI Plus 真的會代飯店團隊接預訂嗎？",
-      a: "會，依談好的管道、時段與步驟照顧訂房工作，不只是提供流程建議。",
-    },
-    {
-      q: "一定要把全部訂房工作轉過去嗎？",
-      a: "不必。飯店可以先從部分管道、時段或步驟開始，例如回覆與追蹤，其餘仍由飯店團隊照顧。",
-    },
-    {
-      q: "一定要先換 PMS 或預訂系統嗎？",
-      a: "不必。團隊會先看現有系統、權限與資料轉交方式，再談一套實際做得到的流程。",
-    },
-    {
-      q: "誰決定價格並核准方案？",
-      a: "飯店決定政策與核准權限。The KPI Plus 依談好的資料回覆與作業。超出條件的情況會交回飯店負責人決定。",
-    },
-    {
-      q: "是 24 小時回覆嗎？",
-      a: "照顧時段會寫在各飯店的服務範圍裡，也包括非該時段的工作如何接收與轉交。",
-    },
-  ],
+  "/solutions/outsourced-hotel-reservations": reservationsFaqsTh,
+  "/en/solutions/outsourced-hotel-reservations": reservationsFaqsEn,
+  "/ru/solutions/outsourced-hotel-reservations": reservationsFaqsEn,
+  "/zh/solutions/outsourced-hotel-reservations": reservationsFaqsEn,
   "/solutions/b2b-agent-sales": [
     {
       q: "เดอะ เคพีไอ พลัส ช่วยหาเอเยนต์รายใหม่ให้จริงไหม?",

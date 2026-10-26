@@ -46,7 +46,7 @@ export function HomeFaqList({ items }: { items: FaqItem[] }) {
                 id={buttonId}
                 type="button"
                 className="kpi-faq-trigger"
-                aria-expanded={expanded}
+                aria-expanded={expanded ? "true" : "false"}
                 aria-controls={panelId}
                 onClick={() => setOpen(expanded ? null : index)}
                 onKeyDown={(event) => onTriggerKeyDown(event, index)}
@@ -61,8 +61,8 @@ export function HomeFaqList({ items }: { items: FaqItem[] }) {
               id={panelId}
               role="region"
               aria-labelledby={buttonId}
-              aria-hidden={!expanded}
-              inert={!expanded || undefined}
+              aria-hidden={expanded ? undefined : true}
+              inert={expanded ? undefined : true}
               className="kpi-faq-panel"
             >
               <div className="kpi-faq-panel-inner">
