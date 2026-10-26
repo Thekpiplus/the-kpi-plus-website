@@ -1,25 +1,47 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { B2bEnquiry } from "@/components/B2bEnquiry";
+import { B2bFrameworkMatrix } from "@/components/b2b/B2bFrameworkMatrix";
+import { B2bFrameworkVisual } from "@/components/b2b/B2bFrameworkVisual";
+import { B2bFunnelVisual } from "@/components/b2b/B2bFunnelVisual";
+import { B2bHeroVisual } from "@/components/b2b/B2bHeroVisual";
+import { B2bKpiChart } from "@/components/b2b/B2bKpiChart";
 import { B2bStickyCta } from "@/components/B2bStickyCta";
+import { B2bWorkflowVisual } from "@/components/b2b/B2bWorkflowVisual";
+import { PageFaqs } from "@/components/PageFaqs";
 import { PageHero } from "@/components/PageHero";
 import { SiteShell } from "@/components/SiteShell";
+import {
+  B2B_HERO_VISUAL,
+  B2B_KPIS,
+  b2bFrameworkCopy,
+  b2bFunnelCopy,
+  b2bSampleLabel,
+  b2bScopeCopy,
+  type B2bKpi,
+} from "@/lib/b2b";
+import type { CmsB2bPage } from "@/lib/cms/b2b-page";
+import { b2bFrameworkVisualUrl, b2bHeroVisualUrl, resolveB2bPage } from "@/lib/cms/b2b-page-public";
+import { faqsForRoute } from "@/lib/faqs";
 import { solutionNavLabel } from "@/lib/nav";
 import { existingHref, localizePath, type Locale } from "@/lib/seo";
+import "@/components/b2b/b2b-ops.css";
 
 const copy = {
   th: {
     crumb: "โซลูชัน",
     eyebrow: "การขายผ่านเอเจนต์และคู่ค้า",
     title: "หาพาร์ตเนอร์ที่เหมาะกับโรงแรม ไม่ใช่เพิ่มรายชื่อเอเยนต์ให้มากที่สุด",
-    lead: "Agent, Wholesaler และพาร์ตเนอร์ B2B อาจช่วยให้โรงแรมเข้าถึงตลาดใหม่หรือเติมยอดขายในช่วงที่ต้องการได้ แต่ช่องทางนี้มาพร้อมงานเรื่องราคา สัญญา ห้องพักที่กันไว้ เงื่อนไขการจอง และการติดตามผล",
+    lead: "Partner Fit สำคัญกว่าจำนวนพาร์ตเนอร์ และไม่ใช่การเลือกจากราคาอย่างเดียว โรงแรมต้องมีข้อเสนอ B2B โครงสร้างราคา และ Sales Material ที่ชัดก่อนเริ่มประสานงาน",
+    leadNext:
+      "การออกไปหาพาร์ตเนอร์ต้องโยงกับการจองและผลรายได้ ไม่ใช่แค่มีรายชื่อหรือสัญญา",
     leadClose:
-      "เดอะ เคพีไอ พลัส เริ่มจากประเมินว่า B2B เหมาะกับโรงแรมของคุณหรือไม่ หากเหมาะ เราช่วยคัดเลือกและประสานพาร์ตเนอร์จากเครือข่ายที่มีอยู่ รวมถึงช่วยวางเงื่อนไขการขายและดูว่าความร่วมมือนั้นสร้างรายได้ให้โรงแรมจริงหรือเปล่า",
+      "เดอะ เคพีไอ พลัส ช่วยวางกระบวนการขาย B2B ให้เป็นระบบได้ เมื่อโรงแรมอนุมัติให้ใช้บริการนี้",
     fit: "บริการนี้เหมาะเป็นพิเศษกับโรงแรมขนาดกลางถึงขนาดใหญ่ ที่มีจำนวนห้องและทีมรองรับการขายผ่านพาร์ตเนอร์หลายราย",
     cta: "ให้ทีมประเมินช่องทาง B2B ของโรงแรม",
     secondary: "ดูโซลูชันทั้งหมด",
     underCta: "ส่งชื่อโรงแรม จำนวนห้อง และสถานะพาร์ตเนอร์ปัจจุบัน",
-    photoAlt: "ทีมโรงแรมทบทวนช่องทางขายและพาร์ตเนอร์ B2B",
+    photoAlt: "ตัวอย่างการทบทวนงานขายพาร์ตเนอร์ B2B ด้าน Partner ราคา และการจอง",
     shouldTitle: "โรงแรมของคุณควรเพิ่มช่องทาง B2B ไหม?",
     shouldBody:
       "ก่อนแนะนำเอเยนต์รายใหม่ เราดูว่าโรงแรมต้องการลูกค้าจากตลาดใด มีห้องว่างในช่วงไหน ราคาปัจจุบันเป็นอย่างไร และทีมสามารถดูแลการจองและเงื่อนไขของพาร์ตเนอร์ได้แค่ไหน",
@@ -65,14 +87,15 @@ const copy = {
     crumb: "Solutions",
     eyebrow: "B2B & Agent Sales",
     title: "Find partners that fit the hotel, not the longest agent list",
-    lead: "Agents, wholesalers, and B2B partners can help a hotel reach a new market or fill dates that need sales. The channel also brings rate work, contracts, held rooms, booking conditions, and follow-up.",
+    lead: "Partner Fit matters more than how many names are on the list, and partners should not be chosen on price alone. The hotel needs a clear B2B offer, rate structure, and sales material before outreach starts.",
+    leadNext: "Partner outreach has to connect to bookings and revenue, not stop at a contact list or a signed paper.",
     leadClose:
-      "The KPI Plus starts by asking whether B2B fits this hotel. If it does, we help choose and introduce partners from the current network, set the selling conditions, and review whether the relationship actually creates hotel revenue.",
+      "The KPI Plus can help set a structured B2B sales process, only where this service is approved.",
     fit: "This service is especially suited to mid-size and larger hotels that have enough rooms and team capacity to sell through several partners.",
     cta: "Ask the team to review the hotel’s B2B path",
     secondary: "All solutions",
     underCta: "Send the hotel name, room count, and whether partners already exist.",
-    photoAlt: "A hotel team reviewing sales channels and B2B partners",
+    photoAlt: "Sample B2B partner sales review of partner fit, rates, and booking flow",
     shouldTitle: "Should this hotel add a B2B channel yet?",
     shouldBody:
       "Before we introduce a new agent, we look at the market the hotel needs, which dates still have rooms, the current rates, and whether the team can look after partner bookings and conditions.",
@@ -119,6 +142,7 @@ const copy = {
     eyebrow: "B2B и продажи через агентов",
     title: "Найти партнёров, которые подходят отелю, а не самый длинный список агентов",
     lead: "Агенты, wholesaler и B2B-партнёры могут помочь отелю выйти на новый рынок или закрыть даты, которые нужно продавать. Канал также несёт работу с ценой, договором, зарезервированными номерами, условиями брони и проверкой результата.",
+    leadNext: "",
     leadClose:
       "The KPI Plus начинает с вопроса, подходит ли B2B этому отелю. Если да, мы помогаем выбрать и представить партнёров из текущей сети, согласовать условия продажи и проверить, создаёт ли сотрудничество реальный доход отеля.",
     fit: "Эта услуга особенно подходит средним и более крупным отелям, у которых хватает номеров и команды, чтобы продавать через нескольких партнёров.",
@@ -172,6 +196,7 @@ const copy = {
     eyebrow: "B2B 與旅行社銷售",
     title: "找適合這間飯店的夥伴，不是把旅行社名單加到最長",
     lead: "Agent、Wholesaler 與 B2B 夥伴，可能幫飯店進入新市場，或補上需要銷售的日期。但這條通路也帶來價格、合約、保留房、預訂條件與後續追蹤的工作。",
+    leadNext: "",
     leadClose:
       "The KPI Plus 會先問：B2B 適不適合這間飯店。若適合，我們會從現有網絡幫忙挑選並牽線夥伴、整理銷售條件，並檢視這段合作是否真的為飯店帶來收益。",
     fit: "這項服務特別適合中大型飯店，客房數與團隊足以承接多家夥伴的銷售條件。",
@@ -222,58 +247,7 @@ const copy = {
   },
 } as const;
 
-const thaiExistingMarks = [
-  "สร้างยอดขายจริง",
-  "ยอดขายไม่เป็นไปตามที่คาด",
-  "ไม่สอดคล้องกัน",
-  "การติดตามกับเอเจนต์",
-  "OTA และ Direct Booking",
-] as const;
-
-function existingLatin(text: string): ReactNode {
-  const parts = text.split(/(B2B|OTA|Direct Booking)/g);
-  return parts.map((part, index) =>
-    part === "B2B" || part === "OTA" || part === "Direct Booking" ? (
-      <span key={index} className="kpi-latin">
-        {part}
-      </span>
-    ) : (
-      part
-    ),
-  );
-}
-
-function existingLine(text: string, mark?: string): ReactNode {
-  if (!mark) return existingLatin(text);
-  const at = text.indexOf(mark);
-  if (at < 0) return existingLatin(text);
-  const phrase =
-    mark === "OTA และ Direct Booking" ? (
-      <>
-        <span className="kpi-latin kpi-b2b-existing-em">OTA</span>
-        {" และ "}
-        <span className="kpi-latin kpi-b2b-existing-em">Direct Booking</span>
-      </>
-    ) : (
-      <span className="kpi-b2b-existing-em">{mark}</span>
-    );
-  return (
-    <>
-      {existingLatin(text.slice(0, at))}
-      {phrase}
-      {existingLatin(text.slice(at + mark.length))}
-    </>
-  );
-}
-
 const b2bPhases = ["Assess", "Evaluate", "Connect", "Sell", "Review"] as const;
-
-const b2bMetrics = [
-  { name: "Room Nights", label: "จำนวนคืนห้องพักที่ขายได้" },
-  { name: "Revenue", label: "รายได้จากแต่ละพาร์ตเนอร์" },
-  { name: "Net Contribution", label: "รายได้หลังหักต้นทุนและค่าคอมมิชชัน" },
-  { name: "Performance vs Allotment", label: "ผลลัพธ์เทียบกับห้องที่จัดสรรไว้" },
-] as const;
 
 const thaiMethod: { num: string; title: ReactNode; body: ReactNode }[] = [
   {
@@ -339,74 +313,93 @@ const thaiMethod: { num: string; title: ReactNode; body: ReactNode }[] = [
   },
 ];
 
-const thaiHelp: { num: string; title: ReactNode; body: ReactNode }[] = [
-  {
-    num: "01",
-    title: "ประเมินตลาดและความเหมาะสม",
-    body: (
-      <>
-        ประเมินว่าช่องทาง <span className="kpi-latin">B2B</span>{" "}
-        <span className="kpi-b2b-help-em">เหมาะกับโรงแรมหรือไม่</span> จากตลาด กลุ่มลูกค้า ช่วงเวลาที่ต้องการยอดขาย
-        และรูปแบบการขายของโรงแรม
-      </>
-    ),
-  },
-  {
-    num: "02",
-    title: "คัดเลือกและประสานพาร์ตเนอร์",
-    body: (
-      <>
-        ช่วยคัดเลือก <span className="kpi-latin">Agent, Wholesaler</span> หรือ{" "}
-        <span className="kpi-latin">B2B Partner</span>{" "}
-        <span className="kpi-b2b-help-em">ที่เหมาะกับตลาด</span> และ{" "}
-        <span className="kpi-latin">positioning</span> ของโรงแรม
-      </>
-    ),
-  },
-  {
-    num: "03",
-    title: "ช่วยวางราคาและเงื่อนไขการขาย",
-    body: (
-      <>
-        ช่วยวาง<span className="kpi-b2b-help-em">ราคา เงื่อนไข</span> ค่าคอมมิชชัน และกรอบการขายให้ชัดก่อนเริ่มทำงานร่วมกัน
-      </>
-    ),
-  },
-  {
-    num: "04",
-    title: "ประสานสัญญาและการเริ่มขาย",
-    body: (
-      <>
-        ช่วยประสานข้อมูล สัญญา ขั้นตอน<span className="kpi-b2b-help-em">เริ่มขาย</span> และการเชื่อมต่อที่จำเป็นกับทีมโรงแรม
-      </>
-    ),
-  },
-  {
-    num: "05",
-    title: (
-      <>
-        ติดตามว่าพาร์ตเนอร์
-        <span className="kpi-b2b-help-title-br"> </span>
-        สร้างยอดขายจริงไหม
-      </>
-    ),
-    body: (
-      <>
-        ติดตามว่าพาร์ตเนอร์สร้าง <span className="kpi-latin">room nights</span> และ
-        <span className="kpi-b2b-help-em">รายได้จริง</span>หรือไม่ พร้อมดูต้นทุน ช่องทาง และโอกาสที่ควรปรับต่อ
-      </>
-    ),
-  },
-];
-
-export function B2bView({ locale }: { locale: Locale }) {
+export async function B2bView({
+  locale,
+  previewContent,
+  embedded = false,
+}: {
+  locale: Locale;
+  previewContent?: CmsB2bPage | null;
+  embedded?: boolean;
+}) {
   const t = copy[locale];
+  const cms = await resolveB2bPage(locale, previewContent);
+  const fromCms = cms.fromCms;
   const solutions = localizePath("/solutions", locale);
+  const pageRoute = localizePath("/solutions/b2b-agent-sales", locale);
   const revenueHref = existingHref("/solutions/revenue-commercial-management", locale);
   const budgetHref = existingHref("/tools/hotel-budget-calculator", locale);
+  const sample = b2bSampleLabel(locale);
+  const heroTitle = fromCms ? cms.hero.title : t.title;
+  const primaryCta = fromCms ? cms.hero.primaryCta : { label: t.cta, href: "#b2b-enquiry" };
+  const secondaryCta = fromCms ? cms.hero.secondaryCta : { label: t.secondary, href: solutions };
+  const readinessTitle = fromCms ? cms.readiness.title : t.shouldTitle;
+  const readinessBody = fromCms ? cms.readiness.body : t.shouldBody;
+  const readinessClose = fromCms ? cms.readiness.close : t.shouldClose;
+  const frameworkCopy = b2bFrameworkCopy(locale);
+  const frameworkRows =
+    fromCms && cms.readiness.items?.some((item) => item.area?.trim())
+      ? cms.readiness.items.map((item) => ({
+          id: item.id,
+          area: item.area,
+          problem: item.problem,
+          prepare: item.prepare,
+          output: item.output,
+        }))
+      : frameworkCopy.rows;
+  const helpTitle = fromCms ? cms.scopeSection.title : t.helpTitle;
+  const scopeItems = fromCms
+    ? cms.scopeItems.map((item) => ({
+        id: item.id,
+        kicker: item.kicker,
+        title: item.title,
+        body: item.description,
+        input: item.input,
+        output: item.output,
+      }))
+    : b2bScopeCopy(locale);
+  const funnelSteps = fromCms && cms.funnelSteps.length ? cms.funnelSteps : b2bFunnelCopy(locale);
+  const funnelTitle = fromCms ? cms.funnelSection.title : locale === "th" ? "ลำดับงานขายผ่านพาร์ตเนอร์" : "The partner sales sequence";
+  const methodTitle = fromCms ? cms.workflowSection.title : t.methodTitle;
+  const methodSteps = fromCms
+    ? cms.workflowSteps.map((step) => ({ num: step.number, title: step.title, body: step.description, phase: step.phase }))
+    : (locale === "th" ? thaiMethod : t.steps.map(([num, title, body]) => ({ num, title, body }))).map((step, index) => ({
+        ...step,
+        phase: b2bPhases[index],
+      }));
+  const measureTitle = fromCms ? cms.measureSection.title : t.measureTitle;
+  const measureIntro = fromCms ? cms.measureSection.intro : t.measureBody;
+  const measureClose = fromCms ? cms.measureSection.close : t.measureClose;
+  const publicKpis = fromCms && cms.kpis.length ? cms.kpis : B2B_KPIS;
+  const relatedTitle = fromCms ? cms.related.title : t.relatedTitle;
+  const relatedCards = fromCms
+    ? cms.related.cards
+    : [
+        ...(revenueHref
+          ? [{ id: "revenue", href: revenueHref, title: t.revenueTitle, description: t.revenueBody, cta: t.details }]
+          : []),
+        ...(budgetHref
+          ? [{ id: "budget", href: budgetHref, title: t.toolName, description: t.toolBody, cta: t.toolCta }]
+          : []),
+      ];
+  const faqs = fromCms ? cms.faqs : faqsForRoute(pageRoute);
+  const faqIntro = fromCms ? cms.faqIntro : undefined;
+  const heroSrc = (fromCms ? cms.hero.visual.src : "") || b2bHeroVisualUrl() || "";
+  const cmsFrameworkSrc = fromCms ? cms.readiness.visual.src : "";
+  const frameworkSrc =
+    (cmsFrameworkSrc &&
+    !cmsFrameworkSrc.includes("b2b-agent-sales-hero") &&
+    !cmsFrameworkSrc.includes("b2b-agent-sales-readiness-placeholder.webp")
+      ? cmsFrameworkSrc
+      : "") ||
+    b2bFrameworkVisualUrl() ||
+    "";
+  const workflowSrc = fromCms ? cms.workflowSection.visual.src : "";
+  const kpiVisualSrc = fromCms ? cms.measureSection.visual.src : "";
+  const stickyLabel = primaryCta.label || t.cta;
 
-  return (
-    <SiteShell locale={locale} route={localizePath("/solutions/b2b-agent-sales", locale)}>
+  const inner = (
+    <div className="kpi-b2b-page">
       <PageHero className="kpi-b2b-hero">
         <div className="kpi-b2b-hero-grid">
           <div className="kpi-b2b-hero-copy">
@@ -422,7 +415,9 @@ export function B2bView({ locale }: { locale: Locale }) {
               </ol>
             </nav>
             <h1 className="kpi-h1 kpi-b2b-hero-title">
-              {locale === "th" ? (
+              {fromCms ? (
+                heroTitle
+              ) : locale === "th" ? (
                 <>
                   <span className="kpi-b2b-hero-line">
                     หา<span className="kpi-b2b-hero-em">พาร์ตเนอร์ที่เหมาะกับโรงแรม</span>
@@ -436,136 +431,174 @@ export function B2bView({ locale }: { locale: Locale }) {
                 t.title
               )}
             </h1>
-            {locale === "th" ? (
+            {fromCms ? (
+              <>
+                <p className="kpi-b2b-hero-lead">{cms.hero.description}</p>
+                {cms.hero.leadNext ? <p className="kpi-b2b-hero-lead kpi-b2b-hero-lead-next">{cms.hero.leadNext}</p> : null}
+                {cms.hero.leadClose ? <p className="kpi-b2b-hero-outcome">{cms.hero.leadClose}</p> : null}
+              </>
+            ) : locale === "th" ? (
               <>
                 <p className="kpi-b2b-hero-lead">
-                  <span className="kpi-latin">Agent, Wholesaler</span> และพาร์ตเนอร์ <span className="kpi-latin">B2B</span>{" "}
-                  สามารถช่วยให้โรงแรมเข้าถึงตลาดใหม่ และเติมยอดขายในช่วงที่ต้องการได้
+                  <span className="kpi-latin">Partner Fit</span> สำคัญกว่าจำนวนพาร์ตเนอร์ และไม่ใช่การเลือกจากราคาอย่างเดียว
+                  โรงแรมต้องมีข้อเสนอ <span className="kpi-latin">B2B</span> โครงสร้างราคา และ{" "}
+                  <span className="kpi-latin">Sales Material</span> ที่ชัดก่อนเริ่มประสานงาน
                 </p>
-                <p className="kpi-b2b-hero-lead kpi-b2b-hero-lead-next">
-                  <span className="kpi-latin">The KPI Plus</span> ช่วยประเมินว่าช่องทาง <span className="kpi-latin">B2B</span>{" "}
-                  เหมาะกับโรงแรมหรือไม่ จากนั้นจึงคัดเลือก ประสานงาน และวางเงื่อนไขการขาย กับพาร์ตเนอร์ที่เหมาะสม
-                </p>
+                <p className="kpi-b2b-hero-lead kpi-b2b-hero-lead-next">{t.leadNext}</p>
                 <p className="kpi-b2b-hero-outcome">
-                  <span>เป้าหมายไม่ใช่มีพาร์ตเนอร์ให้มากที่สุด</span>
-                  <span className="kpi-b2b-hero-outcome-strong">แต่เลือกช่องทางที่สร้างรายได้ให้โรงแรมได้จริง</span>
+                  <span>
+                    <span className="kpi-latin">The KPI Plus</span> ช่วยวางกระบวนการขาย <span className="kpi-latin">B2B</span> ให้เป็นระบบได้
+                  </span>
+                  <span className="kpi-b2b-hero-outcome-strong">เมื่อโรงแรมอนุมัติให้ใช้บริการนี้</span>
                 </p>
               </>
             ) : (
               <>
                 <p className="kpi-b2b-hero-lead">{t.lead}</p>
+                {t.leadNext ? <p className="kpi-b2b-hero-lead kpi-b2b-hero-lead-next">{t.leadNext}</p> : null}
                 <p className="kpi-b2b-hero-outcome">{t.leadClose}</p>
               </>
             )}
             <div className="kpi-actions">
-              <a href="#b2b-enquiry" className="kpi-button">
-                {locale === "th" ? (
+              <a href={primaryCta.href || "#b2b-enquiry"} className="kpi-button">
+                {fromCms || locale !== "th" ? (
+                  primaryCta.label
+                ) : (
                   <>
                     ประเมินโอกาส <span className="kpi-latin">B2B</span> ของโรงแรม
                   </>
-                ) : (
-                  t.cta
                 )}{" "}
                 <span className="kpi-b2b-hero-arrow" aria-hidden="true">
                   ↗
                 </span>
               </a>
-              <Link href={solutions} className="kpi-button-ghost kpi-b2b-hero-secondary">
-                {t.secondary}
+              <Link href={secondaryCta.href || solutions} className="kpi-button-ghost kpi-b2b-hero-secondary">
+                {secondaryCta.label}
               </Link>
             </div>
-            <p className="kpi-b2b-hero-note">{t.underCta}</p>
+            <p className="kpi-b2b-hero-note">{fromCms ? cms.hero.underCta : t.underCta}</p>
           </div>
-          <figure className="kpi-b2b-hero-photo">
-            <img src="/media/b2b-hero-meeting.jpg" alt={t.photoAlt} width={1200} height={900} />
-          </figure>
+          <B2bHeroVisual
+            locale={locale}
+            src={heroSrc}
+            alt={fromCms ? (locale === "th" ? cms.hero.visual.altTh : cms.hero.visual.altEn) : t.photoAlt}
+            label={fromCms ? cms.hero.visual.label : undefined}
+            meta={fromCms ? cms.hero.visual.label || B2B_HERO_VISUAL.meta.th : undefined}
+            caption={fromCms ? cms.hero.caption : locale === "th" ? B2B_HERO_VISUAL.caption.th : B2B_HERO_VISUAL.caption.en}
+          />
         </div>
       </PageHero>
 
-      <section className="kpi-section">
-        <div className="kpi-split">
-          <div>
-            <h2 className="kpi-h2">{t.shouldTitle}</h2>
-            <p className="mt-6 max-w-2xl text-base leading-8 text-[#555555]">{t.shouldBody}</p>
-            <p className="mt-5 max-w-2xl text-base leading-8 text-[#3B3B3B]">{t.shouldClose}</p>
-          </div>
-          <figure className="kpi-home-photo">
-            <img src="/media/kpi-grow-revenue_f786a5a5.jpg" alt={t.photoAlt} width={1200} height={900} />
-          </figure>
-        </div>
+      <section className="kpi-section kpi-b2b-framework">
+        <p className="kpi-latin kpi-b2b-framework-kicker">{frameworkCopy.kicker}</p>
+        <h2 className="kpi-h2">{readinessTitle}</h2>
+        <p className="kpi-b2b-framework-lead">{readinessBody}</p>
+        <B2bFrameworkMatrix
+          caption={frameworkCopy.kicker}
+          columns={frameworkCopy.columns}
+          rows={frameworkRows}
+        />
+        <B2bFrameworkVisual
+          locale={locale}
+          src={frameworkSrc}
+          alt={fromCms ? (locale === "th" ? cms.readiness.visual.altTh : cms.readiness.visual.altEn) : undefined}
+          label={fromCms ? cms.readiness.visual.label : undefined}
+          caption={fromCms ? cms.readiness.visual.caption : undefined}
+        />
+        <p className="kpi-b2b-framework-close">{readinessClose}</p>
+        <a href={primaryCta.href || "#b2b-enquiry"} className="kpi-button kpi-b2b-framework-cta">
+          {fromCms || locale !== "th" ? (
+            primaryCta.label
+          ) : (
+            <>
+              ประเมินโอกาส <span className="kpi-latin">B2B</span> ของโรงแรม
+            </>
+          )}{" "}
+          <span className="kpi-b2b-hero-arrow" aria-hidden="true">
+            ↗
+          </span>
+        </a>
       </section>
 
       <section className="kpi-b2b-help border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section">
-          <h2 className="kpi-h2 kpi-b2b-help-title">{t.helpTitle}</h2>
-          <ol className="kpi-b2b-help-list">
-            {(locale === "th" ? thaiHelp : t.help.map(([num, title, body]) => ({ num, title, body }))).map(
-              (item, index) => (
-                <li
-                  key={item.num}
-                  className={index === 4 ? "kpi-b2b-help-step kpi-b2b-help-step-outcome" : "kpi-b2b-help-step"}
-                >
-                  <div className="kpi-b2b-help-head">
-                    <span className="kpi-latin kpi-b2b-help-num">{item.num}</span>
-                    <h3>{item.title}</h3>
-                  </div>
-                  <p>{item.body}</p>
-                </li>
-              ),
-            )}
-          </ol>
-          <a href="#b2b-enquiry" className="kpi-button kpi-b2b-help-cta">
-            {t.cta}{" "}
-            <span className="kpi-b2b-help-arrow" aria-hidden="true">
-              ↗
-            </span>
-          </a>
+          <h2 className="kpi-h2 kpi-b2b-help-title">{helpTitle}</h2>
+          <ul className="kpi-b2b-scope-grid">
+            {scopeItems.map((item) => (
+              <li key={item.id} className="kpi-b2b-scope-card">
+                <p className="kpi-latin kpi-b2b-scope-kicker">{item.kicker}</p>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+                {item.input ? (
+                  <dl className="kpi-b2b-scope-io">
+                    <div>
+                      <dt>Input</dt>
+                      <dd>{item.input}</dd>
+                    </div>
+                    <div>
+                      <dt>Output</dt>
+                      <dd>{item.output}</dd>
+                    </div>
+                  </dl>
+                ) : null}
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
-      <section className="kpi-section kpi-b2b-existing">
-        <h2 className="kpi-h2 kpi-b2b-existing-title">
-          {locale === "th" ? (
-            <>
-              มีพาร์ตเนอร์อยู่แล้ว แต่<span className="kpi-b2b-existing-title-em">ยังไม่เห็นผลชัด?</span>
-            </>
-          ) : (
-            t.existingTitle
-          )}
-        </h2>
-        <ol className="kpi-b2b-existing-list">
-          {t.existing.map((item, index) => (
-            <li key={item} className="kpi-b2b-existing-row">
-              <span className="kpi-latin kpi-b2b-existing-num">{String(index + 1).padStart(2, "0")}</span>
-              <p>{locale === "th" ? existingLine(item, thaiExistingMarks[index]) : item}</p>
-            </li>
-          ))}
-        </ol>
+      <section className="kpi-section kpi-b2b-funnel-section">
+        <h2 className="kpi-h2">{funnelTitle}</h2>
+        <B2bFunnelVisual locale={locale} steps={funnelSteps} caption={fromCms ? cms.funnelSection.caption : undefined} />
       </section>
 
       <section className="kpi-b2b-method border-y border-[#E3E8EB] bg-white">
-        <div className="kpi-section">
-          <h2 className="kpi-h2 kpi-b2b-method-title">{t.methodTitle}</h2>
-          <ol className="kpi-b2b-method-list">
-            {(locale === "th" ? thaiMethod : t.steps.map(([num, title, body]) => ({ num, title, body }))).map(
-              (step, index) => (
+        <div className="kpi-section kpi-b2b-method-grid">
+          <div>
+            <h2 className="kpi-h2 kpi-b2b-method-title">{methodTitle}</h2>
+            <ol className="kpi-b2b-method-list">
+              {methodSteps.map((step) => (
                 <li key={step.num} className="kpi-b2b-method-step">
                   <span className="kpi-latin kpi-b2b-method-num">{step.num}</span>
                   <div className="kpi-b2b-method-copy">
-                    <p className="kpi-latin kpi-b2b-method-phase">{b2bPhases[index]}</p>
+                    <p className="kpi-latin kpi-b2b-method-phase">{step.phase}</p>
                     <h3>{step.title}</h3>
                     <p className="kpi-b2b-method-body">{step.body}</p>
                   </div>
                 </li>
-              ),
-            )}
-          </ol>
+              ))}
+            </ol>
+          </div>
+          {workflowSrc ? (
+            <figure className="kpi-b2b-workflow-visual">
+              <img
+                src={workflowSrc}
+                alt={locale === "th" ? cms.workflowSection.visual.altTh : cms.workflowSection.visual.altEn}
+                width={1200}
+                height={675}
+                loading="lazy"
+              />
+              <figcaption className="b2b-ops-caption">
+                <span className="b2b-ops-badge">{sample}</span> {cms.workflowSection.visual.caption || cms.workflowSection.visual.label}
+              </figcaption>
+            </figure>
+          ) : (
+            <B2bWorkflowVisual
+              locale={locale}
+              steps={methodSteps.map((step, index) => ({
+                num: step.num,
+                title: typeof step.title === "string" ? step.title : String(t.steps[index]?.[1] ?? step.phase),
+              }))}
+            />
+          )}
         </div>
       </section>
 
       <section className="kpi-section kpi-b2b-measure">
-        <h2 className="kpi-h2 kpi-b2b-measure-title">{t.measureTitle}</h2>
-        {locale === "th" ? (
+        <h2 className="kpi-h2 kpi-b2b-measure-title">{measureTitle}</h2>
+        {fromCms ? (
+          <p className="kpi-b2b-measure-intro">{measureIntro}</p>
+        ) : locale === "th" ? (
           <p className="kpi-b2b-measure-intro">
             ไม่ได้ดูแค่จำนวนพาร์ตเนอร์
             <span className="kpi-b2b-measure-br"> </span>
@@ -575,14 +608,33 @@ export function B2bView({ locale }: { locale: Locale }) {
           <p className="kpi-b2b-measure-intro">{t.measureBody}</p>
         )}
         <div className="kpi-b2b-measure-metrics">
-          {b2bMetrics.map((metric) => (
-            <div key={metric.name} className="kpi-b2b-measure-metric">
-              <p className="kpi-latin kpi-b2b-measure-name">{metric.name}</p>
-              {locale === "th" ? <p className="kpi-b2b-measure-label">{metric.label}</p> : null}
-            </div>
+          {publicKpis.map((kpi) => (
+            <B2bKpiCard key={kpi.id} kpi={kpi} locale={locale} sample={sample} />
           ))}
         </div>
-        {locale === "th" ? (
+        <B2bKpiChart
+          locale={locale}
+          kpis={publicKpis}
+          title={locale === "th" ? "ดัชนีผลงานพาร์ตเนอร์ (ตัวอย่าง)" : "Partner performance index (sample)"}
+          subtitle={locale === "th" ? "ไม่ใช่ยอดจริงของโรงแรมหรือพาร์ตเนอร์รายใด" : "Not a live hotel or partner result"}
+        />
+        {kpiVisualSrc ? (
+          <figure className="kpi-b2b-kpi-visual">
+            <img
+              src={kpiVisualSrc}
+              alt={locale === "th" ? cms.measureSection.visual.altTh : cms.measureSection.visual.altEn}
+              width={1200}
+              height={675}
+              loading="lazy"
+            />
+            <figcaption className="b2b-ops-caption">
+              <span className="b2b-ops-badge">{sample}</span> {cms.measureSection.visual.caption || cms.measureSection.visual.label}
+            </figcaption>
+          </figure>
+        ) : null}
+        {fromCms ? (
+          <p className="kpi-b2b-measure-close">{measureClose}</p>
+        ) : locale === "th" ? (
           <p className="kpi-b2b-measure-close">
             <span>
               เพื่อดูว่า <span className="kpi-latin">B2B</span> ควรมีบทบาทแค่ไหน
@@ -597,82 +649,79 @@ export function B2bView({ locale }: { locale: Locale }) {
         )}
       </section>
 
-      {budgetHref || revenueHref ? (
+      {relatedCards.length ? (
         <section className="kpi-b2b-related border-t border-[#E3E8EB] bg-white">
           <div className="kpi-section">
             <h2 className="kpi-h2 kpi-b2b-related-title">
-              {locale === "th" ? (
+              {fromCms || locale !== "th" ? (
+                relatedTitle
+              ) : (
                 <>
                   เรื่องที่เกี่ยวข้องกับช่องทางขาย
                   <span className="kpi-b2b-related-br"> </span>
                   และแผนรายได้
                 </>
-              ) : (
-                t.relatedTitle
               )}
             </h2>
             <div className="kpi-b2b-related-grid">
-              {revenueHref ? (
-                <Link href={revenueHref} className="kpi-b2b-related-item is-featured">
-                  <span className="kpi-b2b-related-rule" aria-hidden="true" />
-                  <h3>{t.revenueTitle}</h3>
-                  <p>
-                    {locale === "th" ? (
-                      <>
-                        มอง <span className="kpi-latin">B2B</span> ร่วมกับราคา <span className="kpi-latin">OTA</span> และ{" "}
-                        <span className="kpi-latin">Direct Booking</span>
-                        <span className="kpi-b2b-related-br"> </span>
-                        เพื่อจัดสัดส่วนช่องทางขายให้เหมาะกับเป้าหมายรายได้
-                      </>
-                    ) : (
-                      t.revenueBody
-                    )}
-                  </p>
+              {relatedCards.map((card, index) => (
+                <Link key={card.id} href={card.href} className={`kpi-b2b-related-item${index === 0 ? " is-featured" : ""}`}>
+                  {index === 0 ? <span className="kpi-b2b-related-rule" aria-hidden="true" /> : null}
+                  <h3>{card.title}</h3>
+                  <p>{card.description}</p>
                   <span className="kpi-b2b-related-cta">
-                    {t.details}{" "}
+                    {card.cta}{" "}
                     <span className="kpi-b2b-related-arrow" aria-hidden="true">
                       ↗
                     </span>
                   </span>
                 </Link>
-              ) : null}
-              {budgetHref ? (
-                <Link href={budgetHref} className="kpi-b2b-related-item">
-                  <h3>
-                    {locale === "th" ? (
-                      <>
-                        เครื่องคำนวณ <span className="kpi-latin">Budget</span> โรงแรม
-                      </>
-                    ) : (
-                      t.toolName
-                    )}
-                  </h3>
-                  <p>
-                    {locale === "th" ? (
-                      <>
-                        ดูแผนรายได้และค่าใช้จ่ายในภาพรวม
-                        <span className="kpi-b2b-related-br"> </span>
-                        ก่อนตัดสินใจเรื่องช่องทางขายเพิ่ม
-                      </>
-                    ) : (
-                      t.toolBody
-                    )}
-                  </p>
-                  <span className="kpi-b2b-related-cta">
-                    {t.toolCta}{" "}
-                    <span className="kpi-b2b-related-arrow" aria-hidden="true">
-                      ↗
-                    </span>
-                  </span>
-                </Link>
-              ) : null}
+              ))}
             </div>
           </div>
         </section>
       ) : null}
 
+      <PageFaqs items={faqs} locale={locale} sectionId="b2b-faq" intro={faqIntro} />
       <B2bEnquiry locale={locale} />
-      <B2bStickyCta label={t.cta} />
+      <B2bStickyCta label={stickyLabel} />
+    </div>
+  );
+
+  if (embedded) return inner;
+  return (
+    <SiteShell locale={locale} route={pageRoute} hideFaqs>
+      {inner}
     </SiteShell>
+  );
+}
+
+function B2bKpiCard({ kpi, locale, sample }: { kpi: B2bKpi; locale: Locale; sample: string }) {
+  const thai = locale === "th";
+  return (
+    <article className="kpi-b2b-measure-metric">
+      <p className="kpi-latin kpi-b2b-measure-name">{kpi.name}</p>
+      <p className="kpi-b2b-measure-label">{thai ? kpi.definitionTh : kpi.definitionEn}</p>
+      <dl className="kpi-b2b-kpi-meta">
+        <div>
+          <dt>{thai ? "ช่วงเวลา" : "Period"}</dt>
+          <dd>{thai ? kpi.periodTh : kpi.periodEn}</dd>
+        </div>
+        <div>
+          <dt>{thai ? "หน่วย" : "Unit"}</dt>
+          <dd>{kpi.unit}</dd>
+        </div>
+        <div>
+          <dt>{thai ? "เปรียบเทียบ" : "Comparison"}</dt>
+          <dd>{thai ? kpi.comparisonTh : kpi.comparisonEn}</dd>
+        </div>
+        <div>
+          <dt>{thai ? "สถานะข้อมูล" : "Data status"}</dt>
+          <dd>
+            <span className="b2b-ops-badge">{kpi.dataStatus === "Sample" ? sample : kpi.dataStatus}</span>
+          </dd>
+        </div>
+      </dl>
+    </article>
   );
 }

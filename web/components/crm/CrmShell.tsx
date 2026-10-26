@@ -51,6 +51,7 @@ const cmsLinks = [
   { href: "/crm/cms/redirects", label: "Redirect" },
   { href: "/crm/cms/globals", label: "ตั้งค่าเว็บ" },
   { href: "/crm/cms/reservations", label: "เส้นแบ่งงาน Reservations" },
+  { href: "/crm/cms/b2b", label: "หน้า B2B Agent Sales" },
   { href: "/crm/cms/contacts", label: "ข้อมูลติดต่อ" },
 ];
 

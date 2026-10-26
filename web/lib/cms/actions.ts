@@ -35,6 +35,8 @@ import {
   serializeReservationsPageBody,
 } from "./reservations-page";
 import { defaultReservationsCms } from "./reservations-page-seed";
+import { B2B_CMS_TEMPLATE, B2B_PAGE_ROUTE, serializeB2bPageBody } from "./b2b-page";
+import { defaultB2bCms } from "./b2b-page-seed";
 
 async function requireCms() {
   const user = await requireUser();
@@ -236,6 +238,11 @@ export async function ensurePageFromSite(route: string) {
       const hydrated = await hydrateReservationsDocument(existing);
       return hydrated.id;
     }
+    if (normalized === B2B_PAGE_ROUTE) {
+      const { hydrateB2bDocument } = await import("./b2b-page-actions");
+      const hydrated = await hydrateB2bDocument(existing);
+      return hydrated.id;
+    }
     return existing.id;
   }
 
@@ -252,6 +259,7 @@ export async function ensurePageFromSite(route: string) {
   })();
   const isRevenue = normalized === REVENUE_PAGE_ROUTE;
   const isReservations = normalized === RESERVATIONS_PAGE_ROUTE;
+  const isB2b = normalized === B2B_PAGE_ROUTE;
   const created = await db.cmsDocument.create({
     data: {
       kind: "page",
@@ -259,13 +267,21 @@ export async function ensurePageFromSite(route: string) {
       slug,
       locale: "th",
       status: "published",
-      template: isRevenue ? REVENUE_CMS_TEMPLATE : isReservations ? RESERVATIONS_CMS_TEMPLATE : "general",
+      template: isRevenue
+        ? REVENUE_CMS_TEMPLATE
+        : isReservations
+          ? RESERVATIONS_CMS_TEMPLATE
+          : isB2b
+            ? B2B_CMS_TEMPLATE
+            : "general",
       excerpt: sitePage.description || "",
       body: isRevenue
         ? serializeRevenuePageBody(defaultRevenueCms("th"))
         : isReservations
           ? serializeReservationsPageBody(defaultReservationsCms("th"))
-          : bodyFromMarkdown(markdown),
+          : isB2b
+            ? serializeB2bPageBody(defaultB2bCms("th"))
+            : bodyFromMarkdown(markdown),
       tags: "",
       seoTitle: sitePage.title,
       metaDescription: sitePage.description || "",

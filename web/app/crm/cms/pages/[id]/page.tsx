@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CmsDocumentForm } from "@/components/cms/CmsDocumentForm";
+import { B2bPageEditor } from "@/components/cms/B2bPageEditor";
 import { ReservationsPageEditor } from "@/components/cms/ReservationsPageEditor";
 import { RevenuePageEditor } from "@/components/cms/RevenuePageEditor";
 import { ConfirmDeleteButton } from "@/components/crm/ui/ConfirmDeleteButton";
@@ -13,6 +14,8 @@ import {
   saveReservationsPage,
 } from "@/lib/cms/reservations-page-actions";
 import { isReservationsPageDocument } from "@/lib/cms/reservations-page";
+import { editorStateForB2bDocument, saveB2bPage } from "@/lib/cms/b2b-page-actions";
+import { isB2bPageDocument } from "@/lib/cms/b2b-page";
 import { documentById } from "@/lib/cms/queries";
 import { documentPath } from "@/lib/cms/body";
 
@@ -31,6 +34,58 @@ export default async function EditCmsPage({
   const path = documentPath(document);
   const revenue = isRevenuePageDocument(document);
   const reservations = isReservationsPageDocument(document);
+  const b2b = isB2bPageDocument(document);
+
+  if (b2b) {
+    const hydrated = await editorStateForB2bDocument(id);
+    if (!hydrated) notFound();
+    return (
+      <div className="crm-cms">
+        <PageHeader
+          eyebrow="Content Management"
+          title={hydrated.document.title}
+          description={path}
+          actions={
+            <div className="crm-cms-actions">
+              <Link href="/crm/cms" className="crm-users-secondary">
+                ← หน้าเพจทั้งหมด
+              </Link>
+              <Link href={`/crm/cms/pages/${hydrated.document.id}/preview`} className="crm-users-secondary">
+                ดูตัวอย่าง
+              </Link>
+            </div>
+          }
+        />
+        <B2bPageEditor
+          initial={hydrated.state}
+          notice={saved === "1" ? "บันทึกแล้ว" : undefined}
+          error={error}
+          saveAction={saveB2bPage}
+          updatedAt={hydrated.document.updatedAt.toISOString()}
+          initialTab={tab}
+          previewHref={`/crm/cms/pages/${hydrated.document.id}/preview`}
+          publicHref={path}
+        />
+        <div className="crm-cms-editor-danger">
+          <div>
+            <p>ลบหน้าเพจ</p>
+            <span>ย้ายเข้าถังขยะ หน้าสาธารณะจะกลับไปใช้เนื้อหาในโค้ด</span>
+          </div>
+          <ConfirmDeleteButton
+            action={trashDocument}
+            fields={{ id: hydrated.document.id, returnTo: "/crm/cms" }}
+            itemName={hydrated.document.title}
+            eyebrow="Content"
+            title="ย้ายเข้าถังขยะ"
+            message={`ยืนยันย้าย “${hydrated.document.title}” เข้าถังขยะ?`}
+            buttonLabel="ลบหน้าเพจ"
+            confirmLabel="ลบหน้าเพจ"
+            className="kpi-button crm-users-delete-btn"
+          />
+        </div>
+      </div>
+    );
+  }
 
   if (reservations) {
     const hydrated = await editorStateForReservationsDocument(id);

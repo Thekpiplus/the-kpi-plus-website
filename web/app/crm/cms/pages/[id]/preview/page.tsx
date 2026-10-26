@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { B2bView } from "@/components/B2bView";
 import { ReservationsView } from "@/components/ReservationsView";
 import { RevenueView } from "@/components/RevenueView";
 import { PageHeader } from "@/components/crm/ui/PageHeader";
+import { loadB2bPagePreview } from "@/lib/cms/b2b-page-public";
+import { isB2bPageDocument } from "@/lib/cms/b2b-page";
 import { loadReservationsPagePreview } from "@/lib/cms/reservations-page-public";
 import { isReservationsPageDocument } from "@/lib/cms/reservations-page";
 import { loadRevenuePagePreview } from "@/lib/cms/revenue-page-public";
@@ -21,14 +24,20 @@ export default async function PreviewCmsPage({
 
   const reservations = isReservationsPageDocument(document);
   const revenue = isRevenuePageDocument(document);
-  if (!reservations && !revenue) notFound();
+  const b2b = isB2bPageDocument(document);
+  if (!reservations && !revenue && !b2b) notFound();
 
   const preview = reservations ? await loadReservationsPagePreview(id) : null;
   const revenuePreview = revenue ? await loadRevenuePagePreview(id) : null;
-  const live = preview?.live ?? revenuePreview?.live ?? false;
-  if (!preview && !revenuePreview) notFound();
+  const b2bPreview = b2b ? await loadB2bPagePreview(id) : null;
+  const live = preview?.live ?? revenuePreview?.live ?? b2bPreview?.live ?? false;
+  if (!preview && !revenuePreview && !b2bPreview) notFound();
   const path = documentPath(document);
-  const title = reservations ? "ตัวอย่างหน้า Outsourced Hotel Reservations" : "ตัวอย่างหน้า Revenue & Commercial";
+  const title = reservations
+    ? "ตัวอย่างหน้า Outsourced Hotel Reservations"
+    : b2b
+      ? "ตัวอย่างหน้า B2B Agent Sales"
+      : "ตัวอย่างหน้า Revenue & Commercial";
 
   return (
     <div className="crm-cms crm-cs-preview">
@@ -57,6 +66,8 @@ export default async function PreviewCmsPage({
           <ReservationsView locale={preview.locale} previewContent={preview.content} embedded />
         ) : revenuePreview ? (
           <RevenueView locale={revenuePreview.locale} previewContent={revenuePreview.content} embedded />
+        ) : b2bPreview ? (
+          <B2bView locale={b2bPreview.locale} previewContent={b2bPreview.content} embedded />
         ) : null}
       </div>
     </div>

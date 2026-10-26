@@ -1,7 +1,9 @@
 import { B2bView } from "@/components/B2bView";
-import { metadataFor } from "@/lib/seo";
+import { b2bPublicMetadata } from "@/lib/cms/b2b-page-public";
 
-export const metadata = metadataFor("/solutions/b2b-agent-sales");
+export async function generateMetadata() {
+  return b2bPublicMetadata("/solutions/b2b-agent-sales");
+}
 
 export default function B2bPage() {
   return <B2bView locale="th" />;
