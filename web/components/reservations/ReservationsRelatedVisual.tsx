@@ -10,12 +10,17 @@ import "./reservations-ops.css";
 type ReservationsRelatedVisualProps = {
   locale: "th" | "en" | "ru" | "zh";
   src?: string;
+  alt?: string;
+  label?: string;
+  status?: "real" | "approved" | "sample" | "placeholder";
 };
 
-export function ReservationsRelatedVisual({ locale, src }: ReservationsRelatedVisualProps) {
+export function ReservationsRelatedVisual({ locale, src, alt, label, status }: ReservationsRelatedVisualProps) {
   const visual = RESERVATIONS_RELATED_VISUAL;
-  const { recommendedSize, aspectRatio, width, height, displayWidth, displayHeight, status } = visual;
-  const alt = reservationsVisualAlt(visual, locale);
+  const { recommendedSize, aspectRatio, width, height, displayWidth, displayHeight } = visual;
+  const resolvedStatus = status ?? visual.status;
+  const resolvedAlt = alt || reservationsVisualAlt(visual, locale);
+  const resolvedLabel = label || RESERVATIONS_RELATED_LABEL;
   const sampleLabel = locale === "th" ? "ตัวอย่างข้อมูล" : "Sample Visual";
 
   if (src) {
@@ -24,18 +29,18 @@ export function ReservationsRelatedVisual({ locale, src }: ReservationsRelatedVi
         <ReservationDummyImage
           className="kpi-reservations-related-visual-photo"
           src={src}
-          alt={alt}
-          label={RESERVATIONS_RELATED_LABEL}
+          alt={resolvedAlt}
+          label={resolvedLabel}
           recommendedSize={recommendedSize}
           ratio={aspectRatio}
           fit="contain"
           locale={locale}
-          status={status}
+          status={resolvedStatus}
           width={width}
           height={height}
           sampleLabel={sampleLabel}
         />
-        <p className="kpi-reservations-related-visual-caption">{RESERVATIONS_RELATED_LABEL}</p>
+        <p className="kpi-reservations-related-visual-caption">{resolvedLabel}</p>
       </div>
     );
   }
@@ -45,18 +50,18 @@ export function ReservationsRelatedVisual({ locale, src }: ReservationsRelatedVi
       <div
         className="kpi-reservations-related-visual-photo reservations-related-visual"
         role="img"
-        aria-label={`${alt}. ${RESERVATIONS_RELATED_LABEL}`}
+        aria-label={`${resolvedAlt}. ${resolvedLabel}`}
         style={{ width: "100%", maxWidth: displayWidth, aspectRatio }}
       >
         <span className="reservations-ops-badge">{sampleLabel}</span>
-        <strong>{RESERVATIONS_RELATED_LABEL}</strong>
+        <strong>{resolvedLabel}</strong>
         <ol>
           {RESERVATIONS_RELATED_TOPICS.map((topic) => (
             <li key={topic}>{topic}</li>
           ))}
         </ol>
       </div>
-      <figcaption className="kpi-reservations-related-visual-caption">{RESERVATIONS_RELATED_LABEL}</figcaption>
+      <figcaption className="kpi-reservations-related-visual-caption">{resolvedLabel}</figcaption>
       <span className="sr-only">
         {recommendedSize} · {displayWidth}×{displayHeight}
       </span>

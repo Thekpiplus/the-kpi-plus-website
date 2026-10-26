@@ -86,6 +86,20 @@ export type ReservationServiceSettings = {
   escalationPath?: string;
   integrationNotes?: string;
   reportingFrequency?: string;
+  privacyNoteTh?: string;
+  privacyNoteEn?: string;
+};
+
+export type ReservationBoundaryItem = {
+  id: string;
+  label: string;
+  configured: boolean;
+};
+
+export type ReservationServiceBoundaries = ReservationServiceSettings & {
+  handles: ReservationBoundaryItem[];
+  hotelOwns: ReservationBoundaryItem[];
+  slaApproved?: boolean;
 };
 
 export type ReservationsVisualLayout = ServiceVisual & {
@@ -93,6 +107,13 @@ export type ReservationsVisualLayout = ServiceVisual & {
   height: number;
   displayWidth: number;
   displayHeight: number;
+};
+
+export type ReservationsVisualOverride = {
+  alt?: string;
+  label?: string;
+  caption?: string;
+  status?: ServiceVisual["status"];
 };
 
 export const RESERVATIONS_CONTENT_STATUS: ContentStatus = "sample";
@@ -134,8 +155,8 @@ export const HERO_CAPABILITIES = [
 
 export const RESERVATIONS_PROBLEM_VISUAL: ReservationsVisualLayout = {
   src: PROBLEM_CANDIDATE,
-  altTh: "ตัวอย่าง Reservation Queue / Booking Inbox ใช้ Guest A, Guest B และรหัสจำลอง",
-  altEn: "Sample Reservation Queue / Booking Inbox using Guest A, Guest B, and fake booking codes",
+  altTh: "ตัวอย่าง Reservation Queue / Booking Inbox ใช้ Guest A และ Guest B โดยไม่มีรหัสจองจริง",
+  altEn: "Sample Reservation Queue / Booking Inbox using Guest A and Guest B, with no real booking IDs",
   status: "placeholder",
   recommendedSize: "1200 × 800 px",
   aspectRatio: "3 / 2",
@@ -147,11 +168,11 @@ export const RESERVATIONS_PROBLEM_VISUAL: ReservationsVisualLayout = {
 
 export const RESERVATIONS_PROBLEM_LABEL = "ตัวอย่าง Reservation Queue / Booking Inbox";
 
-/** Fake inbox rows only. Never a real guest name, email, phone, or booking ID. */
+/** Sample aliases only. Never a real guest name, email, phone, or booking ID. */
 export const SAMPLE_INBOX = [
-  { guest: "Guest A", channel: "LINE", code: "RQ-2401", status: "Waiting hotel rate" },
-  { guest: "Guest B", channel: "Email", code: "RQ-2402", status: "Follow-up" },
-  { guest: "Guest A", channel: "Phone", code: "BK-1108", status: "Handover to hotel" },
+  { guest: "Guest A", channel: "LINE", code: "Sample request", status: "Waiting hotel rate" },
+  { guest: "Guest B", channel: "Email", code: "Sample request", status: "Follow-up" },
+  { guest: "Guest A", channel: "Phone", code: "Sample booking", status: "Handover to hotel" },
 ] as const;
 
 export const RESERVATION_PROBLEM_ITEMS = [
@@ -535,11 +556,28 @@ export const SCOPE_ITEMS: ServiceScopeItem[] = [
 
 /** Hotel-owned items to state in the service scope. Not a published operating contract. */
 export const HOTEL_OWNED_WHEN_APPLICABLE = [
-  { id: "rate", th: "กลยุทธ์ราคา", en: "Rate strategy" },
-  { id: "inventory", th: "นโยบายห้องว่าง", en: "Inventory policy" },
-  { id: "refund", th: "ข้อยกเว้นการคืนเงิน", en: "Refund exceptions" },
-  { id: "compensation", th: "การชดเชยแขก", en: "Guest compensation" },
-  { id: "policy", th: "นโยบายปฏิบัติงานขั้นสุดท้าย", en: "Final operational policies" },
+  { id: "rate", th: "กลยุทธ์ราคา", en: "Rate Strategy" },
+  { id: "inventory", th: "นโยบายห้องว่าง", en: "Inventory Policy" },
+  { id: "refund", th: "ข้อยกเว้นการคืนเงิน", en: "Refund Exceptions" },
+  { id: "compensation", th: "การชดเชยแขก", en: "Guest Compensation" },
+  { id: "policy", th: "นโยบายปฏิบัติงานขั้นสุดท้าย", en: "Final Operational Policies" },
+] as const;
+
+export const RESERVATION_HANDLE_CATALOGUE: readonly Omit<ReservationBoundaryItem, "configured">[] = [
+  { id: "inquiry", label: "Inquiry Handling" },
+  { id: "entry", label: "Booking Entry" },
+  { id: "modify-cancel", label: "Modification / Cancellation" },
+  { id: "confirm", label: "Confirmation" },
+  { id: "summary", label: "Reservation Summary" },
+  { id: "channel", label: "Channel Coordination" },
+] as const;
+
+export const RESERVATION_HOTEL_CATALOGUE: readonly Omit<ReservationBoundaryItem, "configured">[] = [
+  { id: "rate", label: "Rate Strategy" },
+  { id: "inventory", label: "Inventory Policy" },
+  { id: "refund", label: "Refund Exceptions" },
+  { id: "compensation", label: "Guest Compensation" },
+  { id: "policy", label: "Final Operational Policies" },
 ] as const;
 
 export const RESERVATION_WORKFLOW_STEPS: ReservationWorkflowStep[] = [
@@ -626,8 +664,8 @@ export const RESERVATION_KPIS: ReservationKpi[] = [
     periodTh: KPI_PERIOD_TH,
     periodEn: KPI_PERIOD_EN,
     dataStatus: "Sample",
-    labels: [],
-    values: [],
+    labels: ["Period 1", "Period 2", "Period 3", "Period 4"],
+    values: [8, 11, 9, 14],
   },
   {
     id: "response-time",
@@ -707,13 +745,135 @@ export const RESERVATION_KPIS: ReservationKpi[] = [
 export const RESERVATION_SERVICE_SETTINGS: ReservationServiceSettings = {
   supportedChannels: ["LINE", "Email", "Social", "Phone", "Website"],
   supportedLanguages: [],
+  operatingHours: "",
   slaTextTh: "ช่วงเวลาที่ดูแลจะระบุในขอบเขตบริการของแต่ละโรงแรม รวมถึงวิธีรับและส่งต่องานนอกเวลาที่ตกลงกัน",
   slaTextEn: "The hours of cover are written in each hotel’s service scope, including how work outside those hours is received and handed over.",
   escalationPath:
     "The hotel sets the policy and approval rights. Anything outside those conditions goes back to the hotel owner of that decision.",
   integrationNotes:
     "The hotel does not need to change the PMS first. The team reviews the current system, access, and how details are handed over.",
+  reportingFrequency: "",
+  privacyNoteTh: "หน้านี้ไม่แสดงชื่อแขก อีเมล เบอร์โทร รหัสจองจริง หรือบันทึกการจองที่เป็นความลับ",
+  privacyNoteEn: "This page does not publish guest names, emails, phone numbers, real booking IDs, or private reservation notes.",
 };
+
+export const DEFAULT_RESERVATION_BOUNDARIES: ReservationServiceBoundaries = {
+  ...RESERVATION_SERVICE_SETTINGS,
+  slaApproved: true,
+  handles: RESERVATION_HANDLE_CATALOGUE.map((item) => ({ ...item, configured: true })),
+  hotelOwns: RESERVATION_HOTEL_CATALOGUE.map((item) => ({ ...item, configured: true })),
+};
+
+export type ReservationBoundaryField = {
+  id: string;
+  labelTh: string;
+  labelEn: string;
+  required: boolean;
+  value: string;
+};
+
+function textValue(value?: string) {
+  return value?.trim() ?? "";
+}
+
+function listValue(values?: string[]) {
+  return (values ?? []).map((item) => item.trim()).filter(Boolean);
+}
+
+export function reservationConfiguredItems(items: ReservationBoundaryItem[]) {
+  return items.filter((item) => item.configured);
+}
+
+export function reservationBoundaryFields(
+  boundaries: ReservationServiceBoundaries,
+  locale: "th" | "en" | "ru" | "zh",
+): ReservationBoundaryField[] {
+  const thai = locale === "th";
+  return [
+    {
+      id: "channels",
+      labelTh: "ช่องทางที่รองรับ",
+      labelEn: "Supported channels",
+      required: true,
+      value: listValue(boundaries.supportedChannels).join(" · "),
+    },
+    {
+      id: "languages",
+      labelTh: "ภาษาที่รองรับ",
+      labelEn: "Supported languages",
+      required: false,
+      value: listValue(boundaries.supportedLanguages).join(" · "),
+    },
+    {
+      id: "hours",
+      labelTh: "เวลาทำการ",
+      labelEn: "Operating hours",
+      required: false,
+      value: textValue(boundaries.operatingHours),
+    },
+    {
+      id: "sla",
+      labelTh: "ข้อความ SLA",
+      labelEn: "SLA wording",
+      required: true,
+      value:
+        boundaries.slaApproved === false
+          ? ""
+          : textValue(thai ? boundaries.slaTextTh : boundaries.slaTextEn) ||
+            textValue(boundaries.slaTextEn) ||
+            textValue(boundaries.slaTextTh),
+    },
+    {
+      id: "escalation",
+      labelTh: "เส้นทางส่งต่อ",
+      labelEn: "Escalation path",
+      required: true,
+      value: textValue(boundaries.escalationPath),
+    },
+    {
+      id: "integration",
+      labelTh: "หมายเหตุ PMS / Booking Engine",
+      labelEn: "PMS / Booking Engine notes",
+      required: false,
+      value: textValue(boundaries.integrationNotes),
+    },
+    {
+      id: "reporting",
+      labelTh: "ความถี่ของรายงาน",
+      labelEn: "Reporting frequency",
+      required: false,
+      value: textValue(boundaries.reportingFrequency),
+    },
+    {
+      id: "privacy",
+      labelTh: "ความเป็นส่วนตัวและความปลอดภัย",
+      labelEn: "Privacy / security note",
+      required: false,
+      value: textValue(thai ? boundaries.privacyNoteTh : boundaries.privacyNoteEn) || textValue(boundaries.privacyNoteEn) || textValue(boundaries.privacyNoteTh),
+    },
+  ];
+}
+
+export function reservationBoundaryPublicFields(
+  boundaries: ReservationServiceBoundaries,
+  locale: "th" | "en" | "ru" | "zh",
+) {
+  return reservationBoundaryFields(boundaries, locale).filter((field) => field.value);
+}
+
+export function reservationBoundaryIncomplete(boundaries: ReservationServiceBoundaries) {
+  const missing: string[] = [];
+  if (!reservationConfiguredItems(boundaries.handles).length) {
+    missing.push("The KPI Plus handles");
+  }
+  if (!reservationConfiguredItems(boundaries.hotelOwns).length) {
+    missing.push("Hotel approves or owns");
+  }
+  for (const field of reservationBoundaryFields(boundaries, "en")) {
+    if (field.required && !field.value) missing.push(field.labelEn);
+  }
+  return missing;
+}
 
 export type ReservationFlowStep = {
   number: string;

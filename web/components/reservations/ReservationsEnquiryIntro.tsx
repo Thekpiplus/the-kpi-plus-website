@@ -42,6 +42,10 @@ type ReservationsEnquiryIntroProps = {
   heading: string;
   lead: string;
   photoSrc?: string;
+  photoAlt?: string;
+  nextTitle?: string;
+  steps?: string[];
+  trust?: string[];
 };
 
 export function ReservationsEnquiryIntro({
@@ -50,8 +54,16 @@ export function ReservationsEnquiryIntro({
   heading,
   lead,
   photoSrc,
+  photoAlt,
+  nextTitle,
+  steps,
+  trust,
 }: ReservationsEnquiryIntroProps) {
   const t = locale === "th" ? copy.th : copy.en;
+  const resolvedNext = nextTitle || t.nextTitle;
+  const resolvedSteps = steps?.length ? steps : t.steps;
+  const resolvedTrust = trust?.length ? trust : t.trust;
+  const showPhoto = Boolean(photoSrc) && !/replace with verified|รอรูป|placeholder/i.test(photoAlt || "");
 
   return (
     <div className="kpi-reservations-enquiry-intro">
@@ -65,9 +77,9 @@ export function ReservationsEnquiryIntro({
         ))}
       </p>
       <div className="kpi-reservations-enquiry-next">
-        <h3 className="kpi-reservations-enquiry-next-title">{t.nextTitle}</h3>
+        <h3 className="kpi-reservations-enquiry-next-title">{resolvedNext}</h3>
         <ol className="kpi-reservations-enquiry-points">
-          {t.steps.map((step, index) => (
+          {resolvedSteps.map((step, index) => (
             <li key={step}>
               <span className="kpi-reservations-enquiry-num kpi-latin" aria-hidden="true">
                 {String(index + 1).padStart(2, "0")}
@@ -77,22 +89,21 @@ export function ReservationsEnquiryIntro({
           ))}
         </ol>
         <ul className="kpi-reservations-enquiry-trust">
-          {t.trust.map((item) => (
+          {resolvedTrust.map((item) => (
             <li key={item}>{item}</li>
           ))}
         </ul>
       </div>
-      {photoSrc ? (
+      {showPhoto ? (
         <figure className="kpi-reservations-enquiry-photo">
           <img
             src={photoSrc}
-            alt={TEAM_PHOTO.label}
+            alt={photoAlt || TEAM_PHOTO.label}
             width={TEAM_PHOTO.displayWidth}
             height={TEAM_PHOTO.displayHeight}
             loading="lazy"
             decoding="async"
           />
-          <figcaption>{TEAM_PHOTO.label}</figcaption>
         </figure>
       ) : null}
     </div>

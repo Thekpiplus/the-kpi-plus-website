@@ -1,7 +1,9 @@
 import { ReservationsView } from "@/components/ReservationsView";
-import { metadataFor } from "@/lib/seo";
+import { reservationsPublicMetadata } from "@/lib/cms/reservations-page-public";
 
-export const metadata = metadataFor("/ru/solutions/outsourced-hotel-reservations");
+export async function generateMetadata() {
+  return reservationsPublicMetadata("/ru/solutions/outsourced-hotel-reservations");
+}
 
 export default function Page() {
   return <ReservationsView locale="ru" />;

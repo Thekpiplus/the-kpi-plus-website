@@ -1,12 +1,13 @@
 import type { User } from "@prisma/client";
 import { isFullAccessRole, isPartnerRoleValue, normalizeRole } from "@/lib/crm/roles";
 
-export const ADMIN_MODULES = ["leads", "partners", "users", "cms"] as const;
+export const ADMIN_MODULES = ["leads", "partners", "reservations", "users", "cms"] as const;
 export type AdminModule = (typeof ADMIN_MODULES)[number];
 
 export const MODULE_LABEL: Record<AdminModule, string> = {
   leads: "Lead Management",
   partners: "Partner Management",
+  reservations: "Reservation Operations",
   users: "Users Management",
   cms: "Content Management System",
 };
@@ -14,6 +15,7 @@ export const MODULE_LABEL: Record<AdminModule, string> = {
 export const MODULE_PATH: Record<AdminModule, string> = {
   leads: "/crm/sales",
   partners: "/crm/partners",
+  reservations: "/crm/reservations",
   users: "/crm/users",
   cms: "/crm/cms",
 };
@@ -75,6 +77,7 @@ export function moduleForPath(pathname: string): AdminModule | null {
   if (pathname.startsWith("/crm/cms")) return "cms";
   if (pathname.startsWith("/crm/users")) return "users";
   if (pathname.startsWith("/crm/partners")) return "partners";
+  if (pathname.startsWith("/crm/reservations")) return "reservations";
   if (
     pathname.startsWith("/crm/sales") ||
     pathname.startsWith("/crm/pipeline") ||

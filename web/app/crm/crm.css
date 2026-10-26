@@ -2238,6 +2238,16 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
   color: #8f4d0f;
 }
 
+.crm-dash-module-reservations .crm-dash-module-icon {
+  background: rgba(11, 102, 96, 0.14);
+  color: #0b6660;
+}
+
+.crm-dash-module-reservations .crm-dash-module-cta {
+  background: #d7efe8;
+  color: #0b4f4a;
+}
+
 .crm-dash-bottom {
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
@@ -2289,6 +2299,10 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
 
 .crm-dash-activity li.is-users .crm-dash-activity-dot {
   background: rgba(155, 120, 220, 0.16);
+}
+
+.crm-dash-activity li.is-reservations .crm-dash-activity-dot {
+  background: rgba(11, 102, 96, 0.2);
 }
 
 .crm-dash-activity-title {
@@ -8619,6 +8633,59 @@ html[data-crm-theme="dark"] .crm-cms-redirect-card,
 .crm-cms-globals-form {
   display: grid;
   gap: 1rem;
+}
+
+.kpi-reservations-boundaries-editor-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.kpi-reservations-boundaries-editor-grid fieldset {
+  display: grid;
+  gap: 0.45rem;
+  min-width: 0;
+  margin: 0;
+  padding: 1rem;
+  border: 1px solid var(--admin-border);
+  border-radius: var(--admin-radius-md);
+  background: var(--admin-surface);
+}
+
+.kpi-reservations-boundaries-editor-grid legend {
+  padding: 0 0.35rem;
+  color: var(--admin-navy);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.kpi-reservations-boundaries-editor-grid fieldset > p {
+  margin: 0 0 0.35rem;
+  color: var(--admin-text-muted);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.kpi-reservations-boundaries-check {
+  display: flex;
+  gap: 0.55rem;
+  align-items: flex-start;
+  color: var(--admin-text);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.kpi-reservations-boundaries-check input {
+  width: 1.05rem;
+  height: 1.05rem;
+  margin-top: 0.15rem;
+  accent-color: #0b6660;
+}
+
+@media (max-width: 47.99rem) {
+  .kpi-reservations-boundaries-editor-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .crm-cms-globals-site-line {

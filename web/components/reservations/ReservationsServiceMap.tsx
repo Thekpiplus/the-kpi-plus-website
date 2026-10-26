@@ -8,9 +8,15 @@ import {
 } from "@/lib/reservations";
 import "./reservations-ops.css";
 
+type MapItem = { id: string; title: string; output: string };
+
 type ReservationsServiceMapProps = {
   locale: "th" | "en" | "ru" | "zh";
   src?: string;
+  items?: MapItem[];
+  label?: string;
+  alt?: string;
+  status?: "real" | "approved" | "sample" | "placeholder";
 };
 
 const MAP_ROWS = [
@@ -18,12 +24,17 @@ const MAP_ROWS = [
   ["channel", "modify", "cancel", "report"],
 ] as const;
 
-export function ReservationsServiceMap({ locale, src }: ReservationsServiceMapProps) {
+export function ReservationsServiceMap({ locale, src, items, label, alt, status }: ReservationsServiceMapProps) {
   const visual = RESERVATIONS_SERVICE_MAP_VISUAL;
-  const { recommendedSize, aspectRatio, width, height, displayWidth, displayHeight, status } = visual;
-  const alt = reservationsVisualAlt(visual, locale);
+  const { recommendedSize, aspectRatio, width, height, displayWidth, displayHeight } = visual;
+  const resolvedStatus = status ?? visual.status;
+  const resolvedAlt = alt || reservationsVisualAlt(visual, locale);
+  const resolvedLabel = label || RESERVATIONS_SERVICE_MAP_LABEL;
   const sampleLabel = locale === "th" ? "ตัวอย่างแผนภาพ" : "Sample workflow";
-  const byId = new Map(SCOPE_ITEMS.map((item) => [item.id, item]));
+  const mapped =
+    items?.map((item) => ({ id: item.id, titleEn: item.title, outputEn: item.output, outputTh: item.output })) ??
+    SCOPE_ITEMS;
+  const byId = new Map(mapped.map((item) => [item.id, item]));
 
   if (src) {
     return (
@@ -31,30 +42,30 @@ export function ReservationsServiceMap({ locale, src }: ReservationsServiceMapPr
         <ReservationDummyImage
           className="kpi-reservations-service-map-photo"
           src={src}
-          alt={alt}
-          label={RESERVATIONS_SERVICE_MAP_LABEL}
+          alt={resolvedAlt}
+          label={resolvedLabel}
           recommendedSize={recommendedSize}
           ratio={aspectRatio}
           fit="contain"
           locale={locale}
-          status={status}
+          status={resolvedStatus}
           width={width}
           height={height}
           sampleLabel={sampleLabel}
         />
-        <p className="kpi-reservations-service-map-caption">{RESERVATIONS_SERVICE_MAP_LABEL}</p>
+        <p className="kpi-reservations-service-map-caption">{resolvedLabel}</p>
       </div>
     );
   }
 
   return (
     <figure className="kpi-reservations-service-map">
-      <div className="kpi-reservations-service-map-photo reservations-ops-frame" aria-label={alt}>
+      <div className="kpi-reservations-service-map-photo reservations-ops-frame" aria-label={resolvedAlt}>
         <div className="reservations-service-map">
           <div className="reservations-queue__head">
             <span className="reservations-ops-badge">{sampleLabel}</span>
-            <strong>{RESERVATIONS_SERVICE_MAP_LABEL}</strong>
-            <small>Inquiry → Availability → Booking → Confirmation</small>
+            <strong>{resolvedLabel}</strong>
+            <small>Inquiry → Response → Booking → Confirmation</small>
           </div>
           <div className="reservations-service-map__grid">
             {MAP_ROWS.map((row) => (
@@ -72,6 +83,7 @@ export function ReservationsServiceMap({ locale, src }: ReservationsServiceMapPr
                       <span className="reservations-service-map__card">
                         <ReservationScopeIcon id={id} />
                         <strong>{item.titleEn}</strong>
+                        <small>{locale === "th" && "outputTh" in item ? item.outputTh : item.outputEn}</small>
                       </span>
                     </div>
                   );
@@ -82,7 +94,7 @@ export function ReservationsServiceMap({ locale, src }: ReservationsServiceMapPr
           <p className="reservations-ops-note">Sample workflow · agreed scope decides the live work</p>
         </div>
       </div>
-      <figcaption className="kpi-reservations-service-map-caption">{RESERVATIONS_SERVICE_MAP_LABEL}</figcaption>
+      <figcaption className="kpi-reservations-service-map-caption">{resolvedLabel}</figcaption>
       <span className="sr-only">
         {recommendedSize} · {displayWidth}×{displayHeight}
       </span>

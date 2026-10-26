@@ -8,9 +8,16 @@ import {
 } from "@/lib/reservations";
 import "./reservations-ops.css";
 
+type FlowStep = { id: string; number: string; label: string };
+
 type ReservationsBookingFlowProps = {
   locale: "th" | "en" | "ru" | "zh";
   src?: string;
+  slaNote?: string;
+  steps?: FlowStep[];
+  label?: string;
+  alt?: string;
+  status?: "real" | "approved" | "sample" | "placeholder";
 };
 
 const BOXES = [
@@ -46,12 +53,18 @@ function FlowNodeLabel({ x, y, label }: { x: number; y: number; label: string })
   );
 }
 
-export function ReservationsBookingFlow({ locale, src }: ReservationsBookingFlowProps) {
+export function ReservationsBookingFlow({ locale, src, slaNote, steps, label, alt, status }: ReservationsBookingFlowProps) {
   const visual = RESERVATIONS_BOOKING_FLOW_VISUAL;
-  const { recommendedSize, aspectRatio, width, height, displayWidth, displayHeight, status } = visual;
-  const alt = reservationsVisualAlt(visual, locale);
+  const { recommendedSize, aspectRatio, width, height, displayWidth, displayHeight } = visual;
+  const resolvedStatus = status ?? visual.status;
+  const resolvedAlt = alt || reservationsVisualAlt(visual, locale);
+  const resolvedLabel = label || RESERVATIONS_BOOKING_FLOW_LABEL;
+  const flowSteps = steps?.length ? steps : BOOKING_FLOW_STEPS;
   const sampleLabel = locale === "th" ? "ตัวอย่างแผนภาพ" : "Sample workflow";
-  const slaNote = locale === "th" ? RESERVATION_SERVICE_SETTINGS.slaTextTh : RESERVATION_SERVICE_SETTINGS.slaTextEn;
+  const sequence = "Inquiry → Response → Booking → Confirmation";
+  const coverNote = (
+    slaNote ?? (locale === "th" ? RESERVATION_SERVICE_SETTINGS.slaTextTh : RESERVATION_SERVICE_SETTINGS.slaTextEn)
+  )?.trim();
 
   if (src) {
     return (
@@ -59,19 +72,19 @@ export function ReservationsBookingFlow({ locale, src }: ReservationsBookingFlow
         <ReservationDummyImage
           className="kpi-reservations-booking-flow-photo"
           src={src}
-          alt={alt}
-          label={RESERVATIONS_BOOKING_FLOW_LABEL}
+          alt={resolvedAlt}
+          label={resolvedLabel}
           recommendedSize={recommendedSize}
           ratio={aspectRatio}
           fit="contain"
           locale={locale}
-          status={status}
+          status={resolvedStatus}
           width={width}
           height={height}
           sampleLabel={sampleLabel}
         />
-        <p className="kpi-reservations-booking-flow-caption">{RESERVATIONS_BOOKING_FLOW_LABEL}</p>
-        {slaNote ? <p className="kpi-reservations-booking-flow-sla">{slaNote}</p> : null}
+        <p className="kpi-reservations-booking-flow-caption">{resolvedLabel} · {sequence}</p>
+        {coverNote ? <p className="kpi-reservations-booking-flow-sla">{coverNote}</p> : null}
       </div>
     );
   }
@@ -81,10 +94,10 @@ export function ReservationsBookingFlow({ locale, src }: ReservationsBookingFlow
       <div className="kpi-reservations-booking-flow-photo reservations-ops-frame">
         <div className="reservations-booking-flow-mobile-head">
           <span className="reservations-ops-badge">{sampleLabel}</span>
-          <strong>{RESERVATIONS_BOOKING_FLOW_LABEL}</strong>
+          <strong>{resolvedLabel}</strong>
         </div>
         <ol className="reservations-booking-flow-stack">
-          {BOOKING_FLOW_STEPS.map((step, index) => (
+          {flowSteps.map((step, index) => (
             <li key={step.id}>
               {index > 0 ? (
                 <svg className="reservations-booking-flow-chevron" viewBox="0 0 24 24" aria-hidden="true">
@@ -102,10 +115,10 @@ export function ReservationsBookingFlow({ locale, src }: ReservationsBookingFlow
           role="img"
           aria-labelledby="reservations-booking-flow-title reservations-booking-flow-desc"
         >
-          <title id="reservations-booking-flow-title">{RESERVATIONS_BOOKING_FLOW_LABEL}</title>
+          <title id="reservations-booking-flow-title">{resolvedLabel}</title>
           <desc id="reservations-booking-flow-desc">
-            Guest Inquiry, Fast Response, Availability / Rate Check, Booking Confirmation, Accurate Record,
-            Follow-up / Report. Sample workflow. Reply hours follow the hotel’s approved service scope.
+            {sequence}. {flowSteps.map((step) => step.label).join(", ")}. Sample workflow. Hours of cover follow the
+            hotel’s approved service scope.
           </desc>
           <defs>
             <marker
@@ -126,13 +139,14 @@ export function ReservationsBookingFlow({ locale, src }: ReservationsBookingFlow
             {sampleLabel.toUpperCase()}
           </text>
           <text x="48" y="128" fill="#f7fbff" fontSize="36" fontWeight="800">
-            {RESERVATIONS_BOOKING_FLOW_LABEL}
+            {resolvedLabel}
           </text>
           <text x="48" y="168" fill="rgba(247,251,255,0.7)" fontSize="22" fontWeight="600">
-            Guest Inquiry to Follow-up / Report
+            {sequence}
           </text>
-          {BOOKING_FLOW_STEPS.map((step, index) => {
+          {flowSteps.map((step, index) => {
             const box = BOXES[index];
+            if (!box) return null;
             const cx = box.x + BOX_W / 2;
             return (
               <g key={step.id}>
@@ -193,8 +207,8 @@ export function ReservationsBookingFlow({ locale, src }: ReservationsBookingFlow
           </text>
         </svg>
       </div>
-      <figcaption className="kpi-reservations-booking-flow-caption">{RESERVATIONS_BOOKING_FLOW_LABEL}</figcaption>
-      {slaNote ? <p className="kpi-reservations-booking-flow-sla">{slaNote}</p> : null}
+      <figcaption className="kpi-reservations-booking-flow-caption">{resolvedLabel} · {sequence}</figcaption>
+      {coverNote ? <p className="kpi-reservations-booking-flow-sla">{coverNote}</p> : null}
       <span className="sr-only">
         {recommendedSize} · {displayWidth}×{displayHeight}
       </span>

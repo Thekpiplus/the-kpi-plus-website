@@ -4,6 +4,7 @@ import {
   RESERVATIONS_PROBLEM_VISUAL,
   SAMPLE_INBOX,
   reservationsVisualAlt,
+  type ReservationsVisualOverride,
 } from "@/lib/reservations";
 import "./reservations-ops.css";
 
@@ -11,12 +12,16 @@ type ReservationsProblemVisualProps = {
   locale: "th" | "en" | "ru" | "zh";
   src?: string;
   caption?: string;
+  override?: ReservationsVisualOverride;
 };
 
-export function ReservationsProblemVisual({ locale, src, caption }: ReservationsProblemVisualProps) {
+export function ReservationsProblemVisual({ locale, src, caption, override }: ReservationsProblemVisualProps) {
   const visual = RESERVATIONS_PROBLEM_VISUAL;
-  const { recommendedSize, aspectRatio, width, height, displayWidth, displayHeight, status } = visual;
-  const alt = reservationsVisualAlt(visual, locale);
+  const { recommendedSize, aspectRatio, width, height, displayWidth, displayHeight } = visual;
+  const status = override?.status ?? visual.status;
+  const alt = override?.alt || reservationsVisualAlt(visual, locale);
+  const label = override?.label || RESERVATIONS_PROBLEM_LABEL;
+  const resolvedCaption = caption || override?.caption;
   const sampleLabel = locale === "th" ? "ตัวอย่างข้อมูล" : "Sample data";
 
   if (src) {
@@ -26,7 +31,7 @@ export function ReservationsProblemVisual({ locale, src, caption }: Reservations
           className="kpi-reservations-problem-photo"
           src={src}
           alt={alt}
-          label={RESERVATIONS_PROBLEM_LABEL}
+          label={label}
           recommendedSize={recommendedSize}
           ratio={aspectRatio}
           fit="contain"
@@ -36,7 +41,7 @@ export function ReservationsProblemVisual({ locale, src, caption }: Reservations
           height={height}
           sampleLabel={sampleLabel}
         />
-        {caption ? <p className="kpi-reservations-problem-photo-caption">{caption}</p> : null}
+        {resolvedCaption ? <p className="kpi-reservations-problem-photo-caption">{resolvedCaption}</p> : null}
       </div>
     );
   }
@@ -47,8 +52,8 @@ export function ReservationsProblemVisual({ locale, src, caption }: Reservations
         <div className="reservations-inbox">
           <div className="reservations-queue__head">
             <span className="reservations-ops-badge">{sampleLabel}</span>
-            <strong>{RESERVATIONS_PROBLEM_LABEL}</strong>
-            <small>Guest A · Guest B · RQ-2401 · RQ-2402 · BK-1108</small>
+            <strong>{label}</strong>
+            <small>Sample data · Guest A / Guest B · no booking IDs</small>
           </div>
           <div className="reservations-inbox__table">
             {SAMPLE_INBOX.map((row) => (
@@ -64,7 +69,7 @@ export function ReservationsProblemVisual({ locale, src, caption }: Reservations
           <p className="reservations-ops-note">Redact guest and booking data before publishing</p>
         </div>
       </div>
-      {caption ? <figcaption className="kpi-reservations-problem-photo-caption">{caption}</figcaption> : null}
+      {resolvedCaption ? <figcaption className="kpi-reservations-problem-photo-caption">{resolvedCaption}</figcaption> : null}
       <span className="sr-only">
         {recommendedSize} · {displayWidth}×{displayHeight}
       </span>

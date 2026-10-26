@@ -4,6 +4,7 @@ import { leadOriginCounts, todayLists, userCounts } from "@/lib/crm/queries";
 import { hasModule } from "@/lib/crm/modules";
 import { partnerOverview } from "@/lib/partners/queries";
 import { cmsOverview } from "@/lib/cms/queries";
+import { reservationOpsOverview } from "@/lib/reservations-ops/queries";
 import { EmptyState } from "@/components/crm/ui/EmptyState";
 import { ModuleCard } from "@/components/crm/ui/ModuleCard";
 import { NewLeadOpenButton } from "@/components/crm/ui/NewLeadModal";
@@ -11,7 +12,7 @@ import { roleLabel } from "@/lib/crm/roles";
 
 export default async function AdminHomePage() {
   const user = await requireUser();
-  const [lists, origins, partners, users, cms] = await Promise.all([
+  const [lists, origins, partners, users, cms, reservations] = await Promise.all([
     todayLists(),
     leadOriginCounts(),
     partnerOverview().catch(() => ({
@@ -23,6 +24,7 @@ export default async function AdminHomePage() {
     })),
     userCounts(),
     cmsOverview().catch(() => ({ pages: 0, insights: 0, drafts: 0, media: 0 })),
+    reservationOpsOverview().catch(() => ({ open: 0, due: 0, escalated: 0 })),
   ]);
 
   const dueToday = lists.dueToday.length + lists.overdue.length;
@@ -63,6 +65,22 @@ export default async function AdminHomePage() {
           cta: "เปิด Partner Management",
         }
       : null,
+    hasModule(user, "reservations")
+      ? {
+          href: "/crm/reservations",
+          accent: "reservations" as const,
+          icon: "▣",
+          category: "RESERVATIONS",
+          title: "Reservation Operations",
+          body: "คิว Inquiry, Booking, Modification, Cancellation และ Confirmation",
+          stats: [
+            { label: "เปิดอยู่", value: reservations.open },
+            { label: "ครบกำหนด", value: reservations.due },
+            { label: "Escalated", value: reservations.escalated },
+          ],
+          cta: "เปิดคิวงานจอง",
+        }
+      : null,
     hasModule(user, "users")
       ? {
           href: "/crm/users",
@@ -97,7 +115,7 @@ export default async function AdminHomePage() {
       : null,
   ].filter(Boolean) as Array<{
     href: string;
-    accent: "leads" | "partners" | "users" | "cms";
+    accent: "leads" | "partners" | "reservations" | "users" | "cms";
     icon: string;
     category: string;
     title: string;
@@ -146,6 +164,15 @@ export default async function AdminHomePage() {
     });
   }
 
+  if (hasModule(user, "reservations") && reservations.escalated > 0 && tasks.length < 5) {
+    tasks.push({
+      title: `งานจองที่ส่งต่อ ${reservations.escalated} รายการ`,
+      meta: "Reservations",
+      priority: "urgent",
+      href: "/crm/reservations?status=escalated",
+    });
+  }
+
   const activity = [
     origins.web > 0
       ? { title: "มีลีดใหม่จากเว็บไซต์", meta: `${origins.web} รายการ`, tone: "leads" as const }
@@ -159,10 +186,13 @@ export default async function AdminHomePage() {
     cms.drafts > 0
       ? { title: "มีบทความฉบับร่าง", meta: `${cms.drafts} รายการ`, tone: "cms" as const }
       : null,
+    reservations.escalated > 0
+      ? { title: "งานจองที่ต้องส่งต่อโรงแรม", meta: `${reservations.escalated} รายการ`, tone: "reservations" as const }
+      : null,
     users.total > 0
       ? { title: `ผู้ใช้ในระบบ ${users.total} คน`, meta: "Users", tone: "users" as const }
       : null,
-  ].filter(Boolean) as Array<{ title: string; meta: string; tone: "leads" | "partners" | "users" | "cms" }>;
+  ].filter(Boolean) as Array<{ title: string; meta: string; tone: "leads" | "partners" | "reservations" | "users" | "cms" }>;
 
   const priorityLabel = {
     urgent: "ด่วน",
@@ -249,7 +279,7 @@ export default async function AdminHomePage() {
         ) : (
           <EmptyState
             title="ยังไม่มีโมดูลที่เข้าได้"
-            body="ติดต่อ Superadmin เพื่อเปิดสิทธิ์ Lead / Partner / Users / CMS"
+            body="ติดต่อ Superadmin เพื่อเปิดสิทธิ์ Lead / Partner / Reservations / Users / CMS"
           />
         )}
       </section>

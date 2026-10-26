@@ -552,3 +552,79 @@ model CmsClientLogo {
   @@index([isActive])
   @@index([sortOrder])
 }
+
+model ReservationOperation {
+  id          String                     @id @default(cuid())
+  reference   String                     @unique @db.VarChar(32)
+  name        String                     @db.VarChar(255)
+  type        String
+  channel     String
+  status      String                     @default("new")
+  priority    String                     @default("normal")
+  assigneeId  String                     @default("")
+  dueAt       DateTime?
+  hotelName   String                     @default("") @db.VarChar(255)
+  guestName   String                     @default("") @db.VarChar(255)
+  guestEmail  String                     @default("") @db.VarChar(255)
+  guestPhone  String                     @default("") @db.VarChar(64)
+  bookingCode String                     @default("") @db.VarChar(64)
+  notes       String                     @default("") @db.Text
+  closedAt    DateTime?
+  escalatedAt DateTime?
+  createdBy   String                     @default("")
+  updatedBy   String                     @default("")
+  createdAt   DateTime                   @default(now())
+  updatedAt   DateTime                   @updatedAt
+  subtasks    ReservationSubtask[]
+  comments    ReservationOpComment[]
+  attachments ReservationOpAttachment[]
+
+  @@index([status])
+  @@index([type])
+  @@index([channel])
+  @@index([assigneeId])
+  @@index([dueAt])
+}
+
+model ReservationSubtask {
+  id          String                @id @default(cuid())
+  operationId String
+  operation   ReservationOperation  @relation(fields: [operationId], references: [id], onDelete: Cascade)
+  name        String                @db.VarChar(255)
+  status      String                @default("open")
+  completed   Boolean               @default(false)
+  dueAt       DateTime?
+  assigneeId  String                @default("")
+  priority    String                @default("normal")
+  comments    String                @default("") @db.Text
+  sortOrder   Int                   @default(0)
+  createdAt   DateTime              @default(now())
+  updatedAt   DateTime              @updatedAt
+
+  @@index([operationId])
+}
+
+model ReservationOpComment {
+  id          String               @id @default(cuid())
+  operationId String
+  operation   ReservationOperation @relation(fields: [operationId], references: [id], onDelete: Cascade)
+  authorId    String
+  body        String               @db.Text
+  createdAt   DateTime             @default(now())
+
+  @@index([operationId])
+}
+
+model ReservationOpAttachment {
+  id          String               @id @default(cuid())
+  operationId String
+  operation   ReservationOperation @relation(fields: [operationId], references: [id], onDelete: Cascade)
+  filename    String
+  mime        String
+  size        Int
+  path        String               @db.VarChar(500)
+  createdBy   String               @default("")
+  createdAt   DateTime             @default(now())
+
+  @@index([operationId])
+}

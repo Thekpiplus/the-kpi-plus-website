@@ -235,6 +235,7 @@ export function EnquiryForm({
   showAssessmentNote = false,
   compact = false,
   consultantImageSrc,
+  consultantImageAlt,
   introNextTitle,
   introSteps,
   introTrust,
@@ -250,6 +251,7 @@ export function EnquiryForm({
   showAssessmentNote?: boolean;
   compact?: boolean;
   consultantImageSrc?: string;
+  consultantImageAlt?: string;
   introNextTitle?: string;
   introSteps?: string[];
   introTrust?: string[];
@@ -694,6 +696,10 @@ export function EnquiryForm({
             heading={heading}
             lead={lead}
             photoSrc={consultantImageSrc}
+            photoAlt={consultantImageAlt}
+            nextTitle={introNextTitle}
+            steps={introSteps}
+            trust={introTrust}
           />
           <div className="kpi-reservations-enquiry-panel">
             {status === "success" ? (

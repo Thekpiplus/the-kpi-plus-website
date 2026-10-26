@@ -9,6 +9,7 @@ import { ReservationsProblemVisual } from "@/components/reservations/Reservation
 import { ReservationsRelatedVisual } from "@/components/reservations/ReservationsRelatedVisual";
 import { ReservationsBookingFlow } from "@/components/reservations/ReservationsBookingFlow";
 import { ReservationsServiceMap } from "@/components/reservations/ReservationsServiceMap";
+import { ReservationsServiceBoundaries } from "@/components/reservations/ReservationsServiceBoundaries";
 import { ReservationsWorkflowMap } from "@/components/reservations/ReservationsWorkflowMap";
 import { PageFaqs } from "@/components/PageFaqs";
 import { ReservationsStickyCta } from "@/components/ReservationsStickyCta";
@@ -19,14 +20,12 @@ import { formatInsightDate, insightExcerpt, insightPosts, insightUpdatedAt, insi
 import { solutionsIndexCopy } from "@/lib/localized-ui";
 import { solutionNavLabel } from "@/lib/nav";
 import {
-  RESERVATION_SERVICE_SETTINGS,
   reservationsBookingFlowVisualUrl,
   reservationsHeroVisualUrl,
   reservationsKpiVisualUrl,
   reservationsProblemVisualUrl,
   reservationsRelatedVisualUrl,
   reservationsServiceMapVisualUrl,
-  reservationsTeamVisualUrl,
   reservationsWorkflowVisualUrl,
   formatReservationKpiUpdatedAt,
   formatReservationKpiValue,
@@ -34,12 +33,16 @@ import {
   reservationKpiUnitLabel,
   reservationKpisForPublic,
   HERO_CAPABILITIES,
-  HOTEL_OWNED_WHEN_APPLICABLE,
   RESERVATION_BENEFIT_GROUPS,
   RESERVATION_PROBLEM_ITEMS,
   SCOPE_ITEMS,
   type ReservationKpi,
+  type ReservationsVisualOverride,
 } from "@/lib/reservations";
+import { isReservationsAdminViewer } from "@/lib/cms/reservations-admin";
+import { loadReservationBoundaries } from "@/lib/cms/reservations-boundaries";
+import type { CmsReservationsPage, CmsReservationsVisual } from "@/lib/cms/reservations-page";
+import { resolveReservationsPage } from "@/lib/cms/reservations-page-public";
 import { existingHref, localizePath, pageByRoute, type Locale } from "@/lib/seo";
 
 const relatedInsightHrefs = ["/insights/direct-booking-journey-audit"] as const;
@@ -296,8 +299,18 @@ const copy = {
   },
 } as const;
 
-export async function ReservationsView({ locale }: { locale: Locale }) {
+export async function ReservationsView({
+  locale,
+  previewContent,
+  embedded = false,
+}: {
+  locale: Locale;
+  previewContent?: CmsReservationsPage | null;
+  embedded?: boolean;
+}) {
   const t = copy[locale];
+  const cms = await resolveReservationsPage(locale, previewContent);
+  const fromCms = cms.fromCms;
   const insightsUi = insightsIndexCopy[locale];
   const solutions = localizePath("/solutions", locale);
   const insights = insightPosts
@@ -309,22 +322,139 @@ export async function ReservationsView({ locale }: { locale: Locale }) {
     .filter((item): item is { post: (typeof insightPosts)[number]; href: string } => Boolean(item.href));
   const conversionHref = existingHref("/solutions/hotel-direct-bookings", locale);
   const websiteHref = existingHref("/solutions/hotel-website-design", locale);
-  const heroSrc = reservationsHeroVisualUrl();
-  const problemSrc = reservationsProblemVisualUrl();
-  const workflowSrc = reservationsWorkflowVisualUrl();
-  const serviceMapSrc = reservationsServiceMapVisualUrl();
-  const bookingFlowSrc = reservationsBookingFlowVisualUrl();
-  const kpiSrc = reservationsKpiVisualUrl();
-  const relatedSrc = reservationsRelatedVisualUrl([heroSrc, problemSrc]);
-  const teamPhotoSrc = reservationsTeamVisualUrl([heroSrc, problemSrc]);
-  const publicKpis = reservationKpisForPublic();
+  const heroSrc = fromCms ? cms.hero.visual.src || undefined : reservationsHeroVisualUrl();
+  const problemSrc = fromCms ? cms.problemsSection.visual.src || undefined : reservationsProblemVisualUrl();
+  const workflowSrc = fromCms ? cms.workflowSection.visual.src || undefined : reservationsWorkflowVisualUrl();
+  const serviceMapSrc = fromCms ? cms.scopeSection.visual.src || undefined : reservationsServiceMapVisualUrl();
+  const bookingFlowSrc = fromCms ? cms.benefitsSection.visual.src || undefined : reservationsBookingFlowVisualUrl();
+  const kpiSrc = fromCms ? cms.measureSection.visual.src || undefined : reservationsKpiVisualUrl();
+  const relatedSrc = (() => {
+    const src = fromCms ? cms.related.src : reservationsRelatedVisualUrl([heroSrc, problemSrc]);
+    if (!src || src === heroSrc || src === problemSrc) return undefined;
+    return src;
+  })();
+  const teamPhotoSrc = publicTeamPhoto(fromCms ? cms.form.visual : undefined, [heroSrc, problemSrc]);
+  const publicKpis = fromCms ? cms.kpis : reservationKpisForPublic();
   const websiteBody = solutionsIndexCopy[locale].problems["/solutions/hotel-website-design"] || t.websiteBody;
   const scopeLabel = locale === "th" ? "งานที่อาจอยู่ในขอบเขตที่ตกลงกัน" : "Work that may be in the agreed scope";
   const pageRoute = localizePath("/solutions/outsourced-hotel-reservations", locale);
-  const faqs = faqsForRoute(pageRoute);
+  const faqs = fromCms ? cms.faqs : faqsForRoute(pageRoute);
+  const [storedBoundaries, adminViewer] = fromCms
+    ? [cms.boundaries, await isReservationsAdminViewer()]
+    : await Promise.all([loadReservationBoundaries(), isReservationsAdminViewer()]);
+  const boundaries = fromCms ? cms.boundaries : storedBoundaries;
+  const slaNote =
+    boundaries.slaApproved === false
+      ? ""
+      : locale === "th"
+        ? boundaries.slaTextTh || ""
+        : boundaries.slaTextEn || boundaries.slaTextTh || "";
+  const heroTitle = fromCms ? cms.hero.title : t.title;
+  const primaryCta = fromCms
+    ? cms.hero.primaryCta
+    : { label: locale === "th" ? copy.th.heroCta : t.cta, href: "#reservations-enquiry" };
+  const secondaryCta = fromCms ? cms.hero.secondaryCta : { label: t.secondary, href: solutions };
+  const primaryHref = ctaHref(primaryCta.href, locale, "#reservations-enquiry");
+  const secondaryHref = ctaHref(secondaryCta.href, locale, solutions);
+  const capabilities = fromCms ? cms.hero.capabilities : HERO_CAPABILITIES.map((item) => (locale === "th" ? item.th : item.en));
+  const problemItems = fromCms
+    ? cms.problems.map((item) => ({
+        problem: item.problem,
+        impact: item.impact,
+        support: item.support,
+      }))
+    : RESERVATION_PROBLEM_ITEMS.map((item, index) => ({
+        problem:
+          locale === "th" ? item.problemTh : locale === "en" ? item.problemEn : copy[locale].problems[index],
+        impact: locale === "th" ? item.impactTh : item.impactEn,
+        support: locale === "th" ? item.supportTh : item.supportEn,
+      }));
+  const scopeItems = fromCms
+    ? cms.scopeItems.map((item) => ({
+        id: item.id,
+        title: item.title,
+        description: item.description,
+        input: item.input,
+        output: item.output,
+        channels: scopeChannels(item.channels),
+      }))
+    : SCOPE_ITEMS.map((item) => ({
+        id: item.id,
+        title: item.titleEn,
+        description: locale === "th" ? item.descriptionTh : item.descriptionEn,
+        input: locale === "th" ? item.inputTh : item.inputEn,
+        output: locale === "th" ? item.outputTh : item.outputEn,
+        channels: item.channels ?? [],
+      }));
+  const benefitGroups = fromCms
+    ? cms.benefitGroups.map((group) => ({ id: group.id, title: group.title, kicker: "", items: group.items }))
+    : RESERVATION_BENEFIT_GROUPS.map((group) => ({
+        id: group.id,
+        title: group.titleEn,
+        kicker: locale === "th" ? group.titleTh : "",
+        items: group.items.map((item) => (locale === "th" ? item.th : item.en)),
+      }));
+  const relatedCards = fromCms
+    ? cms.related.cards
+    : [
+        ...insights.map(({ post, href }) => {
+          const updated = insightUpdatedAt(post);
+          const dateIso = updated || post.publishedAt;
+          return {
+            id: post.slug,
+            href,
+            category: post.category[locale],
+            title: post.title[locale] || post.title.th,
+            description: insightExcerpt(post, locale),
+            meta: dateIso
+              ? `${updated ? insightsUi.updated : insightsUi.published} ${formatInsightDate(dateIso, locale)} · ${post.readingTimeMinutes} ${insightsUi.minutes}`
+              : `${post.readingTimeMinutes} ${insightsUi.minutes}`,
+            cta: insightsUi.read,
+            featured: true,
+          };
+        }),
+        ...(conversionHref
+          ? [
+              {
+                id: "conversion",
+                href: conversionHref,
+                category: t.relatedCategoryService,
+                title: solutionNavLabel("/solutions/hotel-direct-bookings", locale) || t.conversionTitle,
+                description: t.conversionBody,
+                meta: t.relatedMetaService,
+                cta: t.details,
+                featured: false,
+              },
+            ]
+          : []),
+        ...(websiteHref
+          ? [
+              {
+                id: "website",
+                href: websiteHref,
+                category: t.relatedCategoryService,
+                title: solutionNavLabel("/solutions/hotel-website-design", locale) || t.websiteTitle,
+                description: websiteBody,
+                meta: t.relatedMetaService,
+                cta: t.details,
+                featured: false,
+              },
+            ]
+          : []),
+      ];
+  const featuredRelated = relatedCards.filter((card) => ("featured" in card ? card.featured : relatedCards[0]?.id === card.id));
+  const sideRelated = relatedCards.filter((card) => !featuredRelated.includes(card));
+  const faqIntro = fromCms ? cms.faqIntro : locale === "th" ? copy.th.faqIntro : copy.en.faqIntro;
+  const sampleLabel =
+    fromCms && cms.measureSection.sampleLabel
+      ? cms.measureSection.sampleLabel
+      : locale === "th"
+        ? "ตัวอย่างข้อมูล · ไม่ใช่ผลลัพธ์ของโรงแรม และไม่มีค่า SLA"
+        : "Sample Visual. Not hotel results, and no SLA values.";
+  const stickyLabel = fromCms ? cms.hero.primaryCta.label : t.cta;
 
-  return (
-    <SiteShell locale={locale} route={pageRoute} hideFaqs>
+  const inner = (
+    <>
       <PageHero className="kpi-reservations-hero">
         <div className="kpi-reservations-hero-grid">
           <div className="kpi-reservations-hero-copy">
@@ -340,17 +470,25 @@ export async function ReservationsView({ locale }: { locale: Locale }) {
               </ol>
             </nav>
             <h1 className="kpi-h1 kpi-reservations-hero-title">
-              {locale === "th" ? (
+              {!fromCms && locale === "th" ? (
                 <>
                   <span className="kpi-reservations-hero-line">ให้เราช่วยดูแลงานจอง</span>
                   <span className="kpi-reservations-hero-line">เพื่อให้ทีมของคุณ</span>
                   <span className="kpi-reservations-hero-line kpi-reservations-hero-em">มีเวลาดูแลแขก</span>
                 </>
               ) : (
-                t.title
+                heroTitle
               )}
             </h1>
-            {locale === "th" ? (
+            {fromCms ? (
+              <>
+                <p className="kpi-reservations-hero-lead">{cms.hero.description}</p>
+                {cms.hero.leadNext ? (
+                  <p className="kpi-reservations-hero-lead kpi-reservations-hero-lead-next">{cms.hero.leadNext}</p>
+                ) : null}
+                {cms.hero.leadClose ? <p className="kpi-reservations-hero-outcome">{cms.hero.leadClose}</p> : null}
+              </>
+            ) : locale === "th" ? (
               <>
                 <p className="kpi-reservations-hero-lead">{copy.th.lead.replaceAll("\n", " ")}</p>
                 <p className="kpi-reservations-hero-lead kpi-reservations-hero-lead-next">
@@ -375,33 +513,39 @@ export async function ReservationsView({ locale }: { locale: Locale }) {
                 ? "เมื่อโรงแรมอนุมัติขอบเขตแล้ว บริการนี้ช่วยดูแลได้"
                 : "When the hotel approves the scope, the service can support"}
             </p>
-            <ul className="kpi-reservations-hero-scope" aria-label={scopeLabel}>
-              {HERO_CAPABILITIES.map((item) => (
-                <li key={item.id}>{locale === "th" ? item.th : item.en}</li>
-              ))}
-            </ul>
+            {capabilities.length ? (
+              <ul className="kpi-reservations-hero-scope" aria-label={scopeLabel}>
+                {capabilities.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            ) : null}
             <div className="kpi-actions">
-              <a href="#reservations-enquiry" className="kpi-button">
-                {locale === "th" ? copy.th.heroCta : t.cta}{" "}
+              <a href={primaryHref} className="kpi-button">
+                {primaryCta.label}{" "}
                 <span className="kpi-reservations-hero-arrow" aria-hidden="true">
                   ↗
                 </span>
               </a>
-              <Link href={solutions} className="kpi-button-ghost kpi-reservations-hero-secondary">
-                {t.secondary}
+              <Link href={secondaryHref} className="kpi-button-ghost kpi-reservations-hero-secondary">
+                {secondaryCta.label}
               </Link>
             </div>
-            <p className="kpi-reservations-hero-note">
-              {locale === "th" ? copy.th.underCta.replaceAll("\n", " ") : t.underCta}
-            </p>
+            {fromCms ? (
+              cms.hero.underCta ? <p className="kpi-reservations-hero-note">{cms.hero.underCta}</p> : null
+            ) : (
+              <p className="kpi-reservations-hero-note">
+                {locale === "th" ? copy.th.underCta.replaceAll("\n", " ") : t.underCta}
+              </p>
+            )}
           </div>
-          <ReservationsHeroVisual locale={locale} src={heroSrc} />
+          <ReservationsHeroVisual locale={locale} src={heroSrc} override={visualOverride(cms.hero.visual, locale)} />
         </div>
       </PageHero>
 
       <section className="kpi-section kpi-reservations-problems">
         <h2 className="kpi-h2 kpi-reservations-problem-title">
-          {locale === "th" ? (
+          {!fromCms && locale === "th" ? (
             <>
               <span className="kpi-reservations-problem-title-line">
                 งานจองกำลัง<span className="kpi-reservations-problem-title-em">ดึงเวลา</span>
@@ -409,31 +553,29 @@ export async function ReservationsView({ locale }: { locale: Locale }) {
               <span className="kpi-reservations-problem-title-br"> </span>
               <span className="kpi-reservations-problem-title-line">ทีมหน้างานไปมากแค่ไหน?</span>
             </>
+          ) : fromCms ? (
+            cms.problemsSection.title
           ) : (
             t.problemTitle
           )}
         </h2>
         <div className="kpi-reservations-problems-grid">
           <div className="kpi-reservations-problem-list">
-            {RESERVATION_PROBLEM_ITEMS.map((item, index) => (
-              <article key={item.problemEn} className="kpi-reservations-problem">
+            {problemItems.map((item, index) => (
+              <article key={`${item.problem}-${index}`} className="kpi-reservations-problem">
                 <span className="kpi-reservations-problem-num kpi-latin">{String(index + 1).padStart(2, "0")}</span>
                 <div className="kpi-reservations-problem-body">
                   <p className="kpi-reservations-problem-text">
                     <span className="kpi-reservations-problem-layer-label kpi-latin">Problem</span>
-                    {locale === "th"
-                      ? item.problemTh
-                      : locale === "en"
-                        ? item.problemEn
-                        : copy[locale].problems[index]}
+                    {item.problem}
                   </p>
                   <p className="kpi-reservations-problem-impact">
                     <span className="kpi-reservations-problem-layer-label kpi-latin">Impact</span>
-                    {locale === "th" ? item.impactTh : item.impactEn}
+                    {item.impact}
                   </p>
                   <p className="kpi-reservations-problem-support">
                     <span className="kpi-reservations-problem-layer-label kpi-latin">Support</span>
-                    {locale === "th" ? item.supportTh : item.supportEn}
+                    {item.support}
                   </p>
                 </div>
               </article>
@@ -442,7 +584,14 @@ export async function ReservationsView({ locale }: { locale: Locale }) {
           <ReservationsProblemVisual
             locale={locale}
             src={problemSrc}
-            caption={locale === "th" ? copy.th.problemCaption : "Sample data · Reservation Queue / Booking Inbox"}
+            caption={
+              fromCms
+                ? cms.problemsSection.caption
+                : locale === "th"
+                  ? copy.th.problemCaption
+                  : "Sample data · Reservation Queue / Booking Inbox"
+            }
+            override={visualOverride(cms.problemsSection.visual, locale)}
           />
         </div>
       </section>
@@ -450,29 +599,27 @@ export async function ReservationsView({ locale }: { locale: Locale }) {
       <section className="border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section kpi-reservations-help">
           <p className="kpi-reservations-help-kicker kpi-latin">RESERVATION SUPPORT</p>
-          <h2 className="kpi-h2 kpi-reservations-help-title">{t.helpTitle}</h2>
+          <h2 className="kpi-h2 kpi-reservations-help-title">{fromCms ? cms.scopeSection.title : t.helpTitle}</h2>
           <div className="kpi-reservations-scope-grid">
-            {SCOPE_ITEMS.map((item) => (
+            {scopeItems.map((item) => (
               <article key={item.id} className="kpi-reservations-scope-card">
                 <span className="kpi-reservations-scope-icon" aria-hidden="true">
                   <ReservationScopeIcon id={item.id} />
                 </span>
                 <div className="kpi-reservations-scope-copy">
-                  <h3 className="kpi-reservations-help-name kpi-latin">{item.titleEn}</h3>
-                  <p className="kpi-reservations-help-body">
-                    {locale === "th" ? item.descriptionTh : item.descriptionEn}
-                  </p>
+                  <h3 className="kpi-reservations-help-name kpi-latin">{item.title}</h3>
+                  <p className="kpi-reservations-help-body">{item.description}</p>
                   <dl className="kpi-reservations-scope-io">
                     <div>
                       <dt className="kpi-latin">Input</dt>
-                      <dd>{locale === "th" ? item.inputTh : item.inputEn}</dd>
+                      <dd>{item.input}</dd>
                     </div>
                     <div>
                       <dt className="kpi-latin">Output</dt>
-                      <dd>{locale === "th" ? item.outputTh : item.outputEn}</dd>
+                      <dd>{item.output}</dd>
                     </div>
                   </dl>
-                  {item.channels?.length ? (
+                  {item.channels.length ? (
                     <ul className="kpi-reservations-scope-channels" aria-label="Channels">
                       {item.channels.map((channel) => (
                         <li key={channel} className="kpi-latin">
@@ -485,26 +632,17 @@ export async function ReservationsView({ locale }: { locale: Locale }) {
               </article>
             ))}
           </div>
-          <aside className="kpi-reservations-hotel-owns">
-            <p className="kpi-reservations-hotel-owns-title">
-              {locale === "th"
-                ? "โรงแรมเป็นผู้พิจารณาหรือเป็นเจ้าของเรื่องต่อไปนี้ ตามที่ใช้กับแต่ละงาน"
-                : "The hotel approves or owns the following, when they apply to the work"}
-            </p>
-            <ul>
-              {HOTEL_OWNED_WHEN_APPLICABLE.map((item) => (
-                <li key={item.id}>{locale === "th" ? item.th : item.en}</li>
-              ))}
-            </ul>
-            <p className="kpi-reservations-hotel-owns-note">
-              {locale === "th"
-                ? "ขอบเขตจริงขึ้นกับข้อตกลงของแต่ละโรงแรม ไม่ได้ประกาศเส้นแบ่งงานตายตัวในหน้านี้"
-                : "The live split follows each hotel’s agreement. This page does not publish a fixed ownership boundary."}
-            </p>
-          </aside>
-          <ReservationsServiceMap locale={locale} src={serviceMapSrc} />
-          <a href="#reservations-enquiry" className="kpi-button kpi-reservations-help-cta">
-            {t.cta} <span aria-hidden="true">↗</span>
+          <ReservationsServiceBoundaries locale={locale} boundaries={boundaries} admin={adminViewer} />
+          <ReservationsServiceMap
+            locale={locale}
+            src={serviceMapSrc}
+            items={scopeItems.map((item) => ({ id: item.id, title: item.title, output: item.output }))}
+            label={fromCms ? cms.scopeSection.mapLabel : undefined}
+            alt={locale === "th" ? cms.scopeSection.visual.altTh : cms.scopeSection.visual.altEn}
+            status={cms.scopeSection.visual.status}
+          />
+          <a href={primaryHref} className="kpi-button kpi-reservations-help-cta">
+            {stickyLabel} <span aria-hidden="true">↗</span>
           </a>
         </div>
       </section>
@@ -512,16 +650,20 @@ export async function ReservationsView({ locale }: { locale: Locale }) {
       <section className="kpi-section kpi-reservations-direct">
         <div className="kpi-reservations-direct-inner">
           <h2 className="kpi-h2 kpi-reservations-direct-title">
-            {locale === "th" ? (
+            {!fromCms && locale === "th" ? (
               <>
                 <span className="kpi-reservations-direct-em">การจองตรง</span>ดีขึ้นได้อย่างไร?
               </>
+            ) : fromCms ? (
+              cms.benefitsSection.title
             ) : (
               t.directTitle
             )}
           </h2>
           <p className="kpi-reservations-direct-intro">
-            {locale === "th" ? (
+            {fromCms ? (
+              cms.benefitsSection.intro
+            ) : locale === "th" ? (
               <>
                 เมื่อมีคนดูแลคำถามและติดตามลูกค้าอย่างต่อเนื่อง
                 <span className="kpi-reservations-direct-br"> </span>
@@ -533,28 +675,68 @@ export async function ReservationsView({ locale }: { locale: Locale }) {
               t.directBody
             )}
           </p>
-          <ReservationsBookingFlow locale={locale} src={bookingFlowSrc} />
+          <ReservationsBookingFlow
+            locale={locale}
+            src={bookingFlowSrc}
+            slaNote={slaNote}
+            steps={fromCms ? cms.flowSteps : undefined}
+            label={fromCms ? cms.benefitsSection.visual.label : undefined}
+            alt={locale === "th" ? cms.benefitsSection.visual.altTh : cms.benefitsSection.visual.altEn}
+            status={cms.benefitsSection.visual.status}
+          />
           <div className="kpi-reservations-benefits-grid">
-            {RESERVATION_BENEFIT_GROUPS.map((group) => (
+            {benefitGroups.map((group) => (
               <article key={group.id} className="kpi-reservations-benefit-group">
-                <h3 className="kpi-latin">{group.titleEn}</h3>
-                {locale === "th" ? <p className="kpi-reservations-benefit-kicker">{group.titleTh}</p> : null}
+                <h3 className="kpi-latin">{group.title}</h3>
+                {group.kicker ? <p className="kpi-reservations-benefit-kicker">{group.kicker}</p> : null}
                 <ul>
                   {group.items.map((item) => (
-                    <li key={item.en}>{locale === "th" ? item.th : item.en}</li>
+                    <li key={item}>{item}</li>
                   ))}
                 </ul>
               </article>
             ))}
           </div>
+          {fromCms && cms.benefitsSection.close ? (
+            <p className="kpi-reservations-direct-intro">{cms.benefitsSection.close}</p>
+          ) : null}
         </div>
       </section>
 
       <section className="border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section kpi-reservations-split">
-          <h2 className="kpi-h2 kpi-reservations-split-title">{t.splitTitle}</h2>
-          <ReservationsWorkflowMap locale={locale} src={workflowSrc} />
-          {locale === "th" ? (
+          <h2 className="kpi-h2 kpi-reservations-split-title">{fromCms ? cms.workflowSection.title : t.splitTitle}</h2>
+          <ReservationsWorkflowMap
+            locale={locale}
+            src={workflowSrc}
+            steps={
+              fromCms
+                ? cms.workflowSteps.map((step) => ({
+                    id: step.id,
+                    number: step.number,
+                    title: step.title,
+                    description: step.description,
+                    owner: step.owner,
+                    input: step.input,
+                    output: step.output,
+                    escalation: step.escalation,
+                  }))
+                : undefined
+            }
+            label={fromCms ? cms.workflowSection.visual.label : undefined}
+            alt={locale === "th" ? cms.workflowSection.visual.altTh : cms.workflowSection.visual.altEn}
+            status={cms.workflowSection.visual.status}
+          />
+          {fromCms ? (
+            cms.workflowSection.noteBody ? (
+              <div className="kpi-reservations-split-note">
+                {cms.workflowSection.noteTitle ? (
+                  <p className="kpi-reservations-split-note-title">{cms.workflowSection.noteTitle}</p>
+                ) : null}
+                <p className="kpi-reservations-split-note-body">{cms.workflowSection.noteBody}</p>
+              </div>
+            ) : null
+          ) : locale === "th" ? (
             <div className="kpi-reservations-split-note">
               <p className="kpi-reservations-split-note-title">ก่อนเริ่มงาน เราจะตกลงร่วมกันเรื่อง</p>
               <p className="kpi-reservations-split-note-body">
@@ -564,29 +746,6 @@ export async function ReservationsView({ locale }: { locale: Locale }) {
           ) : (
             <p className="kpi-reservations-split-note kpi-reservations-split-note-body">{t.splitClose}</p>
           )}
-          <dl className="reservations-settings">
-            <div>
-              <dt>{locale === "th" ? "ช่องทางที่ดูแล" : "Supported channels"}</dt>
-              <dd>{RESERVATION_SERVICE_SETTINGS.supportedChannels.join(" · ")}</dd>
-            </div>
-            <div>
-              <dt>{locale === "th" ? "เวลาทำการ" : "Hours of cover"}</dt>
-              <dd>
-                {locale === "th"
-                  ? RESERVATION_SERVICE_SETTINGS.slaTextTh
-                  : RESERVATION_SERVICE_SETTINGS.slaTextEn}
-              </dd>
-            </div>
-            <div>
-              <dt>{locale === "th" ? "วิธีส่งต่อกรณีเร่งด่วน" : "Escalation"}</dt>
-              <dd>{RESERVATION_SERVICE_SETTINGS.escalationPath}</dd>
-            </div>
-            <div>
-              <dt>{locale === "th" ? "ระบบที่ใช้" : "Systems"}</dt>
-              <dd>{RESERVATION_SERVICE_SETTINGS.integrationNotes}</dd>
-            </div>
-          </dl>
-          <ReservationsWorkflowMap locale={locale} src={workflowSrc} />
         </div>
       </section>
 
@@ -615,8 +774,10 @@ export async function ReservationsView({ locale }: { locale: Locale }) {
 
       <section className="border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section kpi-reservations-measure">
-          <h2 className="kpi-h2 kpi-reservations-measure-title">{t.measureTitle}</h2>
-          {locale === "th" ? (
+          <h2 className="kpi-h2 kpi-reservations-measure-title">{fromCms ? cms.measureSection.title : t.measureTitle}</h2>
+          {fromCms ? (
+            cms.measureSection.intro ? <p className="kpi-reservations-measure-intro">{cms.measureSection.intro}</p> : null
+          ) : locale === "th" ? (
             <p className="kpi-reservations-measure-intro">
               ไม่ใช่แค่ตอบลูกค้าให้เร็ว
               <span className="kpi-reservations-measure-br"> </span>
@@ -625,18 +786,22 @@ export async function ReservationsView({ locale }: { locale: Locale }) {
           ) : (
             <p className="kpi-reservations-measure-intro">{t.measureBody}</p>
           )}
-          <p className="kpi-reservations-measure-sample">
-            {locale === "th"
-              ? "ตัวอย่างข้อมูล · ไม่ใช่ผลลัพธ์ของโรงแรม และไม่มีค่า SLA"
-              : "Sample Visual. Not hotel results, and no SLA values."}
-          </p>
+          <p className="kpi-reservations-measure-sample">{sampleLabel}</p>
           <div className="kpi-reservations-measure-metrics">
             {publicKpis.map((kpi) => (
               <ReservationKpiMetricCard key={kpi.id} kpi={kpi} locale={locale} />
             ))}
           </div>
-          <ReservationsKpiVisual locale={locale} src={kpiSrc} />
-          {locale === "th" ? (
+          <ReservationsKpiVisual
+            locale={locale}
+            src={kpiSrc}
+            kpis={publicKpis}
+            sampleLabel={sampleLabel}
+            override={visualOverride(cms.measureSection.visual, locale)}
+          />
+          {fromCms ? (
+            cms.measureSection.close ? <p className="kpi-reservations-measure-close">{cms.measureSection.close}</p> : null
+          ) : locale === "th" ? (
             <p className="kpi-reservations-measure-close">
               <span>เพื่อให้โรงแรมเห็นทั้งคุณภาพการตอบลูกค้า</span>
               <span className="kpi-reservations-measure-close-strong">และโอกาสรายได้ที่เกิดขึ้นจริง</span>
@@ -650,90 +815,78 @@ export async function ReservationsView({ locale }: { locale: Locale }) {
       <section className="border-t border-[#E3E8EB] bg-white">
         <div className="kpi-section kpi-reservations-related">
           <h2 className="kpi-h2 kpi-reservations-related-title">
-            {locale === "th" ? (
+            {!fromCms && locale === "th" ? (
               <>
                 <span className="kpi-reservations-related-title-line">เรื่องที่เกี่ยวข้องกับการจองตรง</span>
                 <span className="kpi-reservations-related-br"> </span>
                 <span className="kpi-reservations-related-title-line">และงานจอง</span>
               </>
+            ) : fromCms ? (
+              cms.related.title
             ) : (
               t.relatedTitle
             )}
           </h2>
           <div className="kpi-reservations-related-grid">
-            {insights.map(({ post, href }) => {
-              const updated = insightUpdatedAt(post);
-              const dateIso = updated || post.publishedAt;
-              const dateLabel = dateIso
-                ? `${updated ? insightsUi.updated : insightsUi.published} ${formatInsightDate(dateIso, locale)}`
-                : undefined;
-              return (
-                <Link key={post.slug} href={href} className="kpi-reservations-related-item is-featured">
-                  <ReservationsRelatedVisual locale={locale} src={relatedSrc} />
-                  <p className="kpi-reservations-related-cat">{post.category[locale]}</p>
-                  <h3>{post.title[locale] || post.title.th}</h3>
-                  <p>{insightExcerpt(post, locale)}</p>
+            {featuredRelated.map((card) => (
+              <Link key={card.id} href={card.href} className="kpi-reservations-related-item is-featured">
+                <ReservationsRelatedVisual
+                  locale={locale}
+                  src={relatedSrc}
+                  alt={locale === "th" ? cms.related.altTh : cms.related.altEn}
+                />
+                <p className="kpi-reservations-related-cat">{card.category}</p>
+                <h3>{card.title}</h3>
+                <p>{card.description}</p>
+                {card.meta ? (
                   <p className="kpi-reservations-related-meta">
-                    {dateLabel ? <span>{dateLabel}</span> : null}
-                    <span>
-                      {post.readingTimeMinutes} {insightsUi.minutes}
-                    </span>
+                    <span>{card.meta}</span>
                   </p>
-                  <span className="kpi-reservations-related-cta">
-                    {insightsUi.read}
-                    <span className="kpi-reservations-related-arrow" aria-hidden="true">
-                      ↗
-                    </span>
+                ) : null}
+                <span className="kpi-reservations-related-cta">
+                  {card.cta}
+                  <span className="kpi-reservations-related-arrow" aria-hidden="true">
+                    ↗
                   </span>
-                </Link>
-              );
-            })}
-            <div className="kpi-reservations-related-side">
-              {conversionHref ? (
-                <Link href={conversionHref} className="kpi-reservations-related-item">
-                  <p className="kpi-reservations-related-cat">{t.relatedCategoryService}</p>
-                  <h3>{solutionNavLabel("/solutions/hotel-direct-bookings", locale)}</h3>
-                  <p>{t.conversionBody}</p>
-                  <p className="kpi-reservations-related-meta">
-                    <span>{t.relatedMetaService}</span>
-                  </p>
-                  <span className="kpi-reservations-related-cta">
-                    {t.details}
-                    <span className="kpi-reservations-related-arrow" aria-hidden="true">
-                      ↗
+                </span>
+              </Link>
+            ))}
+            {sideRelated.length ? (
+              <div className="kpi-reservations-related-side">
+                {sideRelated.map((card) => (
+                  <Link key={card.id} href={card.href} className="kpi-reservations-related-item">
+                    <p className="kpi-reservations-related-cat">{card.category}</p>
+                    <h3>{card.title}</h3>
+                    <p>{card.description}</p>
+                    {card.meta ? (
+                      <p className="kpi-reservations-related-meta">
+                        <span>{card.meta}</span>
+                      </p>
+                    ) : null}
+                    <span className="kpi-reservations-related-cta">
+                      {card.cta}
+                      <span className="kpi-reservations-related-arrow" aria-hidden="true">
+                        ↗
+                      </span>
                     </span>
-                  </span>
-                </Link>
-              ) : null}
-              {websiteHref ? (
-                <Link href={websiteHref} className="kpi-reservations-related-item">
-                  <p className="kpi-reservations-related-cat">{t.relatedCategoryService}</p>
-                  <h3>{solutionNavLabel("/solutions/hotel-website-design", locale)}</h3>
-                  <p>{websiteBody}</p>
-                  <p className="kpi-reservations-related-meta">
-                    <span>{t.relatedMetaService}</span>
-                  </p>
-                  <span className="kpi-reservations-related-cta">
-                    {t.details}
-                    <span className="kpi-reservations-related-arrow" aria-hidden="true">
-                      ↗
-                    </span>
-                  </span>
-                </Link>
-              ) : null}
-            </div>
+                  </Link>
+                ))}
+              </div>
+            ) : null}
           </div>
         </div>
       </section>
 
-      <PageFaqs
-        items={faqs}
-        locale={locale}
-        sectionId="reservations-faq"
-        intro={locale === "th" ? copy.th.faqIntro : copy.en.faqIntro}
-      />
-      <ReservationsEnquiry locale={locale} teamPhotoSrc={teamPhotoSrc} />
-      <ReservationsStickyCta label={t.cta} />
+      <PageFaqs items={faqs} locale={locale} sectionId="reservations-faq" intro={faqIntro} />
+      <ReservationsEnquiry locale={locale} teamPhotoSrc={teamPhotoSrc} helper={fromCms ? cms.form : undefined} />
+      <ReservationsStickyCta label={stickyLabel} />
+    </>
+  );
+
+  if (embedded) return inner;
+  return (
+    <SiteShell locale={locale} route={pageRoute} hideFaqs>
+      {inner}
     </SiteShell>
   );
 }
@@ -808,4 +961,35 @@ function ReservationKpiMetricCard({ kpi, locale }: { kpi: ReservationKpi; locale
       </dl>
     </article>
   );
+}
+
+function visualOverride(visual: CmsReservationsVisual, locale: Locale): ReservationsVisualOverride {
+  return {
+    alt: locale === "th" ? visual.altTh : visual.altEn,
+    label: visual.label,
+    caption: visual.caption,
+    status: visual.status,
+  };
+}
+
+function ctaHref(href: string, locale: Locale, fallback: string) {
+  const next = href.trim() || fallback;
+  if (/^(#|mailto:|tel:|https?:\/\/)/i.test(next)) return next;
+  return existingHref(next, locale) || next;
+}
+
+function scopeChannels(value: string | readonly string[]) {
+  if (Array.isArray(value)) return [...value];
+  return String(value)
+    .split(/[,·|/]/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function publicTeamPhoto(visual: CmsReservationsVisual | undefined, exclude: Array<string | undefined>) {
+  if (!visual?.src.trim()) return undefined;
+  if (visual.status !== "real" && visual.status !== "approved") return undefined;
+  if (exclude.includes(visual.src)) return undefined;
+  if (/replace with verified|รอรูป/i.test(`${visual.label} ${visual.altTh} ${visual.altEn}`)) return undefined;
+  return visual.src;
 }

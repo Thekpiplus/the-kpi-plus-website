@@ -29,6 +29,12 @@ import {
 import { parseSiteGlobals } from "@/lib/site-globals";
 import { REVENUE_CMS_TEMPLATE, REVENUE_PAGE_ROUTE, serializeRevenuePageBody } from "./revenue-page";
 import { defaultRevenueCms } from "./revenue-page-seed";
+import {
+  RESERVATIONS_CMS_TEMPLATE,
+  RESERVATIONS_PAGE_ROUTE,
+  serializeReservationsPageBody,
+} from "./reservations-page";
+import { defaultReservationsCms } from "./reservations-page-seed";
 
 async function requireCms() {
   const user = await requireUser();
@@ -225,6 +231,11 @@ export async function ensurePageFromSite(route: string) {
       const hydrated = await hydrateRevenueDocument(existing);
       return hydrated.id;
     }
+    if (normalized === RESERVATIONS_PAGE_ROUTE) {
+      const { hydrateReservationsDocument } = await import("./reservations-page-actions");
+      const hydrated = await hydrateReservationsDocument(existing);
+      return hydrated.id;
+    }
     return existing.id;
   }
 
@@ -240,6 +251,7 @@ export async function ensurePageFromSite(route: string) {
     return label === "—" ? "" : label;
   })();
   const isRevenue = normalized === REVENUE_PAGE_ROUTE;
+  const isReservations = normalized === RESERVATIONS_PAGE_ROUTE;
   const created = await db.cmsDocument.create({
     data: {
       kind: "page",
@@ -247,9 +259,13 @@ export async function ensurePageFromSite(route: string) {
       slug,
       locale: "th",
       status: "published",
-      template: isRevenue ? REVENUE_CMS_TEMPLATE : "general",
+      template: isRevenue ? REVENUE_CMS_TEMPLATE : isReservations ? RESERVATIONS_CMS_TEMPLATE : "general",
       excerpt: sitePage.description || "",
-      body: isRevenue ? serializeRevenuePageBody(defaultRevenueCms("th")) : bodyFromMarkdown(markdown),
+      body: isRevenue
+        ? serializeRevenuePageBody(defaultRevenueCms("th"))
+        : isReservations
+          ? serializeReservationsPageBody(defaultReservationsCms("th"))
+          : bodyFromMarkdown(markdown),
       tags: "",
       seoTitle: sitePage.title,
       metaDescription: sitePage.description || "",

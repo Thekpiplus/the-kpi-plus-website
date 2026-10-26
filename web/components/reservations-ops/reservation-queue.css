@@ -1,0 +1,123 @@
+.crm-ops {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.crm-ops-filters {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) repeat(4, minmax(0, 1fr)) auto auto;
+  gap: 0.6rem;
+  align-items: end;
+}
+
+.crm-ops-inline,
+.crm-ops-row-actions,
+.crm-ops-guest-head,
+.crm-ops-subtask-form,
+.crm-ops-comment-form,
+.crm-ops-file-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.crm-ops-name {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #0b6660;
+  font: inherit;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.crm-ops-progress {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.crm-ops-priority {
+  display: inline-flex;
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+  background: #f4f4f4;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.crm-ops-priority.is-urgent,
+.crm-ops-priority.is-high {
+  background: #f2f8e2;
+  color: #0b1f33;
+}
+
+.crm-ops-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+}
+
+.crm-ops-drawer-backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(11, 31, 51, 0.45);
+}
+
+.crm-ops-drawer-panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: grid;
+  gap: 1rem;
+  width: min(36rem, 100%);
+  height: 100%;
+  overflow: auto;
+  padding: 1.25rem 1.35rem 2rem;
+  background: #fff;
+  box-shadow: -16px 0 40px rgba(11, 31, 51, 0.16);
+}
+
+.crm-ops-drawer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.crm-ops-subtasks,
+.crm-ops-comments,
+.crm-ops-files {
+  display: grid;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.crm-ops-subtasks li,
+.crm-ops-comments li,
+.crm-ops-files li {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid #e3e8eb;
+  border-radius: 10px;
+}
+
+@media (max-width: 64rem) {
+  .crm-ops-filters,
+  .crm-ops-drawer-grid {
+    grid-template-columns: 1fr;
+  }
+}

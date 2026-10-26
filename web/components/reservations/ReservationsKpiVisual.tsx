@@ -6,21 +6,28 @@ import {
   reservationKpiLatestUpdatedAt,
   reservationKpiPublicChart,
   reservationsVisualAlt,
+  type ReservationKpi,
+  type ReservationsVisualOverride,
 } from "@/lib/reservations";
 import "./reservations-ops.css";
 
 type ReservationsKpiVisualProps = {
   locale: "th" | "en" | "ru" | "zh";
   src?: string;
+  kpis?: ReservationKpi[];
+  sampleLabel?: string;
+  override?: ReservationsVisualOverride;
 };
 
-export function ReservationsKpiVisual({ locale, src }: ReservationsKpiVisualProps) {
+export function ReservationsKpiVisual({ locale, src, kpis, sampleLabel, override }: ReservationsKpiVisualProps) {
   const visual = RESERVATIONS_KPI_VISUAL;
-  const { recommendedSize, aspectRatio, width, height, displayWidth, displayHeight, status } = visual;
-  const alt = reservationsVisualAlt(visual, locale);
-  const sampleLabel = locale === "th" ? "ตัวอย่างข้อมูล" : "Sample data";
-  const chart = reservationKpiPublicChart();
-  const updated = reservationKpiLatestUpdatedAt();
+  const { recommendedSize, aspectRatio, width, height, displayWidth, displayHeight } = visual;
+  const status = override?.status ?? visual.status;
+  const alt = override?.alt || reservationsVisualAlt(visual, locale);
+  const label = override?.label || RESERVATIONS_KPI_LABEL;
+  const resolvedSample = sampleLabel || (locale === "th" ? "ตัวอย่างข้อมูล" : "Sample data");
+  const chart = reservationKpiPublicChart(kpis);
+  const updated = reservationKpiLatestUpdatedAt(kpis);
   const thai = locale === "th";
   const subtitle = thai
     ? "ตัวชี้วัดงานจองที่วัดได้จากช่องทางและระบบของโรงแรม"
@@ -39,7 +46,7 @@ export function ReservationsKpiVisual({ locale, src }: ReservationsKpiVisualProp
           className="kpi-reservations-kpi-visual-photo"
           src={src}
           alt={alt}
-          label={RESERVATIONS_KPI_LABEL}
+          label={label}
           recommendedSize={recommendedSize}
           ratio={aspectRatio}
           fit="contain"
@@ -47,9 +54,9 @@ export function ReservationsKpiVisual({ locale, src }: ReservationsKpiVisualProp
           status={status}
           width={width}
           height={height}
-          sampleLabel={sampleLabel}
+          sampleLabel={resolvedSample}
         />
-        <p className="kpi-reservations-kpi-visual-caption">{RESERVATIONS_KPI_LABEL}</p>
+        <p className="kpi-reservations-kpi-visual-caption">{label}</p>
       </div>
     );
   }
@@ -63,14 +70,14 @@ export function ReservationsKpiVisual({ locale, src }: ReservationsKpiVisualProp
         series={chart?.series ?? []}
         unit={chart?.unit}
         empty={!chart}
-        statusLabel={sampleLabel}
+        statusLabel={resolvedSample}
         periodLabel={periodLabel}
         axisXLabel={thai ? "ช่วงวัด" : "Measurement period"}
         axisYLabel={thai ? "ค่า" : "Value"}
         updatedLabel={updated ? `${thai ? "อัปเดต" : "Updated"} ${updated}` : undefined}
         disclaimer={disclaimer}
       />
-      <p className="kpi-reservations-kpi-visual-caption">{RESERVATIONS_KPI_LABEL}</p>
+      <p className="kpi-reservations-kpi-visual-caption">{label}</p>
       <span className="sr-only">
         {recommendedSize} · {displayWidth}×{displayHeight}
       </span>

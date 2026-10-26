@@ -1,3 +1,18 @@
+.kpi-reservations-hero-grid,
+.kpi-reservations-problems-grid,
+.kpi-reservations-scope-grid,
+.kpi-reservations-related-grid,
+.reservations-handoff,
+.reservations-booking-flow-stack,
+.reservations-service-map {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.kpi-reservations-enquiry-grid {
+  min-width: 0;
+}
+
 .reservations-ops-frame {
   position: relative;
   width: 100%;
@@ -232,10 +247,19 @@
   overflow-wrap: anywhere;
 }
 
+.reservations-service-map__card small {
+  grid-column: 2;
+  color: rgba(247, 251, 255, 0.72);
+  font-size: 0.58rem;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
 .reservations-service-map__card svg {
   width: 16px;
   height: 16px;
   flex-shrink: 0;
+  grid-row: 1 / span 2;
 }
 
 .reservations-channels {
@@ -386,7 +410,7 @@
 .reservations-handoff-visual {
   margin: 0;
   min-width: 0;
-  max-width: 640px;
+  max-width: none;
 }
 
 .reservations-handoff-photo {
@@ -823,7 +847,7 @@
 
 .reservation-kpi-card {
   min-width: 0;
-  max-width: 720px;
+  max-width: none;
   margin: 0;
   padding: 1.25rem;
   overflow: hidden;
@@ -867,7 +891,7 @@
 .reservation-kpi-card svg {
   display: block;
   width: 100%;
-  max-width: 720px;
+  max-width: none;
   height: auto;
   aspect-ratio: 16 / 9;
 }

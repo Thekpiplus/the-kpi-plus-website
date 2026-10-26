@@ -6,20 +6,23 @@ import {
   RESERVATIONS_HERO_VISUAL,
   SAMPLE_QUEUE,
   reservationsVisualAlt,
+  type ReservationsVisualOverride,
 } from "@/lib/reservations";
 import "./reservations-ops.css";
 
 type ReservationsHeroVisualProps = {
   locale: "th" | "en" | "ru" | "zh";
   src?: string;
+  override?: ReservationsVisualOverride;
 };
 
-export function ReservationsHeroVisual({ locale, src }: ReservationsHeroVisualProps) {
+export function ReservationsHeroVisual({ locale, src, override }: ReservationsHeroVisualProps) {
   const visual = RESERVATIONS_HERO_VISUAL;
-  const { recommendedSize, aspectRatio, width, height, displayWidth, displayHeight, status } = visual;
-  const alt = reservationsVisualAlt(visual, locale);
-  const label = locale === "th" ? RESERVATIONS_HERO_LABEL.th : RESERVATIONS_HERO_LABEL.en;
-  const caption = locale === "th" ? RESERVATIONS_HERO_CAPTION.th : RESERVATIONS_HERO_CAPTION.en;
+  const { recommendedSize, aspectRatio, width, height, displayWidth, displayHeight } = visual;
+  const status = override?.status ?? visual.status;
+  const alt = override?.alt || reservationsVisualAlt(visual, locale);
+  const label = override?.label || (locale === "th" ? RESERVATIONS_HERO_LABEL.th : RESERVATIONS_HERO_LABEL.en);
+  const caption = override?.caption || (locale === "th" ? RESERVATIONS_HERO_CAPTION.th : RESERVATIONS_HERO_CAPTION.en);
 
   if (src) {
     return (

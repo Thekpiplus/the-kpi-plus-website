@@ -32,6 +32,13 @@ const partnerLinks: ContextLink[] = [
   { href: "/crm/partners/settings", label: "กติกา" },
 ];
 
+const reservationLinks: ContextLink[] = [
+  { href: "/crm/reservations", label: "คิวงาน" },
+  { href: "/crm/reservations?status=new", label: "New" },
+  { href: "/crm/reservations?status=in_progress", label: "In Progress" },
+  { href: "/crm/reservations?status=escalated", label: "Escalated" },
+];
+
 const userLinks: { href: string; label: string }[] = [];
 
 const cmsLinks = [
@@ -43,12 +50,14 @@ const cmsLinks = [
   { href: "/crm/cms/media", label: "สื่อ/ไฟล์รูปภาพ" },
   { href: "/crm/cms/redirects", label: "Redirect" },
   { href: "/crm/cms/globals", label: "ตั้งค่าเว็บ" },
+  { href: "/crm/cms/reservations", label: "เส้นแบ่งงาน Reservations" },
   { href: "/crm/cms/contacts", label: "ข้อมูลติดต่อ" },
 ];
 
 const contextByWorkspace: Record<Exclude<Workspace, "home">, ContextLink[]> = {
   leads: leadLinks,
   partners: partnerLinks,
+  reservations: reservationLinks,
   users: userLinks,
   cms: cmsLinks,
 };
@@ -57,6 +66,7 @@ const NAV_LABEL: Record<NavKey, string> = {
   home: "หน้าหลัก",
   leads: "Lead Management",
   partners: "Partner Management",
+  reservations: "Reservation Operations",
   users: "Users Management",
   cms: "Content Management",
   settings: "ตั้งค่า",
@@ -97,6 +107,15 @@ function IconUsers() {
     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <circle cx="12" cy="8" r="2.6" stroke="currentColor" strokeWidth="1.7" />
       <path d="M6.5 18.5c.7-2.8 2.8-4.2 5.5-4.2s4.8 1.4 5.5 4.2" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IconReservations() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M6 5.5h12A1.5 1.5 0 0 1 19.5 7v12A1.5 1.5 0 0 1 18 20.5H6A1.5 1.5 0 0 1 4.5 19V7A1.5 1.5 0 0 1 6 5.5Z" stroke="currentColor" strokeWidth="1.7" />
+      <path d="M8 3.5v4M16 3.5v4M8 12h8M8 15.5h5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
     </svg>
   );
 }
@@ -153,6 +172,7 @@ const NAV_ICON: Record<NavKey, () => ReactNode> = {
   home: IconHome,
   leads: IconLeads,
   partners: IconPartners,
+  reservations: IconReservations,
   users: IconUsers,
   cms: IconCms,
   settings: IconSettings,
@@ -162,6 +182,7 @@ function workspaceOf(pathname: string): Workspace {
   if (pathname.startsWith("/crm/cms")) return "cms";
   if (pathname.startsWith("/crm/users")) return "users";
   if (pathname.startsWith("/crm/partners")) return "partners";
+  if (pathname.startsWith("/crm/reservations")) return "reservations";
   if (
     pathname.startsWith("/crm/sales") ||
     pathname.startsWith("/crm/pipeline") ||

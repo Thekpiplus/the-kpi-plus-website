@@ -7,9 +7,25 @@ import {
 } from "@/lib/reservations";
 import "./reservations-ops.css";
 
+type WorkflowStepView = {
+  id: string;
+  number: string;
+  title: string;
+  titleSecondary?: string;
+  description: string;
+  owner: string;
+  input?: string;
+  output: string;
+  escalation?: string;
+};
+
 type ReservationsWorkflowMapProps = {
   locale: "th" | "en" | "ru" | "zh";
   src?: string;
+  steps?: WorkflowStepView[];
+  label?: string;
+  alt?: string;
+  status?: "real" | "approved" | "sample" | "placeholder";
 };
 
 const LANES = [
@@ -17,44 +33,59 @@ const LANES = [
   { id: "hotel", label: "Hotel", x: 830, width: 700 },
 ] as const;
 
-export function ReservationsWorkflowMap({ locale, src }: ReservationsWorkflowMapProps) {
+export function ReservationsWorkflowMap({ locale, src, steps, label, alt, status }: ReservationsWorkflowMapProps) {
   const thai = locale === "th";
   const visual = RESERVATIONS_WORKFLOW_VISUAL;
-  const { recommendedSize, aspectRatio, width, height, displayWidth, displayHeight, status } = visual;
-  const alt = reservationsVisualAlt(visual, locale);
+  const { recommendedSize, aspectRatio, width, height, displayWidth, displayHeight } = visual;
+  const resolvedStatus = status ?? visual.status;
+  const resolvedAlt = alt || reservationsVisualAlt(visual, locale);
+  const resolvedLabel = label || RESERVATIONS_HANDOFF_LABEL;
   const sampleLabel = thai ? "ตัวอย่างแผนภาพ" : "Sample workflow";
+  const flowSteps: WorkflowStepView[] =
+    steps?.length
+      ? steps
+      : RESERVATION_WORKFLOW_STEPS.map((step) => ({
+          id: step.id,
+          number: step.number,
+          title: step.titleEn,
+          titleSecondary: thai ? step.titleTh : undefined,
+          description: thai ? step.descriptionTh : step.descriptionEn,
+          owner: thai ? step.ownerTh : step.ownerEn,
+          input: thai ? step.inputTh : step.inputEn,
+          output: thai ? step.outputTh : step.outputEn,
+          escalation: thai ? step.escalationTh : step.escalationEn,
+        }));
 
   return (
     <div className="reservations-handoff">
       <ol className="reservations-handoff-timeline">
-        {RESERVATION_WORKFLOW_STEPS.map((step) => {
-          const owner = thai ? step.ownerTh : step.ownerEn;
-          const shared = step.ownerEn.includes("+");
+        {flowSteps.map((step) => {
+          const shared = step.owner.includes("+");
           return (
             <li key={step.id} className="reservations-handoff-step">
               <span className="reservations-handoff-step__num kpi-latin">{step.number}</span>
               <div className="reservations-handoff-step__body">
-                <h3 className="kpi-latin">{step.titleEn}</h3>
-                {thai ? <p className="reservations-handoff-step__title-th">{step.titleTh}</p> : null}
+                <h3 className="kpi-latin">{step.title}</h3>
+                {step.titleSecondary ? <p className="reservations-handoff-step__title-th">{step.titleSecondary}</p> : null}
                 <p className={`reservations-handoff-owner${shared ? " is-shared" : ""}`}>
                   <span className="kpi-latin">Owner</span>
-                  {owner}
+                  {step.owner}
                 </p>
                 <dl>
-                  {step.inputEn ? (
+                  {step.input ? (
                     <div>
                       <dt className="kpi-latin">Input</dt>
-                      <dd>{thai ? step.inputTh : step.inputEn}</dd>
+                      <dd>{step.input}</dd>
                     </div>
                   ) : null}
                   <div>
                     <dt className="kpi-latin">Output</dt>
-                    <dd>{thai ? step.outputTh : step.outputEn}</dd>
+                    <dd>{step.output}</dd>
                   </div>
-                  {step.escalationEn ? (
+                  {step.escalation ? (
                     <div>
                       <dt className="kpi-latin">Escalation</dt>
-                      <dd>{thai ? step.escalationTh : step.escalationEn}</dd>
+                      <dd>{step.escalation}</dd>
                     </div>
                   ) : null}
                 </dl>
@@ -69,36 +100,39 @@ export function ReservationsWorkflowMap({ locale, src }: ReservationsWorkflowMap
           <ReservationDummyImage
             className="reservations-handoff-photo"
             src={src}
-            alt={alt}
-            label={RESERVATIONS_HANDOFF_LABEL}
+            alt={resolvedAlt}
+            label={resolvedLabel}
             recommendedSize={recommendedSize}
             ratio={aspectRatio}
             fit="contain"
             locale={locale}
-            status={status}
+            status={resolvedStatus}
             width={width}
             height={height}
             sampleLabel={sampleLabel}
           />
-          <p className="reservations-handoff-caption">{RESERVATIONS_HANDOFF_LABEL}</p>
+          <p className="reservations-handoff-caption">{resolvedLabel}</p>
         </div>
       ) : (
         <figure className="reservations-handoff-visual">
-          <div className="reservations-handoff-photo reservations-ops-frame" aria-label={alt}>
+          <div className="reservations-handoff-photo reservations-ops-frame" aria-label={resolvedAlt}>
             <svg
               className="reservations-handoff-svg"
               viewBox="0 0 1600 900"
               role="img"
-              aria-labelledby="reservations-handoff-title"
+              aria-labelledby="reservations-handoff-title reservations-handoff-desc"
             >
-              <title id="reservations-handoff-title">{RESERVATIONS_HANDOFF_LABEL}</title>
+              <title id="reservations-handoff-title">{resolvedLabel}</title>
+              <desc id="reservations-handoff-desc">
+                Reservation Team and Hotel lanes. Each step shows the owner and the handoff. Sample workflow.
+              </desc>
               <rect width="1600" height="900" fill="#06182b" />
               <rect x="48" y="36" width="220" height="40" rx="20" fill="#A2DC25" />
               <text x="158" y="63" textAnchor="middle" fill="#1A3A02" fontSize="18" fontWeight="800">
                 {sampleLabel.toUpperCase()}
               </text>
               <text x="48" y="118" fill="#f7fbff" fontSize="32" fontWeight="800">
-                {RESERVATIONS_HANDOFF_LABEL}
+                {resolvedLabel}
               </text>
               {LANES.map((lane) => (
                 <g key={lane.id}>
@@ -116,9 +150,9 @@ export function ReservationsWorkflowMap({ locale, src }: ReservationsWorkflowMap
                   </text>
                 </g>
               ))}
-              {RESERVATION_WORKFLOW_STEPS.map((step, index) => {
+              {flowSteps.map((step, index) => {
                 const y = 230 + index * 145;
-                const shared = step.ownerEn.includes("+");
+                const shared = step.owner.includes("+");
                 return (
                   <g key={step.id}>
                     <rect x="96" y={y} width="668" height="118" rx="18" fill="rgba(162,220,37,0.16)" />
@@ -126,10 +160,10 @@ export function ReservationsWorkflowMap({ locale, src }: ReservationsWorkflowMap
                       {step.number}
                     </text>
                     <text x="176" y={y + 42} fill="#f7fbff" fontSize="24" fontWeight="700">
-                      {step.titleEn}
+                      {step.title}
                     </text>
                     <text x="124" y={y + 78} fill="rgba(247,251,255,0.8)" fontSize="18">
-                      {step.outputEn}
+                      {step.output}
                     </text>
                     {shared ? (
                       <>
@@ -145,7 +179,7 @@ export function ReservationsWorkflowMap({ locale, src }: ReservationsWorkflowMap
                           Handoff
                         </text>
                         <text x="890" y={y + 82} fill="#f7fbff" fontSize="20" fontWeight="600">
-                          {step.descriptionEn}
+                          {step.description}
                         </text>
                       </>
                     ) : (
@@ -158,7 +192,7 @@ export function ReservationsWorkflowMap({ locale, src }: ReservationsWorkflowMap
               })}
             </svg>
           </div>
-          <figcaption className="reservations-handoff-caption">{RESERVATIONS_HANDOFF_LABEL}</figcaption>
+          <figcaption className="reservations-handoff-caption">{resolvedLabel}</figcaption>
           <span className="sr-only">
             {recommendedSize} · {displayWidth}×{displayHeight}
           </span>

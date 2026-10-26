@@ -1,5 +1,6 @@
 import { DEFAULT_RULE } from "@/lib/partners/rules";
 import { ensureCmsSchema } from "@/lib/cms/ensure";
+import { ensureReservationOpsSchema } from "@/lib/reservations-ops/ensure";
 import { refreshCmsFiles } from "@/lib/cms/queries";
 import { ensureLeadArchiveColumn } from "./archive";
 import { STAGES } from "./constants";
@@ -40,6 +41,7 @@ export async function ensureCrmSeed() {
   await ensureDemoLeads();
   await ensureLeadArchiveColumn().catch(() => undefined);
   await ensureCmsSchema().catch(() => undefined);
+  await ensureReservationOpsSchema().catch(() => undefined);
   await refreshCmsFiles().catch(() => undefined);
 }
 
