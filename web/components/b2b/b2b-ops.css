@@ -31,10 +31,12 @@
 }
 
 .b2b-hero-mock__head strong {
+  min-width: 0;
   color: #fff;
   font-size: clamp(0.92rem, 2.1vw, 1.08rem);
   font-weight: 700;
   line-height: 1.3;
+  overflow-wrap: anywhere;
 }
 
 .b2b-hero-mock__head small {
@@ -52,7 +54,7 @@
 
 .b2b-hero-mock__panel {
   display: grid;
-  align-content: start;
+  align-content: flex-start;
   gap: 0.12rem;
   min-width: 0;
   padding: 0.48rem 0.48rem 0.32rem;
@@ -161,10 +163,12 @@
 }
 
 .b2b-readiness-mock__head strong {
+  min-width: 0;
   color: #fff;
   font-size: clamp(0.82rem, 2vw, 0.98rem);
   font-weight: 700;
   line-height: 1.3;
+  overflow-wrap: anywhere;
 }
 
 .b2b-readiness-mock__head small {
@@ -186,7 +190,7 @@
 
 .b2b-readiness-mock__tiles li {
   display: grid;
-  align-content: start;
+  align-content: flex-start;
   gap: 0.08rem;
   min-width: 0;
   padding: 0.38rem 0.42rem 0.28rem;
@@ -286,7 +290,7 @@
 
 .b2b-framework-mock__rows li {
   display: grid;
-  align-content: start;
+  align-content: flex-start;
   gap: 0.2rem;
   min-width: 0;
   padding: 0.55rem 0.5rem 0.4rem;
@@ -317,13 +321,309 @@
   .b2b-framework-mock__rows {
     display: flex;
     flex-wrap: wrap;
-    align-content: start;
+    align-content: flex-start;
     gap: 0.32rem;
   }
 
   .b2b-framework-mock__rows li {
     flex: 1 1 calc(50% - 0.32rem);
     padding: 0.32rem 0.4rem;
+  }
+}
+
+.b2b-funnel-mock {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 1.6cqh;
+  position: absolute;
+  inset: 0;
+  min-width: 0;
+  min-height: 0;
+  padding: 4.4cqh 3.2cqi 3.2cqh;
+  color: #f7fbff;
+}
+
+.b2b-funnel-mock__bar {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 0.9cqh;
+  background: linear-gradient(90deg, #a2dc25, #ebe722);
+}
+
+.b2b-funnel-mock__head {
+  display: grid;
+  gap: 0.4cqh;
+  padding-top: 0.8cqh;
+}
+
+.b2b-funnel-mock__badge {
+  width: max-content;
+  color: #a2dc25;
+  font-size: max(8px, 2.4cqh);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.b2b-funnel-mock__head strong {
+  color: #fff;
+  font-size: clamp(0.72rem, 4.2cqh, 1.05rem);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.b2b-funnel-mock__head small {
+  color: rgba(255, 255, 255, 0.62);
+  font-size: max(8px, 2.6cqh);
+  line-height: 1.35;
+}
+
+.b2b-funnel-mock__path {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0;
+  min-height: 0;
+  max-width: 68cqi;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+.b2b-funnel-mock__path li {
+  display: grid;
+  justify-items: center;
+  width: 100%;
+}
+
+.b2b-funnel-mock__path li span {
+  display: block;
+  width: 100%;
+  padding: 0.9cqh 1.6cqi;
+  border: 1px solid #a2dc25;
+  border-radius: 999px;
+  background: rgba(7, 28, 48, 0.78);
+  color: #fff;
+  font-size: max(9px, 3.1cqh);
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.b2b-funnel-mock__path li.is-target span,
+.b2b-funnel-mock__path li.is-review span {
+  border-color: #ebe722;
+  color: #0b1f33;
+  background: #ebe722;
+}
+
+.b2b-funnel-mock__path li.is-risk span {
+  border-color: #c4a35a;
+  color: #0b1f33;
+  background: #c4a35a;
+}
+
+.b2b-funnel-mock__arrow {
+  color: #a2dc25;
+  font-size: max(9px, 3.2cqh);
+  font-weight: 800;
+  line-height: 1;
+}
+
+.b2b-funnel-mock__path li.is-risk .b2b-funnel-mock__arrow {
+  color: #c4a35a;
+}
+
+.b2b-kpi-mock {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 1.4cqh;
+  position: absolute;
+  inset: 0;
+  min-width: 0;
+  padding: 3.8cqh 3.2cqi 2.6cqh;
+  color: #f7fbff;
+}
+
+.b2b-kpi-mock__bar {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 0.9cqh;
+  background: linear-gradient(90deg, #a2dc25, #ebe722);
+}
+
+.b2b-kpi-mock__head {
+  display: grid;
+  gap: 0.4cqh;
+  padding-top: 0.8cqh;
+}
+
+.b2b-kpi-mock__badge {
+  width: max-content;
+  color: #a2dc25;
+  font-size: max(8px, 2.4cqh);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.b2b-kpi-mock__head strong {
+  color: #fff;
+  font-size: clamp(0.72rem, 4.2cqh, 1.05rem);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.b2b-kpi-mock__head small {
+  color: rgba(255, 255, 255, 0.62);
+  font-size: max(8px, 2.6cqh);
+  line-height: 1.35;
+}
+
+.b2b-kpi-mock__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.1cqh 1.2cqi;
+  align-content: start;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.b2b-kpi-mock__grid span {
+  display: block;
+  min-width: 0;
+  padding: 0.85cqh 1.4cqi;
+  border: 1px solid rgba(162, 220, 37, 0.35);
+  border-radius: 999px;
+  background: rgba(7, 28, 48, 0.78);
+  color: #f2f8e2;
+  font-size: max(8px, 2.5cqh);
+  font-weight: 700;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+@container (max-height: 280px) {
+  .b2b-funnel-mock {
+    gap: 1cqh;
+    padding: 3.6cqh 2.6cqi 2.4cqh;
+  }
+
+  .b2b-funnel-mock__head small {
+    display: none;
+  }
+
+  .b2b-funnel-mock__head strong {
+    font-size: clamp(0.68rem, 4cqh, 0.88rem);
+  }
+}
+
+.b2b-workflow-mock {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 1.4cqh;
+  position: absolute;
+  inset: 0;
+  min-width: 0;
+  min-height: 0;
+  padding: 4.2cqh 3.2cqi 2.8cqh;
+  color: #f7fbff;
+}
+
+.b2b-workflow-mock__bar {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 0.9cqh;
+  background: linear-gradient(90deg, #a2dc25, #ebe722);
+}
+
+.b2b-workflow-mock__head {
+  display: grid;
+  gap: 0.4cqh;
+  padding-top: 0.6cqh;
+}
+
+.b2b-workflow-mock__badge {
+  width: max-content;
+  color: #a2dc25;
+  font-size: max(8px, 2.5cqh);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.b2b-workflow-mock__head strong {
+  color: #fff;
+  font-size: clamp(0.72rem, 4.6cqh, 1rem);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.b2b-workflow-mock__head small {
+  color: rgba(255, 255, 255, 0.62);
+  font-size: max(8px, 2.7cqh);
+  line-height: 1.35;
+}
+
+.b2b-workflow-mock__path {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.b2b-workflow-mock__path li {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: 1.2cqi;
+}
+
+.b2b-workflow-mock__step,
+.b2b-workflow-mock__output {
+  display: block;
+  min-width: 0;
+  padding: 0.7cqh 1.4cqi;
+  border-radius: 999px;
+  font-size: max(8px, 2.9cqh);
+  font-weight: 700;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.b2b-workflow-mock__step {
+  border: 1px solid #a2dc25;
+  background: rgba(7, 28, 48, 0.78);
+  color: #fff;
+}
+
+.b2b-workflow-mock__output {
+  border: 1px solid #ebe722;
+  background: #ebe722;
+  color: #0b1f33;
+}
+
+.b2b-workflow-mock__handoff {
+  color: #a2dc25;
+  font-size: max(9px, 3cqh);
+  font-weight: 800;
+  line-height: 1;
+}
+
+@container (max-height: 240px) {
+  .b2b-workflow-mock {
+    gap: 0.8cqh;
+    padding: 3.4cqh 2.4cqi 2cqh;
+  }
+
+  .b2b-workflow-mock__head small {
+    display: none;
   }
 }
 
@@ -430,4 +730,77 @@
   margin-right: 0.35rem;
   border-radius: 999px;
   vertical-align: -0.05rem;
+}
+
+.b2b-related-mock {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 1.6cqh;
+  position: absolute;
+  inset: 0;
+  min-width: 0;
+  padding: 4cqh 3.4cqi 2.8cqh;
+  color: #f7fbff;
+}
+
+.b2b-related-mock__bar {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 0.9cqh;
+  background: linear-gradient(90deg, #a2dc25, #ebe722);
+}
+
+.b2b-related-mock__head {
+  display: grid;
+  gap: 0.45cqh;
+  padding-top: 0.8cqh;
+}
+
+.b2b-related-mock__badge {
+  width: max-content;
+  color: #a2dc25;
+  font-size: max(8px, 2.5cqh);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.b2b-related-mock__head strong {
+  color: #fff;
+  font-size: clamp(0.78rem, 4.6cqh, 1.08rem);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.b2b-related-mock__head small {
+  color: rgba(255, 255, 255, 0.62);
+  font-size: max(8px, 2.6cqh);
+  line-height: 1.35;
+}
+
+.b2b-related-mock__list {
+  display: grid;
+  gap: 1cqh;
+  align-content: start;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.b2b-related-mock__list li {
+  min-width: 0;
+}
+
+.b2b-related-mock__list span {
+  display: block;
+  min-width: 0;
+  padding: 1.1cqh 1.6cqi;
+  border: 1px solid rgba(162, 220, 37, 0.35);
+  border-radius: 999px;
+  background: rgba(7, 28, 48, 0.78);
+  color: #f2f8e2;
+  font-size: max(8px, 2.7cqh);
+  font-weight: 700;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
 }

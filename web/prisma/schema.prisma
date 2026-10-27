@@ -628,3 +628,437 @@ model ReservationOpAttachment {
 
   @@index([operationId])
 }
+
+model B2bPartner {
+  id             String              @id @default(cuid())
+  name           String              @db.VarChar(255)
+  type           String
+  market         String              @default("") @db.VarChar(255)
+  contactPerson  String              @default("") @db.VarChar(255)
+  contactChannel String              @default("") @db.VarChar(255)
+  ownerId        String              @default("")
+  department     String              @default("sales")
+  priority       String              @default("normal")
+  status         String              @default("new_lead")
+  nextAction     String              @default("") @db.VarChar(500)
+  nextActionAt   DateTime?
+  lastContactAt  DateTime?
+  notes          String              @default("") @db.Text
+  hotels         String              @default("") @db.Text
+  rateApproval   String              @default("draft")
+  createdBy      String              @default("")
+  updatedBy      String              @default("")
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+  contacts       B2bContact[]
+  terms          B2bCommercialTerm[]
+  activities     B2bActivity[]
+  bookings       B2bBooking[]
+  files          B2bFile[]
+  notesList      B2bNote[]
+  audits         B2bAudit[]
+
+  @@index([status])
+  @@index([ownerId])
+  @@index([department])
+  @@index([market])
+  @@index([nextActionAt])
+  @@index([priority])
+}
+
+model B2bContact {
+  id         String     @id @default(cuid())
+  partnerId  String
+  partner    B2bPartner @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  name       String     @db.VarChar(255)
+  role       String     @default("") @db.VarChar(255)
+  email      String     @default("") @db.VarChar(255)
+  phone      String     @default("") @db.VarChar(64)
+  channel    String     @default("") @db.VarChar(64)
+  isPrimary  Boolean    @default(false)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  @@index([partnerId])
+}
+
+model B2bCommercialTerm {
+  id             String     @id @default(cuid())
+  partnerId      String
+  partner        B2bPartner @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  hotelName      String     @default("") @db.VarChar(255)
+  ratePlan       String     @default("") @db.VarChar(255)
+  commissionText String     @default("") @db.Text
+  availability   String     @default("") @db.VarChar(255)
+  channel        String     @default("") @db.VarChar(255)
+  status         String     @default("draft")
+  notes          String     @default("") @db.Text
+  approvedBy     String     @default("")
+  approvedAt     DateTime?
+  createdBy      String     @default("")
+  updatedBy      String     @default("")
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  @@index([partnerId])
+  @@index([status])
+}
+
+model B2bActivity {
+  id          String               @id @default(cuid())
+  partnerId   String
+  partner     B2bPartner           @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  type        String
+  title       String               @db.VarChar(255)
+  hotelName   String               @default("") @db.VarChar(255)
+  dueAt       DateTime?
+  status      String               @default("planned")
+  notes       String               @default("") @db.Text
+  ownerId     String               @default("")
+  completedAt DateTime?
+  closedAt    DateTime?
+  escalatedAt DateTime?
+  createdBy   String               @default("")
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+  subtasks    B2bActivitySubtask[]
+  comments    B2bActivityComment[]
+  files       B2bActivityFile[]
+
+  @@index([partnerId])
+  @@index([dueAt])
+  @@index([status])
+}
+
+model B2bActivitySubtask {
+  id         String      @id @default(cuid())
+  activityId String
+  activity   B2bActivity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  name       String      @db.VarChar(255)
+  status     String      @default("planned")
+  completed  Boolean     @default(false)
+  dueAt      DateTime?
+  assigneeId String      @default("")
+  priority   String      @default("normal")
+  comments   String      @default("") @db.Text
+  sortOrder  Int         @default(0)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  @@index([activityId])
+}
+
+model B2bActivityComment {
+  id         String      @id @default(cuid())
+  activityId String
+  activity   B2bActivity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  authorId   String      @default("")
+  body       String      @db.Text
+  createdAt  DateTime    @default(now())
+
+  @@index([activityId])
+}
+
+model B2bActivityFile {
+  id         String      @id @default(cuid())
+  activityId String
+  activity   B2bActivity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  filename   String
+  mime       String
+  size       Int
+  path       String      @db.VarChar(500)
+  caption    String      @default("") @db.VarChar(500)
+  createdBy  String      @default("")
+  createdAt  DateTime    @default(now())
+
+  @@index([activityId])
+}
+
+model B2bBooking {
+  id          String     @id @default(cuid())
+  partnerId   String
+  partner     B2bPartner @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  hotelName   String     @default("") @db.VarChar(255)
+  period      String     @default("") @db.VarChar(255)
+  roomNights  String     @default("") @db.VarChar(64)
+  revenueText String     @default("") @db.VarChar(255)
+  status      String     @default("draft")
+  dataStatus  String     @default("internal")
+  notes       String     @default("") @db.Text
+  createdBy   String     @default("")
+  updatedBy   String     @default("")
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@index([partnerId])
+}
+
+model B2bFile {
+  id        String     @id @default(cuid())
+  partnerId String
+  partner   B2bPartner @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  kind      String     @default("file")
+  filename  String
+  mime      String
+  size      Int
+  path      String     @db.VarChar(500)
+  caption   String     @default("") @db.VarChar(500)
+  createdBy String     @default("")
+  createdAt DateTime   @default(now())
+
+  @@index([partnerId])
+}
+
+model B2bNote {
+  id        String     @id @default(cuid())
+  partnerId String
+  partner   B2bPartner @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  kind      String     @default("general")
+  body      String     @db.Text
+  authorId  String     @default("")
+  createdAt DateTime   @default(now())
+
+  @@index([partnerId])
+}
+
+model B2bAudit {
+  id        String     @id @default(cuid())
+  partnerId String
+  partner   B2bPartner @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  actorId   String     @default("")
+  action    String
+  detail    String     @db.Text
+  createdAt DateTime   @default(now())
+
+  @@index([partnerId])
+}
+
+model B2bMaterial {
+  id          String   @id @default(cuid())
+  title       String   @db.VarChar(255)
+  kind        String   @default("kit")
+  status      String   @default("draft")
+  notes       String   @default("") @db.Text
+  filename    String   @default("")
+  mime        String   @default("")
+  size        Int      @default(0)
+  path        String   @default("") @db.VarChar(500)
+  createdBy   String   @default("")
+  updatedBy   String   @default("")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([status])
+}
+
+model B2bAccess {
+  id            String   @id @default(cuid())
+  userId        String
+  department    String
+  canContacts   Boolean  @default(false)
+  canCommercial Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([userId, department])
+  @@index([userId])
+}
+
+model AdsCampaign {
+  id              String         @id @default(cuid())
+  name            String         @default("") @db.VarChar(255)
+  hotelName       String         @db.VarChar(255)
+  channel         String         @default("search_ads")
+  objective       String         @default("") @db.VarChar(500)
+  market          String         @default("") @db.VarChar(255)
+  language        String         @default("") @db.VarChar(80)
+  startAt         DateTime?
+  endAt           DateTime?
+  budgetAmount    String         @default("") @db.VarChar(80)
+  budgetPeriod    String         @default("monthly")
+  status          String         @default("draft")
+  ownerId         String         @default("")
+  department      String         @default("marketing")
+  priority        String         @default("normal")
+  nextAction      String         @default("") @db.VarChar(500)
+  nextActionAt    DateTime?
+  landingUrl      String         @default("") @db.VarChar(500)
+  bookingUrl      String         @default("") @db.VarChar(500)
+  trackingStatus  String         @default("not_set")
+  primaryKpi      String         @default("") @db.VarChar(255)
+  kpiTarget       String         @default("") @db.VarChar(255)
+  approvalStatus  String         @default("not_requested")
+  notes           String         @default("") @db.Text
+  audienceIntent        String         @default("") @db.Text
+  adsCreative           String         @default("") @db.Text
+  landingNotes          String         @default("") @db.Text
+  trackingNotes         String         @default("") @db.Text
+  reportNotes           String         @default("") @db.Text
+  searchIntent          String         @default("") @db.Text
+  adCopy                String         @default("") @db.Text
+  audience              String         @default("") @db.Text
+  campaignMessaging     String         @default("") @db.Text
+  creativeNotes         String         @default("") @db.Text
+  offerPromotion        String         @default("") @db.Text
+  rateContext           String         @default("") @db.Text
+  roasTarget            String         @default("") @db.VarChar(255)
+  bookingValueNotes     String         @default("") @db.Text
+  rateFeed              String         @default("") @db.Text
+  hotelAdsQuality       String         @default("") @db.Text
+  channelConsistency    String         @default("") @db.Text
+  bookingEngineNotes    String         @default("") @db.Text
+  landingContent        String         @default("") @db.Text
+  hotelValueProp        String         @default("") @db.Text
+  marketPartnerContext  String         @default("") @db.Text
+  leadFollowUp          String         @default("") @db.Text
+  budgetAuth            String         @default("") @db.Text
+  kpiReview             String         @default("") @db.Text
+  finalDecision         String         @default("") @db.Text
+  accountRef            String         @default("") @db.VarChar(255)
+  budgetNote            String         @default("") @db.VarChar(255)
+  escalatedAt           DateTime?
+  closedAt              DateTime?
+  createdBy             String         @default("")
+  updatedBy             String         @default("")
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+  activities            AdsActivity[]
+  kpis                  AdsKpiEntry[]
+  files                 AdsNote[]
+  audit                 AdsAuditEvent[]
+  subtasks              AdsSubtask[]
+
+  @@index([status])
+  @@index([ownerId])
+  @@index([department])
+  @@index([channel])
+  @@index([nextActionAt])
+  @@index([approvalStatus])
+}
+
+model AdsActivity {
+  id         String      @id @default(cuid())
+  campaignId String
+  campaign   AdsCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  type       String
+  title      String      @db.VarChar(255)
+  dueAt      DateTime?
+  status     String      @default("planned")
+  notes      String      @default("") @db.Text
+  ownerId    String      @default("")
+  createdBy  String      @default("")
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  @@index([campaignId])
+  @@index([dueAt])
+  @@index([status])
+}
+
+model AdsKpiEntry {
+  id         String      @id @default(cuid())
+  campaignId String
+  campaign   AdsCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  period     String      @default("") @db.VarChar(120)
+  metric     String      @default("") @db.VarChar(255)
+  value      String      @default("") @db.VarChar(120)
+  target     String      @default("") @db.VarChar(120)
+  dataStatus String      @default("draft")
+  notes      String      @default("") @db.Text
+  createdBy  String      @default("")
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  @@index([campaignId])
+}
+
+model AdsNote {
+  id         String      @id @default(cuid())
+  campaignId String
+  campaign   AdsCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  kind       String      @default("note")
+  title      String      @default("") @db.VarChar(255)
+  body       String      @default("") @db.Text
+  url        String      @default("") @db.VarChar(500)
+  createdBy  String      @default("")
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  @@index([campaignId])
+}
+
+model AdsAuditEvent {
+  id         String      @id @default(cuid())
+  campaignId String
+  campaign   AdsCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  action     String      @db.VarChar(80)
+  detail     String      @default("") @db.Text
+  createdBy  String      @default("")
+  createdAt  DateTime    @default(now())
+
+  @@index([campaignId])
+  @@index([createdAt])
+}
+
+model AdsAccess {
+  id             String   @id @default(cuid())
+  userId         String
+  department     String
+  canSeeAccounts Boolean  @default(false)
+  canSeeBudget   Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([userId, department])
+  @@index([userId])
+}
+
+model AdsSubtask {
+  id         String              @id @default(cuid())
+  campaignId String
+  campaign   AdsCampaign         @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  name       String              @db.VarChar(255)
+  department String              @default("marketing")
+  ownerId    String              @default("")
+  status     String              @default("not_started")
+  completed  Boolean             @default(false)
+  dueAt      DateTime?
+  priority   String              @default("normal")
+  comments   String              @default("") @db.Text
+  sortOrder  Int                 @default(0)
+  createdBy  String              @default("")
+  createdAt  DateTime            @default(now())
+  updatedAt  DateTime            @updatedAt
+  thread     AdsSubtaskComment[]
+  files      AdsSubtaskFile[]
+
+  @@index([campaignId])
+  @@index([department])
+  @@index([status])
+}
+
+model AdsSubtaskComment {
+  id        String     @id @default(cuid())
+  subtaskId String
+  subtask   AdsSubtask @relation(fields: [subtaskId], references: [id], onDelete: Cascade)
+  authorId  String     @default("")
+  body      String     @db.Text
+  createdAt DateTime   @default(now())
+
+  @@index([subtaskId])
+}
+
+model AdsSubtaskFile {
+  id        String     @id @default(cuid())
+  subtaskId String
+  subtask   AdsSubtask @relation(fields: [subtaskId], references: [id], onDelete: Cascade)
+  filename  String
+  mime      String
+  size      Int
+  path      String     @db.VarChar(500)
+  caption   String     @default("") @db.VarChar(500)
+  createdBy String     @default("")
+  createdAt DateTime   @default(now())
+
+  @@index([subtaskId])
+}

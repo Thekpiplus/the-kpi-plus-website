@@ -1,3 +1,5 @@
+import { adsFaqs } from "@/lib/google-ads";
+
 export type FaqItem = { q: string; a: string };
 
 const caseStudiesFaqsEn: FaqItem[] = [
@@ -122,6 +124,92 @@ const reservationsFaqsEn: FaqItem[] = [
   {
     q: "Can several hotels be looked after in the same system?",
     a: "Each hotel agrees its own scope, channels, system access, and hand-over path. This page does not state that several hotels share one system as a fact. If the enquiry is for a hotel group, how several properties are looked after is discussed when the service scope is set.",
+  },
+];
+
+const b2bFaqsTh: FaqItem[] = [
+  {
+    q: "B2B Agent Sales เหมาะกับโรงแรมแบบใด",
+    a: "เหมาะเป็นพิเศษกับโรงแรมขนาดกลางถึงขนาดใหญ่ ที่มีจำนวนห้องและทีมรองรับการขายผ่านพาร์ตเนอร์ได้ โรงแรมขนาดเล็กพูดคุยเพื่อประเมินได้ แต่ช่องทางอื่นอาจเหมาะกว่าในช่วงเริ่มต้น ทีมดูจากสถานการณ์ของโรงแรม ไม่ได้แนะนำ B2B กับทุกแห่ง",
+  },
+  {
+    q: "The KPI Plus หา Partner ให้ทั้งหมดหรือไม่",
+    a: "ไม่ใช่การรับหาพาร์ตเนอร์ให้ครบทุกตลาด และไม่ได้รับประกันรายชื่อ ทีมช่วยคัดเลือกและประสานพาร์ตเนอร์ที่เกี่ยวข้องจากเครือข่าย หลังดูว่าช่องทางนี้เหมาะกับโรงแรมหรือไม่ โรงแรมเป็นผู้พิจารณาความร่วมมือ",
+  },
+  {
+    q: "โรงแรมต้องมี Rate Plan และ Commission ก่อนหรือไม่",
+    a: "ต้องมีกรอบราคาและค่าคอมมิชชันที่โรงแรมยอมรับได้ก่อนเริ่มประสานพาร์ตเนอร์ หากยังไม่ครบ ทีมช่วยทบทวนโครงสร้างราคาและเงื่อนไข แต่ยังไม่ส่งข้อเสนอออกไปจนกว่าโรงแรมจะอนุมัติ",
+  },
+  {
+    q: "ดูแล Agent ที่มีอยู่แล้วได้หรือไม่",
+    a: "ได้ งานนี้ไม่ได้จำกัดที่การหาเอเจนต์รายใหม่ ทีมช่วยทบทวนพาร์ตเนอร์ที่มีอยู่ เรื่องราคา เงื่อนไข การติดตาม และผลงานเทียบกับช่องทางอื่น",
+  },
+  {
+    q: "ต่างจากการลง OTA อย่างไร",
+    a: "OTA เป็นช่องทางลงขายสาธารณะตามเงื่อนไขของแพลตฟอร์ม B2B เป็นการขายผ่านพาร์ตเนอร์ที่คัดแล้ว มี Rate Plan ค่าคอมมิชชัน สัญญา และการติดตามเป็นรายราย ไม่ใช่การลงห้องเพิ่มบน OTA และควรดูร่วมกับการจองตรง ไม่ใช่แทนกัน",
+  },
+  {
+    q: "ต้องเตรียม Sales Material อะไร",
+    a: "อย่างน้อยต้องมีข้อมูลห้องและสินค้า ราคาและช่วงขาย เงื่อนไขที่โรงแรมอนุมัติ และชุดขายที่พาร์ตเนอร์ส่งต่อได้ หากข้อมูลกระจัดกระจาย ทีมช่วยจัดเป็น B2B Sales Kit ก่อนประสานงาน",
+  },
+  {
+    q: "ใครเป็นผู้อนุมัติ Rate และ Contract",
+    a: "โรงแรมเป็นผู้อนุมัติราคาสุดท้าย ค่าคอมมิชชัน เงื่อนไขสัญญา และเป็นผู้ลงนาม เดอะ เคพีไอ พลัส อาจช่วยทบทวนและประสานงาน แต่ไม่ได้เซ็นสัญญาแทนโรงแรม",
+  },
+  {
+    q: "ใช้เวลานานเท่าไรจึงเริ่มติดต่อ Partner",
+    a: "ยังไม่มีระยะเวลาตายตัวที่อนุมัติให้สื่อสาร เริ่มติดต่อได้เมื่อโรงแรมมี Partner Profile กรอบราคา และ Sales Material พร้อม และอนุมัติให้ประสานงาน หากยังไม่พร้อม ทีมทบทวนความพร้อมก่อน ไม่เริ่มหาพาร์ตเนอร์ทันที",
+  },
+  {
+    q: "วัดผล Partner ด้วย KPI อะไร",
+    a: "วัดจากงานจริง ไม่ใช่จำนวนสัญญาอย่างเดียว เมื่อโรงแรมมีข้อมูล ทีมดู Qualified Partner, Active Partner, Room Nights from B2B และ Revenue by Partner ตัวเลขแปลงผลหรือผลรับประกันจะไม่แสดงหากยังไม่อนุมัติ",
+  },
+  {
+    q: "มีรายงาน Booking และ Revenue หรือไม่",
+    a: "มีการทบทวนยอดจองและรายได้ของพาร์ตเนอร์ที่อยู่ในขอบเขตงาน เมื่อโรงแรมมีข้อมูลเพียงพอ ไม่ใช่แดชบอร์ดสำเร็จรูปของทุกโรงแรม และไม่ใช่ตัวเลขรับประกันผล",
+  },
+];
+
+const b2bFaqsEn: FaqItem[] = [
+  {
+    q: "Which hotels is B2B Agent Sales for?",
+    a: "It is especially suited to mid-size and larger hotels with enough rooms and team capacity to sell through partners. A smaller hotel can still talk this through, but another channel may be a better start. The team recommends B2B from the hotel’s situation, not for every property.",
+  },
+  {
+    q: "Does The KPI Plus find every partner?",
+    a: "No. This is not a promise to cover every market or to deliver a full partner list. The team helps choose and introduce relevant partners from the network, after reviewing whether the channel fits. The hotel decides on cooperation.",
+  },
+  {
+    q: "Does the hotel need a rate plan and commission first?",
+    a: "A B2B rate plan and a commission frame the hotel can accept should exist before outreach. If they are incomplete, the team can review the structure and terms, but no offer goes out until the hotel approves.",
+  },
+  {
+    q: "Can you look after agents the hotel already has?",
+    a: "Yes. The work is not limited to finding new agents. The team can review existing partners, including rates, terms, follow-up, and results against other channels.",
+  },
+  {
+    q: "How is this different from listing on an OTA?",
+    a: "An OTA is a public listing on a platform’s terms. B2B is selling through selected partners, with a rate plan, commission, contract, and follow-up per partner. It is not another OTA listing, and it should be reviewed with direct booking, not as a replacement for it.",
+  },
+  {
+    q: "What sales material does the hotel need to prepare?",
+    a: "At minimum: room and product facts, rates and selling dates, hotel-approved terms, and a pack the partner can share. If those sit in different places, the team helps gather them into a B2B Sales Kit before outreach.",
+  },
+  {
+    q: "Who approves the rate and the contract?",
+    a: "The hotel approves the final rate, commission, and contract terms, and signs its own agreement. The KPI Plus may review and coordinate. It does not sign the contract for the hotel.",
+  },
+  {
+    q: "How long before partner outreach starts?",
+    a: "There is no approved timeline to quote. Outreach starts after the hotel has a Partner Profile, a rate frame, and sales material, and has approved contact. If those are not ready, the team reviews readiness first and does not start outreach immediately.",
+  },
+  {
+    q: "Which KPIs are used to review a partner?",
+    a: "Measurement follows the work, not contract count alone. When the hotel has the data, the team looks at Qualified Partner, Active Partner, Room Nights from B2B, and Revenue by Partner. Conversion rates and guaranteed results are not published unless approved.",
+  },
+  {
+    q: "Is there a booking and revenue report?",
+    a: "Booking and revenue for the partners in scope are reviewed when the hotel has enough data. That is not a ready-made dashboard for every hotel, and it is not a guaranteed result.",
   },
 ];
 
@@ -967,166 +1055,14 @@ const table: Record<string, FaqItem[]> = {
   "/en/solutions/outsourced-hotel-reservations": reservationsFaqsEn,
   "/ru/solutions/outsourced-hotel-reservations": reservationsFaqsEn,
   "/zh/solutions/outsourced-hotel-reservations": reservationsFaqsEn,
-  "/solutions/b2b-agent-sales": [
-    {
-      q: "เดอะ เคพีไอ พลัส ช่วยหาเอเยนต์รายใหม่ให้จริงไหม?",
-      a: "ช่วยคัดเลือกและประสานพาร์ตเนอร์จากเครือข่ายที่เกี่ยวข้องกับตลาดและสินค้าของโรงแรม โดยเริ่มจากประเมินก่อนว่าช่องทางนี้เหมาะกับโรงแรมหรือไม่",
-    },
-    {
-      q: "โรงแรมขนาดเล็กใช้บริการนี้ได้ไหม?",
-      a: "พูดคุยเพื่อประเมินได้ แต่โดยทั่วไปเราแนะนำบริการนี้กับโรงแรมขนาดกลางถึงขนาดใหญ่ ซึ่งมีจำนวนห้องและการดำเนินงานรองรับเงื่อนไขของช่องทาง B2B ได้มากกว่า สำหรับโรงแรมขนาดเล็ก ช่องทางอื่นอาจเหมาะกว่าในช่วงเริ่มต้น",
-    },
-    {
-      q: "เดอะ เคพีไอ พลัส เป็นผู้เซ็นสัญญาแทนโรงแรมหรือไม่?",
-      a: "เราอาจช่วยคัดเลือกพาร์ตเนอร์ ประสานงาน และทบทวนเงื่อนไขทางการขาย แต่โรงแรมเป็นผู้อนุมัติข้อตกลงและลงนามในสัญญาของตนเอง",
-    },
-    {
-      q: "จำเป็นต้องกันห้องให้เอเยนต์ทุกรายไหม?",
-      a: "ไม่จำเป็น รูปแบบการให้ห้องและเงื่อนไขการขายควรพิจารณาตามตลาด ฤดูกาล ความต้องการ และผลงานของพาร์ตเนอร์แต่ละราย",
-    },
-    {
-      q: "B2B จะทำงานร่วมกับ OTA และการจองตรงอย่างไร?",
-      a: "เราดูทั้งสามช่องทางร่วมกัน เพื่อให้ราคา ห้องว่าง และเป้าหมายของแต่ละช่องทางสอดคล้องกัน และทบทวนจากรายได้ที่โรงแรมได้รับจริง",
-    },
-  ],
-  "/en/solutions/b2b-agent-sales": [
-    {
-      q: "Does The KPI Plus actually help find new agents?",
-      a: "We help choose and introduce partners from a network that matches the hotel’s market and product. The work starts by asking whether this channel fits the hotel at all.",
-    },
-    {
-      q: "Can a small hotel use this service?",
-      a: "We can talk and review the situation. In general we recommend this work for mid-size and larger hotels, which have more rooms and operations to support B2B conditions. For a smaller hotel, another channel may be a better start.",
-    },
-    {
-      q: "Does The KPI Plus sign the contract for the hotel?",
-      a: "We may help choose partners, coordinate the work, and review the selling conditions. The hotel approves the agreement and signs its own contract.",
-    },
-    {
-      q: "Does every agent need held rooms?",
-      a: "No. How rooms are given and how they are sold should follow the market, the season, demand, and each partner’s result.",
-    },
-    {
-      q: "How does B2B sit with OTAs and direct booking?",
-      a: "We look at all three together, so rates, rooms, and goals stay aligned, then review from the revenue the hotel actually receives.",
-    },
-  ],
-  "/ru/solutions/b2b-agent-sales": [
-    {
-      q: "The KPI Plus действительно помогает найти новых агентов?",
-      a: "Мы помогаем выбрать и представить партнёров из сети, которая подходит рынку и продукту отеля. Сначала оцениваем, подходит ли этот канал отелю вообще.",
-    },
-    {
-      q: "Может ли маленький отель пользоваться этой услугой?",
-      a: "Поговорить и оценить ситуацию можно. Обычно мы рекомендуем эту работу средним и более крупным отелям: у них больше номеров и процессов под условия B2B. Маленькому отелю на старте может лучше подойти другой канал.",
-    },
-    {
-      q: "The KPI Plus подписывает договор вместо отеля?",
-      a: "Мы можем помочь выбрать партнёров, согласовать работу и разобрать условия продажи. Отель утверждает соглашение и подписывает свой договор.",
-    },
-    {
-      q: "Нужно ли резервировать номера каждому агенту?",
-      a: "Нет. Как давать номера и на каких условиях продавать, нужно смотреть по рынку, сезону, спросу и результату каждого партнёра.",
-    },
-    {
-      q: "Как B2B работает вместе с OTA и прямым бронированием?",
-      a: "Мы смотрим все три канала вместе, чтобы цена, номера и цели не расходились, и проверяем по доходу, который отель реально получает.",
-    },
-  ],
-  "/zh/solutions/b2b-agent-sales": [
-    {
-      q: "The KPI Plus 真的會幫忙找新旅行社嗎？",
-      a: "我們會從與飯店市場和產品相關的網絡，幫忙挑選並牽線夥伴。工作會先從評估這條通路適不適合這間飯店開始。",
-    },
-    {
-      q: "小型飯店可以用這項服務嗎？",
-      a: "可以先談、先評估。一般我們會建議中大型飯店使用，因為客房數與營運較能承接 B2B 條件。小型飯店起步時，其他通路可能更合適。",
-    },
-    {
-      q: "The KPI Plus 會代飯店簽署合約嗎？",
-      a: "我們可以幫忙挑選夥伴、協調作業，並檢視銷售條件。協議由飯店自行核准，合約也由飯店自行簽署。",
-    },
-    {
-      q: "一定要為每家旅行社保留房間嗎？",
-      a: "不必。給房方式與銷售條件，應依市場、淡旺季、需求與各家夥伴的成果來考慮。",
-    },
-    {
-      q: "B2B 要如何與 OTA、直銷預訂一起運作？",
-      a: "我們會把三條通路一起看，讓價格、空房與目標一致，並依飯店實際收到的收益再檢視。",
-    },
-  ],
-  "/solutions/google-ads-management": [
-    {
-      q: "Google Ads ช่วยเพิ่มยอดจองตรงได้ทันทีไหม?",
-      a: "Google Ads ช่วยให้โรงแรมเข้าถึงผู้ที่กำลังค้นหาที่พัก แต่ยอดจองยังขึ้นกับราคา ข้อเสนอ ห้องว่าง เว็บไซต์ และระบบจอง จึงควรตรวจทุกส่วนร่วมกัน",
-    },
-    {
-      q: "ต้องสร้างเว็บไซต์ใหม่ก่อนหรือไม่?",
-      a: "ไม่จำเป็นเสมอไป หากเว็บไซต์เดิมแสดงข้อมูลชัด ใช้บนมือถือสะดวก และพาลูกค้าไปจองได้ ทีมอาจเริ่มจากการปรับหน้าที่มีอยู่ก่อน",
-    },
-    {
-      q: "ควรซื้อโฆษณาคำค้นชื่อโรงแรมอย่างเดียวไหม?",
-      a: "ควรพิจารณาคำค้นชื่อโรงแรมและคำค้นอื่นแยกกัน เพราะมีพฤติกรรมลูกค้าและวิธีวัดผลต่างกัน ทีมจะดูว่าคำค้นกลุ่มใดมีโอกาสสร้างมูลค่าให้โรงแรม",
-    },
-    {
-      q: "Hotel Ads กับ Search Ads เหมือนกันไหม?",
-      a: "ไม่เหมือนกัน Search Ads เป็นโฆษณาที่ตอบคำค้น ส่วน Hotel Ads ใช้ข้อมูลโรงแรม ราคา และห้องว่างในรูปแบบการค้นหาโรงแรมของ Google การเริ่มใช้ Hotel Ads ต้องตรวจการเชื่อมต่อระบบก่อน",
-    },
-  ],
-  "/en/solutions/google-ads-management": [
-    {
-      q: "Do Google Ads increase direct bookings immediately?",
-      a: "Google Ads can reach people who are already searching for a stay. Bookings still depend on the rate, the offer, availability, the website, and the booking path, so those parts should be reviewed together.",
-    },
-    {
-      q: "Do we need a new website first?",
-      a: "Not always. If the current site is clear, works on a phone, and can take a guest to a booking, the team may start by improving the pages you already have.",
-    },
-    {
-      q: "Should we only buy ads for the hotel name?",
-      a: "Hotel-name searches and other stay searches should be reviewed separately, because guest behaviour and measurement differ. The team looks at which group can create value for the hotel.",
-    },
-    {
-      q: "Are Hotel Ads and Search Ads the same?",
-      a: "No. Search Ads answer a query. Hotel Ads use hotel, rate, and availability data in Google’s hotel-search format. Starting Hotel Ads means checking the system connection first.",
-    },
-  ],
-  "/ru/solutions/google-ads-management": [
-    {
-      q: "Google Ads сразу увеличивает прямые брони?",
-      a: "Google Ads помогает дойти до тех, кто уже ищет жильё. Брони по-прежнему зависят от цены, предложения, наличия номеров, сайта и системы бронирования, поэтому эти части нужно смотреть вместе.",
-    },
-    {
-      q: "Нужно ли сначала делать новый сайт?",
-      a: "Не всегда. Если текущий сайт понятен, удобен с телефона и ведёт к брони, команда может начать с доработки существующих страниц.",
-    },
-    {
-      q: "Стоит ли покупать рекламу только по названию отеля?",
-      a: "Поиск названия отеля и другие запросы на жильё лучше смотреть отдельно: поведение гостей и способ измерения различаются. Команда оценит, какая группа может дать ценность отелю.",
-    },
-    {
-      q: "Hotel Ads и Search Ads — это одно и то же?",
-      a: "Нет. Search Ads отвечают на поисковый запрос. Hotel Ads используют данные об отеле, цене и наличии номеров в гостиничном поиске Google. Чтобы начать Hotel Ads, сначала нужно проверить подключение системы.",
-    },
-  ],
-  "/zh/solutions/google-ads-management": [
-    {
-      q: "Google Ads 能立刻增加直銷預訂嗎？",
-      a: "Google Ads 能讓飯店接觸正在搜尋住宿的人。但預訂仍取決於價格、方案、空房、網站與預訂系統，因此這些部分要一起檢查。",
-    },
-    {
-      q: "一定要先做新網站嗎？",
-      a: "不一定。如果現有網站資料清楚、手機好用，也能帶客人去預訂，團隊可能先從調整現有頁面開始。",
-    },
-    {
-      q: "只買飯店名稱的搜尋廣告就好嗎？",
-      a: "飯店名稱搜尋與其他住宿搜尋應分開看，因為客人行為與衡量方式不同。團隊會看哪一組比較能為飯店創造價值。",
-    },
-    {
-      q: "Hotel Ads 和 Search Ads 一樣嗎？",
-      a: "不一樣。Search Ads 是回應搜尋的廣告。Hotel Ads 則在 Google 的飯店搜尋格式中使用飯店、價格與空房資料。要開始 Hotel Ads，必須先檢查系統連接。",
-    },
-  ],
+  "/solutions/b2b-agent-sales": b2bFaqsTh,
+  "/en/solutions/b2b-agent-sales": b2bFaqsEn,
+  "/ru/solutions/b2b-agent-sales": b2bFaqsEn,
+  "/zh/solutions/b2b-agent-sales": b2bFaqsEn,
+  "/solutions/google-ads-management": adsFaqs("th"),
+  "/en/solutions/google-ads-management": adsFaqs("en"),
+  "/ru/solutions/google-ads-management": adsFaqs("en"),
+  "/zh/solutions/google-ads-management": adsFaqs("en"),
   "/solutions/meta-ads-management": [
     {
       q: "โรงแรมขนาดเล็กทำ Meta Ads ได้ไหม?",

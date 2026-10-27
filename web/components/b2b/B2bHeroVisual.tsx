@@ -1,4 +1,4 @@
-import { B2B_HERO_VISUAL, b2bSampleLabel } from "@/lib/b2b";
+import { B2B_HERO_VISUAL, b2bSampleLabel, b2bShowsSampleBadge } from "@/lib/b2b";
 import type { Locale } from "@/lib/seo";
 import "./b2b-ops.css";
 
@@ -23,6 +23,7 @@ export function B2bHeroVisual({
   meta,
   alt: altProp,
   label: labelProp,
+  status,
 }: {
   src?: string;
   locale: Locale;
@@ -30,6 +31,7 @@ export function B2bHeroVisual({
   meta?: string;
   alt?: string;
   label?: string;
+  status?: string;
 }) {
   const fileSrc = src?.trim() || "";
   const hasAsset = Boolean(fileSrc);
@@ -56,7 +58,7 @@ export function B2bHeroVisual({
             decoding="async"
             fetchPriority="high"
           />
-          <span className="kpi-b2b-hero-visual-badge">{sample}</span>
+          {b2bShowsSampleBadge(status) ? <span className="kpi-b2b-hero-visual-badge">{sample}</span> : null}
         </div>
       ) : (
         <div className="b2b-hero-mock" role="img" aria-label={`${alt}. ${label}. ${visualMeta}. ${recommended}`}>

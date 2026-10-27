@@ -16,7 +16,18 @@ export type B2bKpi = {
   dataStatus: "Sample" | "Approved" | "Anonymised";
   labels: string[];
   values: number[];
+  value?: string;
+  updatedAt?: string;
 };
+
+export type B2bFunnelMarker = "path" | "target" | "review" | "risk";
+
+export const B2B_FUNNEL_COLORS = {
+  path: "#A2DC25",
+  target: "#EBE722",
+  review: "#EBE722",
+  risk: "#C4A35A",
+} as const;
 
 export const B2B_SAMPLE_LABEL = {
   th: "ตัวอย่างข้อมูล",
@@ -233,164 +244,735 @@ export const B2B_FRAMEWORK_ROWS = [
   },
 ] as const;
 
+export const B2B_SERVICE_COLUMNS = {
+  area: { th: "พื้นที่งาน", en: "Service Area" },
+  action: { th: "สิ่งที่เราทำ", en: "What we do" },
+  input: { th: "Input", en: "Input" },
+  output: { th: "สิ่งที่ได้", en: "Output" },
+  owner: { th: "ผู้รับผิดชอบหรือจุดอนุมัติ", en: "Owner or approval point" },
+} as const;
+
+export const B2B_SERVICE_SECTION = {
+  kicker: "Service Matrix",
+  expand: { th: "ดูรายละเอียด", en: "Show details" },
+  collapse: { th: "ซ่อนรายละเอียด", en: "Hide details" },
+  related: { th: "หน้าที่เกี่ยวข้อง", en: "Related page" },
+} as const;
+
 export const B2B_SCOPE_ITEMS = [
   {
-    id: "partner-fit",
-    kicker: "Partner Fit",
-    titleTh: "ประเมินตลาดและความเหมาะสม",
-    titleEn: "Review the market and the fit",
-    bodyTh:
-      "ดูขนาดโรงแรม กลุ่มลูกค้า ฤดูกาล ห้องว่าง และช่องทางขายที่มีอยู่ เพื่อประเมินว่าพาร์ตเนอร์ประเภทใดมีโอกาสช่วยเติมยอดขายโดยไม่กระทบช่องทางอื่นเกินความจำเป็น",
-    bodyEn:
-      "Look at hotel size, guest mix, season, empty dates, and current channels, then judge which partner type could add sales without harming other channels more than needed.",
+    id: "partner-mapping",
+    area: "Partner Mapping",
+    actionTh:
+      "ดูขนาดโรงแรม กลุ่มลูกค้า ฤดูกาล ห้องว่าง และช่องทางขายที่มีอยู่ แล้วค้นหาพาร์ตเนอร์ที่เกี่ยวข้องจากเครือข่าย",
+    actionEn:
+      "Look at hotel size, guest mix, season, empty dates, and current channels, then find relevant partners from the network",
     inputTh: "จำนวนห้อง ตลาดหลัก ฤดูกาล ช่องทางปัจจุบัน",
     inputEn: "Rooms, main markets, season, current channels",
-    outputTh: "ข้อสรุปว่า B2B เหมาะตอนนี้หรือควรปรับช่องทางอื่นก่อน",
-    outputEn: "A view on whether B2B fits now, or another channel should come first",
+    outputTh: "Target Partner List",
+    outputEn: "Target Partner List",
+    ownerTh: "เดอะ เคพีไอ พลัส ร่วมกับโรงแรม",
+    ownerEn: "The KPI Plus with the hotel",
+    ownerKind: "shared" as const,
+    href: "",
+    linkLabelTh: "",
+    linkLabelEn: "",
   },
   {
     id: "rate-commission",
-    kicker: "B2B Rate and Commission",
-    titleTh: "ช่วยวางราคาและเงื่อนไขการขาย",
-    titleEn: "Help set rates and selling conditions",
-    bodyTh: "ทบทวนราคา ช่วงเวลาที่เปิดขาย ห้องพักที่จัดสรร เงื่อนไขการยกเลิก การชำระเงิน ค่าคอมมิชชัน และการส่งคืนห้องที่กันไว้",
-    bodyEn: "Review the rate, selling dates, allocated rooms, cancellation, payment, commission, and return of held rooms.",
+    area: "Rate & Commission",
+    actionTh: "ทบทวนราคา ช่วงเวลาที่เปิดขาย ห้องพักที่จัดสรร เงื่อนไขการยกเลิก การชำระเงิน ค่าคอมมิชชัน และการส่งคืนห้องที่กันไว้",
+    actionEn: "Review the rate, selling dates, allocated rooms, cancellation, payment, commission, and return of held rooms.",
     inputTh: "ราคาปัจจุบัน เงื่อนไขที่มีอยู่ ช่วงที่ต้องการยอดขาย",
     inputEn: "Current rates, existing terms, dates that need sales",
-    outputTh: "กรอบราคาและเงื่อนไขที่โรงแรมเข้าใจก่อนเริ่มขาย",
-    outputEn: "A rate and terms frame the hotel understands before selling starts",
+    outputTh: "B2B Rate Sheet",
+    outputEn: "B2B Rate Sheet",
+    ownerTh: "โรงแรมอนุมัติราคาสุดท้ายและค่าคอมมิชชัน",
+    ownerEn: "The hotel approves the final rate and commission",
+    ownerKind: "hotel" as const,
+    href: "/solutions/revenue-commercial-management",
+    linkLabelTh: "บริหารรายได้และกลยุทธ์การขาย",
+    linkLabelEn: "Revenue & Commercial Management",
   },
   {
     id: "sales-material",
-    kicker: "Sales Material",
-    titleTh: "รวบรวมข้อมูลสินค้า",
-    titleEn: "Gather the product facts",
-    bodyTh: "ช่วยรวบรวมข้อมูลสินค้า ประสานเงื่อนไขกับพาร์ตเนอร์ และเตรียมงานที่ต้องใช้ในการเริ่มขาย",
-    bodyEn: "Help gather product facts, align conditions with the partner, and prepare what is needed to start selling.",
+    area: "Sales Material",
+    actionTh: "ช่วยรวบรวมข้อมูลสินค้า ประสานเงื่อนไขกับพาร์ตเนอร์ และเตรียมงานที่ต้องใช้ในการเริ่มขาย",
+    actionEn: "Help gather product facts, align conditions with the partner, and prepare what is needed to start selling.",
     inputTh: "ข้อมูลห้อง ราคา ช่วงขาย เงื่อนไขที่โรงแรมอนุมัติ",
     inputEn: "Room facts, rates, selling dates, hotel-approved terms",
-    outputTh: "ชุดข้อมูลสินค้าที่พร้อมส่งให้พาร์ตเนอร์หลังโรงแรมอนุมัติ",
-    outputEn: "A product pack ready for the partner after the hotel approves",
+    outputTh: "B2B Sales Kit",
+    outputEn: "B2B Sales Kit",
+    ownerTh: "โรงแรมอนุมัติชุดข้อมูลขาย",
+    ownerEn: "The hotel approves the sales kit",
+    ownerKind: "hotel" as const,
+    href: "",
+    linkLabelTh: "",
+    linkLabelEn: "",
   },
   {
-    id: "partner-outreach",
-    kicker: "Partner Outreach",
-    titleTh: "คัดเลือกและประสานพาร์ตเนอร์",
-    titleEn: "Choose and introduce partners",
-    bodyTh: "ค้นหาพาร์ตเนอร์ที่เกี่ยวข้องจากเครือข่ายของเรา และพิจารณาว่าแต่ละรายเข้าถึงตลาดหรือลูกค้าประเภทใด ก่อนเริ่มพูดคุยเรื่องความร่วมมือกับโรงแรม",
-    bodyEn:
-      "Find relevant partners from our network and see which market or guest type each one reaches, before any cooperation talk with the hotel.",
-    inputTh: "ตลาดที่โรงแรมต้องการ และข้อจำกัดของโรงแรม",
-    inputEn: "The market the hotel needs, and the hotel’s limits",
-    outputTh: "รายชื่อพาร์ตเนอร์ที่ผ่านการคัดจากความเหมาะสม ไม่ใช่รายชื่อยาวที่สุด",
-    outputEn: "Partners chosen for fit, not the longest list",
-  },
-  {
-    id: "follow-up",
-    kicker: "Follow-up",
-    titleTh: "อัปเดตสินค้าและติดตามเอเจนต์",
-    titleEn: "Product updates and agent follow-up",
-    bodyTh: "วางจังหวะการอัปเดตสินค้า และการติดตามกับเอเจนต์อย่างต่อเนื่อง ไม่ปล่อยให้สัญญาอยู่เฉยโดยไม่มีงานขาย",
-    bodyEn: "Keep product updates and agent follow-up on a rhythm, so a signed contract is not left without selling work.",
-    inputTh: "สินค้าที่เปลี่ยน ช่วงขาย การตอบกลับจากพาร์ตเนอร์",
-    inputEn: "Product changes, selling dates, partner replies",
-    outputTh: "รอบการติดตามที่โรงแรมเห็นว่าใครยังทำงานอยู่",
-    outputEn: "A follow-up cycle that shows who is still working",
+    id: "outreach-follow-up",
+    area: "Outreach & Follow-up",
+    actionTh:
+      "คัดเลือกและประสานพาร์ตเนอร์จากเครือข่าย แล้ววางจังหวะการอัปเดตสินค้าและการติดตามกับเอเจนต์อย่างต่อเนื่อง",
+    actionEn:
+      "Choose and introduce partners from the network, then keep product updates and agent follow-up on a rhythm",
+    inputTh: "ตลาดที่โรงแรมต้องการ สินค้าที่เปลี่ยน การตอบกลับจากพาร์ตเนอร์",
+    inputEn: "The market the hotel needs, product changes, partner replies",
+    outputTh: "Partner Pipeline",
+    outputEn: "Partner Pipeline",
+    ownerTh: "เดอะ เคพีไอ พลัส อาจช่วยประสาน โรงแรมอนุมัติความร่วมมือ",
+    ownerEn: "The KPI Plus may support outreach. The hotel approves cooperation",
+    ownerKind: "hotel" as const,
+    href: "",
+    linkLabelTh: "",
+    linkLabelEn: "",
   },
   {
     id: "booking-coordination",
-    kicker: "Booking Coordination",
-    titleTh: "ประสานสัญญาและการเริ่มขาย",
-    titleEn: "Coordinate the contract and the start of sales",
-    bodyTh: "ช่วยประสานข้อมูล สัญญา ขั้นตอนเริ่มขาย และการเชื่อมต่อที่จำเป็นกับทีมโรงแรม โดยโรงแรมเป็นผู้พิจารณาและอนุมัติข้อตกลงก่อนลงนาม",
-    bodyEn:
+    area: "Booking Coordination",
+    actionTh:
+      "ช่วยประสานข้อมูล สัญญา ขั้นตอนเริ่มขาย และการเชื่อมต่อที่จำเป็นกับทีมโรงแรม โดยโรงแรมเป็นผู้พิจารณาและอนุมัติข้อตกลงก่อนลงนาม",
+    actionEn:
       "Help gather facts, align the agreement, and prepare the start of sales. The hotel reviews and approves the agreement before signing.",
     inputTh: "ร่างเงื่อนไข ข้อมูลสินค้า ทีมที่ต้องรับงานจอง",
     inputEn: "Draft terms, product facts, the team that will take bookings",
-    outputTh: "ขั้นตอนเริ่มขายที่โรงแรมอนุมัติแล้ว",
-    outputEn: "A start-of-sales path the hotel has approved",
+    outputTh: "Booking Summary",
+    outputEn: "Booking Summary",
+    ownerTh: "โรงแรมพิจารณาและอนุมัติข้อตกลงก่อนลงนาม",
+    ownerEn: "The hotel reviews and approves the agreement before signing",
+    ownerKind: "hotel" as const,
+    href: "/solutions/outsourced-hotel-reservations",
+    linkLabelTh: "บริการทีมรับจองสำหรับโรงแรม",
+    linkLabelEn: "Outsourced Reservation Management",
   },
   {
     id: "performance-review",
-    kicker: "Performance Review",
-    titleTh: "ติดตามว่าพาร์ตเนอร์สร้างยอดขายจริงไหม",
-    titleEn: "Review whether the partner actually sells",
-    bodyTh: "ดูจำนวนคืนห้องพัก รายได้ ช่วงวันที่จอง ตลาดต้นทาง และการใช้ห้องที่จัดสรรไว้ เพื่อทบทวนว่าควรขยาย ปรับเงื่อนไข หรือหยุดความร่วมมือรายใด",
-    bodyEn:
+    area: "Performance Review",
+    actionTh:
+      "ดูจำนวนคืนห้องพัก รายได้ ช่วงวันที่จอง ตลาดต้นทาง และการใช้ห้องที่จัดสรรไว้ เพื่อทบทวนว่าควรขยาย ปรับเงื่อนไข หรือหยุดความร่วมมือรายใด",
+    actionEn:
       "Look at room nights, revenue, booked dates, source market, and use of allocated rooms, then decide whether to grow, change terms, or stop a relationship.",
     inputTh: "ยอดจอง การใช้ห้องที่จัดสรร ต้นทุนช่องทาง",
     inputEn: "Bookings, use of allocated rooms, channel cost",
-    outputTh: "มติว่าควรทำต่อ ปรับเงื่อนไข หรือเปลี่ยนพาร์ตเนอร์",
-    outputEn: "A decision to continue, change terms, or re-order partners",
+    outputTh: "B2B Performance Report",
+    outputEn: "B2B Performance Report",
+    ownerTh: "เดอะ เคพีไอ พลัส ร่วมกับโรงแรม",
+    ownerEn: "The KPI Plus with the hotel",
+    ownerKind: "shared" as const,
+    href: "/solutions/revenue-commercial-management",
+    linkLabelTh: "บริหารรายได้และกลยุทธ์การขาย",
+    linkLabelEn: "Revenue & Commercial Management",
   },
 ] as const;
 
+export const B2B_FUNNEL_VISUAL_CANDIDATE = "/images/b2b-agent-sales-funnel-placeholder.webp";
+
+export const B2B_FUNNEL_VISUAL = {
+  recommendedSize: "1600 × 900 px",
+  ratio: "16 / 9",
+  fit: "contain" as const,
+  width: 1600,
+  height: 900,
+  displayWidth: 720,
+  displayHeight: 405,
+  alt: {
+    th: "ตัวอย่างลำดับงานขาย B2B จากพาร์ตเนอร์ที่เป็นไปได้ไปสู่การจองที่วัดผลได้",
+    en: "Sample B2B agent sales funnel from a potential partner to a measurable booking",
+  },
+  label: {
+    th: "B2B Agent Sales Funnel · Sample data",
+    en: "B2B Agent Sales Funnel · Sample data",
+  },
+  meta: {
+    th: "Sample data · Path from partner lead to booking review",
+    en: "Sample data · Path from partner lead to booking review",
+  },
+  caption: {
+    th: "ลำดับงานขาย ไม่ใช่บอร์ด CRM หรือผลงานพาร์ตเนอร์รายใด",
+    en: "A sales path, not a CRM board or one partner’s results",
+  },
+  sample: {
+    th: "ตัวอย่างข้อมูล",
+    en: "Sample data",
+  },
+} as const;
+
+export const B2B_FUNNEL_SECTION = {
+  title: {
+    th: "ลำดับงานขายผ่านเอเจนต์",
+    en: "Agent Sales Funnel",
+  },
+  lead: {
+    th: "จากพาร์ตเนอร์ที่เป็นไปได้ ไปสู่ผลลัพธ์การจองที่วัดได้",
+    en: "From a potential partner to a measurable booking outcome",
+  },
+} as const;
+
 export const B2B_FUNNEL_STEPS = [
-  { id: "fit", number: "01", labelEn: "Partner Fit", labelTh: "ความเหมาะสม" },
-  { id: "outreach", number: "02", labelEn: "Partner Outreach", labelTh: "ประสานพาร์ตเนอร์" },
-  { id: "rate", number: "03", labelEn: "Rate & Commission", labelTh: "ราคาและค่าคอม" },
-  { id: "material", number: "04", labelEn: "Sales Material", labelTh: "ข้อมูลสินค้า" },
-  { id: "booking", number: "05", labelEn: "Booking Coordination", labelTh: "เริ่มขาย" },
-  { id: "follow", number: "06", labelEn: "Follow-up", labelTh: "ติดตาม" },
-  { id: "review", number: "07", labelEn: "Performance Review", labelTh: "ทบทวนผล" },
+  {
+    id: "partner-leads",
+    number: "01",
+    marker: "path" as const,
+    labelEn: "Partner Leads",
+    labelTh: "Partner Leads",
+    definitionTh: "รายชื่อพาร์ตเนอร์ที่เริ่มพิจารณา ให้เข้ากับตลาดของโรงแรม",
+    definitionEn: "Partners first brought in for review against the hotel’s market",
+    outputTh: "Partner Lead List",
+    outputEn: "Partner Lead List",
+    kpiId: "partner-leads",
+    kpiName: "Partner Leads",
+  },
+  {
+    id: "qualified",
+    number: "02",
+    marker: "path" as const,
+    labelEn: "Qualified Partner",
+    labelTh: "Qualified Partner",
+    definitionTh: "พาร์ตเนอร์ที่ผ่านเกณฑ์ตลาด สินค้า และรูปแบบการขาย",
+    definitionEn: "A partner that fits the market, the product, and the way the hotel sells",
+    outputTh: "Qualified Partner Record",
+    outputEn: "Qualified Partner Record",
+    kpiId: "qualified-count",
+    kpiName: "Qualified Partner Count",
+  },
+  {
+    id: "rate-contract",
+    number: "03",
+    marker: "target" as const,
+    labelEn: "Rate / Contract Ready",
+    labelTh: "Rate / Contract Ready",
+    definitionTh: "ราคา เงื่อนไข และร่างข้อตกลงพร้อมให้โรงแรมพิจารณา",
+    definitionEn: "Rates, terms, and a draft agreement ready for the hotel to review",
+    outputTh: "Rate Sheet / Contract Pack",
+    outputEn: "Rate Sheet / Contract Pack",
+    kpiId: "",
+    kpiName: "",
+  },
+  {
+    id: "active",
+    number: "04",
+    marker: "path" as const,
+    labelEn: "Active Partner",
+    labelTh: "Active Partner",
+    definitionTh: "พาร์ตเนอร์ที่โรงแรมอนุมัติแล้วและเริ่มขายได้",
+    definitionEn: "A partner the hotel has approved and that can start selling",
+    outputTh: "Active Partner List",
+    outputEn: "Active Partner List",
+    kpiId: "active-count",
+    kpiName: "Active Partner Count",
+  },
+  {
+    id: "booking",
+    number: "05",
+    marker: "path" as const,
+    labelEn: "Booking / Room Night",
+    labelTh: "Booking / Room Night",
+    definitionTh: "การจองที่โยงกับคืนห้องพักและรายได้ที่วัดได้",
+    definitionEn: "A booking tied to room nights and revenue the hotel can measure",
+    outputTh: "Booking / Room Night Record",
+    outputEn: "Booking / Room Night Record",
+    kpiId: "booking-conversion",
+    kpiName: "Booking Conversion",
+    extraKpis: [{ id: "room-nights", name: "Room Nights from B2B" }] as const,
+  },
+  {
+    id: "review",
+    number: "06",
+    marker: "review" as const,
+    labelEn: "Review & Follow-up",
+    labelTh: "Review & Follow-up",
+    definitionTh: "ทบทวนผลงาน แล้วกำหนดว่าจะทำต่อ ปรับเงื่อนไข หรือหยุด",
+    definitionEn: "Review the result, then decide whether to continue, change terms, or stop",
+    outputTh: "Review Notes / Next Action",
+    outputEn: "Review Notes / Next Action",
+    kpiId: "revenue-by-partner",
+    kpiName: "Revenue by Partner",
+  },
 ] as const;
+
+export const B2B_WORKFLOW_VISUAL_CANDIDATE = "/images/b2b-agent-sales-workflow-placeholder.webp";
+
+export const B2B_WORKFLOW_VISUAL = {
+  recommendedSize: "1600 × 900 px",
+  ratio: "16 / 9",
+  fit: "contain" as const,
+  width: 1600,
+  height: 900,
+  displayWidth: 640,
+  displayHeight: 360,
+  alt: {
+    th: "ตัวอย่างลำดับงานขายผ่านพาร์ตเนอร์ แสดงการส่งต่องานและสิ่งที่ได้ในแต่ละขั้น",
+    en: "Sample B2B partner sales workflow showing handoff and output at each step",
+  },
+  label: {
+    th: "B2B Partner Sales Workflow — Sample process",
+    en: "B2B Partner Sales Workflow — Sample process",
+  },
+  meta: {
+    th: "Sample process · Handoff and output",
+    en: "Sample process · Handoff and output",
+  },
+  caption: {
+    th: "แผนภาพการส่งต่องานและสิ่งที่ได้ ไม่ใช่รูปประชุมทั่วไป",
+    en: "A handoff and output path, not a generic meeting photo",
+  },
+  sample: {
+    th: "ตัวอย่างกระบวนการ",
+    en: "Sample process",
+  },
+} as const;
+
+export const B2B_WORKFLOW_SECTION = {
+  title: {
+    th: "วิธีที่เราทำงานร่วมกับโรงแรม",
+    en: "How the work runs",
+  },
+  lead: {
+    th: "งานขายผ่านพาร์ตเนอร์เดินเป็นลำดับ จากภาพโรงแรมไปสู่การทบทวนยอดจอง โดยโรงแรมเป็นผู้อนุมัติข้อตกลง",
+    en: "Partner sales work runs in sequence, from the hotel picture to a booking review. The hotel approves the agreement.",
+  },
+} as const;
+
+export const B2B_WORKFLOW_BOUNDARY = {
+  kicker: "Responsibility boundary",
+  note: {
+    th: "ขอบเขตจริงขึ้นกับข้อตกลงของแต่ละโรงแรม รายการนี้คืองานที่อาจอยู่ในบริการ ไม่ใช่นโยบายที่ใช้กับทุกสัญญา",
+    en: "The live split follows each hotel’s agreement. This list is work that may sit in the service. It is not a policy for every contract.",
+  },
+  supportTitle: {
+    th: "เดอะ เคพีไอ พลัส อาจช่วย",
+    en: "The KPI Plus may support",
+  },
+  approveTitle: {
+    th: "โรงแรมอาจอนุมัติ",
+    en: "The hotel may approve",
+  },
+  support: [
+    "Partner Mapping",
+    "Sales Material",
+    "Rate / Commission Structure",
+    "Outreach and Follow-up",
+    "Performance Review",
+  ] as const,
+  approve: [
+    "Final Rate",
+    "Contract Terms",
+    "Commission Policy",
+    "Inventory / Availability",
+    "Guest Exceptions",
+  ] as const,
+} as const;
+
+export const B2B_WORKFLOW_STEPS = [
+  {
+    id: "understand",
+    number: "01",
+    titleEn: "Understand hotel and market",
+    titleTh: "Understand hotel and market",
+    ownerTh: "เดอะ เคพีไอ พลัส ร่วมกับโรงแรม",
+    ownerEn: "The KPI Plus with the hotel",
+    inputTh: "จำนวนห้อง ตลาดหลัก ฤดูกาล ช่องทางปัจจุบัน",
+    inputEn: "Rooms, main markets, season, current channels",
+    actionTh: "ดูขนาดโรงแรม กลุ่มลูกค้า ฤดูกาล ห้องว่าง และช่องทางขายที่มีอยู่",
+    actionEn: "Look at hotel size, guest mix, season, empty dates, and current channels",
+    outputTh: "Hotel & Market Profile",
+    outputEn: "Hotel & Market Profile",
+    escalationTh: "หาก B2B ยังไม่เหมาะตอนนี้ โรงแรมเป็นผู้ตัดสินใจว่าจะปรับช่องทางอื่นก่อนหรือไม่",
+    escalationEn: "If B2B does not fit now, the hotel decides whether another channel should come first",
+  },
+  {
+    id: "partner-profile",
+    number: "02",
+    titleEn: "Define Partner Profile",
+    titleTh: "Define Partner Profile",
+    ownerTh: "เดอะ เคพีไอ พลัส ร่วมกับโรงแรม",
+    ownerEn: "The KPI Plus with the hotel",
+    inputTh: "Hotel & Market Profile ตลาดที่โรงแรมต้องการ และข้อจำกัดของโรงแรม",
+    inputEn: "Hotel & Market Profile, the market the hotel needs, and the hotel’s limits",
+    actionTh: "กำหนดเกณฑ์พาร์ตเนอร์เป้าหมาย จากตลาด สินค้า และรูปแบบการขายของโรงแรม",
+    actionEn: "Define target partner criteria from the hotel’s market, product, and way of selling",
+    outputTh: "Target Agent Criteria",
+    outputEn: "Target Agent Criteria",
+    escalationTh: "ไม่ประสานพาร์ตเนอร์ที่ไม่ตรงตลาด เว้นแต่โรงแรมตัดสินใจให้ทำต่อ",
+    escalationEn: "Partners that do not fit the market are not contacted unless the hotel decides to continue",
+  },
+  {
+    id: "rate-material",
+    number: "03",
+    titleEn: "Prepare Rate and Sales Material",
+    titleTh: "Prepare Rate and Sales Material",
+    ownerTh: "เดอะ เคพีไอ พลัส เตรียม โรงแรมอนุมัติ",
+    ownerEn: "The KPI Plus prepares. The hotel approves",
+    inputTh: "ราคาปัจจุบัน เงื่อนไขที่มีอยู่ ช่วงที่ต้องการยอดขาย ข้อมูลห้อง",
+    inputEn: "Current rates, existing terms, dates that need sales, room facts",
+    actionTh: "ทบทวนราคา ช่วงเวลาที่เปิดขาย ห้องพักที่จัดสรร และรวบรวมข้อมูลสินค้า",
+    actionEn: "Review the rate, selling dates, and allocated rooms, and gather the product facts",
+    outputTh: "B2B Sales Kit",
+    outputEn: "B2B Sales Kit",
+    escalationTh: "ราคาสุดท้าย ค่าคอมมิชชัน และเงื่อนไขสัญญา ส่งให้โรงแรมอนุมัติ",
+    escalationEn: "Final rate, commission, and contract terms go to the hotel for approval",
+  },
+  {
+    id: "contact-follow-up",
+    number: "04",
+    titleEn: "Contact and Follow Up with Partners",
+    titleTh: "Contact and Follow Up with Partners",
+    ownerTh: "เดอะ เคพีไอ พลัส อาจช่วยประสาน โรงแรมอนุมัติความร่วมมือ",
+    ownerEn: "The KPI Plus may support outreach. The hotel approves cooperation",
+    inputTh: "Target Agent Criteria และ B2B Sales Kit หลังโรงแรมอนุมัติ",
+    inputEn: "Target Agent Criteria and the B2B Sales Kit after the hotel approves",
+    actionTh: "คัดเลือกและประสานพาร์ตเนอร์จากเครือข่าย แล้วติดตามงานขายอย่างต่อเนื่อง",
+    actionEn: "Choose and introduce partners from the network, then keep follow-up on a rhythm",
+    outputTh: "Partner Pipeline",
+    outputEn: "Partner Pipeline",
+    escalationTh: "โรงแรมเป็นผู้อนุมัติข้อตกลงและลงนามในสัญญาของตนเอง",
+    escalationEn: "The hotel approves the agreement and signs its own contract",
+  },
+  {
+    id: "review-plan",
+    number: "05",
+    titleEn: "Review Booking and Adjust Plan",
+    titleTh: "Review Booking and Adjust Plan",
+    ownerTh: "เดอะ เคพีไอ พลัส ร่วมกับโรงแรม",
+    ownerEn: "The KPI Plus with the hotel",
+    inputTh: "ยอดจอง การใช้ห้องที่จัดสรร ต้นทุนช่องทาง",
+    inputEn: "Bookings, use of allocated rooms, channel cost",
+    actionTh: "ดูจำนวนคืนห้องพัก รายได้ ช่วงวันที่จอง ตลาดต้นทาง และการใช้ห้องที่จัดสรรไว้",
+    actionEn: "Look at room nights, revenue, booked dates, source market, and use of allocated rooms",
+    outputTh: "B2B Performance Review",
+    outputEn: "B2B Performance Review",
+    escalationTh: "มติว่าควรทำต่อ ปรับเงื่อนไข หรือเปลี่ยนพาร์ตเนอร์ ทำร่วมกับโรงแรม",
+    escalationEn: "A decision to continue, change terms, or re-order partners is made with the hotel",
+  },
+] as const;
+
+export const B2B_KPI_VISUAL_CANDIDATE = "/images/b2b-agent-sales-kpi-placeholder.webp";
+
+export const B2B_KPI_VISUAL = {
+  recommendedSize: "1600 × 900 px",
+  ratio: "16 / 9",
+  fit: "contain" as const,
+  width: 1600,
+  height: 900,
+  displayWidth: 720,
+  displayHeight: 405,
+  alt: {
+    th: "ตัวอย่างกรอบตัวชี้วัดงานขาย B2B ไม่ใช่ยอดจริงของโรงแรมหรือพาร์ตเนอร์รายใด",
+    en: "Sample B2B agent sales KPI frame, not a live hotel or partner result",
+  },
+  label: {
+    th: "B2B Agent Sales KPI · Sample data",
+    en: "B2B Agent Sales KPI · Sample data",
+  },
+  meta: {
+    th: "Sample data · 16:9 KPI frame",
+    en: "Sample data · 16:9 KPI frame",
+  },
+  caption: {
+    th: "กรอบตัวชี้วัดตัวอย่าง ไม่ใช่จำนวนพาร์ตเนอร์ อัตราแปลง คืนห้องพัก หรือรายได้จริง",
+    en: "A sample KPI frame, not a live partner count, conversion rate, room-night, or revenue figure",
+  },
+  sample: {
+    th: "ตัวอย่างข้อมูล",
+    en: "Sample data",
+  },
+} as const;
+
+export const B2B_KPI_SECTION = {
+  kicker: "KPI and evidence",
+  emptyDate: { th: "—", en: "—" },
+} as const;
+
+export const B2B_RELATED_VISUAL_CANDIDATE = "/images/b2b-agent-sales-related-content-placeholder.webp";
+
+export const B2B_RELATED_VISUAL = {
+  recommendedSize: "1200 × 800 px",
+  ratio: "3 / 2",
+  fit: "contain" as const,
+  width: 1200,
+  height: 800,
+  displayWidth: 520,
+  displayHeight: 347,
+  alt: {
+    th: "ตัวอย่างเนื้อหาขาย B2B และงานพาร์ตเนอร์ ไม่ใช่รูปโรงแรมหรือผลงานลูกค้า",
+    en: "Sample B2B sales and partner content, not a hotel photo or a client result",
+  },
+  label: {
+    th: "B2B Sales / Partner Content",
+    en: "B2B Sales / Partner Content",
+  },
+  meta: {
+    th: "Sample visual · 3:2 partner content frame",
+    en: "Sample visual · 3:2 partner content frame",
+  },
+  caption: {
+    th: "กรอบเนื้อหาขาย B2B ไม่ใช่รายชื่อพาร์ตเนอร์หรือผลลัพธ์จริง",
+    en: "A B2B sales content frame, not a partner list or a live result",
+  },
+  sample: {
+    th: "ตัวอย่างข้อมูล",
+    en: "Sample visual",
+  },
+} as const;
+
+export const B2B_RELATED_VISUAL_OPTIONS = [
+  { id: "partner-review", label: "Partner Review" },
+  { id: "sales-report", label: "B2B Sales Report" },
+  { id: "rate-sheet", label: "Rate Sheet Review" },
+  { id: "sales-kit", label: "Sales Kit Workshop" },
+  { id: "pipeline", label: "Agent Pipeline Review" },
+] as const;
+
+/** Serve only when a real approved team photo is uploaded. Never show this dummy path. */
+export const B2B_TEAM_VISUAL_CANDIDATE = "/images/b2b-agent-sales-team-placeholder.webp";
+
+export const B2B_TEAM_VISUAL = {
+  recommendedSize: "1200 × 800 px",
+  ratio: "3 / 2",
+  fit: "cover" as const,
+  width: 1200,
+  height: 800,
+  displayWidth: 420,
+  displayHeight: 280,
+  label: "Replace with verified B2B Sales Team image",
+} as const;
+
+export const B2B_ENQUIRY = {
+  kicker: "B2B & Agent Sales",
+  receiveTitle: {
+    th: "โรงแรมจะได้อะไรจากการเริ่มคุย",
+    en: "What the hotel receives from starting the discussion",
+  },
+  nextTitle: {
+    th: "What Happens Next",
+    en: "What Happens Next",
+  },
+  receive: [
+    {
+      id: "partner-fit",
+      title: "Partner Fit Review",
+      th: "ทบทวนว่าพาร์ตเนอร์ประเภทใดเหมาะกับตลาดและรูปแบบการขายของโรงแรม",
+      en: "Review which partner type fits the hotel’s market and way of selling",
+    },
+    {
+      id: "rate-commission",
+      title: "B2B Rate & Commission Review",
+      th: "ทบทวนโครงสร้างราคาและค่าคอมมิชชันก่อนเริ่มขาย",
+      en: "Review the rate structure and commission before selling starts",
+    },
+    {
+      id: "sales-material",
+      title: "Sales Material Checklist",
+      th: "รายการเอกสารขายที่โรงแรมต้องมีก่อนประสานงาน",
+      en: "The sales documents the hotel needs before outreach",
+    },
+    {
+      id: "follow-up",
+      title: "Partner Follow-up Plan",
+      th: "แผนติดตามหลังเริ่มพูดคุยกับพาร์ตเนอร์",
+      en: "A follow-up plan after partner conversations begin",
+    },
+  ],
+  steps: {
+    th: [
+      "ส่งข้อมูลโรงแรมและตลาดที่ต้องการเจาะ",
+      "ทีมงานตรวจสอบความพร้อม B2B",
+      "กำหนด Partner Profile และขอบเขตงาน",
+      "นัดคุย Action Plan และขั้นตอนถัดไป",
+    ],
+    en: [
+      "Send hotel details and the market you want to reach",
+      "The team reviews B2B readiness",
+      "Set the Partner Profile and the work scope",
+      "Arrange a conversation on the action plan and next steps",
+    ],
+  },
+  heading: {
+    th: "คุยเรื่องช่องทางพาร์ตเนอร์ของโรงแรม",
+    en: "Talk through the hotel’s partner path",
+  },
+  lead: {
+    th: "เริ่มคุยเรื่องงานขาย B2B เพื่อให้โรงแรมเห็นภาพ Partner Fit ราคา เอกสารขาย และการติดตาม โดยยังไม่ต้องมีรายชื่อพาร์ตเนอร์อยู่แล้ว",
+    en: "Start a B2B agent sales discussion so the hotel can see partner fit, rates, sales material, and follow-up, without needing a partner list first.",
+  },
+  submit: {
+    th: "ให้ทีมประเมินช่องทาง B2B ของโรงแรม",
+    en: "Ask the team to review the hotel’s B2B path",
+  },
+  fields: {
+    th: {
+      market: "ตลาดหรือเซ็กเมนต์ที่ต้องการเจาะ",
+      marketHint: "เช่น ตลาดต้นทาง หรือกลุ่มลูกค้าที่โรงแรมต้องการ",
+      channels: "ช่องทาง B2B ที่มีอยู่",
+      channelsHint: "เช่น เอเจนต์, wholesaler หรือยังไม่มี",
+      rate: "เรื่องราคา / ค่าคอมมิชชัน",
+      rateHint: "เช่น โครงสร้างราคา หรือเงื่อนไขคอมมิชชันที่อยากทบทวน",
+      challenge: "ความท้าทายปัจจุบัน",
+      challengeHint: "บอกสั้น ๆ ว่าติดตรงไหน",
+      loading: "กำลังส่งข้อมูล กรุณารอสักครู่",
+    },
+    en: {
+      market: "Target market or segment",
+      marketHint: "For example a source market or guest type the hotel needs",
+      channels: "Existing B2B channels",
+      channelsHint: "For example agents, wholesalers, or none yet",
+      rate: "Rate / commission topic",
+      rateHint: "For example the rate structure or commission terms to review",
+      challenge: "Current challenge",
+      challengeHint: "A short note on where the work is stuck",
+      loading: "Sending your message. Please wait.",
+    },
+  },
+} as const;
+
+export function b2bEnquiryCopy(locale: Locale) {
+  const thai = locale === "th";
+  return {
+    kicker: B2B_ENQUIRY.kicker,
+    heading: thai ? B2B_ENQUIRY.heading.th : B2B_ENQUIRY.heading.en,
+    lead: thai ? B2B_ENQUIRY.lead.th : B2B_ENQUIRY.lead.en,
+    submit: thai ? B2B_ENQUIRY.submit.th : B2B_ENQUIRY.submit.en,
+    receiveTitle: thai ? B2B_ENQUIRY.receiveTitle.th : B2B_ENQUIRY.receiveTitle.en,
+    nextTitle: thai ? B2B_ENQUIRY.nextTitle.th : B2B_ENQUIRY.nextTitle.en,
+    receive: B2B_ENQUIRY.receive.map((item) => ({
+      id: item.id,
+      title: item.title,
+      body: thai ? item.th : item.en,
+    })),
+    steps: thai ? [...B2B_ENQUIRY.steps.th] : [...B2B_ENQUIRY.steps.en],
+    fields: thai ? B2B_ENQUIRY.fields.th : B2B_ENQUIRY.fields.en,
+  };
+}
 
 export const B2B_KPIS: B2bKpi[] = [
   {
+    id: "qualified-count",
+    name: "Qualified Partner Count",
+    definitionTh: "จำนวนพาร์ตเนอร์ที่ผ่านเกณฑ์ตลาด สินค้า และรูปแบบการขาย",
+    definitionEn: "Partners that passed market, product, and sales-fit review",
+    unit: "partners",
+    periodTh: "",
+    periodEn: "",
+    comparisonTh: "",
+    comparisonEn: "",
+    dataStatus: "Sample",
+    labels: [],
+    values: [],
+    value: "",
+    updatedAt: "",
+  },
+  {
+    id: "active-count",
+    name: "Active Partner Count",
+    definitionTh: "จำนวนพาร์ตเนอร์ที่โรงแรมอนุมัติแล้วและเริ่มขายได้",
+    definitionEn: "Partners the hotel has approved and that can start selling",
+    unit: "partners",
+    periodTh: "",
+    periodEn: "",
+    comparisonTh: "",
+    comparisonEn: "",
+    dataStatus: "Sample",
+    labels: [],
+    values: [],
+    value: "",
+    updatedAt: "",
+  },
+  {
+    id: "partner-conversion",
+    name: "Partner Conversion Rate",
+    definitionTh: "สัดส่วนพาร์ตเนอร์ที่ผ่านการพิจารณาแล้วกลายเป็นพาร์ตเนอร์ที่ขายได้ เมื่อโรงแรมมีข้อมูล",
+    definitionEn: "Share of reviewed partners that become able to sell, once the hotel has the data",
+    unit: "%",
+    periodTh: "",
+    periodEn: "",
+    comparisonTh: "",
+    comparisonEn: "",
+    dataStatus: "Sample",
+    labels: [],
+    values: [],
+    value: "",
+    updatedAt: "",
+  },
+  {
+    id: "booking-conversion",
+    name: "Booking Conversion",
+    definitionTh: "สัดส่วนการจองที่กลายเป็นคืนห้องพักที่วัดได้",
+    definitionEn: "Share of bookings that become measurable room nights",
+    unit: "%",
+    periodTh: "",
+    periodEn: "",
+    comparisonTh: "",
+    comparisonEn: "",
+    dataStatus: "Sample",
+    labels: [],
+    values: [],
+    value: "",
+    updatedAt: "",
+  },
+  {
     id: "room-nights",
-    name: "Room Nights",
-    definitionTh: "จำนวนคืนห้องพักที่ขายได้ผ่านพาร์ตเนอร์ที่ทบทวน",
-    definitionEn: "Room nights sold through the partners under review",
-    unit: "index",
-    periodTh: "ตัวอย่าง Period 1–4",
-    periodEn: "Sample period 1–4",
-    comparisonTh: "เทียบกับเงื่อนไขที่ตกลงไว้ ไม่ใช่เป้าหมายที่รับประกัน",
-    comparisonEn: "Compared with the agreed conditions, not a guaranteed target",
+    name: "Room Nights from B2B",
+    definitionTh: "จำนวนคืนห้องพักที่ขายได้ผ่านพาร์ตเนอร์ B2B ที่ทบทวน",
+    definitionEn: "Room nights sold through the B2B partners under review",
+    unit: "room nights",
+    periodTh: "",
+    periodEn: "",
+    comparisonTh: "",
+    comparisonEn: "",
     dataStatus: "Sample",
-    labels: ["Period 1", "Period 2", "Period 3", "Period 4"],
-    values: [8, 11, 9, 14],
+    labels: [],
+    values: [],
+    value: "",
+    updatedAt: "",
   },
   {
-    id: "revenue",
-    name: "Revenue",
-    definitionTh: "รายได้จากแต่ละพาร์ตเนอร์ ในชุดข้อมูลตัวอย่าง",
-    definitionEn: "Revenue from each partner in the sample set",
-    unit: "index",
-    periodTh: "ตัวอย่าง Period 1–4",
-    periodEn: "Sample period 1–4",
-    comparisonTh: "เทียบกับช่องทางอื่นในภาพเดียวกัน",
-    comparisonEn: "Compared with other channels in the same picture",
+    id: "revenue-by-partner",
+    name: "Revenue by Partner",
+    definitionTh: "รายได้ที่โยงกับแต่ละพาร์ตเนอร์ในชุดที่ทบทวน",
+    definitionEn: "Revenue attributed to each partner in the review set",
+    unit: "THB",
+    periodTh: "",
+    periodEn: "",
+    comparisonTh: "",
+    comparisonEn: "",
     dataStatus: "Sample",
-    labels: ["Period 1", "Period 2", "Period 3", "Period 4"],
-    values: [7, 10, 8, 13],
+    labels: [],
+    values: [],
+    value: "",
+    updatedAt: "",
   },
   {
-    id: "net-contribution",
-    name: "Net Contribution",
-    definitionTh: "รายได้หลังหักต้นทุนและค่าคอมมิชชัน ในชุดข้อมูลตัวอย่าง",
-    definitionEn: "Revenue after cost and commission in the sample set",
-    unit: "index",
-    periodTh: "ตัวอย่าง Period 1–4",
-    periodEn: "Sample period 1–4",
-    comparisonTh: "เทียบกับรายได้ก่อนต้นทุนช่องทาง",
-    comparisonEn: "Compared with revenue before channel cost",
+    id: "average-booking-value",
+    name: "Average Booking Value",
+    definitionTh: "มูลค่าเฉลี่ยของการจอง B2B ในช่วงที่ทบทวน เมื่อโรงแรมมีข้อมูล",
+    definitionEn: "Average value of B2B bookings in the review period, when the hotel has the data",
+    unit: "THB",
+    periodTh: "",
+    periodEn: "",
+    comparisonTh: "",
+    comparisonEn: "",
     dataStatus: "Sample",
-    labels: ["Period 1", "Period 2", "Period 3", "Period 4"],
-    values: [5, 8, 6, 10],
+    labels: [],
+    values: [],
+    value: "",
+    updatedAt: "",
   },
   {
-    id: "allotment",
-    name: "Performance vs Allotment",
-    definitionTh: "ผลลัพธ์เทียบกับห้องที่จัดสรรไว้",
-    definitionEn: "Result against rooms held for the partner",
-    unit: "% index",
-    periodTh: "ตัวอย่าง Period 1–4",
-    periodEn: "Sample period 1–4",
-    comparisonTh: "เทียบกับห้องที่กันไว้ตามเงื่อนไข",
-    comparisonEn: "Compared with rooms held under the agreed terms",
+    id: "repeat-booking-rate",
+    name: "Repeat Booking Rate",
+    definitionTh: "สัดส่วนการจอง B2B ที่กลับมาจองซ้ำ เมื่อโรงแรมมีข้อมูล",
+    definitionEn: "Share of B2B bookings that come from a partner booking again, when the hotel has the data",
+    unit: "%",
+    periodTh: "",
+    periodEn: "",
+    comparisonTh: "",
+    comparisonEn: "",
     dataStatus: "Sample",
-    labels: ["Period 1", "Period 2", "Period 3", "Period 4"],
-    values: [42, 55, 48, 61],
+    labels: [],
+    values: [],
+    value: "",
+    updatedAt: "",
   },
 ];
 
@@ -398,22 +980,161 @@ export function b2bSampleLabel(locale: Locale) {
   return locale === "th" ? B2B_SAMPLE_LABEL.th : B2B_SAMPLE_LABEL.en;
 }
 
+export function b2bShowsSampleBadge(status?: string) {
+  return status !== "approved" && status !== "real";
+}
+
+export type B2bScopeOwnerKind = "shared" | "hotel";
+
+export type B2bServiceRow = {
+  id: string;
+  area: string;
+  action: string;
+  input: string;
+  output: string;
+  owner: string;
+  ownerKind: B2bScopeOwnerKind;
+  href: string;
+  linkLabel: string;
+};
+
 export function b2bScopeCopy(locale: Locale) {
-  return B2B_SCOPE_ITEMS.map((item) => ({
-    id: item.id,
-    kicker: item.kicker,
-    title: locale === "th" ? item.titleTh : item.titleEn,
-    body: locale === "th" ? item.bodyTh : item.bodyEn,
-    input: locale === "th" ? item.inputTh : item.inputEn,
-    output: locale === "th" ? item.outputTh : item.outputEn,
-  }));
+  const thai = locale === "th";
+  return {
+    kicker: B2B_SERVICE_SECTION.kicker,
+    expand: thai ? B2B_SERVICE_SECTION.expand.th : B2B_SERVICE_SECTION.expand.en,
+    collapse: thai ? B2B_SERVICE_SECTION.collapse.th : B2B_SERVICE_SECTION.collapse.en,
+    related: thai ? B2B_SERVICE_SECTION.related.th : B2B_SERVICE_SECTION.related.en,
+    columns: {
+      area: thai ? B2B_SERVICE_COLUMNS.area.th : B2B_SERVICE_COLUMNS.area.en,
+      action: thai ? B2B_SERVICE_COLUMNS.action.th : B2B_SERVICE_COLUMNS.action.en,
+      input: thai ? B2B_SERVICE_COLUMNS.input.th : B2B_SERVICE_COLUMNS.input.en,
+      output: thai ? B2B_SERVICE_COLUMNS.output.th : B2B_SERVICE_COLUMNS.output.en,
+      owner: thai ? B2B_SERVICE_COLUMNS.owner.th : B2B_SERVICE_COLUMNS.owner.en,
+    },
+    rows: B2B_SCOPE_ITEMS.map((item) => ({
+      id: item.id,
+      area: item.area,
+      action: thai ? item.actionTh : item.actionEn,
+      input: thai ? item.inputTh : item.inputEn,
+      output: thai ? item.outputTh : item.outputEn,
+      owner: thai ? item.ownerTh : item.ownerEn,
+      ownerKind: item.ownerKind,
+      href: item.href,
+      linkLabel: thai ? item.linkLabelTh : item.linkLabelEn,
+    })) satisfies B2bServiceRow[],
+  };
 }
 
 export function b2bFunnelCopy(locale: Locale) {
+  const thai = locale === "th";
   return B2B_FUNNEL_STEPS.map((step) => ({
-    ...step,
-    label: locale === "th" ? step.labelTh : step.labelEn,
+    id: step.id,
+    number: step.number,
+    marker: step.marker,
+    label: thai ? step.labelTh : step.labelEn,
+    definition: thai ? step.definitionTh : step.definitionEn,
+    output: thai ? step.outputTh : step.outputEn,
+    kpiId: step.kpiId,
+    kpiName: step.kpiName,
+    extraKpis: "extraKpis" in step ? step.extraKpis.map((item) => ({ ...item })) : [],
   }));
+}
+
+export function b2bRealKpi(kpis: B2bKpi[], id: string, locale: Locale) {
+  if (!id) return null;
+  const kpi = kpis.find((item) => item.id === id);
+  if (!kpi) return null;
+  if (kpi.dataStatus !== "Approved" && kpi.dataStatus !== "Anonymised") return null;
+  const period = (locale === "th" ? kpi.periodTh || kpi.periodEn : kpi.periodEn || kpi.periodTh).trim();
+  const comparison = (locale === "th" ? kpi.comparisonTh || kpi.comparisonEn : kpi.comparisonEn || kpi.comparisonTh).trim();
+  if (!kpi.unit.trim() || !period) return null;
+  const display = kpi.value?.trim() || lastFiniteValue(kpi.values);
+  if (!display) return null;
+  return { ...kpi, display, period, comparison };
+}
+
+export type B2bEvidenceKpi = B2bKpi & {
+  display: string;
+  period: string;
+  comparison: string;
+  definition: string;
+  updatedLabel: string;
+};
+
+export function b2bHasApprovedEvidence(kpis: B2bKpi[]) {
+  return b2bEvidenceKpis(kpis, "en").length > 0;
+}
+
+export function b2bEvidenceKpis(kpis: B2bKpi[], locale: Locale): B2bEvidenceKpi[] {
+  const thai = locale === "th";
+  return kpis.flatMap((kpi) => {
+    if (kpi.dataStatus !== "Approved" && kpi.dataStatus !== "Anonymised") return [];
+    const period = (thai ? kpi.periodTh || kpi.periodEn : kpi.periodEn || kpi.periodTh).trim();
+    const definition = (thai ? kpi.definitionTh || kpi.definitionEn : kpi.definitionEn || kpi.definitionTh).trim();
+    const comparison = (thai ? kpi.comparisonTh || kpi.comparisonEn : kpi.comparisonEn || kpi.comparisonTh).trim();
+    if (!kpi.name.trim() || !period || (!kpi.unit.trim() && !definition)) return [];
+    const display = kpi.value?.trim() || lastFiniteValue(kpi.values);
+    if (!display) return [];
+    return [
+      {
+        ...kpi,
+        display,
+        period,
+        comparison,
+        definition,
+        updatedLabel: formatKpiUpdated(kpi.updatedAt),
+      },
+    ];
+  });
+}
+
+export function b2bApprovedSeries(kpis: B2bKpi[]) {
+  return kpis.filter(
+    (kpi) =>
+      (kpi.dataStatus === "Approved" || kpi.dataStatus === "Anonymised") &&
+      kpi.values.some((item) => Number.isFinite(item)) &&
+      kpi.labels.length === kpi.values.length &&
+      kpi.labels.length > 1,
+  );
+}
+
+function formatKpiUpdated(value?: string) {
+  const next = value?.trim() || "";
+  if (!next) return "";
+  const iso = next.match(/^(\d{4}-\d{2}-\d{2})/);
+  return iso ? iso[1] : next;
+}
+
+function lastFiniteValue(values: number[]) {
+  const next = [...values].reverse().find((item) => Number.isFinite(item));
+  return next == null ? "" : String(next);
+}
+
+export function b2bWorkflowCopy(locale: Locale) {
+  const thai = locale === "th";
+  return B2B_WORKFLOW_STEPS.map((step) => ({
+    id: step.id,
+    number: step.number,
+    title: thai ? step.titleTh : step.titleEn,
+    owner: thai ? step.ownerTh : step.ownerEn,
+    input: thai ? step.inputTh : step.inputEn,
+    action: thai ? step.actionTh : step.actionEn,
+    output: thai ? step.outputTh : step.outputEn,
+    escalation: thai ? step.escalationTh : step.escalationEn,
+  }));
+}
+
+export function b2bWorkflowBoundaryCopy(locale: Locale) {
+  const thai = locale === "th";
+  return {
+    kicker: B2B_WORKFLOW_BOUNDARY.kicker,
+    note: thai ? B2B_WORKFLOW_BOUNDARY.note.th : B2B_WORKFLOW_BOUNDARY.note.en,
+    supportTitle: thai ? B2B_WORKFLOW_BOUNDARY.supportTitle.th : B2B_WORKFLOW_BOUNDARY.supportTitle.en,
+    approveTitle: thai ? B2B_WORKFLOW_BOUNDARY.approveTitle.th : B2B_WORKFLOW_BOUNDARY.approveTitle.en,
+    support: [...B2B_WORKFLOW_BOUNDARY.support],
+    approve: [...B2B_WORKFLOW_BOUNDARY.approve],
+  };
 }
 
 export function b2bReadinessCopy(locale: Locale) {

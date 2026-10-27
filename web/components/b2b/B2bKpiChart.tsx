@@ -2,7 +2,7 @@
 
 import { useId } from "react";
 import type { B2bKpi } from "@/lib/b2b";
-import { b2bSampleLabel } from "@/lib/b2b";
+import { B2B_KPI_VISUAL } from "@/lib/b2b";
 import type { Locale } from "@/lib/seo";
 import "./b2b-ops.css";
 
@@ -30,19 +30,22 @@ export function B2bKpiChart({
   kpis,
   title,
   subtitle,
+  status,
 }: {
   locale: Locale;
   kpis: B2bKpi[];
   title: string;
   subtitle: string;
+  status?: string;
 }) {
   const uid = useId();
-  const sample = b2bSampleLabel(locale);
-  const series = kpis.filter((kpi) => kpi.values.length);
+  const series = kpis.filter((kpi) => kpi.values.length > 1 && kpi.labels.length === kpi.values.length);
   if (!series.length) return null;
   const labels = series[0].labels;
   const peak = Math.max(...series.flatMap((item) => item.values), 1);
   const maxValue = Math.max(1, Math.ceil(peak / 5) * 5);
+  const sample = locale === "th" ? B2B_KPI_VISUAL.sample.th : B2B_KPI_VISUAL.sample.en;
+  const badge = status || sample;
 
   return (
     <div className="b2b-kpi-card">
@@ -51,9 +54,15 @@ export function B2bKpiChart({
           <h3>{title}</h3>
           <p>{subtitle}</p>
         </div>
-        <span className="b2b-kpi-card__status">{sample}</span>
+        <span className="b2b-kpi-card__status">{badge}</span>
       </div>
-      <svg viewBox={`0 0 ${WIDTH} ${HEIGHT}`} width={WIDTH} height={HEIGHT} role="img" aria-labelledby={`${uid}-title`}>
+      <svg
+        viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
+        width={WIDTH}
+        height={HEIGHT}
+        role="img"
+        aria-labelledby={`${uid}-title`}
+      >
         <title id={`${uid}-title`}>{title}</title>
         <rect width={WIDTH} height={HEIGHT} fill="#fff" />
         {Array.from({ length: 5 }, (_, index) => {
@@ -82,7 +91,7 @@ export function B2bKpiChart({
         {labels.map((label, index) => {
           const x = PAD.left + (labels.length > 1 ? (index * (WIDTH - PAD.left - PAD.right)) / (labels.length - 1) : 0);
           return (
-            <text key={label} x={x} y={HEIGHT - 18} textAnchor="middle" fill="#617487" fontSize="11">
+            <text key={`${label}-${index}`} x={x} y={HEIGHT - 18} textAnchor="middle" fill="#617487" fontSize="11">
               {label}
             </text>
           );

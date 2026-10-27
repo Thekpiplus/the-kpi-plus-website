@@ -1,13 +1,13 @@
-import { B2B_READINESS_VISUAL } from "@/lib/b2b";
+import { B2B_READINESS_VISUAL, b2bShowsSampleBadge } from "@/lib/b2b";
 import type { Locale } from "@/lib/seo";
 import "./b2b-ops.css";
 
 const TILES = [
-  { id: "profiles", title: "Agent Profile List", noteTh: "พาร์ตเนอร์ A / B / C", noteEn: "Partner A / B / C" },
+  { id: "profiles", title: "Partner Profile", noteTh: "ปิดชื่อพาร์ตเนอร์", noteEn: "Names redacted" },
   { id: "rates", title: "B2B Rate Sheet", noteTh: "ปิดตัวเลขราคา", noteEn: "Rates redacted" },
   { id: "commission", title: "Commission Structure", noteTh: "ปิดอัตราค่าคอม", noteEn: "Rates redacted" },
   { id: "kit", title: "Sales Kit", noteTh: "ข้อมูลสินค้า", noteEn: "Product pack" },
-  { id: "map", title: "Partner Contact Map", noteTh: "ไม่มีอีเมลหรือเบอร์", noteEn: "No emails or phones" },
+  { id: "map", title: "Partner Map", noteTh: "ไม่มีอีเมลหรือเบอร์", noteEn: "No emails or phones" },
   { id: "segment", title: "Corporate/Wholesale Segment Notes", noteTh: "Corporate / Wholesale", noteEn: "Corporate / Wholesale" },
 ] as const;
 
@@ -18,6 +18,7 @@ export function B2bReadinessVisual({
   meta,
   alt: altProp,
   label: labelProp,
+  status,
 }: {
   src?: string;
   locale: Locale;
@@ -25,6 +26,7 @@ export function B2bReadinessVisual({
   meta?: string;
   alt?: string;
   label?: string;
+  status?: string;
 }) {
   const fileSrc = src?.trim() || "";
   const hasAsset = Boolean(fileSrc);
@@ -51,7 +53,7 @@ export function B2bReadinessVisual({
               loading="lazy"
               decoding="async"
             />
-            <span className="kpi-b2b-readiness-visual-badge">{sample}</span>
+            {b2bShowsSampleBadge(status) ? <span className="kpi-b2b-readiness-visual-badge">{sample}</span> : null}
           </>
         ) : (
           <div className="b2b-readiness-mock" role="img" aria-label={`${alt}. ${label}. ${visualMeta}. ${recommended}`}>

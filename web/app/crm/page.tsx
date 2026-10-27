@@ -4,6 +4,8 @@ import { leadOriginCounts, todayLists, userCounts } from "@/lib/crm/queries";
 import { hasModule } from "@/lib/crm/modules";
 import { partnerOverview } from "@/lib/partners/queries";
 import { cmsOverview } from "@/lib/cms/queries";
+import { adsOpsOverview } from "@/lib/ads-ops/queries";
+import { b2bOpsOverview } from "@/lib/b2b-ops/queries";
 import { reservationOpsOverview } from "@/lib/reservations-ops/queries";
 import { EmptyState } from "@/components/crm/ui/EmptyState";
 import { ModuleCard } from "@/components/crm/ui/ModuleCard";
@@ -12,7 +14,7 @@ import { roleLabel } from "@/lib/crm/roles";
 
 export default async function AdminHomePage() {
   const user = await requireUser();
-  const [lists, origins, partners, users, cms, reservations] = await Promise.all([
+  const [lists, origins, partners, users, cms, reservations, b2b, ads] = await Promise.all([
     todayLists(),
     leadOriginCounts(),
     partnerOverview().catch(() => ({
@@ -25,6 +27,8 @@ export default async function AdminHomePage() {
     userCounts(),
     cmsOverview().catch(() => ({ pages: 0, insights: 0, drafts: 0, media: 0 })),
     reservationOpsOverview().catch(() => ({ open: 0, due: 0, escalated: 0 })),
+    b2bOpsOverview(user).catch(() => ({ total: 0, active: 0, due: 0, pendingRates: 0 })),
+    adsOpsOverview(user).catch(() => ({ total: 0, live: 0, due: 0 })),
   ]);
 
   const dueToday = lists.dueToday.length + lists.overdue.length;
@@ -81,6 +85,38 @@ export default async function AdminHomePage() {
           cta: "เปิดคิวงานจอง",
         }
       : null,
+    hasModule(user, "b2b")
+      ? {
+          href: "/crm/b2b",
+          accent: "b2b" as const,
+          icon: "▦",
+          category: "B2B",
+          title: "B2B Sales Operations",
+          body: "Pipeline พาร์ตเนอร์ท่องเที่ยว เรท และงานติดตามภายใน",
+          stats: [
+            { label: "พาร์ตเนอร์", value: b2b.total },
+            { label: "Active", value: b2b.active },
+            { label: "ติดตาม", value: b2b.due },
+          ],
+          cta: "เปิด B2B Sales Operations",
+        }
+      : null,
+    hasModule(user, "ads")
+      ? {
+          href: "/crm/ads",
+          accent: "ads" as const,
+          icon: "▣",
+          category: "ADS",
+          title: "Google Ads Operations",
+          body: "บอร์ดแคมเปญ Search Ads, Hotel Ads และ Free Booking Links ภายใน",
+          stats: [
+            { label: "แคมเปญ", value: ads.total },
+            { label: "Active", value: ads.live },
+            { label: "ติดตาม", value: ads.due },
+          ],
+          cta: "เปิด Google Ads Operations",
+        }
+      : null,
     hasModule(user, "users")
       ? {
           href: "/crm/users",
@@ -115,7 +151,7 @@ export default async function AdminHomePage() {
       : null,
   ].filter(Boolean) as Array<{
     href: string;
-    accent: "leads" | "partners" | "reservations" | "users" | "cms";
+    accent: "leads" | "partners" | "reservations" | "b2b" | "users" | "cms";
     icon: string;
     category: string;
     title: string;
@@ -164,6 +200,15 @@ export default async function AdminHomePage() {
     });
   }
 
+  if (hasModule(user, "b2b") && b2b.due > 0 && tasks.length < 5) {
+    tasks.push({
+      title: `ติดตามพาร์ตเนอร์ ${b2b.due} รายการ`,
+      meta: "B2B",
+      priority: "medium",
+      href: "/crm/b2b/activities",
+    });
+  }
+
   if (hasModule(user, "reservations") && reservations.escalated > 0 && tasks.length < 5) {
     tasks.push({
       title: `งานจองที่ส่งต่อ ${reservations.escalated} รายการ`,
@@ -189,10 +234,13 @@ export default async function AdminHomePage() {
     reservations.escalated > 0
       ? { title: "งานจองที่ต้องส่งต่อโรงแรม", meta: `${reservations.escalated} รายการ`, tone: "reservations" as const }
       : null,
+    b2b.due > 0
+      ? { title: "มีงานติดตามพาร์ตเนอร์ครบกำหนด", meta: `${b2b.due} รายการ`, tone: "b2b" as const }
+      : null,
     users.total > 0
       ? { title: `ผู้ใช้ในระบบ ${users.total} คน`, meta: "Users", tone: "users" as const }
       : null,
-  ].filter(Boolean) as Array<{ title: string; meta: string; tone: "leads" | "partners" | "reservations" | "users" | "cms" }>;
+  ].filter(Boolean) as Array<{ title: string; meta: string; tone: "leads" | "partners" | "reservations" | "b2b" | "users" | "cms" }>;
 
   const priorityLabel = {
     urgent: "ด่วน",
@@ -279,7 +327,7 @@ export default async function AdminHomePage() {
         ) : (
           <EmptyState
             title="ยังไม่มีโมดูลที่เข้าได้"
-            body="ติดต่อ Superadmin เพื่อเปิดสิทธิ์ Lead / Partner / Reservations / Users / CMS"
+            body="ติดต่อ Superadmin เพื่อเปิดสิทธิ์ Lead / Partner / Reservations / B2B / Users / CMS"
           />
         )}
       </section>

@@ -33,7 +33,7 @@ export function B2bStickyCta({ label }: { label: string }) {
   if (!visible) return null;
 
   return (
-    <div className="kpi-sticky-cta lg:hidden">
+    <div className="kpi-sticky-cta kpi-b2b-sticky-cta lg:hidden">
       <a href="#b2b-enquiry" className="kpi-button w-full">
         {label}
       </a>

@@ -107,6 +107,8 @@ export function Footer({
                 <img
                   src="/brand/KPIPlus_Horizontal_FullColor-Reverse.svg"
                   alt={brandName(locale)}
+                  width={2232}
+                  height={768}
                   className="object-contain object-left"
                 />
               </Link>

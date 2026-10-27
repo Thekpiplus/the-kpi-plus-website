@@ -13,6 +13,7 @@ import { isCmsPageLive, storedPageByPath } from "@/lib/cms/public";
 import { parseRevenuePageBody, REVENUE_CMS_TEMPLATE } from "@/lib/cms/revenue-page";
 import { parseReservationsPageBody, RESERVATIONS_CMS_TEMPLATE } from "@/lib/cms/reservations-page";
 import { parseB2bPageBody, B2B_CMS_TEMPLATE } from "@/lib/cms/b2b-page";
+import { parseGoogleAdsPageBody, GOOGLE_ADS_CMS_TEMPLATE } from "@/lib/cms/google-ads-page";
 import { faqsForRoute, howToStepsForRoute } from "@/lib/faqs";
 import { pageKind } from "@/lib/page-types";
 import {
@@ -47,7 +48,8 @@ export async function SiteShell({
   const specialTemplate =
     stored?.template === REVENUE_CMS_TEMPLATE ||
     stored?.template === RESERVATIONS_CMS_TEMPLATE ||
-    stored?.template === B2B_CMS_TEMPLATE;
+    stored?.template === B2B_CMS_TEMPLATE ||
+    stored?.template === GOOGLE_ADS_CMS_TEMPLATE;
   if (stored?.trashedAt) notFound();
   if (stored && !isCmsPageLive(stored) && !specialTemplate) notFound();
 
@@ -67,7 +69,9 @@ export async function SiteShell({
         ? parseReservationsPageBody(cmsLive.body, locale)?.faqs.map(({ q, a }) => ({ q, a }))
         : cmsLive?.template === B2B_CMS_TEMPLATE
           ? parseB2bPageBody(cmsLive.body, locale)?.faqs.map(({ q, a }) => ({ q, a }))
-          : null;
+          : cmsLive?.template === GOOGLE_ADS_CMS_TEMPLATE
+            ? parseGoogleAdsPageBody(cmsLive.body, locale)?.faqs.map(({ q, a }) => ({ q, a }))
+            : null;
   const faqs = kind === "article" ? [] : cmsFaqs?.length ? cmsFaqs : faqsForRoute(route);
   const faqJson = faqSchema(faqs);
   const crumbs = crumbsFor(route, locale, title);

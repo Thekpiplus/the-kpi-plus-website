@@ -1,7 +1,9 @@
 import { GoogleAdsView } from "@/components/GoogleAdsView";
-import { metadataFor } from "@/lib/seo";
+import { googleAdsPublicMetadata } from "@/lib/cms/google-ads-page-public";
 
-export const metadata = metadataFor("/solutions/google-ads-management");
+export async function generateMetadata() {
+  return googleAdsPublicMetadata("/solutions/google-ads-management");
+}
 
 export default function GoogleAdsPage() {
   return <GoogleAdsView locale="th" />;

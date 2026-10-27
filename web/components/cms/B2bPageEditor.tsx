@@ -11,29 +11,36 @@ import {
   type B2bIntent,
   type B2bSaveResult,
   type B2bVisualStatus,
+  type CmsB2bCheckItem,
+  type CmsB2bCriterion,
+  type CmsB2bGuides,
   type CmsB2bKpi,
   type CmsB2bPage,
   type CmsB2bVisual,
   type CmsRelatedCard,
 } from "@/lib/cms/b2b-page";
-import type { B2bKpiStatus } from "@/lib/b2b";
+import type { B2bFunnelMarker, B2bKpiStatus } from "@/lib/b2b";
 
 const TABS = [
   { id: "hero", label: "Hero" },
   { id: "readiness", label: "Readiness" },
+  { id: "guides", label: "Guides" },
   { id: "problems", label: "Problems" },
   { id: "scope", label: "Scope" },
   { id: "funnel", label: "Funnel" },
   { id: "workflow", label: "Workflow" },
   { id: "kpis", label: "KPIs" },
   { id: "related", label: "Related" },
+  { id: "form", label: "Form" },
   { id: "faq", label: "FAQ" },
   { id: "seo", label: "SEO" },
   { id: "publish", label: "Publish" },
 ] as const;
 
+const FUNNEL_MARKERS: B2bFunnelMarker[] = ["path", "target", "review", "risk"];
+
 type Tab = (typeof TABS)[number]["id"];
-type VisualSlot = "hero" | "readiness" | "workflow" | "kpis" | "social";
+type VisualSlot = "hero" | "readiness" | "funnel" | "workflow" | "kpis" | "related" | "team" | "social";
 
 function isTab(value: string | undefined): value is Tab {
   return TABS.some((tab) => tab.id === value);
@@ -78,6 +85,46 @@ function ImagePreview({ src, alt, recommended }: { src: string; alt: string; rec
   );
 }
 
+function ListBar({
+  title,
+  onAdd,
+  onUp,
+  onDown,
+  onRemove,
+  disableUp,
+  disableDown,
+}: {
+  title: string;
+  onAdd?: () => void;
+  onUp: () => void;
+  onDown: () => void;
+  onRemove: () => void;
+  disableUp?: boolean;
+  disableDown?: boolean;
+}) {
+  return (
+    <div className="crm-cs-metric-head">
+      <h3>{title}</h3>
+      <div className="crm-cs-sticky-actions">
+        <button type="button" className="crm-users-secondary" onClick={onUp} disabled={disableUp}>
+          ขึ้น
+        </button>
+        <button type="button" className="crm-users-secondary" onClick={onDown} disabled={disableDown}>
+          ลง
+        </button>
+        <button type="button" className="crm-users-secondary" onClick={onRemove}>
+          ลบ
+        </button>
+        {onAdd ? (
+          <button type="button" className="crm-users-secondary" onClick={onAdd}>
+            เพิ่ม
+          </button>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
 function moveItem<T>(items: T[], index: number, direction: -1 | 1) {
   const next = index + direction;
   if (next < 0 || next >= items.length) return items;
@@ -85,6 +132,10 @@ function moveItem<T>(items: T[], index: number, direction: -1 | 1) {
   const [row] = copy.splice(index, 1);
   copy.splice(next, 0, row);
   return copy;
+}
+
+function withOrder<T extends { order: number }>(items: T[]) {
+  return items.map((item, index) => ({ ...item, order: index + 1 }));
 }
 
 function parseCsvNumbers(value: string) {
@@ -131,7 +182,19 @@ export function B2bPageEditor({
     locale: initial.locale,
     status: initial.status,
   });
-  const [content, setContent] = useState<CmsB2bPage>(initial.content);
+  const [content, setContent] = useState<CmsB2bPage>({
+    ...initial.content,
+    guides: initial.content.guides ?? {
+      readinessTitle: "",
+      readinessChecks: [],
+      partnerFitTitle: "",
+      partnerFit: [],
+      salesMaterialTitle: "",
+      salesMaterial: [],
+      rateCommissionTitle: "",
+      rateCommissionBody: "",
+    },
+  });
   const [status, setStatus] = useState(error ? b2bErrorMessage(error) : "");
   const [ok, setOk] = useState(notice ?? "");
   const [pending, startTransition] = useTransition();
@@ -140,15 +203,21 @@ export function B2bPageEditor({
   const [previews, setPreviews] = useState<Record<VisualSlot, string>>({
     hero: initial.content.hero.visual.src,
     readiness: initial.content.readiness.visual.src,
+    funnel: initial.content.funnelSection.visual.src,
     workflow: initial.content.workflowSection.visual.src,
     kpis: initial.content.measureSection.visual.src,
+    related: initial.content.related.visual?.src ?? "",
+    team: initial.content.form.visual?.src ?? "",
     social: initial.content.seo.social.src,
   });
   const [clears, setClears] = useState<Record<VisualSlot, boolean>>({
     hero: false,
     readiness: false,
+    funnel: false,
     workflow: false,
     kpis: false,
+    related: false,
+    team: false,
     social: false,
   });
 
@@ -178,8 +247,11 @@ export function B2bPageEditor({
   function patchVisual(slot: VisualSlot, visual: CmsB2bVisual) {
     if (slot === "hero") patchHero("visual", visual);
     else if (slot === "readiness") patchContent({ ...content, readiness: { ...content.readiness, visual } });
+    else if (slot === "funnel") patchContent({ ...content, funnelSection: { ...content.funnelSection, visual } });
     else if (slot === "workflow") patchContent({ ...content, workflowSection: { ...content.workflowSection, visual } });
     else if (slot === "kpis") patchContent({ ...content, measureSection: { ...content.measureSection, visual } });
+    else if (slot === "related") patchContent({ ...content, related: { ...content.related, visual } });
+    else if (slot === "team") patchContent({ ...content, form: { ...content.form, visual } });
     else patchContent({ ...content, seo: { ...content.seo, social: visual } });
   }
 
@@ -253,8 +325,11 @@ export function B2bPageEditor({
     data.set("contentJson", JSON.stringify(content));
     if (clears.hero) data.set("clearHeroImage", "1");
     if (clears.readiness) data.set("clearReadinessImage", "1");
+    if (clears.funnel) data.set("clearFunnelImage", "1");
     if (clears.workflow) data.set("clearWorkflowImage", "1");
     if (clears.kpis) data.set("clearKpiImage", "1");
+    if (clears.related) data.set("clearRelatedImage", "1");
+    if (clears.team) data.set("clearTeamImage", "1");
     if (clears.social) data.set("clearOgImage", "1");
     startTransition(async () => {
       setOk("");
@@ -312,6 +387,22 @@ export function B2bPageEditor({
 
   function patchKpi(index: number, next: Partial<CmsB2bKpi>) {
     patchContent({ ...content, kpis: content.kpis.map((row, i) => (i === index ? { ...row, ...next } : row)) });
+  }
+
+  function patchGuides(next: Partial<CmsB2bGuides>) {
+    patchContent({ ...content, guides: { ...content.guides, ...next } });
+  }
+
+  function patchChecks(items: CmsB2bCheckItem[]) {
+    patchGuides({ readinessChecks: withOrder(items) });
+  }
+
+  function patchPartnerFit(items: CmsB2bCriterion[]) {
+    patchGuides({ partnerFit: withOrder(items) });
+  }
+
+  function patchSalesMaterial(items: CmsB2bCriterion[]) {
+    patchGuides({ salesMaterial: withOrder(items) });
   }
 
   return (
@@ -405,14 +496,32 @@ export function B2bPageEditor({
             </Field>
             {(content.readiness.items ?? []).map((item, index) => (
               <div key={item.id} className="crm-cs-metric">
-                <div className="crm-cs-metric-head">
-                  <h3>{item.area || `แถว ${index + 1}`}</h3>
-                  <div className="crm-cs-sticky-actions">
-                    <button type="button" className="crm-users-secondary" onClick={() => patchContent({ ...content, readiness: { ...content.readiness, items: moveItem(content.readiness.items, index, -1) } })}>ขึ้น</button>
-                    <button type="button" className="crm-users-secondary" onClick={() => patchContent({ ...content, readiness: { ...content.readiness, items: moveItem(content.readiness.items, index, 1) } })}>ลง</button>
-                    <button type="button" className="crm-users-secondary" onClick={() => patchContent({ ...content, readiness: { ...content.readiness, items: content.readiness.items.filter((_, i) => i !== index) } })}>ลบ</button>
-                  </div>
-                </div>
+                <ListBar
+                  title={item.area || `แถว ${index + 1}`}
+                  disableUp={index === 0}
+                  disableDown={index === content.readiness.items.length - 1}
+                  onUp={() =>
+                    patchContent({
+                      ...content,
+                      readiness: { ...content.readiness, items: withOrder(moveItem(content.readiness.items, index, -1)) },
+                    })
+                  }
+                  onDown={() =>
+                    patchContent({
+                      ...content,
+                      readiness: { ...content.readiness, items: withOrder(moveItem(content.readiness.items, index, 1)) },
+                    })
+                  }
+                  onRemove={() =>
+                    patchContent({
+                      ...content,
+                      readiness: {
+                        ...content.readiness,
+                        items: withOrder(content.readiness.items.filter((_, i) => i !== index)),
+                      },
+                    })
+                  }
+                />
                 <Field label="พื้นที่งาน">
                   <input className="crm-field" value={item.area} onChange={(e) => patchContent({ ...content, readiness: { ...content.readiness, items: content.readiness.items.map((row, i) => (i === index ? { ...row, area: e.target.value } : row)) } })} />
                 </Field>
@@ -442,7 +551,114 @@ export function B2bPageEditor({
             >
               เพิ่มแถวในตาราง
             </button>
-            <VisualFields slot="readiness" fileName="readinessImageFile" visual={content.readiness.visual} hint="กรอบ Framework 1600×900 (16:9) แสดงประมาณ 720×405 · อย่าใช้รูป Hero หรือรูปโรงแรมทั่วไป" />
+            <VisualFields slot="readiness" fileName="readinessImageFile" visual={content.readiness.visual} hint="Dummy 1200 × 800 px, แสดงประมาณ 480 × 320 px, อัตราส่วน 3:2 — Sales Kit / Rate Sheet / Partner Profile / Partner Map ห้ามใช้รูป Hero หรือรูปโรงแรมทั่วไป" />
+          </section>
+
+          <section className="crm-cms-editor-panel" hidden={tab !== "guides"}>
+            <header className="crm-cms-editor-panel-head crm-cs-editor-head">
+              <div>
+                <p className="crm-cms-editor-kicker">Guides</p>
+                <h2>รายการตรวจ Partner Fit และเอกสารขาย</h2>
+              </div>
+              {saveBar}
+            </header>
+            <Field label="หัวข้อรายการตรวจความพร้อม B2B">
+              <input className="crm-field" value={content.guides.readinessTitle} onChange={(e) => patchGuides({ readinessTitle: e.target.value })} />
+            </Field>
+            {content.guides.readinessChecks.map((item, index) => (
+              <div key={item.id} className="crm-cs-metric">
+                <ListBar
+                  title={item.check || `ข้อตรวจ ${index + 1}`}
+                  disableUp={index === 0}
+                  disableDown={index === content.guides.readinessChecks.length - 1}
+                  onUp={() => patchChecks(moveItem(content.guides.readinessChecks, index, -1))}
+                  onDown={() => patchChecks(moveItem(content.guides.readinessChecks, index, 1))}
+                  onRemove={() => patchChecks(content.guides.readinessChecks.filter((_, i) => i !== index))}
+                />
+                <Field label="สิ่งที่ต้องมี">
+                  <input className="crm-field" value={item.check} onChange={(e) => patchChecks(content.guides.readinessChecks.map((row, i) => (i === index ? { ...row, check: e.target.value } : row)))} />
+                </Field>
+                <Field label="เหตุผล">
+                  <textarea className="crm-area" rows={2} value={item.why} onChange={(e) => patchChecks(content.guides.readinessChecks.map((row, i) => (i === index ? { ...row, why: e.target.value } : row)))} />
+                </Field>
+                <Field label="สิ่งที่ได้">
+                  <input className="crm-field" value={item.output} onChange={(e) => patchChecks(content.guides.readinessChecks.map((row, i) => (i === index ? { ...row, output: e.target.value } : row)))} />
+                </Field>
+              </div>
+            ))}
+            <button
+              type="button"
+              className="crm-users-secondary"
+              onClick={() =>
+                patchChecks([
+                  ...content.guides.readinessChecks,
+                  { id: newB2bItemId("check"), check: "", why: "", output: "", order: content.guides.readinessChecks.length + 1 },
+                ])
+              }
+            >
+              เพิ่มข้อตรวจความพร้อม
+            </button>
+            <Field label="หัวข้อเกณฑ์ Partner Fit">
+              <input className="crm-field" value={content.guides.partnerFitTitle} onChange={(e) => patchGuides({ partnerFitTitle: e.target.value })} />
+            </Field>
+            {content.guides.partnerFit.map((item, index) => (
+              <div key={item.id} className="crm-cs-metric">
+                <ListBar
+                  title={item.text || `เกณฑ์ ${index + 1}`}
+                  disableUp={index === 0}
+                  disableDown={index === content.guides.partnerFit.length - 1}
+                  onUp={() => patchPartnerFit(moveItem(content.guides.partnerFit, index, -1))}
+                  onDown={() => patchPartnerFit(moveItem(content.guides.partnerFit, index, 1))}
+                  onRemove={() => patchPartnerFit(content.guides.partnerFit.filter((_, i) => i !== index))}
+                />
+                <Field label="เกณฑ์">
+                  <input className="crm-field" value={item.text} onChange={(e) => patchPartnerFit(content.guides.partnerFit.map((row, i) => (i === index ? { ...row, text: e.target.value } : row)))} />
+                </Field>
+              </div>
+            ))}
+            <button
+              type="button"
+              className="crm-users-secondary"
+              onClick={() => patchPartnerFit([...content.guides.partnerFit, { id: newB2bItemId("fit"), text: "", order: content.guides.partnerFit.length + 1 }])}
+            >
+              เพิ่มเกณฑ์ Partner Fit
+            </button>
+            <Field label="หัวข้อชุดเอกสารขาย">
+              <input className="crm-field" value={content.guides.salesMaterialTitle} onChange={(e) => patchGuides({ salesMaterialTitle: e.target.value })} />
+            </Field>
+            {content.guides.salesMaterial.map((item, index) => (
+              <div key={item.id} className="crm-cs-metric">
+                <ListBar
+                  title={item.text || `เอกสาร ${index + 1}`}
+                  disableUp={index === 0}
+                  disableDown={index === content.guides.salesMaterial.length - 1}
+                  onUp={() => patchSalesMaterial(moveItem(content.guides.salesMaterial, index, -1))}
+                  onDown={() => patchSalesMaterial(moveItem(content.guides.salesMaterial, index, 1))}
+                  onRemove={() => patchSalesMaterial(content.guides.salesMaterial.filter((_, i) => i !== index))}
+                />
+                <Field label="รายการ">
+                  <input className="crm-field" value={item.text} onChange={(e) => patchSalesMaterial(content.guides.salesMaterial.map((row, i) => (i === index ? { ...row, text: e.target.value } : row)))} />
+                </Field>
+              </div>
+            ))}
+            <button
+              type="button"
+              className="crm-users-secondary"
+              onClick={() =>
+                patchSalesMaterial([
+                  ...content.guides.salesMaterial,
+                  { id: newB2bItemId("sales"), text: "", order: content.guides.salesMaterial.length + 1 },
+                ])
+              }
+            >
+              เพิ่มรายการเอกสารขาย
+            </button>
+            <Field label="หัวข้อขอบเขตราคาและค่าคอมมิชชัน">
+              <input className="crm-field" value={content.guides.rateCommissionTitle} onChange={(e) => patchGuides({ rateCommissionTitle: e.target.value })} />
+            </Field>
+            <Field label="ข้อความขอบเขตราคาและค่าคอมมิชชัน" hint="ห้ามใส่ตัวเลขสัญญาหรืออัตราคอมมิชชันจนกว่าจะได้รับอนุมัติ">
+              <textarea className="crm-area" rows={4} value={content.guides.rateCommissionBody} onChange={(e) => patchGuides({ rateCommissionBody: e.target.value })} />
+            </Field>
           </section>
 
           <section className="crm-cms-editor-panel" hidden={tab !== "problems"}>
@@ -458,14 +674,14 @@ export function B2bPageEditor({
             </Field>
             {content.problems.map((item, index) => (
               <div key={item.id} className="crm-cs-metric">
-                <div className="crm-cs-metric-head">
-                  <h3>ข้อ {index + 1}</h3>
-                  <div className="crm-cs-sticky-actions">
-                    <button type="button" className="crm-users-secondary" onClick={() => patchContent({ ...content, problems: moveItem(content.problems, index, -1) })}>ขึ้น</button>
-                    <button type="button" className="crm-users-secondary" onClick={() => patchContent({ ...content, problems: moveItem(content.problems, index, 1) })}>ลง</button>
-                    <button type="button" className="crm-users-secondary" onClick={() => patchContent({ ...content, problems: content.problems.filter((_, i) => i !== index) })}>ลบ</button>
-                  </div>
-                </div>
+                <ListBar
+                  title={`ข้อ ${index + 1}`}
+                  disableUp={index === 0}
+                  disableDown={index === content.problems.length - 1}
+                  onUp={() => patchContent({ ...content, problems: withOrder(moveItem(content.problems, index, -1)) })}
+                  onDown={() => patchContent({ ...content, problems: withOrder(moveItem(content.problems, index, 1)) })}
+                  onRemove={() => patchContent({ ...content, problems: withOrder(content.problems.filter((_, i) => i !== index)) })}
+                />
                 <textarea className="crm-area" rows={2} value={item.text} onChange={(e) => patchContent({ ...content, problems: content.problems.map((row, i) => (i === index ? { ...row, text: e.target.value } : row)) })} />
               </div>
             ))}
@@ -477,8 +693,8 @@ export function B2bPageEditor({
           <section className="crm-cms-editor-panel" hidden={tab !== "scope"}>
             <header className="crm-cms-editor-panel-head crm-cs-editor-head">
               <div>
-                <p className="crm-cms-editor-kicker">Service Scope</p>
-                <h2>ขอบเขตงาน</h2>
+                <p className="crm-cms-editor-kicker">Service Matrix</p>
+                <h2>เราช่วยอะไร</h2>
               </div>
               {saveBar}
             </header>
@@ -487,28 +703,51 @@ export function B2bPageEditor({
             </Field>
             {content.scopeItems.map((item, index) => (
               <div key={item.id} className="crm-cs-metric">
-                <div className="crm-cs-metric-head">
-                  <h3>{item.kicker || `งาน ${index + 1}`}</h3>
-                  <div className="crm-cs-sticky-actions">
-                    <button type="button" className="crm-users-secondary" onClick={() => patchContent({ ...content, scopeItems: moveItem(content.scopeItems, index, -1) })}>ขึ้น</button>
-                    <button type="button" className="crm-users-secondary" onClick={() => patchContent({ ...content, scopeItems: moveItem(content.scopeItems, index, 1) })}>ลง</button>
-                    <button type="button" className="crm-users-secondary" onClick={() => patchContent({ ...content, scopeItems: content.scopeItems.filter((_, i) => i !== index) })}>ลบ</button>
-                  </div>
-                </div>
-                <Field label="Kicker">
-                  <input className="crm-field" value={item.kicker} onChange={(e) => patchContent({ ...content, scopeItems: content.scopeItems.map((row, i) => (i === index ? { ...row, kicker: e.target.value } : row)) })} />
+                <ListBar
+                  title={item.area || `งาน ${index + 1}`}
+                  disableUp={index === 0}
+                  disableDown={index === content.scopeItems.length - 1}
+                  onUp={() => patchContent({ ...content, scopeItems: withOrder(moveItem(content.scopeItems, index, -1)) })}
+                  onDown={() => patchContent({ ...content, scopeItems: withOrder(moveItem(content.scopeItems, index, 1)) })}
+                  onRemove={() => patchContent({ ...content, scopeItems: withOrder(content.scopeItems.filter((_, i) => i !== index)) })}
+                />
+                <Field label="พื้นที่งาน">
+                  <input className="crm-field" value={item.area} onChange={(e) => patchContent({ ...content, scopeItems: content.scopeItems.map((row, i) => (i === index ? { ...row, area: e.target.value } : row)) })} />
                 </Field>
-                <Field label="หัวข้อ">
-                  <input className="crm-field" value={item.title} onChange={(e) => patchContent({ ...content, scopeItems: content.scopeItems.map((row, i) => (i === index ? { ...row, title: e.target.value } : row)) })} />
-                </Field>
-                <Field label="คำอธิบาย">
-                  <textarea className="crm-area" rows={3} value={item.description} onChange={(e) => patchContent({ ...content, scopeItems: content.scopeItems.map((row, i) => (i === index ? { ...row, description: e.target.value } : row)) })} />
+                <Field label="สิ่งที่เราทำ">
+                  <textarea className="crm-area" rows={3} value={item.action} onChange={(e) => patchContent({ ...content, scopeItems: content.scopeItems.map((row, i) => (i === index ? { ...row, action: e.target.value } : row)) })} />
                 </Field>
                 <Field label="Input">
                   <input className="crm-field" value={item.input} onChange={(e) => patchContent({ ...content, scopeItems: content.scopeItems.map((row, i) => (i === index ? { ...row, input: e.target.value } : row)) })} />
                 </Field>
                 <Field label="Output">
                   <input className="crm-field" value={item.output} onChange={(e) => patchContent({ ...content, scopeItems: content.scopeItems.map((row, i) => (i === index ? { ...row, output: e.target.value } : row)) })} />
+                </Field>
+                <Field label="ผู้รับผิดชอบหรือจุดอนุมัติ">
+                  <input
+                    className="crm-field"
+                    value={item.owner}
+                    onChange={(e) =>
+                      patchContent({
+                        ...content,
+                        scopeItems: content.scopeItems.map((row, i) =>
+                          i === index
+                            ? {
+                                ...row,
+                                owner: e.target.value,
+                                ownerKind: /อนุมัติ|approves|approval/i.test(e.target.value) ? "hotel" : "shared",
+                              }
+                            : row,
+                        ),
+                      })
+                    }
+                  />
+                </Field>
+                <Field label="ลิงก์หน้าที่เกี่ยวข้อง">
+                  <input className="crm-field" value={item.href} onChange={(e) => patchContent({ ...content, scopeItems: content.scopeItems.map((row, i) => (i === index ? { ...row, href: e.target.value } : row)) })} />
+                </Field>
+                <Field label="ข้อความลิงก์">
+                  <input className="crm-field" value={item.linkLabel} onChange={(e) => patchContent({ ...content, scopeItems: content.scopeItems.map((row, i) => (i === index ? { ...row, linkLabel: e.target.value } : row)) })} />
                 </Field>
               </div>
             ))}
@@ -518,35 +757,210 @@ export function B2bPageEditor({
               onClick={() =>
                 patchContent({
                   ...content,
-                  scopeItems: [...content.scopeItems, { id: newB2bItemId("scope"), kicker: "", title: "", description: "", input: "", output: "", order: content.scopeItems.length + 1 }],
+                  scopeItems: [
+                    ...content.scopeItems,
+                    {
+                      id: newB2bItemId("scope"),
+                      area: "",
+                      action: "",
+                      input: "",
+                      output: "",
+                      owner: "",
+                      ownerKind: "shared",
+                      href: "",
+                      linkLabel: "",
+                      order: content.scopeItems.length + 1,
+                    },
+                  ],
                 })
               }
             >
-              เพิ่มขอบเขตงาน
+              เพิ่มแถวใน Service Matrix
             </button>
           </section>
 
           <section className="crm-cms-editor-panel" hidden={tab !== "funnel"}>
             <header className="crm-cms-editor-panel-head crm-cs-editor-head">
               <div>
-                <p className="crm-cms-editor-kicker">Funnel</p>
-                <h2>ลำดับงานขาย</h2>
+                <p className="crm-cms-editor-kicker">Agent Sales Funnel</p>
+                <h2>ลำดับงานขายผ่านเอเจนต์</h2>
               </div>
               {saveBar}
             </header>
             <Field label="หัวข้อ">
               <input className="crm-field" value={content.funnelSection.title} onChange={(e) => patchContent({ ...content, funnelSection: { ...content.funnelSection, title: e.target.value } })} />
             </Field>
-            <Field label="คำบรรยาย">
+            <Field label="คำอธิบายลำดับงาน">
+              <textarea className="crm-area" rows={2} value={content.funnelSection.lead} onChange={(e) => patchContent({ ...content, funnelSection: { ...content.funnelSection, lead: e.target.value } })} />
+            </Field>
+            <Field label="คำบรรยายภาพ">
               <textarea className="crm-area" rows={2} value={content.funnelSection.caption} onChange={(e) => patchContent({ ...content, funnelSection: { ...content.funnelSection, caption: e.target.value } })} />
             </Field>
             {content.funnelSteps.map((step, index) => (
               <div key={step.id} className="crm-cs-metric">
-                <Field label={`ขั้น ${index + 1}`}>
+                <ListBar
+                  title={step.label || `ขั้น ${step.number || index + 1}`}
+                  disableUp={index === 0}
+                  disableDown={index === content.funnelSteps.length - 1}
+                  onUp={() => patchContent({ ...content, funnelSteps: moveItem(content.funnelSteps, index, -1) })}
+                  onDown={() => patchContent({ ...content, funnelSteps: moveItem(content.funnelSteps, index, 1) })}
+                  onRemove={() => patchContent({ ...content, funnelSteps: content.funnelSteps.filter((_, i) => i !== index) })}
+                />
+                <Field label="เลขขั้น">
+                  <input className="crm-field" value={step.number} onChange={(e) => patchContent({ ...content, funnelSteps: content.funnelSteps.map((row, i) => (i === index ? { ...row, number: e.target.value } : row)) })} />
+                </Field>
+                <Field label="ชื่อขั้น">
                   <input className="crm-field" value={step.label} onChange={(e) => patchContent({ ...content, funnelSteps: content.funnelSteps.map((row, i) => (i === index ? { ...row, label: e.target.value } : row)) })} />
                 </Field>
+                <Field label="เครื่องหมาย">
+                  <select
+                    className="crm-field"
+                    value={step.marker}
+                    onChange={(e) =>
+                      patchContent({
+                        ...content,
+                        funnelSteps: content.funnelSteps.map((row, i) => (i === index ? { ...row, marker: e.target.value as B2bFunnelMarker } : row)),
+                      })
+                    }
+                  >
+                    {FUNNEL_MARKERS.map((item) => (
+                      <option key={item} value={item}>
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+                </Field>
+                <Field label="ความหมาย">
+                  <textarea className="crm-area" rows={2} value={step.definition} onChange={(e) => patchContent({ ...content, funnelSteps: content.funnelSteps.map((row, i) => (i === index ? { ...row, definition: e.target.value } : row)) })} />
+                </Field>
+                <Field label="สิ่งที่ได้">
+                  <input className="crm-field" value={step.output} onChange={(e) => patchContent({ ...content, funnelSteps: content.funnelSteps.map((row, i) => (i === index ? { ...row, output: e.target.value } : row)) })} />
+                </Field>
+                <Field label="ตัวชี้วัด (แสดงตัวเลขเมื่อสถานะ Approved หรือ Anonymised)" hint="รหัสต้องตรงกับ KPI ในแท็บ KPIs เช่น partner-leads, qualified-rate, active-count, booking-conversion, room-nights, revenue-by-partner">
+                  <input className="crm-field" value={step.kpiName} onChange={(e) => patchContent({ ...content, funnelSteps: content.funnelSteps.map((row, i) => (i === index ? { ...row, kpiName: e.target.value } : row)) })} />
+                </Field>
+                <Field label="รหัสตัวชี้วัด">
+                  <input className="crm-field" value={step.kpiId} onChange={(e) => patchContent({ ...content, funnelSteps: content.funnelSteps.map((row, i) => (i === index ? { ...row, kpiId: e.target.value } : row)) })} />
+                </Field>
+                {(step.extraKpis ?? []).map((kpi, kpiIndex) => (
+                  <div key={`${step.id}-extra-${kpi.id || kpiIndex}`} className="crm-cs-metric">
+                    <ListBar
+                      title={kpi.name || `ตัวชี้วัดเพิ่มเติม ${kpiIndex + 1}`}
+                      disableUp={kpiIndex === 0}
+                      disableDown={kpiIndex === (step.extraKpis ?? []).length - 1}
+                      onUp={() =>
+                        patchContent({
+                          ...content,
+                          funnelSteps: content.funnelSteps.map((row, i) =>
+                            i === index ? { ...row, extraKpis: moveItem(row.extraKpis ?? [], kpiIndex, -1) } : row,
+                          ),
+                        })
+                      }
+                      onDown={() =>
+                        patchContent({
+                          ...content,
+                          funnelSteps: content.funnelSteps.map((row, i) =>
+                            i === index ? { ...row, extraKpis: moveItem(row.extraKpis ?? [], kpiIndex, 1) } : row,
+                          ),
+                        })
+                      }
+                      onRemove={() =>
+                        patchContent({
+                          ...content,
+                          funnelSteps: content.funnelSteps.map((row, i) =>
+                            i === index ? { ...row, extraKpis: (row.extraKpis ?? []).filter((_, j) => j !== kpiIndex) } : row,
+                          ),
+                        })
+                      }
+                    />
+                    <Field label="ชื่อตัวชี้วัดเพิ่มเติม">
+                      <input
+                        className="crm-field"
+                        value={kpi.name}
+                        onChange={(e) =>
+                          patchContent({
+                            ...content,
+                            funnelSteps: content.funnelSteps.map((row, i) =>
+                              i === index
+                                ? {
+                                    ...row,
+                                    extraKpis: (row.extraKpis ?? []).map((item, j) =>
+                                      j === kpiIndex ? { ...item, name: e.target.value } : item,
+                                    ),
+                                  }
+                                : row,
+                            ),
+                          })
+                        }
+                      />
+                    </Field>
+                    <Field label="รหัสตัวชี้วัดเพิ่มเติม">
+                      <input
+                        className="crm-field"
+                        value={kpi.id}
+                        onChange={(e) =>
+                          patchContent({
+                            ...content,
+                            funnelSteps: content.funnelSteps.map((row, i) =>
+                              i === index
+                                ? {
+                                    ...row,
+                                    extraKpis: (row.extraKpis ?? []).map((item, j) =>
+                                      j === kpiIndex ? { ...item, id: e.target.value } : item,
+                                    ),
+                                  }
+                                : row,
+                            ),
+                          })
+                        }
+                      />
+                    </Field>
+                  </div>
+                ))}
+                <button
+                  type="button"
+                  className="crm-users-secondary"
+                  onClick={() =>
+                    patchContent({
+                      ...content,
+                      funnelSteps: content.funnelSteps.map((row, i) =>
+                        i === index
+                          ? { ...row, extraKpis: [...(row.extraKpis ?? []), { id: newB2bItemId("fkpi"), name: "" }] }
+                          : row,
+                      ),
+                    })
+                  }
+                >
+                  เพิ่มตัวชี้วัดของขั้นนี้
+                </button>
               </div>
             ))}
+            <button
+              type="button"
+              className="crm-users-secondary"
+              onClick={() =>
+                patchContent({
+                  ...content,
+                  funnelSteps: [
+                    ...content.funnelSteps,
+                    {
+                      id: newB2bItemId("funnel"),
+                      number: String(content.funnelSteps.length + 1).padStart(2, "0"),
+                      marker: "path",
+                      label: "",
+                      definition: "",
+                      output: "",
+                      kpiId: "",
+                      kpiName: "",
+                      extraKpis: [],
+                    },
+                  ],
+                })
+              }
+            >
+              เพิ่มขั้นใน Funnel
+            </button>
+            <VisualFields slot="funnel" fileName="funnelImageFile" visual={content.funnelSection.visual} hint="Dummy 1600 × 900 px, แสดงประมาณ 720 × 405 px, อัตราส่วน 16:9 — ป้าย B2B Agent Sales Funnel · Sample data" />
           </section>
 
           <section className="crm-cms-editor-panel" hidden={tab !== "workflow"}>
@@ -560,15 +974,136 @@ export function B2bPageEditor({
             <Field label="หัวข้อ">
               <input className="crm-field" value={content.workflowSection.title} onChange={(e) => patchContent({ ...content, workflowSection: { ...content.workflowSection, title: e.target.value } })} />
             </Field>
+            <Field label="คำอธิบายลำดับงาน">
+              <textarea className="crm-area" rows={2} value={content.workflowSection.lead} onChange={(e) => patchContent({ ...content, workflowSection: { ...content.workflowSection, lead: e.target.value } })} />
+            </Field>
             {content.workflowSteps.map((step, index) => (
               <div key={step.id} className="crm-cs-metric">
-                <Field label={`${step.number} ${step.phase}`}>
+                <ListBar
+                  title={step.title || `ขั้น ${step.number || index + 1}`}
+                  disableUp={index === 0}
+                  disableDown={index === content.workflowSteps.length - 1}
+                  onUp={() => patchContent({ ...content, workflowSteps: withOrder(moveItem(content.workflowSteps, index, -1)) })}
+                  onDown={() => patchContent({ ...content, workflowSteps: withOrder(moveItem(content.workflowSteps, index, 1)) })}
+                  onRemove={() => patchContent({ ...content, workflowSteps: withOrder(content.workflowSteps.filter((_, i) => i !== index)) })}
+                />
+                <Field label="เลขขั้น">
+                  <input className="crm-field" value={step.number} onChange={(e) => patchContent({ ...content, workflowSteps: content.workflowSteps.map((row, i) => (i === index ? { ...row, number: e.target.value } : row)) })} />
+                </Field>
+                <Field label="ชื่อขั้น">
                   <input className="crm-field" value={step.title} onChange={(e) => patchContent({ ...content, workflowSteps: content.workflowSteps.map((row, i) => (i === index ? { ...row, title: e.target.value } : row)) })} />
                 </Field>
-                <textarea className="crm-area" rows={2} value={step.description} onChange={(e) => patchContent({ ...content, workflowSteps: content.workflowSteps.map((row, i) => (i === index ? { ...row, description: e.target.value } : row)) })} />
+                <Field label="ผู้รับผิดชอบ">
+                  <input className="crm-field" value={step.owner} onChange={(e) => patchContent({ ...content, workflowSteps: content.workflowSteps.map((row, i) => (i === index ? { ...row, owner: e.target.value } : row)) })} />
+                </Field>
+                <Field label="Input">
+                  <input className="crm-field" value={step.input} onChange={(e) => patchContent({ ...content, workflowSteps: content.workflowSteps.map((row, i) => (i === index ? { ...row, input: e.target.value } : row)) })} />
+                </Field>
+                <Field label="สิ่งที่ทำ">
+                  <textarea className="crm-area" rows={2} value={step.action} onChange={(e) => patchContent({ ...content, workflowSteps: content.workflowSteps.map((row, i) => (i === index ? { ...row, action: e.target.value } : row)) })} />
+                </Field>
+                <Field label="สิ่งที่ได้">
+                  <input className="crm-field" value={step.output} onChange={(e) => patchContent({ ...content, workflowSteps: content.workflowSteps.map((row, i) => (i === index ? { ...row, output: e.target.value } : row)) })} />
+                </Field>
+                <Field label="เมื่อต้องส่งต่อ">
+                  <textarea className="crm-area" rows={2} value={step.escalation} onChange={(e) => patchContent({ ...content, workflowSteps: content.workflowSteps.map((row, i) => (i === index ? { ...row, escalation: e.target.value } : row)) })} />
+                </Field>
               </div>
             ))}
-            <VisualFields slot="workflow" fileName="workflowImageFile" visual={content.workflowSection.visual} hint="แผนภาพลำดับงาน ไม่ใช่บอร์ด CRM สาธารณะ" />
+            <button
+              type="button"
+              className="crm-users-secondary"
+              onClick={() =>
+                patchContent({
+                  ...content,
+                  workflowSteps: [
+                    ...content.workflowSteps,
+                    {
+                      id: newB2bItemId("workflow"),
+                      number: String(content.workflowSteps.length + 1).padStart(2, "0"),
+                      title: "",
+                      owner: "",
+                      input: "",
+                      action: "",
+                      output: "",
+                      escalation: "",
+                      order: content.workflowSteps.length + 1,
+                    },
+                  ],
+                })
+              }
+            >
+              เพิ่มขั้นใน Workflow
+            </button>
+            <Field label="หัวข้อเส้นแบ่งความรับผิดชอบ">
+              <input className="crm-field" value={content.workflowSection.boundary.kicker} onChange={(e) => patchContent({ ...content, workflowSection: { ...content.workflowSection, boundary: { ...content.workflowSection.boundary, kicker: e.target.value } } })} />
+            </Field>
+            <Field label="เส้นแบ่งความรับผิดชอบ — หมายเหตุ">
+              <textarea className="crm-area" rows={2} value={content.workflowSection.boundary.note} onChange={(e) => patchContent({ ...content, workflowSection: { ...content.workflowSection, boundary: { ...content.workflowSection.boundary, note: e.target.value } } })} />
+            </Field>
+            <Field label="หัวข้องานที่เดอะ เคพีไอ พลัส อาจช่วย">
+              <input
+                className="crm-field"
+                value={content.workflowSection.boundary.supportTitle}
+                onChange={(e) =>
+                  patchContent({
+                    ...content,
+                    workflowSection: {
+                      ...content.workflowSection,
+                      boundary: { ...content.workflowSection.boundary, supportTitle: e.target.value },
+                    },
+                  })
+                }
+              />
+            </Field>
+            <Field label="เดอะ เคพีไอ พลัส อาจช่วย" hint="บรรทัดละหนึ่งรายการ">
+              <textarea
+                className="crm-area"
+                rows={5}
+                value={content.workflowSection.boundary.support.join("\n")}
+                onChange={(e) =>
+                  patchContent({
+                    ...content,
+                    workflowSection: {
+                      ...content.workflowSection,
+                      boundary: { ...content.workflowSection.boundary, support: e.target.value.split("\n").map((item) => item.trim()).filter(Boolean) },
+                    },
+                  })
+                }
+              />
+            </Field>
+            <Field label="หัวข้องานที่โรงแรมอาจอนุมัติ">
+              <input
+                className="crm-field"
+                value={content.workflowSection.boundary.approveTitle}
+                onChange={(e) =>
+                  patchContent({
+                    ...content,
+                    workflowSection: {
+                      ...content.workflowSection,
+                      boundary: { ...content.workflowSection.boundary, approveTitle: e.target.value },
+                    },
+                  })
+                }
+              />
+            </Field>
+            <Field label="โรงแรมอาจอนุมัติ" hint="บรรทัดละหนึ่งรายการ">
+              <textarea
+                className="crm-area"
+                rows={5}
+                value={content.workflowSection.boundary.approve.join("\n")}
+                onChange={(e) =>
+                  patchContent({
+                    ...content,
+                    workflowSection: {
+                      ...content.workflowSection,
+                      boundary: { ...content.workflowSection.boundary, approve: e.target.value.split("\n").map((item) => item.trim()).filter(Boolean) },
+                    },
+                  })
+                }
+              />
+            </Field>
+            <VisualFields slot="workflow" fileName="workflowImageFile" visual={content.workflowSection.visual} hint="Dummy 1600 × 900 px, แสดงประมาณ 640 × 360 px, อัตราส่วน 16:9 — ป้าย B2B Partner Sales Workflow — Sample process ไม่ใช้รูปประชุมทั่วไป" />
           </section>
 
           <section className="crm-cms-editor-panel" hidden={tab !== "kpis"}>
@@ -588,17 +1123,20 @@ export function B2bPageEditor({
             <Field label="ข้อความปิด">
               <textarea className="crm-area" rows={3} value={content.measureSection.close} onChange={(e) => patchContent({ ...content, measureSection: { ...content.measureSection, close: e.target.value } })} />
             </Field>
-            <Field label="ป้ายข้อมูลตัวอย่าง" hint="ต้องมีคำว่า ตัวอย่างข้อมูล หรือ Sample">
+            <Field label="ป้ายข้อมูลตัวอย่าง" hint="ใช้กับกรอบ Dummy 16:9 เมื่อยังไม่มีซีรีส์ที่อนุมัติ">
               <input className="crm-field" value={content.measureSection.sampleLabel} onChange={(e) => patchContent({ ...content, measureSection: { ...content.measureSection, sampleLabel: e.target.value } })} />
             </Field>
+            <p className="crm-cms-hint">หน้าสาธารณะแสดงเฉพาะ KPI สถานะ Approved หรือ Anonymised ที่มีค่าจริง ห้ามใส่จำนวนพาร์ตเนอร์ อัตราแปลง คืนห้องพัก หรือรายได้ที่ไม่ได้มาจากข้อมูลที่อนุมัติ</p>
             {content.kpis.map((kpi, index) => (
               <div key={kpi.id} className="crm-cs-metric">
-                <div className="crm-cs-metric-head">
-                  <h3>{kpi.name || `KPI ${index + 1}`}</h3>
-                  <div className="crm-cs-sticky-actions">
-                    <button type="button" className="crm-users-secondary" onClick={() => patchContent({ ...content, kpis: content.kpis.filter((_, i) => i !== index) })}>ลบ</button>
-                  </div>
-                </div>
+                <ListBar
+                  title={kpi.name || `KPI ${index + 1}`}
+                  disableUp={index === 0}
+                  disableDown={index === content.kpis.length - 1}
+                  onUp={() => patchContent({ ...content, kpis: moveItem(content.kpis, index, -1) })}
+                  onDown={() => patchContent({ ...content, kpis: moveItem(content.kpis, index, 1) })}
+                  onRemove={() => patchContent({ ...content, kpis: content.kpis.filter((_, i) => i !== index) })}
+                />
                 <Field label="ชื่อ">
                   <input className="crm-field" value={kpi.name} onChange={(e) => patchKpi(index, { name: e.target.value })} />
                 </Field>
@@ -611,8 +1149,14 @@ export function B2bPageEditor({
                 <Field label="ช่วงเวลา">
                   <input className="crm-field" value={kpi.period} onChange={(e) => patchKpi(index, { period: e.target.value })} />
                 </Field>
-                <Field label="การเปรียบเทียบ / เป้าหมาย">
+                <Field label="เป้าหมายหรือเปรียบเทียบ">
                   <input className="crm-field" value={kpi.target} onChange={(e) => patchKpi(index, { target: e.target.value })} />
+                </Field>
+                <Field label="ค่าที่แสดง" hint="ตัวเลขหรือข้อความที่อนุมัติแล้วเท่านั้น">
+                  <input className="crm-field" value={kpi.value} onChange={(e) => patchKpi(index, { value: e.target.value })} />
+                </Field>
+                <Field label="วันที่อัปเดต" hint="เช่น 2026-10-01">
+                  <input className="crm-field" value={kpi.updatedAt} onChange={(e) => patchKpi(index, { updatedAt: e.target.value })} />
                 </Field>
                 <Field label="สถานะข้อมูล">
                   <select className="crm-field" value={kpi.dataStatus} onChange={(e) => patchKpi(index, { dataStatus: e.target.value as B2bKpiStatus })}>
@@ -623,7 +1167,7 @@ export function B2bPageEditor({
                     ))}
                   </select>
                 </Field>
-                <Field label="ค่าซีรีส์" hint="ตัวเลขคั่นด้วยจุลภาค สำหรับกราฟตัวอย่าง">
+                <Field label="ค่าซีรีส์" hint="ตัวเลขคั่นด้วยจุลภาค สำหรับกราฟ SVG เมื่อสถานะ Approved หรือ Anonymised">
                   <input className="crm-field" value={kpi.values.join(", ")} onChange={(e) => patchKpi(index, { values: parseCsvNumbers(e.target.value) })} />
                 </Field>
                 <Field label="ป้ายแกน X">
@@ -639,7 +1183,35 @@ export function B2bPageEditor({
                 </label>
               </div>
             ))}
-            <VisualFields slot="kpis" fileName="kpiImageFile" visual={content.measureSection.visual} hint="ถ้าไม่มีรูป หน้าสาธารณะจะใช้กราฟตัวอย่าง" />
+            <button
+              type="button"
+              className="crm-users-secondary"
+              onClick={() =>
+                patchContent({
+                  ...content,
+                  kpis: [
+                    ...content.kpis,
+                    {
+                      id: newB2bItemId("kpi"),
+                      name: "",
+                      definition: "",
+                      unit: "",
+                      period: "",
+                      target: "",
+                      value: "",
+                      dataStatus: "sample",
+                      values: [],
+                      labels: [],
+                      updatedAt: "",
+                      hideUntilData: true,
+                    },
+                  ],
+                })
+              }
+            >
+              เพิ่ม KPI
+            </button>
+            <VisualFields slot="kpis" fileName="kpiImageFile" visual={content.measureSection.visual} hint="Dummy 1600 × 900 px, แสดงประมาณ 720 × 405 px, อัตราส่วน 16:9 — ป้าย B2B Agent Sales KPI · Sample data ไม่ใช้รูป AI สำหรับตัวเลขจริง" />
           </section>
 
           <section className="crm-cms-editor-panel" hidden={tab !== "related"}>
@@ -653,10 +1225,25 @@ export function B2bPageEditor({
             <Field label="หัวข้อ">
               <input className="crm-field" value={content.related.title} onChange={(e) => patchContent({ ...content, related: { ...content.related, title: e.target.value } })} />
             </Field>
+            <VisualFields slot="related" fileName="relatedImageFile" visual={content.related.visual} hint="Dummy 1200 × 800 px, แสดงประมาณ 520 × 347 px, อัตราส่วน 3:2 — ป้าย B2B Sales / Partner Content ห้ามใช้รูป Hero หรือ Readiness" />
             {content.related.cards.map((card, index) => (
               <RelatedFields
                 key={card.id}
                 card={card}
+                index={index}
+                total={content.related.cards.length}
+                onMove={(direction) =>
+                  patchContent({
+                    ...content,
+                    related: { ...content.related, cards: moveItem(content.related.cards, index, direction) },
+                  })
+                }
+                onRemove={() =>
+                  patchContent({
+                    ...content,
+                    related: { ...content.related, cards: content.related.cards.filter((_, i) => i !== index) },
+                  })
+                }
                 onChange={(next) =>
                   patchContent({
                     ...content,
@@ -665,6 +1252,97 @@ export function B2bPageEditor({
                 }
               />
             ))}
+            <button
+              type="button"
+              className="crm-users-secondary"
+              onClick={() =>
+                patchContent({
+                  ...content,
+                  related: {
+                    ...content.related,
+                    cards: [
+                      ...content.related.cards,
+                      {
+                        id: newB2bItemId("related"),
+                        href: "/",
+                        category: "",
+                        title: "",
+                        description: "",
+                        publishedAt: "",
+                        updatedAt: "",
+                        contentType: "",
+                        readingTime: "",
+                        meta: "",
+                        cta: "",
+                        featured: false,
+                      },
+                    ],
+                  },
+                })
+              }
+            >
+              เพิ่มการ์ดเนื้อหาที่เกี่ยวข้อง
+            </button>
+          </section>
+
+          <section className="crm-cms-editor-panel" hidden={tab !== "form"}>
+            <header className="crm-cms-editor-panel-head crm-cs-editor-head">
+              <div>
+                <p className="crm-cms-editor-kicker">Form</p>
+                <h2>CTA และแบบฟอร์มติดต่อ</h2>
+              </div>
+              {saveBar}
+            </header>
+            <Field label="Kicker">
+              <input className="crm-field" value={content.form.kicker} onChange={(e) => patchContent({ ...content, form: { ...content.form, kicker: e.target.value } })} />
+            </Field>
+            <Field label="หัวข้อ">
+              <input className="crm-field" value={content.form.heading} onChange={(e) => patchContent({ ...content, form: { ...content.form, heading: e.target.value } })} />
+            </Field>
+            <Field label="คำอธิบาย">
+              <textarea className="crm-area" rows={3} value={content.form.lead} onChange={(e) => patchContent({ ...content, form: { ...content.form, lead: e.target.value } })} />
+            </Field>
+            <Field label="หัวข้อสิ่งที่โรงแรมจะได้รับ">
+              <input className="crm-field" value={content.form.receiveTitle} onChange={(e) => patchContent({ ...content, form: { ...content.form, receiveTitle: e.target.value } })} />
+            </Field>
+            <Field label="สิ่งที่โรงแรมจะได้รับ" hint="บรรทัดละหนึ่งรายการ — Partner Fit Review, B2B Rate & Commission Review, Sales Material Checklist, Partner Follow-up Plan">
+              <textarea
+                className="crm-area"
+                rows={4}
+                value={content.form.receive.join("\n")}
+                onChange={(e) =>
+                  patchContent({
+                    ...content,
+                    form: { ...content.form, receive: e.target.value.split("\n").map((item) => item.trim()).filter(Boolean) },
+                  })
+                }
+              />
+            </Field>
+            <Field label="หัวข้อ What Happens Next">
+              <input className="crm-field" value={content.form.nextTitle} onChange={(e) => patchContent({ ...content, form: { ...content.form, nextTitle: e.target.value } })} />
+            </Field>
+            <Field label="ขั้นตอนถัดไป" hint="บรรทัดละหนึ่งรายการ">
+              <textarea
+                className="crm-area"
+                rows={4}
+                value={content.form.steps.join("\n")}
+                onChange={(e) =>
+                  patchContent({
+                    ...content,
+                    form: { ...content.form, steps: e.target.value.split("\n").map((item) => item.trim()).filter(Boolean) },
+                  })
+                }
+              />
+            </Field>
+            <Field label="ข้อความปุ่มส่ง">
+              <input className="crm-field" value={content.form.submit} onChange={(e) => patchContent({ ...content, form: { ...content.form, submit: e.target.value } })} />
+            </Field>
+            <VisualFields
+              slot="team"
+              fileName="teamImageFile"
+              visual={content.form.visual}
+              hint="Optional. Source 1200 × 800 px. Display ~420 × 280 px. Ratio 3:2. Show only when status is approved or real. Never use /images/b2b-agent-sales-team-placeholder.webp."
+            />
           </section>
 
           <section className="crm-cms-editor-panel" hidden={tab !== "faq"}>
@@ -680,12 +1358,14 @@ export function B2bPageEditor({
             </Field>
             {content.faqs.map((item, index) => (
               <div key={item.id} className="crm-cs-metric">
-                <div className="crm-cs-metric-head">
-                  <h3>FAQ {index + 1}</h3>
-                  <button type="button" className="crm-users-secondary" onClick={() => patchContent({ ...content, faqs: content.faqs.filter((_, i) => i !== index) })}>
-                    ลบ
-                  </button>
-                </div>
+                <ListBar
+                  title={item.q || `FAQ ${index + 1}`}
+                  disableUp={index === 0}
+                  disableDown={index === content.faqs.length - 1}
+                  onUp={() => patchContent({ ...content, faqs: moveItem(content.faqs, index, -1) })}
+                  onDown={() => patchContent({ ...content, faqs: moveItem(content.faqs, index, 1) })}
+                  onRemove={() => patchContent({ ...content, faqs: content.faqs.filter((_, i) => i !== index) })}
+                />
                 <Field label="คำถาม">
                   <input className="crm-field" value={item.q} onChange={(e) => patchContent({ ...content, faqs: content.faqs.map((row, i) => (i === index ? { ...row, q: e.target.value } : row)) })} />
                 </Field>
@@ -788,9 +1468,34 @@ export function B2bPageEditor({
   );
 }
 
-function RelatedFields({ card, onChange }: { card: CmsRelatedCard; onChange: (card: CmsRelatedCard) => void }) {
+function RelatedFields({
+  card,
+  index,
+  total,
+  onChange,
+  onMove,
+  onRemove,
+}: {
+  card: CmsRelatedCard;
+  index: number;
+  total: number;
+  onChange: (card: CmsRelatedCard) => void;
+  onMove: (direction: -1 | 1) => void;
+  onRemove: () => void;
+}) {
   return (
     <div className="crm-cs-metric">
+      <ListBar
+        title={card.title || `การ์ด ${index + 1}`}
+        disableUp={index === 0}
+        disableDown={index === total - 1}
+        onUp={() => onMove(-1)}
+        onDown={() => onMove(1)}
+        onRemove={onRemove}
+      />
+      <Field label="หมวด">
+        <input className="crm-field" value={card.category} onChange={(e) => onChange({ ...card, category: e.target.value })} />
+      </Field>
       <Field label="หัวข้อ">
         <input className="crm-field" value={card.title} onChange={(e) => onChange({ ...card, title: e.target.value })} />
       </Field>
@@ -800,6 +1505,25 @@ function RelatedFields({ card, onChange }: { card: CmsRelatedCard; onChange: (ca
       <Field label="คำอธิบาย">
         <textarea className="crm-area" rows={2} value={card.description} onChange={(e) => onChange({ ...card, description: e.target.value })} />
       </Field>
+      <Field label="วันที่เผยแพร่" hint="ใส่เฉพาะวันที่จริงจากบทความ ห้ามสร้างวันที่จำลอง">
+        <input className="crm-field" value={card.publishedAt} onChange={(e) => onChange({ ...card, publishedAt: e.target.value })} />
+      </Field>
+      <Field label="วันที่อัปเดต">
+        <input className="crm-field" value={card.updatedAt} onChange={(e) => onChange({ ...card, updatedAt: e.target.value })} />
+      </Field>
+      <Field label="ประเภทเนื้อหา">
+        <input className="crm-field" value={card.contentType} onChange={(e) => onChange({ ...card, contentType: e.target.value })} />
+      </Field>
+      <Field label="เวลาอ่าน">
+        <input className="crm-field" value={card.readingTime} onChange={(e) => onChange({ ...card, readingTime: e.target.value })} />
+      </Field>
+      <Field label="ปุ่ม">
+        <input className="crm-field" value={card.cta} onChange={(e) => onChange({ ...card, cta: e.target.value })} />
+      </Field>
+      <label className="crm-cms-field">
+        <span>การ์ดเด่น</span>
+        <input type="checkbox" checked={card.featured} onChange={(e) => onChange({ ...card, featured: e.target.checked })} />
+      </label>
     </div>
   );
 }

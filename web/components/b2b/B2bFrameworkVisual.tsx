@@ -1,4 +1,4 @@
-import { B2B_FRAMEWORK_ROWS, B2B_FRAMEWORK_VISUAL } from "@/lib/b2b";
+import { B2B_FRAMEWORK_ROWS, B2B_FRAMEWORK_VISUAL, b2bShowsSampleBadge } from "@/lib/b2b";
 import type { Locale } from "@/lib/seo";
 import "./b2b-ops.css";
 
@@ -9,6 +9,7 @@ export function B2bFrameworkVisual({
   meta,
   alt: altProp,
   label: labelProp,
+  status,
 }: {
   src?: string;
   locale: Locale;
@@ -16,13 +17,14 @@ export function B2bFrameworkVisual({
   meta?: string;
   alt?: string;
   label?: string;
+  status?: string;
 }) {
   const fileSrc = src?.trim() || "";
   const hasAsset = Boolean(fileSrc);
   const thai = locale === "th";
   const sample = thai ? B2B_FRAMEWORK_VISUAL.sample.th : B2B_FRAMEWORK_VISUAL.sample.en;
   const alt = altProp || (thai ? B2B_FRAMEWORK_VISUAL.alt.th : B2B_FRAMEWORK_VISUAL.alt.en);
-  const label = labelProp || B2B_FRAMEWORK_VISUAL.label.en;
+  const label = labelProp || (thai ? B2B_FRAMEWORK_VISUAL.label.th : B2B_FRAMEWORK_VISUAL.label.en);
   const visualMeta = meta || (thai ? B2B_FRAMEWORK_VISUAL.meta.th : B2B_FRAMEWORK_VISUAL.meta.en);
   const visualCaption = caption || (thai ? B2B_FRAMEWORK_VISUAL.caption.th : B2B_FRAMEWORK_VISUAL.caption.en);
   const recommended = thai
@@ -42,7 +44,7 @@ export function B2bFrameworkVisual({
               loading="lazy"
               decoding="async"
             />
-            <span className="kpi-b2b-framework-visual-badge">{sample}</span>
+            {b2bShowsSampleBadge(status) ? <span className="kpi-b2b-framework-visual-badge">{sample}</span> : null}
           </>
         ) : (
           <div className="b2b-framework-mock" role="img" aria-label={`${alt}. ${label}. ${visualMeta}. ${recommended}`}>

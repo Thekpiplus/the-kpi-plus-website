@@ -2,7 +2,7 @@ import { existsSync } from "fs";
 import { join } from "path";
 import type { FaqItem } from "@/lib/faqs";
 import { faqsForRoute } from "@/lib/faqs";
-import { B2B_FRAMEWORK_VISUAL_CANDIDATE, B2B_HERO_VISUAL_CANDIDATE, type B2bKpi } from "@/lib/b2b";
+import { B2B_FRAMEWORK_VISUAL_CANDIDATE, B2B_FUNNEL_VISUAL_CANDIDATE, B2B_HERO_VISUAL_CANDIDATE, B2B_KPI_VISUAL_CANDIDATE, B2B_READINESS_VISUAL_CANDIDATE, B2B_RELATED_VISUAL_CANDIDATE, B2B_WORKFLOW_VISUAL_CANDIDATE, type B2bKpi } from "@/lib/b2b";
 import { localeFromPath, localizePath, metadataFor, type Locale } from "@/lib/seo";
 import { isCmsPageLive } from "./public";
 import { documentById, pageDocumentBySlug } from "./queries";
@@ -28,6 +28,35 @@ export function b2bFrameworkVisualUrl() {
   return publicSrc(B2B_FRAMEWORK_VISUAL_CANDIDATE);
 }
 
+export function b2bReadinessVisualUrl() {
+  return publicSrc(B2B_READINESS_VISUAL_CANDIDATE);
+}
+
+export function b2bFunnelVisualUrl() {
+  return publicSrc(B2B_FUNNEL_VISUAL_CANDIDATE);
+}
+
+export function b2bWorkflowVisualUrl() {
+  return publicSrc(B2B_WORKFLOW_VISUAL_CANDIDATE);
+}
+
+export function b2bKpiVisualUrl() {
+  return publicSrc(B2B_KPI_VISUAL_CANDIDATE);
+}
+
+export function b2bRelatedVisualUrl() {
+  return publicSrc(B2B_RELATED_VISUAL_CANDIDATE);
+}
+
+export function b2bPublicTeamPhoto(visual?: CmsB2bVisual) {
+  if (!visual?.src.trim()) return undefined;
+  if (visual.status !== "real" && visual.status !== "approved") return undefined;
+  if (/b2b-agent-sales-team-placeholder|replace with verified|รอรูป|placeholder/i.test(`${visual.src} ${visual.label} ${visual.altTh} ${visual.altEn}`)) {
+    return undefined;
+  }
+  return publicSrc(visual.src);
+}
+
 function publicSrc(src?: string) {
   const next = src?.trim();
   if (!next) return undefined;
@@ -41,9 +70,11 @@ function withVisualSrc(visual: CmsB2bVisual): CmsB2bVisual {
 }
 
 function kpiIsPublic(kpi: CmsB2bKpi) {
-  if (kpi.dataStatus === "draft") return false;
+  if (kpi.dataStatus !== "approved" && kpi.dataStatus !== "anonymised") return false;
   const hasValue = Boolean(kpi.value.trim()) || kpi.values.some((item) => Number.isFinite(item));
-  if (kpi.hideUntilData && !hasValue) return false;
+  if (!hasValue) return false;
+  if (!kpi.name.trim() || !kpi.period.trim()) return false;
+  if (!kpi.unit.trim() && !kpi.definition.trim()) return false;
   return true;
 }
 
@@ -67,6 +98,8 @@ export function toPublicB2bKpis(kpis: CmsB2bKpi[]): B2bKpi[] {
     dataStatus: toPublicKpiStatus(kpi.dataStatus),
     labels: [...kpi.labels],
     values: [...kpi.values],
+    value: kpi.value,
+    updatedAt: kpi.updatedAt,
   }));
 }
 
@@ -84,10 +117,11 @@ export type B2bResolvedPage = {
   workflowSteps: CmsB2bPage["workflowSteps"];
   measureSection: CmsB2bPage["measureSection"];
   kpis: B2bKpi[];
-  related: { title: string; cards: CmsRelatedCard[] };
+  related: { title: string; visual: CmsB2bVisual; cards: CmsRelatedCard[] };
   form: CmsB2bPage["form"];
   faqIntro: string;
   faqs: FaqItem[];
+  guides: CmsB2bPage["guides"];
   showSample: boolean;
 };
 
@@ -113,16 +147,25 @@ function resolveFromContent(locale: Locale, content: CmsB2bPage, fromCms: boolea
     problems: [...page.problems].sort((a, b) => a.order - b.order),
     scopeSection: page.scopeSection,
     scopeItems: [...page.scopeItems].sort((a, b) => a.order - b.order),
-    funnelSection: page.funnelSection,
-    funnelSteps: page.funnelSteps.map((step) => ({ ...step })),
+    funnelSection: { ...page.funnelSection, visual: withVisualSrc(page.funnelSection.visual) },
+    funnelSteps: page.funnelSteps.map((step) => ({
+      ...step,
+      extraKpis: (step.extraKpis ?? []).map((item) => ({ ...item })),
+    })),
     workflowSection: { ...page.workflowSection, visual: withVisualSrc(page.workflowSection.visual) },
     workflowSteps: [...page.workflowSteps].sort((a, b) => a.order - b.order),
     measureSection: { ...page.measureSection, visual: withVisualSrc(page.measureSection.visual) },
     kpis: toPublicB2bKpis(page.kpis),
-    related: { title: page.related.title, cards: relatedCards },
-    form: { ...page.form },
+    related: { title: page.related.title, visual: withVisualSrc(page.related.visual), cards: relatedCards },
+    form: { ...page.form, visual: withVisualSrc(page.form.visual) },
     faqIntro: page.faqIntro,
     faqs: page.faqs.map(({ q, a }) => ({ q, a })),
+    guides: {
+      ...page.guides,
+      readinessChecks: [...page.guides.readinessChecks].sort((a, b) => a.order - b.order),
+      partnerFit: [...page.guides.partnerFit].sort((a, b) => a.order - b.order),
+      salesMaterial: [...page.guides.salesMaterial].sort((a, b) => a.order - b.order),
+    },
     showSample: chartNeedsSampleLabel(page),
   };
 }

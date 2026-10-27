@@ -1398,6 +1398,21 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
   box-shadow: 0 10px 24px rgba(30, 77, 183, 0.35);
 }
 
+.crm-shell-b2b {
+  --crm-rail-active: #a2dc25;
+}
+
+.crm-shell-b2b .crm-rail-link.is-active,
+.crm-shell-b2b .crm-rail-link[aria-current="page"] {
+  color: #1a3a02;
+  box-shadow: 0 10px 24px rgba(162, 220, 37, 0.35);
+}
+
+.crm-shell-b2b .crm-app-sub-links a[aria-current="page"] {
+  background: #a2dc25;
+  color: #1a3a02;
+}
+
 .crm-rail-link.is-active .crm-rail-chevron,
 .crm-rail-link[aria-current="page"] .crm-rail-chevron {
   opacity: 0.9;
@@ -2248,6 +2263,22 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
   color: #0b4f4a;
 }
 
+.crm-dash-module-b2b .crm-dash-module-icon {
+  background: rgba(162, 220, 37, 0.28);
+  color: #1a3a02;
+}
+
+.crm-dash-module-b2b .crm-dash-module-cta,
+.crm-dash-module-ads .crm-dash-module-cta {
+  background: #a2dc25;
+  color: #1a3a02;
+}
+
+.crm-dash-module-ads .crm-dash-module-icon {
+  background: rgba(162, 220, 37, 0.28);
+  color: #1a3a02;
+}
+
 .crm-dash-bottom {
   display: grid;
   grid-template-columns: 1.05fr 0.95fr;
@@ -2303,6 +2334,10 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
 
 .crm-dash-activity li.is-reservations .crm-dash-activity-dot {
   background: rgba(11, 102, 96, 0.2);
+}
+
+.crm-dash-activity li.is-b2b .crm-dash-activity-dot {
+  background: rgba(162, 220, 37, 0.35);
 }
 
 .crm-dash-activity-title {

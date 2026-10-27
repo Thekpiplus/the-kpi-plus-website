@@ -41,6 +41,30 @@ const reservationLinks: ContextLink[] = [
 
 const userLinks: { href: string; label: string }[] = [];
 
+const b2bLinks: ContextLink[] = [
+  { href: "/crm/b2b", label: "Partner Pipeline" },
+  { href: "/crm/b2b/directory", label: "Partner Directory" },
+  { href: "/crm/b2b/rates", label: "Rate & Commission" },
+  { href: "/crm/b2b/materials", label: "Sales Materials" },
+  { href: "/crm/b2b/activities", label: "Activities / Follow-up" },
+  { href: "/crm/b2b/bookings", label: "Booking Outcomes" },
+  { href: "/crm/b2b/reports", label: "Reports / KPI" },
+  { href: "/crm/b2b/settings", label: "Settings" },
+];
+
+const adsLinks: ContextLink[] = [
+  { href: "/crm/ads", label: "Campaigns" },
+  { href: "/crm/ads/search", label: "Search Ads" },
+  { href: "/crm/ads/hotel", label: "Hotel Ads" },
+  { href: "/crm/ads/free-links", label: "Free Booking Links" },
+  { href: "/crm/ads/landing-pages", label: "Landing Pages" },
+  { href: "/crm/ads/tracking", label: "Tracking & Conversions" },
+  { href: "/crm/ads/optimization", label: "Optimization Log" },
+  { href: "/crm/ads/reports", label: "Reports / KPI" },
+  { href: "/crm/ads/approvals", label: "Approvals" },
+  { href: "/crm/ads/settings", label: "Settings" },
+];
+
 const cmsLinks = [
   { href: "/crm/cms", label: "หน้าเพจทั้งหมด" },
   { href: "/crm/cms/insights", label: "บทความ" },
@@ -52,6 +76,7 @@ const cmsLinks = [
   { href: "/crm/cms/globals", label: "ตั้งค่าเว็บ" },
   { href: "/crm/cms/reservations", label: "เส้นแบ่งงาน Reservations" },
   { href: "/crm/cms/b2b", label: "หน้า B2B Agent Sales" },
+  { href: "/crm/cms/google-ads", label: "หน้า Google Ads Management" },
   { href: "/crm/cms/contacts", label: "ข้อมูลติดต่อ" },
 ];
 
@@ -59,6 +84,8 @@ const contextByWorkspace: Record<Exclude<Workspace, "home">, ContextLink[]> = {
   leads: leadLinks,
   partners: partnerLinks,
   reservations: reservationLinks,
+  b2b: b2bLinks,
+  ads: adsLinks,
   users: userLinks,
   cms: cmsLinks,
 };
@@ -68,6 +95,8 @@ const NAV_LABEL: Record<NavKey, string> = {
   leads: "Lead Management",
   partners: "Partner Management",
   reservations: "Reservation Operations",
+  b2b: "B2B Sales Operations",
+  ads: "Google Ads Operations",
   users: "Users Management",
   cms: "Content Management",
   settings: "ตั้งค่า",
@@ -117,6 +146,15 @@ function IconReservations() {
     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path d="M6 5.5h12A1.5 1.5 0 0 1 19.5 7v12A1.5 1.5 0 0 1 18 20.5H6A1.5 1.5 0 0 1 4.5 19V7A1.5 1.5 0 0 1 6 5.5Z" stroke="currentColor" strokeWidth="1.7" />
       <path d="M8 3.5v4M16 3.5v4M8 12h8M8 15.5h5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IconB2b() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M5 8.5h14v11H5V8.5Z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
+      <path d="M8 8.5V6.8A4 4 0 0 1 12 4a4 4 0 0 1 4 2.8v1.7M9 13h6M9 16.5h4" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
     </svg>
   );
 }
@@ -174,6 +212,8 @@ const NAV_ICON: Record<NavKey, () => ReactNode> = {
   leads: IconLeads,
   partners: IconPartners,
   reservations: IconReservations,
+  b2b: IconB2b,
+  ads: IconB2b,
   users: IconUsers,
   cms: IconCms,
   settings: IconSettings,
@@ -184,6 +224,8 @@ function workspaceOf(pathname: string): Workspace {
   if (pathname.startsWith("/crm/users")) return "users";
   if (pathname.startsWith("/crm/partners")) return "partners";
   if (pathname.startsWith("/crm/reservations")) return "reservations";
+  if (pathname.startsWith("/crm/b2b")) return "b2b";
+  if (pathname.startsWith("/crm/ads")) return "ads";
   if (
     pathname.startsWith("/crm/sales") ||
     pathname.startsWith("/crm/pipeline") ||
@@ -205,6 +247,8 @@ function isCurrent(pathname: string, search: string, href: string) {
   if (path === "/crm/users") return pathname === "/crm/users";
   if (path === "/crm/cms") return pathname === "/crm/cms";
   if (path === "/crm/partners") return pathname === "/crm/partners";
+  if (path === "/crm/b2b") return pathname === "/crm/b2b";
+  if (path === "/crm/ads") return pathname === "/crm/ads";
   return pathname === path || pathname.startsWith(`${path}/`);
 }
 
@@ -380,7 +424,7 @@ export function CrmShell({
   );
 
   const shell = (
-    <div className={`crm-shell crm-shell-app kpi-locale-th${railExpanded ? " is-rail-expanded" : ""}`}>
+    <div className={`crm-shell crm-shell-app kpi-locale-th${railExpanded ? " is-rail-expanded" : ""}${workspace === "b2b" ? " crm-shell-b2b" : ""}${workspace === "ads" ? " crm-shell-ads" : ""}`}>
       <aside
         className={`crm-rail crm-rail-desktop${railExpanded ? " is-expanded" : ""}`}
         aria-label="เมนูหลัก"

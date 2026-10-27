@@ -151,8 +151,11 @@ export async function saveB2bPage(formData: FormData): Promise<B2bSaveResult> {
   const uploads = await Promise.all([
     applyVisualUpload(formData, content.hero.visual, "heroImageFile", "clearHeroImage"),
     applyVisualUpload(formData, content.readiness.visual, "readinessImageFile", "clearReadinessImage"),
+    applyVisualUpload(formData, content.funnelSection.visual, "funnelImageFile", "clearFunnelImage"),
     applyVisualUpload(formData, content.workflowSection.visual, "workflowImageFile", "clearWorkflowImage"),
     applyVisualUpload(formData, content.measureSection.visual, "kpiImageFile", "clearKpiImage"),
+    applyVisualUpload(formData, content.related.visual, "relatedImageFile", "clearRelatedImage"),
+    applyVisualUpload(formData, content.form.visual, "teamImageFile", "clearTeamImage"),
     applyVisualUpload(formData, content.seo.social, "ogImageFile", "clearOgImage"),
   ]);
   const uploadError = uploads.find(Boolean);

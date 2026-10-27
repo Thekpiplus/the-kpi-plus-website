@@ -37,6 +37,8 @@ import {
 import { defaultReservationsCms } from "./reservations-page-seed";
 import { B2B_CMS_TEMPLATE, B2B_PAGE_ROUTE, serializeB2bPageBody } from "./b2b-page";
 import { defaultB2bCms } from "./b2b-page-seed";
+import { GOOGLE_ADS_CMS_TEMPLATE, GOOGLE_ADS_PAGE_ROUTE, serializeGoogleAdsPageBody } from "./google-ads-page";
+import { defaultGoogleAdsCms } from "./google-ads-page-seed";
 
 async function requireCms() {
   const user = await requireUser();
@@ -243,6 +245,11 @@ export async function ensurePageFromSite(route: string) {
       const hydrated = await hydrateB2bDocument(existing);
       return hydrated.id;
     }
+    if (normalized === GOOGLE_ADS_PAGE_ROUTE) {
+      const { hydrateGoogleAdsDocument } = await import("./google-ads-page-actions");
+      const hydrated = await hydrateGoogleAdsDocument(existing);
+      return hydrated.id;
+    }
     return existing.id;
   }
 
@@ -260,6 +267,7 @@ export async function ensurePageFromSite(route: string) {
   const isRevenue = normalized === REVENUE_PAGE_ROUTE;
   const isReservations = normalized === RESERVATIONS_PAGE_ROUTE;
   const isB2b = normalized === B2B_PAGE_ROUTE;
+  const isGoogleAds = normalized === GOOGLE_ADS_PAGE_ROUTE;
   const created = await db.cmsDocument.create({
     data: {
       kind: "page",
@@ -273,7 +281,9 @@ export async function ensurePageFromSite(route: string) {
           ? RESERVATIONS_CMS_TEMPLATE
           : isB2b
             ? B2B_CMS_TEMPLATE
-            : "general",
+            : isGoogleAds
+              ? GOOGLE_ADS_CMS_TEMPLATE
+              : "general",
       excerpt: sitePage.description || "",
       body: isRevenue
         ? serializeRevenuePageBody(defaultRevenueCms("th"))
@@ -281,7 +291,9 @@ export async function ensurePageFromSite(route: string) {
           ? serializeReservationsPageBody(defaultReservationsCms("th"))
           : isB2b
             ? serializeB2bPageBody(defaultB2bCms("th"))
-            : bodyFromMarkdown(markdown),
+            : isGoogleAds
+              ? serializeGoogleAdsPageBody(defaultGoogleAdsCms("th"))
+              : bodyFromMarkdown(markdown),
       tags: "",
       seoTitle: sitePage.title,
       metaDescription: sitePage.description || "",
