@@ -5,9 +5,11 @@ import { useId, useState } from "react";
 import { FormPrivacyNotice } from "@/components/FormPrivacyNotice";
 import { B2bEnquiryIntro } from "@/components/b2b/B2bEnquiryIntro";
 import { AdsEnquiryIntro } from "@/components/google-ads/AdsEnquiryIntro";
+import { AdsEnquiryIntro as MetaAdsEnquiryIntro } from "@/components/meta-ads/AdsEnquiryIntro";
 import { ReservationsEnquiryIntro } from "@/components/reservations/ReservationsEnquiryIntro";
 import { RevenueEnquiryIntro } from "@/components/revenue-commercial/RevenueEnquiryIntro";
 import { adsEnquiryCopy } from "@/lib/google-ads";
+import { metaEnquiryCopy } from "@/lib/meta-ads";
 import { b2bEnquiryCopy } from "@/lib/b2b";
 import { AUDIT_CONTACTS, readUtm } from "@/lib/audit";
 import { auditCopyFor } from "@/lib/audit-copy";
@@ -31,6 +33,7 @@ type FormState = {
   market: string;
   website: string;
   adsStatus: string;
+  trackingStatus: string;
   goal: string;
   message: string;
   consent: boolean;
@@ -124,6 +127,38 @@ function composeGoogleAdsMessage(
     goalLabel ? `${fields.goal}: ${goalLabel}` : "",
     market.trim() ? `${fields.market}: ${market.trim()}` : "",
     adsLabel ? `${fields.adsStatus}: ${adsLabel}` : "",
+    challenge.trim() ? `${fields.challenge}: ${challenge.trim()}` : "",
+  ];
+  return parts.filter(Boolean).join("\n\n");
+}
+
+function composeMetaAdsMessage(
+  website: string,
+  goal: string,
+  market: string,
+  adsStatus: string,
+  trackingStatus: string,
+  challenge: string,
+  locale: Locale,
+) {
+  const fields = metaEnquiryCopy(locale).fields;
+  const goalLabel =
+    goal === "direct"
+      ? fields.goalDirect
+      : goal === "awareness"
+        ? fields.goalAwareness
+        : goal === "enquiry"
+          ? fields.goalInquiry
+          : "";
+  const adsLabel = adsStatus === "yes" ? fields.adsYes : adsStatus === "no" ? fields.adsNo : adsStatus === "unsure" ? fields.adsUnsure : "";
+  const trackingLabel =
+    trackingStatus === "yes" ? fields.trackingYes : trackingStatus === "no" ? fields.trackingNo : trackingStatus === "unsure" ? fields.trackingUnsure : "";
+  const parts = [
+    website.trim() ? `${fields.website}: ${website.trim()}` : "",
+    goalLabel ? `${fields.goal}: ${goalLabel}` : "",
+    market.trim() ? `${fields.market}: ${market.trim()}` : "",
+    adsLabel ? `${fields.adsStatus}: ${adsLabel}` : "",
+    trackingLabel ? `${fields.tracking}: ${trackingLabel}` : "",
     challenge.trim() ? `${fields.challenge}: ${challenge.trim()}` : "",
   ];
   return parts.filter(Boolean).join("\n\n");
@@ -321,6 +356,7 @@ export function EnquiryForm({
     goal?: string;
     market?: string;
     adsStatus?: string;
+    trackingStatus?: string;
     challenge?: string;
     consent?: string;
     privacy?: string;
@@ -341,6 +377,7 @@ export function EnquiryForm({
     market: "",
     website: "",
     adsStatus: "",
+    trackingStatus: "",
     goal: "",
     message: "",
     consent: false,
@@ -364,8 +401,9 @@ export function EnquiryForm({
     }
     if (!preset && !next.serviceInterest) nextErrors.serviceInterest = t.required;
     if (service === "revenue" && !next.topic.trim()) nextErrors.topic = t.required;
-    if (service === "google_ads" && next.website.trim() && !looksLikeWebsite(next.website)) {
-      nextErrors.website = adsEnquiryCopy(locale).fields.websiteInvalid;
+    if ((service === "google_ads" || service === "meta_ads") && next.website.trim() && !looksLikeWebsite(next.website)) {
+      nextErrors.website =
+        service === "meta_ads" ? metaEnquiryCopy(locale).fields.websiteInvalid : adsEnquiryCopy(locale).fields.websiteInvalid;
     }
     if (!next.consent) nextErrors.consent = t.required;
     setErrors(nextErrors);
@@ -389,10 +427,11 @@ export function EnquiryForm({
           topic: service === "revenue" ? state.topic : undefined,
           channels: service === "reservations" || service === "b2b" ? state.channels.trim() : undefined,
           scope: service === "reservations" ? state.scope.trim() : undefined,
-          website: service === "google_ads" ? state.website.trim() : undefined,
-          goal: service === "google_ads" ? state.goal.trim() : undefined,
-          market: service === "google_ads" || service === "b2b" ? state.market.trim() : undefined,
-          adsStatus: service === "google_ads" ? state.adsStatus.trim() : undefined,
+          website: service === "google_ads" || service === "meta_ads" ? state.website.trim() : undefined,
+          goal: service === "google_ads" || service === "meta_ads" ? state.goal.trim() : undefined,
+          market: service === "google_ads" || service === "meta_ads" || service === "b2b" ? state.market.trim() : undefined,
+          adsStatus: service === "google_ads" || service === "meta_ads" ? state.adsStatus.trim() : undefined,
+          trackingStatus: service === "meta_ads" ? state.trackingStatus.trim() : undefined,
           message:
             service === "revenue"
               ? composeRevenueMessage(state.topic, state.message, locale)
@@ -402,7 +441,17 @@ export function EnquiryForm({
                   ? composeB2bMessage(state.market, state.channels, state.topic, state.message, locale)
                   : service === "google_ads"
                     ? composeGoogleAdsMessage(state.website, state.goal, state.market, state.adsStatus, state.message, locale)
-                    : state.message.trim(),
+                    : service === "meta_ads"
+                      ? composeMetaAdsMessage(
+                          state.website,
+                          state.goal,
+                          state.market,
+                          state.adsStatus,
+                          state.trackingStatus,
+                          state.message,
+                          locale,
+                        )
+                      : state.message.trim(),
           consent: state.consent,
           honeypot: state.companyWebsite,
           pageUrl: typeof window === "undefined" ? "" : window.location.href,
@@ -1180,85 +1229,72 @@ export function EnquiryForm({
 
   if (service === "meta_ads" && !compact) {
     const groups = metaAdsGroups[locale];
+    const metaCopy = metaEnquiryCopy(locale);
+    const formUi = {
+      ...metaCopy.fields,
+      website: fieldLabels?.website?.trim() || metaCopy.fields.website,
+      goal: fieldLabels?.goal?.trim() || metaCopy.fields.goal,
+      market: fieldLabels?.market?.trim() || metaCopy.fields.market,
+      adsStatus: fieldLabels?.adsStatus?.trim() || metaCopy.fields.adsStatus,
+      tracking: fieldLabels?.trackingStatus?.trim() || metaCopy.fields.tracking,
+      challenge: fieldLabels?.challenge?.trim() || metaCopy.fields.challenge,
+    };
+    const nameLabel = fieldLabels?.name?.trim() || t.name;
+    const businessLabel = fieldLabels?.business?.trim() || t.business;
+    const contactLabel = fieldLabels?.contact?.trim() || t.contact;
+    const consentLabel = fieldLabels?.consent?.trim() || t.consent;
+    const privacyLabel = fieldLabels?.privacy?.trim() || t.privacy;
     const labelClassName = "kpi-meta-ads-enquiry-label";
+    const sending = status === "submitting";
     return (
       <section id={sectionId} className="kpi-meta-ads-enquiry scroll-mt-28">
         <div className="kpi-section kpi-meta-ads-enquiry-grid">
-          <div className="kpi-meta-ads-enquiry-intro">
-            <p className="kpi-meta-ads-enquiry-kicker kpi-latin">{kickerText}</p>
-            <h2 className="kpi-h2 kpi-meta-ads-enquiry-heading">
-              {locale === "th" ? (
-                <>
-                  คุยเรื่อง <span className="kpi-latin">Meta Ads</span> สำหรับโรงแรม
-                </>
-              ) : (
-                heading
-              )}
-            </h2>
-            {locale === "th" ? (
-              <p className="kpi-meta-ads-enquiry-lead">
-                <span>ส่งข้อมูลสั้น ๆ เกี่ยวกับโรงแรม</span>
-                <span className="kpi-meta-ads-enquiry-line">แล้วทีมจะช่วยดูว่าควรเริ่มจากตรงไหนก่อน</span>
-              </p>
-            ) : (
-              <p className="kpi-meta-ads-enquiry-lead">{lead}</p>
-            )}
-            {locale === "th" ? (
-              <>
-                <ol className="kpi-meta-ads-enquiry-points">
-                  <li>
-                    <span className="kpi-latin">01</span>
-                    <span>ดูกลุ่มลูกค้าและตลาด</span>
-                  </li>
-                  <li>
-                    <span className="kpi-latin">02</span>
-                    <span>ดูคอนเทนต์และข้อเสนอ</span>
-                  </li>
-                  <li>
-                    <span className="kpi-latin">03</span>
-                    <span>
-                      ดูเส้นทางหลังคลิกจนถึง <span className="kpi-latin">Enquiry</span> /{" "}
-                      <span className="kpi-latin">Booking</span>
-                    </span>
-                  </li>
-                </ol>
-                <p className="kpi-meta-ads-enquiry-note">
-                  ไม่จำเป็นต้องมีแคมเปญ <span className="kpi-latin">Meta Ads</span> อยู่แล้วก็ได้
-                </p>
-              </>
-            ) : null}
-          </div>
+          <MetaAdsEnquiryIntro
+            locale={locale}
+            kicker={kickerText}
+            heading={heading}
+            lead={lead}
+            receiveTitle={introReceiveTitle}
+            receive={introReceive}
+            nextTitle={introNextTitle}
+            steps={introSteps}
+            photoSrc={consultantImageSrc}
+            photoAlt={consultantImageAlt}
+          />
           <div className="kpi-meta-ads-enquiry-panel">
             {status === "success" ? (
-              <div role="status">
+              <div className="kpi-meta-ads-enquiry-done" role="status" aria-live="polite">
                 <p className="kpi-meta-ads-enquiry-success">{t.success}</p>
+                <p className="kpi-meta-ads-enquiry-reply">{auditCopyFor(locale).trustReply}</p>
                 <ContactNote locale={locale} className="kpi-meta-ads-enquiry-direct" />
               </div>
             ) : (
-              <form className="kpi-meta-ads-enquiry-fields" onSubmit={onSubmit} noValidate>
+              <form className="kpi-meta-ads-enquiry-fields" onSubmit={onSubmit} noValidate aria-busy={sending}>
                 <div className="kpi-meta-ads-enquiry-group">
                   <p className="kpi-meta-ads-enquiry-group-label">{groups.contact}</p>
                   <div className="kpi-meta-ads-enquiry-pair">
-                    <Field label={t.name} htmlFor={`${formId}-name`} error={errors.name} labelClassName={labelClassName}>
+                    <Field label={nameLabel} htmlFor={`${formId}-name`} error={errors.name} labelClassName={labelClassName}>
                       <input
                         id={`${formId}-name`}
                         name="name"
                         autoComplete="name"
                         className="kpi-field"
                         value={state.name}
+                        disabled={sending}
                         aria-invalid={Boolean(errors.name)}
                         onBlur={() => validate()}
                         onChange={(event) => setState((current) => ({ ...current, name: event.target.value }))}
                       />
                     </Field>
-                    <Field label={t.contact} htmlFor={`${formId}-contact`} error={errors.contact} labelClassName={labelClassName}>
+                    <Field label={contactLabel} htmlFor={`${formId}-contact`} error={errors.contact} labelClassName={labelClassName}>
                       <input
                         id={`${formId}-contact`}
                         name="contact"
-                        autoComplete="tel"
+                        autoComplete="email"
                         inputMode="email"
                         className="kpi-field"
                         value={state.contact}
+                        disabled={sending}
                         aria-invalid={Boolean(errors.contact)}
                         onBlur={() => validate()}
                         onChange={(event) => setState((current) => ({ ...current, contact: event.target.value }))}
@@ -1268,53 +1304,175 @@ export function EnquiryForm({
                 </div>
                 <div className="kpi-meta-ads-enquiry-group">
                   <p className="kpi-meta-ads-enquiry-group-label">{groups.hotel}</p>
-                  <Field label={t.business} htmlFor={`${formId}-business`} error={errors.businessName} labelClassName={labelClassName}>
+                  <Field label={businessLabel} htmlFor={`${formId}-business`} error={errors.businessName} labelClassName={labelClassName}>
                     <input
                       id={`${formId}-business`}
                       name="organization"
                       autoComplete="organization"
                       className="kpi-field"
                       value={state.businessName}
+                      disabled={sending}
                       aria-invalid={Boolean(errors.businessName)}
                       onBlur={() => validate()}
                       onChange={(event) => setState((current) => ({ ...current, businessName: event.target.value }))}
                     />
                   </Field>
+                  <div className="kpi-meta-ads-enquiry-stack">
+                    <Field
+                      label={formUi.website}
+                      htmlFor={`${formId}-website`}
+                      optional={t.messageOptional}
+                      error={errors.website}
+                      labelClassName={labelClassName}
+                    >
+                      <input
+                        id={`${formId}-website`}
+                        name="website"
+                        inputMode="url"
+                        autoComplete="url"
+                        className="kpi-field"
+                        value={state.website}
+                        disabled={sending}
+                        aria-invalid={Boolean(errors.website)}
+                        aria-describedby={`${formId}-website-hint`}
+                        onBlur={() => validate()}
+                        onChange={(event) => setState((current) => ({ ...current, website: event.target.value }))}
+                      />
+                      <p id={`${formId}-website-hint`} className="kpi-meta-ads-enquiry-hint">
+                        {formUi.websiteHint}
+                      </p>
+                    </Field>
+                  </div>
+                  <div className="kpi-meta-ads-enquiry-stack">
+                    <Field label={formUi.goal} htmlFor={`${formId}-goal`} optional={t.messageOptional} labelClassName={labelClassName}>
+                      <select
+                        id={`${formId}-goal`}
+                        name="goal"
+                        className="kpi-field"
+                        value={state.goal}
+                        disabled={sending}
+                        onChange={(event) => setState((current) => ({ ...current, goal: event.target.value }))}
+                      >
+                        <option value="">{formUi.goalEmpty}</option>
+                        <option value="awareness">{formUi.goalAwareness}</option>
+                        <option value="enquiry">{formUi.goalInquiry}</option>
+                        <option value="direct">{formUi.goalDirect}</option>
+                      </select>
+                    </Field>
+                  </div>
+                  <div className="kpi-meta-ads-enquiry-stack">
+                    <Field
+                      label={formUi.market}
+                      htmlFor={`${formId}-market`}
+                      optional={t.messageOptional}
+                      labelClassName={labelClassName}
+                    >
+                      <input
+                        id={`${formId}-market`}
+                        name="market"
+                        className="kpi-field"
+                        value={state.market}
+                        disabled={sending}
+                        aria-describedby={`${formId}-market-hint`}
+                        onChange={(event) => setState((current) => ({ ...current, market: event.target.value }))}
+                      />
+                      <p id={`${formId}-market-hint`} className="kpi-meta-ads-enquiry-hint">
+                        {formUi.marketHint}
+                      </p>
+                    </Field>
+                  </div>
+                  <div className="kpi-meta-ads-enquiry-stack">
+                    <Field
+                      label={formUi.adsStatus}
+                      htmlFor={`${formId}-ads-status`}
+                      optional={t.messageOptional}
+                      labelClassName={labelClassName}
+                    >
+                      <select
+                        id={`${formId}-ads-status`}
+                        name="adsStatus"
+                        className="kpi-field"
+                        value={state.adsStatus}
+                        disabled={sending}
+                        onChange={(event) => setState((current) => ({ ...current, adsStatus: event.target.value }))}
+                      >
+                        <option value="">{formUi.adsEmpty}</option>
+                        <option value="yes">{formUi.adsYes}</option>
+                        <option value="no">{formUi.adsNo}</option>
+                        <option value="unsure">{formUi.adsUnsure}</option>
+                      </select>
+                    </Field>
+                  </div>
+                  <div className="kpi-meta-ads-enquiry-stack">
+                    <Field
+                      label={formUi.tracking}
+                      htmlFor={`${formId}-tracking`}
+                      optional={t.messageOptional}
+                      labelClassName={labelClassName}
+                    >
+                      <select
+                        id={`${formId}-tracking`}
+                        name="trackingStatus"
+                        className="kpi-field"
+                        value={state.trackingStatus}
+                        disabled={sending}
+                        onChange={(event) => setState((current) => ({ ...current, trackingStatus: event.target.value }))}
+                      >
+                        <option value="">{formUi.trackingEmpty}</option>
+                        <option value="yes">{formUi.trackingYes}</option>
+                        <option value="no">{formUi.trackingNo}</option>
+                        <option value="unsure">{formUi.trackingUnsure}</option>
+                      </select>
+                    </Field>
+                  </div>
                 </div>
                 <div className="kpi-meta-ads-enquiry-group">
                   <p className="kpi-meta-ads-enquiry-group-label">{groups.topic}</p>
-                  <Field label={t.message} htmlFor={`${formId}-message`} optional={t.messageOptional} labelClassName={labelClassName}>
+                  <Field
+                    label={formUi.challenge}
+                    htmlFor={`${formId}-message`}
+                    optional={t.messageOptional}
+                    labelClassName={labelClassName}
+                  >
                     <textarea
                       id={`${formId}-message`}
                       name="message"
                       rows={4}
                       className="kpi-field"
-                      placeholder={t.messageHint}
                       value={state.message}
+                      disabled={sending}
+                      aria-describedby={`${formId}-challenge-hint`}
                       onChange={(event) => setState((current) => ({ ...current, message: event.target.value }))}
                     />
+                    <p id={`${formId}-challenge-hint`} className="kpi-meta-ads-enquiry-hint">
+                      {formUi.challengeHint}
+                    </p>
                   </Field>
                 </div>
                 <input type="hidden" name="serviceInterest" value={preset?.id ?? "meta_ads"} />
                 <div className="kpi-meta-ads-enquiry-privacy">
                   <FormPrivacyNotice locale={locale} />
                 </div>
-                <label className="kpi-meta-ads-enquiry-consent">
+                <label className="kpi-meta-ads-enquiry-consent" htmlFor={`${formId}-consent`}>
                   <input
+                    id={`${formId}-consent`}
                     type="checkbox"
                     checked={state.consent}
+                    disabled={sending}
                     aria-invalid={Boolean(errors.consent)}
+                    aria-describedby={errors.consent ? `${formId}-consent-error` : undefined}
+                    onBlur={() => validate()}
                     onChange={(event) => setState((current) => ({ ...current, consent: event.target.checked }))}
                   />
                   <span>
-                    {t.consent}{" "}
+                    {consentLabel}{" "}
                     <Link href={privacyHref} className="font-semibold text-[#0B6660]">
-                      {t.privacy}
+                      {privacyLabel}
                     </Link>
                   </span>
                 </label>
                 {errors.consent ? (
-                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                  <p id={`${formId}-consent-error`} className="kpi-meta-ads-enquiry-error" role="alert">
                     {errors.consent}
                   </p>
                 ) : null}
@@ -1328,28 +1486,21 @@ export function EnquiryForm({
                   className="absolute left-[-10000px] h-px w-px overflow-hidden"
                   onChange={(event) => setState((current) => ({ ...current, companyWebsite: event.target.value }))}
                 />
-                <button className="kpi-button" type="submit" disabled={status === "submitting"}>
-                  {status === "submitting" ? (
-                    t.sending
-                  ) : locale === "th" ? (
-                    <>
-                      ดูโอกาสเพิ่ม <span className="kpi-latin">Enquiry</span> และ{" "}
-                      <span className="kpi-latin">Booking</span>
-                      <span className="kpi-meta-ads-enquiry-arrow" aria-hidden="true">
-                        ↗
-                      </span>
-                    </>
-                  ) : (
-                    cta
-                  )}
+                <button className="kpi-button kpi-meta-ads-enquiry-submit" type="submit" disabled={sending} aria-busy={sending}>
+                  {sending ? t.sending : cta}
                 </button>
+                {sending ? (
+                  <p className="kpi-meta-ads-enquiry-status" role="status" aria-live="polite">
+                    {formUi.loading}
+                  </p>
+                ) : null}
                 {status === "error" ? (
-                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                  <p className="kpi-meta-ads-enquiry-error" role="alert">
                     {t.failed}
                   </p>
                 ) : null}
                 {status === "unavailable" ? (
-                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                  <p className="kpi-meta-ads-enquiry-error" role="alert">
                     {t.unavailable}
                   </p>
                 ) : null}

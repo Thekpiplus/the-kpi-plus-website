@@ -1062,3 +1062,206 @@ model AdsSubtaskFile {
 
   @@index([subtaskId])
 }
+
+model MetaCampaign {
+  id              String         @id @default(cuid())
+  name            String         @default("") @db.VarChar(255)
+  hotelName       String         @db.VarChar(255)
+  channel         String         @default("awareness")
+  objective       String         @default("") @db.VarChar(500)
+  market          String         @default("") @db.VarChar(255)
+  language        String         @default("") @db.VarChar(80)
+  startAt         DateTime?
+  endAt           DateTime?
+  budgetAmount    String         @default("") @db.VarChar(80)
+  budgetPeriod    String         @default("monthly")
+  status          String         @default("draft")
+  ownerId         String         @default("")
+  department      String         @default("marketing")
+  priority        String         @default("normal")
+  nextAction      String         @default("") @db.VarChar(500)
+  nextActionAt    DateTime?
+  landingUrl      String         @default("") @db.VarChar(500)
+  bookingUrl      String         @default("") @db.VarChar(500)
+  trackingStatus  String         @default("not_set")
+  primaryKpi      String         @default("") @db.VarChar(255)
+  kpiTarget       String         @default("") @db.VarChar(255)
+  approvalStatus  String         @default("not_requested")
+  notes           String         @default("") @db.Text
+  audienceIntent        String         @default("") @db.Text
+  adsCreative           String         @default("") @db.Text
+  landingNotes          String         @default("") @db.Text
+  trackingNotes         String         @default("") @db.Text
+  reportNotes           String         @default("") @db.Text
+  searchIntent          String         @default("") @db.Text
+  adCopy                String         @default("") @db.Text
+  audience              String         @default("") @db.Text
+  campaignMessaging     String         @default("") @db.Text
+  creativeNotes         String         @default("") @db.Text
+  offerPromotion        String         @default("") @db.Text
+  rateContext           String         @default("") @db.Text
+  roasTarget            String         @default("") @db.VarChar(255)
+  bookingValueNotes     String         @default("") @db.Text
+  rateFeed              String         @default("") @db.Text
+  hotelAdsQuality       String         @default("") @db.Text
+  channelConsistency    String         @default("") @db.Text
+  bookingEngineNotes    String         @default("") @db.Text
+  landingContent        String         @default("") @db.Text
+  hotelValueProp        String         @default("") @db.Text
+  marketPartnerContext  String         @default("") @db.Text
+  leadFollowUp          String         @default("") @db.Text
+  budgetAuth            String         @default("") @db.Text
+  kpiReview             String         @default("") @db.Text
+  finalDecision         String         @default("") @db.Text
+  audienceSegment       String         @default("") @db.VarChar(255)
+  creativeMatrixRef     String         @default("") @db.VarChar(255)
+  remarketingNotes      String         @default("") @db.Text
+  pixelRef              String         @default("") @db.VarChar(255)
+  accountRef            String         @default("") @db.VarChar(255)
+  budgetNote            String         @default("") @db.VarChar(255)
+  escalatedAt           DateTime?
+  closedAt              DateTime?
+  createdBy             String         @default("")
+  updatedBy             String         @default("")
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+  activities            MetaActivity[]
+  kpis                  MetaKpiEntry[]
+  files                 MetaNote[]
+  audit                 MetaAuditEvent[]
+  subtasks              MetaSubtask[]
+
+  @@index([status])
+  @@index([ownerId])
+  @@index([department])
+  @@index([channel])
+  @@index([nextActionAt])
+  @@index([approvalStatus])
+}
+
+model MetaActivity {
+  id         String      @id @default(cuid())
+  campaignId String
+  campaign   MetaCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  type       String
+  title      String      @db.VarChar(255)
+  dueAt      DateTime?
+  status     String      @default("planned")
+  notes      String      @default("") @db.Text
+  ownerId    String      @default("")
+  createdBy  String      @default("")
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  @@index([campaignId])
+  @@index([dueAt])
+  @@index([status])
+}
+
+model MetaKpiEntry {
+  id         String      @id @default(cuid())
+  campaignId String
+  campaign   MetaCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  period     String      @default("") @db.VarChar(120)
+  metric     String      @default("") @db.VarChar(255)
+  value      String      @default("") @db.VarChar(120)
+  target     String      @default("") @db.VarChar(120)
+  dataStatus String      @default("draft")
+  notes      String      @default("") @db.Text
+  createdBy  String      @default("")
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  @@index([campaignId])
+}
+
+model MetaNote {
+  id         String      @id @default(cuid())
+  campaignId String
+  campaign   MetaCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  kind       String      @default("note")
+  title      String      @default("") @db.VarChar(255)
+  body       String      @default("") @db.Text
+  url        String      @default("") @db.VarChar(500)
+  createdBy  String      @default("")
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  @@index([campaignId])
+}
+
+model MetaAuditEvent {
+  id         String      @id @default(cuid())
+  campaignId String
+  campaign   MetaCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  action     String      @db.VarChar(80)
+  detail     String      @default("") @db.Text
+  createdBy  String      @default("")
+  createdAt  DateTime    @default(now())
+
+  @@index([campaignId])
+  @@index([createdAt])
+}
+
+model MetaAccess {
+  id             String   @id @default(cuid())
+  userId         String
+  department     String
+  canSeeAccounts Boolean  @default(false)
+  canSeeBudget   Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([userId, department])
+  @@index([userId])
+}
+
+model MetaSubtask {
+  id         String              @id @default(cuid())
+  campaignId String
+  campaign   MetaCampaign         @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  name       String              @db.VarChar(255)
+  department String              @default("marketing")
+  ownerId    String              @default("")
+  status     String              @default("not_started")
+  completed  Boolean             @default(false)
+  dueAt      DateTime?
+  priority   String              @default("normal")
+  comments   String              @default("") @db.Text
+  sortOrder  Int                 @default(0)
+  createdBy  String              @default("")
+  createdAt  DateTime            @default(now())
+  updatedAt  DateTime            @updatedAt
+  thread     MetaSubtaskComment[]
+  files      MetaSubtaskFile[]
+
+  @@index([campaignId])
+  @@index([department])
+  @@index([status])
+}
+
+model MetaSubtaskComment {
+  id        String     @id @default(cuid())
+  subtaskId String
+  subtask   MetaSubtask @relation(fields: [subtaskId], references: [id], onDelete: Cascade)
+  authorId  String     @default("")
+  body      String     @db.Text
+  createdAt DateTime   @default(now())
+
+  @@index([subtaskId])
+}
+
+model MetaSubtaskFile {
+  id        String     @id @default(cuid())
+  subtaskId String
+  subtask   MetaSubtask @relation(fields: [subtaskId], references: [id], onDelete: Cascade)
+  filename  String
+  mime      String
+  size      Int
+  path      String     @db.VarChar(500)
+  caption   String     @default("") @db.VarChar(500)
+  createdBy String     @default("")
+  createdAt DateTime   @default(now())
+
+  @@index([subtaskId])
+}

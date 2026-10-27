@@ -5,6 +5,7 @@ import { hasModule } from "@/lib/crm/modules";
 import { partnerOverview } from "@/lib/partners/queries";
 import { cmsOverview } from "@/lib/cms/queries";
 import { adsOpsOverview } from "@/lib/ads-ops/queries";
+import { metaOpsOverview } from "@/lib/meta-ops/queries";
 import { b2bOpsOverview } from "@/lib/b2b-ops/queries";
 import { reservationOpsOverview } from "@/lib/reservations-ops/queries";
 import { EmptyState } from "@/components/crm/ui/EmptyState";
@@ -14,7 +15,7 @@ import { roleLabel } from "@/lib/crm/roles";
 
 export default async function AdminHomePage() {
   const user = await requireUser();
-  const [lists, origins, partners, users, cms, reservations, b2b, ads] = await Promise.all([
+  const [lists, origins, partners, users, cms, reservations, b2b, ads, meta] = await Promise.all([
     todayLists(),
     leadOriginCounts(),
     partnerOverview().catch(() => ({
@@ -29,6 +30,7 @@ export default async function AdminHomePage() {
     reservationOpsOverview().catch(() => ({ open: 0, due: 0, escalated: 0 })),
     b2bOpsOverview(user).catch(() => ({ total: 0, active: 0, due: 0, pendingRates: 0 })),
     adsOpsOverview(user).catch(() => ({ total: 0, live: 0, due: 0 })),
+    metaOpsOverview(user).catch(() => ({ total: 0, live: 0, due: 0 })),
   ]);
 
   const dueToday = lists.dueToday.length + lists.overdue.length;
@@ -115,6 +117,22 @@ export default async function AdminHomePage() {
             { label: "ติดตาม", value: ads.due },
           ],
           cta: "เปิด Google Ads Operations",
+        }
+      : null,
+    hasModule(user, "meta")
+      ? {
+          href: "/crm/meta",
+          accent: "meta" as const,
+          icon: "▣",
+          category: "META",
+          title: "Meta Ads Operations",
+          body: "บอร์ดแคมเปญ Awareness, Traffic, Leads, Conversion และ Remarketing ภายใน",
+          stats: [
+            { label: "แคมเปญ", value: meta.total },
+            { label: "Active", value: meta.live },
+            { label: "ติดตาม", value: meta.due },
+          ],
+          cta: "เปิด Meta Ads Operations",
         }
       : null,
     hasModule(user, "users")

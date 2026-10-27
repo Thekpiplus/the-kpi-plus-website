@@ -33,7 +33,7 @@ export function MetaAdsStickyCta({ label }: { label: string }) {
   if (!visible) return null;
 
   return (
-    <div className="kpi-sticky-cta lg:hidden">
+    <div className="kpi-sticky-cta kpi-meta-ads-sticky lg:hidden">
       <a href="#meta-ads-enquiry" className="kpi-button w-full">
         {label}
       </a>

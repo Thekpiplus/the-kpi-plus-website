@@ -1,4 +1,5 @@
 import { adsFaqs } from "@/lib/google-ads";
+import { metaFaqs } from "@/lib/meta-ads";
 
 export type FaqItem = { q: string; a: string };
 
@@ -1063,78 +1064,10 @@ const table: Record<string, FaqItem[]> = {
   "/en/solutions/google-ads-management": adsFaqs("en"),
   "/ru/solutions/google-ads-management": adsFaqs("en"),
   "/zh/solutions/google-ads-management": adsFaqs("en"),
-  "/solutions/meta-ads-management": [
-    {
-      q: "โรงแรมขนาดเล็กทำ Meta Ads ได้ไหม?",
-      a: "ทำได้ แต่ควรดูเป้าหมาย งบประมาณ จุดเด่นของที่พัก และช่องทางรับการจองก่อน เพื่อเลือกวิธีเริ่มต้นที่เหมาะกับขนาดของโรงแรม",
-    },
-    {
-      q: "ต้องมีเว็บไซต์ก่อนหรือไม่?",
-      a: "ไม่จำเป็นสำหรับทุกเป้าหมาย หากต้องการให้ลูกค้าทักข้อความ สามารถพิจารณาเส้นทางนั้นได้ แต่หากต้องการติดตามการจองตรงผ่านเว็บไซต์ ต้องตรวจหน้าเว็บ ระบบจอง และการติดตามผลเพิ่มเติม",
-    },
-    {
-      q: "วัดยอดจองจากโฆษณาได้ไหม?",
-      a: "ทำได้มากน้อยต่างกันตามเว็บไซต์ ระบบจอง และการตั้งค่าติดตามผลของโรงแรม ทีมจะตรวจสิ่งที่วัดได้จริงก่อนกำหนดวิธีรายงาน",
-    },
-    {
-      q: "ทำโฆษณาแล้วรับประกันยอดจองไหม?",
-      a: "ยอดจองขึ้นอยู่กับหลายส่วน ทั้งราคา ห้องว่าง ข้อเสนอ หน้าเว็บ และการตอบลูกค้า เราจึงเริ่มจากเป้าหมายที่ชัดและทบทวนผลจากข้อมูลที่ตรวจสอบได้",
-    },
-  ],
-  "/en/solutions/meta-ads-management": [
-    {
-      q: "Can a small hotel run Meta Ads?",
-      a: "Yes. First look at the goal, budget, what makes the stay distinctive, and how guests can book, then choose a start that fits the size of the hotel.",
-    },
-    {
-      q: "Do we need a website first?",
-      a: "Not for every goal. If guests should message the hotel, that path can be used. If you want to follow direct bookings through the website, the page, booking path, and tracking need a closer look.",
-    },
-    {
-      q: "Can bookings from the ads be measured?",
-      a: "It depends on the website, booking path, and tracking the hotel already has. The team checks what can actually be measured before agreeing how results are reported.",
-    },
-    {
-      q: "Do the ads guarantee bookings?",
-      a: "Bookings depend on more than the ads, including rate, availability, the offer, the website, and how the team replies. We start from a clear goal and review results from data that can be checked.",
-    },
-  ],
-  "/ru/solutions/meta-ads-management": [
-    {
-      q: "Может ли небольшой отель запускать Meta Ads?",
-      a: "Да. Сначала смотрим цель, бюджет, чем проживание отличается и как гости могут спросить или забронировать, затем выбираем старт по размеру отеля.",
-    },
-    {
-      q: "Нужен ли сначала сайт?",
-      a: "Не для каждой цели. Если гости должны написать в сообщения, этот путь можно использовать. Если нужно отслеживать прямые брони через сайт, страницу, путь бронирования и отслеживание надо проверить отдельно.",
-    },
-    {
-      q: "Можно ли измерить брони из рекламы?",
-      a: "Это зависит от сайта, пути бронирования и уже настроенного отслеживания. Команда сначала смотрит, что реально можно измерить, и только потом согласовывает способ отчёта.",
-    },
-    {
-      q: "Гарантирует ли реклама брони?",
-      a: "Брони зависят не только от рекламы: цена, наличие номеров, предложение, сайт и то, как команда отвечает гостю. Мы начинаем с ясной цели и разбираем результат по данным, которые можно проверить.",
-    },
-  ],
-  "/zh/solutions/meta-ads-management": [
-    {
-      q: "小型飯店也能做 Meta Ads 嗎？",
-      a: "可以。但要先看目標、預算、住宿亮點，以及客人如何詢問或預訂，再選適合飯店規模的起步方式。",
-    },
-    {
-      q: "一定要先有網站嗎？",
-      a: "不是每個目標都必須。如果希望客人傳訊息，可以走那個路徑。若要透過網站追蹤直銷預訂，則還要檢查頁面、預訂系統與追蹤設定。",
-    },
-    {
-      q: "廣告帶來的預訂能量化嗎？",
-      a: "能做到什麼程度，取決於網站、預訂路徑與飯店既有的追蹤設定。團隊會先確認實際能量到什麼，再一起決定如何回報。",
-    },
-    {
-      q: "做廣告有保證預訂嗎？",
-      a: "預訂還取決於價格、空房、方案、網站，以及團隊如何回覆客人。因此會先訂清楚目標，並用可核對的資料檢視結果。",
-    },
-  ],
+  "/solutions/meta-ads-management": metaFaqs("th"),
+  "/en/solutions/meta-ads-management": metaFaqs("en"),
+  "/ru/solutions/meta-ads-management": metaFaqs("en"),
+  "/zh/solutions/meta-ads-management": metaFaqs("en"),
   "/solutions/hotel-seo-google-maps-ai-search": [
     {
       q: "AEO คืออะไร และต่างจาก SEO ไหม?",

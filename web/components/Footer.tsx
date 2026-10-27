@@ -82,6 +82,8 @@ export function Footer({
   const contactHref = existingHref("/contact-us", locale);
   const path = barePath(pathname);
   const isContact = path === "/contact-us";
+  const isMetaAds = path === "/solutions/meta-ads-management";
+  const footerCtaHref = isMetaAds ? `${pathname.split("#")[0]}#meta-ads-enquiry` : auditHref(locale);
   const contact = contactInfoFromCompany(company, locale);
   const primaryPaths = new Set(["/approach", "/insights", "/case-studies", "/about-us", "/contact-us"]);
   const mainLinks = visiblePrimaryLinks(locale);
@@ -115,7 +117,7 @@ export function Footer({
               <p className="kpi-footer-statement kpi-thai-nav">{t.statement}</p>
             </div>
             <div className="kpi-footer-brand-actions">
-              <Link data-track="footer_audit_cta" href={auditHref(locale)} className="kpi-button kpi-thai-nav">
+              <Link data-track="footer_audit_cta" href={footerCtaHref} className="kpi-button kpi-thai-nav">
                 {t.audit} <ArrowUpRight className="h-4 w-4" />
               </Link>
             </div>

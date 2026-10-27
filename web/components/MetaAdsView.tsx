@@ -1,51 +1,69 @@
 import Link from "next/link";
 import { ArrowUpRight } from "@/components/Icons";
+import { MetaObjectiveBoundary } from "@/components/meta-ads/MetaObjectiveBoundary";
+import { MetaScenarioMatrix } from "@/components/meta-ads/MetaScenarioMatrix";
+import { MetaScenarioVisual } from "@/components/meta-ads/MetaScenarioVisual";
+import { MetaFrameworkMatrix } from "@/components/meta-ads/MetaFrameworkMatrix";
+import { MetaFrameworkVisual } from "@/components/meta-ads/MetaFrameworkVisual";
+import { MetaHeroVisual } from "@/components/meta-ads/MetaHeroVisual";
+import { MetaKpiCards } from "@/components/meta-ads/MetaKpiCards";
+import { MetaKpiChart } from "@/components/meta-ads/MetaKpiChart";
+import { MetaKpiFramework } from "@/components/meta-ads/MetaKpiFramework";
+import { MetaKpiVisual } from "@/components/meta-ads/MetaKpiVisual";
+import { MetaCreativeMatrix } from "@/components/meta-ads/MetaCreativeMatrix";
+import { MetaHotelScenarioMatrix } from "@/components/meta-ads/MetaHotelScenarioMatrix";
+import { MetaHotelScenarioVisual } from "@/components/meta-ads/MetaHotelScenarioVisual";
+import { MetaRelatedVisual } from "@/components/meta-ads/MetaRelatedVisual";
+import { MetaAudienceInsight } from "@/components/meta-ads/MetaAudienceInsight";
+import { MetaAudienceVisual } from "@/components/meta-ads/MetaAudienceVisual";
+import { MetaWorkflowSteps } from "@/components/meta-ads/MetaWorkflowSteps";
+import { MetaWorkflowVisual } from "@/components/meta-ads/MetaWorkflowVisual";
 import { MetaAdsEnquiry } from "@/components/MetaAdsEnquiry";
 import { MetaAdsStickyCta } from "@/components/MetaAdsStickyCta";
+import { PageFaqs } from "@/components/PageFaqs";
 import { SiteShell } from "@/components/SiteShell";
-import { insightPosts, insightsIndexCopy } from "@/lib/insights";
+import { relatedCardDateLabel, relatedCardTypeLabel, type CmsMetaAdsPage, type CmsMetaRelatedCard } from "@/lib/cms/meta-ads-page";
+import { metaHeroVisualUrl, metaPublicTeamPhoto, metaAudienceVisualUrl, resolveMetaAdsPage } from "@/lib/cms/meta-ads-page-public";
+import { META_SCENARIO_ROWS, META_SCENARIO_VISUAL, META_SCENARIO_VISUAL_CANDIDATE, META_SCENARIO_VISUAL_LEGACY, META_FRAMEWORK_ROWS, META_FRAMEWORK_VISUAL_CANDIDATE, META_HERO_VISUAL, META_HERO_VISUAL_CANDIDATE, META_KPI_VISUAL, META_KPI_VISUAL_CANDIDATE, META_READINESS_VISUAL, META_RELATED_VISUAL, META_RELATED_VISUAL_CANDIDATE, META_HOTEL_SCENARIO_ROWS, META_HOTEL_SCENARIO_VISUAL, META_HOTEL_SCENARIO_VISUAL_CANDIDATE, META_AUDIENCE_VISUAL, META_AUDIENCE_VISUAL_CANDIDATE, META_AUDIENCE_VISUAL_LEGACY, META_PLATFORM_AUDIENCE_SOURCE, META_WORKFLOW_STEPS, META_WORKFLOW_VISUAL, META_WORKFLOW_VISUAL_CANDIDATE, metaFaqs, metaFaqsAreStale, metaKpiSeriesReady, metaObjectiveRowsAreStale, metaWorkflowStepsAreStale, metaCreativePublicAssetSrc, metaCreativeRowsAreStale, metaKpiCatalogIsStale } from "@/lib/meta-ads";
+import { defaultMetaCreativeRows } from "@/components/meta-ads/MetaCreativeMatrix";
 import { solutionNavLabel } from "@/lib/nav";
-import { existingHref, localizePath, type Locale } from "@/lib/seo";
+import { localizePath, type Locale } from "@/lib/seo";
+import "@/components/meta-ads/meta-ads-visuals.css";
 
-const methodPhases = ["Share", "Review", "Plan"] as const;
-
-const thaiMethodSteps = [
-  {
-    num: "01",
-    title: "ส่งข้อมูลเบื้องต้น",
-    lines: ["ชื่อโรงแรม ลิงก์เพจหรือเว็บไซต์", "และสิ่งที่อยากให้ทีมช่วย"],
-  },
-  {
-    num: "02",
-    title: "ทีมดูความพร้อม",
-    lines: ["ตรวจเป้าหมาย ข้อเสนอ ภาพและวิดีโอ", "ช่องทางรับลูกค้า และข้อมูลที่ใช้วัดผล"],
-  },
-  {
-    num: "03",
-    title: "วางแผนร่วมกัน",
-    lines: ["กำหนดแนวทางแคมเปญ", "สิ่งที่ต้องเตรียม", "และวิธีติดตามผลที่เหมาะกับโรงแรม"],
-  },
-] as const;
+const dataReportalSource = META_PLATFORM_AUDIENCE_SOURCE.href;
 
 const copy = {
   th: {
     crumb: "โซลูชัน",
     eyebrow: "Facebook และ Meta Ads",
     title: "ทำให้คนที่ใช่เห็นโรงแรมของคุณ แล้วมีเหตุผลที่จะสอบถามหรือจอง",
-    lead: "โฆษณาที่ดีไม่จบแค่ยอดเห็นหรือยอดกดถูกใจ เดอะ เคพีไอ พลัส ช่วยโรงแรมวางแผน Meta Ads ตั้งแต่เลือกกลุ่มลูกค้า สื่อสารจุดเด่นและข้อเสนอ ไปจนถึงตรวจว่าหลังคลิกโฆษณาแล้วลูกค้าสอบถามหรือจองต่อได้สะดวกแค่ไหน",
+    lead: "Meta Ads เริ่มจากเป้าหมายธุรกิจที่ชัด กลุ่มลูกค้าและครีเอทีฟต้องเข้ากับตลาดของโรงแรม โฆษณาต้องพาไปหน้าโรงแรมหรือข้อเสนอที่เกี่ยวข้อง และเส้นทางจากโฆษณาไปสู่การสอบถามหรือจองตรงควรวัดผลได้ เดอะ เคพีไอ พลัส ช่วยทบทวนและปรับแคมเปญ เมื่อโรงแรมอนุมัติให้ใช้บริการ",
     cta: "ให้ทีมประเมินแนวทาง Meta Ads",
     secondary: "ดูโซลูชันทั้งหมด",
     underCta: "ส่งชื่อโรงแรมและลิงก์เพจหรือเว็บไซต์ เพื่อเริ่มพูดคุยกับทีม",
-    photoAlt: "นักเดินทางดูเนื้อหาโรงแรมบนสมาร์ทโฟนในบรรยากาศที่พัก",
+    photoAlt: "ตัวอย่าง Meta Ad Creative และ Hotel Booking Funnel ไม่ใช่รูปบุคคล",
+    flow: ["เป้าหมาย", "กลุ่มลูกค้า", "ครีเอทีฟ", "หน้าเว็บ / แชต", "สอบถามหรือจอง"],
     whyTitle: "ลูกค้าอยู่บนแพลตฟอร์ม แต่การเข้าถึงอย่างเดียวไม่พอ",
     facebookStat: "51.5 ล้าน",
     facebookLabel: "ขนาดกลุ่มเป้าหมายโฆษณา Facebook ในไทย",
     instagramStat: "20.6 ล้าน",
     instagramLabel: "ขนาดกลุ่มเป้าหมายโฆษณา Instagram ในไทย",
     whyBody:
-      "ข้อมูล ณ ปลายปี 2025 แสดงให้เห็นโอกาสในการเข้าถึงผู้คนบนทั้งสองแพลตฟอร์ม แต่สิ่งที่โรงแรมต้องวางแผนต่อคือ จะให้ใครเห็นข้อเสนออะไร และหลังจากสนใจแล้วจะไปสอบถามหรือจองที่ไหน",
-    source: "ที่มา: DataReportal Digital 2026 Thailand",
-    note: "ตัวเลขเป็นข้อมูลการเข้าถึงโฆษณาจากเครื่องมือ Meta ผู้ใช้ Facebook และ Instagram อาจซ้ำกัน และตัวเลขนี้ไม่ใช่จำนวนผู้ที่จะจองโรงแรม",
+      "ขนาดกลุ่มเป้าหมายโฆษณาของแพลตฟอร์มบอกได้แค่ว่าในประเทศมีคนที่โฆษณาเข้าถึงได้กว้างแค่ไหน ไม่ใช่จำนวนคนที่โรงแรมอาจเข้าถึงได้ ไม่ใช่ยอดเห็นแคมเปญ และไม่ใช่จำนวนผู้เข้าชมเว็บหรือผลสอบถามหรือจอง โรงแรมยังต้องเลือกกลุ่มลูกค้าและความสนใจที่เข้ากับตลาด แล้ววางครีเอทีฟกับหน้าปลายทางให้คนที่สนใจไปต่อได้",
+    searchAdsTitle: "Awareness",
+    searchAdsBody:
+      "ให้กลุ่มที่ยังไม่รู้จักโรงแรมเห็นจุดเด่นของที่พัก ก่อนตัดสินใจสอบถามหรือจอง",
+    hotelAdsTitle: "Leads / Messages",
+    hotelAdsBody:
+      "รับคำถามเกี่ยวกับห้องพัก วันที่เข้าพัก หรือข้อเสนอ ผ่านข้อความหรือแบบฟอร์มที่โรงแรมตอบได้",
+    hotelAdsSource: "ที่มา: DataReportal Digital 2026 Thailand",
+    freeTitle: "Conversion",
+    freeBody:
+      "พาลูกค้าไปหน้าเว็บ แชต หรือระบบจองเมื่อเส้นทางพร้อม และวัดได้เฉพาะอีเวนต์ที่โรงแรมอนุญาต",
+    freeSource: "ที่มา: DataReportal Digital 2026 Thailand",
+    organicNote: "",
+    whyNote:
+      "ตัวเลขด้านล่างเป็นประมาณการกลุ่มเป้าหมายโฆษณาระดับประเทศจาก DataReportal ไม่ใช่ผลแคมเปญของโรงแรม ผู้ใช้ Facebook และ Instagram อาจซ้ำกัน",
     problemTitle: "ลงโฆษณาอยู่แล้ว แต่รู้หรือไม่ว่าลูกค้าไปต่ออย่างไร?",
     problems: [
       "มีคนเห็นโฆษณา แต่ไม่รู้ว่ามีคนสอบถามหรือจองต่อเท่าไร",
@@ -63,45 +81,70 @@ const copy = {
       ["03", "ตรวจเส้นทางหลังคลิก", "ดูว่าลูกค้าจากโฆษณาไปถึงข้อมูลห้องพัก ช่องทางแชต หรือระบบจองได้สะดวกหรือไม่ พร้อมชี้จุดที่ควรปรับร่วมกับทีมโรงแรม"],
       ["04", "ทบทวนผลและปรับแผน", "พิจารณาผลโฆษณาร่วมกับคุณภาพของคำถามและข้อมูลการจองที่ตรวจสอบได้ เพื่อเลือกสิ่งที่ควรทำต่อ"],
     ],
-    methodTitle: "เริ่มจากสถานการณ์จริงของโรงแรม",
-    steps: [
-      ["01", "ส่งข้อมูลเบื้องต้น", "ชื่อโรงแรม ลิงก์เพจหรือเว็บไซต์ และสิ่งที่อยากให้ทีมช่วย"],
-      ["02", "ทีมดูความพร้อม", "ตรวจเป้าหมาย ข้อเสนอ ภาพและวิดีโอ ช่องทางรับลูกค้า และข้อมูลที่ใช้วัดผล"],
-      ["03", "วางแผนร่วมกัน", "กำหนดแนวทางแคมเปญ สิ่งที่ต้องเตรียม และวิธีติดตามผลที่เหมาะกับโรงแรม"],
+    channelTitle: "เชื่อม Meta Ads กับเป้าหมายการขายของโรงแรม",
+    channelLead:
+      "จับคู่ Objective กับการกระทำตัวอย่าง หน้าปลายทาง KPI และผลที่คาดหวัง ชื่อตัวชี้วัดไม่ใช่ผลแคมเปญของโรงแรม",
+    channels: [
+      ["Awareness", "แนะนำโรงแรมและจุดหมายปลายทาง"],
+      ["Consideration", "แสดงห้องพัก สิ่งอำนวยความสะดวก และข้อเสนอ"],
+      ["Inquiry", "ชวนให้ติดต่อหรือส่งข้อมูล"],
+      ["Direct Booking", "พาไประบบจอง"],
+      ["Remarketing", "กลับไปพูดกับผู้ที่เคยเข้าชมหรือเคยเห็นโฆษณา"],
     ],
-    measureTitle: "ดูมากกว่ายอด Reach และยอดกดถูกใจ",
+    channelClose: "",
+    methodTitle: "ดูทั้งโฆษณาและการจอง ไม่ดูแค่จำนวนคลิก",
+    methodLead:
+      "งานแคมเปญเดินหกขั้น จาก Audit ไป Plan, Create, Launch, Optimize และ Report แต่ละขั้นมีผู้รับผิดชอบ สิ่งที่รับ สิ่งที่ทำ สิ่งที่ได้ และการตัดสินใจขั้นถัดไป",
+    creativeTitle: "จับคู่กลุ่มลูกค้า ข้อความ รูปแบบ หน้าปลายทาง และ KPI",
+    creativeLead:
+      "ตารางนี้เป็นกรอบวางครีเอทีฟ ไม่ใช่ผลแคมเปญ แสดงตัวเลขเมื่อมีข้อมูลที่อนุมัติแล้วเท่านั้น",
+    steps: [
+      ["01", "ตรวจสถานการณ์", "ดูเว็บไซต์ ระบบจอง Meta Ads ที่ใช้อยู่ ตลาดเป้าหมาย และช่วงที่โรงแรมต้องการเพิ่มยอดขาย"],
+      ["02", "ตรวจเส้นทางลูกค้า", "จากโฆษณา ไปถึงหน้าเว็บ ราคา ห้องว่าง และหน้าชำระเงินหรือยืนยันการจอง"],
+      ["03", "วางแผนแคมเปญ", "กำหนดกลุ่มลูกค้า ข้อความโฆษณา หน้าเว็บปลายทาง งบประมาณ และสิ่งที่จะวัด"],
+      ["04", "ทบทวนผล", "ดูข้อมูลที่ตรวจสอบได้ แล้วปรับคำค้น งบ และข้อเสนอร่วมกับสถานการณ์ยอดขายของโรงแรม"],
+    ],
+    measureTitle: "แยกตัวชี้วัดแพลตฟอร์มกับผลธุรกิจ",
     measureBody:
-      "ตัวชี้วัดจะเลือกตามเป้าหมายและข้อมูลที่โรงแรมมี เช่น การเข้าชมหน้าโปรโมชัน จำนวนคำถามเกี่ยวกับการเข้าพัก คุณภาพของผู้สอบถาม และยอดจองที่ตรวจสอบแหล่งที่มาได้",
+      "เราดูว่าโฆษณาพาลูกค้ามาถึงหน้าเว็บ ลูกค้าเข้าสู่หน้าห้องพักหรือระบบจองหรือไม่ มีการสอบถามหรือจองจริงเท่าไร และต้นทุนของผลลัพธ์นั้นเหมาะกับรายได้ที่โรงแรมได้รับหรือไม่",
     measureNote:
-      "หากต้องการวัดผลถึงขั้นการจอง ทีมจะตรวจความพร้อมของเว็บไซต์ ระบบจอง และการติดตามข้อมูลก่อนกำหนดวิธีรายงานร่วมกัน",
-    relatedTitle: "เรื่องที่เกี่ยวข้องกับการวัดผล เว็บไซต์ และการจองตรง",
-    details: "ดูรายละเอียด",
-    toolTitle: "ตรวจเว็บไซต์ก่อนเริ่มคุยเรื่องโฆษณา",
-    toolName: "ตรวจสุขภาพการค้นหาเว็บไซต์โรงแรม",
-    toolBody: "ดูว่าหน้าเว็บพร้อมให้ลูกค้าจากโฆษณาหาข้อมูลและเดินทางไปสอบถามหรือจองต่อหรือไม่",
-    toolCta: "ใช้เครื่องมือฟรี",
-    conversionTitle: "เพิ่มการจองผ่านเว็บไซต์",
-    conversionBody:
-      "เมื่อโฆษณาพาคนมาแล้ว เส้นทางจากหน้าเว็บไปสู่การสอบถามหรือระบบจอง ต้องชัดพอให้ลูกค้าเดินต่อได้",
+      "ความสามารถในการวัดยอดจองและรายได้ขึ้นอยู่กับเว็บไซต์ ระบบจอง และการตั้งค่าติดตามผลของโรงแรม ทีมจะตรวจสิ่งที่วัดได้จริงก่อนกำหนดรายงาน",
+    relatedTitle: "เริ่มจากสถานการณ์จริงของโรงแรม",
+    relatedLead: "เลือกสถานการณ์ที่ใกล้โรงแรมที่สุด แล้วดูคำถามแรก สิ่งที่ควรเริ่ม และสิ่งที่ได้ก่อนขยายงบ",
+    relatedReadingTitle: "เรื่องที่เกี่ยวข้องกับ Meta Ads และการตลาดโรงแรม",
+    relatedReadingLead: "อ่านบทความและหน้าบริการที่มีอยู่จริงเรื่องการตลาดโรงแรม การจองตรง Conversion Tracking และ SEO กับ SEM",
   },
   en: {
     crumb: "Solutions",
     eyebrow: "Facebook and Instagram ads for hotels",
     title: "Help the right people see your hotel, then give them a reason to enquire or book",
-    lead: "A useful ad does more than collect views or likes. The KPI Plus helps hotels plan Meta Ads from the audience and the offer through to whether a guest can enquire or book after the click.",
+    lead: "Meta Ads starts from a clear business objective. Audience and creative have to fit the hotel’s market. The ad should open a relevant hotel or offer page, and the path from the ad to an enquiry or direct booking should be measurable. The KPI Plus supports review and optimization where the service is approved.",
     cta: "Ask the team to review a Meta Ads approach",
     secondary: "All solutions",
     underCta: "Send the hotel name and a page or website link to start the conversation.",
-    photoAlt: "A traveller viewing hotel content on a smartphone in a hospitality setting",
+    photoAlt: "Sample Meta Ad Creative and Hotel Booking Funnel, not a person photo",
+    flow: ["Objective", "Audience", "Creative", "Landing / Chat", "Enquiry or booking"],
     whyTitle: "Guests are on the platforms, but reach alone is not the plan",
     facebookStat: "51.5 million",
     facebookLabel: "Facebook advertising audience size in Thailand",
     instagramStat: "20.6 million",
     instagramLabel: "Instagram advertising audience size in Thailand",
     whyBody:
-      "Late-2025 figures show the chance to reach people on both platforms. The hotel still has to decide who should see which offer, and where they go to enquire or book after they are interested.",
-    source: "Source: DataReportal Digital 2026 Thailand",
-    note: "These figures are Meta advertising-reach estimates. Facebook and Instagram users can overlap, and this is not the number of people who will book a hotel.",
+      "A platform audience estimate only shows how many people in the country can be reached with ads. It is not the hotel’s potential reach, not campaign reach, and not website visitors or enquiry or booking results. The hotel still has to choose an audience and interests that fit its market, then match creative to a page those people can continue on.",
+    searchAdsTitle: "Awareness",
+    searchAdsBody:
+      "Help people who do not yet know the hotel see what makes the stay distinctive before they enquire or book.",
+    hotelAdsTitle: "Leads / Messages",
+    hotelAdsBody:
+      "Collect room, date, or offer questions through messages or a form the hotel can answer.",
+    hotelAdsSource: "Source: DataReportal Digital 2026 Thailand",
+    freeTitle: "Conversion",
+    freeBody:
+      "Send guests to a page, chat, or booking path when that path is ready, and measure only events the hotel allows.",
+    freeSource: "Source: DataReportal Digital 2026 Thailand",
+    organicNote: "",
+    whyNote:
+      "The figures below are country-level advertising-audience estimates from DataReportal, not a hotel campaign result. Facebook and Instagram users can overlap.",
     problemTitle: "You may already be advertising. Do you know what guests do next?",
     problems: [
       "People see the ads, but it is unclear how many enquire or book afterwards",
@@ -119,154 +162,666 @@ const copy = {
       ["03", "Check the path after the click", "See whether guests from the ad can reach room details, chat, or the booking path, and note what the hotel team should fix."],
       ["04", "Review the result and adjust", "Look at ad results together with enquiry quality and bookings you can verify, then choose the next move."],
     ],
-    methodTitle: "Start from the hotel’s real situation",
-    steps: [
-      ["01", "Send a few basics", "The hotel name, a page or website link, and what you want the ads to help with."],
-      ["02", "The team checks readiness", "Goals, offers, photos and video, how guests can reply, and the data you can use to review results."],
-      ["03", "Plan together", "Agree the campaign direction, what to prepare, and a review method that fits the hotel’s systems."],
+    channelTitle: "Connect Meta Ads to the hotel’s sales objectives",
+    channelLead:
+      "Match each Objective to an example action, destination page, KPI, and expected output. KPI names are not a hotel campaign result.",
+    channels: [
+      ["Awareness", "Introduce the hotel and destination"],
+      ["Consideration", "Show rooms, facilities, and offer"],
+      ["Inquiry", "Encourage contact or lead submission"],
+      ["Direct Booking", "Send users to booking engine"],
+      ["Remarketing", "Reconnect with previous visitors or viewers"],
     ],
-    measureTitle: "Look beyond reach and likes",
+    channelClose: "",
+    methodTitle: "Review the ads and the booking, not clicks alone",
+    methodLead:
+      "Campaign work runs in six steps: Audit, Plan, Create, Launch, Optimize, and Report. Each step has an owner, input, action, output, and a next decision.",
+    creativeTitle: "Match audience, message, format, destination, and KPI",
+    creativeLead:
+      "This matrix is a planning framework, not campaign results. Figures stay hidden until approved data exists.",
+    steps: [
+      ["01", "Check the situation", "Look at the website, booking system, current Meta Ads, the target market, and the dates the hotel wants to sell."],
+      ["02", "Check the guest path", "From the ad through to the page, the rate, availability, and the payment or confirmation step."],
+      ["03", "Plan the campaign", "Agree the audience, ad copy, destination pages, budget, and what will be measured."],
+      ["04", "Review the result", "Use data that can be checked, then adjust searches, budget, and the offer with the hotel’s sales situation."],
+    ],
+    measureTitle: "Separate platform metrics from business metrics",
     measureBody:
-      "Measures are chosen from the hotel’s goal and the data it already has, such as visits to a promotion page, stay enquiries, the quality of those enquiries, and bookings whose source can be checked.",
+      "We look at whether ads bring guests to the site, whether they reach a room page or the booking system, how many enquire or book, and whether the cost of that result fits the revenue the hotel receives.",
     measureNote:
-      "If you want to review bookings, the team first checks the website, booking path, and tracking, then agrees how results will be reported.",
-    relatedTitle: "Related reading on measurement, the website, and direct booking",
-    details: "Read more",
-    toolTitle: "Check the website before the ads conversation",
-    toolName: "Hotel Searchability Check",
-    toolBody: "See whether the page is ready for a guest from an ad to find details and continue to an enquiry or booking.",
-    toolCta: "Use the free tool",
-    conversionTitle: "Website Conversion",
-    conversionBody: "After the ad, the enquiry and booking path still has to be clear enough to continue.",
+      "How far bookings and revenue can be measured depends on the website, booking system, and tracking the hotel already has. The team checks what can actually be measured before agreeing the report.",
+    relatedTitle: "Start from the hotel’s real situation",
+    relatedLead: "Pick the closest hotel situation, then see the first diagnostic question, the starting action, and the output before extra spend.",
+    relatedReadingTitle: "Related reading on Meta Ads and hotel marketing",
+    relatedReadingLead: "Read existing hotel marketing, direct-booking, conversion-tracking, and SEO and SEM pages.",
   },
   ru: {
     crumb: "Решения",
-    eyebrow: "Facebook и Instagram Ads для отелей",
-    title: "Пусть нужные люди увидят отель и поймут, зачем спрашивать или бронировать",
-    lead: "Хорошая реклама не заканчивается просмотрами и лайками. The KPI Plus помогает отелю спланировать Meta Ads: кого показывать, что сказать про проживание и предложение, и сможет ли гость после клика удобно спросить или забронировать.",
-    cta: "Попросить команду оценить подход к Meta Ads",
-    secondary: "Все решения",
-    underCta: "Отправьте название отеля и ссылку на страницу или сайт, чтобы начать разговор.",
-    photoAlt: "Отель и команда, которая занимается проживанием и продажей номеров",
-    whyTitle: "Гости уже на платформах, но одного охвата недостаточно",
+    eyebrow: "Meta Ads для отелей",
     facebookStat: "51,5 млн",
     facebookLabel: "Размер рекламной аудитории Facebook в Таиланде",
     instagramStat: "20,6 млн",
     instagramLabel: "Размер рекламной аудитории Instagram в Таиланде",
+    title: "Пусть нужные люди увидят отель и поймут, зачем спрашивать или бронировать",
+    lead: "Хорошая реклама не заканчивается просмотрами и лайками. The KPI Plus помогает отелю спланировать Meta Ads: кого показывать, что сказать про проживание и предложение, и сможет ли гость после клика удобно спросить или забронировать.",
+    cta: "Попросить команду оценить подход к Meta Ads",
+    secondary: "Все решения",
+    underCta: "Отправьте название отеля, сайт и ссылку на страницу бронирования для первого просмотра.",
+    photoAlt: "Путешественник сравнивает варианты проживания в Google перед бронированием",
+    flow: ["Поиск", "Реклама", "Сайт", "Бронь", "Разбор"],
+    whyTitle: "Гости уже на платформах, но одного охвата недостаточно",
     whyBody:
-      "Данные конца 2025 года показывают возможность охвата на обеих платформах. Отелю всё равно нужно решить, кто должен увидеть какое предложение и куда гость пойдёт спрашивать или бронировать после интереса.",
-    source: "Источник: DataReportal Digital 2026 Thailand",
-    note: "Цифры — оценка рекламного охвата из инструментов Meta. Пользователи Facebook и Instagram могут пересекаться, и это не число людей, которые забронируют отель.",
-    problemTitle: "Реклама уже идёт. Понятно ли, что гость делает дальше?",
+      "Путешественники ищут название отеля, жильё в нужном районе и цены, прежде чем выбрать канал бронирования. Если сайт отеля появляется в нужный момент с понятными данными и понятным путём брони, есть шанс привести гостя на собственный канал отеля.",
+    searchAdsTitle: "Awareness",
+    searchAdsBody:
+      "Текстовая реклама, которая отвечает на запрос: название отеля или жильё в районе. Подходит, чтобы вести человека на страницу, совпадающую с запросом.",
+    hotelAdsTitle: "Google Leads",
+    hotelAdsBody:
+      "Google указывает, что отель может показывать название, цену и причины бронировать на своём сайте в Leads, чтобы направить путешественника на сайт и поддержать прямое бронирование.",
+    hotelAdsSource: "Источник: DataReportal Digital 2026 Thailand",
+    freeTitle: "Free booking links",
+    freeBody:
+      "У Google также есть ссылки бронирования без платы за рекламу. Они могут привести гостя на страницу брони отеля, если цена, наличие номеров и подключение готовы.",
+    freeSource: "Источник: DataReportal Digital 2026 Thailand",
+    organicNote: "",
+    whyNote:
+      "Awareness, Leads и free booking links имеют разные форматы и условия. Команда сначала проверяет готовность отеля, затем рекомендует, какой путь использовать.",
+    problemTitle: "Отель ищут, но прямые брони не доходят до цели?",
     problems: [
-      "Люди видят рекламу, но неясно, сколько потом спрашивают или бронируют",
-      "Одна и та же картинка и текст идут всем группам гостей",
-      "На часть дат ещё есть номера, но предложение не доходит до подходящих людей",
-      "После клика сложно найти описание номера, цену или способ связаться",
-      "У тех, кто уже проявил интерес, нет понятного плана повторного контакта",
+      "Поиск названия отеля показывает несколько вариантов брони, а сайт отеля не выглядит главным",
+      "Реклама даёт клики, но неясно, сколько потом вопросов или броней",
+      "Реклама ведёт на главную, хотя гость ищет номер или конкретное предложение",
+      "Цена, наличие номеров или условия на странице брони неясны",
+      "Поиск названия отеля и поиск жилья в районе собраны в одну кампанию, поэтому результат трудно разобрать отдельно",
     ],
-    problemClose: "Если знакома хотя бы одна ситуация, команда поможет понять, с чего начать.",
-    problemCta: "Попросить команду посмотреть ситуацию отеля",
-    helpTitle: "Связать рекламу с тем, что отелю нужно продать",
+    problemClose: "Дело может быть не только в бюджете. Команда смотрит и рекламу, и путь бронирования, прежде чем сказать, что менять.",
+    problemCta: "Попросить команду посмотреть путь бронирования отеля",
+    helpTitle: "От поискового запроса к прямой брони, которую можно разобрать",
     help: [
-      ["01", "Цель и аудитория", "Понять, нужно ли больше узнаваемости, больше вопросов про номера или более ясный путь к бронированию, и подобрать рекламу под эту цель."],
-      ["02", "Сильные стороны и предложение", "Соединить локацию, номера, опыт проживания и даты, которые нужно продать, с подходящими изображением, текстом и аудиторией."],
-      ["03", "Путь после клика", "Проверить, доходит ли гость из рекламы до описания номера, чата или бронирования, и отметить, что стоит поправить вместе с командой отеля."],
-      ["04", "Разбор результата и следующий шаг", "Смотреть результат рекламы вместе с качеством вопросов и бронями, которые можно проверить, затем выбрать, что делать дальше."],
+      ["01", "Подобрать запросы и цель под отель", "Отделить поиск названия отеля от поиска жилья по району, типу номера или потребности и решить, какой группе какой бюджет и текст нужны."],
+      ["02", "Связать рекламу с реальной ценой и предложением", "Реклама должна говорить то, что гость увидит после клика, и совпадать с номерами, ценой и условиями, которые отель готов продавать."],
+      ["03", "Настроить путь на сайт и в систему бронирования", "Проверить, видит ли гость номер, цену, может выбрать даты и завершить бронь, особенно с телефона."],
+      ["04", "Смотреть показатели, важные бизнесу", "Смотреть запросы, визиты, вход в систему брони, вопросы и брони, которые можно отследить, затем сопоставить стоимость рекламы с ценностью этих броней."],
     ],
-    methodTitle: "Начинаем с реальной ситуации отеля",
+    channelTitle: "Connect Meta Ads to the hotel’s sales objectives",
+    channelLead:
+      "Match each Objective to an example action, destination page, KPI, and expected output. KPI names are not a hotel campaign result.",
+    channels: [
+      ["Awareness", "Introduce the hotel and destination"],
+      ["Consideration", "Show rooms, facilities, and offer"],
+      ["Inquiry", "Encourage contact or lead submission"],
+      ["Direct Booking", "Send users to booking engine"],
+      ["Remarketing", "Reconnect with previous visitors or viewers"],
+    ],
+    channelClose: "",
+    methodTitle: "Смотреть рекламу и бронь, а не только клики",
+    methodLead:
+      "Campaign work runs in six steps: Audit, Plan, Create, Launch, Optimize, and Report. Each step has an owner, input, action, output, and a next decision.",
+    creativeTitle: "Match audience, message, format, destination, and KPI",
+    creativeLead:
+      "This matrix is a planning framework, not campaign results. Figures stay hidden until approved data exists.",
     steps: [
-      ["01", "Пришлите базовые данные", "Название отеля, ссылку на страницу или сайт и то, чем должна помочь реклама."],
-      ["02", "Команда смотрит готовность", "Цели, предложение, фото и видео, как гости могут ответить, и какие данные можно использовать для разбора."],
-      ["03", "Планируем вместе", "Согласуем направление кампании, что подготовить и как отслеживать результат в системах отеля."],
+      ["01", "Проверить ситуацию", "Сайт, систему брони, текущие Meta Ads, целевой рынок и даты, которые отелю нужно продавать."],
+      ["02", "Проверить путь гостя", "От запроса и рекламы до страницы, цены, наличия номеров и шага оплаты или подтверждения."],
+      ["03", "Спланировать кампанию", "Согласовать запросы, тексты, страницы назначения, бюджет и то, что будем измерять."],
+      ["04", "Разобрать результат", "Использовать проверяемые данные, затем скорректировать запросы, бюджет и предложение вместе с продажами отеля."],
     ],
-    measureTitle: "Смотреть шире, чем охват и лайки",
+    measureTitle: "Separate platform metrics from business metrics",
     measureBody:
-      "Показатели выбираются по цели отеля и данным, которые уже есть: визиты на страницу предложения, вопросы про проживание, качество этих вопросов и брони, чей источник можно проверить.",
+      "Мы смотрим, какие запросы приводят на сайт, доходит ли гость до страницы номера или системы брони, сколько спрашивает или бронирует, и подходит ли стоимость этого результата доходу отеля.",
     measureNote:
-      "Если нужно смотреть до брони, команда сначала проверит сайт, путь бронирования и отслеживание, затем согласует, как отчитываться о результате.",
-    relatedTitle: "Материалы про измерение, сайт и прямое бронирование",
-    details: "Подробнее",
-    toolTitle: "Проверьте сайт до разговора о рекламе",
-    toolName: "Проверка поисковой готовности сайта отеля",
-    toolBody: "Понять, сможет ли гость из рекламы найти информацию и перейти к вопросу или бронированию.",
-    toolCta: "Использовать бесплатный инструмент",
-    conversionTitle: "Website Conversion",
-    conversionBody: "После рекламы путь к вопросу и бронированию на сайте всё равно должен быть достаточно понятным.",
+      "Насколько можно измерить брони и доход, зависит от сайта, системы брони и уже настроенного отслеживания. Команда сначала проверяет, что реально измеримо, затем согласовывает отчёт.",
+    relatedTitle: "Start from the hotel’s real situation",
+    relatedLead: "Pick the closest hotel situation, then see the first diagnostic question, the starting action, and the output before extra spend.",
+    relatedReadingTitle: "Related reading on Meta Ads and hotel marketing",
+    relatedReadingLead: "Read existing hotel marketing, direct-booking, conversion-tracking, and SEO and SEM pages.",
   },
   zh: {
     crumb: "解決方案",
-    eyebrow: "飯店的 Facebook 與 Instagram 廣告",
-    title: "讓對的人看到你的飯店，並有理由詢問或預訂",
-    lead: "好的廣告不會停在曝光或按讚。The KPI Plus 協助飯店規劃 Meta Ads：該給誰看、如何說明住宿亮點與方案，以及點擊之後，客人能否順利詢問或預訂。",
-    cta: "請團隊評估 Meta Ads 做法",
-    secondary: "查看全部方案",
-    underCta: "留下飯店名稱，以及粉絲專頁或網站連結，即可開始與團隊討論。",
-    photoAlt: "飯店與團隊處理入住與客房銷售",
-    whyTitle: "客人已在這些平台上，但只有觸及還不夠",
-    facebookStat: "5,150 萬",
+    eyebrow: "飯店的 Meta Ads",
+    facebookStat: "5150 萬",
     facebookLabel: "泰國 Facebook 廣告目標對象規模",
-    instagramStat: "2,060 萬",
+    instagramStat: "2060 萬",
     instagramLabel: "泰國 Instagram 廣告目標對象規模",
+    title: "讓對的人看到你的飯店，並有理由詢問或預訂",
+    lead: "旅客可能在 Google 搜尋飯店名稱、地點，或想要的住宿類型。有點擊還不是有預訂。The KPI Plus 會把廣告，連同網站、價格、方案與預訂系統一起規劃，讓興趣比較有機會變成可核對的直銷預訂。",
+    cta: "請團隊看增加直銷預訂的機會",
+    secondary: "查看全部方案",
+    underCta: "留下飯店名稱、網站與預訂頁連結，讓團隊先看一輪。",
+    photoAlt: "旅客在 Google 上比較住宿後再決定預訂",
+    flow: ["搜尋", "廣告", "網站", "預訂系統", "檢視結果"],
+    whyTitle: "客人已經在 Google 上比較你的飯店",
     whyBody:
-      "2025 年底的資料顯示兩個平台都有觸及機會。飯店仍須決定：該讓誰看到什麼方案，以及對方有興趣之後，要去哪裡詢問或預訂。",
-    source: "來源：DataReportal Digital 2026 Thailand",
-    note: "數字來自 Meta 廣告工具的觸及估計。Facebook 與 Instagram 使用者可能重複，這也不是會預訂飯店的人數。",
-    problemTitle: "也許已經在投廣告，但知不知道客人接下來怎麼走？",
+      "旅客會先搜尋飯店名稱、想去的地點，以及價格資訊，再決定從哪個通路預訂。若飯店網站在對的時間出現，資料與預訂路徑又清楚，就比較有機會把客人帶進飯店自己的預訂通路。",
+    searchAdsTitle: "Awareness",
+    searchAdsBody:
+      "回應搜尋的文字廣告，例如飯店名稱或某一地區的住宿。適合把人帶到與需求相符的網頁。",
+    hotelAdsTitle: "Google Leads",
+    hotelAdsBody:
+      "Google 指出，飯店可在 Leads 顯示名稱、價格，以及透過自家網站預訂的重點，把旅客帶到網站，並增加直銷預訂的機會。",
+    hotelAdsSource: "來源：DataReportal Digital 2026 Thailand",
+    freeTitle: "Free booking links",
+    freeBody:
+      "Google 也有不收取廣告費的預訂連結。只要價格、空房與系統連接準備好，就能把客人帶到飯店的預訂頁。",
+    freeSource: "來源：DataReportal Digital 2026 Thailand",
+    organicNote: "",
+    whyNote:
+      "Awareness、Leads 與 free booking links 的形式與條件不同。團隊會先檢查飯店準備程度，再建議該走哪一條。",
+    problemTitle: "有人在搜尋飯店，直銷預訂卻還沒到目標？",
     problems: [
-      "有人看到廣告，卻不清楚之後有多少人詢問或預訂",
-      "對每個客群都用同一組圖片和文字",
-      "某些日期還有空房，方案卻還沒到適合的人面前",
-      "點擊之後找不到房型、價格或聯絡方式",
-      "曾經表示興趣的人，還沒有合適的後續追蹤計畫",
+      "搜尋飯店名稱後出現多個預訂選項，飯店自己的網站還不夠突出",
+      "付了廣告費也有點擊，卻不清楚之後有多少詢問或實際預訂",
+      "廣告把客人帶到首頁，但其實對方在找特定房型或方案",
+      "預訂頁上的價格、空房或條件不夠清楚",
+      "飯店名稱搜尋與地區住宿搜尋被放在同一組活動，結果很難分開看",
     ],
-    problemClose: "如果以上任一情況很熟悉，團隊可以一起看該先從哪裡調整。",
-    problemCta: "請團隊先看飯店的現況",
-    helpTitle: "把廣告接到飯店真正要賣的目標",
+    problemClose: "問題不一定只在廣告預算。團隊會先看廣告與預訂路徑，再說明該調整哪一段。",
+    problemCta: "請團隊先看飯店的預訂路徑",
+    helpTitle: "從搜尋走到可檢視的直銷預訂",
     help: [
-      ["01", "訂目標與客群", "先看飯店要提高認識、增加客房詢問，還是讓人更容易走進預訂通路，再讓廣告做法對應該目標。"],
-      ["02", "說明亮點與方案", "把地點、客房、住宿體驗，以及需要銷售的日期，配上合適的圖片、文字與客群。"],
-      ["03", "檢查點擊後的路徑", "看廣告來的客人能否順利找到房型、聊天管道或預訂系統，並與飯店團隊一起標出該調整的地方。"],
-      ["04", "檢視結果再調整", "把廣告結果，連同可檢查的詢問品質與預訂資料一起看，再決定下一步。"],
+      ["01", "依飯店選對搜尋詞與目標", "把飯店名稱搜尋，和依地點、房型或需求找住宿的搜尋分開，再決定哪一組該用什麼預算與文案。"],
+      ["02", "讓廣告對上真實價格與方案", "廣告應說明點擊後會看到什麼，並與飯店實際可賣的空房、價格與條件一致。"],
+      ["03", "調整進入網站與預訂系統的路徑", "檢查客人能否看到房型、打開價格、選擇入住日期並完成預訂，尤其是在手機上。"],
+      ["04", "追蹤與生意有關的結果", "看搜尋詞、網頁瀏覽、進入預訂系統、詢問，以及能追蹤的預訂，再把廣告成本對上這些預訂的價值。"],
     ],
-    methodTitle: "從飯店的真實情況開始",
+    channelTitle: "Connect Meta Ads to the hotel’s sales objectives",
+    channelLead:
+      "Match each Objective to an example action, destination page, KPI, and expected output. KPI names are not a hotel campaign result.",
+    channels: [
+      ["Awareness", "Introduce the hotel and destination"],
+      ["Consideration", "Show rooms, facilities, and offer"],
+      ["Inquiry", "Encourage contact or lead submission"],
+      ["Direct Booking", "Send users to booking engine"],
+      ["Remarketing", "Reconnect with previous visitors or viewers"],
+    ],
+    channelClose: "",
+    methodTitle: "看廣告，也看預訂，不只看點擊數",
+    methodLead:
+      "Campaign work runs in six steps: Audit, Plan, Create, Launch, Optimize, and Report. Each step has an owner, input, action, output, and a next decision.",
+    creativeTitle: "Match audience, message, format, destination, and KPI",
+    creativeLead:
+      "This matrix is a planning framework, not campaign results. Figures stay hidden until approved data exists.",
     steps: [
-      ["01", "先提供基本資料", "飯店名稱、粉絲專頁或網站連結，以及希望廣告幫忙的事情。"],
-      ["02", "團隊檢查準備程度", "看目標、方案、照片與影片、接待客人的管道，以及能用來檢視結果的資料。"],
-      ["03", "一起規劃", "確認活動方向、需要準備的內容，以及適合飯店現有系統的追蹤方式。"],
+      ["01", "先看現況", "檢查網站、預訂系統、目前的 Meta Ads、目標市場，以及飯店想加強銷售的時段。"],
+      ["02", "檢查客人路徑", "從搜尋與廣告，走到網頁、價格、空房，以及付款或確認預訂的頁面。"],
+      ["03", "規劃活動", "確認搜尋詞、廣告文案、落地頁、預算，以及要衡量的項目。"],
+      ["04", "檢視結果", "用可核對的資料，再依飯店的銷售情況調整搜尋詞、預算與方案。"],
     ],
-    measureTitle: "看的不只是觸及和按讚",
+    measureTitle: "Separate platform metrics from business metrics",
     measureBody:
-      "指標會依飯店目標與既有資料來選，例如促銷頁瀏覽、住宿相關詢問、詢問者的品質，以及能核對來源的預訂。",
+      "我們會看哪些搜尋把客人帶到網站、是否進入房型頁或預訂系統、實際詢問或預訂有多少，以及這個結果的成本是否適合飯店拿到的收益。",
     measureNote:
-      "若要追到預訂，團隊會先檢查網站、預訂路徑與追蹤設定，再一起決定如何回報結果。",
-    relatedTitle: "與成效、網站與直銷預訂相關的內容",
-    details: "查看詳情",
-    toolTitle: "談廣告前，先檢查網站",
-    toolName: "飯店網站搜尋健康檢查",
-    toolBody: "看從廣告進來的客人，是否找得到資料，並能繼續詢問或預訂。",
-    toolCta: "使用免費工具",
-    conversionTitle: "Website Conversion",
-    conversionBody: "廣告把人帶來之後，網站上的詢問與預訂路徑仍須清楚到走得下去。",
+      "預訂與收益能量到什麼程度，取決於網站、預訂系統與飯店既有的追蹤設定。團隊會先確認實際能量到什麼，再一起決定報告方式。",
+    relatedTitle: "Start from the hotel’s real situation",
+    relatedLead: "Pick the closest hotel situation, then see the first diagnostic question, the starting action, and the output before extra spend.",
+    relatedReadingTitle: "Related reading on Meta Ads and hotel marketing",
+    relatedReadingLead: "Read existing hotel marketing, direct-booking, conversion-tracking, and SEO and SEM pages.",
   },
 } as const;
 
-export function MetaAdsView({ locale }: { locale: Locale }) {
-  const t = copy[locale];
-  const insightsUi = insightsIndexCopy[locale];
+export async function MetaAdsView({
+  locale,
+  previewContent,
+  embedded = false,
+}: {
+  locale: Locale;
+  previewContent?: CmsMetaAdsPage | null;
+  embedded?: boolean;
+}) {
+  const t = copy[locale === "th" ? "th" : "en"];
+  const cms = await resolveMetaAdsPage(locale, previewContent);
+  const fromCms = cms.fromCms;
+  const thai = locale === "th";
   const solutions = localizePath("/solutions", locale);
-  const featuredInsight = insightPosts.find(
-    (post) => post.href === "/insights/direct-booking-journey-audit" && existingHref(post.href, locale),
-  );
-  const seoInsight = insightPosts.find(
-    (post) =>
-      post.href === "/insights/seo-vs-sem-for-hotels-which-one-should-you-focus-on" &&
-      existingHref(post.href, locale),
-  );
-  const conversionHref = localizePath("/solutions/hotel-direct-bookings", locale);
-
-  return (
-    <SiteShell locale={locale} route={localizePath("/solutions/meta-ads-management", locale)}>
+  const heroVisual = cms.hero.visual;
+  const visibilityVisual = cms.visibility.visual;
+  const heroSrc = heroVisual.src.trim() || metaHeroVisualUrl() || "";
+  const visibilitySrc = (() => {
+    const cmsSrc = visibilityVisual.src.trim();
+    const dummy = metaAudienceVisualUrl() || "";
+    const blocked = new Set([
+      heroSrc,
+      META_HERO_VISUAL_CANDIDATE,
+      META_RELATED_VISUAL_CANDIDATE,
+      META_AUDIENCE_VISUAL_LEGACY,
+      "",
+    ]);
+    if (cmsSrc && !blocked.has(cmsSrc) && cmsSrc !== META_AUDIENCE_VISUAL_CANDIDATE) return cmsSrc;
+    if (dummy && !blocked.has(dummy)) return dummy;
+    return "";
+  })();
+  const usingDummyAudience =
+    !visibilityVisual.src.trim() ||
+    visibilityVisual.src === META_AUDIENCE_VISUAL_CANDIDATE ||
+    visibilityVisual.src === META_AUDIENCE_VISUAL_LEGACY ||
+    visibilitySrc === META_AUDIENCE_VISUAL_CANDIDATE;
+  const visibilityCaption = usingDummyAudience
+    ? thai
+      ? META_AUDIENCE_VISUAL.caption.th
+      : META_AUDIENCE_VISUAL.caption.en
+    : visibilityVisual.caption.trim() || (thai ? META_AUDIENCE_VISUAL.caption.th : META_AUDIENCE_VISUAL.caption.en);
+  const visibilityLabel = usingDummyAudience
+    ? thai
+      ? META_AUDIENCE_VISUAL.label.th
+      : META_AUDIENCE_VISUAL.label.en
+    : visibilityVisual.label.trim() || (thai ? META_AUDIENCE_VISUAL.label.th : META_AUDIENCE_VISUAL.label.en);
+  const heroTitle =
+    fromCms && cms.hero.title.trim() && !/เมื่อลูกค้าค้นหาที่พัก|When guests search for a stay/.test(cms.hero.title)
+      ? cms.hero.title
+      : t.title;
+  const heroLead =
+    fromCms &&
+    cms.hero.description.trim() &&
+    !/โฆษณาที่ดีไม่จบแค่ยอดเห็น|A useful ad does more than collect views/.test(cms.hero.description)
+      ? cms.hero.description
+      : t.lead;
+  const heroCta = fromCms && cms.hero.primaryCta.label.trim() ? cms.hero.primaryCta.label : t.cta;
+  const heroSecondary = fromCms && cms.hero.secondaryCta.label.trim() ? cms.hero.secondaryCta.label : t.secondary;
+  const heroUnder = fromCms && cms.hero.underCta.trim() ? cms.hero.underCta : t.underCta;
+  const visibilityTitle =
+    locale === "zh" && /Google/.test(t.whyTitle)
+      ? copy.en.whyTitle
+      : fromCms && cms.visibility.title.trim() && !/เมื่อลูกค้าค้นหาที่พัก|When guests search for a stay/.test(cms.visibility.title)
+        ? cms.visibility.title
+        : t.whyTitle;
+  const visibilityBody =
+    fromCms &&
+    cms.visibility.body.trim() &&
+    !/ข้อมูล ณ ปลายปี 2025 แสดงให้เห็นโอกาส|Late-2025 figures show the chance/.test(cms.visibility.body)
+      ? cms.visibility.body
+      : locale === "th"
+        ? copy.th.whyBody
+        : copy.en.whyBody;
+  const visibilityNote =
+    fromCms &&
+    cms.visibility.note.trim() &&
+    !/ตัวเลขเป็นข้อมูลการเข้าถึงโฆษณาจากเครื่องมือ Meta|These figures are Meta advertising-reach estimates/.test(
+      cms.visibility.note,
+    )
+      ? cms.visibility.note
+      : locale === "th"
+        ? copy.th.whyNote
+        : copy.en.whyNote;
+  const useSplitThaiWhy = locale === "th" && visibilityTitle === copy.th.whyTitle;
+  const useSplitThaiWhyBody = locale === "th" && visibilityBody === copy.th.whyBody;
+  const useSplitThaiTitle = locale === "th" && heroTitle === copy.th.title;
+  const usingDummyHero =
+    !heroVisual.src.trim() || heroVisual.src === META_HERO_VISUAL_CANDIDATE || heroSrc === META_HERO_VISUAL_CANDIDATE;
+  const heroCaption = usingDummyHero
+    ? thai
+      ? META_HERO_VISUAL.caption.th
+      : META_HERO_VISUAL.caption.en
+    : heroVisual.caption.trim() || (thai ? META_HERO_VISUAL.caption.th : META_HERO_VISUAL.caption.en);
+  const heroLabel = usingDummyHero
+    ? thai
+      ? META_HERO_VISUAL.label.th
+      : META_HERO_VISUAL.label.en
+    : heroVisual.label.trim() || (thai ? META_HERO_VISUAL.label.th : META_HERO_VISUAL.label.en);
+  const frameworkRows = (() => {
+    const fallback = META_FRAMEWORK_ROWS.map((row) => ({
+      id: row.id,
+      area: row.area,
+      problem: thai ? row.problemTh : row.problemEn,
+      inspect: thai ? row.inspectTh : row.inspectEn,
+      improve: thai ? row.improveTh : row.improveEn,
+      output: thai ? row.outputTh : row.outputEn,
+    }));
+    if (!fromCms || !cms.readiness.items.length) return fallback;
+    const mapped = cms.readiness.items
+      .map((item) => ({
+        id: item.id,
+        area: item.area.trim(),
+        problem: (item.problem || item.why).trim(),
+        inspect: (item.inspect || item.check).trim(),
+        improve: item.improve.trim(),
+        output: item.output.trim(),
+      }))
+      .filter((row) => row.area && row.problem && row.inspect && row.improve && row.output);
+    const stale = mapped.some(
+      (row) => row.id === "campaign-structure" || row.area === "Campaign Structure" || row.area === "Booking Experience",
+    );
+    return !stale && mapped.length === META_FRAMEWORK_ROWS.length ? mapped : fallback;
+  })();
+  const frameworkSrc = (() => {
+    const cmsSrc = cms.readiness.visual.src.trim();
+    const blocked = new Set([
+      "",
+      heroSrc,
+      visibilitySrc,
+      META_HERO_VISUAL_CANDIDATE,
+      META_AUDIENCE_VISUAL_CANDIDATE,
+      META_FRAMEWORK_VISUAL_CANDIDATE,
+      META_RELATED_VISUAL_CANDIDATE,
+    ]);
+    return cmsSrc && !blocked.has(cmsSrc) ? cmsSrc : "";
+  })();
+  const frameworkTitle =
+    fromCms &&
+    cms.readiness.title.trim() &&
+    !/คำค้นถึงการจอง|Search-to-Booking|Objective-to-Booking Readiness Framework/.test(cms.readiness.title)
+      ? cms.readiness.title
+      : locale === "th"
+        ? "กรอบความพร้อม Meta Ads"
+        : "Meta Ads Readiness Framework";
+  const frameworkLead =
+    fromCms && cms.readiness.body.trim() && !/จากคำค้น|Search-to-Booking/.test(cms.readiness.body)
+      ? cms.readiness.body
+      : locale === "th"
+        ? "รวมปัญหาที่พบซ้ำ — เป้าหมาย กลุ่มลูกค้า ครีเอทีฟ หน้าปลายทาง เส้นทางสอบถามหรือจอง และการวัดผล — ไว้ในตารางเดียว ก่อนขยายงบ"
+        : "Bring the repeated issues — objective, audience, creative, landing page, enquiry or booking path, and measurement — into one matrix before extra spend.";
+  const channelRows = (() => {
+    const fallback = META_SCENARIO_ROWS.map((row) => ({
+      id: row.id,
+      channel: row.channel,
+      useCase: thai ? row.useCaseTh : row.useCaseEn,
+      control: thai ? row.controlTh : row.controlEn,
+      input: thai ? row.inputTh : row.inputEn,
+      output: thai ? row.outputTh : row.outputEn,
+      kpi: thai ? row.kpiTh : row.kpiEn,
+    }));
+    if (!fromCms || !cms.channels.rows.length) return fallback;
+    const mapped = cms.channels.rows
+      .map((item) => ({
+        id: item.id,
+        channel: item.channel.trim(),
+        useCase: (item.useCase || item.role).trim(),
+        control: item.control.trim(),
+        input: (item.input || item.need).trim(),
+        output: item.output.trim(),
+        kpi: item.kpi.trim(),
+      }))
+      .filter((row) => row.channel && row.useCase && (row.input || row.control) && row.output && row.kpi);
+    const stale =
+      mapped.length !== META_SCENARIO_ROWS.length || metaObjectiveRowsAreStale(mapped);
+    return !stale && mapped.length ? mapped : fallback;
+  })();
+  const channelSrc = (() => {
+    const cmsSrc = cms.channels.visual.src.trim();
+    const blocked = new Set([
+      "",
+      heroSrc,
+      visibilitySrc,
+      frameworkSrc,
+      META_HERO_VISUAL_CANDIDATE,
+      META_AUDIENCE_VISUAL_CANDIDATE,
+      META_AUDIENCE_VISUAL_LEGACY,
+      META_FRAMEWORK_VISUAL_CANDIDATE,
+      META_SCENARIO_VISUAL_CANDIDATE,
+      META_SCENARIO_VISUAL_LEGACY,
+      META_RELATED_VISUAL_CANDIDATE,
+    ]);
+    return cmsSrc && !blocked.has(cmsSrc) ? cmsSrc : "";
+  })();
+  const usingDummyChannel = !channelSrc;
+  const channelTitle =
+    fromCms &&
+    cms.channels.title.trim() &&
+    !/ช่องทางไหน|Which path|Awareness vs|Leads vs|Traffic vs/.test(cms.channels.title)
+      ? cms.channels.title
+      : t.channelTitle;
+  const channelLabel = usingDummyChannel
+    ? thai
+      ? META_SCENARIO_VISUAL.label.th
+      : META_SCENARIO_VISUAL.label.en
+    : cms.channels.visual.label.trim() || (thai ? META_SCENARIO_VISUAL.label.th : META_SCENARIO_VISUAL.label.en);
+  const channelCaption = usingDummyChannel
+    ? thai
+      ? META_SCENARIO_VISUAL.caption.th
+      : META_SCENARIO_VISUAL.caption.en
+    : cms.channels.visual.caption.trim() || (thai ? META_SCENARIO_VISUAL.caption.th : META_SCENARIO_VISUAL.caption.en);
+  const workflowSteps = (() => {
+    const fallback = META_WORKFLOW_STEPS.map((step) => ({
+      id: step.id,
+      number: step.number,
+      title: thai ? step.titleTh : step.titleEn,
+      owner: thai ? step.ownerTh : step.ownerEn,
+      input: thai ? step.inputTh : step.inputEn,
+      action: thai ? step.actionTh : step.actionEn,
+      output: thai ? step.outputTh : step.outputEn,
+      nextDecision: thai ? step.nextDecisionTh : step.nextDecisionEn,
+    }));
+    if (!fromCms || !cms.workflow.steps.length) return fallback;
+    const mapped = cms.workflow.steps
+      .map((item) => ({
+        id: item.id,
+        number: item.number.trim() || "00",
+        title: item.title.trim(),
+        owner: item.owner.trim(),
+        input: item.input.trim(),
+        action: item.action.trim(),
+        output: item.output.trim(),
+        nextDecision: (item.nextDecision || item.handoff).trim(),
+      }))
+      .filter((step) => step.title && step.owner && step.input && step.action && step.output && step.nextDecision);
+    const stale = mapped.length !== META_WORKFLOW_STEPS.length || metaWorkflowStepsAreStale(mapped);
+    return !stale && mapped.length ? mapped : fallback;
+  })();
+  const workflowSrc = (() => {
+    const cmsSrc = cms.workflow.visual.src.trim();
+    const blocked = new Set([
+      "",
+      heroSrc,
+      visibilitySrc,
+      frameworkSrc,
+      channelSrc,
+      META_HERO_VISUAL_CANDIDATE,
+      META_AUDIENCE_VISUAL_CANDIDATE,
+      META_FRAMEWORK_VISUAL_CANDIDATE,
+      META_SCENARIO_VISUAL_CANDIDATE,
+      META_WORKFLOW_VISUAL_CANDIDATE,
+      META_RELATED_VISUAL_CANDIDATE,
+      META_HOTEL_SCENARIO_VISUAL_CANDIDATE,
+    ]);
+    return cmsSrc && !blocked.has(cmsSrc) ? cmsSrc : "";
+  })();
+  const usingDummyWorkflow = !workflowSrc;
+  const workflowTitle =
+    fromCms &&
+    cms.workflow.title.trim() &&
+    !/ห้าขั้น|five steps|Structure, Launch/.test(cms.workflow.title)
+      ? cms.workflow.title
+      : t.methodTitle;
+  const workflowLabel = usingDummyWorkflow
+    ? thai
+      ? META_WORKFLOW_VISUAL.label.th
+      : META_WORKFLOW_VISUAL.label.en
+    : cms.workflow.visual.label.trim() || (thai ? META_WORKFLOW_VISUAL.label.th : META_WORKFLOW_VISUAL.label.en);
+  const workflowCaption = usingDummyWorkflow
+    ? thai
+      ? META_WORKFLOW_VISUAL.caption.th
+      : META_WORKFLOW_VISUAL.caption.en
+    : cms.workflow.visual.caption.trim() || (thai ? META_WORKFLOW_VISUAL.caption.th : META_WORKFLOW_VISUAL.caption.en);
+  const creativeRows = (() => {
+    const fallback = defaultMetaCreativeRows(locale);
+    if (!fromCms || !cms.creative?.rows?.length) return fallback;
+    const mapped = cms.creative.rows.map((item) => ({
+      id: item.id,
+      audience: item.audience.trim(),
+      market: item.market.trim(),
+      hook: item.hook.trim(),
+      offer: item.offer.trim(),
+      format: item.format,
+      formatLabel: item.formatLabel.trim(),
+      landing: item.landing.trim(),
+      kpi: item.kpi.trim(),
+      status: item.status,
+      assetSrc: metaCreativePublicAssetSrc(item.assetSrc),
+      assetKind: item.assetKind,
+      assetAlt: item.assetAlt.trim(),
+    }));
+    const stale = metaCreativeRowsAreStale(mapped);
+    const ready = mapped.filter((row) => row.status !== "archived" && row.audience && row.hook && row.format && row.landing && row.kpi);
+    return !stale && ready.length ? ready : fallback;
+  })();
+  const creativeTitle =
+    fromCms && cms.creative?.title.trim() && !/related reading|เรื่องที่เกี่ยวข้อง/i.test(cms.creative.title)
+      ? cms.creative.title
+      : t.creativeTitle;
+  const creativeLead =
+    fromCms && cms.creative?.body.trim() && !/related reading|เรื่องที่เกี่ยวข้อง/i.test(cms.creative.body)
+      ? cms.creative.body
+      : t.creativeLead;
+  const evidenceKpis = (metaKpiCatalogIsStale(cms.publicKpis) ? [] : cms.publicKpis).map((kpi) => ({
+    id: kpi.id,
+    name: kpi.name,
+    group: kpi.group,
+    objective: kpi.objective || kpi.context,
+    market: kpi.market,
+    definition: kpi.definition,
+    unit: kpi.unit,
+    period: kpi.period,
+    target: kpi.target,
+    value: kpi.value.trim() || (metaKpiSeriesReady(kpi.labels, kpi.values) ? String(kpi.values[kpi.values.length - 1]) : ""),
+    context: kpi.context,
+    dataStatus: kpi.dataStatus,
+    updatedAt: kpi.updatedAt,
+  }));
+  const evidenceSeries = (metaKpiCatalogIsStale(cms.publicKpis) ? [] : cms.publicKpis)
+    .filter((kpi) => metaKpiSeriesReady(kpi.labels, kpi.values))
+    .map((kpi) => ({
+      id: kpi.id,
+      name: kpi.name,
+      labels: kpi.labels,
+      values: kpi.values,
+      target: kpi.target,
+      tone: kpi.tone,
+      dataStatus: kpi.dataStatus,
+    }));
+  const kpiSrc = (() => {
+    const cmsSrc = cms.measure.visual.src.trim();
+    const blocked = new Set([
+      "",
+      heroSrc,
+      visibilitySrc,
+      frameworkSrc,
+      channelSrc,
+      workflowSrc,
+      META_HERO_VISUAL_CANDIDATE,
+      META_AUDIENCE_VISUAL_CANDIDATE,
+      META_FRAMEWORK_VISUAL_CANDIDATE,
+      META_SCENARIO_VISUAL_CANDIDATE,
+      META_WORKFLOW_VISUAL_CANDIDATE,
+      META_KPI_VISUAL_CANDIDATE,
+      META_RELATED_VISUAL_CANDIDATE,
+      META_HOTEL_SCENARIO_VISUAL_CANDIDATE,
+    ]);
+    return cmsSrc && !blocked.has(cmsSrc) ? cmsSrc : "";
+  })();
+  const hotelScenarioTitle =
+    fromCms && cms.scenario?.title.trim()
+      ? cms.scenario.title
+      : fromCms && cms.related.title.trim() && /สถานการณ์จริง|real situation|Hotel Scenario/i.test(cms.related.title)
+        ? cms.related.title
+        : t.relatedTitle;
+  const relatedReadingTitle =
+    fromCms &&
+    cms.related.title.trim() &&
+    /เรื่องที่เกี่ยวข้อง|Related reading|Meta Ads and hotel marketing|การตลาดโรงแรม/i.test(cms.related.title) &&
+    !/สถานการณ์จริง|real situation|Hotel Scenario/i.test(cms.related.title)
+      ? cms.related.title
+      : t.relatedReadingTitle;
+  const faqItems = fromCms && cms.faqs.length && !metaFaqsAreStale(cms.faqs) ? cms.faqs : metaFaqs(locale);
+  const relatedSrc = (() => {
+    const cmsSrc = cms.related.visual.src.trim();
+    const blocked = new Set([
+      "",
+      heroSrc,
+      visibilitySrc,
+      frameworkSrc,
+      channelSrc,
+      workflowSrc,
+      kpiSrc,
+      META_HERO_VISUAL_CANDIDATE,
+      META_AUDIENCE_VISUAL_CANDIDATE,
+      META_AUDIENCE_VISUAL_LEGACY,
+      META_FRAMEWORK_VISUAL_CANDIDATE,
+      META_SCENARIO_VISUAL_CANDIDATE,
+      META_WORKFLOW_VISUAL_CANDIDATE,
+      META_KPI_VISUAL_CANDIDATE,
+      META_RELATED_VISUAL_CANDIDATE,
+      META_HOTEL_SCENARIO_VISUAL_CANDIDATE,
+    ]);
+    return cmsSrc && !blocked.has(cmsSrc) ? cmsSrc : "";
+  })();
+  const usingDummyRelated = !relatedSrc;
+  const scenarioSrc = (() => {
+    const cmsSrc = cms.scenario?.visual.src.trim() || "";
+    const blocked = new Set([
+      "",
+      heroSrc,
+      visibilitySrc,
+      frameworkSrc,
+      channelSrc,
+      workflowSrc,
+      kpiSrc,
+      relatedSrc,
+      META_HERO_VISUAL_CANDIDATE,
+      META_AUDIENCE_VISUAL_CANDIDATE,
+      META_FRAMEWORK_VISUAL_CANDIDATE,
+      META_SCENARIO_VISUAL_CANDIDATE,
+      META_WORKFLOW_VISUAL_CANDIDATE,
+      META_KPI_VISUAL_CANDIDATE,
+      META_RELATED_VISUAL_CANDIDATE,
+      META_HOTEL_SCENARIO_VISUAL_CANDIDATE,
+    ]);
+    return cmsSrc && !blocked.has(cmsSrc) ? cmsSrc : "";
+  })();
+  const usingDummyHotelScenario = !scenarioSrc;
+  const relatedCards = cms.related.cards;
+  const featuredRelated = relatedCards.find((card) => card.featured) ?? relatedCards[0];
+  const supportingRelated = relatedCards.filter((card) => card.id !== featuredRelated?.id);
+  const relatedLabel = usingDummyRelated
+    ? thai
+      ? META_RELATED_VISUAL.label.th
+      : META_RELATED_VISUAL.label.en
+    : cms.related.visual.label.trim() || (thai ? META_RELATED_VISUAL.label.th : META_RELATED_VISUAL.label.en);
+  const relatedCaption = usingDummyRelated
+    ? thai
+      ? META_RELATED_VISUAL.caption.th
+      : META_RELATED_VISUAL.caption.en
+    : cms.related.visual.caption.trim() || (thai ? META_RELATED_VISUAL.caption.th : META_RELATED_VISUAL.caption.en);
+  const hotelScenarioRows =
+    fromCms && cms.scenario?.rows?.length
+      ? cms.scenario.rows.map((row) => ({
+          id: row.id,
+          situation: row.situation,
+          question: row.question,
+          action: row.action,
+          output: row.output,
+          next: row.next,
+        }))
+      : META_HOTEL_SCENARIO_ROWS.map((row) => ({
+          id: row.id,
+          situation: thai ? row.situationTh : row.situationEn,
+          question: thai ? row.questionTh : row.questionEn,
+          action: thai ? row.actionTh : row.actionEn,
+          output: thai ? row.outputTh : row.outputEn,
+          next: thai ? row.nextTh : row.nextEn,
+        }));
+  const hotelScenarioLabel = usingDummyHotelScenario
+    ? thai
+      ? META_HOTEL_SCENARIO_VISUAL.label.th
+      : META_HOTEL_SCENARIO_VISUAL.label.en
+    : cms.scenario.visual.label.trim() || (thai ? META_HOTEL_SCENARIO_VISUAL.label.th : META_HOTEL_SCENARIO_VISUAL.label.en);
+  const hotelScenarioCaption = usingDummyHotelScenario
+    ? thai
+      ? META_HOTEL_SCENARIO_VISUAL.caption.th
+      : META_HOTEL_SCENARIO_VISUAL.caption.en
+    : cms.scenario.visual.caption.trim() || (thai ? META_HOTEL_SCENARIO_VISUAL.caption.th : META_HOTEL_SCENARIO_VISUAL.caption.en);
+  const hasApprovedKpis = evidenceKpis.length > 0;
+  const usingDummyKpi = !kpiSrc;
+  const kpiLabel = usingDummyKpi
+    ? thai
+      ? META_KPI_VISUAL.label.th
+      : META_KPI_VISUAL.label.en
+    : cms.measure.visual.label.trim() || (thai ? META_KPI_VISUAL.label.th : META_KPI_VISUAL.label.en);
+  const kpiCaption = usingDummyKpi
+    ? thai
+      ? META_KPI_VISUAL.caption.th
+      : META_KPI_VISUAL.caption.en
+    : cms.measure.visual.caption.trim() || (thai ? META_KPI_VISUAL.caption.th : META_KPI_VISUAL.caption.en);
+  const inner = (
+    <>
       <section className="kpi-hero kpi-home-hero-section kpi-meta-ads-hero">
         <div className="kpi-wrap">
           <nav aria-label="Breadcrumb" className="kpi-meta-ads-hero-crumb">
@@ -282,497 +837,418 @@ export function MetaAdsView({ locale }: { locale: Locale }) {
           </nav>
           <div className="kpi-home-hero">
             <div className="kpi-home-hero-copy">
-              <p className="kpi-home-eyebrow kpi-latin">Social Demand &amp; Direct Response</p>
+              <p className="kpi-home-eyebrow kpi-latin">{fromCms && cms.hero.eyebrow.trim() ? cms.hero.eyebrow : t.eyebrow}</p>
               <h1 className="kpi-h1 kpi-home-h1">
-                {locale === "th" ? (
+                {useSplitThaiTitle ? (
                   <>
                     <span className="kpi-home-h1-lead">ทำให้คนที่ใช่เห็นโรงแรมของคุณ</span>
-                    <span className="kpi-home-h1-rest">แล้วมีเหตุผลที่จะ</span>
-                    <span className="kpi-home-h1-close kpi-home-accent">สอบถามหรือจอง</span>
+                    <span className="kpi-home-h1-rest">
+                      แล้วมีเหตุผลที่จะสอบถาม
+                      <span className="kpi-home-h1-close">หรือจอง</span>
+                    </span>
                   </>
                 ) : (
-                  t.title
+                  heroTitle
                 )}
               </h1>
-              {locale === "th" ? (
+              {locale === "th" && heroLead === copy.th.lead ? (
                 <p className="kpi-lead kpi-home-lead">
                   <span className="kpi-meta-ads-lead-line">
-                    <span className="kpi-latin">Meta Ads</span> ไม่ควรวัดแค่ยอดเห็น หรือยอดกดถูกใจ
+                    <span className="kpi-latin">Meta Ads</span> เริ่มจากเป้าหมายธุรกิจที่ชัด กลุ่มลูกค้าและครีเอทีฟต้องเข้ากับตลาดของโรงแรม
                   </span>
                   <span className="kpi-meta-ads-lead-line">
-                    เราวางตั้งแต่กลุ่มลูกค้า คอนเทนต์ และข้อเสนอ ไปจนถึงเส้นทางหลังคลิก เพื่อให้ความสนใจมีโอกาสกลายเป็น การสอบถามหรือยอดจอง
+                    โฆษณาต้องพาไปหน้าโรงแรมหรือข้อเสนอที่เกี่ยวข้อง และเส้นทางสอบถามหรือจองตรงควรวัดผลได้{" "}
+                    <span className="kpi-latin">The KPI Plus</span> ช่วยทบทวนและปรับเมื่อโรงแรมอนุมัติให้ใช้บริการ
                   </span>
                 </p>
               ) : (
-                <p className="kpi-lead kpi-home-lead">{t.lead}</p>
+                <p className="kpi-lead kpi-home-lead">{heroLead}</p>
               )}
               <div className="kpi-actions">
-                <a href="#meta-ads-enquiry" className="kpi-button">
-                  {locale === "th" ? (
-                    <>
-                      ดูโอกาสเพิ่ม <span className="kpi-latin">Enquiry</span> และ <span className="kpi-latin">Booking</span>
-                    </>
-                  ) : (
-                    t.cta
-                  )}{" "}
+                <a href={fromCms ? cms.hero.primaryCta.href || "#meta-ads-enquiry" : "#meta-ads-enquiry"} className="kpi-button">
+                  {heroCta}{" "}
                   <span aria-hidden="true">↗</span>
                 </a>
-                <Link href={solutions} className="kpi-button-ghost">
-                  {t.secondary}
+                <Link href={fromCms ? localizePath(cms.hero.secondaryCta.href || "/solutions", locale) : solutions} className="kpi-button-ghost">
+                  {heroSecondary}
                 </Link>
               </div>
-              <p className="kpi-meta-ads-hero-note">
-                {locale === "th" ? (
-                  <>
-                    ส่งชื่อโรงแรม เว็บไซต์หรือเพจ
-                    <span className="kpi-meta-ads-hero-note-br"> </span>
-                    เพื่อให้ทีมดูจุดเริ่มต้น
-                  </>
-                ) : (
-                  t.underCta
-                )}
-              </p>
+              <p className="kpi-meta-ads-hero-under">{heroUnder}</p>
               <p className="kpi-home-trust kpi-meta-ads-journey">
-                {(locale === "th"
-                  ? (["กลุ่มลูกค้า", "คอนเทนต์", "หน้าเว็บ / แชต", "Enquiry", "Booking"] as const)
-                  : (["Audience", "Content", "Page / Chat", "Enquiry", "Booking"] as const)
-                ).map((step, index) => (
+                {t.flow.map((step, index) => (
                   <span key={step}>
-                    <span className="kpi-latin">{String(index + 1).padStart(2, "0")}</span>{" "}
-                    {step === "Enquiry" || step === "Booking" ? <span className="kpi-latin">{step}</span> : step}
+                    <span className="kpi-latin">{String(index + 1).padStart(2, "0")}</span> {step}
                   </span>
                 ))}
               </p>
             </div>
-            <div className="kpi-hero-visual kpi-home-photo">
-              <img src="/media/meta-ads-hero-phone.jpg" alt={t.photoAlt} width={1200} height={900} />
+            <div className="kpi-meta-ads-hero-visual">
+              <MetaHeroVisual
+                locale={locale}
+                src={heroSrc}
+                status={usingDummyHero ? "sample" : heroVisual.status || "sample"}
+                alt={
+                  usingDummyHero
+                    ? thai
+                      ? META_HERO_VISUAL.alt.th
+                      : META_HERO_VISUAL.alt.en
+                    : thai
+                      ? heroVisual.altTh || META_HERO_VISUAL.alt.th
+                      : heroVisual.altEn || META_HERO_VISUAL.alt.en
+                }
+                label={heroLabel}
+                caption={heroCaption}
+                meta={thai ? META_HERO_VISUAL.meta.th : META_HERO_VISUAL.meta.en}
+              />
             </div>
           </div>
         </div>
       </section>
 
-      <section className="kpi-section kpi-meta-ads-audience">
-        <div className="kpi-meta-ads-audience-grid">
-          <div className="kpi-meta-ads-audience-copy">
+      <section className="kpi-section kpi-meta-ads-compare">
+        <div className="kpi-meta-ads-compare-grid">
+          <div className="kpi-meta-ads-compare-copy">
             <h2 className="kpi-h2">
-              {locale === "th" ? (
+              {useSplitThaiWhy ? (
                 <>
-                  <span className="kpi-meta-ads-audience-line">ลูกค้าอยู่บนแพลตฟอร์ม</span>
-                  <span className="kpi-meta-ads-audience-br"> </span>
-                  <span className="kpi-meta-ads-audience-line">
-                    แต่<span className="kpi-meta-ads-audience-em">การเข้าถึงอย่างเดียวไม่พอ</span>
-                  </span>
+                  <span className="kpi-meta-ads-compare-line">ลูกค้าอยู่บนแพลตฟอร์ม</span>
+                  <span className="kpi-meta-ads-compare-br"> </span>
+                  <span className="kpi-meta-ads-compare-line">แต่การเข้าถึงอย่างเดียวไม่พอ</span>
                 </>
               ) : (
-                t.whyTitle
+                visibilityTitle
               )}
             </h2>
-            <div className="kpi-meta-ads-audience-stats">
-              <article>
-                <p className="kpi-meta-ads-audience-platform">
-                  <img src="/brand/meta/facebook.svg" alt="" width={22} height={22} />
-                  <span className="kpi-latin">Facebook</span>
-                </p>
-                <p className="kpi-meta-ads-audience-number kpi-latin">
-                  {locale === "th" ? (
-                    <>
-                      51.5 <span>ล้าน</span>
-                    </>
-                  ) : (
-                    t.facebookStat
-                  )}
-                </p>
-                <p className="kpi-meta-ads-audience-label">
-                  {locale === "th" ? "ขนาดกลุ่มเป้าหมายโฆษณาในไทย" : t.facebookLabel}
-                </p>
-              </article>
-              <article>
-                <p className="kpi-meta-ads-audience-platform">
-                  <img src="/brand/meta/instagram.svg" alt="" width={22} height={22} />
-                  <span className="kpi-latin">Instagram</span>
-                </p>
-                <p className="kpi-meta-ads-audience-number kpi-latin">
-                  {locale === "th" ? (
-                    <>
-                      20.6 <span>ล้าน</span>
-                    </>
-                  ) : (
-                    t.instagramStat
-                  )}
-                </p>
-                <p className="kpi-meta-ads-audience-label">
-                  {locale === "th" ? "ขนาดกลุ่มเป้าหมายโฆษณาในไทย" : t.instagramLabel}
-                </p>
-              </article>
-            </div>
-            {locale === "th" ? (
-              <div className="kpi-meta-ads-audience-body">
-                <p>
-                  <span className="kpi-latin">Reach</span> บอกได้ว่ามีโอกาสเข้าถึงคนมากแค่ไหน
-                </p>
-                <p className="kpi-meta-ads-audience-body-strong">
-                  แต่ผลลัพธ์จริงอยู่ที่ว่า คนที่เห็นแล้วสนใจ คลิก{" "}
-                  <span className="kpi-meta-ads-audience-em">สอบถาม หรือจองต่อ</span> หรือไม่
-                </p>
-              </div>
+            {useSplitThaiWhyBody ? (
+              <p className="kpi-meta-ads-compare-lead">
+                <span className="kpi-meta-ads-compare-lead-line">
+                  ขนาดกลุ่มเป้าหมายโฆษณาของแพลตฟอร์มบอกได้แค่ว่าในประเทศมีคนที่โฆษณาเข้าถึงได้กว้างแค่ไหน ไม่ใช่จำนวนคนที่โรงแรมอาจเข้าถึงได้
+                </span>
+                <span className="kpi-meta-ads-compare-lead-line">
+                  ไม่ใช่ยอดเห็นแคมเปญ และไม่ใช่จำนวนผู้เข้าชมเว็บหรือผลสอบถามหรือจอง โรงแรมยังต้องเลือกกลุ่มลูกค้าและความสนใจที่เข้ากับตลาด
+                  แล้ววางครีเอทีฟกับหน้าปลายทางให้คนที่สนใจไปต่อได้
+                </span>
+              </p>
             ) : (
-              <p className="kpi-meta-ads-audience-body">{t.whyBody}</p>
+              <p className="kpi-meta-ads-compare-lead">{visibilityBody}</p>
             )}
-            <p className="kpi-meta-ads-audience-source">
-              <a href="https://datareportal.com/reports/digital-2026-thailand" target="_blank" rel="noreferrer">
-                <span className="kpi-latin">Source: DataReportal Digital 2026 Thailand</span>
+          </div>
+          <MetaAudienceVisual
+            locale={locale}
+            src={visibilitySrc}
+            status={usingDummyAudience ? "sample" : visibilityVisual.status || "sample"}
+            alt={
+              usingDummyAudience
+                ? thai
+                  ? META_AUDIENCE_VISUAL.alt.th
+                  : META_AUDIENCE_VISUAL.alt.en
+                : thai
+                  ? visibilityVisual.altTh || META_AUDIENCE_VISUAL.alt.th
+                  : visibilityVisual.altEn || META_AUDIENCE_VISUAL.alt.en
+            }
+            label={visibilityLabel}
+            caption={visibilityCaption}
+            meta={thai ? META_AUDIENCE_VISUAL.meta.th : META_AUDIENCE_VISUAL.meta.en}
+          />
+          <div className="kpi-meta-ads-compare-insight">
+            <MetaAudienceInsight
+              locale={locale}
+              stats={fromCms ? cms.visibility.stats : undefined}
+              sourceLabel={fromCms ? cms.visibility.sourceLabel : undefined}
+              sourceHref={fromCms ? cms.visibility.sourceHref : undefined}
+            />
+            {t.organicNote ? <p className="kpi-meta-ads-compare-organic">{t.organicNote}</p> : null}
+            <p className="kpi-meta-ads-compare-note">{visibilityNote}</p>
+            <p className="kpi-meta-ads-compare-source">
+              <a href={fromCms && cms.visibility.sourceHref.trim() ? cms.visibility.sourceHref : dataReportalSource} target="_blank" rel="noreferrer">
+                {thai ? "ที่มา: " : "Source: "}
+                <span className="kpi-latin">{fromCms && cms.visibility.sourceLabel.trim() ? cms.visibility.sourceLabel : META_PLATFORM_AUDIENCE_SOURCE.label}</span>
               </a>
             </p>
-            <p className="kpi-meta-ads-audience-note">{t.note}</p>
           </div>
-          <figure className="kpi-meta-ads-audience-photo">
-            <img
-              src="/media/meta-ads-audience-phone.jpg"
-              alt={
-                locale === "th"
-                  ? "นักเดินทางดูเนื้อหาโรงแรมบนสมาร์ทโฟนในบรรยากาศที่พัก"
-                  : t.photoAlt
-              }
-              width={1200}
-              height={900}
-            />
-          </figure>
         </div>
       </section>
 
-      <section className="border-y border-[#E3E8EB] bg-white">
-        <div className="kpi-section kpi-meta-ads-problems">
-          <h2 className="kpi-h2">
-            {locale === "th" ? (
-              <>
-                <span className="kpi-meta-ads-problem-line">ลงโฆษณาอยู่แล้ว</span>
-                <span className="kpi-meta-ads-problem-br"> </span>
-                <span className="kpi-meta-ads-problem-line">
-                  แต่รู้หรือไม่ว่า<span className="kpi-meta-ads-problem-em">ลูกค้าไปต่ออย่างไร?</span>
-                </span>
-              </>
-            ) : (
-              t.problemTitle
-            )}
-          </h2>
-          <ol className="kpi-meta-ads-problems-list">
-            {locale === "th" ? (
-              <>
-                <li>
-                  <span className="kpi-latin">01</span>
-                  <p>
-                    มีคนเห็นโฆษณา
-                    <span className="kpi-meta-ads-problem-br"> </span>
-                    แต่ยังไม่รู้ว่า<span className="kpi-meta-ads-problem-em">กี่คนสอบถามหรือจองต่อ</span>
-                  </p>
-                </li>
-                <li>
-                  <span className="kpi-latin">02</span>
-                  <p>
-                    ใช้ภาพและข้อความแบบเดียว
-                    <span className="kpi-meta-ads-problem-br"> </span>
-                    กับ<span className="kpi-meta-ads-problem-em">ลูกค้าทุกกลุ่ม</span>
-                  </p>
-                </li>
-                <li>
-                  <span className="kpi-latin">03</span>
-                  <p>
-                    มีห้องว่างบางช่วง
-                    <span className="kpi-meta-ads-problem-br"> </span>
-                    แต่ข้อเสนอ<span className="kpi-meta-ads-problem-em">ยังไปไม่ถึงกลุ่มที่เหมาะสม</span>
-                  </p>
-                </li>
-                <li>
-                  <span className="kpi-latin">04</span>
-                  <p>
-                    คนคลิกแล้ว
-                    <span className="kpi-meta-ads-problem-br"> </span>
-                    แต่หาข้อมูล ราคา หรือ<span className="kpi-meta-ads-problem-em">ช่องทางติดต่อไม่เจอ</span>
-                  </p>
-                </li>
-                <li>
-                  <span className="kpi-latin">05</span>
-                  <p>
-                    คนเคยสนใจโรงแรมแล้ว
-                    <span className="kpi-meta-ads-problem-br"> </span>
-                    แต่ยังไม่มี<span className="kpi-meta-ads-problem-em">แผนติดตามที่เหมาะสม</span>
-                  </p>
-                </li>
-              </>
-            ) : (
-              t.problems.map((problem, index) => (
-                <li key={problem}>
-                  <span className="kpi-latin">{String(index + 1).padStart(2, "0")}</span>
-                  <p>{problem}</p>
-                </li>
-              ))
-            )}
-          </ol>
-          {locale === "th" ? (
-            <p className="kpi-meta-ads-problem-close">
-              <span>การเห็นโฆษณาเป็นเพียงจุดเริ่มต้น</span>
-              <span className="kpi-meta-ads-problem-close-strong">
-                สิ่งสำคัญคือรู้ว่า <span className="kpi-meta-ads-problem-em">ลูกค้าเดินต่อไปถึงไหน</span>
-              </span>
-            </p>
-          ) : (
-            <p className="kpi-meta-ads-problem-close">{t.problemClose}</p>
-          )}
-          <a href="#meta-ads-enquiry" className="kpi-button">
-            {locale === "th" ? (
-              <>
-                ให้ทีมดูเส้นทางลูกค้าจาก <span className="kpi-latin">Meta Ads</span>
-              </>
-            ) : (
-              t.problemCta
-            )}{" "}
-            <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </section>
-
-      <section className="kpi-section kpi-meta-ads-help">
-        <h2 className="kpi-h2">
-          {locale === "th" ? (
-            <>
-              เชื่อมโฆษณากับ<span className="kpi-meta-ads-help-em">เป้าหมายการขาย</span>ของโรงแรม
-            </>
-          ) : (
-            t.helpTitle
-          )}
-        </h2>
-        <ol className="kpi-meta-ads-help-steps">
-          {locale === "th" ? (
-            <>
-              <li>
-                <span className="kpi-latin kpi-meta-ads-help-num">01</span>
-                <h3>
-                  วาง<span className="kpi-meta-ads-help-em">เป้าหมายและกลุ่มลูกค้า</span>
-                </h3>
-                <p>
-                  ดูว่าโรงแรมต้องการเพิ่มการรับรู้
-                  <span className="kpi-meta-ads-help-br"> </span>
-                  เติมยอดในช่วงไหน
-                  <span className="kpi-meta-ads-help-br"> </span>
-                  หรือพาลูกค้าเข้าสู่ช่องทางจอง
-                </p>
-              </li>
-              <li>
-                <span className="kpi-latin kpi-meta-ads-help-num">02</span>
-                <h3>
-                  สื่อสาร<span className="kpi-meta-ads-help-em">จุดเด่นและข้อเสนอ</span>
-                </h3>
-                <p>
-                  นำห้องพัก ประสบการณ์
-                  <span className="kpi-meta-ads-help-br"> </span>
-                  และช่วงเวลาที่ต้องการขาย
-                  <span className="kpi-meta-ads-help-br"> </span>
-                  มาจับคู่กับข้อความและกลุ่มลูกค้าที่เหมาะสม
-                </p>
-              </li>
-              <li>
-                <span className="kpi-latin kpi-meta-ads-help-num">03</span>
-                <h3>
-                  ตรวจ<span className="kpi-meta-ads-help-em">เส้นทางหลังคลิก</span>
-                </h3>
-                <p>
-                  ดูว่าหลังจากเห็นโฆษณา
-                  <span className="kpi-meta-ads-help-br"> </span>
-                  ลูกค้าไปต่อที่เว็บไซต์ แชต
-                  <span className="kpi-meta-ads-help-br"> </span>
-                  หรือระบบจองได้สะดวกแค่ไหน
-                </p>
-              </li>
-              <li>
-                <span className="kpi-latin kpi-meta-ads-help-num">04</span>
-                <h3>ทบทวนผลและปรับแผน</h3>
-                <p>
-                  ดูทั้งผลโฆษณา คุณภาพคำถาม
-                  <span className="kpi-meta-ads-help-br"> </span>
-                  และ<span className="kpi-meta-ads-help-em">ยอดจองที่ตรวจสอบได้</span>
-                  <span className="kpi-meta-ads-help-br"> </span>
-                  เพื่อเลือกสิ่งที่ควรทำต่อ
-                </p>
-              </li>
-            </>
-          ) : (
-            t.help.map(([num, title, body]) => (
-              <li key={num}>
-                <span className="kpi-latin kpi-meta-ads-help-num">{num}</span>
-                <h3>{title}</h3>
-                <p>{body}</p>
-              </li>
-            ))
-          )}
-        </ol>
-        <a href="#meta-ads-enquiry" className="kpi-button">
-          {locale === "th" ? (
-            <>
-              ให้ทีมประเมินแนวทาง <span className="kpi-latin">Meta Ads</span>
-            </>
-          ) : (
-            t.cta
-          )}{" "}
-          <span aria-hidden="true">↗</span>
+      <section className="kpi-section kpi-meta-ads-framework">
+        <p className="kpi-latin kpi-meta-ads-readiness-kicker">Meta Ads Readiness Framework</p>
+        <h2 className="kpi-h2">{frameworkTitle}</h2>
+        <p className="kpi-meta-ads-readiness-lead">{frameworkLead}</p>
+        <MetaFrameworkMatrix locale={locale} rows={frameworkRows} />
+        <MetaFrameworkVisual
+          locale={locale}
+          src={frameworkSrc}
+          rows={frameworkRows}
+          status={frameworkSrc ? cms.readiness.visual.status || "sample" : "sample"}
+          alt={thai ? META_READINESS_VISUAL.alt.th : META_READINESS_VISUAL.alt.en}
+          label={thai ? META_READINESS_VISUAL.label.th : META_READINESS_VISUAL.label.en}
+          caption={thai ? META_READINESS_VISUAL.caption.th : META_READINESS_VISUAL.caption.en}
+          meta={thai ? META_READINESS_VISUAL.meta.th : META_READINESS_VISUAL.meta.en}
+        />
+        <a href="#meta-ads-enquiry" className="kpi-button kpi-meta-ads-framework-cta">
+          {t.problemCta} <span aria-hidden="true">↗</span>
         </a>
       </section>
 
-      <section className="kpi-meta-ads-method border-y border-[#E3E8EB] bg-white">
-        <div className="kpi-section">
-          <p className="kpi-latin kpi-meta-ads-method-eyebrow">How we start</p>
-          <h2 className="kpi-h2">{t.methodTitle}</h2>
-          <ol className="kpi-meta-ads-method-list">
-            {locale === "th"
-              ? thaiMethodSteps.map((step, index) => (
-                  <li key={step.num} className="kpi-meta-ads-method-step">
-                    <span className="kpi-latin kpi-meta-ads-method-num">{step.num}</span>
-                    <div className="kpi-meta-ads-method-copy">
-                      <p className="kpi-latin kpi-meta-ads-method-phase">
-                        {step.num} / {methodPhases[index]}
-                      </p>
-                      <h3>{step.title}</h3>
-                      <p className="kpi-meta-ads-method-body">
-                        {step.lines.map((line, lineIndex) => (
-                          <span key={line}>
-                            {lineIndex > 0 ? <span className="kpi-meta-ads-method-br"> </span> : null}
-                            {line}
-                          </span>
-                        ))}
-                      </p>
-                    </div>
-                  </li>
-                ))
-              : t.steps.map(([num, title, body], index) => (
-                  <li key={num} className="kpi-meta-ads-method-step">
-                    <span className="kpi-latin kpi-meta-ads-method-num">{num}</span>
-                    <div className="kpi-meta-ads-method-copy">
-                      <p className="kpi-latin kpi-meta-ads-method-phase">
-                        {num} / {methodPhases[index]}
-                      </p>
-                      <h3>{title}</h3>
-                      <p className="kpi-meta-ads-method-body">{body}</p>
-                    </div>
-                  </li>
-                ))}
-          </ol>
+      <section className="border-y border-[#E3E8EB] bg-white">
+        <div className="kpi-section kpi-meta-ads-channels">
+          <p className="kpi-latin kpi-meta-ads-channels-kicker-section">Objective-to-Booking Map</p>
+          <h2 className="kpi-h2">{channelTitle}</h2>
+          <p className="kpi-meta-ads-channels-lead">{t.channelLead}</p>
+          <MetaScenarioMatrix locale={locale} rows={channelRows} />
+          <MetaScenarioVisual
+            locale={locale}
+            src={channelSrc}
+            rows={channelRows}
+            status={usingDummyChannel ? "sample" : cms.channels.visual.status || "sample"}
+            alt={
+              usingDummyChannel
+                ? thai
+                  ? META_SCENARIO_VISUAL.alt.th
+                  : META_SCENARIO_VISUAL.alt.en
+                : thai
+                  ? cms.channels.visual.altTh || META_SCENARIO_VISUAL.alt.th
+                  : cms.channels.visual.altEn || META_SCENARIO_VISUAL.alt.en
+            }
+            label={channelLabel}
+            caption={channelCaption}
+            meta={thai ? META_SCENARIO_VISUAL.meta.th : META_SCENARIO_VISUAL.meta.en}
+          />
+          <MetaObjectiveBoundary locale={locale} />
         </div>
       </section>
 
-      <section className="kpi-section">
-        <h2 className="kpi-h2">{t.measureTitle}</h2>
-        <p className="kpi-lead mt-5">{t.measureBody}</p>
-        <p className="mt-5 max-w-2xl text-sm leading-7 text-[#555555]">{t.measureNote}</p>
+      <section className="kpi-section kpi-meta-ads-method">
+        <p className="kpi-latin kpi-meta-ads-workflow-kicker">Campaign Workflow</p>
+        <h2 className="kpi-h2">
+          {locale === "th" && workflowTitle === copy.th.methodTitle ? (
+            <>
+              <span className="kpi-meta-ads-method-line">ดูทั้งโฆษณาและการจอง</span>
+              <span className="kpi-meta-ads-method-br"> </span>
+              <span className="kpi-meta-ads-method-line">ไม่ดูแค่จำนวนคลิก</span>
+            </>
+          ) : (
+            workflowTitle
+          )}
+        </h2>
+        <p className="kpi-meta-ads-workflow-lead">{t.methodLead}</p>
+        <MetaWorkflowSteps locale={locale} steps={workflowSteps} />
+        <MetaWorkflowVisual
+          locale={locale}
+          src={workflowSrc}
+          steps={workflowSteps}
+          status={usingDummyWorkflow ? "sample" : cms.workflow.visual.status || "sample"}
+          alt={
+            usingDummyWorkflow
+              ? thai
+                ? META_WORKFLOW_VISUAL.alt.th
+                : META_WORKFLOW_VISUAL.alt.en
+              : thai
+                ? cms.workflow.visual.altTh || META_WORKFLOW_VISUAL.alt.th
+                : cms.workflow.visual.altEn || META_WORKFLOW_VISUAL.alt.en
+          }
+          label={workflowLabel}
+          caption={workflowCaption}
+          meta={thai ? META_WORKFLOW_VISUAL.meta.th : META_WORKFLOW_VISUAL.meta.en}
+        />
+      </section>
+
+      <section className="border-y border-[#E3E8EB] bg-white">
+        <div className="kpi-section kpi-meta-ads-creative">
+          <p className="kpi-latin kpi-meta-ads-channels-kicker-section">Creative Matrix</p>
+          <h2 className="kpi-h2">{creativeTitle}</h2>
+          <p className="kpi-meta-ads-channels-lead">{creativeLead}</p>
+          <MetaCreativeMatrix locale={locale} rows={creativeRows} />
+        </div>
+      </section>
+
+      <section className="kpi-section kpi-meta-ads-measure">
+        <p className="kpi-latin kpi-meta-ads-measure-sample">KPI and Tracking</p>
+        <h2 className="kpi-h2">
+          {fromCms && cms.measure.title.trim() && !/ตัวเลขที่สำคัญกว่าคลิก|What the guest does next|Search-to-Booking/.test(cms.measure.title)
+            ? cms.measure.title
+            : t.measureTitle}
+        </h2>
+        <p className="kpi-meta-ads-measure-lead">
+          {fromCms && cms.measure.intro.trim() && !/คำค้นใดพาลูกค้า|which searches bring/.test(cms.measure.intro)
+            ? cms.measure.intro
+            : thai
+              ? "แยกตัวชี้วัดแพลตฟอร์มกับผลธุรกิจ Reach Frequency Impressions CTR และการมีส่วนร่วมไม่ใช่ผลรายได้ แสดงตัวเลขเฉพาะสถานะ Approved, Anonymised หรือ Sample ที่ติดป้ายชัดเจน"
+              : "Separate platform metrics from business metrics. Reach, Frequency, Impressions, CTR, and engagement are not a revenue result. Figures are shown only with Approved, Anonymised, or clearly labelled Sample status."}
+        </p>
+        {hasApprovedKpis ? <MetaKpiCards locale={locale} kpis={evidenceKpis} /> : <MetaKpiFramework locale={locale} />}
+        {hasApprovedKpis && evidenceSeries.length ? (
+          <MetaKpiChart locale={locale} series={evidenceSeries} />
+        ) : (
+          <MetaKpiVisual
+            locale={locale}
+            src={kpiSrc}
+            status={usingDummyKpi ? "sample" : cms.measure.visual.status || "sample"}
+            alt={
+              usingDummyKpi
+                ? thai
+                  ? META_KPI_VISUAL.alt.th
+                  : META_KPI_VISUAL.alt.en
+                : thai
+                  ? cms.measure.visual.altTh || META_KPI_VISUAL.alt.th
+                  : cms.measure.visual.altEn || META_KPI_VISUAL.alt.en
+            }
+            label={kpiLabel}
+            caption={kpiCaption}
+            meta={thai ? META_KPI_VISUAL.meta.th : META_KPI_VISUAL.meta.en}
+          />
+        )}
+        <p className="kpi-meta-ads-measure-close">{fromCms && cms.measure.close.trim() ? cms.measure.close : t.measureNote}</p>
+        {cms.checklists?.tracking?.items?.length || cms.checklists?.events?.items?.length || cms.checklists?.landing?.items?.length ? (
+          <div className="kpi-meta-ads-tracking">
+            {cms.checklists.tracking?.items?.length ? (
+              <article>
+                <h3>{cms.checklists.tracking.title || "Tracking Boundary"}</h3>
+                {cms.checklists.tracking.note ? <p>{cms.checklists.tracking.note}</p> : null}
+                <ul>
+                  {cms.checklists.tracking.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </article>
+            ) : null}
+            {cms.checklists.events?.items?.length ? (
+              <article>
+                <h3>{cms.checklists.events.title || "Supported events"}</h3>
+                {cms.checklists.events.note ? <p>{cms.checklists.events.note}</p> : null}
+                <ul>
+                  {cms.checklists.events.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </article>
+            ) : null}
+            {cms.checklists.landing?.items?.length ? (
+              <article>
+                <h3>{cms.checklists.landing.title || "Landing Page"}</h3>
+                {cms.checklists.landing.note ? <p>{cms.checklists.landing.note}</p> : null}
+                <ul>
+                  {cms.checklists.landing.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </article>
+            ) : null}
+          </div>
+        ) : null}
       </section>
 
       <section className="border-t border-[#E3E8EB] bg-white">
-        <div className="kpi-section kpi-meta-ads-related">
-          <h2 className="kpi-h2">
-            {locale === "th" ? (
-              <>
-                <span className="kpi-meta-ads-related-line">เรื่องที่เกี่ยวข้องกับการวัดผล</span>
-                <span className="kpi-meta-ads-related-br"> </span>
-                <span className="kpi-meta-ads-related-line">เว็บไซต์ และการจองตรง</span>
-              </>
-            ) : (
-              t.relatedTitle
-            )}
-          </h2>
-          <div className="kpi-meta-ads-related-layout">
-            {featuredInsight ? (
-              <article className="kpi-meta-ads-related-featured">
-                <span className="kpi-meta-ads-related-accent" aria-hidden="true" />
-                <p className="kpi-meta-ads-related-kicker">{featuredInsight.category[locale]}</p>
-                <h3>
-                  {locale === "th" ? (
-                    <>
-                      วิเคราะห์เส้นทาง <span className="kpi-latin">Direct Booking</span> ของโรงแรม
-                    </>
-                  ) : (
-                    featuredInsight.title[locale]
-                  )}
-                </h3>
-                <Link
-                  href={existingHref(featuredInsight.href, locale) ?? featuredInsight.href}
-                  className="kpi-meta-ads-related-cta"
-                >
-                  {insightsUi.read} <ArrowUpRight aria-hidden="true" />
-                </Link>
-              </article>
-            ) : null}
-            <div className="kpi-meta-ads-related-stack">
-              {seoInsight ? (
-                <article>
-                  <p className="kpi-meta-ads-related-kicker">
-                    {locale === "th" ? (
-                      <>
-                        <span className="kpi-latin">SEO</span> และ <span className="kpi-latin">LOCAL SEARCH</span>
-                      </>
-                    ) : (
-                      seoInsight.category[locale]
-                    )}
-                  </p>
-                  <h3>
-                    {locale === "th" ? (
-                      <>
-                        <span className="kpi-latin">SEO vs SEM</span> สำหรับโรงแรม:
-                        <span className="kpi-meta-ads-related-br"> </span>
-                        ควรเริ่มจากอะไรและเลือกอย่างไร?
-                      </>
-                    ) : (
-                      seoInsight.title[locale]
-                    )}
-                  </h3>
-                  <Link
-                    href={existingHref(seoInsight.href, locale) ?? seoInsight.href}
-                    className="kpi-meta-ads-related-cta"
-                  >
-                    {insightsUi.read} <ArrowUpRight aria-hidden="true" />
-                  </Link>
-                </article>
-              ) : null}
-              <article>
-                <h3>{t.toolName}</h3>
-                <p>
-                  {locale === "th" ? (
-                    <>
-                      ดูว่าหน้าเว็บพร้อมให้ลูกค้าจากโฆษณา
-                      <span className="kpi-meta-ads-related-br"> </span>
-                      หาข้อมูลและเดินทางไปสอบถามหรือจองต่อหรือไม่
-                    </>
-                  ) : (
-                    t.toolBody
-                  )}
-                </p>
-                <Link href="/tools/hotel-searchability-check" className="kpi-meta-ads-related-cta">
-                  {t.toolCta} <ArrowUpRight aria-hidden="true" />
-                </Link>
-              </article>
-              <article>
-                <h3>{t.conversionTitle}</h3>
-                <p>
-                  {locale === "th" ? (
-                    <>
-                      เมื่อโฆษณาพาคนมาแล้ว
-                      <span className="kpi-meta-ads-related-br"> </span>
-                      เส้นทางจากหน้าเว็บไปสู่การสอบถามหรือระบบจอง
-                      <span className="kpi-meta-ads-related-br"> </span>
-                      ต้องชัดพอให้ลูกค้าเดินต่อได้
-                    </>
-                  ) : (
-                    t.conversionBody
-                  )}
-                </p>
-                <Link href={conversionHref} className="kpi-meta-ads-related-cta">
-                  {t.details} <ArrowUpRight aria-hidden="true" />
-                </Link>
-              </article>
-            </div>
-          </div>
+        <div className="kpi-section kpi-meta-ads-hotel-scenario">
+          <p className="kpi-latin kpi-meta-ads-channels-kicker-section">Hotel Scenario Matrix</p>
+          <h2 className="kpi-h2">{hotelScenarioTitle}</h2>
+          <p className="kpi-meta-ads-channels-lead">{t.relatedLead}</p>
+          <MetaHotelScenarioMatrix locale={locale} rows={hotelScenarioRows} />
+          <MetaHotelScenarioVisual
+            locale={locale}
+            src={scenarioSrc}
+            rows={hotelScenarioRows}
+            status={usingDummyHotelScenario ? "sample" : cms.scenario.visual.status || "sample"}
+            alt={
+              usingDummyHotelScenario
+                ? thai
+                  ? META_HOTEL_SCENARIO_VISUAL.alt.th
+                  : META_HOTEL_SCENARIO_VISUAL.alt.en
+                : thai
+                  ? cms.scenario.visual.altTh || META_HOTEL_SCENARIO_VISUAL.alt.th
+                  : cms.scenario.visual.altEn || META_HOTEL_SCENARIO_VISUAL.alt.en
+            }
+            label={hotelScenarioLabel}
+            caption={hotelScenarioCaption}
+            meta={thai ? META_HOTEL_SCENARIO_VISUAL.meta.th : META_HOTEL_SCENARIO_VISUAL.meta.en}
+          />
         </div>
       </section>
 
-      <MetaAdsEnquiry locale={locale} />
+      {relatedCards.length ? (
+        <section className="border-t border-[#E3E8EB] bg-white">
+          <div className="kpi-section kpi-meta-ads-related">
+            <p className="kpi-latin kpi-meta-ads-channels-kicker-section">Related Content</p>
+            <h2 className="kpi-h2">{relatedReadingTitle}</h2>
+            <p className="kpi-meta-ads-channels-lead">{t.relatedReadingLead}</p>
+            <div className="kpi-meta-ads-related-layout">
+              <MetaRelatedVisual
+                locale={locale}
+                src={relatedSrc}
+                status={usingDummyRelated ? "sample" : cms.related.visual.status || "sample"}
+                alt={
+                  usingDummyRelated
+                    ? thai
+                      ? META_RELATED_VISUAL.alt.th
+                      : META_RELATED_VISUAL.alt.en
+                    : thai
+                      ? cms.related.visual.altTh || META_RELATED_VISUAL.alt.th
+                      : cms.related.visual.altEn || META_RELATED_VISUAL.alt.en
+                }
+                label={relatedLabel}
+                caption={relatedCaption}
+              />
+              {featuredRelated ? <MetaRelatedCard key={featuredRelated.id} card={featuredRelated} locale={locale} featured /> : null}
+              {supportingRelated.length ? (
+                <div className="kpi-meta-ads-related-cards">
+                  {supportingRelated.map((card) => (
+                    <MetaRelatedCard key={card.id} card={card} locale={locale} />
+                  ))}
+                </div>
+              ) : null}
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      <MetaAdsEnquiry
+        locale={locale}
+        helper={cms.form}
+        teamPhotoSrc={metaPublicTeamPhoto(fromCms ? cms.form.visual : undefined)}
+      />
+      <PageFaqs items={faqItems} locale={locale} sectionId="meta-ads-faq" />
       <MetaAdsStickyCta label={t.cta} />
+    </>
+  );
+
+  if (embedded) return inner;
+  return (
+    <SiteShell locale={locale} route={localizePath("/solutions/meta-ads-management", locale)} hideFaqs>
+      {inner}
     </SiteShell>
   );
 }
+
+function MetaRelatedCard({
+  card,
+  locale,
+  featured = false,
+}: {
+  card: CmsMetaRelatedCard;
+  locale: Locale;
+  featured?: boolean;
+}) {
+  const dateLabel = relatedCardDateLabel(card, locale);
+  const typeLabel = relatedCardTypeLabel(card);
+  const meta = dateLabel || typeLabel ? "" : card.meta;
+  const datetime = (card.updatedAt || card.publishedAt).trim();
+  return (
+    <Link href={card.href} className={`kpi-meta-ads-related-item${featured ? " is-featured" : ""}`}>
+      {featured ? <span className="kpi-meta-ads-related-accent" aria-hidden="true" /> : null}
+      {card.category ? <p className="kpi-meta-ads-related-kicker">{card.category}</p> : null}
+      <h3>{card.title}</h3>
+      {card.description ? <p>{card.description}</p> : null}
+      {dateLabel || typeLabel || meta ? (
+        <p className="kpi-meta-ads-related-meta">
+          {dateLabel ? datetime ? <time dateTime={datetime}>{dateLabel}</time> : <span>{dateLabel}</span> : null}
+          {dateLabel && typeLabel ? <span aria-hidden="true"> · </span> : null}
+          {typeLabel ? <span>{typeLabel}</span> : null}
+          {!dateLabel && !typeLabel && meta ? <span>{meta}</span> : null}
+        </p>
+      ) : null}
+      <span className="kpi-meta-ads-related-cta">
+        {card.cta} <ArrowUpRight aria-hidden="true" />
+      </span>
+    </Link>
+  );
+}
+

@@ -1413,6 +1413,25 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
   color: #1a3a02;
 }
 
+.crm-shell-meta,
+.crm-shell-ads {
+  --crm-rail-active: #a2dc25;
+}
+
+.crm-shell-meta .crm-rail-link.is-active,
+.crm-shell-meta .crm-rail-link[aria-current="page"],
+.crm-shell-ads .crm-rail-link.is-active,
+.crm-shell-ads .crm-rail-link[aria-current="page"] {
+  color: #1a3a02;
+  box-shadow: 0 10px 24px rgba(162, 220, 37, 0.35);
+}
+
+.crm-shell-meta .crm-app-sub-links a[aria-current="page"],
+.crm-shell-ads .crm-app-sub-links a[aria-current="page"] {
+  background: #a2dc25;
+  color: #1a3a02;
+}
+
 .crm-rail-link.is-active .crm-rail-chevron,
 .crm-rail-link[aria-current="page"] .crm-rail-chevron {
   opacity: 0.9;
@@ -2269,12 +2288,14 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
 }
 
 .crm-dash-module-b2b .crm-dash-module-cta,
-.crm-dash-module-ads .crm-dash-module-cta {
+.crm-dash-module-ads .crm-dash-module-cta,
+.crm-dash-module-meta .crm-dash-module-cta {
   background: #a2dc25;
   color: #1a3a02;
 }
 
-.crm-dash-module-ads .crm-dash-module-icon {
+.crm-dash-module-ads .crm-dash-module-icon,
+.crm-dash-module-meta .crm-dash-module-icon {
   background: rgba(162, 220, 37, 0.28);
   color: #1a3a02;
 }

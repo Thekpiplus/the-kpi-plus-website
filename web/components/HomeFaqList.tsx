@@ -46,7 +46,7 @@ export function HomeFaqList({ items }: { items: FaqItem[] }) {
                 id={buttonId}
                 type="button"
                 className="kpi-faq-trigger"
-                aria-expanded={expanded}
+                aria-expanded={expanded ? "true" : "false"}
                 aria-controls={panelId}
                 onClick={() => setOpen(expanded ? null : index)}
                 onKeyDown={(event) => onTriggerKeyDown(event, index)}

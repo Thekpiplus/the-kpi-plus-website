@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { B2bView } from "@/components/B2bView";
 import { GoogleAdsView } from "@/components/GoogleAdsView";
+import { MetaAdsView } from "@/components/MetaAdsView";
 import { ReservationsView } from "@/components/ReservationsView";
 import { RevenueView } from "@/components/RevenueView";
 import { PageHeader } from "@/components/crm/ui/PageHeader";
@@ -9,6 +10,8 @@ import { loadB2bPagePreview } from "@/lib/cms/b2b-page-public";
 import { isB2bPageDocument } from "@/lib/cms/b2b-page";
 import { loadGoogleAdsPagePreview } from "@/lib/cms/google-ads-page-public";
 import { isGoogleAdsPageDocument } from "@/lib/cms/google-ads-page";
+import { loadMetaAdsPagePreview } from "@/lib/cms/meta-ads-page-public";
+import { isMetaAdsPageDocument } from "@/lib/cms/meta-ads-page";
 import { loadReservationsPagePreview } from "@/lib/cms/reservations-page-public";
 import { isReservationsPageDocument } from "@/lib/cms/reservations-page";
 import { loadRevenuePagePreview } from "@/lib/cms/revenue-page-public";
@@ -29,14 +32,16 @@ export default async function PreviewCmsPage({
   const revenue = isRevenuePageDocument(document);
   const b2b = isB2bPageDocument(document);
   const googleAds = isGoogleAdsPageDocument(document);
-  if (!reservations && !revenue && !b2b && !googleAds) notFound();
+  const metaAds = isMetaAdsPageDocument(document);
+  if (!reservations && !revenue && !b2b && !googleAds && !metaAds) notFound();
 
   const preview = reservations ? await loadReservationsPagePreview(id) : null;
   const revenuePreview = revenue ? await loadRevenuePagePreview(id) : null;
   const b2bPreview = b2b ? await loadB2bPagePreview(id) : null;
   const adsPreview = googleAds ? await loadGoogleAdsPagePreview(id) : null;
-  const live = preview?.live ?? revenuePreview?.live ?? b2bPreview?.live ?? adsPreview?.live ?? false;
-  if (!preview && !revenuePreview && !b2bPreview && !adsPreview) notFound();
+  const metaPreview = metaAds ? await loadMetaAdsPagePreview(id) : null;
+  const live = preview?.live ?? revenuePreview?.live ?? b2bPreview?.live ?? adsPreview?.live ?? metaPreview?.live ?? false;
+  if (!preview && !revenuePreview && !b2bPreview && !adsPreview && !metaPreview) notFound();
   const path = documentPath(document);
   const title = reservations
     ? "ตัวอย่างหน้า Outsourced Hotel Reservations"
@@ -44,7 +49,9 @@ export default async function PreviewCmsPage({
       ? "ตัวอย่างหน้า B2B Agent Sales"
       : googleAds
         ? "ตัวอย่างหน้า Google Ads Management"
-        : "ตัวอย่างหน้า Revenue & Commercial";
+        : metaAds
+          ? "ตัวอย่างหน้า Meta Ads Management"
+          : "ตัวอย่างหน้า Revenue & Commercial";
 
   return (
     <div className="crm-cms crm-cs-preview">
@@ -77,6 +84,8 @@ export default async function PreviewCmsPage({
           <B2bView locale={b2bPreview.locale} previewContent={b2bPreview.content} embedded />
         ) : adsPreview ? (
           <GoogleAdsView locale={adsPreview.locale} previewContent={adsPreview.content} embedded />
+        ) : metaPreview ? (
+          <MetaAdsView locale={metaPreview.locale} previewContent={metaPreview.content} embedded />
         ) : null}
       </div>
     </div>

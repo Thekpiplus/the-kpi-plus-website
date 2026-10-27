@@ -65,6 +65,20 @@ const adsLinks: ContextLink[] = [
   { href: "/crm/ads/settings", label: "Settings" },
 ];
 
+const metaLinks: ContextLink[] = [
+  { href: "/crm/meta", label: "Campaigns" },
+  { href: "/crm/meta/audiences", label: "Audiences" },
+  { href: "/crm/meta/creative-matrix", label: "Creative Matrix" },
+  { href: "/crm/meta/ads", label: "Meta Ads" },
+  { href: "/crm/meta/landing-pages", label: "Landing Pages" },
+  { href: "/crm/meta/tracking", label: "Tracking & Conversions" },
+  { href: "/crm/meta/remarketing", label: "Remarketing" },
+  { href: "/crm/meta/optimization", label: "Optimization Log" },
+  { href: "/crm/meta/reports", label: "Reports / KPI" },
+  { href: "/crm/meta/approvals", label: "Approvals" },
+  { href: "/crm/meta/settings", label: "Settings" },
+];
+
 const cmsLinks = [
   { href: "/crm/cms", label: "หน้าเพจทั้งหมด" },
   { href: "/crm/cms/insights", label: "บทความ" },
@@ -77,6 +91,7 @@ const cmsLinks = [
   { href: "/crm/cms/reservations", label: "เส้นแบ่งงาน Reservations" },
   { href: "/crm/cms/b2b", label: "หน้า B2B Agent Sales" },
   { href: "/crm/cms/google-ads", label: "หน้า Google Ads Management" },
+  { href: "/crm/cms/meta-ads", label: "หน้า Meta Ads Management" },
   { href: "/crm/cms/contacts", label: "ข้อมูลติดต่อ" },
 ];
 
@@ -86,6 +101,7 @@ const contextByWorkspace: Record<Exclude<Workspace, "home">, ContextLink[]> = {
   reservations: reservationLinks,
   b2b: b2bLinks,
   ads: adsLinks,
+  meta: metaLinks,
   users: userLinks,
   cms: cmsLinks,
 };
@@ -97,6 +113,7 @@ const NAV_LABEL: Record<NavKey, string> = {
   reservations: "Reservation Operations",
   b2b: "B2B Sales Operations",
   ads: "Google Ads Operations",
+  meta: "Meta Ads Operations",
   users: "Users Management",
   cms: "Content Management",
   settings: "ตั้งค่า",
@@ -214,6 +231,7 @@ const NAV_ICON: Record<NavKey, () => ReactNode> = {
   reservations: IconReservations,
   b2b: IconB2b,
   ads: IconB2b,
+  meta: IconB2b,
   users: IconUsers,
   cms: IconCms,
   settings: IconSettings,
@@ -226,6 +244,7 @@ function workspaceOf(pathname: string): Workspace {
   if (pathname.startsWith("/crm/reservations")) return "reservations";
   if (pathname.startsWith("/crm/b2b")) return "b2b";
   if (pathname.startsWith("/crm/ads")) return "ads";
+  if (pathname.startsWith("/crm/meta")) return "meta";
   if (
     pathname.startsWith("/crm/sales") ||
     pathname.startsWith("/crm/pipeline") ||
@@ -249,6 +268,7 @@ function isCurrent(pathname: string, search: string, href: string) {
   if (path === "/crm/partners") return pathname === "/crm/partners";
   if (path === "/crm/b2b") return pathname === "/crm/b2b";
   if (path === "/crm/ads") return pathname === "/crm/ads";
+  if (path === "/crm/meta") return pathname === "/crm/meta";
   return pathname === path || pathname.startsWith(`${path}/`);
 }
 
@@ -312,6 +332,7 @@ export function CrmShell({
   const allowed = ADMIN_MODULES.filter((module) => modules.includes(module));
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [railExpanded, setRailExpanded] = useState(true);
+  const [railReady, setRailReady] = useState(false);
   const drawerId = useId();
   const newLeadOpen = searchParams.get("newLead") === "1";
   const newLeadDuplicate = searchParams.get("duplicate") || undefined;
@@ -327,15 +348,17 @@ export function CrmShell({
     } catch {
       // ignore
     }
+    setRailReady(true);
   }, []);
 
   useEffect(() => {
+    if (!railReady) return;
     try {
       window.localStorage.setItem("crm-rail-expanded", railExpanded ? "1" : "0");
     } catch {
       // ignore
     }
-  }, [railExpanded]);
+  }, [railExpanded, railReady]);
 
   useEffect(() => {
     setDrawerOpen(false);
@@ -424,16 +447,20 @@ export function CrmShell({
   );
 
   const shell = (
-    <div className={`crm-shell crm-shell-app kpi-locale-th${railExpanded ? " is-rail-expanded" : ""}${workspace === "b2b" ? " crm-shell-b2b" : ""}${workspace === "ads" ? " crm-shell-ads" : ""}`}>
+    <div
+      className={`crm-shell crm-shell-app kpi-locale-th${railExpanded ? " is-rail-expanded" : ""}${workspace === "b2b" ? " crm-shell-b2b" : ""}${workspace === "ads" ? " crm-shell-ads" : ""}${workspace === "meta" ? " crm-shell-meta" : ""}`}
+      suppressHydrationWarning
+    >
       <aside
         className={`crm-rail crm-rail-desktop${railExpanded ? " is-expanded" : ""}`}
         aria-label="เมนูหลัก"
+        suppressHydrationWarning
       >
         <div className="crm-rail-head">
-          <Link href="/crm" className="crm-rail-brand" title="The KPI Plus">
+          <a href="/crm" className="crm-rail-brand" title="The KPI Plus">
             <img src="/brand/KPIPlus_Symbol_FullColor.svg" alt="" width={36} height={36} />
             <strong className="crm-rail-brand-text">THE KPI PLUS</strong>
-          </Link>
+          </a>
           <button
             type="button"
             className="crm-rail-toggle"
@@ -465,10 +492,10 @@ export function CrmShell({
         aria-hidden={!drawerOpen}
       >
         <div className="crm-drawer-head">
-          <Link href="/crm" className="crm-rail-brand" onClick={() => setDrawerOpen(false)}>
+          <a href="/crm" className="crm-rail-brand" onClick={() => setDrawerOpen(false)}>
             <img src="/brand/KPIPlus_Symbol_FullColor.svg" alt="The KPI Plus" width={36} height={36} />
             <strong className="crm-rail-brand-text">THE KPI PLUS</strong>
-          </Link>
+          </a>
           <button type="button" className="crm-drawer-close" aria-label="ปิดเมนู" onClick={() => setDrawerOpen(false)}>
             ✕
           </button>
