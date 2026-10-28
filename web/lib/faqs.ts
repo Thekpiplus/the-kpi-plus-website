@@ -1,5 +1,6 @@
 import { adsFaqs } from "@/lib/google-ads";
 import { hotelSeoFaqs } from "@/lib/hotel-seo";
+import { hotelDirectBookingFaqs } from "@/lib/direct-bookings";
 import { hotelWebsiteFaqs } from "@/lib/hotel-website";
 import { metaFaqs } from "@/lib/meta-ads";
 
@@ -1078,78 +1079,10 @@ const table: Record<string, FaqItem[]> = {
   "/en/solutions/hotel-website-design": hotelWebsiteFaqs("en"),
   "/ru/solutions/hotel-website-design": hotelWebsiteFaqs("en"),
   "/zh/solutions/hotel-website-design": hotelWebsiteFaqs("en"),
-  "/solutions/hotel-direct-bookings": [
-    {
-      q: "ต้องออกแบบเว็บไซต์ใหม่ก่อนหรือไม่?",
-      a: "ไม่จำเป็น เราจะเริ่มตรวจเว็บไซต์เดิมและเลือกจุดที่ควรปรับก่อน หากระบบเดิมมีข้อจำกัดจึงค่อยพิจารณางานพัฒนาเพิ่มเติม",
-    },
-    {
-      q: "เพิ่ม Conversion หมายถึงดูเฉพาะยอดจองไหม?",
-      a: "ยอดจองสำเร็จเป็นผลลัพธ์สำคัญ แต่ระหว่างทางเรายังดูการดูห้องพัก การคลิกเข้าสู่ระบบจอง และคำถามจากลูกค้า เพื่อหาว่าขั้นตอนไหนต้องปรับ",
-    },
-    {
-      q: "หาก Booking Engine เป็นของผู้ให้บริการอื่น ยังวัดยอดจองได้ไหม?",
-      a: "ขึ้นอยู่กับการตั้งค่าและความสามารถของผู้ให้บริการ เราจะตรวจว่าติดตามข้อมูลข้ามเว็บไซต์และระบบจองได้ถึงขั้นใดก่อนกำหนดวิธีรายงาน",
-    },
-    {
-      q: "ทำงานร่วมกับ Google Ads และ SEO ได้ไหม?",
-      a: "ได้ เมื่อโฆษณาหรือผลค้นหาพาคนมาที่เว็บไซต์ หน้าเว็บควรตอบสิ่งที่เขากำลังหาและพาไปต่อได้ เราจึงสามารถดูเส้นทางนี้ร่วมกับแคมเปญและงาน SEO ของโรงแรม",
-    },
-  ],
-  "/en/solutions/hotel-direct-bookings": [
-    {
-      q: "Do we need a new website first?",
-      a: "No. We start with the current website and choose what to change first. If the current system limits the work, we then review extra development.",
-    },
-    {
-      q: "Does conversion mean we only look at bookings?",
-      a: "Completed bookings are an important result. Along the way we also look at room views, clicks into the booking system, and guest questions, to see which step needs a change.",
-    },
-    {
-      q: "If another company runs the booking engine, can we still measure bookings?",
-      a: "It depends on the provider’s setup and what the system can do. We first check how far the path can be tracked across the website and the booking system, then agree how to report.",
-    },
-    {
-      q: "Can this work with Google Ads and SEO?",
-      a: "Yes. When ads or search results send people to the website, the page should answer what they are looking for and help them continue. We can review this path together with the hotel’s campaigns and SEO work.",
-    },
-  ],
-  "/ru/solutions/hotel-direct-bookings": [
-    {
-      q: "Нужно ли сначала делать новый сайт?",
-      a: "Нет. Мы начинаем с текущего сайта и выбираем, что править первым. Если текущая система ограничивает работу, тогда смотрим дополнительную разработку.",
-    },
-    {
-      q: "Конверсия значит смотреть только брони?",
-      a: "Завершённые брони — важный результат. По пути мы также смотрим просмотры номеров, клики в систему брони и вопросы гостей, чтобы понять, какой шаг нужно править.",
-    },
-    {
-      q: "Если booking engine у другого провайдера, можно ли всё равно считать брони?",
-      a: "Зависит от настроек и возможностей провайдера. Сначала проверяем, как далеко путь можно отследить между сайтом и системой брони, затем договариваемся, как отчитываться.",
-    },
-    {
-      q: "Можно ли работать вместе с Google Ads и SEO?",
-      a: "Да. Когда реклама или поиск приводят людей на сайт, страница должна отвечать на их вопрос и вести дальше. Этот путь можно смотреть вместе с кампаниями и SEO отеля.",
-    },
-  ],
-  "/zh/solutions/hotel-direct-bookings": [
-    {
-      q: "一定要先做新網站嗎？",
-      a: "不必。我們會先檢查現有網站，並選擇該先調整的點。若現有系統有限制，再考慮額外開發。",
-    },
-    {
-      q: "提升 Conversion 是只看預訂量嗎？",
-      a: "完成的預訂是重要結果。過程中我們也會看客房瀏覽、進入預訂系統的點擊，以及客人的問題，找出該調整哪一步。",
-    },
-    {
-      q: "若 Booking Engine 是其他供應商的，還能量到預訂嗎？",
-      a: "取決於供應商的設定與系統能力。我們會先檢查網站與預訂系統之間能追蹤到哪一步，再決定回報方式。",
-    },
-    {
-      q: "可以和 Google Ads、SEO 一起做嗎？",
-      a: "可以。當廣告或搜尋結果把人帶到網站，頁面應回答他們正在找的事，並帶他們繼續。這條路徑可以和飯店的廣告活動與 SEO 一起看。",
-    },
-  ],
+  "/solutions/hotel-direct-bookings": hotelDirectBookingFaqs("th"),
+  "/en/solutions/hotel-direct-bookings": hotelDirectBookingFaqs("en"),
+  "/ru/solutions/hotel-direct-bookings": hotelDirectBookingFaqs("en"),
+  "/zh/solutions/hotel-direct-bookings": hotelDirectBookingFaqs("en"),
   "/solutions/hotel-systems-implementation": [
     {
       q: "จำเป็นต้องเปลี่ยน PMS เดิมไหม?",

@@ -45,6 +45,12 @@ import { HOTEL_SEO_CMS_TEMPLATE, HOTEL_SEO_PAGE_ROUTE, serializeHotelSeoPageBody
 import { defaultHotelSeoCms } from "./hotel-seo-page-seed";
 import { HOTEL_WEBSITE_CMS_TEMPLATE, HOTEL_WEBSITE_PAGE_ROUTE, serializeHotelWebsitePageBody } from "./hotel-website-page";
 import { defaultHotelWebsiteCms } from "./hotel-website-page";
+import {
+  HOTEL_DIRECT_BOOKINGS_CMS_TEMPLATE,
+  HOTEL_DIRECT_BOOKINGS_PAGE_ROUTE,
+  serializeDirectBookingPageBody,
+  defaultDirectBookingCms,
+} from "./hotel-direct-bookings-page";
 
 async function requireCms() {
   const user = await requireUser();
@@ -287,6 +293,7 @@ export async function ensurePageFromSite(route: string) {
   const isMetaAds = normalized === META_ADS_PAGE_ROUTE;
   const isHotelSeo = normalized === HOTEL_SEO_PAGE_ROUTE;
   const isHotelWebsite = normalized === HOTEL_WEBSITE_PAGE_ROUTE;
+  const isHotelDirectBookings = normalized === HOTEL_DIRECT_BOOKINGS_PAGE_ROUTE;
   const created = await db.cmsDocument.create({
     data: {
       kind: "page",
@@ -308,6 +315,8 @@ export async function ensurePageFromSite(route: string) {
                   ? HOTEL_SEO_CMS_TEMPLATE
                   : isHotelWebsite
                     ? HOTEL_WEBSITE_CMS_TEMPLATE
+                  : isHotelDirectBookings
+                    ? HOTEL_DIRECT_BOOKINGS_CMS_TEMPLATE
                 : "general",
       excerpt: sitePage.description || "",
       body: isRevenue
@@ -324,6 +333,8 @@ export async function ensurePageFromSite(route: string) {
                   ? serializeHotelSeoPageBody(defaultHotelSeoCms("th"))
                   : isHotelWebsite
                     ? serializeHotelWebsitePageBody(defaultHotelWebsiteCms("th"))
+                  : isHotelDirectBookings
+                    ? serializeDirectBookingPageBody(defaultDirectBookingCms("th"))
                 : bodyFromMarkdown(markdown),
       tags: "",
       seoTitle: sitePage.title,

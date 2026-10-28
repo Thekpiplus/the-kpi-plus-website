@@ -86,16 +86,21 @@ export function Footer({
   const isMetaAds = path === "/solutions/meta-ads-management";
   const isHotelSeo = path === "/solutions/hotel-seo-google-maps-ai-search";
   const isHotelWebsite = path === "/solutions/hotel-website-design";
+  const isDirectBooking = path === "/solutions/hotel-direct-bookings";
   const footerCtaHref = isMetaAds
     ? `${pathname.split("#")[0]}#meta-ads-enquiry`
     : isHotelSeo
       ? `${pathname.split("#")[0]}#search-enquiry`
       : isHotelWebsite
         ? `${pathname.split("#")[0]}#website-enquiry`
-        : auditHref(locale);
+        : isDirectBooking
+          ? `${pathname.split("#")[0]}#conversion-enquiry`
+          : auditHref(locale);
   const footerCtaLabel = isHotelWebsite
     ? enquiryServiceById("website")?.submit[locale] ?? t.audit
-    : t.audit;
+    : isDirectBooking
+      ? enquiryServiceById("conversion")?.submit[locale] ?? t.audit
+      : t.audit;
   const contact = contactInfoFromCompany(company, locale);
   const primaryPaths = new Set(["/approach", "/insights", "/case-studies", "/about-us", "/contact-us"]);
   const mainLinks = visiblePrimaryLinks(locale);
@@ -108,7 +113,7 @@ export function Footer({
   const toolsIndexHref = existingHref("/tools", locale);
 
   return (
-    <footer lang={htmlLang(locale)} className="kpi-footer">
+    <footer lang={htmlLang(locale)} className={`kpi-footer${isDirectBooking ? " kpi-footer--conversion" : ""}`}>
       <div className="kpi-section">
         <div className="kpi-footer-top">
           <section className="kpi-footer-brand">
@@ -129,7 +134,11 @@ export function Footer({
               <p className="kpi-footer-statement kpi-thai-nav">{t.statement}</p>
             </div>
             <div className="kpi-footer-brand-actions">
-              <Link data-track="footer_audit_cta" href={footerCtaHref} className="kpi-button kpi-thai-nav">
+              <Link
+                data-track={isDirectBooking ? "footer_conversion_cta" : "footer_audit_cta"}
+                href={footerCtaHref}
+                className="kpi-button kpi-thai-nav"
+              >
                 {footerCtaLabel} <ArrowUpRight className="h-4 w-4" />
               </Link>
             </div>

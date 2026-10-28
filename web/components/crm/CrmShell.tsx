@@ -79,6 +79,21 @@ const metaLinks: ContextLink[] = [
   { href: "/crm/meta/settings", label: "Settings" },
 ];
 
+const conversionLinks: ContextLink[] = [
+  { href: "/crm/conversion", label: "Direct Booking Projects" },
+  { href: "/crm/conversion/review", label: "Website Review" },
+  { href: "/crm/conversion/room", label: "Room and Offer Information" },
+  { href: "/crm/conversion/friction", label: "Conversion Friction" },
+  { href: "/crm/conversion/booking", label: "Booking Engine" },
+  { href: "/crm/conversion/mobile", label: "Mobile UX" },
+  { href: "/crm/conversion/tracking", label: "Tracking and Analytics" },
+  { href: "/crm/conversion/experiments", label: "Experiments / Changes" },
+  { href: "/crm/conversion/reports", label: "Reports / KPI" },
+  { href: "/crm/conversion/approvals", label: "Approvals" },
+  { href: "/crm/conversion/handover", label: "Handover and Ownership" },
+  { href: "/crm/conversion/settings", label: "Settings" },
+];
+
 const websiteLinks: ContextLink[] = [
   { href: "/crm/website", label: "Website Projects" },
   { href: "/crm/website/discovery", label: "Discovery and Content" },
@@ -122,6 +137,7 @@ const cmsLinks = [
   { href: "/crm/cms/meta-ads", label: "หน้า Meta Ads Management" },
   { href: "/crm/cms/hotel-seo", label: "หน้า Hotel SEO / Local Search" },
   { href: "/crm/cms/hotel-website", label: "หน้า Hotel Website Design" },
+  { href: "/crm/cms/hotel-direct-bookings", label: "หน้า Hotel Direct Bookings" },
   { href: "/crm/cms/contacts", label: "ข้อมูลติดต่อ" },
 ];
 
@@ -134,6 +150,7 @@ const contextByWorkspace: Record<Exclude<Workspace, "home">, ContextLink[]> = {
   meta: metaLinks,
   seo: seoLinks,
   website: websiteLinks,
+  conversion: conversionLinks,
   users: userLinks,
   cms: cmsLinks,
 };
@@ -148,6 +165,7 @@ const NAV_LABEL: Record<NavKey, string> = {
   meta: "Meta Ads Operations",
   seo: "Local Search Operations",
   website: "Website Operations",
+  conversion: "Direct Booking Operations",
   users: "Users Management",
   cms: "Content Management",
   settings: "ตั้งค่า",
@@ -277,6 +295,7 @@ const NAV_ICON: Record<NavKey, () => ReactNode> = {
   meta: IconB2b,
   seo: IconSeo,
   website: IconSeo,
+  conversion: IconSeo,
   users: IconUsers,
   cms: IconCms,
   settings: IconSettings,
@@ -292,6 +311,7 @@ function workspaceOf(pathname: string): Workspace {
   if (pathname.startsWith("/crm/meta")) return "meta";
   if (pathname.startsWith("/crm/seo")) return "seo";
   if (pathname.startsWith("/crm/website")) return "website";
+  if (pathname.startsWith("/crm/conversion")) return "conversion";
   if (
     pathname.startsWith("/crm/sales") ||
     pathname.startsWith("/crm/pipeline") ||
@@ -318,6 +338,7 @@ function isCurrent(pathname: string, search: string, href: string) {
   if (path === "/crm/meta") return pathname === "/crm/meta";
   if (path === "/crm/seo") return pathname === "/crm/seo";
   if (path === "/crm/website") return pathname === "/crm/website";
+  if (path === "/crm/conversion") return pathname === "/crm/conversion";
   return pathname === path || pathname.startsWith(`${path}/`);
 }
 
@@ -497,7 +518,7 @@ export function CrmShell({
 
   const shell = (
     <div
-      className={`crm-shell crm-shell-app kpi-locale-th${railExpanded ? " is-rail-expanded" : ""}${workspace === "b2b" ? " crm-shell-b2b" : ""}${workspace === "ads" ? " crm-shell-ads" : ""}${workspace === "meta" ? " crm-shell-meta" : ""}${workspace === "seo" ? " crm-shell-seo" : ""}${workspace === "website" ? " crm-shell-website" : ""}`}
+      className={`crm-shell crm-shell-app kpi-locale-th${railExpanded ? " is-rail-expanded" : ""}${workspace === "b2b" ? " crm-shell-b2b" : ""}${workspace === "ads" ? " crm-shell-ads" : ""}${workspace === "meta" ? " crm-shell-meta" : ""}${workspace === "seo" ? " crm-shell-seo" : ""}${workspace === "website" ? " crm-shell-website" : ""}${workspace === "conversion" ? " crm-shell-conversion" : ""}`}
       suppressHydrationWarning
     >
       <aside

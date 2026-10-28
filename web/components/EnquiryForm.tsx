@@ -7,12 +7,15 @@ import { B2bEnquiryIntro } from "@/components/b2b/B2bEnquiryIntro";
 import { AdsEnquiryIntro } from "@/components/google-ads/AdsEnquiryIntro";
 import { AdsEnquiryIntro as MetaAdsEnquiryIntro } from "@/components/meta-ads/AdsEnquiryIntro";
 import { HotelSeoEnquiryIntro } from "@/components/hotel-seo/HotelSeoEnquiryIntro";
+import { ConversionEnquiryIntro } from "@/components/direct-bookings/ConversionEnquiryIntro";
+import { ConversionEnquiryVisual } from "@/components/direct-bookings/ConversionEnquiryVisual";
 import { WebsiteEnquiryIntro } from "@/components/hotel-website/WebsiteEnquiryIntro";
 import { ReservationsEnquiryIntro } from "@/components/reservations/ReservationsEnquiryIntro";
 import { RevenueEnquiryIntro } from "@/components/revenue-commercial/RevenueEnquiryIntro";
 import { adsEnquiryCopy } from "@/lib/google-ads";
 import { hotelSeoEnquiryCopy } from "@/lib/hotel-seo";
 import { websiteEnquiryCopy } from "@/lib/hotel-website";
+import { directBookingEnquiryCopy } from "@/lib/direct-bookings";
 import { metaEnquiryCopy } from "@/lib/meta-ads";
 import { b2bEnquiryCopy } from "@/lib/b2b";
 import { AUDIT_CONTACTS, readUtm } from "@/lib/audit";
@@ -39,6 +42,7 @@ type FormState = {
   mapsUrl: string;
   adsStatus: string;
   trackingStatus: string;
+  analyticsStatus: string;
   goal: string;
   bookingEngine: string;
   existingCms: string;
@@ -155,6 +159,46 @@ function composeWebsiteMessage(
     goalLabel ? `${fields.goal}: ${goalLabel}` : "",
     challenge.trim() ? `${fields.challenge}: ${challenge.trim()}` : "",
     timeline.trim() ? `${fields.timeline}: ${timeline.trim()}` : "",
+  ]
+    .filter(Boolean)
+    .join("\n\n");
+}
+
+function conversionGoalLabel(id: string, locale: Locale) {
+  const fields = directBookingEnquiryCopy(locale).fields;
+  if (id === "direct") return fields.goalDirect;
+  if (id === "review") return fields.goalReview;
+  if (id === "website") return fields.goalWebsite;
+  return "";
+}
+
+function conversionStatusLabel(id: string, yes: string, no: string, unsure: string) {
+  if (id === "yes") return yes;
+  if (id === "no") return no;
+  if (id === "unsure") return unsure;
+  return "";
+}
+
+function composeConversionMessage(
+  website: string,
+  bookingEngine: string,
+  goal: string,
+  analyticsStatus: string,
+  trackingStatus: string,
+  concern: string,
+  locale: Locale,
+) {
+  const fields = directBookingEnquiryCopy(locale).fields;
+  const goalLabel = conversionGoalLabel(goal, locale);
+  const analyticsLabel = conversionStatusLabel(analyticsStatus, fields.analyticsYes, fields.analyticsNo, fields.analyticsUnsure);
+  const trackingLabel = conversionStatusLabel(trackingStatus, fields.trackingYes, fields.trackingNo, fields.trackingUnsure);
+  return [
+    website.trim() ? `${fields.website}: ${website.trim()}` : "",
+    bookingEngine.trim() ? `${fields.bookingEngine}: ${bookingEngine.trim()}` : "",
+    goalLabel ? `${fields.goal}: ${goalLabel}` : "",
+    analyticsLabel ? `${fields.analytics}: ${analyticsLabel}` : "",
+    trackingLabel ? `${fields.tracking}: ${trackingLabel}` : "",
+    concern.trim() ? `${fields.concern}: ${concern.trim()}` : "",
   ]
     .filter(Boolean)
     .join("\n\n");
@@ -392,6 +436,7 @@ export function EnquiryForm({
   introTrust,
   introReceiveTitle,
   introReceive,
+  introVisualSrc,
   fieldLabels,
 }: {
   locale: Locale;
@@ -411,6 +456,7 @@ export function EnquiryForm({
   introTrust?: string[];
   introReceiveTitle?: string;
   introReceive?: Array<{ title: string; body?: string }>;
+  introVisualSrc?: string;
   fieldLabels?: {
     name?: string;
     business?: string;
@@ -423,6 +469,7 @@ export function EnquiryForm({
     market?: string;
     adsStatus?: string;
     trackingStatus?: string;
+    analyticsStatus?: string;
     challenge?: string;
     bookingEngine?: string;
     cms?: string;
@@ -448,6 +495,7 @@ export function EnquiryForm({
     mapsUrl: "",
     adsStatus: "",
     trackingStatus: "",
+    analyticsStatus: "",
     goal: "",
     bookingEngine: "",
     existingCms: "",
@@ -474,12 +522,14 @@ export function EnquiryForm({
     }
     if (!preset && !next.serviceInterest) nextErrors.serviceInterest = t.required;
     if (service === "revenue" && !next.topic.trim()) nextErrors.topic = t.required;
-    if ((service === "google_ads" || service === "meta_ads" || service === "search" || service === "website") && next.website.trim() && !looksLikeWebsite(next.website)) {
+    if ((service === "google_ads" || service === "meta_ads" || service === "search" || service === "website" || service === "conversion") && next.website.trim() && !looksLikeWebsite(next.website)) {
       nextErrors.website =
         service === "search"
           ? hotelSeoEnquiryCopy(locale).fields.websiteInvalid
           : service === "website"
             ? websiteEnquiryCopy(locale).fields.websiteInvalid
+            : service === "conversion"
+              ? directBookingEnquiryCopy(locale).fields.websiteInvalid
             : service === "meta_ads"
               ? metaEnquiryCopy(locale).fields.websiteInvalid
               : adsEnquiryCopy(locale).fields.websiteInvalid;
@@ -487,8 +537,11 @@ export function EnquiryForm({
     if (service === "search" && next.mapsUrl.trim() && !looksLikeWebsite(next.mapsUrl)) {
       nextErrors.mapsUrl = hotelSeoEnquiryCopy(locale).fields.mapsInvalid;
     }
-    if (service === "website" && next.bookingEngine.trim() && !looksLikeWebsite(next.bookingEngine)) {
-      nextErrors.bookingEngine = websiteEnquiryCopy(locale).fields.bookingEngineInvalid;
+    if ((service === "website" || service === "conversion") && next.bookingEngine.trim() && !looksLikeWebsite(next.bookingEngine)) {
+      nextErrors.bookingEngine =
+        service === "conversion"
+          ? directBookingEnquiryCopy(locale).fields.bookingEngineInvalid
+          : websiteEnquiryCopy(locale).fields.bookingEngineInvalid;
     }
     if (!next.consent) nextErrors.consent = t.required;
     setErrors(nextErrors);
@@ -512,15 +565,16 @@ export function EnquiryForm({
           topic: service === "revenue" || service === "search" ? state.topic : undefined,
           channels: service === "reservations" || service === "b2b" ? state.channels.trim() : undefined,
           scope: service === "reservations" ? state.scope.trim() : undefined,
-          website: service === "google_ads" || service === "meta_ads" || service === "search" || service === "website" ? state.website.trim() : undefined,
+          website: service === "google_ads" || service === "meta_ads" || service === "search" || service === "website" || service === "conversion" ? state.website.trim() : undefined,
           mapsUrl: service === "search" ? state.mapsUrl.trim() : undefined,
-          bookingEngine: service === "website" ? state.bookingEngine.trim() : undefined,
+          bookingEngine: service === "website" || service === "conversion" ? state.bookingEngine.trim() : undefined,
           cms: service === "website" ? state.existingCms.trim() : undefined,
           timeline: service === "website" ? state.timeline.trim() : undefined,
-          goal: service === "google_ads" || service === "meta_ads" || service === "website" ? state.goal.trim() : undefined,
+          goal: service === "google_ads" || service === "meta_ads" || service === "website" || service === "conversion" ? state.goal.trim() : undefined,
           market: service === "google_ads" || service === "meta_ads" || service === "b2b" ? state.market.trim() : undefined,
           adsStatus: service === "google_ads" || service === "meta_ads" ? state.adsStatus.trim() : undefined,
-          trackingStatus: service === "meta_ads" ? state.trackingStatus.trim() : undefined,
+          analyticsStatus: service === "conversion" ? state.analyticsStatus.trim() : undefined,
+          trackingStatus: service === "meta_ads" || service === "conversion" ? state.trackingStatus.trim() : undefined,
           message:
             service === "revenue"
               ? composeRevenueMessage(state.topic, state.message, locale)
@@ -552,6 +606,16 @@ export function EnquiryForm({
                               state.timeline,
                               locale,
                             )
+                          : service === "conversion"
+                            ? composeConversionMessage(
+                                state.website,
+                                state.bookingEngine,
+                                state.goal,
+                                state.analyticsStatus,
+                                state.trackingStatus,
+                                state.message,
+                                locale,
+                              )
                           : state.message.trim(),
           consent: state.consent,
           honeypot: state.companyWebsite,
@@ -1879,80 +1943,71 @@ export function EnquiryForm({
 
   if (service === "conversion" && !compact) {
     const groups = conversionGroups[locale];
+    const conversionCopy = directBookingEnquiryCopy(locale);
+    const formUi = {
+      ...conversionCopy.fields,
+      website: fieldLabels?.website?.trim() || conversionCopy.fields.website,
+      bookingEngine: fieldLabels?.bookingEngine?.trim() || conversionCopy.fields.bookingEngine,
+      goal: fieldLabels?.goal?.trim() || conversionCopy.fields.goal,
+      analytics: fieldLabels?.analyticsStatus?.trim() || conversionCopy.fields.analytics,
+      tracking: fieldLabels?.trackingStatus?.trim() || conversionCopy.fields.tracking,
+      concern: fieldLabels?.challenge?.trim() || conversionCopy.fields.concern,
+    };
+    const nameLabel = fieldLabels?.name?.trim() || conversionCopy.labels.name;
+    const businessLabel = fieldLabels?.business?.trim() || conversionCopy.labels.business;
+    const contactLabel = fieldLabels?.contact?.trim() || conversionCopy.labels.contact;
+    const consentLabel = fieldLabels?.consent?.trim() || conversionCopy.labels.consent;
+    const privacyLabel = fieldLabels?.privacy?.trim() || conversionCopy.labels.privacy;
     const labelClassName = "kpi-website-enquiry-label";
+    const sending = status === "submitting";
     return (
       <section id={sectionId} className="kpi-website-enquiry kpi-conversion-enquiry scroll-mt-28">
         <div className="kpi-section kpi-website-enquiry-grid">
-          <div className="kpi-website-enquiry-intro">
-            <p className="kpi-website-enquiry-kicker kpi-latin">{kickerText}</p>
-            <h2 className="kpi-h2 kpi-website-enquiry-heading">{heading}</h2>
-            {locale === "th" ? (
-              <p className="kpi-website-enquiry-lead">
-                <span>ส่งลิงก์เว็บไซต์และหน้าจอง</span>
-                <span className="kpi-website-enquiry-line">พร้อมบอกจุดที่กังวล</span>
-                <span className="kpi-website-enquiry-line">ทีมจะช่วยดูว่าลูกค้าหยุดก่อนจองตรงไหน</span>
-              </p>
-            ) : (
-              <p className="kpi-website-enquiry-lead">{lead}</p>
-            )}
-            {locale === "th" ? (
-              <>
-                <ol className="kpi-website-enquiry-points">
-                  <li>
-                    <span className="kpi-latin">01</span>
-                    <span>ดูหน้าที่คนเข้าชมและจุดที่ออก</span>
-                  </li>
-                  <li>
-                    <span className="kpi-latin">02</span>
-                    <span>
-                      ดูปุ่มจองและประสบการณ์บน <span className="kpi-latin">Mobile</span>
-                    </span>
-                  </li>
-                  <li>
-                    <span className="kpi-latin">03</span>
-                    <span>
-                      ดูเส้นทางเข้า <span className="kpi-latin">Booking Engine</span>
-                    </span>
-                  </li>
-                </ol>
-                <p className="kpi-website-enquiry-note">
-                  ไม่จำเป็นต้องสร้างเว็บใหม่ก่อน
-                  <span className="kpi-website-enquiry-line">เริ่มจากเส้นทางจองที่มีอยู่แล้วได้</span>
-                </p>
-              </>
-            ) : null}
-          </div>
-          <div className="kpi-website-enquiry-panel">
+          <ConversionEnquiryIntro
+            locale={locale}
+            kicker={kickerText}
+            heading={heading}
+            lead={lead}
+            receiveTitle={introReceiveTitle}
+            receive={introReceive}
+            nextTitle={introNextTitle}
+            steps={introSteps}
+          />
+          <div className="kpi-conversion-enquiry-aside">
+            <ConversionEnquiryVisual locale={locale} src={introVisualSrc} />
+            <div className="kpi-website-enquiry-panel">
             {status === "success" ? (
-              <div role="status">
+              <div className="kpi-website-enquiry-done" role="status" aria-live="polite">
                 <p className="kpi-website-enquiry-success">{t.success}</p>
                 <ContactNote locale={locale} className="kpi-website-enquiry-direct" />
               </div>
             ) : (
-              <form className="kpi-website-enquiry-fields" onSubmit={onSubmit} noValidate>
+              <form className="kpi-website-enquiry-fields" onSubmit={onSubmit} noValidate aria-busy={sending}>
                 <div className="kpi-website-enquiry-group">
                   <p className="kpi-website-enquiry-group-label">{groups.contact}</p>
                   <div className="kpi-website-enquiry-pair">
-                    <Field label={t.name} htmlFor={`${formId}-name`} error={errors.name} labelClassName={labelClassName}>
+                    <Field label={nameLabel} htmlFor={`${formId}-name`} error={errors.name} labelClassName={labelClassName}>
                       <input
                         id={`${formId}-name`}
                         name="name"
                         autoComplete="name"
                         className="kpi-field"
                         value={state.name}
+                        disabled={sending}
                         aria-invalid={Boolean(errors.name)}
                         onBlur={() => validate()}
                         onChange={(event) => setState((current) => ({ ...current, name: event.target.value }))}
                       />
                     </Field>
-                    <Field label={t.contact} htmlFor={`${formId}-contact`} error={errors.contact} labelClassName={labelClassName}>
+                    <Field label={contactLabel} htmlFor={`${formId}-contact`} error={errors.contact} labelClassName={labelClassName}>
                       <input
                         id={`${formId}-contact`}
                         name="contact"
-                        autoComplete="tel"
+                        autoComplete="email"
                         inputMode="email"
                         className="kpi-field"
                         value={state.contact}
+                        disabled={sending}
                         aria-invalid={Boolean(errors.contact)}
                         onBlur={() => validate()}
                         onChange={(event) => setState((current) => ({ ...current, contact: event.target.value }))}
@@ -1962,32 +2017,138 @@ export function EnquiryForm({
                 </div>
                 <div className="kpi-website-enquiry-group">
                   <p className="kpi-website-enquiry-group-label">{groups.hotel}</p>
-                  <Field label={t.business} htmlFor={`${formId}-business`} error={errors.businessName} labelClassName={labelClassName}>
+                  <Field label={businessLabel} htmlFor={`${formId}-business`} error={errors.businessName} labelClassName={labelClassName}>
                     <input
                       id={`${formId}-business`}
                       name="organization"
                       autoComplete="organization"
                       className="kpi-field"
                       value={state.businessName}
+                      disabled={sending}
                       aria-invalid={Boolean(errors.businessName)}
                       onBlur={() => validate()}
                       onChange={(event) => setState((current) => ({ ...current, businessName: event.target.value }))}
                     />
                   </Field>
+                  <div className="kpi-website-enquiry-stack">
+                    <Field
+                      label={formUi.website}
+                      htmlFor={`${formId}-website`}
+                      optional={t.messageOptional}
+                      error={errors.website}
+                      labelClassName={labelClassName}
+                    >
+                      <input
+                        id={`${formId}-website`}
+                        name="website"
+                        inputMode="url"
+                        autoComplete="url"
+                        className="kpi-field"
+                        value={state.website}
+                        disabled={sending}
+                        aria-invalid={Boolean(errors.website)}
+                        aria-describedby={`${formId}-website-hint`}
+                        onBlur={() => validate()}
+                        onChange={(event) => setState((current) => ({ ...current, website: event.target.value }))}
+                      />
+                      <p id={`${formId}-website-hint`} className="kpi-website-enquiry-hint">
+                        {formUi.websiteHint}
+                      </p>
+                    </Field>
+                    <Field
+                      label={formUi.bookingEngine}
+                      htmlFor={`${formId}-booking-engine`}
+                      optional={t.messageOptional}
+                      error={errors.bookingEngine}
+                      labelClassName={labelClassName}
+                    >
+                      <input
+                        id={`${formId}-booking-engine`}
+                        name="bookingEngine"
+                        inputMode="url"
+                        className="kpi-field"
+                        value={state.bookingEngine}
+                        disabled={sending}
+                        aria-invalid={Boolean(errors.bookingEngine)}
+                        aria-describedby={`${formId}-booking-engine-hint`}
+                        onBlur={() => validate()}
+                        onChange={(event) => setState((current) => ({ ...current, bookingEngine: event.target.value }))}
+                      />
+                      <p id={`${formId}-booking-engine-hint`} className="kpi-website-enquiry-hint">
+                        {formUi.bookingEngineHint}
+                      </p>
+                    </Field>
+                  </div>
                 </div>
                 <div className="kpi-website-enquiry-group">
                   <p className="kpi-website-enquiry-group-label">{groups.topic}</p>
-                  <Field label={t.message} htmlFor={`${formId}-message`} optional={t.messageOptional} labelClassName={labelClassName}>
-                    <textarea
-                      id={`${formId}-message`}
-                      name="message"
-                      rows={4}
+                  <Field label={formUi.goal} htmlFor={`${formId}-goal`} optional={t.messageOptional} labelClassName={labelClassName}>
+                    <select
+                      id={`${formId}-goal`}
+                      name="goal"
                       className="kpi-field"
-                      placeholder={t.messageHint}
-                      value={state.message}
-                      onChange={(event) => setState((current) => ({ ...current, message: event.target.value }))}
-                    />
+                      value={state.goal}
+                      disabled={sending}
+                      onChange={(event) => setState((current) => ({ ...current, goal: event.target.value }))}
+                    >
+                      <option value="">{formUi.goalEmpty}</option>
+                      <option value="direct">{formUi.goalDirect}</option>
+                      <option value="review">{formUi.goalReview}</option>
+                      <option value="website">{formUi.goalWebsite}</option>
+                    </select>
                   </Field>
+                  <div className="kpi-website-enquiry-stack">
+                    <Field label={formUi.analytics} htmlFor={`${formId}-analytics`} optional={t.messageOptional} labelClassName={labelClassName}>
+                      <select
+                        id={`${formId}-analytics`}
+                        name="analyticsStatus"
+                        className="kpi-field"
+                        value={state.analyticsStatus}
+                        disabled={sending}
+                        onChange={(event) => setState((current) => ({ ...current, analyticsStatus: event.target.value }))}
+                      >
+                        <option value="">{formUi.analyticsEmpty}</option>
+                        <option value="yes">{formUi.analyticsYes}</option>
+                        <option value="no">{formUi.analyticsNo}</option>
+                        <option value="unsure">{formUi.analyticsUnsure}</option>
+                      </select>
+                    </Field>
+                    <Field label={formUi.tracking} htmlFor={`${formId}-tracking`} optional={t.messageOptional} labelClassName={labelClassName}>
+                      <select
+                        id={`${formId}-tracking`}
+                        name="trackingStatus"
+                        className="kpi-field"
+                        value={state.trackingStatus}
+                        disabled={sending}
+                        onChange={(event) => setState((current) => ({ ...current, trackingStatus: event.target.value }))}
+                      >
+                        <option value="">{formUi.trackingEmpty}</option>
+                        <option value="yes">{formUi.trackingYes}</option>
+                        <option value="no">{formUi.trackingNo}</option>
+                        <option value="unsure">{formUi.trackingUnsure}</option>
+                      </select>
+                    </Field>
+                    <Field
+                      label={formUi.concern}
+                      htmlFor={`${formId}-message`}
+                      optional={t.messageOptional}
+                      labelClassName={labelClassName}
+                    >
+                      <textarea
+                        id={`${formId}-message`}
+                        name="message"
+                        rows={4}
+                        className="kpi-field"
+                        value={state.message}
+                        disabled={sending}
+                        aria-describedby={`${formId}-challenge-hint`}
+                        onChange={(event) => setState((current) => ({ ...current, message: event.target.value }))}
+                      />
+                      <p id={`${formId}-challenge-hint`} className="kpi-website-enquiry-hint">
+                        {formUi.concernHint}
+                      </p>
+                    </Field>
+                  </div>
                 </div>
                 <input type="hidden" name="serviceInterest" value={preset?.id ?? "conversion"} />
                 <div className="kpi-website-enquiry-privacy">
@@ -1997,13 +2158,14 @@ export function EnquiryForm({
                   <input
                     type="checkbox"
                     checked={state.consent}
+                    disabled={sending}
                     aria-invalid={Boolean(errors.consent)}
                     onChange={(event) => setState((current) => ({ ...current, consent: event.target.checked }))}
                   />
                   <span>
-                    {t.consent}{" "}
+                    {consentLabel}{" "}
                     <Link href={privacyHref} className="font-semibold text-[#0B6660]">
-                      {t.privacy}
+                      {privacyLabel}
                     </Link>
                   </span>
                 </label>
@@ -2022,33 +2184,37 @@ export function EnquiryForm({
                   className="absolute left-[-10000px] h-px w-px overflow-hidden"
                   onChange={(event) => setState((current) => ({ ...current, companyWebsite: event.target.value }))}
                 />
-                <button className="kpi-button" type="submit" disabled={status === "submitting"}>
-                  {status === "submitting" ? (
+                <button className="kpi-button kpi-website-enquiry-submit" type="submit" disabled={sending} aria-busy={sending}>
+                  {sending ? (
                     t.sending
-                  ) : locale === "th" ? (
+                  ) : (
                     <>
-                      ให้ทีมตรวจเส้นทางจองบนเว็บไซต์
+                      {cta}
                       <span className="kpi-website-enquiry-arrow" aria-hidden="true">
                         ↗
                       </span>
                     </>
-                  ) : (
-                    cta
                   )}
                 </button>
+                {sending ? (
+                  <p className="kpi-website-enquiry-status" role="status" aria-live="polite">
+                    {conversionCopy.loading}
+                  </p>
+                ) : null}
                 {status === "error" ? (
-                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                  <p className="kpi-website-enquiry-error" role="alert">
                     {t.failed}
                   </p>
                 ) : null}
                 {status === "unavailable" ? (
-                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                  <p className="kpi-website-enquiry-error" role="alert">
                     {t.unavailable}
                   </p>
                 ) : null}
                 <ContactNote locale={locale} className="kpi-website-enquiry-direct" />
               </form>
             )}
+            </div>
           </div>
         </div>
       </section>

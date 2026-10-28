@@ -51,7 +51,7 @@ export function SaveBar({
   onSave: () => void;
   saveLabel?: string;
 }) {
-  const state = pending ? "กำลังบันทึก…" : error ? "บันทึกไม่สำเร็จ" : ok || idle;
+  const state = pending ? "กำลังบันทึก…" : error ? error : ok || idle;
   return (
     <div className="crm-cs-savebar b2b-savebar">
       <button className="kpi-button b2b-save" type="button" onClick={onSave} disabled={pending}>

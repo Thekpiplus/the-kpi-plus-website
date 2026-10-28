@@ -4,6 +4,7 @@ import { B2bView } from "@/components/B2bView";
 import { GoogleAdsView } from "@/components/GoogleAdsView";
 import { MetaAdsView } from "@/components/MetaAdsView";
 import { SeoLocalView } from "@/components/SeoLocalView";
+import { ConversionView } from "@/components/ConversionView";
 import { WebsiteView } from "@/components/WebsiteView";
 import { ReservationsView } from "@/components/ReservationsView";
 import { RevenueView } from "@/components/RevenueView";
@@ -18,6 +19,8 @@ import { isHotelSeoPageDocument } from "@/lib/cms/hotel-seo-page";
 import { loadHotelSeoPagePreview } from "@/lib/cms/hotel-seo-page-public";
 import { isHotelWebsitePageDocument } from "@/lib/cms/hotel-website-page";
 import { loadHotelWebsitePagePreview } from "@/lib/cms/hotel-website-page-public";
+import { isHotelDirectBookingsPageDocument } from "@/lib/cms/hotel-direct-bookings-page";
+import { loadDirectBookingPagePreview } from "@/lib/cms/hotel-direct-bookings-page-public";
 import { loadReservationsPagePreview } from "@/lib/cms/reservations-page-public";
 import { isReservationsPageDocument } from "@/lib/cms/reservations-page";
 import { loadRevenuePagePreview } from "@/lib/cms/revenue-page-public";
@@ -41,7 +44,8 @@ export default async function PreviewCmsPage({
   const metaAds = isMetaAdsPageDocument(document);
   const hotelSeo = isHotelSeoPageDocument(document);
   const hotelWebsite = isHotelWebsitePageDocument(document);
-  if (!reservations && !revenue && !b2b && !googleAds && !metaAds && !hotelSeo && !hotelWebsite) notFound();
+  const hotelDirectBookings = isHotelDirectBookingsPageDocument(document);
+  if (!reservations && !revenue && !b2b && !googleAds && !metaAds && !hotelSeo && !hotelWebsite && !hotelDirectBookings) notFound();
 
   const preview = reservations ? await loadReservationsPagePreview(id) : null;
   const revenuePreview = revenue ? await loadRevenuePagePreview(id) : null;
@@ -50,6 +54,7 @@ export default async function PreviewCmsPage({
   const metaPreview = metaAds ? await loadMetaAdsPagePreview(id) : null;
   const hotelSeoPreview = hotelSeo ? await loadHotelSeoPagePreview(id) : null;
   const hotelWebsitePreview = hotelWebsite ? await loadHotelWebsitePagePreview(id) : null;
+  const hotelDirectBookingsPreview = hotelDirectBookings ? await loadDirectBookingPagePreview(id) : null;
   const live =
     preview?.live ??
     revenuePreview?.live ??
@@ -58,8 +63,9 @@ export default async function PreviewCmsPage({
     metaPreview?.live ??
     hotelSeoPreview?.live ??
     hotelWebsitePreview?.live ??
+    hotelDirectBookingsPreview?.live ??
     false;
-  if (!preview && !revenuePreview && !b2bPreview && !adsPreview && !metaPreview && !hotelSeoPreview && !hotelWebsitePreview) notFound();
+  if (!preview && !revenuePreview && !b2bPreview && !adsPreview && !metaPreview && !hotelSeoPreview && !hotelWebsitePreview && !hotelDirectBookingsPreview) notFound();
   const path = documentPath(document);
   const title = reservations
     ? "ตัวอย่างหน้า Outsourced Hotel Reservations"
@@ -73,6 +79,8 @@ export default async function PreviewCmsPage({
             ? "ตัวอย่างหน้า Hotel SEO, Google Maps และ AI Search"
           : hotelWebsite
             ? "ตัวอย่างหน้า Hotel Website Design"
+          : hotelDirectBookings
+            ? "ตัวอย่างหน้า Hotel Direct Bookings"
           : "ตัวอย่างหน้า Revenue & Commercial";
 
   return (
@@ -118,6 +126,12 @@ export default async function PreviewCmsPage({
           <WebsiteView
             locale={hotelWebsitePreview.locale === "en" || hotelWebsitePreview.locale === "ru" || hotelWebsitePreview.locale === "zh" ? hotelWebsitePreview.locale : "th"}
             previewContent={hotelWebsitePreview.content}
+            embedded
+          />
+        ) : hotelDirectBookingsPreview ? (
+          <ConversionView
+            locale={hotelDirectBookingsPreview.locale === "en" || hotelDirectBookingsPreview.locale === "ru" || hotelDirectBookingsPreview.locale === "zh" ? hotelDirectBookingsPreview.locale : "th"}
+            previewContent={hotelDirectBookingsPreview.content}
             embedded
           />
         ) : null}

@@ -18605,16 +18605,67 @@ a.kpi-revenue-related-item {
 }
 
 .kpi-shell .kpi-conversion-hero .kpi-latin {
-  font-family: Poppins, sans-serif !important;
+  font-family: Montserrat, "Prompt", sans-serif !important;
+}
+
+.kpi-conversion-hero .kpi-home-hero > * {
+  min-width: 0;
 }
 
 .kpi-conversion-hero .kpi-home-hero-copy {
+  position: relative;
+  z-index: 1;
   overflow: visible;
+  max-width: 34rem;
+}
+
+.kpi-conversion-hero .kpi-home-photo {
+  position: relative;
+  z-index: 0;
+  overflow: visible;
+  width: 100%;
+  max-width: min(560px, 100%);
+  justify-self: stretch;
+  background: transparent;
+  box-shadow: none;
+}
+
+.kpi-conversion-hero .kpi-home-photo .db-visual {
+  max-width: 100%;
+}
+
+.kpi-conversion-hero .kpi-home-photo .db-visual-frame {
+  width: 100%;
+  max-width: 560px;
+  max-height: 350px;
+  aspect-ratio: 8 / 5;
 }
 
 .kpi-conversion-hero .kpi-home-photo img {
-  object-fit: cover;
-  object-position: 58% 52%;
+  aspect-ratio: 8 / 5;
+  object-fit: contain;
+  object-position: center;
+}
+
+.kpi-conversion-hero .kpi-home-eyebrow {
+  color: #a2dc25;
+}
+
+.kpi-conversion-hero h1.kpi-home-h1,
+.kpi-shell :lang(th) .kpi-conversion-hero h1.kpi-home-h1 {
+  max-width: 100%;
+  margin-top: 0.85rem;
+  text-wrap: wrap;
+}
+
+.kpi-conversion-hero a.kpi-button {
+  background: #a2dc25;
+  color: #1a3a02;
+}
+
+.kpi-conversion-hero a.kpi-button:hover {
+  background: #ebe722;
+  color: #1a3a02;
 }
 
 .kpi-conversion-lead-close,
@@ -18639,6 +18690,87 @@ a.kpi-revenue-related-item {
 
 .kpi-conversion-journey {
   margin-top: 1.1rem !important;
+}
+
+.kpi-conversion-hero-trust {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 32rem;
+  margin: 0.45rem 0 0;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.5;
+}
+
+.kpi-conversion-hero-trust span:not(:last-child)::after {
+  content: "·";
+  margin-inline: 0.45rem;
+  color: #a2dc25;
+}
+
+.kpi-conversion-hero .db-visual-caption {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.kpi-conversion-hero .db-visual-caption strong {
+  color: #ebe722;
+  font-size: 0.78rem;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.kpi-conversion-hero .db-visual-meta {
+  color: rgba(255, 255, 255, 0.58);
+}
+
+@media (max-width: 63.99rem) {
+  .kpi-conversion-hero.kpi-hero {
+    padding-block: 1.75rem 1.5rem;
+  }
+
+  .kpi-conversion-hero .kpi-home-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.1rem;
+  }
+
+  .kpi-conversion-hero .kpi-home-hero-copy {
+    order: 1;
+  }
+
+  .kpi-conversion-hero .kpi-home-photo {
+    order: 2;
+    max-width: min(560px, 100%);
+    margin-inline: auto;
+  }
+
+  .kpi-conversion-hero .kpi-actions {
+    flex-wrap: wrap;
+  }
+
+  .kpi-conversion-hero .kpi-button,
+  .kpi-conversion-hero .kpi-button-ghost {
+    min-height: 2.75rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  .kpi-conversion-hero.kpi-hero {
+    padding-block: 2.5rem 2.2rem;
+  }
+
+  .kpi-conversion-hero .kpi-home-hero {
+    grid-template-columns: minmax(0, 1.05fr) minmax(22rem, 560px);
+    column-gap: clamp(2rem, 4vw, 3.25rem);
+    align-items: center;
+  }
+
+  .kpi-conversion-hero .kpi-home-photo {
+    margin-top: 0;
+    justify-self: end;
+  }
 }
 
 .kpi-shell .kpi-conversion-why h2.kpi-h2,
@@ -18670,7 +18802,7 @@ a.kpi-revenue-related-item {
 .kpi-shell .kpi-conversion-help .kpi-latin,
 .kpi-shell .kpi-conversion-method .kpi-latin,
 .kpi-shell .kpi-conversion-related .kpi-latin {
-  font-family: Poppins, sans-serif !important;
+  font-family: Montserrat, Prompt, sans-serif !important;
 }
 
 .kpi-conversion-why,
@@ -18757,6 +18889,30 @@ a.kpi-revenue-related-item {
   font-weight: 600;
 }
 
+.kpi-conversion-why-flow-label,
+.kpi-shell :lang(th) .kpi-conversion-why-flow-label {
+  margin: 1.15rem 0 0;
+  color: #3b3b3b;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0 !important;
+  line-height: 1.5 !important;
+}
+
+.kpi-conversion-why-cite,
+.kpi-shell :lang(th) .kpi-conversion-why-cite {
+  margin: 0.4rem 0 0;
+  color: #8a9196;
+  font-size: 0.75rem;
+  letter-spacing: 0 !important;
+  line-height: 1.55 !important;
+}
+
+.kpi-conversion-why-cite a {
+  color: #0a2472;
+  text-decoration: none;
+}
+
 .kpi-conversion-why-sources {
   margin-top: 1.1rem;
 }
@@ -18777,18 +18933,26 @@ a.kpi-revenue-related-item {
 
 .kpi-conversion-why-media {
   margin: 0;
-  overflow: hidden;
+  overflow: visible;
+  max-width: min(480px, 100%);
   border-radius: 10px;
   background: transparent;
   box-shadow: none;
 }
 
+.kpi-conversion-why-media .db-visual-frame {
+  width: 100%;
+  max-width: 480px;
+  max-height: 320px;
+  aspect-ratio: 3 / 2;
+}
+
 .kpi-conversion-why-media img {
   display: block;
   width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  object-position: 88% 38%;
+  aspect-ratio: 3 / 2;
+  object-fit: contain;
+  object-position: center;
 }
 
 .kpi-conversion-stops-list,
@@ -27012,6 +27176,138 @@ a.kpi-revenue-related-item {
   }
 }
 
+.kpi-shell:has(.kpi-conversion) .kpi-faq-home {
+  scroll-margin-top: 7.25rem;
+}
+
+.kpi-shell:has(.kpi-conversion) .kpi-faq-home .kpi-faq-list {
+  max-width: none;
+  padding-inline: 0;
+}
+
+.kpi-shell:has(.kpi-conversion) .kpi-faq-home .kpi-faq-item.is-open::before {
+  background: #a2dc25;
+}
+
+.kpi-shell:has(.kpi-conversion) .kpi-faq-home .kpi-faq-item,
+.kpi-shell:has(.kpi-conversion) #conversion-enquiry,
+.kpi-shell:has(.kpi-conversion) #hotel-direct-bookings-faq {
+  scroll-margin-bottom: 6.5rem;
+}
+
+.kpi-shell:has(.kpi-conversion) .kpi-faq-home .kpi-faq-trigger {
+  min-height: var(--kpi-touch);
+}
+
+.kpi-shell:has(.kpi-conversion) .kpi-faq-home .kpi-faq-trigger:focus,
+.kpi-shell:has(.kpi-conversion) .kpi-faq-home .kpi-faq-trigger:focus-visible {
+  outline: 2px solid #a2dc25 !important;
+  outline-color: #a2dc25 !important;
+  outline-style: solid !important;
+  outline-width: 2px !important;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px #ffffff, 0 0 0 5px #a2dc25 !important;
+}
+
+.kpi-shell:has(.kpi-conversion) .kpi-faq-home .kpi-faq-item.is-open .kpi-faq-mark {
+  color: #0b6660;
+}
+
+.kpi-shell:has(.kpi-conversion) .kpi-faq-home .kpi-faq-q,
+.kpi-shell:has(.kpi-conversion) .kpi-faq-home .kpi-faq-panel p {
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
+
+.kpi-shell:has(.kpi-conversion) .kpi-faq-home .kpi-faq-panel p {
+  max-width: 40rem;
+  text-wrap: pretty;
+}
+
+.kpi-shell:has(.kpi-conversion) .kpi-faq-home img,
+.kpi-shell:has(.kpi-conversion) .kpi-faq-home dialog {
+  display: none;
+}
+
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-faq-home .kpi-faq-trigger,
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-faq-home .kpi-faq-lead,
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-faq-home .kpi-faq-panel p {
+  font-family: Prompt, "Noto Sans Thai", Tahoma, Arial, sans-serif;
+}
+
+.kpi-shell:has(.kpi-conversion) .kpi-faq-home .kpi-latin,
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-faq-home .kpi-latin {
+  font-family: Montserrat, Poppins, sans-serif !important;
+}
+
+.kpi-shell:has(.kpi-conversion) .kpi-footer .kpi-button,
+.kpi-footer--conversion .kpi-button {
+  min-height: var(--kpi-touch);
+  background: #a2dc25;
+  color: #1a3a02;
+  white-space: normal;
+}
+
+.kpi-shell:has(.kpi-conversion) .kpi-footer .kpi-button:hover,
+.kpi-shell:has(.kpi-conversion) .kpi-footer .kpi-button:active,
+.kpi-footer--conversion .kpi-button:hover,
+.kpi-footer--conversion .kpi-button:active {
+  background: #93c91f;
+  color: #1a3a02;
+}
+
+.kpi-shell:has(.kpi-conversion) .kpi-footer a:focus,
+.kpi-shell:has(.kpi-conversion) .kpi-footer a:focus-visible,
+.kpi-shell:has(.kpi-conversion) .kpi-footer button:focus,
+.kpi-shell:has(.kpi-conversion) .kpi-footer button:focus-visible {
+  outline: 2px solid #a2dc25 !important;
+  outline-offset: 3px;
+}
+
+.kpi-shell:has(.kpi-conversion) .kpi-footer-statement,
+.kpi-shell:has(.kpi-conversion) .kpi-footer-link,
+.kpi-shell:has(.kpi-conversion) .kpi-footer-address,
+.kpi-shell:has(.kpi-conversion) .kpi-footer-copy,
+.kpi-shell:has(.kpi-conversion) .kpi-footer-legal-links {
+  overflow-wrap: anywhere;
+}
+
+.kpi-shell:has(.kpi-conversion) .kpi-footer-legal a:hover,
+.kpi-shell:has(.kpi-conversion) .kpi-footer-legal button:hover,
+.kpi-shell:has(.kpi-conversion) .kpi-footer-lang a:hover {
+  color: #a2dc25;
+}
+
+@media (max-width: 39.99rem) {
+  .kpi-shell:has(.kpi-conversion) .kpi-faq-home .kpi-faq-trigger {
+    gap: 0.75rem;
+    padding-top: 0.9rem;
+    padding-bottom: 0.9rem;
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .kpi-shell:has(.kpi-conversion) .kpi-faq-home .kpi-faq-panel p {
+    max-width: none;
+    padding-right: 0;
+    font-size: 0.9375rem;
+    line-height: 1.75;
+  }
+
+  .kpi-shell:has(.kpi-conversion) .kpi-footer .kpi-button,
+  .kpi-footer--conversion .kpi-button {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .kpi-shell:has(.kpi-conversion) .kpi-footer-statement,
+  .kpi-shell:has(.kpi-conversion) .kpi-footer-copy,
+  .kpi-shell:has(.kpi-conversion) .kpi-footer-legal-links {
+    max-width: none;
+  }
+}
+
 .kpi-shell:has(.kpi-cs-hero) .kpi-faq-home .kpi-faq-list {
   max-width: min(44rem, 100%);
 }
@@ -32232,4 +32528,26 @@ a.kpi-contact-card-value:focus-visible {
   .kpi-contact-next-step:first-child {
     padding-left: 0;
   }
+}
+
+/* Hotel Direct Bookings: Prompt for Thai copy, with Noto Sans Thai fallback. */
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-conversion,
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-conversion :is(h1, h2, h3, h4, p, li, dt, dd, label, button, a, figcaption, strong, small),
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-conversion .kpi-h1,
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-conversion .kpi-h2,
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-conversion .kpi-home-h1,
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-conversion .kpi-home-h1-lead,
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-conversion .kpi-home-h1-rest,
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-conversion .kpi-lead,
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-conversion .kpi-button,
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-website-enquiry :is(h2, h3, p, li, label, button, span),
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-faq-home :is(h2, p, button) {
+  font-family: Prompt, "Noto Sans Thai", Tahoma, Arial, sans-serif !important;
+}
+
+.kpi-shell:has(.kpi-conversion) .kpi-conversion .kpi-latin,
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-conversion .kpi-latin,
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-website-enquiry .kpi-latin,
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-faq-home .kpi-latin {
+  font-family: Montserrat, Prompt, sans-serif !important;
 }
