@@ -6,6 +6,7 @@ import { partnerOverview } from "@/lib/partners/queries";
 import { cmsOverview } from "@/lib/cms/queries";
 import { adsOpsOverview } from "@/lib/ads-ops/queries";
 import { metaOpsOverview } from "@/lib/meta-ops/queries";
+import { seoOpsOverview } from "@/lib/seo-ops/queries";
 import { b2bOpsOverview } from "@/lib/b2b-ops/queries";
 import { reservationOpsOverview } from "@/lib/reservations-ops/queries";
 import { EmptyState } from "@/components/crm/ui/EmptyState";
@@ -15,7 +16,7 @@ import { roleLabel } from "@/lib/crm/roles";
 
 export default async function AdminHomePage() {
   const user = await requireUser();
-  const [lists, origins, partners, users, cms, reservations, b2b, ads, meta] = await Promise.all([
+  const [lists, origins, partners, users, cms, reservations, b2b, ads, meta, seo] = await Promise.all([
     todayLists(),
     leadOriginCounts(),
     partnerOverview().catch(() => ({
@@ -31,6 +32,7 @@ export default async function AdminHomePage() {
     b2bOpsOverview(user).catch(() => ({ total: 0, active: 0, due: 0, pendingRates: 0 })),
     adsOpsOverview(user).catch(() => ({ total: 0, live: 0, due: 0 })),
     metaOpsOverview(user).catch(() => ({ total: 0, live: 0, due: 0 })),
+    seoOpsOverview(user).catch(() => ({ total: 0, live: 0, due: 0 })),
   ]);
 
   const dueToday = lists.dueToday.length + lists.overdue.length;
@@ -133,6 +135,22 @@ export default async function AdminHomePage() {
             { label: "ติดตาม", value: meta.due },
           ],
           cta: "เปิด Meta Ads Operations",
+        }
+      : null,
+    hasModule(user, "seo")
+      ? {
+          href: "/crm/seo",
+          accent: "seo" as const,
+          icon: "▣",
+          category: "LOCAL SEARCH",
+          title: "Local Search Operations",
+          body: "บอร์ดงาน Search Visibility, Website / SEO, Google Business Profile, Maps และ AEO ภายใน",
+          stats: [
+            { label: "งาน", value: seo.total },
+            { label: "เผยแพร่", value: seo.live },
+            { label: "ติดตาม", value: seo.due },
+          ],
+          cta: "เปิด Local Search Operations",
         }
       : null,
     hasModule(user, "users")

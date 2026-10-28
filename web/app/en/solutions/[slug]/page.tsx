@@ -15,6 +15,7 @@ import { WebsiteView } from "@/components/WebsiteView";
 import { SOLUTION_SLUGS } from "@/lib/solution-slugs";
 import { b2bPublicMetadata } from "@/lib/cms/b2b-page-public";
 import { googleAdsPublicMetadata } from "@/lib/cms/google-ads-page-public";
+import { hotelSeoPublicMetadata } from "@/lib/cms/hotel-seo-page-public";
 import { reservationsPublicMetadata } from "@/lib/cms/reservations-page-public";
 import { revenuePublicMetadata } from "@/lib/cms/revenue-page-public";
 import { metadataFor, pageByRoute } from "@/lib/seo";
@@ -33,6 +34,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }) 
   if (slug === "outsourced-hotel-reservations") return reservationsPublicMetadata(route);
   if (slug === "b2b-agent-sales") return b2bPublicMetadata(route);
   if (slug === "google-ads-management") return googleAdsPublicMetadata(route);
+  if (slug === "hotel-seo-google-maps-ai-search") return hotelSeoPublicMetadata(route);
   return metadataFor(route);
 }
 

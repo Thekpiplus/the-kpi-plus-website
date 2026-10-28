@@ -79,6 +79,20 @@ const metaLinks: ContextLink[] = [
   { href: "/crm/meta/settings", label: "Settings" },
 ];
 
+const seoLinks: ContextLink[] = [
+  { href: "/crm/seo", label: "Search Visibility" },
+  { href: "/crm/seo/website", label: "Website / SEO" },
+  { href: "/crm/seo/gbp", label: "Google Business Profile" },
+  { href: "/crm/seo/maps", label: "Maps / Local Listings" },
+  { href: "/crm/seo/aeo", label: "AI Search / AEO" },
+  { href: "/crm/seo/reviews", label: "Reviews and Questions" },
+  { href: "/crm/seo/contact", label: "Contact / Booking Paths" },
+  { href: "/crm/seo/audit", label: "Audit Actions" },
+  { href: "/crm/seo/reports", label: "Reports / KPI" },
+  { href: "/crm/seo/sources", label: "Sources and Approvals" },
+  { href: "/crm/seo/settings", label: "Settings" },
+];
+
 const cmsLinks = [
   { href: "/crm/cms", label: "หน้าเพจทั้งหมด" },
   { href: "/crm/cms/insights", label: "บทความ" },
@@ -92,6 +106,7 @@ const cmsLinks = [
   { href: "/crm/cms/b2b", label: "หน้า B2B Agent Sales" },
   { href: "/crm/cms/google-ads", label: "หน้า Google Ads Management" },
   { href: "/crm/cms/meta-ads", label: "หน้า Meta Ads Management" },
+  { href: "/crm/cms/hotel-seo", label: "หน้า Hotel SEO / Local Search" },
   { href: "/crm/cms/contacts", label: "ข้อมูลติดต่อ" },
 ];
 
@@ -102,6 +117,7 @@ const contextByWorkspace: Record<Exclude<Workspace, "home">, ContextLink[]> = {
   b2b: b2bLinks,
   ads: adsLinks,
   meta: metaLinks,
+  seo: seoLinks,
   users: userLinks,
   cms: cmsLinks,
 };
@@ -114,6 +130,7 @@ const NAV_LABEL: Record<NavKey, string> = {
   b2b: "B2B Sales Operations",
   ads: "Google Ads Operations",
   meta: "Meta Ads Operations",
+  seo: "Local Search Operations",
   users: "Users Management",
   cms: "Content Management",
   settings: "ตั้งค่า",
@@ -176,6 +193,15 @@ function IconB2b() {
   );
 }
 
+function IconSeo() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M12 21s6.5-5.2 6.5-10.2A6.5 6.5 0 0 0 12 4.3 6.5 6.5 0 0 0 5.5 10.8C5.5 15.8 12 21 12 21Z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
+      <circle cx="12" cy="10.8" r="2.1" stroke="currentColor" strokeWidth="1.7" />
+    </svg>
+  );
+}
+
 function IconCms() {
   return (
     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -232,6 +258,7 @@ const NAV_ICON: Record<NavKey, () => ReactNode> = {
   b2b: IconB2b,
   ads: IconB2b,
   meta: IconB2b,
+  seo: IconSeo,
   users: IconUsers,
   cms: IconCms,
   settings: IconSettings,
@@ -245,6 +272,7 @@ function workspaceOf(pathname: string): Workspace {
   if (pathname.startsWith("/crm/b2b")) return "b2b";
   if (pathname.startsWith("/crm/ads")) return "ads";
   if (pathname.startsWith("/crm/meta")) return "meta";
+  if (pathname.startsWith("/crm/seo")) return "seo";
   if (
     pathname.startsWith("/crm/sales") ||
     pathname.startsWith("/crm/pipeline") ||
@@ -269,6 +297,7 @@ function isCurrent(pathname: string, search: string, href: string) {
   if (path === "/crm/b2b") return pathname === "/crm/b2b";
   if (path === "/crm/ads") return pathname === "/crm/ads";
   if (path === "/crm/meta") return pathname === "/crm/meta";
+  if (path === "/crm/seo") return pathname === "/crm/seo";
   return pathname === path || pathname.startsWith(`${path}/`);
 }
 
@@ -448,7 +477,7 @@ export function CrmShell({
 
   const shell = (
     <div
-      className={`crm-shell crm-shell-app kpi-locale-th${railExpanded ? " is-rail-expanded" : ""}${workspace === "b2b" ? " crm-shell-b2b" : ""}${workspace === "ads" ? " crm-shell-ads" : ""}${workspace === "meta" ? " crm-shell-meta" : ""}`}
+      className={`crm-shell crm-shell-app kpi-locale-th${railExpanded ? " is-rail-expanded" : ""}${workspace === "b2b" ? " crm-shell-b2b" : ""}${workspace === "ads" ? " crm-shell-ads" : ""}${workspace === "meta" ? " crm-shell-meta" : ""}${workspace === "seo" ? " crm-shell-seo" : ""}`}
       suppressHydrationWarning
     >
       <aside

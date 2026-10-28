@@ -6,9 +6,11 @@ import { FormPrivacyNotice } from "@/components/FormPrivacyNotice";
 import { B2bEnquiryIntro } from "@/components/b2b/B2bEnquiryIntro";
 import { AdsEnquiryIntro } from "@/components/google-ads/AdsEnquiryIntro";
 import { AdsEnquiryIntro as MetaAdsEnquiryIntro } from "@/components/meta-ads/AdsEnquiryIntro";
+import { HotelSeoEnquiryIntro } from "@/components/hotel-seo/HotelSeoEnquiryIntro";
 import { ReservationsEnquiryIntro } from "@/components/reservations/ReservationsEnquiryIntro";
 import { RevenueEnquiryIntro } from "@/components/revenue-commercial/RevenueEnquiryIntro";
 import { adsEnquiryCopy } from "@/lib/google-ads";
+import { hotelSeoEnquiryCopy } from "@/lib/hotel-seo";
 import { metaEnquiryCopy } from "@/lib/meta-ads";
 import { b2bEnquiryCopy } from "@/lib/b2b";
 import { AUDIT_CONTACTS, readUtm } from "@/lib/audit";
@@ -32,6 +34,7 @@ type FormState = {
   scope: string;
   market: string;
   website: string;
+  mapsUrl: string;
   adsStatus: string;
   trackingStatus: string;
   goal: string;
@@ -40,7 +43,7 @@ type FormState = {
   companyWebsite: string;
 };
 
-type FieldError = Partial<Record<"name" | "businessName" | "contact" | "serviceInterest" | "topic" | "consent" | "website", string>>;
+type FieldError = Partial<Record<"name" | "businessName" | "contact" | "serviceInterest" | "topic" | "consent" | "website" | "mapsUrl", string>>;
 
 const revenueGroups = {
   th: { contact: "ข้อมูลติดต่อ", hotel: "เกี่ยวกับโรงแรม", topic: "เรื่องที่อยากคุย" },
@@ -108,6 +111,29 @@ function looksLikeWebsite(value: string) {
   const next = value.trim();
   if (!next) return true;
   return /^(https?:\/\/)?[\w.-]+\.[a-z]{2,}([/?#][^\s]*)?$/i.test(next);
+}
+
+function hotelSeoIssueLabel(id: string, locale: Locale) {
+  const fields = hotelSeoEnquiryCopy(locale).fields;
+  if (id === "search") return fields.issueSearch;
+  if (id === "maps") return fields.issueMaps;
+  if (id === "website") return fields.issueWebsite;
+  if (id === "contact") return fields.issueContact;
+  if (id === "booking") return fields.issueBooking;
+  return "";
+}
+
+function composeHotelSeoMessage(website: string, mapsUrl: string, issue: string, outcome: string, locale: Locale) {
+  const fields = hotelSeoEnquiryCopy(locale).fields;
+  const issueLabel = hotelSeoIssueLabel(issue, locale);
+  return [
+    website.trim() ? `${fields.website}: ${website.trim()}` : "",
+    mapsUrl.trim() ? `${fields.maps}: ${mapsUrl.trim()}` : "",
+    issueLabel ? `${fields.issue}: ${issueLabel}` : "",
+    outcome.trim() ? `${fields.outcome}: ${outcome.trim()}` : "",
+  ]
+    .filter(Boolean)
+    .join("\n\n");
 }
 
 function composeGoogleAdsMessage(
@@ -217,10 +243,10 @@ const metaAdsGroups = {
 } as const;
 
 const searchGroups = {
-  th: { contact: "ข้อมูลติดต่อ", hotel: "ข้อมูลธุรกิจ", topic: "เรื่องที่อยากคุย" },
-  en: { contact: "Contact details", hotel: "Business details", topic: "What you'd like to discuss" },
-  ru: { contact: "Contact details", hotel: "Business details", topic: "What you'd like to discuss" },
-  zh: { contact: "Contact details", hotel: "Business details", topic: "What you'd like to discuss" },
+  th: { contact: "ข้อมูลติดต่อ", hotel: "ข้อมูลโรงแรม", topic: "ปัญหาและผลที่ต้องการ" },
+  en: { contact: "Contact details", hotel: "Hotel / company", topic: "Issue and desired outcome" },
+  ru: { contact: "Contact details", hotel: "Hotel / company", topic: "Issue and desired outcome" },
+  zh: { contact: "Contact details", hotel: "Hotel / company", topic: "Issue and desired outcome" },
 } as const;
 
 const websiteGroups = {
@@ -353,6 +379,9 @@ export function EnquiryForm({
     business?: string;
     contact?: string;
     website?: string;
+    mapsUrl?: string;
+    issue?: string;
+    outcome?: string;
     goal?: string;
     market?: string;
     adsStatus?: string;
@@ -376,6 +405,7 @@ export function EnquiryForm({
     scope: "",
     market: "",
     website: "",
+    mapsUrl: "",
     adsStatus: "",
     trackingStatus: "",
     goal: "",
@@ -401,9 +431,16 @@ export function EnquiryForm({
     }
     if (!preset && !next.serviceInterest) nextErrors.serviceInterest = t.required;
     if (service === "revenue" && !next.topic.trim()) nextErrors.topic = t.required;
-    if ((service === "google_ads" || service === "meta_ads") && next.website.trim() && !looksLikeWebsite(next.website)) {
+    if ((service === "google_ads" || service === "meta_ads" || service === "search") && next.website.trim() && !looksLikeWebsite(next.website)) {
       nextErrors.website =
-        service === "meta_ads" ? metaEnquiryCopy(locale).fields.websiteInvalid : adsEnquiryCopy(locale).fields.websiteInvalid;
+        service === "search"
+          ? hotelSeoEnquiryCopy(locale).fields.websiteInvalid
+          : service === "meta_ads"
+            ? metaEnquiryCopy(locale).fields.websiteInvalid
+            : adsEnquiryCopy(locale).fields.websiteInvalid;
+    }
+    if (service === "search" && next.mapsUrl.trim() && !looksLikeWebsite(next.mapsUrl)) {
+      nextErrors.mapsUrl = hotelSeoEnquiryCopy(locale).fields.mapsInvalid;
     }
     if (!next.consent) nextErrors.consent = t.required;
     setErrors(nextErrors);
@@ -424,10 +461,11 @@ export function EnquiryForm({
           businessName: state.businessName.trim(),
           contact: state.contact.trim(),
           serviceInterest: serviceId,
-          topic: service === "revenue" ? state.topic : undefined,
+          topic: service === "revenue" || service === "search" ? state.topic : undefined,
           channels: service === "reservations" || service === "b2b" ? state.channels.trim() : undefined,
           scope: service === "reservations" ? state.scope.trim() : undefined,
-          website: service === "google_ads" || service === "meta_ads" ? state.website.trim() : undefined,
+          website: service === "google_ads" || service === "meta_ads" || service === "search" ? state.website.trim() : undefined,
+          mapsUrl: service === "search" ? state.mapsUrl.trim() : undefined,
           goal: service === "google_ads" || service === "meta_ads" ? state.goal.trim() : undefined,
           market: service === "google_ads" || service === "meta_ads" || service === "b2b" ? state.market.trim() : undefined,
           adsStatus: service === "google_ads" || service === "meta_ads" ? state.adsStatus.trim() : undefined,
@@ -451,7 +489,9 @@ export function EnquiryForm({
                           state.message,
                           locale,
                         )
-                      : state.message.trim(),
+                      : service === "search"
+                        ? composeHotelSeoMessage(state.website, state.mapsUrl, state.topic, state.message, locale)
+                        : state.message.trim(),
           consent: state.consent,
           honeypot: state.companyWebsite,
           pageUrl: typeof window === "undefined" ? "" : window.location.href,
@@ -2136,85 +2176,70 @@ export function EnquiryForm({
 
   if (service === "search" && !compact) {
     const groups = searchGroups[locale];
+    const searchCopy = hotelSeoEnquiryCopy(locale);
+    const formUi = {
+      ...searchCopy.fields,
+      website: fieldLabels?.website?.trim() || searchCopy.fields.website,
+      maps: fieldLabels?.mapsUrl?.trim() || searchCopy.fields.maps,
+      issue: fieldLabels?.issue?.trim() || searchCopy.fields.issue,
+      outcome: fieldLabels?.outcome?.trim() || searchCopy.fields.outcome,
+    };
+    const nameLabel = fieldLabels?.name?.trim() || searchCopy.labels.name;
+    const businessLabel = fieldLabels?.business?.trim() || searchCopy.labels.business;
+    const contactLabel = fieldLabels?.contact?.trim() || searchCopy.labels.contact;
+    const consentLabel = fieldLabels?.consent?.trim() || searchCopy.labels.consent;
+    const privacyLabel = fieldLabels?.privacy?.trim() || searchCopy.labels.privacy;
     const labelClassName = "kpi-search-enquiry-label";
+    const sending = status === "submitting";
     return (
       <section id={sectionId} className="kpi-search-enquiry scroll-mt-28">
         <div className="kpi-section kpi-search-enquiry-grid">
-          <div className="kpi-search-enquiry-intro">
-            <p className="kpi-search-enquiry-kicker kpi-latin">{kickerText}</p>
-            <h2 className="kpi-h2 kpi-search-enquiry-heading">
-              {locale === "th" ? (
-                <>
-                  คุยเรื่อง <span className="kpi-latin">SEO</span> และการค้นหาท้องถิ่น
-                </>
-              ) : (
-                heading
-              )}
-            </h2>
-            {locale === "th" ? (
-              <p className="kpi-search-enquiry-lead">
-                <span>ส่งข้อมูลสั้น ๆ เกี่ยวกับธุรกิจ</span>
-                <span className="kpi-search-enquiry-line">แล้วทีมจะช่วยดูว่าควรเริ่มปรับจากจุดไหนก่อน</span>
-              </p>
-            ) : (
-              <p className="kpi-search-enquiry-lead">{lead}</p>
-            )}
-            {locale === "th" ? (
-              <>
-                <ol className="kpi-search-enquiry-points">
-                  <li>
-                    <span className="kpi-latin">01</span>
-                    <span>ดูการค้นพบปัจจุบัน</span>
-                  </li>
-                  <li>
-                    <span className="kpi-latin">02</span>
-                    <span>
-                      ดูเว็บไซต์และ <span className="kpi-latin">Google Maps</span>
-                    </span>
-                  </li>
-                  <li>
-                    <span className="kpi-latin">03</span>
-                    <span>ดูจุดที่ลูกค้าค้นพบแล้วติดต่อไม่ต่อเนื่อง</span>
-                  </li>
-                </ol>
-                <p className="kpi-search-enquiry-note">
-                  ไม่จำเป็นต้องมี <span className="kpi-latin">Search Console</span>
-                  <span className="kpi-search-enquiry-line">หรือข้อมูลครบทุกระบบอยู่แล้วก็ได้</span>
-                </p>
-              </>
-            ) : null}
-          </div>
+          <HotelSeoEnquiryIntro
+            locale={locale}
+            kicker={kickerText}
+            heading={heading}
+            lead={lead}
+            receiveTitle={introReceiveTitle}
+            receive={introReceive}
+            nextTitle={introNextTitle}
+            steps={introSteps}
+            photoSrc={consultantImageSrc}
+            photoAlt={consultantImageAlt}
+          />
           <div className="kpi-search-enquiry-panel">
             {status === "success" ? (
-              <div role="status">
+              <div className="kpi-search-enquiry-done" role="status" aria-live="polite">
                 <p className="kpi-search-enquiry-success">{t.success}</p>
+                <p className="kpi-search-enquiry-reply">{auditCopyFor(locale).trustReply}</p>
                 <ContactNote locale={locale} className="kpi-search-enquiry-direct" />
               </div>
             ) : (
-              <form className="kpi-search-enquiry-fields" onSubmit={onSubmit} noValidate>
+              <form className="kpi-search-enquiry-fields" onSubmit={onSubmit} noValidate aria-busy={sending}>
                 <div className="kpi-search-enquiry-group">
                   <p className="kpi-search-enquiry-group-label">{groups.contact}</p>
                   <div className="kpi-search-enquiry-pair">
-                    <Field label={t.name} htmlFor={`${formId}-name`} error={errors.name} labelClassName={labelClassName}>
+                    <Field label={nameLabel} htmlFor={`${formId}-name`} error={errors.name} labelClassName={labelClassName}>
                       <input
                         id={`${formId}-name`}
                         name="name"
                         autoComplete="name"
                         className="kpi-field"
                         value={state.name}
+                        disabled={sending}
                         aria-invalid={Boolean(errors.name)}
                         onBlur={() => validate()}
                         onChange={(event) => setState((current) => ({ ...current, name: event.target.value }))}
                       />
                     </Field>
-                    <Field label={t.contact} htmlFor={`${formId}-contact`} error={errors.contact} labelClassName={labelClassName}>
+                    <Field label={contactLabel} htmlFor={`${formId}-contact`} error={errors.contact} labelClassName={labelClassName}>
                       <input
                         id={`${formId}-contact`}
                         name="contact"
-                        autoComplete="tel"
+                        autoComplete="email"
                         inputMode="email"
                         className="kpi-field"
                         value={state.contact}
+                        disabled={sending}
                         aria-invalid={Boolean(errors.contact)}
                         onBlur={() => validate()}
                         onChange={(event) => setState((current) => ({ ...current, contact: event.target.value }))}
@@ -2224,53 +2249,138 @@ export function EnquiryForm({
                 </div>
                 <div className="kpi-search-enquiry-group">
                   <p className="kpi-search-enquiry-group-label">{groups.hotel}</p>
-                  <Field label={t.business} htmlFor={`${formId}-business`} error={errors.businessName} labelClassName={labelClassName}>
+                  <Field label={businessLabel} htmlFor={`${formId}-business`} error={errors.businessName} labelClassName={labelClassName}>
                     <input
                       id={`${formId}-business`}
                       name="organization"
                       autoComplete="organization"
                       className="kpi-field"
                       value={state.businessName}
+                      disabled={sending}
                       aria-invalid={Boolean(errors.businessName)}
                       onBlur={() => validate()}
                       onChange={(event) => setState((current) => ({ ...current, businessName: event.target.value }))}
                     />
                   </Field>
+                  <div className="kpi-search-enquiry-stack">
+                    <Field
+                      label={formUi.website}
+                      htmlFor={`${formId}-website`}
+                      optional={t.messageOptional}
+                      error={errors.website}
+                      labelClassName={labelClassName}
+                    >
+                      <input
+                        id={`${formId}-website`}
+                        name="website"
+                        inputMode="url"
+                        autoComplete="url"
+                        className="kpi-field"
+                        value={state.website}
+                        disabled={sending}
+                        aria-invalid={Boolean(errors.website)}
+                        aria-describedby={`${formId}-website-hint`}
+                        onBlur={() => validate()}
+                        onChange={(event) => setState((current) => ({ ...current, website: event.target.value }))}
+                      />
+                      <p id={`${formId}-website-hint`} className="kpi-search-enquiry-hint">
+                        {formUi.websiteHint}
+                      </p>
+                    </Field>
+                  </div>
+                  <div className="kpi-search-enquiry-stack">
+                    <Field
+                      label={formUi.maps}
+                      htmlFor={`${formId}-maps`}
+                      optional={t.messageOptional}
+                      error={errors.mapsUrl}
+                      labelClassName={labelClassName}
+                    >
+                      <input
+                        id={`${formId}-maps`}
+                        name="mapsUrl"
+                        inputMode="url"
+                        autoComplete="url"
+                        className="kpi-field"
+                        value={state.mapsUrl}
+                        disabled={sending}
+                        aria-invalid={Boolean(errors.mapsUrl)}
+                        aria-describedby={`${formId}-maps-hint`}
+                        onBlur={() => validate()}
+                        onChange={(event) => setState((current) => ({ ...current, mapsUrl: event.target.value }))}
+                      />
+                      <p id={`${formId}-maps-hint`} className="kpi-search-enquiry-hint">
+                        {formUi.mapsHint}
+                      </p>
+                    </Field>
+                  </div>
                 </div>
                 <div className="kpi-search-enquiry-group">
                   <p className="kpi-search-enquiry-group-label">{groups.topic}</p>
-                  <Field label={t.message} htmlFor={`${formId}-message`} optional={t.messageOptional} labelClassName={labelClassName}>
-                    <textarea
-                      id={`${formId}-message`}
-                      name="message"
-                      rows={4}
+                  <Field label={formUi.issue} htmlFor={`${formId}-issue`} optional={t.messageOptional} labelClassName={labelClassName}>
+                    <select
+                      id={`${formId}-issue`}
+                      name="topic"
                       className="kpi-field"
-                      placeholder={t.messageHint}
-                      value={state.message}
-                      onChange={(event) => setState((current) => ({ ...current, message: event.target.value }))}
-                    />
+                      value={state.topic}
+                      disabled={sending}
+                      onChange={(event) => setState((current) => ({ ...current, topic: event.target.value }))}
+                    >
+                      <option value="">{formUi.issueEmpty}</option>
+                      <option value="search">{formUi.issueSearch}</option>
+                      <option value="maps">{formUi.issueMaps}</option>
+                      <option value="website">{formUi.issueWebsite}</option>
+                      <option value="contact">{formUi.issueContact}</option>
+                      <option value="booking">{formUi.issueBooking}</option>
+                    </select>
                   </Field>
+                  <div className="kpi-search-enquiry-stack">
+                    <Field
+                      label={formUi.outcome}
+                      htmlFor={`${formId}-message`}
+                      optional={t.messageOptional}
+                      labelClassName={labelClassName}
+                    >
+                      <textarea
+                        id={`${formId}-message`}
+                        name="message"
+                        rows={4}
+                        className="kpi-field"
+                        value={state.message}
+                        disabled={sending}
+                        aria-describedby={`${formId}-outcome-hint`}
+                        onChange={(event) => setState((current) => ({ ...current, message: event.target.value }))}
+                      />
+                      <p id={`${formId}-outcome-hint`} className="kpi-search-enquiry-hint">
+                        {formUi.outcomeHint}
+                      </p>
+                    </Field>
+                  </div>
                 </div>
                 <input type="hidden" name="serviceInterest" value={preset?.id ?? "search"} />
                 <div className="kpi-search-enquiry-privacy">
                   <FormPrivacyNotice locale={locale} />
                 </div>
-                <label className="kpi-search-enquiry-consent">
+                <label className="kpi-search-enquiry-consent" htmlFor={`${formId}-consent`}>
                   <input
+                    id={`${formId}-consent`}
                     type="checkbox"
                     checked={state.consent}
+                    disabled={sending}
                     aria-invalid={Boolean(errors.consent)}
+                    aria-describedby={errors.consent ? `${formId}-consent-error` : undefined}
+                    onBlur={() => validate()}
                     onChange={(event) => setState((current) => ({ ...current, consent: event.target.checked }))}
                   />
                   <span>
-                    {t.consent}{" "}
+                    {consentLabel}{" "}
                     <Link href={privacyHref} className="font-semibold text-[#0B6660]">
-                      {t.privacy}
+                      {privacyLabel}
                     </Link>
                   </span>
                 </label>
                 {errors.consent ? (
-                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                  <p id={`${formId}-consent-error`} className="kpi-search-enquiry-error" role="alert">
                     {errors.consent}
                   </p>
                 ) : null}
@@ -2284,27 +2394,21 @@ export function EnquiryForm({
                   className="absolute left-[-10000px] h-px w-px overflow-hidden"
                   onChange={(event) => setState((current) => ({ ...current, companyWebsite: event.target.value }))}
                 />
-                <button className="kpi-button" type="submit" disabled={status === "submitting"}>
-                  {status === "submitting" ? (
-                    t.sending
-                  ) : locale === "th" ? (
-                    <>
-                      ให้ทีมดูการค้นพบธุรกิจของคุณ
-                      <span className="kpi-search-enquiry-arrow" aria-hidden="true">
-                        ↗
-                      </span>
-                    </>
-                  ) : (
-                    cta
-                  )}
+                <button className="kpi-button kpi-search-enquiry-submit" type="submit" disabled={sending} aria-busy={sending}>
+                  {sending ? t.sending : cta}
                 </button>
+                {sending ? (
+                  <p className="kpi-search-enquiry-status" role="status" aria-live="polite">
+                    {formUi.loading}
+                  </p>
+                ) : null}
                 {status === "error" ? (
-                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                  <p className="kpi-search-enquiry-error" role="alert">
                     {t.failed}
                   </p>
                 ) : null}
                 {status === "unavailable" ? (
-                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                  <p className="kpi-search-enquiry-error" role="alert">
                     {t.unavailable}
                   </p>
                 ) : null}

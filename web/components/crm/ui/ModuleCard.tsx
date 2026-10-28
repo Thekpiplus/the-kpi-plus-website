@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export type ModuleCardProps = {
   href: string;
-  accent: "leads" | "partners" | "reservations" | "b2b" | "ads" | "meta" | "users" | "cms";
+  accent: "leads" | "partners" | "reservations" | "b2b" | "ads" | "meta" | "seo" | "users" | "cms";
   icon: string;
   category: string;
   title: string;

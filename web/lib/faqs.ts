@@ -1,4 +1,5 @@
 import { adsFaqs } from "@/lib/google-ads";
+import { hotelSeoFaqs } from "@/lib/hotel-seo";
 import { metaFaqs } from "@/lib/meta-ads";
 
 export type FaqItem = { q: string; a: string };
@@ -1068,78 +1069,10 @@ const table: Record<string, FaqItem[]> = {
   "/en/solutions/meta-ads-management": metaFaqs("en"),
   "/ru/solutions/meta-ads-management": metaFaqs("en"),
   "/zh/solutions/meta-ads-management": metaFaqs("en"),
-  "/solutions/hotel-seo-google-maps-ai-search": [
-    {
-      q: "AEO คืออะไร และต่างจาก SEO ไหม?",
-      a: "AEO คือการจัดข้อมูลให้ตอบคำถามของผู้ค้นหาได้ชัดเจน โดยเฉพาะคำถามที่ละเอียดหรือมีหลายเงื่อนไข เป็นแนวทางหนึ่งในการทำเนื้อหาที่มีประโยชน์และเข้าใจง่าย ไม่ใช่ช่องทางลัดที่รับประกันว่าธุรกิจจะปรากฏในคำตอบ AI",
-    },
-    {
-      q: "ต้องมีเว็บไซต์ไหม ถ้ามี Google Business Profile แล้ว?",
-      a: "Business Profile ช่วยให้ลูกค้าเห็นข้อมูลสำคัญบน Search และ Maps ได้ แต่เว็บไซต์มีพื้นที่อธิบายบริการ ห้องพัก เมนู เงื่อนไข และรายละเอียดการจองได้มากกว่า ทีมจะดูว่าธุรกิจของคุณต้องการข้อมูลและเส้นทางตัดสินใจระดับใด",
-    },
-    {
-      q: "รีวิวช่วยให้ติดอันดับ Maps ไหม?",
-      a: "Google ระบุว่ารีวิวและคะแนนเป็นส่วนหนึ่งของความโดดเด่นของธุรกิจ แต่ผลในพื้นที่ยังขึ้นกับความเกี่ยวข้องและระยะทางด้วย จึงควรขอรีวิวจากลูกค้าจริง ตอบอย่างเหมาะสม และรักษาข้อมูลธุรกิจให้ถูกต้อง ไม่ใช่มองเพียงจำนวนดาว",
-    },
-    {
-      q: "ทำแล้วจะเห็นผลเมื่อไร?",
-      a: "ขึ้นอยู่กับสภาพเว็บไซต์ ความครบถ้วนของข้อมูล การแข่งขันในพื้นที่ และสิ่งที่ต้องแก้ บางเรื่องอย่างเวลาเปิดหรือเบอร์โทรสามารถแก้ได้ทันที ส่วนการเติบโตจากการค้นหาและเนื้อหาต้องติดตามต่อเนื่อง",
-    },
-  ],
-  "/en/solutions/hotel-seo-google-maps-ai-search": [
-    {
-      q: "What is AEO, and is it different from SEO?",
-      a: "AEO means organising facts so they clearly answer the searcher’s question, especially a detailed or multi-part question. It is a way to make useful, easy-to-understand content, not a shortcut that guarantees a mention in an AI answer.",
-    },
-    {
-      q: "Do we still need a website if we already have a Google Business Profile?",
-      a: "The Business Profile can show key facts on Search and Maps. A website has more space for services, rooms, menus, conditions, and booking details. The team looks at how much information and how much of a decision path this business needs.",
-    },
-    {
-      q: "Do reviews improve a Maps rank?",
-      a: "Google says reviews and ratings are part of prominence. Local results also depend on relevance and distance. Ask real customers, reply in a suitable way, and keep the business facts accurate. Do not look at the star count alone.",
-    },
-    {
-      q: "When will we see a result?",
-      a: "It depends on the website, how complete the facts are, local competition, and what needs fixing. Hours or a phone number can change at once. Search and content growth need ongoing review.",
-    },
-  ],
-  "/ru/solutions/hotel-seo-google-maps-ai-search": [
-    {
-      q: "Что такое AEO и чем оно отличается от SEO?",
-      a: "AEO — это организация фактов так, чтобы они ясно отвечали на вопрос ищущего, особенно на подробный или составной вопрос. Это способ делать полезный понятный контент, а не короткий путь, который гарантирует появление в ответе ИИ.",
-    },
-    {
-      q: "Нужен ли сайт, если уже есть Google Business Profile?",
-      a: "Business Profile показывает ключевые факты в Search и Maps. На сайте больше места для услуг, номеров, меню, условий и деталей брони. Команда смотрит, какой объём информации и какой путь решения нужны этому бизнесу.",
-    },
-    {
-      q: "Помогают ли отзывы подняться в Maps?",
-      a: "Google указывает, что отзывы и оценки входят в известность. Локальный результат также зависит от релевантности и расстояния. Просите отзывы у реальных клиентов, отвечайте уместно и держите данные бизнеса точными, а не смотрите только на число звёзд.",
-    },
-    {
-      q: "Когда будет виден результат?",
-      a: "Это зависит от сайта, полноты данных, конкуренции в районе и того, что нужно исправить. Часы или телефон можно поменять сразу. Рост из поиска и контента нужно смотреть дальше.",
-    },
-  ],
-  "/zh/solutions/hotel-seo-google-maps-ai-search": [
-    {
-      q: "AEO 是什麼？和 SEO 一樣嗎？",
-      a: "AEO 是把資料整理到能清楚回答搜尋者的問題，尤其是較細或有多個條件的問題。這是做出有用、好懂內容的做法，不是保證會出現在 AI 答案裡的捷徑。",
-    },
-    {
-      q: "已經有 Google Business Profile，還需要網站嗎？",
-      a: "Business Profile 能在 Search 與 Maps 顯示重點資料。網站則有更多空間說明服務、客房、菜單、條件與預訂細節。團隊會看這門生意需要多少資訊，以及多完整的決定路徑。",
-    },
-    {
-      q: "評論能幫助 Maps 排名嗎？",
-      a: "Google 指出評論與評分是知名度的一部分。在地結果還取決於相關性與距離。應請真實客人寫評論、適當回覆，並維持商家資料正確，而不是只看星星數。",
-    },
-    {
-      q: "做了之後何時看得到結果？",
-      a: "取決於網站現況、資料是否完整、當地競爭，以及要修正的項目。營業時間或電話可以立刻改。搜尋與內容的成長則需要持續追蹤。",
-    },
-  ],
+  "/solutions/hotel-seo-google-maps-ai-search": hotelSeoFaqs("th"),
+  "/en/solutions/hotel-seo-google-maps-ai-search": hotelSeoFaqs("en"),
+  "/ru/solutions/hotel-seo-google-maps-ai-search": hotelSeoFaqs("en"),
+  "/zh/solutions/hotel-seo-google-maps-ai-search": hotelSeoFaqs("en"),
   "/solutions/hotel-website-design": [
     {
       q: "ต้องใช้ WordPress เท่านั้นไหม?",

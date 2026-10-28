@@ -1,5 +1,6 @@
 # /solutions/hotel-seo-google-maps-ai-search
 **Source:** `solutions/seo-local-search.html`
+**Live page:** Next.js `SeoLocalView` + CMS Hotel SEO. This markdown is an archived static-export snapshot, not the published page.
 **Language:** th
 **Title:** SEO, Google Maps และ AI Search | เดอะ เคพีไอ พลัส
 **Description:** บริการ SEO และการค้นหาในพื้นที่สำหรับการค้นพบ ข้อมูลสถานที่ที่ถูกต้อง Google Business Profile และเส้นทางผู้เข้าพักที่ชัดเจน

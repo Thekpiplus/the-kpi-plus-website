@@ -1,128 +1,200 @@
 import Link from "next/link";
-import { ArrowUpRight } from "@/components/Icons";
+import { HotelSeoAuditVisual } from "@/components/hotel-seo/HotelSeoAuditVisual";
+import { HotelSeoCompareMatrix } from "@/components/hotel-seo/HotelSeoCompareMatrix";
+import { HotelSeoDiscoveryFlow } from "@/components/hotel-seo/HotelSeoDiscoveryFlow";
+import { HotelSeoGbpVisual } from "@/components/hotel-seo/HotelSeoGbpVisual";
+import { HotelSeoHelpBoundary } from "@/components/hotel-seo/HotelSeoHelpBoundary";
+import { HotelSeoHelpSteps } from "@/components/hotel-seo/HotelSeoHelpSteps";
+import { HotelSeoKpiFramework } from "@/components/hotel-seo/HotelSeoKpiFramework";
+import { HotelSeoProcessSteps } from "@/components/hotel-seo/HotelSeoProcessSteps";
+import { HotelSeoProcessVisual } from "@/components/hotel-seo/HotelSeoProcessVisual";
+import { HotelSeoHeroVisual } from "@/components/hotel-seo/HotelSeoHeroVisual";
+import { HotelSeoSearchBehaviorVisual } from "@/components/hotel-seo/HotelSeoSearchBehaviorVisual";
+import { HotelSeoKpiVisual } from "@/components/hotel-seo/HotelSeoKpiVisual";
+import { HotelSeoRelatedCards } from "@/components/hotel-seo/HotelSeoRelatedCards";
+import { HotelSeoRelatedVisual } from "@/components/hotel-seo/HotelSeoRelatedVisual";
+import { PageFaqs } from "@/components/PageFaqs";
 import { SeoLocalEnquiry } from "@/components/SeoLocalEnquiry";
 import { SeoLocalStickyCta } from "@/components/SeoLocalStickyCta";
 import { SiteShell } from "@/components/SiteShell";
-import { insightPosts, insightsIndexCopy } from "@/lib/insights";
+import type { CmsHotelSeoPage, CmsSeoRelatedCard } from "@/lib/cms/hotel-seo-page";
+import {
+  hotelSeoAuditVisualUrl,
+  hotelSeoBehaviorVisualUrl,
+  hotelSeoCompareVisualUrl,
+  hotelSeoFlowVisualUrl,
+  hotelSeoGbpVisualUrl,
+  hotelSeoHeroVisualUrl,
+  hotelSeoKpiVisualUrl,
+  hotelSeoProcessVisualUrl,
+  hotelSeoRelatedVisualUrl,
+  resolveHotelSeoPage,
+} from "@/lib/cms/hotel-seo-page-public";
+import {
+  HOTEL_SEO_AUDIT_VISUAL,
+  HOTEL_SEO_AUDIT_VISUAL_CANDIDATE,
+  HOTEL_SEO_BEHAVIOR_MAP,
+  HOTEL_SEO_BEHAVIOR_TYPES,
+  HOTEL_SEO_BEHAVIOR_VISUAL,
+  HOTEL_SEO_BEHAVIOR_VISUAL_CANDIDATE,
+  HOTEL_SEO_COMPARE_STATEMENT,
+  HOTEL_SEO_COMPARE_VISUAL,
+  HOTEL_SEO_COMPARE_VISUAL_CANDIDATE,
+  HOTEL_SEO_FLOW_VISUAL,
+  HOTEL_SEO_FLOW_VISUAL_CANDIDATE,
+  HOTEL_SEO_GBP_ACTIONS,
+  HOTEL_SEO_GBP_COPY,
+  HOTEL_SEO_GBP_VISUAL,
+  HOTEL_SEO_GBP_VISUAL_CANDIDATE,
+  HOTEL_SEO_HERO_VISUAL,
+  HOTEL_SEO_HERO_VISUAL_CANDIDATE,
+  HOTEL_SEO_KPI_COPY,
+  HOTEL_SEO_KPI_VISUAL_CANDIDATE,
+  HOTEL_SEO_PROCESS_VISUAL_CANDIDATE,
+  HOTEL_SEO_RELATED_VISUAL_CANDIDATE,
+  hotelSeoFaqs,
+  hotelSeoFaqsAreStale,
+  hotelSeoRelatedCards,
+  type HotelSeoRelatedCard,
+  HOTEL_SEO_PROBLEM_FIELDS,
+  HOTEL_SEO_PROBLEM_ITEMS,
+  HOTEL_SEO_SOURCES,
+} from "@/lib/hotel-seo";
 import { solutionNavLabel } from "@/lib/nav";
-import { existingHref, localizePath, type Locale } from "@/lib/seo";
-
-const relatedInsightHrefs = ["/insights/seo-vs-sem-for-hotels-which-one-should-you-focus-on"] as const;
-
-const methodPhases = ["Audit", "Review", "Prioritize", "Track"] as const;
-
-const thaiMethodSteps = [
-  {
-    num: "01",
-    title: "ดูการค้นพบปัจจุบัน",
-    lines: [
-      "ตรวจเว็บไซต์ Google Search Console",
-      "และ Google Business Profile",
-      "ดูว่าธุรกิจมีข้อมูลอะไรอยู่แล้ว",
-      "และมีสิทธิ์เข้าถึงระบบใดบ้าง",
-    ],
-  },
-  {
-    num: "02",
-    title: "ตรวจข้อมูลที่ลูกค้าใช้ตัดสินใจ",
-    lines: ["ดูบริการ ทำเล ราคา เวลาเปิด", "รูปภาพ รีวิว และช่องทางติดต่อหรือจอง"],
-  },
-  {
-    num: "03",
-    title: "จัดลำดับสิ่งที่ต้องแก้",
-    lines: ["แยก Quick Wins", "ออกจากงานเนื้อหา เว็บไซต์", "และข้อมูลที่ต้องทำต่อเนื่อง"],
-  },
-  {
-    num: "04",
-    title: "ติดตามการเปลี่ยนแปลง",
-    lines: ["ดูการค้นพบ การเข้าชมเว็บไซต์", "การโทร ขอเส้นทาง", "และการสอบถามหรือจองที่ตรวจสอบได้"],
-  },
-] as const;
-
-const thaiMeasureGroups = [
-  {
-    num: "01",
-    title: "Website Search Performance",
-    introLines: ["ดู:"] as const,
-    metrics: ["impressions", "clicks", "landing", "actions"] as const,
-  },
-  {
-    num: "02",
-    title: "Google Business Profile",
-    introLines: ["ดู:"] as const,
-    metrics: ["discovery", "webclicks", "calls", "directions"] as const,
-  },
-  {
-    num: "03",
-    title: "Business Outcomes",
-    introLines: ["หากระบบของธุรกิจเชื่อมต่อและติดตามได้", "ให้ดูต่อถึง:"] as const,
-    metrics: ["enquiry", "direct", "booking"] as const,
-  },
-] as const;
-
-function ThaiMeasureMetric({ id }: { id: (typeof thaiMeasureGroups)[number]["metrics"][number] }) {
-  switch (id) {
-    case "impressions":
-      return <>การแสดงผลจากการค้นหา</>;
-    case "clicks":
-      return (
-        <>
-          จำนวน<span className="kpi-seo-local-measure-em">คลิก</span>
-        </>
-      );
-    case "landing":
-      return (
-        <>
-          หน้า <span className="kpi-latin">Landing Page</span> ที่ลูกค้าเข้าชม
-        </>
-      );
-    case "actions":
-      return <>สิ่งที่ลูกค้าทำต่อหลังเข้าหน้าเว็บ</>;
-    case "discovery":
-      return <>การค้นพบโปรไฟล์</>;
-    case "webclicks":
-      return (
-        <>
-          การ<span className="kpi-seo-local-measure-em">คลิก</span>เข้าเว็บไซต์
-        </>
-      );
-    case "calls":
-      return (
-        <>
-          การกด<span className="kpi-seo-local-measure-em">โทร</span>
-        </>
-      );
-    case "directions":
-      return (
-        <>
-          การขอ<span className="kpi-seo-local-measure-em">เส้นทาง</span>
-        </>
-      );
-    case "enquiry":
-      return (
-        <>
-          การ<span className="kpi-seo-local-measure-em">สอบถาม</span>
-        </>
-      );
-    case "direct":
-      return <>การติดต่อโดยตรง</>;
-    case "booking":
-      return (
-        <>
-          การ<span className="kpi-seo-local-measure-em">จอง</span>ที่ตรวจสอบได้
-        </>
-      );
-    default:
-      return null;
-  }
-}
+import { localizePath, type Locale } from "@/lib/seo";
 
 const sources = {
-  aiFeatures: "https://developers.google.com/search/docs/appearance/ai-features",
-  aiModeTh: "https://blog.google/intl/th-th/products/consumer-products/ai-mode/",
-  searchIo: "https://blog.google/intl/th-th/products/consumer-products/search-io-2026/",
-  localRank: "https://support.google.com/business/answer/7091?hl=en",
+  aiFeatures: HOTEL_SEO_SOURCES.aiFeatures.url,
+  aiModeTh: HOTEL_SEO_SOURCES.aiModeTh.url,
+  searchIo: HOTEL_SEO_SOURCES.searchIo.url,
+  localRank: HOTEL_SEO_SOURCES.localRank.url,
 } as const;
+
+function looksThai(value: string) {
+  return /[\u0E00-\u0E7F]/.test(value);
+}
+
+function cmsText(fromCms: boolean, locale: Locale, value: string | undefined, fallback: string) {
+  const next = value?.trim();
+  if (!fromCms || !next) return fallback;
+  if (locale !== "th" && looksThai(next)) return fallback;
+  return next;
+}
+
+function cmsList(fromCms: boolean, locale: Locale, rows: string[] | undefined, fallback: string[]) {
+  const next = rows?.map((item) => item.trim()).filter(Boolean) ?? [];
+  if (!fromCms || !next.length) return fallback;
+  if (locale !== "th" && next.some(looksThai)) return fallback;
+  return next;
+}
+
+function useCmsRows(fromCms: boolean, locale: Locale, sample: string | undefined, count: number) {
+  if (!fromCms || !count) return false;
+  if (locale !== "th" && sample && looksThai(sample)) return false;
+  return true;
+}
+
+function visualReady(src: string | undefined, status: string | undefined) {
+  const next = src?.trim() || "";
+  if (!next || status === "placeholder") return "";
+  if (status === "sample" || status === "approved" || status === "real") return next;
+  return "";
+}
+
+function relatedFromCms(cards: CmsSeoRelatedCard[]): HotelSeoRelatedCard[] {
+  return cards.map((card) => ({
+    id: card.id,
+    href: card.href,
+    external: card.external,
+    featured: card.featured,
+    categoryTh: card.category,
+    categoryEn: card.category,
+    titleTh: card.title,
+    titleEn: card.title,
+    descriptionTh: card.description,
+    descriptionEn: card.description,
+    publishedAt: card.publishedAt || undefined,
+    updatedAt: card.updatedAt || undefined,
+    accessedAt: card.accessedAt || undefined,
+    dateKind: card.accessedAt && !card.publishedAt && !card.updatedAt ? "accessed" : card.updatedAt ? "updated" : "published",
+    contentTypeTh: card.contentType,
+    contentTypeEn: card.contentType,
+    readingTimeMinutes: Number(card.readingTime) || undefined,
+    ctaTh: card.cta,
+    ctaEn: card.cta,
+    sourceName: card.sourceName || undefined,
+    sourceUrl: card.sourceUrl || undefined,
+  }));
+}
+
+function sourceDisplayName(value: string | undefined, fallback: string) {
+  if (!value) return fallback;
+  if (/blog\.google/i.test(value)) return "blog.google";
+  if (/Search Central/i.test(value)) return "Google Search Central";
+  if (/Business Profile Help/i.test(value)) return "Google Business Profile Help";
+  return value;
+}
+
+function SearchSourceCite({
+  locale,
+  source,
+  fallback,
+  nameFallback,
+}: {
+  locale: Locale;
+  source?: {
+    name?: string;
+    url?: string;
+    publishedAt?: string;
+    accessedAt?: string;
+    market?: string;
+    period?: string;
+    definition?: string;
+    status?: string;
+  };
+  fallback: (typeof HOTEL_SEO_SOURCES)[keyof typeof HOTEL_SEO_SOURCES];
+  nameFallback: string;
+}) {
+  const thai = locale === "th";
+  const row = {
+    name: source?.name || fallback.name,
+    url: source?.url || fallback.url,
+    publishedAt: source?.publishedAt || fallback.publishedAt,
+    accessedAt: source?.accessedAt || fallback.accessedAt,
+    market: source?.market || fallback.market,
+    period: source?.period || fallback.period,
+    definition: source?.definition || fallback.definition,
+    status: source?.status || fallback.status,
+  };
+  const kind =
+    row.status === "platform_estimate"
+      ? thai
+        ? "ประมาณการแพลตฟอร์ม ไม่ใช่ผลโรงแรม"
+        : "Platform estimate, not a hotel result"
+      : thai
+        ? "แนวทางผลิตภัณฑ์ ไม่ใช่ผลโรงแรม"
+        : "Product guidance, not a hotel result";
+  const published =
+    row.publishedAt && row.publishedAt !== "Guidance"
+      ? `${thai ? "เผยแพร่" : "Published"} ${row.publishedAt}`
+      : null;
+  const accessed = row.accessedAt ? `${thai ? "เข้าถึง" : "Accessed"} ${row.accessedAt}` : null;
+  return (
+    <p className="kpi-seo-local-change-source">
+      <a href={row.url} target="_blank" rel="noreferrer">
+        <span className="kpi-latin">
+          {thai ? "ที่มา: " : "Source: "}
+          {sourceDisplayName(row.name, nameFallback)}
+        </span>
+      </a>
+      <span className="kpi-seo-local-source-url kpi-latin">{row.url}</span>
+      <span className="kpi-seo-local-source-meta">
+        {[published, accessed, row.market, row.period, kind].filter(Boolean).join(" · ")}
+      </span>
+      <span className="kpi-seo-local-source-meta">{row.definition}</span>
+    </p>
+  );
+}
 
 const copy = {
   th: {
@@ -131,7 +203,7 @@ const copy = {
     title: "ให้ลูกค้าค้นพบธุรกิจของคุณ เข้าใจว่าคุณเหมาะกับเขา และติดต่อได้ทันที",
     lead: "วันนี้ลูกค้าไม่ได้ค้นหาแค่ชื่อโรงแรมหรือร้าน แต่ค้นหาด้วยความต้องการ เช่น “สปาใกล้ฉันที่มีนวดคู่” หรือ “โรงแรมใกล้สนามบินที่เช็กอินดึกได้”",
     leadClose:
-      "เราช่วยทำให้เว็บไซต์ Google Business Profile และข้อมูลสำคัญของธุรกิจชัดเจนและสอดคล้องกัน เพื่อเพิ่มโอกาสให้ลูกค้าค้นพบ เข้าใจ และติดต่อได้ง่ายขึ้น",
+      "การถูกค้นพบเริ่มจากข้อมูลธุรกิจที่ชัดและสอดคล้องกัน ข้อมูลบน Google Maps และเว็บไซต์ต้องรองรับการตัดสินใจชุดเดียวกัน คำตอบจาก Search และ AI ควรพาไปหน้าธุรกิจที่มีประโยชน์ และเส้นทางสุดท้ายเชื่อมไปสู่การติดต่อหรือจองที่วัดผลได้",
     cta: "ให้ทีมดูการค้นพบธุรกิจของคุณ",
     secondary: "ดูโซลูชันทั้งหมด",
     underCta: "ส่งชื่อธุรกิจ เว็บไซต์หรือ Google Maps และปัญหาที่พบ",
@@ -153,7 +225,7 @@ const copy = {
     changeClose:
       "สำหรับโรงแรม สปา และคาเฟ่ นี่หมายความว่าข้อมูลบนเว็บไซต์และ Google Maps ต้องตอบคำถามเดียวกันให้ชัด ตั้งแต่บริการและทำเล ไปจนถึงราคา เวลาเปิด และวิธีจอง",
     aiNote:
-      "แนวทาง SEO พื้นฐานยังใช้กับ AI Overviews และ AI Mode ไม่มีวิธีพิเศษที่รับประกันว่าธุรกิจจะปรากฏในคำตอบ AI",
+      "แนวทาง SEO พื้นฐานยังใช้กับ AI Overviews และ AI Mode ไม่มีวิธีพิเศษที่รับประกันว่าธุรกิจจะปรากฏในทุกคำตอบ AI หรือ AI Overview การปรากฏต่างกันตามคำค้น ทำเล ภาษา บริบทผู้ใช้ คุณภาพแหล่งข้อมูล และการเปลี่ยนแปลงของระบบค้นหา",
     aiNoteSource: "ที่มา: Google Search Central",
     compareTitle: "SEO, AEO และ Local SEO ช่วยต่างกันอย่างไร?",
     compare: [
@@ -161,8 +233,7 @@ const copy = {
       ["AEO / ความพร้อมสำหรับ AI Search", "ข้อมูลที่ชัดเจนพอให้ระบบค้นหาเข้าใจและนำไปประกอบคำตอบ", "เช่น หน้า FAQ ที่ระบุว่าสปามีบริการอะไร ใช้เวลานานเท่าไร อยู่ที่ไหน และจองอย่างไร"],
       ["Local SEO", "ข้อมูลธุรกิจบน Google Search และ Maps", "เช่น โปรไฟล์คาเฟ่ที่มีเวลาเปิด เมนู รูปจริง รีวิว และปุ่มนำทาง"],
     ],
-    compareClose:
-      "ทั้งสามส่วนควรใช้ข้อมูลจริงชุดเดียวกัน หากเวลาเปิดบน Maps ไม่ตรงกับเว็บไซต์ หรือหน้าเว็บบอกว่ามีบริการที่ร้านไม่ได้ให้แล้ว ลูกค้าอาจตัดสินใจผิดหรือเสียความเชื่อมั่น",
+    compareClose: HOTEL_SEO_COMPARE_STATEMENT.th,
     problemTitle: "ธุรกิจของคุณกำลังเจอปัญหาเหล่านี้หรือไม่?",
     problems: [
       "มีเว็บไซต์ แต่ค้นหาบริการหรือทำเลที่เกี่ยวข้องแล้วไม่พบหน้าเว็บ",
@@ -213,7 +284,7 @@ const copy = {
     title: "Help customers find the business, see why it fits, and contact you at once",
     lead: "People no longer search only the hotel or shop name. They may ask for “a couples massage spa near me”, “a quiet café in Phuket”, or “a hotel near the airport with late check-in”, then read an AI answer, open Google Maps, check reviews, and compare the website before they decide.",
     leadClose:
-      "The KPI Plus helps put the website and Google Business Profile in order so the facts are correct, clear, and useful for the questions customers actually ask. That gives the business a better chance of being found, then of a call, a direction request, an enquiry, or a booking.",
+      "Search visibility starts with clear, consistent business facts. Google Maps and the website must support the same decision. Search and AI answers should open a useful page, then connect to contact or booking where that path can be measured.",
     cta: "Ask the team to review how customers find this business",
     secondary: "All solutions",
     underCta: "Send the business name, a website or Google Maps link, and the issue you see.",
@@ -235,7 +306,7 @@ const copy = {
     changeClose:
       "For hotels, spas, and cafés this means the website and Google Maps have to answer the same questions clearly: the service, the location, the price, the hours, and how to book.",
     aiNote:
-      "The usual SEO work still applies to AI Overviews and AI Mode. There is no special method that guarantees a business will appear in an AI answer.",
+      "The usual SEO work still applies to AI Overviews and AI Mode. There is no special method that guarantees a business will appear in every AI answer or AI Overview. Visibility varies by query, location, language, user context, source quality, and search-system changes.",
     aiNoteSource: "Source: Google Search Central",
     compareTitle: "How do SEO, AEO, and Local SEO differ?",
     compare: [
@@ -243,8 +314,7 @@ const copy = {
       ["AEO / AI Search readiness", "Clear facts a search system can understand and use in an answer", "For example, an FAQ that says what the spa offers, how long it takes, where it is, and how to book."],
       ["Local SEO", "Business information on Google Search and Maps", "For example, a café profile with hours, menu, real photos, reviews, and a directions button."],
     ],
-    compareClose:
-      "All three should use the same real facts. If Maps hours do not match the website, or the site lists a service the place no longer offers, a customer can decide wrongly or lose trust.",
+    compareClose: HOTEL_SEO_COMPARE_STATEMENT.en,
     problemTitle: "Does any of this sound like the business now?",
     problems: [
       "There is a website, but a search for the service or the area does not find the page",
@@ -455,17 +525,319 @@ const copy = {
   },
 } as const;
 
-export function SeoLocalView({ locale }: { locale: Locale }) {
+export async function SeoLocalView({
+  locale,
+  previewContent,
+  embedded = false,
+}: {
+  locale: Locale;
+  previewContent?: CmsHotelSeoPage | null;
+  embedded?: boolean;
+}) {
+  const cms = await resolveHotelSeoPage(locale, previewContent).catch(() => null);
+  const fromCms = Boolean(cms?.fromCms);
   const t = copy[locale];
-  const insightsUi = insightsIndexCopy[locale];
   const solutions = localizePath("/solutions", locale);
-  const insights = insightPosts
-    .filter((post) => relatedInsightHrefs.includes(post.href as (typeof relatedInsightHrefs)[number]))
-    .filter((post) => existingHref(post.href, locale));
-  const featuredInsight = insights[0];
-
-  return (
-    <SiteShell locale={locale} route={localizePath("/solutions/hotel-seo-google-maps-ai-search", locale)}>
+  const useCmsCopy = fromCms && (locale === "th" || !looksThai(cms?.hero.title || cms?.hero.description || ""));
+  const relatedCards =
+    useCmsCopy && cms?.related.cards.length ? relatedFromCms(cms.related.cards) : hotelSeoRelatedCards(locale);
+  const faqItems =
+    cms?.faqs?.length && !hotelSeoFaqsAreStale(cms.faqs)
+      ? cms.faqs.map(({ q, a }) => ({ q, a }))
+      : hotelSeoFaqs(locale === "th" ? "th" : "en");
+  const aiMode = cms?.search.aiModeSource;
+  const growth = cms?.search.growthSource;
+  const maps = cms?.search.mapsSource;
+  const aiNote = cms?.search.aiNoteSource;
+  const gbpSource = cms?.gbp.source;
+  const dummyHero = hotelSeoHeroVisualUrl();
+  const cmsHeroSrc = visualReady(cms?.hero.visual.src, cms?.hero.visual.status);
+  const genericHeroSrc = /kpi-grow-demand|the-kpi-plus-revenue-scene|person-with-phone/i.test(cmsHeroSrc);
+  const dummyBehavior = hotelSeoBehaviorVisualUrl();
+  const dummyAudit = hotelSeoAuditVisualUrl();
+  const dummyCompare = hotelSeoCompareVisualUrl();
+  const dummyFlow = hotelSeoFlowVisualUrl();
+  const dummyGbp = hotelSeoGbpVisualUrl();
+  const dummyProcess = hotelSeoProcessVisualUrl();
+  const dummyKpi = hotelSeoKpiVisualUrl();
+  const dummyRelated = hotelSeoRelatedVisualUrl();
+  const blockedHero = new Set(
+    [
+      dummyHero,
+      dummyBehavior,
+      dummyAudit,
+      dummyCompare,
+      dummyFlow,
+      dummyGbp,
+      dummyProcess,
+      dummyKpi,
+      dummyRelated,
+      HOTEL_SEO_HERO_VISUAL_CANDIDATE,
+      HOTEL_SEO_BEHAVIOR_VISUAL_CANDIDATE,
+      HOTEL_SEO_AUDIT_VISUAL_CANDIDATE,
+      HOTEL_SEO_COMPARE_VISUAL_CANDIDATE,
+      HOTEL_SEO_FLOW_VISUAL_CANDIDATE,
+      HOTEL_SEO_GBP_VISUAL_CANDIDATE,
+      HOTEL_SEO_PROCESS_VISUAL_CANDIDATE,
+      HOTEL_SEO_KPI_VISUAL_CANDIDATE,
+      HOTEL_SEO_RELATED_VISUAL_CANDIDATE,
+      cms?.search.visual.src,
+      cms?.problems.visual.src,
+      cms?.gbp.visual.src,
+      "",
+    ].filter(Boolean) as string[],
+  );
+  const uniqueHeroSrc = cmsHeroSrc && !genericHeroSrc && !blockedHero.has(cmsHeroSrc) ? cmsHeroSrc : "";
+  const heroSrc = uniqueHeroSrc || dummyHero || "";
+  const cmsBehaviorSrc = cms?.search.visual.src?.trim() || "";
+  const blockedBehavior = new Set(
+    [
+      heroSrc,
+      dummyHero,
+      dummyBehavior,
+      dummyAudit,
+      dummyCompare,
+      dummyFlow,
+      dummyGbp,
+      dummyProcess,
+      dummyKpi,
+      dummyRelated,
+      HOTEL_SEO_HERO_VISUAL_CANDIDATE,
+      HOTEL_SEO_BEHAVIOR_VISUAL_CANDIDATE,
+      HOTEL_SEO_AUDIT_VISUAL_CANDIDATE,
+      HOTEL_SEO_COMPARE_VISUAL_CANDIDATE,
+      HOTEL_SEO_FLOW_VISUAL_CANDIDATE,
+      HOTEL_SEO_GBP_VISUAL_CANDIDATE,
+      HOTEL_SEO_PROCESS_VISUAL_CANDIDATE,
+      HOTEL_SEO_KPI_VISUAL_CANDIDATE,
+      HOTEL_SEO_RELATED_VISUAL_CANDIDATE,
+      "",
+    ].filter(Boolean) as string[],
+  );
+  const uniqueBehaviorSrc =
+    visualReady(cmsBehaviorSrc, cms?.search.visual.status) && !blockedBehavior.has(cmsBehaviorSrc) ? cmsBehaviorSrc : "";
+  const behaviorSrc = uniqueBehaviorSrc || dummyBehavior || "";
+  const cmsAuditSrc = cms?.problems.visual.src?.trim() || "";
+  const genericAuditSrc = /kpi-grow-demand|person-with-phone|the-kpi-plus-revenue-scene/i.test(cmsAuditSrc);
+  const blockedAudit = new Set(
+    [
+      heroSrc,
+      behaviorSrc,
+      dummyHero,
+      dummyBehavior,
+      dummyAudit,
+      dummyCompare,
+      dummyFlow,
+      dummyGbp,
+      dummyProcess,
+      dummyKpi,
+      dummyRelated,
+      HOTEL_SEO_HERO_VISUAL_CANDIDATE,
+      HOTEL_SEO_BEHAVIOR_VISUAL_CANDIDATE,
+      HOTEL_SEO_AUDIT_VISUAL_CANDIDATE,
+      HOTEL_SEO_COMPARE_VISUAL_CANDIDATE,
+      HOTEL_SEO_FLOW_VISUAL_CANDIDATE,
+      HOTEL_SEO_GBP_VISUAL_CANDIDATE,
+      HOTEL_SEO_PROCESS_VISUAL_CANDIDATE,
+      HOTEL_SEO_KPI_VISUAL_CANDIDATE,
+      HOTEL_SEO_RELATED_VISUAL_CANDIDATE,
+      "",
+    ].filter(Boolean) as string[],
+  );
+  const uniqueAuditSrc =
+    visualReady(cmsAuditSrc, cms?.problems.visual.status) && !genericAuditSrc && !blockedAudit.has(cmsAuditSrc)
+      ? cmsAuditSrc
+      : "";
+  const auditSrc = uniqueAuditSrc || dummyAudit || "";
+  const cmsCompareSrc = visualReady(cms?.compare.visual.src, cms?.compare.visual.status);
+  const comparePermission = !cms?.compare.visual.containsGoogleBrand || Boolean(cms?.compare.visual.brandNote?.trim());
+  const compareSrc =
+    cmsCompareSrc && cmsCompareSrc !== dummyCompare && cmsCompareSrc !== HOTEL_SEO_COMPARE_VISUAL_CANDIDATE && comparePermission
+      ? cmsCompareSrc
+      : "";
+  const cmsFlowSrc = visualReady(cms?.help.visual.src, cms?.help.visual.status);
+  const flowPermission = !cms?.help.visual.containsGoogleBrand || Boolean(cms?.help.visual.brandNote?.trim());
+  const flowSrc =
+    cmsFlowSrc && cmsFlowSrc !== dummyFlow && cmsFlowSrc !== HOTEL_SEO_FLOW_VISUAL_CANDIDATE && flowPermission ? cmsFlowSrc : "";
+  const cmsProcessSrc = visualReady(cms?.method.visual.src, cms?.method.visual.status);
+  const processSrc =
+    cmsProcessSrc && cmsProcessSrc !== dummyProcess && cmsProcessSrc !== HOTEL_SEO_PROCESS_VISUAL_CANDIDATE ? cmsProcessSrc : "";
+  const cmsGbpSrc = cms?.gbp.visual.src?.trim() || "";
+  const genericGbpSrc = /kpi-grow-demand|person-with-phone|the-kpi-plus-revenue-scene/i.test(cmsGbpSrc);
+  const gbpPermission = !cms?.gbp.visual.containsGoogleBrand || Boolean(cms?.gbp.visual.brandNote?.trim());
+  const blockedGbp = new Set(
+    [
+      heroSrc,
+      behaviorSrc,
+      auditSrc,
+      dummyHero,
+      dummyBehavior,
+      dummyAudit,
+      dummyCompare,
+      dummyFlow,
+      dummyGbp,
+      dummyProcess,
+      dummyKpi,
+      dummyRelated,
+      HOTEL_SEO_HERO_VISUAL_CANDIDATE,
+      HOTEL_SEO_BEHAVIOR_VISUAL_CANDIDATE,
+      HOTEL_SEO_AUDIT_VISUAL_CANDIDATE,
+      HOTEL_SEO_COMPARE_VISUAL_CANDIDATE,
+      HOTEL_SEO_FLOW_VISUAL_CANDIDATE,
+      HOTEL_SEO_GBP_VISUAL_CANDIDATE,
+      HOTEL_SEO_PROCESS_VISUAL_CANDIDATE,
+      HOTEL_SEO_KPI_VISUAL_CANDIDATE,
+      HOTEL_SEO_RELATED_VISUAL_CANDIDATE,
+      "",
+    ].filter(Boolean) as string[],
+  );
+  const gbpSrc =
+    visualReady(cmsGbpSrc, cms?.gbp.visual.status) && !genericGbpSrc && !blockedGbp.has(cmsGbpSrc) && gbpPermission
+      ? cmsGbpSrc
+      : "";
+  const cmsKpiSrc = cms?.measure.visual.src?.trim() || "";
+  const genericKpiSrc = /kpi-grow-demand|person-with-phone|the-kpi-plus-revenue-scene|hotel-seo-outcomes-kpi-placeholder/i.test(cmsKpiSrc);
+  const blockedKpi = new Set(
+    [
+      heroSrc,
+      behaviorSrc,
+      auditSrc,
+      gbpSrc,
+      dummyHero,
+      dummyBehavior,
+      dummyAudit,
+      dummyCompare,
+      dummyFlow,
+      dummyGbp,
+      dummyProcess,
+      dummyKpi,
+      dummyRelated,
+      HOTEL_SEO_HERO_VISUAL_CANDIDATE,
+      HOTEL_SEO_BEHAVIOR_VISUAL_CANDIDATE,
+      HOTEL_SEO_AUDIT_VISUAL_CANDIDATE,
+      HOTEL_SEO_COMPARE_VISUAL_CANDIDATE,
+      HOTEL_SEO_FLOW_VISUAL_CANDIDATE,
+      HOTEL_SEO_GBP_VISUAL_CANDIDATE,
+      HOTEL_SEO_PROCESS_VISUAL_CANDIDATE,
+      HOTEL_SEO_KPI_VISUAL_CANDIDATE,
+      HOTEL_SEO_RELATED_VISUAL_CANDIDATE,
+      "",
+    ].filter(Boolean) as string[],
+  );
+  const kpiSrc =
+    visualReady(cmsKpiSrc, cms?.measure.visual.status) && !genericKpiSrc && !blockedKpi.has(cmsKpiSrc) ? cmsKpiSrc : "";
+  const cmsRelatedSrc = cms?.related.visual.src?.trim() || "";
+  const genericRelatedSrc =
+    /kpi-grow-demand|person-with-phone|the-kpi-plus-revenue-scene|hotel-seo-local-search-hero|hotel-seo-google-business-profile|hotel-seo-related-content-placeholder|hotel-seo-outcomes-kpi|hotel-seo-audit-process/i.test(
+      cmsRelatedSrc,
+    );
+  const blockedRelated = new Set(
+    [
+      heroSrc,
+      behaviorSrc,
+      auditSrc,
+      gbpSrc,
+      dummyHero,
+      dummyBehavior,
+      dummyAudit,
+      dummyCompare,
+      dummyFlow,
+      dummyGbp,
+      dummyProcess,
+      dummyKpi,
+      dummyRelated,
+      HOTEL_SEO_HERO_VISUAL_CANDIDATE,
+      HOTEL_SEO_BEHAVIOR_VISUAL_CANDIDATE,
+      HOTEL_SEO_AUDIT_VISUAL_CANDIDATE,
+      HOTEL_SEO_COMPARE_VISUAL_CANDIDATE,
+      HOTEL_SEO_FLOW_VISUAL_CANDIDATE,
+      HOTEL_SEO_GBP_VISUAL_CANDIDATE,
+      HOTEL_SEO_PROCESS_VISUAL_CANDIDATE,
+      HOTEL_SEO_KPI_VISUAL_CANDIDATE,
+      HOTEL_SEO_RELATED_VISUAL_CANDIDATE,
+      "",
+    ].filter(Boolean) as string[],
+  );
+  const relatedSrc =
+    visualReady(cmsRelatedSrc, cms?.related.visual.status) && !genericRelatedSrc && !blockedRelated.has(cmsRelatedSrc)
+      ? cmsRelatedSrc
+      : "";
+  const cmsFormSrc = cms?.form.visual.src?.trim() || "";
+  const genericFormSrc = /kpi-grow-demand|person-with-phone|the-kpi-plus-revenue-scene|hotel-seo-local-search-hero|hotel-seo-google-business-profile/i.test(
+    cmsFormSrc,
+  );
+  const blockedForm = new Set(
+    [
+      heroSrc,
+      gbpSrc,
+      dummyHero,
+      dummyGbp,
+      dummyRelated,
+      HOTEL_SEO_HERO_VISUAL_CANDIDATE,
+      HOTEL_SEO_GBP_VISUAL_CANDIDATE,
+      HOTEL_SEO_RELATED_VISUAL_CANDIDATE,
+      "",
+    ].filter(Boolean) as string[],
+  );
+  const formPhotoSrc =
+    visualReady(cmsFormSrc, cms?.form.visual.status) && !genericFormSrc && !blockedForm.has(cmsFormSrc) ? cmsFormSrc : "";
+  const defaultHeroPoints =
+    locale === "th"
+      ? [
+          "การถูกค้นพบเริ่มจากข้อมูลธุรกิจที่ชัดและสอดคล้องกัน",
+          "ข้อมูลบน Google Maps และเว็บไซต์ต้องรองรับการตัดสินใจชุดเดียวกัน",
+          "คำตอบจาก Search และ AI ควรพาไปหน้าธุรกิจที่มีประโยชน์",
+          "เส้นทางสุดท้ายเชื่อมไปสู่การติดต่อหรือจองที่วัดผลได้",
+        ]
+      : [
+          "Search visibility starts with clear and consistent business information",
+          "Google Maps and the website must support the same customer decision",
+          "Search and AI answers should lead to a useful business page",
+          "The path should connect to contact or booking where it can be measured",
+        ];
+  const heroPoints = cmsList(useCmsCopy, locale, cms?.hero.points, defaultHeroPoints);
+  const heroTitle = cmsText(useCmsCopy, locale, cms?.hero.title, locale === "th" ? "" : t.title);
+  const heroLead = cmsText(useCmsCopy, locale, cms?.hero.description, locale === "th" ? "" : t.lead);
+  const heroCta = cmsText(useCmsCopy, locale, cms?.hero.primaryCta.label, t.cta);
+  const heroCtaHref = cms?.hero.primaryCta.href.trim() || "#search-enquiry";
+  const heroSecondary = cmsText(useCmsCopy, locale, cms?.hero.secondaryCta.label, t.secondary);
+  const heroSecondaryHref = cms?.hero.secondaryCta.href.trim() || solutions;
+  const heroUnder = cmsText(useCmsCopy, locale, cms?.hero.underCta, locale === "th" ? "" : t.underCta);
+  const heroEyebrow = cmsText(useCmsCopy, locale, cms?.hero.eyebrow, locale === "th" ? "Search Visibility & Local Discovery" : t.eyebrow);
+  const compareRows = useCmsRows(useCmsCopy, locale, cms?.compare.rows[0]?.area, cms?.compare.rows.length || 0)
+    ? cms!.compare.rows
+    : undefined;
+  const problemRows = useCmsRows(useCmsCopy, locale, cms?.problems.items[0]?.problem, cms?.problems.items.length || 0)
+    ? cms!.problems.items
+    : undefined;
+  const helpSteps = useCmsRows(useCmsCopy, locale, cms?.help.steps[0]?.title, cms?.help.steps.length || 0)
+    ? cms!.help.steps
+    : undefined;
+  const flowStages = useCmsRows(useCmsCopy, locale, cms?.help.stages[0]?.label, cms?.help.stages.length || 0)
+    ? cms!.help.stages
+    : undefined;
+  const processSteps = useCmsRows(useCmsCopy, locale, cms?.method.steps[0]?.title, cms?.method.steps.length || 0)
+    ? cms!.method.steps
+    : undefined;
+  const behaviorTypes = useCmsRows(useCmsCopy, locale, cms?.search.types[0]?.title, cms?.search.types.length || 0)
+    ? cms!.search.types
+    : undefined;
+  const behaviorMap = cmsList(useCmsCopy, locale, cms?.search.map, []);
+  const gbpFields = useCmsRows(useCmsCopy, locale, cms?.gbp.fields[0]?.label, cms?.gbp.fields.length || 0)
+    ? cms!.gbp.fields
+    : undefined;
+  const gbpActions = useCmsRows(useCmsCopy, locale, cms?.gbp.actions[0]?.label || cms?.gbp.actions[0]?.name, cms?.gbp.actions.length || 0)
+    ? cms!.gbp.actions
+    : undefined;
+  const listingRows = useCmsRows(useCmsCopy, locale, cms?.consistency.listing[0]?.area, cms?.consistency.listing.length || 0)
+    ? cms!.consistency.listing
+    : undefined;
+  const gscRows = useCmsRows(useCmsCopy, locale, cms?.consistency.gsc[0]?.area, cms?.consistency.gsc.length || 0)
+    ? cms!.consistency.gsc
+    : undefined;
+  const kpiChart = cms?.measure.kpis.find((kpi) => kpi.labels.length && kpi.values.length);
+  const inner = (
+    <>
       <section className="kpi-hero kpi-home-hero-section kpi-seo-local-hero">
         <div className="kpi-wrap">
           <nav aria-label="Breadcrumb" className="kpi-seo-local-hero-crumb">
@@ -481,11 +853,11 @@ export function SeoLocalView({ locale }: { locale: Locale }) {
           </nav>
           <div className="kpi-home-hero">
             <div className="kpi-home-hero-copy">
-              <p className="kpi-home-eyebrow kpi-latin">
-                {locale === "th" ? "Search Visibility & Local Discovery" : t.eyebrow}
-              </p>
+              <p className="kpi-home-eyebrow kpi-latin">{heroEyebrow}</p>
               <h1 className="kpi-h1 kpi-home-h1">
-                {locale === "th" ? (
+                {heroTitle ? (
+                  heroTitle
+                ) : locale === "th" ? (
                   <>
                     <span className="kpi-home-h1-lead">
                       ให้ลูกค้า<span className="kpi-home-accent">ค้นพบธุรกิจของคุณ</span>
@@ -496,32 +868,38 @@ export function SeoLocalView({ locale }: { locale: Locale }) {
                   t.title
                 )}
               </h1>
-              {locale === "th" ? (
+              {heroLead ? (
+                <p className="kpi-lead kpi-home-lead">{heroLead}</p>
+              ) : locale === "th" ? (
                 <p className="kpi-lead kpi-home-lead">
                   <span className="kpi-seo-local-lead-line">
                     วันนี้ลูกค้าไม่ได้ค้นหาแค่ชื่อโรงแรมหรือร้าน แต่ค้นหาด้วยความต้องการ เช่น “สปาใกล้ฉันที่มีนวดคู่” หรือ “โรงแรมใกล้สนามบินที่เช็กอินดึกได้”
                   </span>
-                  <span className="kpi-seo-local-lead-line">
-                    เราช่วยทำให้เว็บไซต์ <span className="kpi-latin">Google Business Profile</span>{" "}
-                    และข้อมูลสำคัญของธุรกิจชัดเจนและสอดคล้องกัน เพื่อเพิ่มโอกาสให้ลูกค้าค้นพบ เข้าใจ และติดต่อได้ง่ายขึ้น
-                  </span>
                 </p>
               ) : (
-                <>
-                  <p className="kpi-lead kpi-home-lead">{t.lead}</p>
-                  <p className="kpi-seo-local-lead-close">{t.leadClose}</p>
-                </>
+                <p className="kpi-lead kpi-home-lead">{t.lead}</p>
+              )}
+              {locale === "th" || locale === "en" ? (
+                <ul className="kpi-seo-local-hero-points">
+                  {heroPoints.map((point) => (
+                    <li key={point}>{point}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="kpi-seo-local-lead-close">{t.leadClose}</p>
               )}
               <div className="kpi-actions">
-                <a href="#search-enquiry" className="kpi-button">
-                  {t.cta} <span aria-hidden="true">↗</span>
+                <a href={heroCtaHref} className="kpi-button">
+                  {heroCta} <span aria-hidden="true">↗</span>
                 </a>
-                <Link href={solutions} className="kpi-button-ghost">
-                  {t.secondary}
+                <Link href={heroSecondaryHref} className="kpi-button-ghost">
+                  {heroSecondary}
                 </Link>
               </div>
               <p className="kpi-seo-local-hero-note">
-                {locale === "th" ? (
+                {heroUnder ? (
+                  heroUnder
+                ) : locale === "th" ? (
                   <>
                     ส่งชื่อธุรกิจ เว็บไซต์หรือ <span className="kpi-latin">Google Maps</span>
                     <span className="kpi-seo-local-hero-note-br"> </span>
@@ -537,7 +915,7 @@ export function SeoLocalView({ locale }: { locale: Locale }) {
                     ["01", "Search"],
                     ["02", "Maps"],
                     ["03", "Website"],
-                    ["04", "Contact"],
+                    ["04", "Contact / Booking"],
                   ] as const
                 ).map(([num, step]) => (
                   <span key={step}>
@@ -548,8 +926,16 @@ export function SeoLocalView({ locale }: { locale: Locale }) {
                 ))}
               </p>
             </div>
-            <div className="kpi-hero-visual kpi-home-photo">
-              <img src="/media/seo-local-hero-phone.jpg" alt={t.photoAlt} width={1200} height={900} />
+            <div className="kpi-hero-visual kpi-meta-ads-hero-visual">
+              <HotelSeoHeroVisual
+                locale={locale}
+                src={heroSrc}
+                status={cms?.hero.visual.status || "sample"}
+                alt={locale === "th" ? cms?.hero.visual.altTh || HOTEL_SEO_HERO_VISUAL.alt.th : cms?.hero.visual.altEn || HOTEL_SEO_HERO_VISUAL.alt.en}
+                label={cms?.hero.visual.label || (locale === "th" ? HOTEL_SEO_HERO_VISUAL.label.th : HOTEL_SEO_HERO_VISUAL.label.en)}
+                caption={cms?.hero.visual.caption || (locale === "th" ? HOTEL_SEO_HERO_VISUAL.caption.th : HOTEL_SEO_HERO_VISUAL.caption.en)}
+                meta={locale === "th" ? HOTEL_SEO_HERO_VISUAL.meta.th : HOTEL_SEO_HERO_VISUAL.meta.en}
+              />
             </div>
           </div>
         </div>
@@ -557,443 +943,350 @@ export function SeoLocalView({ locale }: { locale: Locale }) {
 
       <section className="kpi-section kpi-seo-local-change">
         <p className="kpi-latin kpi-seo-local-change-eyebrow">Search Behavior</p>
-        <h2 className="kpi-h2">{t.changeTitle}</h2>
-        <div className="kpi-seo-local-change-layout">
+        <h2 className="kpi-h2">{cmsText(useCmsCopy, locale, cms?.search.title, t.changeTitle)}</h2>
+        <p className="kpi-seo-local-change-intro">
+          {cmsText(
+            useCmsCopy,
+            locale,
+            cms?.search.intro,
+            locale === "th"
+              ? "วันนี้ลูกค้าเริ่มจากคำถาม แล้วอาจใช้ Traditional Search, AI Search, Google Maps หรือเปิดเว็บไซต์ก่อนโทร ขอเส้นทาง ติดต่อ หรือจอง"
+              : "Customers start with a question, then may use Traditional Search, AI Search, Google Maps, or the website before they call, get directions, contact, or book.",
+          )}
+        </p>
+        <div className="kpi-seo-local-change-split">
+          <div className="kpi-seo-local-change-copy">
+            <ul className="kpi-seo-local-change-types">
+              {(behaviorTypes
+                ? behaviorTypes
+                : HOTEL_SEO_BEHAVIOR_TYPES.map((type) => ({
+                    id: type.id,
+                    num: type.num,
+                    title: locale === "th" ? type.titleTh : type.titleEn,
+                    body: locale === "th" ? type.bodyTh : type.bodyEn,
+                    order: 0,
+                  }))
+              ).map((type) => (
+                <li key={type.id}>
+                  <span className="kpi-latin">{type.num}</span>
+                  <h3>{type.title}</h3>
+                  <p>{type.body}</p>
+                </li>
+              ))}
+            </ul>
+            <div className="kpi-seo-local-behavior-map-wrap">
+              <p className="kpi-latin kpi-seo-local-change-eyebrow">Search Behavior Map</p>
+              <ol className="kpi-seo-local-behavior-map">
+                {(behaviorMap.length
+                  ? behaviorMap.map((step, index) => ({ id: `map-${index}`, label: step }))
+                  : HOTEL_SEO_BEHAVIOR_MAP.map((step) => ({ id: step.id, label: locale === "th" ? step.th : step.en }))
+                ).map((step) => (
+                  <li key={step.id}>
+                    <span>{step.label}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
+          <div className="kpi-seo-local-change-visual">
+            <HotelSeoSearchBehaviorVisual
+              locale={locale}
+              src={behaviorSrc}
+              status={cms?.search.visual.status || "sample"}
+              alt={locale === "th" ? cms?.search.visual.altTh || HOTEL_SEO_BEHAVIOR_VISUAL.alt.th : cms?.search.visual.altEn || HOTEL_SEO_BEHAVIOR_VISUAL.alt.en}
+              label={cms?.search.visual.label || (locale === "th" ? HOTEL_SEO_BEHAVIOR_VISUAL.label.th : HOTEL_SEO_BEHAVIOR_VISUAL.label.en)}
+              caption={cms?.search.visual.caption || (locale === "th" ? HOTEL_SEO_BEHAVIOR_VISUAL.caption.th : HOTEL_SEO_BEHAVIOR_VISUAL.caption.en)}
+              meta={locale === "th" ? HOTEL_SEO_BEHAVIOR_VISUAL.meta.th : HOTEL_SEO_BEHAVIOR_VISUAL.meta.en}
+            />
+          </div>
+        </div>
+        <div className="kpi-seo-local-change-evidence">
           <article className="kpi-seo-local-change-featured">
             <h3>
-              {locale === "th" ? (
-                <>
-                  <span className="kpi-latin">AI Search</span> ใช้ภาษาไทยได้แล้ว
-                </>
-              ) : (
-                t.aiTitle
-              )}
+              {cmsText(
+                useCmsCopy,
+                locale,
+                cms?.search.aiTitle,
+                locale === "th" ? "" : t.aiTitle,
+              ) ||
+                (locale === "th" ? (
+                  <>
+                    <span className="kpi-latin">AI Search</span> ใช้ภาษาไทยได้แล้ว
+                  </>
+                ) : (
+                  t.aiTitle
+                ))}
             </h3>
-            {locale === "th" ? (
+            {cmsText(useCmsCopy, locale, cms?.search.aiBody, locale === "th" ? "" : t.aiBody) ? (
+              <p className="kpi-seo-local-change-body">{cmsText(useCmsCopy, locale, cms?.search.aiBody, t.aiBody)}</p>
+            ) : locale === "th" ? (
               <div className="kpi-seo-local-change-body">
                 <p>
-                  <span className="kpi-latin">Google</span> เปิด <span className="kpi-latin">AI Mode</span> ในประเทศไทย
-                  <span className="kpi-seo-local-change-br"> </span>
-                  และรองรับภาษาไทยแล้ว
+                  <span className="kpi-latin">Google</span> เปิด <span className="kpi-latin">AI Mode</span> ในประเทศไทยเมื่อเดือนสิงหาคม 2025
+                  และเพิ่มการรองรับภาษาไทยในเดือนตุลาคม 2025
                 </p>
-                <p>
-                  ผู้ใช้สามารถถามคำถามยาวขึ้น
-                  <span className="kpi-seo-local-change-br"> </span>
-                  เปรียบเทียบตัวเลือก และถามต่อเนื่อง
-                  <span className="kpi-seo-local-change-br"> </span>
-                  โดยไม่ต้องเริ่มค้นหาใหม่ทุกครั้ง
-                </p>
+                <p>ผู้ใช้สามารถถามคำถามยาวขึ้น เปรียบเทียบตัวเลือก และถามต่อเนื่องใน Search ได้ โดยไม่ต้องเริ่มใหม่ทุกครั้ง</p>
               </div>
             ) : (
               <p className="kpi-seo-local-change-body">{t.aiBody}</p>
             )}
-            <p className="kpi-seo-local-change-source">
-              <a href={sources.aiModeTh} target="_blank" rel="noreferrer">
-                <span className="kpi-latin">Source: blog.google</span>
-              </a>
-            </p>
+            <SearchSourceCite locale={locale} source={aiMode} fallback={HOTEL_SEO_SOURCES.aiModeTh} nameFallback="blog.google" />
           </article>
-          <div className="kpi-seo-local-change-stack">
-            <article className="kpi-seo-local-change-stat">
-              <p className="kpi-seo-local-change-number">{t.growthStat}</p>
-              <p className="kpi-seo-local-change-stat-label">
-                {locale === "th" ? (
+          <article className="kpi-seo-local-change-stat">
+            <h3 className="kpi-h3">{cmsText(useCmsCopy, locale, cms?.search.growthTitle, t.growthTitle)}</h3>
+            <p className="kpi-seo-local-change-number">{cmsText(useCmsCopy, locale, cms?.search.growthStat, t.growthStat)}</p>
+            <p className="kpi-seo-local-change-stat-label">
+              {cmsText(useCmsCopy, locale, cms?.search.growthLabel, locale === "th" ? "" : t.growthLabel) ||
+                (locale === "th" ? (
                   <>
-                    การใช้งาน <span className="kpi-latin">AI Search</span>
-                    <span className="kpi-seo-local-change-br"> </span>
-                    ต่อเดือนทั่วโลก
+                    การใช้งาน <span className="kpi-latin">AI Search</span> ต่อเดือนทั่วโลก
                   </>
                 ) : (
                   t.growthLabel
-                )}
-              </p>
-              <p className="kpi-seo-local-change-body">
-                {locale === "th" ? (
+                ))}
+            </p>
+            <p className="kpi-seo-local-change-body">
+              {cmsText(
+                useCmsCopy,
+                locale,
+                cms?.search.growthNote,
+                locale === "th"
+                  ? "ตัวเลขนี้เป็นประมาณการแพลตฟอร์มทั่วโลกของ Google ไม่ใช่จำนวนผู้ใช้ในประเทศไทย และไม่ใช่ผลโรงแรม"
+                  : t.growthNote,
+              )}
+            </p>
+            <SearchSourceCite locale={locale} source={growth} fallback={HOTEL_SEO_SOURCES.searchIo} nameFallback="blog.google" />
+          </article>
+          <article>
+            <h3>
+              {cmsText(useCmsCopy, locale, cms?.search.mapsTitle, locale === "th" ? "" : t.mapsTitle) ||
+                (locale === "th" ? (
                   <>
-                    สะท้อนว่าพฤติกรรมการค้นหา
-                    <span className="kpi-seo-local-change-br"> </span>
-                    กำลังเปลี่ยนจากคำค้นสั้น ๆ
-                    <span className="kpi-seo-local-change-br"> </span>
-                    ไปสู่คำถามและการเปรียบเทียบที่ซับซ้อนขึ้น
-                  </>
-                ) : (
-                  t.growthNote
-                )}
-              </p>
-              <p className="kpi-seo-local-change-source">
-                <a href={sources.searchIo} target="_blank" rel="noreferrer">
-                  <span className="kpi-latin">Source: blog.google</span>
-                </a>
-              </p>
-            </article>
-            <article>
-              <h3>
-                {locale === "th" ? (
-                  <>
-                    <span className="kpi-latin">Google Maps</span> ยังสำคัญ
-                    <span className="kpi-seo-local-change-br"> </span>
-                    กับการตัดสินใจในพื้นที่
+                    <span className="kpi-latin">Google Maps</span> ยังสำคัญกับการตัดสินใจในพื้นที่
                   </>
                 ) : (
                   t.mapsTitle
-                )}
-              </h3>
-              {locale === "th" ? (
-                <div className="kpi-seo-local-change-body">
-                  <p>
-                    ความเกี่ยวข้อง ระยะทาง
-                    <span className="kpi-seo-local-change-br"> </span>
-                    และความโดดเด่นของธุรกิจ
-                    <span className="kpi-seo-local-change-br"> </span>
-                    ยังเป็นปัจจัยสำคัญในการค้นหาในพื้นที่
-                  </p>
-                  <p>
-                    ข้อมูลบน <span className="kpi-latin">Google Business Profile</span>
-                    <span className="kpi-seo-local-change-br"> </span>
-                    จึงต้องถูกต้อง ชัดเจน และสอดคล้องกับเว็บไซต์
-                  </p>
-                </div>
-              ) : (
-                <p className="kpi-seo-local-change-body">{t.mapsBody}</p>
-              )}
-              <p className="kpi-seo-local-change-source">
-                <a href={sources.localRank} target="_blank" rel="noreferrer">
-                  <span className="kpi-latin">Source: Google Business Profile Help</span>
-                </a>
+                ))}
+            </h3>
+            {cmsText(useCmsCopy, locale, cms?.search.mapsBody, locale === "th" ? "" : t.mapsBody) ? (
+              <p className="kpi-seo-local-change-body">{cmsText(useCmsCopy, locale, cms?.search.mapsBody, t.mapsBody)}</p>
+            ) : locale === "th" ? (
+              <div className="kpi-seo-local-change-body">
+                <p>ความเกี่ยวข้อง ระยะทาง และความโดดเด่นของธุรกิจยังเป็นปัจจัยสำคัญในการค้นหาในพื้นที่</p>
+                <p>
+                  ข้อมูลบน <span className="kpi-latin">Google Business Profile</span> จึงต้องถูกต้อง ชัดเจน และสอดคล้องกับเว็บไซต์
+                </p>
+              </div>
+            ) : (
+              <p className="kpi-seo-local-change-body">{t.mapsBody}</p>
+            )}
+            <SearchSourceCite
+              locale={locale}
+              source={maps}
+              fallback={HOTEL_SEO_SOURCES.localRank}
+              nameFallback="Google Business Profile Help"
+            />
+          </article>
+        </div>
+        <div className="kpi-seo-local-change-takeaway">
+          {cmsText(useCmsCopy, locale, cms?.search.close, locale === "th" ? "" : t.changeClose) ? (
+            <p>{cmsText(useCmsCopy, locale, cms?.search.close, t.changeClose)}</p>
+          ) : locale === "th" ? (
+            <>
+              <p>
+                สำหรับโรงแรม สปา และคาเฟ่ ข้อมูลบนเว็บไซต์และ <span className="kpi-latin">Google Maps</span> ต้องตอบคำถามเดียวกันให้ชัด
               </p>
-            </article>
-          </div>
-          <div className="kpi-seo-local-change-takeaway">
-            {locale === "th" ? (
-              <>
-                <p>
-                  สำหรับโรงแรม สปา และคาเฟ่
-                  <span className="kpi-seo-local-change-br"> </span>
-                  ข้อมูลบนเว็บไซต์และ <span className="kpi-latin">Google Maps</span>
-                  <span className="kpi-seo-local-change-br"> </span>
-                  ต้องตอบคำถามเดียวกันให้ชัด
-                </p>
-                <p className="kpi-seo-local-change-takeaway-strong">
-                  ตั้งแต่บริการ ทำเล ราคา เวลาเปิด
-                  <span className="kpi-seo-local-change-br"> </span>
-                  ไปจนถึงวิธีติดต่อหรือจอง
-                </p>
-              </>
-            ) : (
-              <p>{t.changeClose}</p>
-            )}
-          </div>
-          <div className="kpi-seo-local-change-note">
-            {locale === "th" ? (
-              <>
-                <p>
-                  <span className="kpi-latin">SEO</span> พื้นฐานยังคงสำคัญต่อ
-                  <span className="kpi-seo-local-change-br"> </span>
-                  <span className="kpi-latin">AI Overviews</span> และ <span className="kpi-latin">AI Mode</span>
-                </p>
-                <p>
-                  ยังไม่มีวิธีพิเศษที่รับประกันว่า
-                  <span className="kpi-seo-local-change-br"> </span>
-                  ธุรกิจจะปรากฏในคำตอบ <span className="kpi-latin">AI</span>
-                </p>
-              </>
-            ) : (
-              <p>{t.aiNote}</p>
-            )}
-            <p className="kpi-seo-local-change-source">
-              <a href={sources.aiFeatures} target="_blank" rel="noreferrer">
-                <span className="kpi-latin">Source: Google Search Central</span>
-              </a>
-            </p>
-          </div>
+              <p className="kpi-seo-local-change-takeaway-strong">ตั้งแต่บริการ ทำเล ราคา เวลาเปิด ไปจนถึงวิธีติดต่อหรือจอง</p>
+            </>
+          ) : (
+            <p>{t.changeClose}</p>
+          )}
+        </div>
+        <div className="kpi-seo-local-change-note">
+          {cmsText(useCmsCopy, locale, cms?.search.aiNote, locale === "th" ? "" : t.aiNote) ? (
+            <p>{cmsText(useCmsCopy, locale, cms?.search.aiNote, t.aiNote)}</p>
+          ) : locale === "th" ? (
+            <>
+              <p>
+                <span className="kpi-latin">SEO</span> พื้นฐานยังคงสำคัญต่อ <span className="kpi-latin">AI Overviews</span> และ{" "}
+                <span className="kpi-latin">AI Mode</span>
+              </p>
+              <p>
+                ยังไม่มีวิธีพิเศษที่รับประกันว่าธุรกิจจะปรากฏในทุกคำตอบ <span className="kpi-latin">AI</span> หรือ{" "}
+                <span className="kpi-latin">AI Overview</span> การปรากฏต่างกันตามคำค้น ทำเล ภาษา บริบทผู้ใช้ คุณภาพแหล่งข้อมูล
+                และการเปลี่ยนแปลงของระบบค้นหา
+              </p>
+            </>
+          ) : (
+            <p>{t.aiNote}</p>
+          )}
+          <SearchSourceCite
+            locale={locale}
+            source={aiNote}
+            fallback={HOTEL_SEO_SOURCES.aiFeatures}
+            nameFallback="Google Search Central"
+          />
         </div>
       </section>
 
       <section className="border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section kpi-seo-local-compare">
           <h2 className="kpi-h2">
-            {locale === "th" ? (
-              <>
-                <span className="kpi-seo-local-compare-line">
-                  <span className="kpi-latin">SEO</span>, <span className="kpi-latin">AEO</span> และ{" "}
-                  <span className="kpi-latin">Local SEO</span>
-                </span>
-                <span className="kpi-seo-local-compare-br"> </span>
-                <span className="kpi-seo-local-compare-line">ช่วยต่างกันอย่างไร?</span>
-              </>
-            ) : (
-              t.compareTitle
-            )}
-          </h2>
-          {locale === "th" ? (
-            <p className="kpi-seo-local-compare-lead">
-              ไม่ใช่เลือกอย่างใดอย่างหนึ่ง
-              <span className="kpi-seo-local-compare-br"> </span>
-              แต่ทำให้เว็บไซต์ ข้อมูลธุรกิจ
-              <span className="kpi-seo-local-compare-br"> </span>
-              และคำตอบที่ลูกค้าต้องการสอดคล้องกัน
-            </p>
-          ) : null}
-          <ol className="kpi-seo-local-compare-cols">
-            {locale === "th" ? (
-              <>
-                <li>
-                  <span className="kpi-latin kpi-seo-local-compare-num">01</span>
-                  <h3 className="kpi-latin">SEO</h3>
-                  <p className="kpi-seo-local-compare-role">ทำให้หน้าเว็บไซต์ตอบสิ่งที่ลูกค้าค้นหา</p>
-                  <p className="kpi-seo-local-compare-example">
-                    เช่น ทำเล ห้องพัก การเดินทาง
-                    <span className="kpi-seo-local-compare-br"> </span>
-                    ราคา และวิธีจอง
-                  </p>
-                </li>
-                <li>
-                  <span className="kpi-latin kpi-seo-local-compare-num">02</span>
-                  <h3>
-                    <span className="kpi-latin">AEO</span> / <span className="kpi-latin">AI Search</span>
-                  </h3>
-                  <p className="kpi-seo-local-compare-role">จัดข้อมูลให้ชัดและเป็นคำตอบ</p>
-                  <p className="kpi-seo-local-compare-example">
-                    เพื่อให้ระบบค้นหาและ <span className="kpi-latin">AI</span> เข้าใจว่า
-                    <span className="kpi-seo-local-compare-br"> </span>
-                    ธุรกิจเหมาะกับใคร อยู่ที่ไหน
-                    <span className="kpi-seo-local-compare-br"> </span>
-                    และให้บริการอะไร
-                  </p>
-                </li>
-                <li>
-                  <span className="kpi-latin kpi-seo-local-compare-num">03</span>
-                  <h3 className="kpi-latin">Local SEO</h3>
-                  <p className="kpi-seo-local-compare-role">
-                    ทำให้ข้อมูลบน <span className="kpi-latin">Google Search</span> และ{" "}
-                    <span className="kpi-latin">Maps</span>
-                    <span className="kpi-seo-local-compare-br"> </span>
-                    ถูกต้องและสอดคล้อง
-                  </p>
-                  <p className="kpi-seo-local-compare-example">
-                    เช่น เวลาเปิด เมนู รีวิว รูปจริง
-                    <span className="kpi-seo-local-compare-br"> </span>
-                    เบอร์โทร และเส้นทาง
-                  </p>
-                </li>
-              </>
-            ) : (
-              t.compare.map(([title, see, example], index) => (
-                <li key={title}>
-                  <span className="kpi-latin kpi-seo-local-compare-num">
-                    {String(index + 1).padStart(2, "0")}
+            {cmsText(useCmsCopy, locale, cms?.compare.title, locale === "th" ? "" : t.compareTitle) ||
+              (locale === "th" ? (
+                <>
+                  <span className="kpi-seo-local-compare-line">
+                    <span className="kpi-latin">SEO</span>, <span className="kpi-latin">AEO</span> และ{" "}
+                    <span className="kpi-latin">Local SEO</span>
                   </span>
-                  <h3>{title}</h3>
-                  <p className="kpi-seo-local-compare-role">{see}</p>
-                  <p className="kpi-seo-local-compare-example">{example}</p>
-                </li>
-              ))
-            )}
-          </ol>
-          <div className="kpi-seo-local-compare-close">
-            {locale === "th" ? (
-              <>
-                <p className="kpi-seo-local-compare-close-strong">
-                  ทั้งสามส่วนควรใช้ข้อมูลจริงชุดเดียวกัน
-                </p>
-                <p className="kpi-seo-local-compare-close-strong">
-                  เพื่อให้ <span className="kpi-latin">Search</span>, <span className="kpi-latin">AI</span> และ{" "}
-                  <span className="kpi-latin">Maps</span>
                   <span className="kpi-seo-local-compare-br"> </span>
-                  เข้าใจธุรกิจไปในทิศทางเดียวกัน
-                </p>
-                <p className="kpi-seo-local-compare-close-note">
-                  เวลาเปิด บริการ ราคา รูปภาพ
-                  <span className="kpi-seo-local-compare-br"> </span>
-                  และช่องทางติดต่อควรสอดคล้องกัน
-                  <span className="kpi-seo-local-compare-br"> </span>
-                  ทั้งบนเว็บไซต์และ <span className="kpi-latin">Google Business Profile</span>
-                </p>
-              </>
-            ) : (
-              <p className="kpi-seo-local-compare-close-strong">{t.compareClose}</p>
-            )}
-          </div>
+                  <span className="kpi-seo-local-compare-line">ช่วยต่างกันอย่างไร?</span>
+                </>
+              ) : (
+                t.compareTitle
+              ))}
+          </h2>
+          <p className="kpi-seo-local-compare-lead">
+            {locale === "th"
+              ? "ไม่ใช่เลือกอย่างใดอย่างหนึ่ง แต่จัดเว็บไซต์ ข้อมูลธุรกิจ และคำตอบที่ลูกค้าต้องการให้สอดคล้องกัน"
+              : "These are not alternatives. The website, the business facts, and the answers customers need should work together."}
+          </p>
+          <HotelSeoCompareMatrix
+            locale={locale === "th" ? "th" : "en"}
+            rows={compareRows}
+            src={compareSrc}
+            status={cms?.compare.visual.status || "sample"}
+            caption={cms?.compare.visual.caption}
+            label={cms?.compare.visual.label || (locale === "th" ? HOTEL_SEO_COMPARE_VISUAL.label.th : HOTEL_SEO_COMPARE_VISUAL.label.en)}
+          />
+          <p className="kpi-seo-local-compare-close-strong">
+            {cmsText(useCmsCopy, locale, cms?.compare.close, locale === "th" ? HOTEL_SEO_COMPARE_STATEMENT.th : HOTEL_SEO_COMPARE_STATEMENT.en)}
+          </p>
         </div>
       </section>
 
       <section className="kpi-section kpi-seo-local-problems">
         <h2 className="kpi-h2">
-          {locale === "th" ? (
-            <>
-              <span className="kpi-seo-local-problem-line">ธุรกิจของคุณกำลังเจอ</span>
-              <span className="kpi-seo-local-problem-br"> </span>
-              <span className="kpi-seo-local-problem-line">
-                <span className="kpi-seo-local-problem-em">ปัญหาเหล่านี้</span>หรือไม่?
-              </span>
-            </>
-          ) : (
-            t.problemTitle
-          )}
+          {cmsText(useCmsCopy, locale, cms?.problems.title, locale === "th" ? "" : t.problemTitle) ||
+            (locale === "th" ? (
+              <>
+                <span className="kpi-seo-local-problem-line">ธุรกิจของคุณกำลังเจอ</span>
+                <span className="kpi-seo-local-problem-br"> </span>
+                <span className="kpi-seo-local-problem-line">
+                  <span className="kpi-seo-local-problem-em">ปัญหาเหล่านี้</span>หรือไม่?
+                </span>
+              </>
+            ) : (
+              t.problemTitle
+            ))}
         </h2>
         <div className="kpi-seo-local-problems-grid">
           <div className="kpi-seo-local-problems-main">
             <ol className="kpi-seo-local-problems-list">
-              {locale === "th" ? (
-                <>
-                  <li>
-                    <span className="kpi-latin">01</span>
-                    <p>
-                      มีเว็บไซต์
-                      <span className="kpi-seo-local-problem-br"> </span>
-                      แต่ค้นหาบริการหรือทำเลที่เกี่ยวข้องแล้ว<span className="kpi-seo-local-problem-em">ไม่พบหน้าเว็บ</span>
-                    </p>
+              {(problemRows
+                ? problemRows.map((item) => ({
+                    id: item.id,
+                    num: item.num,
+                    problem: item.problem,
+                    sees: item.sees,
+                    inspect: item.inspect,
+                    improve: item.improve,
+                    output: item.output,
+                  }))
+                : HOTEL_SEO_PROBLEM_ITEMS.map((item) => ({
+                    id: item.id,
+                    num: item.num,
+                    problem: locale === "th" ? item.problemTh : item.problemEn,
+                    sees: locale === "th" ? item.seesTh : item.seesEn,
+                    inspect: locale === "th" ? item.dataTh : item.dataEn,
+                    improve: "",
+                    output: locale === "th" ? item.outputTh : item.outputEn,
+                  }))
+              ).map((item) => {
+                const thai = locale === "th";
+                return (
+                  <li key={item.id}>
+                    <span className="kpi-latin">{item.num}</span>
+                    <div className="kpi-seo-local-problem-card">
+                      <dl>
+                        <div>
+                          <dt>{thai ? HOTEL_SEO_PROBLEM_FIELDS[0].th : HOTEL_SEO_PROBLEM_FIELDS[0].en}</dt>
+                          <dd className="kpi-seo-local-problem-title">{item.problem}</dd>
+                        </div>
+                        <div>
+                          <dt>{thai ? HOTEL_SEO_PROBLEM_FIELDS[1].th : HOTEL_SEO_PROBLEM_FIELDS[1].en}</dt>
+                          <dd>{item.sees}</dd>
+                        </div>
+                        <div>
+                          <dt>{thai ? HOTEL_SEO_PROBLEM_FIELDS[2].th : HOTEL_SEO_PROBLEM_FIELDS[2].en}</dt>
+                          <dd>{item.inspect}</dd>
+                        </div>
+                        {item.improve ? (
+                          <div>
+                            <dt>{thai ? "สิ่งที่ควรปรับ" : "Improvement"}</dt>
+                            <dd>{item.improve}</dd>
+                          </div>
+                        ) : null}
+                        <div>
+                          <dt>{thai ? HOTEL_SEO_PROBLEM_FIELDS[3].th : HOTEL_SEO_PROBLEM_FIELDS[3].en}</dt>
+                          <dd>{item.output}</dd>
+                        </div>
+                      </dl>
+                    </div>
                   </li>
-                  <li>
-                    <span className="kpi-latin">02</span>
-                    <p>
-                      ลูกค้าเห็นธุรกิจบน <span className="kpi-latin">Maps</span>
-                      <span className="kpi-seo-local-problem-br"> </span>
-                      แต่ข้อมูลสำคัญ<span className="kpi-seo-local-problem-em">ยังไม่เป็นปัจจุบัน</span>
-                    </p>
-                  </li>
-                  <li>
-                    <span className="kpi-latin">03</span>
-                    <p>
-                      มีคนเข้าชมเว็บไซต์
-                      <span className="kpi-seo-local-problem-br"> </span>
-                      แต่หาราคา บริการ ทำเล หรือ<span className="kpi-seo-local-problem-em">วิธีจองไม่เจอ</span>
-                    </p>
-                  </li>
-                  <li>
-                    <span className="kpi-latin">04</span>
-                    <p>
-                      มีรีวิวอยู่แล้ว
-                      <span className="kpi-seo-local-problem-br"> </span>
-                      แต่ยังไม่ได้ใช้<span className="kpi-seo-local-problem-em">คำถามจริงของลูกค้า</span>มาปรับข้อมูลธุรกิจ
-                    </p>
-                  </li>
-                  <li>
-                    <span className="kpi-latin">05</span>
-                    <p>
-                      ยังไม่รู้ว่าลูกค้าค้นพบธุรกิจผ่าน
-                      <span className="kpi-seo-local-problem-br"> </span>
-                      <span className="kpi-seo-local-problem-em kpi-latin">Search, Maps หรือ AI</span>
-                      <span className="kpi-seo-local-problem-br"> </span>
-                      แล้วติดต่อจากช่องทางไหน
-                    </p>
-                  </li>
-                </>
-              ) : (
-                t.problems.map((problem, index) => (
-                  <li key={problem}>
-                    <span className="kpi-latin">{String(index + 1).padStart(2, "0")}</span>
-                    <p>{problem}</p>
-                  </li>
-                ))
-              )}
+                );
+              })}
             </ol>
-            <a href="#search-enquiry" className="kpi-seo-local-problems-cta">
-              {t.problemCta} <span aria-hidden="true">↗</span>
+            <a href={heroCtaHref} className="kpi-seo-local-problems-cta">
+              {cmsText(useCmsCopy, locale, cms?.problems.cta, t.problemCta)} <span aria-hidden="true">↗</span>
             </a>
           </div>
-          <figure className="kpi-seo-local-problems-photo">
-            <img
-              src="/media/seo-local-problems-phone.jpg"
-              alt={
-                locale === "th"
-                  ? "นักเดินทางค้นหาโรงแรมหรือธุรกิจในพื้นที่บนสมาร์ทโฟน"
-                  : t.photoAlt
-              }
-              width={1200}
-              height={900}
+          <div className="kpi-seo-local-problems-photo">
+            <HotelSeoAuditVisual
+              locale={locale}
+              src={auditSrc}
+              status={cms?.problems.visual.status || "sample"}
+              alt={locale === "th" ? cms?.problems.visual.altTh || HOTEL_SEO_AUDIT_VISUAL.alt.th : cms?.problems.visual.altEn || HOTEL_SEO_AUDIT_VISUAL.alt.en}
+              label={cms?.problems.visual.label || (locale === "th" ? HOTEL_SEO_AUDIT_VISUAL.label.th : HOTEL_SEO_AUDIT_VISUAL.label.en)}
+              caption={cms?.problems.visual.caption || (locale === "th" ? HOTEL_SEO_AUDIT_VISUAL.caption.th : HOTEL_SEO_AUDIT_VISUAL.caption.en)}
+              meta={locale === "th" ? HOTEL_SEO_AUDIT_VISUAL.meta.th : HOTEL_SEO_AUDIT_VISUAL.meta.en}
+              rows={listingRows}
             />
-          </figure>
+          </div>
         </div>
       </section>
 
       <section className="border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section kpi-seo-local-help">
           <h2 className="kpi-h2">
-            {locale === "th" ? (
-              <>
-                <span className="kpi-seo-local-help-line">
-                  เราช่วยให้ธุรกิจ<span className="kpi-seo-local-help-em">ถูกค้นพบ</span>
-                </span>
-                <span className="kpi-seo-local-help-br"> </span>
-                <span className="kpi-seo-local-help-line">และติดต่อได้อย่างไร?</span>
-              </>
-            ) : (
-              t.helpTitle
-            )}
+            {cmsText(useCmsCopy, locale, cms?.help.title, locale === "th" ? "" : t.helpTitle) ||
+              (locale === "th" ? (
+                <>
+                  <span className="kpi-seo-local-help-line">
+                    เราช่วยให้ธุรกิจ<span className="kpi-seo-local-help-em">ถูกค้นพบ</span>
+                  </span>
+                  <span className="kpi-seo-local-help-br"> </span>
+                  <span className="kpi-seo-local-help-line">และติดต่อได้อย่างไร?</span>
+                </>
+              ) : (
+                t.helpTitle
+              ))}
           </h2>
-          <ol className="kpi-seo-local-help-cols">
-            {locale === "th" ? (
-              <>
-                <li>
-                  <span className="kpi-latin kpi-seo-local-help-num">01</span>
-                  <h3>
-                    ทำให้เว็บไซต์<span className="kpi-seo-local-help-em">ตอบคำถามของลูกค้า</span>
-                  </h3>
-                  <p>
-                    ดูว่าลูกค้าค้นหาอะไร
-                    <span className="kpi-seo-local-help-br"> </span>
-                    และจัดหน้าเว็บให้ตอบเรื่องทำเล
-                    <span className="kpi-seo-local-help-br"> </span>
-                    บริการ ราคา และวิธีจองได้ชัด
-                  </p>
-                </li>
-                <li>
-                  <span className="kpi-latin kpi-seo-local-help-num">02</span>
-                  <h3>
-                    จัดข้อมูลให้ <span className="kpi-seo-local-help-em kpi-latin">Search และ AI</span> เข้าใจ
-                  </h3>
-                  <p>
-                    ปรับโครงสร้างเว็บไซต์ เนื้อหา
-                    <span className="kpi-seo-local-help-br"> </span>
-                    และข้อมูลธุรกิจให้เชื่อมกัน
-                  </p>
-                  <p>
-                    เพื่อให้ระบบค้นหาเข้าใจธุรกิจ
-                    <span className="kpi-seo-local-help-br"> </span>
-                    ได้ง่ายและถูกต้องขึ้น
-                  </p>
-                </li>
-                <li>
-                  <span className="kpi-latin kpi-seo-local-help-num">03</span>
-                  <h3>
-                    ดูแล <span className="kpi-seo-local-help-em kpi-latin">Google Business Profile</span>{" "}
-                    อย่างจริงจัง
-                  </h3>
-                  <p>
-                    อัปเดตหมวดหมู่ ที่อยู่ เวลาเปิด
-                    <span className="kpi-seo-local-help-br"> </span>
-                    เว็บไซต์ บริการ รูปภาพ และรีวิว
-                    <span className="kpi-seo-local-help-br"> </span>
-                    ให้เป็นปัจจุบัน
-                  </p>
-                </li>
-                <li>
-                  <span className="kpi-latin kpi-seo-local-help-num">04</span>
-                  <h3>
-                    เชื่อมการค้นพบกับการ<span className="kpi-seo-local-help-em">ติดต่อและการจอง</span>
-                  </h3>
-                  <p>
-                    ดูว่าหลังจากค้นพบธุรกิจแล้ว
-                    <span className="kpi-seo-local-help-br"> </span>
-                    ลูกค้าสามารถโทร ขอเส้นทาง
-                    <span className="kpi-seo-local-help-br"> </span>
-                    ส่งคำถาม หรือจองต่อได้สะดวกหรือไม่
-                  </p>
-                </li>
-              </>
-            ) : (
-              t.help.map(([num, title, body]) => (
-                <li key={num}>
-                  <span className="kpi-latin kpi-seo-local-help-num">{num}</span>
-                  <h3>{title}</h3>
-                  <p>{body}</p>
-                </li>
-              ))
-            )}
-          </ol>
-          <a href="#search-enquiry" className="kpi-button">
-            {t.cta} <span aria-hidden="true">↗</span>
+          <div className="kpi-seo-local-help-visual">
+            <HotelSeoDiscoveryFlow
+              locale={locale}
+              src={flowSrc}
+              status={cms?.help.visual.status || "sample"}
+              alt={locale === "th" ? cms?.help.visual.altTh || HOTEL_SEO_FLOW_VISUAL.alt.th : cms?.help.visual.altEn || HOTEL_SEO_FLOW_VISUAL.alt.en}
+              label={cms?.help.visual.label}
+              caption={cms?.help.visual.caption}
+              stages={flowStages}
+            />
+          </div>
+          <HotelSeoHelpSteps locale={locale === "th" ? "th" : "en"} steps={helpSteps} />
+          <HotelSeoHelpBoundary locale={locale === "th" ? "th" : "en"} boundary={useCmsCopy ? cms?.help.boundary : undefined} />
+          <a href={heroCtaHref} className="kpi-button">
+            {heroCta} <span aria-hidden="true">↗</span>
           </a>
         </div>
       </section>
@@ -1002,299 +1295,168 @@ export function SeoLocalView({ locale }: { locale: Locale }) {
         <div className="kpi-seo-local-gbp-grid">
           <div className="kpi-seo-local-gbp-copy">
             <h2 className="kpi-h2">
-              {locale === "th" ? (
-                <>
-                  ทำไม <span className="kpi-latin kpi-seo-local-gbp-em">Google Business Profile</span> สำคัญกับสปา
-                  คาเฟ่ และธุรกิจหน้าร้าน?
-                </>
-              ) : (
-                t.gbpTitle
-              )}
+              {cmsText(useCmsCopy, locale, cms?.gbp.title, locale === "th" ? "" : HOTEL_SEO_GBP_COPY.title.en) ||
+                (locale === "th" ? (
+                  <>
+                    ทำไม <span className="kpi-latin kpi-seo-local-gbp-em">Google Business Profile</span> ที่ครบและเป็นปัจจุบันช่วยการค้นพบในพื้นที่?
+                  </>
+                ) : (
+                  HOTEL_SEO_GBP_COPY.title.en
+                ))}
             </h2>
-            {locale === "th" ? (
-              <div className="kpi-seo-local-gbp-body">
-                <p>
-                  ลูกค้าของธุรกิจใกล้ตัว
-                  <span className="kpi-seo-local-gbp-br"> </span>
-                  มักตัดสินใจจากข้อมูลไม่กี่อย่าง
-                </p>
-                <p className="kpi-seo-local-gbp-factors">
-                  อยู่ที่ไหน
-                  <span className="kpi-seo-local-gbp-br"> </span>
-                  เปิดกี่โมง
-                  <span className="kpi-seo-local-gbp-br"> </span>
-                  มีบริการอะไร
-                  <span className="kpi-seo-local-gbp-br"> </span>
-                  และคนอื่นรีวิวอย่างไร
-                </p>
-                <p>
-                  <span className="kpi-latin">Google Business Profile</span>
-                  <span className="kpi-seo-local-gbp-br"> </span>
-                  ช่วยให้ข้อมูลเหล่านี้ปรากฏบน <span className="kpi-latin">Search</span> และ{" "}
-                  <span className="kpi-latin">Maps</span>
-                  <span className="kpi-seo-local-gbp-br"> </span>
-                  ในจังหวะที่ลูกค้ากำลังตัดสินใจ
-                </p>
-              </div>
-            ) : (
-              <div className="kpi-seo-local-gbp-body">
-                <p>{t.gbpBody}</p>
-              </div>
-            )}
+            <div className="kpi-seo-local-gbp-body">
+              <p>{cmsText(useCmsCopy, locale, cms?.gbp.body, locale === "th" ? HOTEL_SEO_GBP_COPY.lead.th : HOTEL_SEO_GBP_COPY.lead.en)}</p>
+            </div>
+            <p className="kpi-seo-local-gbp-rank">
+              {cmsText(useCmsCopy, locale, cms?.gbp.rankNote, locale === "th" ? HOTEL_SEO_GBP_COPY.rankNote.th : HOTEL_SEO_GBP_COPY.rankNote.en)}
+            </p>
             <div className="kpi-seo-local-gbp-signals">
-              <article>
-                <h3 className="kpi-latin">Call</h3>
-                <p>{locale === "th" ? "ลูกค้ากดโทรจากโปรไฟล์" : "Call from the profile"}</p>
-              </article>
-              <article>
-                <h3 className="kpi-latin">Directions</h3>
-                <p>{locale === "th" ? "ลูกค้าขอเส้นทางมายังธุรกิจ" : "Ask for directions"}</p>
-              </article>
-              <article>
-                <h3 className="kpi-latin">Website Visit</h3>
-                <p>{locale === "th" ? "ลูกค้าเข้าเว็บไซต์เพื่อดูข้อมูลเพิ่ม" : "Visit the website"}</p>
-              </article>
+              {(gbpActions
+                ? gbpActions
+                : HOTEL_SEO_GBP_ACTIONS.map((action) => ({
+                    id: action.id,
+                    name: action.name,
+                    label: locale === "th" ? action.th : action.en,
+                    order: 0,
+                  }))
+              ).map((action) => (
+                <article key={action.id}>
+                  <h3 className="kpi-latin">{action.name}</h3>
+                  <p>{action.label}</p>
+                </article>
+              ))}
             </div>
             <div className="kpi-seo-local-gbp-close">
-              {locale === "th" ? (
-                <>
-                  <p>
-                    สำหรับธุรกิจหน้าร้าน
-                    <span className="kpi-seo-local-gbp-br"> </span>
-                    การค้นพบไม่ควรจบที่ “เห็นชื่อ”
-                  </p>
-                  <p className="kpi-seo-local-gbp-close-strong">
-                    แต่ควรพาลูกค้าไปสู่
-                    <span className="kpi-seo-local-gbp-br"> </span>
-                    การเดินทางจริง การโทร หรือการจอง
-                  </p>
-                </>
-              ) : (
-                <p className="kpi-seo-local-gbp-close-strong">{t.gbpExample}</p>
-              )}
+              <p className="kpi-seo-local-gbp-close-strong">
+                {cmsText(useCmsCopy, locale, cms?.gbp.close, locale === "th" ? HOTEL_SEO_GBP_COPY.close.th : HOTEL_SEO_GBP_COPY.close.en)}
+              </p>
             </div>
-            <p className="kpi-seo-local-gbp-source">
-              <a href={sources.localRank} target="_blank" rel="noreferrer">
-                <span className="kpi-latin">Source: Google Business Profile Help</span>
-              </a>
-            </p>
-          </div>
-          <figure className="kpi-seo-local-gbp-photo">
-            <img
-              src="/media/seo-local-gbp-phone.jpg"
-              alt={
-                locale === "th"
-                  ? "มือถือแสดงข้อมูลธุรกิจบนแผนที่พร้อมเวลาเปิดและรีวิว"
-                  : "A phone showing a local business listing with hours and reviews"
-              }
-              width={1200}
-              height={900}
+            <SearchSourceCite
+              locale={locale}
+              source={gbpSource}
+              fallback={HOTEL_SEO_SOURCES.localRank}
+              nameFallback="Google Business Profile Help"
             />
-          </figure>
+          </div>
+          <div className="kpi-seo-local-gbp-photo">
+            <HotelSeoGbpVisual
+              locale={locale}
+              src={gbpSrc}
+              status={cms?.gbp.visual.status || "sample"}
+              alt={locale === "th" ? cms?.gbp.visual.altTh || HOTEL_SEO_GBP_VISUAL.alt.th : cms?.gbp.visual.altEn || HOTEL_SEO_GBP_VISUAL.alt.en}
+              label={cms?.gbp.visual.label || (locale === "th" ? HOTEL_SEO_GBP_VISUAL.label.th : HOTEL_SEO_GBP_VISUAL.label.en)}
+              caption={cms?.gbp.visual.caption || (locale === "th" ? HOTEL_SEO_GBP_VISUAL.caption.th : HOTEL_SEO_GBP_VISUAL.caption.en)}
+              meta={locale === "th" ? HOTEL_SEO_GBP_VISUAL.meta.th : HOTEL_SEO_GBP_VISUAL.meta.en}
+              fields={gbpFields}
+              actions={gbpActions}
+            />
+          </div>
         </div>
       </section>
 
       <section className="kpi-seo-local-method border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section">
-          <h2 className="kpi-h2">{t.methodTitle}</h2>
-          <ol className="kpi-seo-local-method-list">
-            {locale === "th"
-              ? thaiMethodSteps.map((step, index) => (
-                  <li key={step.num} className="kpi-seo-local-method-step">
-                    <span className="kpi-latin kpi-seo-local-method-num">{step.num}</span>
-                    <div className="kpi-seo-local-method-copy">
-                      <p className="kpi-latin kpi-seo-local-method-phase">
-                        {step.num} / {methodPhases[index]}
-                      </p>
-                      <h3>{step.title}</h3>
-                      <p className="kpi-seo-local-method-body">
-                        {step.lines.map((line, lineIndex) => (
-                          <span key={`${step.num}-${line}`}>
-                            {lineIndex > 0 ? <span className="kpi-seo-local-method-br"> </span> : null}
-                            {line === "แยก Quick Wins" ? (
-                              <>
-                                แยก <span className="kpi-latin">Quick Wins</span>
-                              </>
-                            ) : line === "ตรวจเว็บไซต์ Google Search Console" ? (
-                              <>
-                                ตรวจเว็บไซต์ <span className="kpi-latin">Google Search Console</span>
-                              </>
-                            ) : line === "และ Google Business Profile" ? (
-                              <>
-                                และ <span className="kpi-latin">Google Business Profile</span>
-                              </>
-                            ) : (
-                              line
-                            )}
-                          </span>
-                        ))}
-                      </p>
-                    </div>
-                  </li>
-                ))
-              : t.steps.map(([num, title, body], index) => (
-                  <li key={num} className="kpi-seo-local-method-step">
-                    <span className="kpi-latin kpi-seo-local-method-num">{num}</span>
-                    <div className="kpi-seo-local-method-copy">
-                      <p className="kpi-latin kpi-seo-local-method-phase">
-                        {num} / {methodPhases[index]}
-                      </p>
-                      <h3>{title}</h3>
-                      <p className="kpi-seo-local-method-body">{body}</p>
-                    </div>
-                  </li>
-                ))}
-          </ol>
+          <h2 className="kpi-h2">{cmsText(useCmsCopy, locale, cms?.method.title, t.methodTitle)}</h2>
+          <div className="kpi-seo-local-method-layout">
+            <div className="kpi-seo-local-method-visual">
+              <HotelSeoProcessVisual
+                locale={locale}
+                src={processSrc}
+                status={cms?.method.visual.status || "sample"}
+              />
+            </div>
+            <HotelSeoProcessSteps locale={locale} steps={processSteps} />
+          </div>
         </div>
       </section>
 
       <section className="kpi-section kpi-seo-local-measure">
-        <h2 className="kpi-h2">{t.measureTitle}</h2>
-        {locale === "th" ? (
-          <>
-            <div className="kpi-seo-local-measure-grid">
-              {thaiMeasureGroups.map((group) => (
-                <article key={group.num} className="kpi-seo-local-measure-group">
-                  <p className="kpi-latin kpi-seo-local-measure-num">{group.num}</p>
-                  <h3 className="kpi-latin">{group.title}</h3>
-                  <p className="kpi-seo-local-measure-intro">
-                    {group.introLines.map((line, lineIndex) => (
-                      <span key={line}>
-                        {lineIndex > 0 ? <span className="kpi-seo-local-measure-br"> </span> : null}
-                        {line}
-                      </span>
-                    ))}
-                  </p>
-                  <ul className="kpi-seo-local-measure-metrics">
-                    {group.metrics.map((metric) => (
-                      <li key={metric}>
-                        <ThaiMeasureMetric id={metric} />
-                      </li>
-                    ))}
-                  </ul>
-                </article>
-              ))}
-            </div>
-            <p className="kpi-seo-local-measure-note">
-              <span>
-                เราไม่รับประกันอันดับบน <span className="kpi-latin">Google Maps</span>
-                <span className="kpi-seo-local-measure-br"> </span>
-                หรือการถูกอ้างอิงในคำตอบ <span className="kpi-latin">AI</span>
-              </span>
-              <span className="kpi-seo-local-measure-note-strong">
-                เป้าหมายคือทำให้ข้อมูลธุรกิจถูกต้อง ชัดเจน
-                <span className="kpi-seo-local-measure-br"> </span>
-                และช่วยให้เห็นว่าการค้นพบ
-                <span className="kpi-seo-local-measure-br"> </span>
-                พาลูกค้าไปสู่การติดต่อจริงอย่างไร
-              </span>
-            </p>
-          </>
-        ) : (
-          <>
-            <p className="kpi-seo-local-measure-fallback">{t.measureWeb}</p>
-            <p className="kpi-seo-local-measure-fallback">{t.measureMaps}</p>
-            <p className="kpi-seo-local-measure-note">{t.measureNote}</p>
-          </>
-        )}
+        <h2 className="kpi-h2">{cmsText(useCmsCopy, locale, cms?.measure.title, t.measureTitle)}</h2>
+        <p className="kpi-seo-local-measure-lead">
+          {cmsText(useCmsCopy, locale, cms?.measure.intro, locale === "th" ? HOTEL_SEO_KPI_COPY.intro.th : HOTEL_SEO_KPI_COPY.intro.en)}
+        </p>
+        <div className="kpi-seo-local-measure-visual">
+          <HotelSeoKpiVisual
+            locale={locale}
+            src={kpiSrc}
+            status={kpiSrc ? cms?.measure.visual.status || "sample" : "sample"}
+            alt={locale === "th" ? cms?.measure.visual.altTh : cms?.measure.visual.altEn}
+            label={cms?.measure.visual.label}
+            caption={cms?.measure.visual.caption}
+            chart={kpiChart ? { labels: kpiChart.labels, values: kpiChart.values } : undefined}
+          />
+        </div>
+        <HotelSeoKpiFramework locale={locale} overrides={useCmsCopy ? cms?.measure.kpis : undefined} />
+        <p className="kpi-seo-local-measure-note">
+          {cmsText(useCmsCopy, locale, cms?.measure.close, locale === "th" ? HOTEL_SEO_KPI_COPY.close.th : HOTEL_SEO_KPI_COPY.close.en)}
+        </p>
       </section>
 
       <section className="border-t border-[#E3E8EB] bg-white">
         <div className="kpi-section kpi-seo-local-related">
           <h2 className="kpi-h2">
-            {locale === "th" ? (
-              <>
-                <span className="kpi-seo-local-related-line">เรื่องที่เกี่ยวข้องกับการค้นหา</span>
-                <span className="kpi-seo-local-related-br"> </span>
-                <span className="kpi-seo-local-related-line">เว็บไซต์ และการจอง</span>
-              </>
-            ) : (
-              t.relatedTitle
-            )}
+            {cmsText(useCmsCopy, locale, cms?.related.title, locale === "th" ? "" : t.relatedTitle) ||
+              (locale === "th" ? (
+                <>
+                  <span className="kpi-seo-local-related-line">เรื่องที่เกี่ยวข้องกับการค้นหา</span>
+                  <span className="kpi-seo-local-related-br"> </span>
+                  <span className="kpi-seo-local-related-line">เว็บไซต์ และการจอง</span>
+                </>
+              ) : (
+                t.relatedTitle
+              ))}
           </h2>
           <div className="kpi-seo-local-related-layout">
-            {featuredInsight ? (
-              <article className="kpi-seo-local-related-featured">
-                <span className="kpi-seo-local-related-accent" aria-hidden="true" />
-                <p className="kpi-seo-local-related-kicker">
-                  {locale === "th" ? (
-                    <>
-                      <span className="kpi-latin">SEO</span> และ <span className="kpi-latin">LOCAL SEARCH</span>
-                    </>
-                  ) : (
-                    featuredInsight.category[locale]
-                  )}
-                </p>
-                <h3>
-                  {locale === "th" ? (
-                    <>
-                      <span className="kpi-latin">SEO vs SEM</span> สำหรับโรงแรม:
-                      <span className="kpi-seo-local-related-br"> </span>
-                      ควรเริ่มจากอะไรและเลือกอย่างไร?
-                    </>
-                  ) : (
-                    featuredInsight.title[locale]
-                  )}
-                </h3>
-                <Link
-                  href={existingHref(featuredInsight.href, locale) ?? featuredInsight.href}
-                  className="kpi-seo-local-related-cta"
-                >
-                  {insightsUi.read} <ArrowUpRight aria-hidden="true" />
-                </Link>
-              </article>
-            ) : null}
-            <div className="kpi-seo-local-related-stack">
-              <article>
-                <h3>{t.toolName}</h3>
-                <p>
-                  {locale === "th" ? (
-                    <>
-                      ดูว่าหน้าเว็บพร้อมให้ลูกค้าจาก <span className="kpi-latin">Search</span> หรือ{" "}
-                      <span className="kpi-latin">Maps</span>
-                      <span className="kpi-seo-local-related-br"> </span>
-                      หาข้อมูลและเดินทางไปสอบถามหรือจองต่อหรือไม่
-                    </>
-                  ) : (
-                    t.toolBody
-                  )}
-                </p>
-                <Link href="/tools/hotel-searchability-check" className="kpi-seo-local-related-cta">
-                  {t.toolCta} <ArrowUpRight aria-hidden="true" />
-                </Link>
-              </article>
-              <article>
-                <h3>
-                  {locale === "th" ? (
-                    <>
-                      สร้างลิงก์รีวิว <span className="kpi-latin">Google</span>
-                    </>
-                  ) : (
-                    t.reviewName
-                  )}
-                </h3>
-                <p>
-                  {locale === "th" ? (
-                    <>
-                      สร้างลิงก์ที่พาลูกค้าไปยังหน้าส่งรีวิว
-                      <span className="kpi-seo-local-related-br"> </span>
-                      เพื่อให้ขั้นตอนการขอรีวิวสะดวกและตรงจุดมากขึ้น
-                    </>
-                  ) : (
-                    t.reviewBody
-                  )}
-                </p>
-                <Link href="/tools/hotel-review-link" className="kpi-seo-local-related-cta">
-                  {t.reviewCta} <ArrowUpRight aria-hidden="true" />
-                </Link>
-              </article>
+            <div className="kpi-seo-local-related-visual">
+              <HotelSeoRelatedVisual locale={locale} src={relatedSrc} status={relatedSrc ? cms?.related.visual.status || "sample" : "sample"} />
             </div>
+            {relatedCards.length ? <HotelSeoRelatedCards locale={locale} cards={relatedCards} /> : null}
           </div>
         </div>
       </section>
 
-      <SeoLocalEnquiry locale={locale} />
-      <SeoLocalStickyCta label={t.cta} />
+      {gscRows?.length || listingRows?.length ? (
+        <section className="kpi-section kpi-seo-local-help">
+          <h2 className="kpi-h2">{cmsText(useCmsCopy, locale, cms?.consistency.title, locale === "th" ? "รายการตรวจความสอดคล้องของข้อมูล" : "Data consistency checklist")}</h2>
+          {cms?.consistency.note ? <p className="kpi-seo-local-measure-lead">{cms.consistency.note}</p> : null}
+          <div className="kpi-seo-local-help-boundary-grid">
+            {gscRows?.length ? (
+              <article>
+                <h3 className="kpi-latin">Search Console</h3>
+                <ul>
+                  {gscRows.map((row) => (
+                    <li key={row.id} className="kpi-latin kpi-seo-local-help-chip">
+                      {row.area}: {row.check}
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            ) : null}
+            {listingRows?.length ? (
+              <article>
+                <h3 className="kpi-latin">Local listing</h3>
+                <ul>
+                  {listingRows.map((row) => (
+                    <li key={row.id} className="kpi-latin kpi-seo-local-help-chip">
+                      {row.area}: {row.check}
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            ) : null}
+          </div>
+        </section>
+      ) : null}
+      <SeoLocalEnquiry locale={locale} helper={useCmsCopy ? cms?.form : undefined} teamPhotoSrc={formPhotoSrc} />
+      <PageFaqs items={faqItems} locale={locale} sectionId="hotel-seo-faq" />
+      <SeoLocalStickyCta label={heroCta} />
+    </>
+  );
+
+  if (embedded) return inner;
+  return (
+    <SiteShell locale={locale} route={localizePath("/solutions/hotel-seo-google-maps-ai-search", locale)} hideFaqs>
+      {inner}
     </SiteShell>
   );
 }

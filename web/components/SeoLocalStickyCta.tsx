@@ -33,7 +33,7 @@ export function SeoLocalStickyCta({ label }: { label: string }) {
   if (!visible) return null;
 
   return (
-    <div className="kpi-sticky-cta lg:hidden">
+    <div className="kpi-sticky-cta kpi-search-enquiry-sticky lg:hidden">
       <a href="#search-enquiry" className="kpi-button w-full">
         {label}
       </a>

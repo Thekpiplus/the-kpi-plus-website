@@ -15,6 +15,8 @@ import { parseReservationsPageBody, RESERVATIONS_CMS_TEMPLATE } from "@/lib/cms/
 import { parseB2bPageBody, B2B_CMS_TEMPLATE } from "@/lib/cms/b2b-page";
 import { parseGoogleAdsPageBody, GOOGLE_ADS_CMS_TEMPLATE } from "@/lib/cms/google-ads-page";
 import { parseMetaAdsPageBody, META_ADS_CMS_TEMPLATE } from "@/lib/cms/meta-ads-page";
+import { parseHotelSeoPageBody, HOTEL_SEO_CMS_TEMPLATE } from "@/lib/cms/hotel-seo-page";
+import { hotelSeoFaqs, hotelSeoFaqsAreStale } from "@/lib/hotel-seo";
 import { faqsForRoute, howToStepsForRoute } from "@/lib/faqs";
 import { pageKind } from "@/lib/page-types";
 import {
@@ -51,7 +53,8 @@ export async function SiteShell({
     stored?.template === RESERVATIONS_CMS_TEMPLATE ||
     stored?.template === B2B_CMS_TEMPLATE ||
     stored?.template === GOOGLE_ADS_CMS_TEMPLATE ||
-    stored?.template === META_ADS_CMS_TEMPLATE;
+    stored?.template === META_ADS_CMS_TEMPLATE ||
+    stored?.template === HOTEL_SEO_CMS_TEMPLATE;
   if (stored?.trashedAt) notFound();
   if (stored && !isCmsPageLive(stored) && !specialTemplate) notFound();
 
@@ -75,6 +78,13 @@ export async function SiteShell({
             ? parseGoogleAdsPageBody(cmsLive.body, locale)?.faqs.map(({ q, a }) => ({ q, a }))
             : cmsLive?.template === META_ADS_CMS_TEMPLATE
               ? parseMetaAdsPageBody(cmsLive.body, locale)?.faqs.map(({ q, a }) => ({ q, a }))
+              : cmsLive?.template === HOTEL_SEO_CMS_TEMPLATE
+                ? (() => {
+                    const mapped = parseHotelSeoPageBody(cmsLive.body, locale)?.faqs.map(({ q, a }) => ({ q, a })) ?? [];
+                    return mapped.length && !hotelSeoFaqsAreStale(mapped)
+                      ? mapped
+                      : hotelSeoFaqs(locale === "th" ? "th" : "en");
+                  })()
               : null;
   const faqs = kind === "article" ? [] : cmsFaqs?.length ? cmsFaqs : faqsForRoute(route);
   const faqJson = faqSchema(faqs);

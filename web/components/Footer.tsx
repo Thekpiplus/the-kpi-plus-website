@@ -83,7 +83,12 @@ export function Footer({
   const path = barePath(pathname);
   const isContact = path === "/contact-us";
   const isMetaAds = path === "/solutions/meta-ads-management";
-  const footerCtaHref = isMetaAds ? `${pathname.split("#")[0]}#meta-ads-enquiry` : auditHref(locale);
+  const isHotelSeo = path === "/solutions/hotel-seo-google-maps-ai-search";
+  const footerCtaHref = isMetaAds
+    ? `${pathname.split("#")[0]}#meta-ads-enquiry`
+    : isHotelSeo
+      ? `${pathname.split("#")[0]}#search-enquiry`
+      : auditHref(locale);
   const contact = contactInfoFromCompany(company, locale);
   const primaryPaths = new Set(["/approach", "/insights", "/case-studies", "/about-us", "/contact-us"]);
   const mainLinks = visiblePrimaryLinks(locale);

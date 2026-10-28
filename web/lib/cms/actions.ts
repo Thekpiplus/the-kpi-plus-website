@@ -41,6 +41,8 @@ import { GOOGLE_ADS_CMS_TEMPLATE, GOOGLE_ADS_PAGE_ROUTE, serializeGoogleAdsPageB
 import { defaultGoogleAdsCms } from "./google-ads-page-seed";
 import { META_ADS_CMS_TEMPLATE, META_ADS_PAGE_ROUTE, serializeMetaAdsPageBody } from "./meta-ads-page";
 import { defaultMetaAdsCms } from "./meta-ads-page-seed";
+import { HOTEL_SEO_CMS_TEMPLATE, HOTEL_SEO_PAGE_ROUTE, serializeHotelSeoPageBody } from "./hotel-seo-page";
+import { defaultHotelSeoCms } from "./hotel-seo-page-seed";
 
 async function requireCms() {
   const user = await requireUser();
@@ -257,6 +259,11 @@ export async function ensurePageFromSite(route: string) {
       const hydrated = await hydrateMetaAdsDocument(existing);
       return hydrated.id;
     }
+    if (normalized === HOTEL_SEO_PAGE_ROUTE) {
+      const { hydrateHotelSeoDocument } = await import("./hotel-seo-page-actions");
+      const hydrated = await hydrateHotelSeoDocument(existing);
+      return hydrated.id;
+    }
     return existing.id;
   }
 
@@ -276,6 +283,7 @@ export async function ensurePageFromSite(route: string) {
   const isB2b = normalized === B2B_PAGE_ROUTE;
   const isGoogleAds = normalized === GOOGLE_ADS_PAGE_ROUTE;
   const isMetaAds = normalized === META_ADS_PAGE_ROUTE;
+  const isHotelSeo = normalized === HOTEL_SEO_PAGE_ROUTE;
   const created = await db.cmsDocument.create({
     data: {
       kind: "page",
@@ -293,6 +301,8 @@ export async function ensurePageFromSite(route: string) {
               ? GOOGLE_ADS_CMS_TEMPLATE
               : isMetaAds
                 ? META_ADS_CMS_TEMPLATE
+                : isHotelSeo
+                  ? HOTEL_SEO_CMS_TEMPLATE
                 : "general",
       excerpt: sitePage.description || "",
       body: isRevenue
@@ -305,6 +315,8 @@ export async function ensurePageFromSite(route: string) {
               ? serializeGoogleAdsPageBody(defaultGoogleAdsCms("th"))
               : isMetaAds
                 ? serializeMetaAdsPageBody(defaultMetaAdsCms("th"))
+                : isHotelSeo
+                  ? serializeHotelSeoPageBody(defaultHotelSeoCms("th"))
                 : bodyFromMarkdown(markdown),
       tags: "",
       seoTitle: sitePage.title,
