@@ -1,5 +1,6 @@
 import { adsFaqs } from "@/lib/google-ads";
 import { hotelSeoFaqs } from "@/lib/hotel-seo";
+import { hotelWebsiteFaqs } from "@/lib/hotel-website";
 import { metaFaqs } from "@/lib/meta-ads";
 
 export type FaqItem = { q: string; a: string };
@@ -1073,94 +1074,10 @@ const table: Record<string, FaqItem[]> = {
   "/en/solutions/hotel-seo-google-maps-ai-search": hotelSeoFaqs("en"),
   "/ru/solutions/hotel-seo-google-maps-ai-search": hotelSeoFaqs("en"),
   "/zh/solutions/hotel-seo-google-maps-ai-search": hotelSeoFaqs("en"),
-  "/solutions/hotel-website-design": [
-    {
-      q: "ต้องใช้ WordPress เท่านั้นไหม?",
-      a: "ไม่จำเป็น เราพิจารณา CMS และวิธีพัฒนาตามความต้องการของโรงแรม ระบบที่ต้องเชื่อม และคนที่จะดูแลเว็บไซต์ต่อ",
-    },
-    {
-      q: "ทีมโรงแรมแก้เนื้อหาเองได้ไหม?",
-      a: "ได้ หากเป็นสิ่งที่โรงแรมต้องการ เราจะนำเรื่องนี้ไปประกอบการเลือก CMS และออกแบบส่วนที่ทีมต้องอัปเดตบ่อย เช่น ภาพ ข้อความ และโปรโมชั่น",
-    },
-    {
-      q: "มีเว็บไซต์แล้วจำเป็นต้องสร้างใหม่ไหม?",
-      a: "ไม่เสมอไป ทีมจะตรวจเว็บเดิมก่อน หากโครงสร้างและระบบยังรองรับเป้าหมาย การปรับปรุงบางหน้าก็อาจเพียงพอ",
-    },
-    {
-      q: "ต้องเตรียมภาพใหม่ทั้งหมดหรือไม่?",
-      a: "ไม่จำเป็นต้องถ่ายใหม่ทั้งหมด เราจะดูภาพที่มีอยู่ก่อนว่าแสดงโรงแรมตามจริงและช่วยให้ลูกค้าเข้าใจห้องพักและประสบการณ์เข้าพักได้หรือไม่",
-    },
-    {
-      q: "ทำเว็บไซต์แล้วจะได้ยอดจองตรงทันทีไหม?",
-      a: "เว็บไซต์ช่วยให้ลูกค้าเข้าใจโรงแรมและจองได้สะดวกขึ้น แต่ยอดจองยังขึ้นกับจำนวนคนเข้าชม ราคา ห้องว่าง ข้อเสนอ และระบบจอง เราจึงวางเว็บไซต์ให้ทำงานร่วมกับแผนรายได้และช่องทางขายของโรงแรม",
-    },
-  ],
-  "/en/solutions/hotel-website-design": [
-    {
-      q: "Do we have to use WordPress?",
-      a: "No. We review the CMS and the way to build the site from the hotel’s needs, the systems that must connect, and who will look after the website afterwards.",
-    },
-    {
-      q: "Can the hotel team update the content themselves?",
-      a: "Yes, if that is what the hotel wants. We use this when choosing a CMS and when designing the parts the team will update often, such as photos, copy, and offers.",
-    },
-    {
-      q: "If we already have a website, do we have to rebuild it?",
-      a: "Not always. The team reviews the current site first. If the structure and systems still support the goal, improving some pages may be enough.",
-    },
-    {
-      q: "Do we need a full new set of photos?",
-      a: "Not always. We first look at the photos you already have, and whether they show the hotel as it is and help guests understand the rooms and the stay.",
-    },
-    {
-      q: "Will a new website bring direct bookings immediately?",
-      a: "A website can help guests understand the hotel and book more easily. Bookings still depend on how many people visit, the rate, availability, the offer, and the booking system. We plan the site to work with the hotel’s revenue plan and other sales channels.",
-    },
-  ],
-  "/ru/solutions/hotel-website-design": [
-    {
-      q: "Нужно ли использовать только WordPress?",
-      a: "Нет. Мы смотрим CMS и способ разработки по потребности отеля, системам, которые нужно связать, и тому, кто будет вести сайт дальше.",
-    },
-    {
-      q: "Может ли команда отеля сама менять контент?",
-      a: "Да, если отелю это нужно. Мы учитываем это при выборе CMS и при проектировании частей, которые команда будет часто обновлять: фото, тексты и акции.",
-    },
-    {
-      q: "Если сайт уже есть, его обязательно делать заново?",
-      a: "Не всегда. Команда сначала смотрит текущий сайт. Если структура и системы ещё поддерживают цель, может хватить доработки отдельных страниц.",
-    },
-    {
-      q: "Нужно ли снимать все фото заново?",
-      a: "Не обязательно. Сначала смотрим уже имеющиеся фото: показывают ли они отель как есть и помогают ли гостю понять номера и пребывание.",
-    },
-    {
-      q: "Новый сайт сразу даст прямые брони?",
-      a: "Сайт помогает гостю понять отель и проще забронировать. Брони по-прежнему зависят от числа визитов, цены, наличия номеров, предложения и системы брони. Поэтому сайт планируем вместе с планом дохода и другими каналами продаж отеля.",
-    },
-  ],
-  "/zh/solutions/hotel-website-design": [
-    {
-      q: "一定只能用 WordPress 嗎？",
-      a: "不必。我們依飯店需求、要串接的系統，以及之後誰照顧網站，來考慮 CMS 與開發方式。",
-    },
-    {
-      q: "飯店團隊可以自己改內容嗎？",
-      a: "可以，若這是飯店需要的。我們會把這一點納入 CMS 選擇，並設計團隊常要更新的部分，例如照片、文字與促銷。",
-    },
-    {
-      q: "已經有網站，一定要重做嗎？",
-      a: "不一定。團隊會先看現有網站。若結構與系統仍能支援目標，調整部分頁面可能就夠。",
-    },
-    {
-      q: "一定要全部重拍照片嗎？",
-      a: "不必全部重拍。我們會先看現有照片，是否真實呈現飯店，並幫助客人理解客房與入住體驗。",
-    },
-    {
-      q: "做了網站就會立刻有直銷預訂嗎？",
-      a: "網站能幫助客人理解飯店、也較容易預訂。但預訂量仍取決於造訪人數、價格、空房、方案與預訂系統。因此我們會把網站放進飯店的收益計畫與其他銷售通路一起規劃。",
-    },
-  ],
+  "/solutions/hotel-website-design": hotelWebsiteFaqs("th"),
+  "/en/solutions/hotel-website-design": hotelWebsiteFaqs("en"),
+  "/ru/solutions/hotel-website-design": hotelWebsiteFaqs("en"),
+  "/zh/solutions/hotel-website-design": hotelWebsiteFaqs("en"),
   "/solutions/hotel-direct-bookings": [
     {
       q: "ต้องออกแบบเว็บไซต์ใหม่ก่อนหรือไม่?",

@@ -2,50 +2,45 @@ import Link from "next/link";
 import { SiteShell } from "@/components/SiteShell";
 import { WebsiteEnquiry } from "@/components/WebsiteEnquiry";
 import { WebsiteStickyCta } from "@/components/WebsiteStickyCta";
+import { WebsiteCmsStack } from "@/components/hotel-website/WebsiteCmsStack";
+import { WebsiteConfidenceVisual } from "@/components/hotel-website/WebsiteConfidenceVisual";
+import { WebsiteDecision } from "@/components/hotel-website/WebsiteDecision";
+import { WebsiteHeroVisual } from "@/components/hotel-website/WebsiteHeroVisual";
+import { WebsiteMeasure } from "@/components/hotel-website/WebsiteMeasure";
+import { WebsiteFramework } from "@/components/hotel-website/WebsiteFramework";
+import { WebsiteReadinessChecklist } from "@/components/hotel-website/WebsiteReadinessChecklist";
+import { PageFaqs } from "@/components/PageFaqs";
+import { WebsiteRelated } from "@/components/hotel-website/WebsiteRelated";
+import { WebsiteWorkflow } from "@/components/hotel-website/WebsiteWorkflow";
+import "@/components/hotel-website/hotel-website-visuals.css";
+import type { CmsHotelWebsitePage } from "@/lib/cms/hotel-website-page";
+import {
+  loadHotelWebsitePage,
+  websiteCmsStackVisualUrl,
+  websiteConfidenceVisualUrl,
+  websiteDecisionVisualUrl,
+  websiteFrameworkVisualUrl,
+  websiteHeroVisualUrl,
+  websiteKpiVisualUrl,
+  hotelWebsiteFaqsFromCms,
+  websiteRelatedVisualUrl,
+  websiteWorkflowVisualUrl,
+} from "@/lib/cms/hotel-website-page-public";
+import {
+  WEBSITE_CMS_STACK_VISUAL_CANDIDATE,
+  WEBSITE_CONFIDENCE_PATH,
+  WEBSITE_CONFIDENCE_VISUAL,
+  WEBSITE_CONFIDENCE_VISUAL_CANDIDATE,
+  WEBSITE_DECISION_VISUAL_CANDIDATE,
+  WEBSITE_FRAMEWORK_VISUAL_CANDIDATE,
+  WEBSITE_HERO_CAPABILITIES,
+  WEBSITE_HERO_VISUAL_CANDIDATE,
+  WEBSITE_KPI_VISUAL_CANDIDATE,
+  WEBSITE_SOURCES,
+  WEBSITE_WORKFLOW_VISUAL_CANDIDATE,
+} from "@/lib/hotel-website";
 import { solutionNavLabel } from "@/lib/nav";
-import { existingHref, localizePath, type Locale } from "@/lib/seo";
-
-const googleIpsos = "https://business.google.com/in/think/consumer-insights/insights-apac-traveler-behaviors/";
-const thaiStudy = "https://so03.tci-thaijo.org/index.php/art/article/view/288881";
-
-const thaiQuestions = [
-  {
-    num: "01",
-    title: "ห้องพักชัดพอไหม?",
-    em: "ห้องพัก",
-    lines: ["ห้องแต่ละประเภทต่างกันอย่างไร", "และภาพตรงกับประสบการณ์จริงหรือไม่?"],
-  },
-  {
-    num: "02",
-    title: "ลูกค้าเข้าใจทำเลไหม?",
-    em: "ทำเล",
-    lines: ["โรงแรมอยู่ตรงไหน เดินทางอย่างไร", "และใกล้อะไรที่สำคัญ?"],
-  },
-  {
-    num: "03",
-    title: "ราคาและเงื่อนไขชัดไหม?",
-    em: "ราคาและเงื่อนไข",
-    lines: ["ลูกค้าเข้าใจว่าราคานี้รวมอะไร", "และมีเงื่อนไขการยกเลิกอย่างไร?"],
-  },
-  {
-    num: "04",
-    title: "ติดต่อหรือจองต่อได้ง่ายไหม?",
-    em: "ติดต่อหรือจอง",
-    lines: ["ลูกค้าหาปุ่มจอง ช่องทางติดต่อ", "หรือข้อมูลที่ต้องการได้ทันทีหรือไม่?"],
-  },
-  {
-    num: "05",
-    title: "เส้นทางไปสู่การจองลื่นไหม?",
-    em: "ระบบจอง",
-    lines: ["เมื่อกดจองแล้ว ระบบจองชัดเจน", "ใช้งานง่าย และไม่ทำให้ลูกค้าหลุดหรือไม่?"],
-  },
-  {
-    num: "06",
-    title: "ทีมโรงแรมดูแลต่อเองได้ไหม?",
-    em: "ดูแลต่อเอง",
-    lines: ["ทีมสามารถแก้ข้อมูลห้องพัก", "โปรโมชั่น ราคา และภาพ", "ได้สะดวกแค่ไหน?"],
-  },
-] as const;
+import { existingHref, localizePath, solutionsIndexHref, type Locale } from "@/lib/seo";
 
 function emphasizePhrase(text: string, em: string, className = "kpi-website-questions-em") {
   const index = text.indexOf(em);
@@ -59,235 +54,26 @@ function emphasizePhrase(text: string, em: string, className = "kpi-website-ques
   );
 }
 
-const thaiHelpSteps = [
-  {
-    num: "01",
-    title: "วางเว็บไซต์จากมุมมองของผู้เข้าพัก",
-    em: "มุมมองของผู้เข้าพัก",
-    lines: [
-      "จัดหน้าและลำดับข้อมูลให้ลูกค้าเข้าใจ",
-      "โรงแรม ห้องพัก ทำเล สิ่งอำนวยความสะดวก",
-      "โปรโมชั่น และวิธีจองได้ง่าย",
-    ],
-  },
-  {
-    num: "02",
-    title: "เล่าเรื่องโรงแรมด้วยข้อมูลและภาพจริง",
-    em: "ข้อมูลและภาพจริง",
-    lines: ["พัฒนาเนื้อหาที่แสดงจุดเด่นโดยไม่เกินจริง", "พร้อมวางรายการภาพที่มีอยู่", "และภาพที่ควรถ่ายเพิ่ม"],
-  },
-  {
-    num: "03",
-    title: "ออกแบบให้ใช้งานง่ายบนมือถือ",
-    em: "ใช้งานง่ายบนมือถือ",
-    lines: [
-      "ดูทั้งการอ่าน การนำทาง ความเร็วของหน้า",
-      "ปุ่มติดต่อ และเส้นทางไปหน้าจอง",
-      "บนอุปกรณ์ที่ลูกค้าใช้งานจริง",
-    ],
-  },
-  {
-    num: "04",
-    title: "เชื่อมระบบจองและการวัดผล",
-    em: "ระบบจองและการวัดผล",
-    lines: [
-      "ตรวจว่าหน้าห้องพักและข้อเสนอ",
-      "พาลูกค้าไปยัง Booking Engine ได้ชัด",
-      "พร้อมตั้งค่าการติดตามความสนใจ",
-      "และการจองที่ตรวจสอบได้",
-    ],
-  },
-  {
-    num: "05",
-    title: "ทำให้ทีมโรงแรมดูแลเว็บต่อได้",
-    em: "ดูแลเว็บต่อได้",
-    lines: [
-      "เลือกวิธีจัดการเนื้อหา",
-      "ให้เหมาะกับคนที่ใช้งานจริง",
-    ],
-    linesAfter: [
-      "หากทีมต้องอัปเดตรูป ข้อความ",
-      "หรือโปรโมชั่นเอง",
-      "เว็บไซต์ควรมีขั้นตอนแก้ไขที่เข้าใจง่าย",
-      "และกำหนดสิทธิ์ได้เหมาะสม",
-    ],
-  },
-] as const;
-
-const tools = [
-  { name: "WordPress", src: "/brand/tools/wordpress.webp", mark: "plain", kind: "cms" },
-  { name: "Cursor", src: "/brand/tools/cursor.png", mark: "plain", kind: "dev" },
-  { name: "Claude", src: "/brand/tools/claude.png", mark: "wordmark", kind: "dev" },
-  { name: "Manus", src: "/brand/tools/manus.png", mark: "tile", kind: "dev" },
-] as const;
-
-const thaiCmsSteps = [
-  {
-    num: "01",
-    label: "CMS & USERS",
-    title: "เลือก CMS จากคนที่จะใช้งานจริง",
-    lines: [
-      "ดูว่าทีมโรงแรมต้องแก้อะไรบ่อยแค่ไหน",
-      "ใครเป็นคนดูแล",
-      "และเว็บไซต์ต้องเชื่อมกับระบบอะไรบ้าง",
-    ],
-  },
-  {
-    num: "02",
-    label: "TECHNOLOGY FIT",
-    title: "เลือกเทคโนโลยีให้เหมาะกับความซับซ้อน",
-    lines: [
-      "WordPress อาจเหมาะกับเว็บไซต์",
-      "ที่ทีมต้องแก้เนื้อหาเองเป็นประจำ",
-      "ส่วนเว็บไซต์ที่มี requirement เฉพาะ",
-      "ควรเลือก CMS หรือแนวทางพัฒนา",
-      "ให้เหมาะกับงานจริง",
-    ],
-  },
-  {
-    num: "03",
-    label: "DEVELOPMENT TOOLS",
-    title: "เครื่องมือพัฒนาควรช่วยทีม ไม่เพิ่มภาระให้โรงแรม",
-    lines: [
-      "ทีมพัฒนาอาจใช้ Cursor, Claude หรือ Manus",
-      "เพื่อช่วยจัดการงานและทำต้นแบบ",
-      "แต่เว็บไซต์ที่ส่งมอบ",
-      "ต้องใช้งานง่าย ดูแลต่อได้",
-      "และไม่บังคับให้ทีมโรงแรม",
-      "ต้องเรียนรู้เครื่องมือเหล่านี้",
-    ],
-  },
-] as const;
-
-function withLatinTools(text: string) {
-  const parts = text.split(
-    /(WordPress|Cursor|Claude|Manus|CMS|requirement|Booking Engine|SEO|Tracking|Mobile UX|Mobile|Links|Forms)/g,
-  );
-  return parts.map((part, index) =>
-    /^(WordPress|Cursor|Claude|Manus|CMS|requirement|Booking Engine|SEO|Tracking|Mobile UX|Mobile|Links|Forms)$/.test(
-      part,
-    ) ? (
-      <span key={`${part}-${index}`} className="kpi-latin">
-        {part}
-      </span>
-    ) : (
-      part
-    ),
-  );
-}
-
-const thaiMeasureGroups = [
-  {
-    num: "01",
-    title: "Landing Page Engagement",
-    em: "Landing Page",
-    lines: ["ดูว่าลูกค้าเข้าหน้าห้องพัก", "โปรโมชั่น หรือหน้าที่สำคัญจริงหรือไม่"],
-  },
-  {
-    num: "02",
-    title: "Mobile Experience",
-    em: "Mobile",
-    lines: ["ดูพฤติกรรมบนมือถือ", "เพราะเป็นอุปกรณ์หลักที่ลูกค้าใช้ค้นหา", "และเดินทางไปสู่การจอง"],
-  },
-  {
-    num: "03",
-    title: "Contact & Booking Intent",
-    em: "",
-    lines: ["ดูการกดโทร แชต ปุ่มจอง", "หรือการเข้าสู่ Booking Engine"],
-  },
-  {
-    num: "04",
-    title: "Booking Outcome",
-    em: "Booking Outcome",
-    lines: ["หาก Booking Engine", "สามารถส่งข้อมูลกลับมาได้"],
-    linesAfter: ["จึงดูต่อถึงการจองสำเร็จ", "และมูลค่าที่ตรวจสอบได้"],
-  },
-] as const;
-
-const thaiMethodSteps = [
-  {
-    num: "01",
-    label: "DISCOVER",
-    title: "เข้าใจโรงแรม",
-    lines: ["ดูกลุ่มลูกค้า ห้องพัก จุดเด่น", "เว็บไซต์เดิม และระบบจอง"],
-  },
-  {
-    num: "02",
-    label: "STRUCTURE",
-    title: "วางโครงสร้าง",
-    lines: ["กำหนดหน้าที่จำเป็น ข้อมูลที่ลูกค้าต้องเห็น", "และเส้นทางจากการค้นพบไปสู่การติดต่อหรือจอง"],
-  },
-  {
-    num: "03",
-    label: "SELECT",
-    title: "เลือกวิธีพัฒนา",
-    lines: ["เลือก CMS และวิธีเชื่อมต่อ", "ให้เหมาะกับทีม ระบบ และการดูแลระยะยาว"],
-  },
-  {
-    num: "04",
-    label: "BUILD",
-    title: "ออกแบบและพัฒนา",
-    lines: ["ทำงานร่วมกับโรงแรมเพื่อยืนยันภาพ ข้อความ", "ราคา เงื่อนไข และประสบการณ์ใช้งาน"],
-  },
-  {
-    num: "05",
-    label: "HANDOVER",
-    title: "ตรวจและส่งมอบ",
-    lines: ["ทดสอบ Mobile, Links, Booking Engine,", "Forms และ Tracking"],
-    linesAfter: ["พร้อมเตรียมทีมให้ดูแลเนื้อหาต่อได้หลังเปิดใช้งาน"],
-  },
-] as const;
-
-const thaiToolsCopy = [
-  "เราเลือกเครื่องมือตามงาน ไม่ยึดติดกับแพลตฟอร์มใดแพลตฟอร์มหนึ่ง",
-  "WordPress อาจใช้เป็น CMS ส่วน Cursor, Claude หรือ Manus อาจช่วยในขั้นตอนวางแผน พัฒนา หรือจัดการงานเบื้องหลัง",
-  "สิ่งที่โรงแรมได้รับต้องยังคงใช้งานง่าย ดูแลต่อได้ และไม่ผูกกับเครื่องมือเหล่านี้",
-] as const;
-
-const thaiNewDecision = [
-  {
-    key: "improve",
-    title: "ปรับเว็บไซต์เดิม",
-    support: ["เหมาะเมื่อระบบพื้นฐานยังดี", "แต่ต้องปรับประสบการณ์และข้อมูลให้ชัดขึ้น"],
-    points: [
-      "ทีมยังแก้ไขเนื้อหาได้สะดวก",
-      "เว็บไซต์บนมือถือยังใช้งานได้ดี",
-      "เชื่อม Booking Engine ได้",
-      "โครงสร้างยังรองรับ SEO และ Tracking",
-      "ปัญหาหลักอยู่ที่เนื้อหา ภาพ หรือเส้นทางจอง",
-    ],
-  },
-  {
-    key: "rebuild",
-    title: "สร้างเว็บไซต์ใหม่",
-    support: ["เหมาะเมื่อข้อจำกัดของระบบเดิม", "เริ่มขัดขวางการขายและการดูแลเว็บไซต์"],
-    points: [
-      "ระบบเดิมแก้ไขยากหรือพึ่งผู้พัฒนามากเกินไป",
-      "Mobile UX มีปัญหา",
-      "โครงสร้างไม่รองรับห้องพัก โปรโมชั่น หรือหลายภาษาได้ดี",
-      "เชื่อม Booking Engine หรือการวัดผลได้จำกัด",
-      "การแก้ต่อมีต้นทุนสูงกว่าการวางระบบใหม่",
-    ],
-  },
-] as const;
-
 const copy = {
   th: {
     crumb: "โซลูชัน",
     eyebrow: "Hotel Website & Direct Booking",
     title: "เว็บไซต์ที่ทำให้ลูกค้ามั่นใจก่อนจอง และทีมโรงแรมใช้งานต่อได้จริง",
-    lead: "ลูกค้าอาจพบโรงแรมจาก OTA, Google Maps หรือโซเชียลมีเดีย ก่อนกลับมาดูเว็บไซต์เพื่อเช็กห้องพัก ทำเล ราคา และเงื่อนไขอีกครั้งก่อนตัดสินใจ เว็บไซต์จึงต้องตอบคำถามสำคัญได้ชัด และพาลูกค้าไปสู่การติดต่อหรือจองได้ง่าย",
+    lead: "ลูกค้าควรเข้าใจโรงแรม ห้องพัก ข้อเสนอ เงื่อนไข และทำเลได้ก่อนจอง เว็บไซต์จึงต้องพาจากจุดที่พบโรงแรมไปสู่การจองตรงได้ชัด และทีมโรงแรมแก้เนื้อหาต่อได้หลังส่งมอบ",
     leadClose:
-      "The KPI Plus ช่วยวางโครงสร้าง ออกแบบ และพัฒนาเว็บไซต์ให้เชื่อมกับเป้าหมายด้านรายได้และ Direct Booking เลือก CMS หรือแนวทางพัฒนาตามสิ่งที่โรงแรมต้องใช้จริง ไม่ยึดติดกับเครื่องมือเดียว",
-    cta: "ดูโอกาสเพิ่ม Direct Booking",
+      "The KPI Plus ช่วยออกแบบและพัฒนาเว็บไซต์ให้รองรับการใช้งานจริงด้าน Responsive, CMS, Booking Engine และการวัดผล ตามความสามารถที่โรงแรมต้องใช้",
+    cta: "ขอให้ทีมรีวิวเว็บไซต์โรงแรม",
     secondary: "ดูโซลูชันทั้งหมด",
-    underCta: "ส่งชื่อโรงแรม ลิงก์เว็บไซต์เดิม และสิ่งที่อยากปรับ",
-    photoAlt: "แล็ปท็อปในโรงแรมแสดงหน้าเว็บห้องพักพร้อมปุ่มจองตรง",
+    underCta: "Responsive · CMS-ready · Booking Engine-ready · Measurement-ready",
+    photoAlt: "ตัวอย่างเว็บไซต์โรงแรมและเส้นทางจองตรง แสดงเดสก์ท็อป มือถือ และลำดับ Home ห้องพัก ข้อเสนอ ไปสู่ระบบจอง ไม่ใช่เว็บไซต์ลูกค้าจริง",
     whyTitle: "ทำไมเว็บไซต์ทางการจึงช่วยสร้างความมั่นใจ?",
     whyBody:
-      "งานสำรวจผู้เดินทางในหลายประเทศเอเชียแปซิฟิก รวมประเทศไทย พบว่า มากกว่า 3 ใน 5 ของผู้ตอบในแต่ละตลาดต้องมั่นใจก่อนจอง และมากกว่าครึ่งตรวจสอบข้อมูลการเดินทางจากแหล่งอื่นเพิ่มเติม เว็บไซต์ทางการจึงเป็นที่ที่โรงแรมควรให้ข้อมูลห้องพักและเงื่อนไขที่ชัดเจน ตรวจสอบได้ และตรงกับช่องทางอื่น",
+      "ต้องการข้อมูลและเงื่อนไขที่ชัดเจนจากแหล่งเพิ่มเติมก่อนตัดสินใจจอง",
     whyStudy:
-      "งานวิจัยในประเทศไทยปี 2025 กับผู้ตอบ 510 คน ยังพบว่าราคาและเงื่อนไขการยกเลิกมีผลร่วมกันต่อความตั้งใจจอง เว็บไซต์จึงควรช่วยให้ลูกค้าเข้าใจทั้งสิ่งที่จะได้รับ ราคา และเงื่อนไขก่อนกดจอง",
+      "ราคาและเงื่อนไขการยกเลิกมีผลร่วมกันต่อความตั้งใจจอง เว็บไซต์ทางการควรช่วยให้ลูกค้าเห็นรายละเอียดห้องพัก ข้อเสนอ นโยบาย และเส้นทางจองตรงก่อนตัดสินใจ",
+    whyContext:
+      "ตัวเลขนี้เป็นบริบทจากงานวิจัย ไม่ใช่ผลลัพธ์ที่บริการนี้รับประกัน และไม่ได้แปลว่าเว็บไซต์เพียงอย่างเดียวทำให้เกิดการจองหรือการยกเลิกตามที่รายงาน",
+    whyFlowTitle: "ลำดับที่ลูกค้าใช้ตัดสินใจก่อนจอง",
     sourceLabel: "ที่มา",
     sourceGoogle: "Google/Ipsos – พฤติกรรมผู้เดินทางในเอเชียแปซิฟิก",
     sourceThai: "งานวิจัยเรื่องราคาและเงื่อนไขการยกเลิกในการจองโรงแรมออนไลน์ในไทย",
@@ -332,8 +118,8 @@ const copy = {
     cmsExample: "ตัวอย่าง CMS",
     devAid: "เครื่องมือช่วยพัฒนา",
     measureTitle: "เราวัดผลอะไร?",
-    measureBody: "เราดูการเข้าชมหน้าสำคัญ การใช้งานบนมือถือ การกดติดต่อ และการคลิกเข้าสู่ระบบจอง หาก Booking Engine ส่งข้อมูลกลับมาได้ จึงดูการจองสำเร็จร่วมด้วย",
-    measureNote: "การคลิกปุ่มจองไม่เท่ากับการจองสำเร็จ ทีมจะระบุให้ชัดว่าระบบของโรงแรมติดตามผลได้ถึงขั้นใด",
+    measureBody: "เราดู Engagement, Mobile, Contact Intent และ Booking Outcome การคลิกจองยังไม่ใช่การจองสำเร็จ",
+    measureNote: "Booking Outcome จะแสดงได้เมื่อ Booking Engine และ Tracking Event เชื่อมต่อและได้รับอนุญาตให้ใช้ข้อมูล",
     relatedTitle: "เรื่องที่เกี่ยวข้องกับเว็บไซต์ การค้นหา และการจองตรง",
     details: "ดูรายละเอียด",
     toolName: "ตรวจสุขภาพการค้นหาเว็บไซต์",
@@ -346,18 +132,21 @@ const copy = {
     crumb: "Solutions",
     eyebrow: "Hotel Website Design",
     title: "A website that helps guests feel sure before they book, and that the hotel team can keep using",
-    lead: "A guest may find the hotel on an OTA, Google Maps, or social media, then open the official website to check the rooms, the location, the rate, and the conditions again. A useful website shows the hotel clearly, answers the important questions, and makes it easy to enquire or book.",
+    lead: "Guests should understand the hotel, rooms, offers, policies, and location before they book. The website can guide them from discovery to a direct booking, and the hotel team can keep updating content after handover.",
     leadClose:
-      "The KPI Plus helps plan, design, and build the website so it connects to the hotel’s revenue and direct-booking goal. We choose a CMS or a development approach from what the hotel needs, not from a single tool.",
+      "The KPI Plus designs and builds the website so it can stay responsive, CMS-ready, booking-engine-ready, and measurement-ready when those capabilities are part of the brief.",
     cta: "Ask the team to review the hotel website",
     secondary: "All solutions",
-    underCta: "Send the hotel name, the current website, and what you want to change.",
-    photoAlt: "A guest opening a hotel website on a phone to check rooms before booking",
+    underCta: "Responsive · CMS-ready · Booking Engine-ready · Measurement-ready",
+    photoAlt: "Sample hotel website and direct booking flow showing desktop, mobile, and Home to Room, Offer, then Booking Engine — not a live client site",
     whyTitle: "Why does an official website help guests feel sure?",
     whyBody:
-      "A traveller study across several Asia-Pacific markets, including Thailand, found that more than three in five respondents in each market need to feel sure before they book, and more than half check travel details from another source. The official website is where the hotel should give clear, checkable room and condition facts that match other channels.",
+      "need to feel sure before they book, and more than half check travel details from another source.",
     whyStudy:
-      "A 2025 study in Thailand with 510 respondents also found that price and cancellation terms together affect booking intention. The website should help the guest understand what they will get, the rate, and the conditions before they book.",
+      "Price and cancellation terms together affect booking intention. The official website should show room details, the offer, policy, and a direct-booking path before the guest decides.",
+    whyContext:
+      "These figures are research context, not a result this service guarantees. They do not mean a website alone caused the reported booking or cancellation outcome.",
+    whyFlowTitle: "The path guests use before they book",
     sourceLabel: "Source",
     sourceGoogle: "Google/Ipsos – Asia-Pacific traveller behaviour",
     sourceThai: "Research on price and cancellation terms in online hotel booking in Thailand",
@@ -402,8 +191,8 @@ const copy = {
     cmsExample: "CMS example",
     devAid: "Development aid",
     measureTitle: "What do we measure?",
-    measureBody: "We look at visits to key pages, use on a phone, contact clicks, and clicks into the booking system. If the booking engine can send data back, we also review completed bookings.",
-    measureNote: "A click on Book is not a completed booking. The team will say clearly how far the hotel’s systems can track the result.",
+    measureBody: "We look at Engagement, Mobile, Contact Intent, and Booking Outcome. A Book click is not a completed booking.",
+    measureNote: "Booking Outcome is shown only when the Booking Engine and tracking events are connected and approved for use.",
     relatedTitle: "Related reading on the website, search, and direct booking",
     details: "Read more",
     toolName: "Hotel searchability check",
@@ -422,12 +211,15 @@ const copy = {
     cta: "Попросить команду посмотреть сайт отеля",
     secondary: "Все решения",
     underCta: "Отправьте название отеля, текущий сайт и что хотите изменить.",
-    photoAlt: "Гость открывает сайт отеля на телефоне, чтобы посмотреть номера перед бронью",
+    photoAlt: "Sample hotel website and direct booking flow showing desktop, mobile, and Home to Room, Offer, then Booking Engine — not a live client site",
     whyTitle: "Почему официальный сайт помогает гостю чувствовать уверенность?",
     whyBody:
       "Исследование путешественников в нескольких рынках Азиатско-Тихоокеанского региона, включая Таиланд, показало: больше трёх из пяти респондентов на каждом рынке хотят уверенности перед бронью, и больше половины дополнительно проверяют данные о поездке из другого источника. Официальный сайт — место, где отель должен дать ясные, проверяемые факты о номерах и условиях, совпадающие с другими каналами.",
     whyStudy:
       "Исследование 2025 года в Таиланде среди 510 респондентов также показало, что цена и условия отмены вместе влияют на намерение забронировать. Сайт должен помочь гостю понять, что он получит, какова цена и какие условия, до нажатия «забронировать».",
+    whyContext:
+      "These figures are research context, not a result this service guarantees. They do not mean a website alone caused the reported booking or cancellation outcome.",
+    whyFlowTitle: "The path guests use before they book",
     sourceLabel: "Источник",
     sourceGoogle: "Google/Ipsos – поведение путешественников в Азиатско-Тихоокеанском регионе",
     sourceThai: "Исследование цены и условий отмены при онлайн-бронировании отелей в Таиланде",
@@ -492,12 +284,15 @@ const copy = {
     cta: "請團隊查看飯店網站",
     secondary: "查看全部方案",
     underCta: "留下飯店名稱、現有網站，以及想調整的地方。",
-    photoAlt: "客人用手機打開飯店網站，在預訂前查看客房",
+    photoAlt: "Sample hotel website and direct booking flow showing desktop, mobile, and Home to Room, Offer, then Booking Engine — not a live client site",
     whyTitle: "為什麼官方網站能幫助客人更有把握？",
     whyBody:
       "一項涵蓋多個亞太市場、包括泰國的旅客調查發現，各市場超過五分之三的受訪者預訂前需要感到有把握，超過一半會再從其他來源核對行程資料。官方網站因此應提供清楚、可核對、並與其他通路一致的客房與條件資訊。",
     whyStudy:
       "2025 年泰國一項 510 人的研究也發現，價格與取消條件會共同影響預訂意向。網站應幫助客人在按下預訂前，理解將得到什麼、價格如何，以及條件是什麼。",
+    whyContext:
+      "These figures are research context, not a result this service guarantees. They do not mean a website alone caused the reported booking or cancellation outcome.",
+    whyFlowTitle: "The path guests use before they book",
     sourceLabel: "來源",
     sourceGoogle: "Google/Ipsos – 亞太旅客行為",
     sourceThai: "泰國線上飯店預訂之價格與取消條件研究",
@@ -554,14 +349,168 @@ const copy = {
   },
 } as const;
 
-export function WebsiteView({ locale }: { locale: Locale }) {
+export async function WebsiteView({
+  locale,
+  previewContent,
+  embedded,
+}: {
+  locale: Locale;
+  previewContent?: CmsHotelWebsitePage;
+  embedded?: boolean;
+}) {
   const t = copy[locale];
-  const solutions = localizePath("/solutions", locale);
-  const conversionHref = existingHref("/solutions/hotel-direct-bookings", locale);
-  const toolHref = existingHref("/tools/hotel-searchability-check", locale);
-
-  return (
-    <SiteShell locale={locale} route={localizePath("/solutions/hotel-website-design", locale)}>
+  const cms = previewContent ? { ...previewContent, fromCms: true } : await loadHotelWebsitePage(locale);
+  const fromCms = cms.fromCms;
+  const solutions = solutionsIndexHref(locale);
+  const dummyHeroSrc = websiteHeroVisualUrl() || "";
+  const heroSrc = (() => {
+    const cmsSrc = cms.hero.visual.src.trim();
+    if (cmsSrc && cmsSrc !== dummyHeroSrc) return cmsSrc;
+    return dummyHeroSrc || cmsSrc;
+  })();
+  const dummyConfidenceSrc = websiteConfidenceVisualUrl() || "";
+  const confidenceSrc = (() => {
+    const next = cms.confidence.visual.src.trim();
+    const blocked = new Set([heroSrc, dummyHeroSrc, WEBSITE_HERO_VISUAL_CANDIDATE, ""]);
+    if (next && !blocked.has(next) && next !== dummyConfidenceSrc) return next;
+    if (dummyConfidenceSrc && !blocked.has(dummyConfidenceSrc)) return dummyConfidenceSrc;
+    return "";
+  })();
+  const dummyFrameworkSrc = websiteFrameworkVisualUrl() || "";
+  const frameworkSrc = (() => {
+    const blocked = new Set([
+      heroSrc,
+      dummyHeroSrc,
+      dummyConfidenceSrc,
+      WEBSITE_HERO_VISUAL_CANDIDATE,
+      WEBSITE_CONFIDENCE_VISUAL_CANDIDATE,
+      "",
+    ]);
+    const next = cms.framework.visual.src.trim();
+    if (next && !blocked.has(next) && next !== dummyFrameworkSrc) return next;
+    return dummyFrameworkSrc && !blocked.has(dummyFrameworkSrc) ? dummyFrameworkSrc : "";
+  })();
+  const dummyCmsSrc = websiteCmsStackVisualUrl() || "";
+  const cmsStackSrc = (() => {
+    const blocked = new Set([
+      heroSrc,
+      dummyHeroSrc,
+      dummyConfidenceSrc,
+      dummyFrameworkSrc,
+      WEBSITE_HERO_VISUAL_CANDIDATE,
+      WEBSITE_CONFIDENCE_VISUAL_CANDIDATE,
+      WEBSITE_FRAMEWORK_VISUAL_CANDIDATE,
+      "",
+    ]);
+    const next = cms.cms.visual.src.trim();
+    if (next && !blocked.has(next) && next !== dummyCmsSrc) return next;
+    return dummyCmsSrc && !blocked.has(dummyCmsSrc) ? dummyCmsSrc : "";
+  })();
+  const dummyDecisionSrc = websiteDecisionVisualUrl() || "";
+  const decisionSrc = (() => {
+    const blocked = new Set([
+      heroSrc,
+      dummyHeroSrc,
+      dummyConfidenceSrc,
+      dummyFrameworkSrc,
+      dummyCmsSrc,
+      WEBSITE_HERO_VISUAL_CANDIDATE,
+      WEBSITE_CONFIDENCE_VISUAL_CANDIDATE,
+      WEBSITE_FRAMEWORK_VISUAL_CANDIDATE,
+      WEBSITE_CMS_STACK_VISUAL_CANDIDATE,
+      "",
+    ]);
+    const next = cms.rebuild.visual.src.trim();
+    if (next && !blocked.has(next) && next !== dummyDecisionSrc) return next;
+    return dummyDecisionSrc && !blocked.has(dummyDecisionSrc) ? dummyDecisionSrc : "";
+  })();
+  const dummyWorkflowSrc = websiteWorkflowVisualUrl() || "";
+  const workflowSrc = (() => {
+    const blocked = new Set([
+      heroSrc,
+      dummyHeroSrc,
+      dummyConfidenceSrc,
+      dummyFrameworkSrc,
+      dummyCmsSrc,
+      dummyDecisionSrc,
+      WEBSITE_HERO_VISUAL_CANDIDATE,
+      WEBSITE_CONFIDENCE_VISUAL_CANDIDATE,
+      WEBSITE_FRAMEWORK_VISUAL_CANDIDATE,
+      WEBSITE_CMS_STACK_VISUAL_CANDIDATE,
+      WEBSITE_DECISION_VISUAL_CANDIDATE,
+      "",
+    ]);
+    const next = cms.workflow.visual.src.trim();
+    if (next && !blocked.has(next) && next !== dummyWorkflowSrc) return next;
+    return dummyWorkflowSrc && !blocked.has(dummyWorkflowSrc) ? dummyWorkflowSrc : "";
+  })();
+  const dummyMeasureSrc = websiteKpiVisualUrl() || "";
+  const measureSrc = (() => {
+    const blocked = new Set([
+      heroSrc,
+      dummyHeroSrc,
+      dummyConfidenceSrc,
+      dummyFrameworkSrc,
+      dummyCmsSrc,
+      dummyDecisionSrc,
+      dummyWorkflowSrc,
+      WEBSITE_HERO_VISUAL_CANDIDATE,
+      WEBSITE_CONFIDENCE_VISUAL_CANDIDATE,
+      WEBSITE_FRAMEWORK_VISUAL_CANDIDATE,
+      WEBSITE_CMS_STACK_VISUAL_CANDIDATE,
+      WEBSITE_DECISION_VISUAL_CANDIDATE,
+      WEBSITE_WORKFLOW_VISUAL_CANDIDATE,
+      "",
+    ]);
+    const next = cms.measure.visual.src.trim();
+    if (next && !blocked.has(next) && next !== dummyMeasureSrc) return next;
+    return dummyMeasureSrc && !blocked.has(dummyMeasureSrc) ? dummyMeasureSrc : "";
+  })();
+  const dummyRelatedSrc = websiteRelatedVisualUrl() || "";
+  const relatedSrc = (() => {
+    const blocked = new Set([
+      heroSrc,
+      dummyHeroSrc,
+      dummyConfidenceSrc,
+      dummyFrameworkSrc,
+      dummyCmsSrc,
+      dummyDecisionSrc,
+      dummyWorkflowSrc,
+      dummyMeasureSrc,
+      WEBSITE_HERO_VISUAL_CANDIDATE,
+      WEBSITE_CONFIDENCE_VISUAL_CANDIDATE,
+      WEBSITE_FRAMEWORK_VISUAL_CANDIDATE,
+      WEBSITE_CMS_STACK_VISUAL_CANDIDATE,
+      WEBSITE_DECISION_VISUAL_CANDIDATE,
+      WEBSITE_WORKFLOW_VISUAL_CANDIDATE,
+      WEBSITE_KPI_VISUAL_CANDIDATE,
+      "",
+    ]);
+    const next = cms.related.visual.src.trim();
+    if (next && !blocked.has(next) && next !== dummyRelatedSrc) return next;
+    return dummyRelatedSrc && !blocked.has(dummyRelatedSrc) ? dummyRelatedSrc : "";
+  })();
+  const whySources =
+    fromCms && cms.confidence.sources.length
+      ? cms.confidence.sources
+      : [WEBSITE_SOURCES.googleIpsos, WEBSITE_SOURCES.thaiCancellation];
+  const heroCtaHref =
+    existingHref(fromCms ? cms.hero.primaryCta.href.trim() || "#website-enquiry" : "#website-enquiry", locale) ||
+    "#website-enquiry";
+  const heroCtaLabel = fromCms && cms.hero.primaryCta.label.trim() ? cms.hero.primaryCta.label : t.cta;
+  const heroSecondaryHref =
+    existingHref(fromCms ? cms.hero.secondaryCta.href.trim() || "/solutions" : "/solutions", locale) || solutions;
+  const heroSecondaryLabel =
+    fromCms && cms.hero.secondaryCta.label.trim() ? cms.hero.secondaryCta.label : t.secondary;
+  const heroAlt = locale === "th" ? cms.hero.visual.altTh || t.photoAlt : cms.hero.visual.altEn || t.photoAlt;
+  const confidenceAlt =
+    locale === "th"
+      ? cms.confidence.visual.altTh || WEBSITE_CONFIDENCE_VISUAL.altTh
+      : cms.confidence.visual.altEn || WEBSITE_CONFIDENCE_VISUAL.altEn;
+  const relatedOverrides = cms.related.cards;
+  const faqItems = hotelWebsiteFaqsFromCms(fromCms ? cms : null, locale);
+  const inner = (
+    <div className="kpi-website">
       <section className="kpi-hero kpi-home-hero-section kpi-website-hero">
         <div className="kpi-wrap">
           <nav aria-label="Breadcrumb" className="kpi-website-hero-crumb">
@@ -577,9 +526,11 @@ export function WebsiteView({ locale }: { locale: Locale }) {
           </nav>
           <div className="kpi-home-hero">
             <div className="kpi-home-hero-copy">
-              <p className="kpi-home-eyebrow kpi-latin">{t.eyebrow}</p>
+              <p className="kpi-home-eyebrow kpi-latin">{fromCms ? cms.hero.eyebrow || t.eyebrow : t.eyebrow}</p>
               <h1 className="kpi-h1 kpi-home-h1">
-                {locale === "th" ? (
+                {fromCms ? (
+                  cms.hero.title || t.title
+                ) : locale === "th" ? (
                   <>
                     <span className="kpi-home-h1-lead">
                       เว็บไซต์ที่ทำให้ลูกค้า<span className="kpi-home-accent">มั่นใจก่อนจอง</span>
@@ -591,60 +542,32 @@ export function WebsiteView({ locale }: { locale: Locale }) {
                 )}
               </h1>
               {locale === "th" ? (
-                <>
-                  <p className="kpi-lead kpi-home-lead">
-                    ลูกค้าอาจพบโรงแรมจาก <span className="kpi-latin">OTA</span>,{" "}
-                    <span className="kpi-latin">Google Maps</span> หรือโซเชียลมีเดีย
-                    ก่อนกลับมาดูเว็บไซต์เพื่อเช็กห้องพัก ทำเล ราคา และเงื่อนไขอีกครั้ง
-                    เว็บไซต์จึงต้องตอบคำถามสำคัญได้ชัด และพาไปสู่การติดต่อหรือจองได้ง่าย
-                  </p>
-                  <p className="kpi-website-lead-close">
-                    <span className="kpi-latin">The KPI Plus</span> ช่วยออกแบบและพัฒนาเว็บไซต์
-                    ให้เชื่อมกับเป้าหมายด้านรายได้และ <span className="kpi-latin">Direct Booking</span>
-                    โดยเลือก <span className="kpi-latin">CMS</span> ตามที่โรงแรมต้องใช้จริง
-                  </p>
-                </>
+                <p className="kpi-lead kpi-home-lead">
+                  ลูกค้าควรเข้าใจโรงแรม ห้องพัก ข้อเสนอ เงื่อนไข และทำเลได้ก่อนจอง
+                  เว็บไซต์จึงต้องพาจากจุดที่พบโรงแรมไปสู่การจองตรงได้ชัด
+                  และทีมโรงแรมแก้เนื้อหาต่อได้หลังส่งมอบ
+                </p>
               ) : (
-                <>
-                  <p className="kpi-lead kpi-home-lead">{t.lead}</p>
-                  <p className="kpi-website-lead-close">{t.leadClose}</p>
-                </>
+                <p className="kpi-lead kpi-home-lead">{t.lead}</p>
               )}
               <div className="kpi-actions">
-                <a href="#website-enquiry" className="kpi-button">
-                  {locale === "th" ? (
-                    <>
-                      ดูโอกาสเพิ่ม <span className="kpi-latin">Direct Booking</span>
-                    </>
-                  ) : (
-                    t.cta
-                  )}{" "}
-                  <span aria-hidden="true">↗</span>
+                <a href={heroCtaHref} className="kpi-button kpi-website-hero-cta">
+                  {heroCtaLabel} <span aria-hidden="true">↗</span>
                 </a>
-                <Link href={solutions} className="kpi-button-ghost">
-                  {t.secondary}
+                <Link href={heroSecondaryHref} className="kpi-button-ghost">
+                  {heroSecondaryLabel}
                 </Link>
               </div>
-              <p className="kpi-website-hero-note">{t.underCta}</p>
-              <p className="kpi-home-trust kpi-website-journey">
-                {(
-                  [
-                    ["01", "Discover"],
-                    ["02", "Explore Rooms"],
-                    ["03", "Check Offer"],
-                    ["04", "Book Direct"],
-                  ] as const
-                ).map(([num, step]) => (
-                  <span key={step}>
-                    <span className="kpi-latin">
-                      {num} {step}
-                    </span>
+              <p className="kpi-website-hero-trust">
+                {WEBSITE_HERO_CAPABILITIES.map((item) => (
+                  <span key={item} className="kpi-latin">
+                    {item}
                   </span>
                 ))}
               </p>
             </div>
             <div className="kpi-hero-visual kpi-home-photo">
-              <img src="/media/hotel-website-hero-laptop.jpg" alt={t.photoAlt} width={1200} height={900} />
+              <WebsiteHeroVisual locale={locale} src={heroSrc} alt={heroAlt} status={cms.hero.visual.status} />
             </div>
           </div>
         </div>
@@ -663,81 +586,73 @@ export function WebsiteView({ locale }: { locale: Locale }) {
                 t.whyTitle
               )}
             </h2>
-            {locale === "th" ? (
-              <>
-                <div className="kpi-website-why-findings">
-                  <article className="kpi-website-why-finding">
-                    <p className="kpi-website-why-stat">
-                      <span className="kpi-latin kpi-website-why-number">3</span>
-                      <span className="kpi-website-why-stat-mid"> ใน </span>
-                      <span className="kpi-latin kpi-website-why-number">5</span>
-                      <span className="kpi-website-why-stat-label"> นักเดินทาง</span>
-                    </p>
-                    <p className="kpi-website-why-finding-body">
-                      ต้องการข้อมูลและเงื่อนไขที่ชัดเจนจากแหล่งเพิ่มเติมก่อนตัดสินใจจอง
-                    </p>
-                  </article>
-                  <article className="kpi-website-why-finding">
-                    <h3>ราคาและเงื่อนไขมีผลต่อความตั้งใจจอง</h3>
-                    <p className="kpi-website-why-finding-body">
-                      เว็บไซต์ทางการควรช่วยให้ลูกค้าเข้าใจสิ่งที่จะได้รับ ราคา และเงื่อนไขก่อนตัดสินใจ
-                    </p>
-                  </article>
-                </div>
-                <p className="kpi-website-why-takeaway">
-                  <span>เว็บไซต์ทางการจึงไม่ใช่แค่ช่องทางขาย</span>
-                  <span className="kpi-website-why-takeaway-strong">
-                    แต่เป็นจุดที่ช่วยยืนยันว่าข้อมูลนี้เชื่อถือได้
-                    <span className="kpi-website-why-br"> </span>
-                    และจองต่อได้จริง
-                  </span>
-                </p>
-                <div className="kpi-website-why-sources">
-                  <p>
-                    <span className="kpi-latin">Source:</span>{" "}
-                    <a href={googleIpsos} target="_blank" rel="noreferrer">
-                      Google / Ipsos
-                    </a>
+            {locale === "th" || locale === "en" ? (
+              <div className="kpi-website-why-findings">
+                <article className="kpi-website-why-finding">
+                  <p className="kpi-website-why-stat">
+                    <span className="kpi-latin kpi-website-why-number">3</span>
+                    <span className="kpi-website-why-stat-mid">{locale === "th" ? " ใน " : " in "}</span>
+                    <span className="kpi-latin kpi-website-why-number">5</span>
+                    <span className="kpi-website-why-stat-label">
+                      {locale === "th" ? " นักเดินทาง" : " travellers"}
+                    </span>
                   </p>
-                  <p>
-                    <span className="kpi-latin">Source:</span>{" "}
-                    <a href={thaiStudy} target="_blank" rel="noreferrer">
-                      Thailand hotel booking cancellation research
-                    </a>
-                  </p>
-                </div>
-              </>
+                  <p className="kpi-website-why-finding-body">{t.whyBody}</p>
+                </article>
+                <article className="kpi-website-why-finding">
+                  <h3>{locale === "th" ? "ราคาและเงื่อนไขมีผลต่อความตั้งใจจอง" : "Price and terms affect booking intent"}</h3>
+                  <p className="kpi-website-why-finding-body">{t.whyStudy}</p>
+                </article>
+              </div>
             ) : (
               <>
                 <p className="kpi-website-why-fallback">{t.whyBody}</p>
                 <p className="kpi-website-why-fallback">{t.whyStudy}</p>
-                <div className="kpi-website-why-sources">
-                  <p>
-                    {t.sourceLabel}:{" "}
-                    <a href={googleIpsos} target="_blank" rel="noreferrer">
-                      {t.sourceGoogle}
-                    </a>
-                  </p>
-                  <p>
-                    {t.sourceLabel}:{" "}
-                    <a href={thaiStudy} target="_blank" rel="noreferrer">
-                      {t.sourceThai}
-                    </a>
-                  </p>
-                </div>
               </>
             )}
+            <p className="kpi-website-why-flow-label">{t.whyFlowTitle}</p>
+            <ol className="kpi-website-why-flow">
+              {WEBSITE_CONFIDENCE_PATH.map((step, index) => (
+                <li key={step.en}>
+                  <span className="kpi-latin">{String(index + 1).padStart(2, "0")}</span>
+                  <span className={locale === "th" ? undefined : "kpi-latin"}>{locale === "th" ? step.th : step.en}</span>
+                </li>
+              ))}
+            </ol>
+            {locale === "th" ? (
+              <p className="kpi-website-why-takeaway">
+                <span>เว็บไซต์ทางการจึงไม่ใช่แค่ช่องทางขาย</span>
+                <span className="kpi-website-why-takeaway-strong">
+                  แต่เป็นจุดที่ช่วยยืนยันว่าข้อมูลนี้เชื่อถือได้
+                  <span className="kpi-website-why-br"> </span>
+                  และจองต่อได้จริง
+                </span>
+              </p>
+            ) : null}
+            <p className="kpi-website-why-note">{t.whyContext}</p>
+            <div className="kpi-website-why-sources">
+              {whySources.map((source) => (
+                <p key={source.url}>
+                  <span className="kpi-latin">{t.sourceLabel}:</span>{" "}
+                  <a href={source.url} target="_blank" rel="noreferrer">
+                    {source.name}
+                  </a>
+                  <span className="web-source-meta">
+                    {source.publishedAt} · {source.market}
+                    {source.period ? ` · ${source.period}` : ""}
+                    {source.definition ? ` · ${source.definition}` : ""}
+                    {` · accessed ${source.accessedAt}`}
+                  </span>
+                </p>
+              ))}
+            </div>
           </div>
           <figure className="kpi-website-why-media">
-            <img
-              src="/media/hotel-website-why-phone.jpg"
-              alt={
-                locale === "th"
-                  ? "นักเดินทางดูเว็บไซต์โรงแรมทางการบนมือถือเพื่อเช็กห้องพักและเงื่อนไขก่อนจอง"
-                  : t.photoAlt
-              }
-              width={1200}
-              height={900}
+            <WebsiteConfidenceVisual
+              locale={locale}
+              src={confidenceSrc}
+              alt={confidenceAlt}
+              status={cms.confidence.visual.status}
             />
           </figure>
         </div>
@@ -758,29 +673,18 @@ export function WebsiteView({ locale }: { locale: Locale }) {
               t.questionsTitle
             )}
           </h2>
+          <p className="kpi-website-questions-lead">
+            {locale === "th"
+              ? "ตรวจจากหลักฐานบนเว็บไซต์ว่าลูกค้าเข้าใจห้องพัก ทำเล ราคา เงื่อนไข และเส้นทางจองได้หรือไม่ สถานะในตารางเป็นตัวอย่างการตรวจ ไม่ใช่คะแนนโรงแรมรายใด"
+              : "Review the evidence on the website: rooms, location, price, policy, and the booking path. Status in this table is sample review state, not a scored hotel result."}
+          </p>
+          <WebsiteReadinessChecklist
+            locale={locale}
+            questions={fromCms && cms.readiness.items.length ? cms.readiness.items : undefined}
+            rows={fromCms && cms.readiness.rows.length ? cms.readiness.rows : undefined}
+          />
           {locale === "th" ? (
             <>
-              <ol className="kpi-website-questions-list">
-                {thaiQuestions.map((item) => {
-                  const emInTitle = item.title.includes(item.em);
-                  return (
-                    <li key={item.num} className="kpi-website-questions-item">
-                      <span className="kpi-latin kpi-website-questions-num">{item.num}</span>
-                      <div className="kpi-website-questions-copy">
-                        <h3>{emphasizePhrase(item.title, item.em)}</h3>
-                        <p>
-                          {item.lines.map((line, lineIndex) => (
-                            <span key={line}>
-                              {lineIndex > 0 ? <span className="kpi-website-questions-br"> </span> : null}
-                              {emInTitle ? line : emphasizePhrase(line, item.em)}
-                            </span>
-                          ))}
-                        </p>
-                      </div>
-                    </li>
-                  );
-                })}
-              </ol>
               <p className="kpi-website-questions-close">
                 <span>เว็บไซต์ที่ดีไม่ควรแค่ดูสวย</span>
                 <span className="kpi-website-questions-close-strong">
@@ -795,415 +699,155 @@ export function WebsiteView({ locale }: { locale: Locale }) {
               </a>
             </>
           ) : (
-            <ol className="kpi-website-questions-list">
-              {t.questions.map((item, index) => (
-                <li key={item} className="kpi-website-questions-item">
-                  <span className="kpi-latin kpi-website-questions-num">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <div className="kpi-website-questions-copy">
-                    <p>{item}</p>
-                  </div>
-                </li>
-              ))}
-            </ol>
+            <a href="#website-enquiry" className="kpi-website-questions-cta">
+              {t.cta}
+              <span aria-hidden="true">↗</span>
+            </a>
           )}
         </div>
       </section>
 
       <section className="kpi-section kpi-website-help">
-        <h2 className="kpi-h2">{t.helpTitle}</h2>
+        <h2 className="kpi-h2">{fromCms && cms.framework.title.trim() ? cms.framework.title : t.helpTitle}</h2>
+        <WebsiteFramework locale={locale} src={frameworkSrc || cms.framework.visual.src} steps={cms.framework.steps} />
         {locale === "th" ? (
-          <>
-            <ol className="kpi-website-help-list">
-              {thaiHelpSteps.map((step) => (
-                <li
-                  key={step.num}
-                  className={`kpi-website-help-item${step.num === "05" ? " is-outcome" : ""}`}
-                >
-                  <span className="kpi-latin kpi-website-help-num">{step.num}</span>
-                  <div className="kpi-website-help-copy">
-                    <h3>{emphasizePhrase(step.title, step.em, "kpi-website-help-em")}</h3>
-                    <p>
-                      {step.lines.map((line, lineIndex) => (
-                        <span key={line}>
-                          {lineIndex > 0 ? <span className="kpi-website-help-br"> </span> : null}
-                          {line.includes("Booking Engine") ? (
-                            <>
-                              พาลูกค้าไปยัง <span className="kpi-latin">Booking Engine</span> ได้ชัด
-                            </>
-                          ) : (
-                            line
-                          )}
-                        </span>
-                      ))}
-                    </p>
-                    {"linesAfter" in step && step.linesAfter ? (
-                      <p className="kpi-website-help-p-follow">
-                        {step.linesAfter.map((line, lineIndex) => (
-                          <span key={line}>
-                            {lineIndex > 0 ? <span className="kpi-website-help-br"> </span> : null}
-                            {line}
-                          </span>
-                        ))}
-                      </p>
-                    ) : null}
-                  </div>
-                </li>
-              ))}
-            </ol>
-            <a href="#website-enquiry" className="kpi-button kpi-website-help-cta">
-              ดูโอกาสเพิ่ม <span className="kpi-latin">Direct Booking</span>
-              <span aria-hidden="true">↗</span>
-            </a>
-          </>
+          <a href="#website-enquiry" className="kpi-button kpi-website-help-cta">
+            ดูโอกาสเพิ่ม <span className="kpi-latin">Direct Booking</span>
+            <span aria-hidden="true">↗</span>
+          </a>
         ) : (
-          <>
-            <ol className="kpi-website-help-list">
-              {t.help.map(([num, title, body]) => (
-                <li
-                  key={num}
-                  className={`kpi-website-help-item${num === "05" ? " is-outcome" : ""}`}
-                >
-                  <span className="kpi-latin kpi-website-help-num">{num}</span>
-                  <div className="kpi-website-help-copy">
-                    <h3>{title}</h3>
-                    <p>{body}</p>
-                  </div>
-                </li>
-              ))}
-            </ol>
-            <a href="#website-enquiry" className="kpi-button kpi-website-help-cta">
-              {t.cta} <span aria-hidden="true">↗</span>
-            </a>
-          </>
+          <a href="#website-enquiry" className="kpi-button kpi-website-help-cta">
+            {t.cta} <span aria-hidden="true">↗</span>
+          </a>
         )}
       </section>
 
       <section className="kpi-website-cms border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section">
-          <h2 className="kpi-h2">{t.cmsTitle}</h2>
-          {locale === "th" ? (
-            <>
-              <ol className="kpi-website-cms-list">
-                {thaiCmsSteps.map((step) => (
-                  <li key={step.num} className="kpi-website-cms-item">
-                    <span className="kpi-latin kpi-website-cms-num">{step.num}</span>
-                    <span className="kpi-latin kpi-website-cms-label">{step.label}</span>
-                    <h3>{step.title}</h3>
-                    <p>
-                      {step.lines.map((line, lineIndex) => (
-                        <span key={line}>
-                          {lineIndex > 0 ? <span className="kpi-website-cms-br"> </span> : null}
-                          {withLatinTools(line)}
-                        </span>
-                      ))}
-                    </p>
-                  </li>
-                ))}
-              </ol>
-              <p className="kpi-website-cms-close">
-                <span>เป้าหมายไม่ใช่เลือกเทคโนโลยีที่ใหม่ที่สุด</span>
-                <span className="kpi-website-cms-close-strong">
-                  แต่เลือกสิ่งที่ทีมโรงแรม
-                  <span className="kpi-website-cms-br"> </span>
-                  <span className="kpi-website-cms-em">ใช้งานต่อได้จริง</span>
-                </span>
-              </p>
-            </>
-          ) : (
-            <>
-              <p className="kpi-lead mt-5">{t.cmsBody}</p>
-              <p className="mt-5 max-w-3xl text-base leading-8 text-[#555555]">{t.cmsWordpress}</p>
-              <p className="mt-5 max-w-3xl text-base leading-8 text-[#555555]">{t.cmsTools}</p>
-            </>
-          )}
+          <h2 className="kpi-h2">{fromCms && cms.cms.title.trim() ? cms.cms.title : t.cmsTitle}</h2>
+          <WebsiteCmsStack
+            locale={locale}
+            src={cmsStackSrc}
+            alt={locale === "th" ? cms.cms.visual.altTh : cms.cms.visual.altEn}
+            status={cms.cms.visual.status}
+            lead={fromCms && cms.cms.body.trim() ? cms.cms.body : t.cmsBody}
+            rows={fromCms && cms.cms.rows.length ? cms.cms.rows : undefined}
+            note={fromCms ? cms.cms.note : undefined}
+            disclaimer={fromCms ? cms.cms.disclaimer : undefined}
+          />
         </div>
       </section>
 
       <section className="kpi-section kpi-website-new">
-        <h2 className="kpi-h2">{t.newTitle}</h2>
-        {locale === "th" ? (
-          <>
-            <div className="kpi-website-new-grid">
-              {thaiNewDecision.map((side) => (
-                <article key={side.key} className="kpi-website-new-col">
-                  <h3>{side.title}</h3>
-                  <p className="kpi-website-new-support">
-                    {side.support.map((line, lineIndex) => (
-                      <span key={line}>
-                        {lineIndex > 0 ? <span className="kpi-website-new-br"> </span> : null}
-                        {line}
-                      </span>
-                    ))}
-                  </p>
-                  <ul className="kpi-website-new-points">
-                    {side.points.map((point) => (
-                      <li key={point}>{withLatinTools(point)}</li>
-                    ))}
-                  </ul>
-                </article>
-              ))}
-            </div>
-            <p className="kpi-website-new-close">
-              <span>เราไม่เริ่มจากคำว่า “ต้องทำใหม่”</span>
-              <span className="kpi-website-new-close-strong">
-                แต่เริ่มจากดูว่า
-                <span className="kpi-website-new-br"> </span>
-                เว็บไซต์เดิม
-                <span className="kpi-website-new-em">ยังพาโรงแรมไปต่อได้แค่ไหน</span>
-              </span>
-            </p>
-          </>
-        ) : (
-          <>
-            <p className="mt-6 max-w-3xl text-base leading-8 text-[#555555]">{t.newBody}</p>
-            <p className="mt-5 max-w-3xl text-base leading-8 text-[#3B3B3B]">{t.newClose}</p>
-          </>
-        )}
+        <h2 className="kpi-h2">{fromCms && cms.rebuild.title.trim() ? cms.rebuild.title : t.newTitle}</h2>
+        <WebsiteDecision
+          locale={locale}
+          src={decisionSrc || cms.rebuild.visual.src}
+          alt={locale === "th" ? cms.rebuild.visual.altTh : cms.rebuild.visual.altEn}
+          status={cms.rebuild.visual.status}
+          lead={fromCms && cms.rebuild.body.trim() ? cms.rebuild.body : t.newBody}
+          note={fromCms ? cms.rebuild.note : undefined}
+          paths={fromCms && cms.rebuild.paths.length ? cms.rebuild.paths : undefined}
+          close={
+            fromCms && cms.rebuild.close.trim()
+              ? cms.rebuild.close
+              : locale === "th"
+                ? "เราไม่เริ่มจากคำว่า “ต้องทำใหม่” แต่เริ่มจากดูว่าเว็บไซต์เดิมยังพาโรงแรมไปต่อได้แค่ไหน"
+                : t.newClose
+          }
+        />
       </section>
 
       <section className="kpi-website-method border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section">
-          <h2 className="kpi-h2">{t.methodTitle}</h2>
-          {locale === "th" ? (
-            <ol className="kpi-website-method-list">
-              {thaiMethodSteps.map((step) => (
-                <li key={step.num} className="kpi-website-method-item">
-                  <div className="kpi-website-method-meta">
-                    <span className="kpi-latin kpi-website-method-num">{step.num}</span>
-                    <span className="kpi-latin kpi-website-method-label">{step.label}</span>
-                  </div>
-                  <div className="kpi-website-method-copy">
-                    <h3>{step.title}</h3>
-                    <p>
-                      {step.lines.map((line, lineIndex) => (
-                        <span key={line}>
-                          {lineIndex > 0 ? <span className="kpi-website-method-br"> </span> : null}
-                          {withLatinTools(line)}
-                        </span>
-                      ))}
-                    </p>
-                    {"linesAfter" in step && step.linesAfter ? (
-                      <p className="kpi-website-method-p-follow">
-                        {step.linesAfter.map((line, lineIndex) => (
-                          <span key={line}>
-                            {lineIndex > 0 ? <span className="kpi-website-method-br"> </span> : null}
-                            {line}
-                          </span>
-                        ))}
-                      </p>
-                    ) : null}
-                  </div>
-                </li>
-              ))}
-            </ol>
-          ) : (
-            <ol className="kpi-website-method-list">
-              {t.steps.map(([num, title, body]) => (
-                <li key={num} className="kpi-website-method-item">
-                  <div className="kpi-website-method-meta">
-                    <span className="kpi-latin kpi-website-method-num">{num}</span>
-                  </div>
-                  <div className="kpi-website-method-copy">
-                    <h3>{title}</h3>
-                    <p>{body}</p>
-                  </div>
-                </li>
-              ))}
-            </ol>
-          )}
-
-          <div className="kpi-website-method-tools">
-            <h3 className="kpi-website-method-tools-title">{t.toolsTitle}</h3>
-            {locale === "th" ? (
-              <>
-                <div className="kpi-website-method-tools-copy">
-                  {thaiToolsCopy.map((para) => (
-                    <p key={para}>{withLatinTools(para)}</p>
-                  ))}
-                </div>
-                <ul className="kpi-website-method-tools-row" aria-label="เครื่องมือที่ทีมอาจใช้">
-                  {tools.map((tool) => (
-                    <li key={tool.name}>
-                      <img
-                        src={tool.src}
-                        alt={tool.mark === "wordmark" ? tool.name : ""}
-                        className={`kpi-website-method-tools-mark${tool.mark === "wordmark" ? " is-wordmark" : ""}`}
-                      />
-                      {tool.mark === "wordmark" ? (
-                        <span className="kpi-website-method-tools-name-fallback kpi-latin">{tool.name}</span>
-                      ) : (
-                        <span className="kpi-latin">{tool.name}</span>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-                <p className="kpi-website-method-tools-close">
-                  <span>เครื่องมือเป็นเพียงสิ่งที่ช่วยให้ทีมทำงานได้ดีขึ้น</span>
-                  <span className="kpi-website-method-tools-close-strong">
-                    เว็บไซต์ที่ส่งมอบต้องเป็นสิ่งที่ทีมโรงแรม
-                    <span className="kpi-website-method-em">ใช้งานต่อได้จริง</span>
-                  </span>
-                </p>
-              </>
-            ) : (
-              <>
-                <p className="kpi-website-method-tools-fallback">{t.toolsBody}</p>
-                <ul className="kpi-website-method-tools-row" aria-label={t.toolsTitle}>
-                  {tools.map((tool) => (
-                    <li key={tool.name}>
-                      <img
-                        src={tool.src}
-                        alt={tool.mark === "wordmark" ? tool.name : ""}
-                        className={`kpi-website-method-tools-mark${tool.mark === "wordmark" ? " is-wordmark" : ""}`}
-                      />
-                      {tool.mark === "wordmark" ? (
-                        <span className="kpi-website-method-tools-name-fallback kpi-latin">{tool.name}</span>
-                      ) : (
-                        <span className="kpi-latin">{tool.name}</span>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
-          </div>
+          <h2 className="kpi-h2">{fromCms && cms.workflow.title.trim() ? cms.workflow.title : t.methodTitle}</h2>
+          <WebsiteWorkflow
+            locale={locale}
+            src={workflowSrc}
+            alt={locale === "th" ? cms.workflow.visual.altTh : cms.workflow.visual.altEn}
+            status={cms.workflow.visual.status}
+            steps={cms.workflow.steps}
+            handover={fromCms && cms.workflow.handover.length ? cms.workflow.handover : undefined}
+          />
         </div>
       </section>
 
       <section className="kpi-section kpi-website-measure">
-        <h2 className="kpi-h2">{t.measureTitle}</h2>
-        {locale === "th" ? (
-          <>
-            <ol className="kpi-website-measure-list">
-              {thaiMeasureGroups.map((group) => (
-                <li key={group.num} className="kpi-website-measure-item">
-                  <span className="kpi-latin kpi-website-measure-num">{group.num}</span>
-                  <div className="kpi-website-measure-copy">
-                    <h3 className="kpi-latin">
-                      {group.em
-                        ? emphasizePhrase(group.title, group.em, "kpi-website-measure-em")
-                        : group.title}
-                    </h3>
-                    <p>
-                      {group.lines.map((line, lineIndex) => (
-                        <span key={line}>
-                          {lineIndex > 0 ? <span className="kpi-website-measure-br"> </span> : null}
-                          {withLatinTools(line)}
-                        </span>
-                      ))}
-                    </p>
-                    {"linesAfter" in group && group.linesAfter ? (
-                      <p className="kpi-website-measure-p-follow">
-                        {group.linesAfter.map((line, lineIndex) => (
-                          <span key={line}>
-                            {lineIndex > 0 ? <span className="kpi-website-measure-br"> </span> : null}
-                            {line}
-                          </span>
-                        ))}
-                      </p>
-                    ) : null}
-                  </div>
-                </li>
-              ))}
-            </ol>
-            <p className="kpi-website-measure-close">
-              <span>
-                การคลิกปุ่มจอง
-                <span className="kpi-website-measure-br"> </span>
-                ยังไม่ใช่<span className="kpi-website-measure-em">การจองสำเร็จ</span>
-              </span>
-              <span className="kpi-website-measure-close-strong">
-                เราจึงวัดให้ลึกที่สุด
-                <span className="kpi-website-measure-br"> </span>
-                เท่าที่ระบบของโรงแรมรองรับ
-              </span>
-            </p>
-          </>
-        ) : (
-          <>
-            <p className="kpi-lead mt-5">{t.measureBody}</p>
-            <p className="mt-5 max-w-3xl text-base leading-8 text-[#3B3B3B]">{t.measureNote}</p>
-          </>
-        )}
+        <h2 className="kpi-h2">{fromCms && cms.measure.title.trim() ? cms.measure.title : t.measureTitle}</h2>
+        {fromCms && cms.measure.body.trim() ? <p className="kpi-lead mt-5">{cms.measure.body}</p> : <p className="kpi-lead mt-5">{t.measureBody}</p>}
+        <WebsiteMeasure
+          locale={locale}
+          src={measureSrc}
+          alt={locale === "th" ? cms.measure.visual.altTh : cms.measure.visual.altEn}
+          status={cms.measure.visual.status}
+          kpis={cms.measure.kpis.map((kpi) => ({
+            id: kpi.id,
+            name: kpi.name,
+            group: kpi.group,
+            period: kpi.period,
+            unit: kpi.unit,
+            definition: kpi.definition,
+            comparison: kpi.comparison,
+            market: kpi.market,
+            source: kpi.source,
+            dataStatus: kpi.dataStatus,
+            hideUntilData:
+              kpi.group === "outcome" && !(cms.measure.tracking.bookingEngineConfigured && cms.measure.tracking.trackingConfigured)
+                ? true
+                : kpi.hideUntilData,
+            value: kpi.value,
+            updatedAt: kpi.updatedAt,
+            tone: kpi.tone,
+          }))}
+          chart={cms.measure.kpis
+            .filter((kpi) => kpi.group !== "outcome" && kpi.labels.length && kpi.values.length)
+            .map((kpi) => ({
+              id: kpi.id,
+              name: kpi.name,
+              labels: kpi.labels,
+              values: kpi.values,
+              target: kpi.target || kpi.comparison,
+            }))}
+          trackingBoundary={fromCms ? cms.measure.tracking.boundary || cms.measure.note : undefined}
+          trackingReady={cms.measure.tracking.bookingEngineConfigured && cms.measure.tracking.trackingConfigured}
+        />
       </section>
 
-      {toolHref || conversionHref ? (
-        <section className="kpi-website-related border-t border-[#E3E8EB] bg-white">
-          <div className="kpi-section">
-            <h2 className="kpi-h2">
-              {locale === "th" ? (
-                <>
-                  <span className="kpi-website-related-line">เรื่องที่เกี่ยวข้องกับเว็บไซต์</span>
-                  <span className="kpi-website-related-br"> </span>
-                  <span className="kpi-website-related-line">การค้นหา และการจองตรง</span>
-                </>
-              ) : (
-                t.relatedTitle
-              )}
-            </h2>
-            <div className="kpi-website-related-layout">
-              {toolHref ? (
-                <article className="kpi-website-related-primary">
-                  <span className="kpi-website-related-accent" aria-hidden="true" />
-                  <h3>{t.toolName}</h3>
-                  {locale === "th" ? (
+      <section className="kpi-website-related border-t border-[#E3E8EB] bg-white">
+        <div className="kpi-section">
+          <h2 className="kpi-h2">
+            {fromCms && cms.related.title.trim()
+              ? cms.related.title
+              : locale === "th"
+                ? (
                     <>
-                      <p>
-                        ดูว่าหน้าเว็บพร้อมให้ลูกค้า
-                        <span className="kpi-website-related-br"> </span>
-                        ค้นหาข้อมูลห้องพัก โปรโมชั่น และทำเล
-                      </p>
-                      <p className="kpi-website-related-follow">
-                        รวมถึงเดินทางต่อไปสู่
-                        <span className="kpi-website-related-br"> </span>
-                        การสอบถามหรือการจองได้หรือไม่
-                      </p>
+                      <span className="kpi-website-related-line">เรื่องที่เกี่ยวข้องกับเว็บไซต์</span>
+                      <span className="kpi-website-related-br"> </span>
+                      <span className="kpi-website-related-line">การค้นหา และการจองตรง</span>
                     </>
-                  ) : (
-                    <p>{t.toolBody}</p>
-                  )}
-                  <Link href={toolHref} className="kpi-website-related-cta">
-                    {t.toolCta}
-                    <span aria-hidden="true">↗</span>
-                  </Link>
-                </article>
-              ) : null}
-              {conversionHref ? (
-                <article className="kpi-website-related-secondary">
-                  <h3>{locale === "th" ? t.conversionTitle : solutionNavLabel("/solutions/hotel-direct-bookings", locale)}</h3>
-                  {locale === "th" ? (
-                    <>
-                      <p>
-                        เมื่อโครงสร้างเว็บไซต์พร้อมแล้ว
-                        <span className="kpi-website-related-br"> </span>
-                        ดูต่อว่าเส้นทางจากหน้าห้องพัก
-                      </p>
-                      <p className="kpi-website-related-follow">
-                        ไปสู่การสอบถาม
-                        <span className="kpi-website-related-br"> </span>
-                        หรือ <span className="kpi-latin">Booking Engine</span>
-                        <span className="kpi-website-related-br"> </span>
-                        ชัดพอหรือไม่
-                      </p>
-                    </>
-                  ) : (
-                    <p>{t.conversionBody}</p>
-                  )}
-                  <Link href={conversionHref} className="kpi-website-related-cta">
-                    {t.details}
-                    <span aria-hidden="true">↗</span>
-                  </Link>
-                </article>
-              ) : null}
-            </div>
-          </div>
-        </section>
-      ) : null}
+                  )
+                : t.relatedTitle}
+          </h2>
+          <WebsiteRelated
+            locale={locale}
+            src={relatedSrc}
+            alt={locale === "th" ? cms.related.visual.altTh : cms.related.visual.altEn}
+            status={cms.related.visual.status}
+            overrides={relatedOverrides}
+          />
+        </div>
+      </section>
 
-      <WebsiteEnquiry locale={locale} />
-      <WebsiteStickyCta label={t.cta} />
+      <WebsiteEnquiry locale={locale} helper={fromCms ? cms.form : undefined} />
+      <PageFaqs items={faqItems} locale={locale} sectionId="hotel-website-faq" />
+      <WebsiteStickyCta label={fromCms && cms.form.submit.trim() ? cms.form.submit : t.cta} />
+    </div>
+  );
+
+  if (embedded) return inner;
+  return (
+    <SiteShell locale={locale} route={localizePath("/solutions/hotel-website-design", locale)} hideFaqs>
+      {inner}
     </SiteShell>
   );
 }

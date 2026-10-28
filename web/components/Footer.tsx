@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { ContactCard } from "@/components/ContactCard";
 import { ArrowUpRight, Earth } from "@/components/Icons";
 import { COMPANY, contactInfoFromCompany, type CompanyContact } from "@/lib/company";
+import { enquiryServiceById } from "@/lib/enquiry";
 import { locales, uiCopy, visiblePrimaryLinks, visibleSolutionGroups, visibleToolLinks } from "@/lib/nav";
 import {
   auditHref,
@@ -84,11 +85,17 @@ export function Footer({
   const isContact = path === "/contact-us";
   const isMetaAds = path === "/solutions/meta-ads-management";
   const isHotelSeo = path === "/solutions/hotel-seo-google-maps-ai-search";
+  const isHotelWebsite = path === "/solutions/hotel-website-design";
   const footerCtaHref = isMetaAds
     ? `${pathname.split("#")[0]}#meta-ads-enquiry`
     : isHotelSeo
       ? `${pathname.split("#")[0]}#search-enquiry`
-      : auditHref(locale);
+      : isHotelWebsite
+        ? `${pathname.split("#")[0]}#website-enquiry`
+        : auditHref(locale);
+  const footerCtaLabel = isHotelWebsite
+    ? enquiryServiceById("website")?.submit[locale] ?? t.audit
+    : t.audit;
   const contact = contactInfoFromCompany(company, locale);
   const primaryPaths = new Set(["/approach", "/insights", "/case-studies", "/about-us", "/contact-us"]);
   const mainLinks = visiblePrimaryLinks(locale);
@@ -123,7 +130,7 @@ export function Footer({
             </div>
             <div className="kpi-footer-brand-actions">
               <Link data-track="footer_audit_cta" href={footerCtaHref} className="kpi-button kpi-thai-nav">
-                {t.audit} <ArrowUpRight className="h-4 w-4" />
+                {footerCtaLabel} <ArrowUpRight className="h-4 w-4" />
               </Link>
             </div>
           </section>

@@ -152,6 +152,18 @@ export async function pageDocumentBySlug(slug: string, locale = "th") {
   }
 }
 
+export async function pageDocumentsBySlug(slug: string) {
+  try {
+    const db = await cmsDb();
+    return db.cmsDocument.findMany({
+      where: { kind: "page", slug, trashedAt: null },
+      orderBy: { locale: "asc" },
+    });
+  } catch {
+    return [];
+  }
+}
+
 export async function trashedInsightSlugs() {
   try {
     const db = await cmsDb();

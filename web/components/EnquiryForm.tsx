@@ -7,10 +7,12 @@ import { B2bEnquiryIntro } from "@/components/b2b/B2bEnquiryIntro";
 import { AdsEnquiryIntro } from "@/components/google-ads/AdsEnquiryIntro";
 import { AdsEnquiryIntro as MetaAdsEnquiryIntro } from "@/components/meta-ads/AdsEnquiryIntro";
 import { HotelSeoEnquiryIntro } from "@/components/hotel-seo/HotelSeoEnquiryIntro";
+import { WebsiteEnquiryIntro } from "@/components/hotel-website/WebsiteEnquiryIntro";
 import { ReservationsEnquiryIntro } from "@/components/reservations/ReservationsEnquiryIntro";
 import { RevenueEnquiryIntro } from "@/components/revenue-commercial/RevenueEnquiryIntro";
 import { adsEnquiryCopy } from "@/lib/google-ads";
 import { hotelSeoEnquiryCopy } from "@/lib/hotel-seo";
+import { websiteEnquiryCopy } from "@/lib/hotel-website";
 import { metaEnquiryCopy } from "@/lib/meta-ads";
 import { b2bEnquiryCopy } from "@/lib/b2b";
 import { AUDIT_CONTACTS, readUtm } from "@/lib/audit";
@@ -38,12 +40,15 @@ type FormState = {
   adsStatus: string;
   trackingStatus: string;
   goal: string;
+  bookingEngine: string;
+  existingCms: string;
+  timeline: string;
   message: string;
   consent: boolean;
   companyWebsite: string;
 };
 
-type FieldError = Partial<Record<"name" | "businessName" | "contact" | "serviceInterest" | "topic" | "consent" | "website" | "mapsUrl", string>>;
+type FieldError = Partial<Record<"name" | "businessName" | "contact" | "serviceInterest" | "topic" | "consent" | "website" | "mapsUrl" | "bookingEngine", string>>;
 
 const revenueGroups = {
   th: { contact: "ข้อมูลติดต่อ", hotel: "เกี่ยวกับโรงแรม", topic: "เรื่องที่อยากคุย" },
@@ -121,6 +126,38 @@ function hotelSeoIssueLabel(id: string, locale: Locale) {
   if (id === "contact") return fields.issueContact;
   if (id === "booking") return fields.issueBooking;
   return "";
+}
+
+function websiteGoalLabel(id: string, locale: Locale) {
+  const fields = websiteEnquiryCopy(locale).fields;
+  if (id === "direct") return fields.goalDirect;
+  if (id === "refresh") return fields.goalRefresh;
+  if (id === "mobile") return fields.goalMobile;
+  if (id === "cms") return fields.goalCms;
+  return "";
+}
+
+function composeWebsiteMessage(
+  website: string,
+  bookingEngine: string,
+  existingCms: string,
+  goal: string,
+  challenge: string,
+  timeline: string,
+  locale: Locale,
+) {
+  const fields = websiteEnquiryCopy(locale).fields;
+  const goalLabel = websiteGoalLabel(goal, locale);
+  return [
+    website.trim() ? `${fields.website}: ${website.trim()}` : "",
+    bookingEngine.trim() ? `${fields.bookingEngine}: ${bookingEngine.trim()}` : "",
+    existingCms.trim() ? `${fields.cms}: ${existingCms.trim()}` : "",
+    goalLabel ? `${fields.goal}: ${goalLabel}` : "",
+    challenge.trim() ? `${fields.challenge}: ${challenge.trim()}` : "",
+    timeline.trim() ? `${fields.timeline}: ${timeline.trim()}` : "",
+  ]
+    .filter(Boolean)
+    .join("\n\n");
 }
 
 function composeHotelSeoMessage(website: string, mapsUrl: string, issue: string, outcome: string, locale: Locale) {
@@ -250,10 +287,10 @@ const searchGroups = {
 } as const;
 
 const websiteGroups = {
-  th: { contact: "ข้อมูลติดต่อ", hotel: "ข้อมูลโรงแรม", topic: "เรื่องที่อยากคุย" },
-  en: { contact: "Contact details", hotel: "About the hotel", topic: "What you'd like to discuss" },
-  ru: { contact: "Contact details", hotel: "About the hotel", topic: "What you'd like to discuss" },
-  zh: { contact: "Contact details", hotel: "About the hotel", topic: "What you'd like to discuss" },
+  th: { contact: "ข้อมูลติดต่อ", hotel: "ข้อมูลโรงแรม", topic: "เป้าหมายและปัญหาปัจจุบัน" },
+  en: { contact: "Contact details", hotel: "Hotel / company", topic: "Goal and current challenge" },
+  ru: { contact: "Contact details", hotel: "Hotel / company", topic: "Goal and current challenge" },
+  zh: { contact: "Contact details", hotel: "Hotel / company", topic: "Goal and current challenge" },
 } as const;
 
 const conversionGroups = {
@@ -387,6 +424,9 @@ export function EnquiryForm({
     adsStatus?: string;
     trackingStatus?: string;
     challenge?: string;
+    bookingEngine?: string;
+    cms?: string;
+    timeline?: string;
     consent?: string;
     privacy?: string;
   };
@@ -409,6 +449,9 @@ export function EnquiryForm({
     adsStatus: "",
     trackingStatus: "",
     goal: "",
+    bookingEngine: "",
+    existingCms: "",
+    timeline: "",
     message: "",
     consent: false,
     companyWebsite: "",
@@ -431,16 +474,21 @@ export function EnquiryForm({
     }
     if (!preset && !next.serviceInterest) nextErrors.serviceInterest = t.required;
     if (service === "revenue" && !next.topic.trim()) nextErrors.topic = t.required;
-    if ((service === "google_ads" || service === "meta_ads" || service === "search") && next.website.trim() && !looksLikeWebsite(next.website)) {
+    if ((service === "google_ads" || service === "meta_ads" || service === "search" || service === "website") && next.website.trim() && !looksLikeWebsite(next.website)) {
       nextErrors.website =
         service === "search"
           ? hotelSeoEnquiryCopy(locale).fields.websiteInvalid
-          : service === "meta_ads"
-            ? metaEnquiryCopy(locale).fields.websiteInvalid
-            : adsEnquiryCopy(locale).fields.websiteInvalid;
+          : service === "website"
+            ? websiteEnquiryCopy(locale).fields.websiteInvalid
+            : service === "meta_ads"
+              ? metaEnquiryCopy(locale).fields.websiteInvalid
+              : adsEnquiryCopy(locale).fields.websiteInvalid;
     }
     if (service === "search" && next.mapsUrl.trim() && !looksLikeWebsite(next.mapsUrl)) {
       nextErrors.mapsUrl = hotelSeoEnquiryCopy(locale).fields.mapsInvalid;
+    }
+    if (service === "website" && next.bookingEngine.trim() && !looksLikeWebsite(next.bookingEngine)) {
+      nextErrors.bookingEngine = websiteEnquiryCopy(locale).fields.bookingEngineInvalid;
     }
     if (!next.consent) nextErrors.consent = t.required;
     setErrors(nextErrors);
@@ -464,9 +512,12 @@ export function EnquiryForm({
           topic: service === "revenue" || service === "search" ? state.topic : undefined,
           channels: service === "reservations" || service === "b2b" ? state.channels.trim() : undefined,
           scope: service === "reservations" ? state.scope.trim() : undefined,
-          website: service === "google_ads" || service === "meta_ads" || service === "search" ? state.website.trim() : undefined,
+          website: service === "google_ads" || service === "meta_ads" || service === "search" || service === "website" ? state.website.trim() : undefined,
           mapsUrl: service === "search" ? state.mapsUrl.trim() : undefined,
-          goal: service === "google_ads" || service === "meta_ads" ? state.goal.trim() : undefined,
+          bookingEngine: service === "website" ? state.bookingEngine.trim() : undefined,
+          cms: service === "website" ? state.existingCms.trim() : undefined,
+          timeline: service === "website" ? state.timeline.trim() : undefined,
+          goal: service === "google_ads" || service === "meta_ads" || service === "website" ? state.goal.trim() : undefined,
           market: service === "google_ads" || service === "meta_ads" || service === "b2b" ? state.market.trim() : undefined,
           adsStatus: service === "google_ads" || service === "meta_ads" ? state.adsStatus.trim() : undefined,
           trackingStatus: service === "meta_ads" ? state.trackingStatus.trim() : undefined,
@@ -491,7 +542,17 @@ export function EnquiryForm({
                         )
                       : service === "search"
                         ? composeHotelSeoMessage(state.website, state.mapsUrl, state.topic, state.message, locale)
-                        : state.message.trim(),
+                        : service === "website"
+                          ? composeWebsiteMessage(
+                              state.website,
+                              state.bookingEngine,
+                              state.existingCms,
+                              state.goal,
+                              state.message,
+                              state.timeline,
+                              locale,
+                            )
+                          : state.message.trim(),
           consent: state.consent,
           honeypot: state.companyWebsite,
           pageUrl: typeof window === "undefined" ? "" : window.location.href,
@@ -1996,82 +2057,69 @@ export function EnquiryForm({
 
   if (service === "website" && !compact) {
     const groups = websiteGroups[locale];
+    const websiteCopy = websiteEnquiryCopy(locale);
+    const formUi = {
+      ...websiteCopy.fields,
+      website: fieldLabels?.website?.trim() || websiteCopy.fields.website,
+      bookingEngine: fieldLabels?.bookingEngine?.trim() || websiteCopy.fields.bookingEngine,
+      cms: fieldLabels?.cms?.trim() || websiteCopy.fields.cms,
+      goal: fieldLabels?.goal?.trim() || websiteCopy.fields.goal,
+      challenge: fieldLabels?.challenge?.trim() || websiteCopy.fields.challenge,
+      timeline: fieldLabels?.timeline?.trim() || websiteCopy.fields.timeline,
+    };
+    const nameLabel = fieldLabels?.name?.trim() || websiteCopy.labels.name;
+    const businessLabel = fieldLabels?.business?.trim() || websiteCopy.labels.business;
+    const contactLabel = fieldLabels?.contact?.trim() || websiteCopy.labels.contact;
+    const consentLabel = fieldLabels?.consent?.trim() || websiteCopy.labels.consent;
+    const privacyLabel = fieldLabels?.privacy?.trim() || websiteCopy.labels.privacy;
     const labelClassName = "kpi-website-enquiry-label";
+    const sending = status === "submitting";
     return (
       <section id={sectionId} className="kpi-website-enquiry scroll-mt-28">
         <div className="kpi-section kpi-website-enquiry-grid">
-          <div className="kpi-website-enquiry-intro">
-            <p className="kpi-website-enquiry-kicker kpi-latin">{kickerText}</p>
-            <h2 className="kpi-h2 kpi-website-enquiry-heading">{heading}</h2>
-            {locale === "th" ? (
-              <p className="kpi-website-enquiry-lead">
-                <span>ส่งข้อมูลสั้น ๆ เกี่ยวกับโรงแรม</span>
-                <span className="kpi-website-enquiry-line">แล้วทีมจะช่วยดูว่าเว็บไซต์</span>
-                <span className="kpi-website-enquiry-line">ควรเริ่มปรับจากจุดไหนก่อน</span>
-              </p>
-            ) : (
-              <p className="kpi-website-enquiry-lead">{lead}</p>
-            )}
-            {locale === "th" ? (
-              <>
-                <ol className="kpi-website-enquiry-points">
-                  <li>
-                    <span className="kpi-latin">01</span>
-                    <span>ดูโครงสร้างและเนื้อหา</span>
-                  </li>
-                  <li>
-                    <span className="kpi-latin">02</span>
-                    <span>
-                      ดู <span className="kpi-latin">Mobile</span> และประสบการณ์ใช้งาน
-                    </span>
-                  </li>
-                  <li>
-                    <span className="kpi-latin">03</span>
-                    <span>
-                      ดูเส้นทางไปสู่ <span className="kpi-latin">Booking Engine</span> /{" "}
-                      <span className="kpi-latin">Direct Booking</span>
-                    </span>
-                  </li>
-                </ol>
-                <p className="kpi-website-enquiry-note">
-                  ไม่จำเป็นต้องตัดสินใจก่อน
-                  <span className="kpi-website-enquiry-line">ว่าจะสร้างเว็บไซต์ใหม่</span>
-                  <span className="kpi-website-enquiry-line">หรือปรับเว็บไซต์เดิม</span>
-                </p>
-              </>
-            ) : null}
-          </div>
+          <WebsiteEnquiryIntro
+            locale={locale}
+            kicker={kickerText}
+            heading={heading}
+            lead={lead}
+            receiveTitle={introReceiveTitle}
+            receive={introReceive}
+            nextTitle={introNextTitle}
+            steps={introSteps}
+          />
           <div className="kpi-website-enquiry-panel">
             {status === "success" ? (
-              <div role="status">
+              <div className="kpi-website-enquiry-done" role="status" aria-live="polite">
                 <p className="kpi-website-enquiry-success">{t.success}</p>
                 <ContactNote locale={locale} className="kpi-website-enquiry-direct" />
               </div>
             ) : (
-              <form className="kpi-website-enquiry-fields" onSubmit={onSubmit} noValidate>
+              <form className="kpi-website-enquiry-fields" onSubmit={onSubmit} noValidate aria-busy={sending}>
                 <div className="kpi-website-enquiry-group">
                   <p className="kpi-website-enquiry-group-label">{groups.contact}</p>
                   <div className="kpi-website-enquiry-pair">
-                    <Field label={t.name} htmlFor={`${formId}-name`} error={errors.name} labelClassName={labelClassName}>
+                    <Field label={nameLabel} htmlFor={`${formId}-name`} error={errors.name} labelClassName={labelClassName}>
                       <input
                         id={`${formId}-name`}
                         name="name"
                         autoComplete="name"
                         className="kpi-field"
                         value={state.name}
+                        disabled={sending}
                         aria-invalid={Boolean(errors.name)}
                         onBlur={() => validate()}
                         onChange={(event) => setState((current) => ({ ...current, name: event.target.value }))}
                       />
                     </Field>
-                    <Field label={t.contact} htmlFor={`${formId}-contact`} error={errors.contact} labelClassName={labelClassName}>
+                    <Field label={contactLabel} htmlFor={`${formId}-contact`} error={errors.contact} labelClassName={labelClassName}>
                       <input
                         id={`${formId}-contact`}
                         name="contact"
-                        autoComplete="tel"
+                        autoComplete="email"
                         inputMode="email"
                         className="kpi-field"
                         value={state.contact}
+                        disabled={sending}
                         aria-invalid={Boolean(errors.contact)}
                         onBlur={() => validate()}
                         onChange={(event) => setState((current) => ({ ...current, contact: event.target.value }))}
@@ -2081,53 +2129,162 @@ export function EnquiryForm({
                 </div>
                 <div className="kpi-website-enquiry-group">
                   <p className="kpi-website-enquiry-group-label">{groups.hotel}</p>
-                  <Field label={t.business} htmlFor={`${formId}-business`} error={errors.businessName} labelClassName={labelClassName}>
+                  <Field label={businessLabel} htmlFor={`${formId}-business`} error={errors.businessName} labelClassName={labelClassName}>
                     <input
                       id={`${formId}-business`}
                       name="organization"
                       autoComplete="organization"
                       className="kpi-field"
                       value={state.businessName}
+                      disabled={sending}
                       aria-invalid={Boolean(errors.businessName)}
                       onBlur={() => validate()}
                       onChange={(event) => setState((current) => ({ ...current, businessName: event.target.value }))}
                     />
                   </Field>
+                  <div className="kpi-website-enquiry-stack">
+                    <Field
+                      label={formUi.website}
+                      htmlFor={`${formId}-website`}
+                      optional={t.messageOptional}
+                      error={errors.website}
+                      labelClassName={labelClassName}
+                    >
+                      <input
+                        id={`${formId}-website`}
+                        name="website"
+                        inputMode="url"
+                        autoComplete="url"
+                        className="kpi-field"
+                        value={state.website}
+                        disabled={sending}
+                        aria-invalid={Boolean(errors.website)}
+                        aria-describedby={`${formId}-website-hint`}
+                        onBlur={() => validate()}
+                        onChange={(event) => setState((current) => ({ ...current, website: event.target.value }))}
+                      />
+                      <p id={`${formId}-website-hint`} className="kpi-website-enquiry-hint">
+                        {formUi.websiteHint}
+                      </p>
+                    </Field>
+                    <Field
+                      label={formUi.bookingEngine}
+                      htmlFor={`${formId}-booking-engine`}
+                      optional={t.messageOptional}
+                      error={errors.bookingEngine}
+                      labelClassName={labelClassName}
+                    >
+                      <input
+                        id={`${formId}-booking-engine`}
+                        name="bookingEngine"
+                        inputMode="url"
+                        className="kpi-field"
+                        value={state.bookingEngine}
+                        disabled={sending}
+                        aria-invalid={Boolean(errors.bookingEngine)}
+                        aria-describedby={`${formId}-booking-engine-hint`}
+                        onBlur={() => validate()}
+                        onChange={(event) => setState((current) => ({ ...current, bookingEngine: event.target.value }))}
+                      />
+                      <p id={`${formId}-booking-engine-hint`} className="kpi-website-enquiry-hint">
+                        {formUi.bookingEngineHint}
+                      </p>
+                    </Field>
+                    <Field label={formUi.cms} htmlFor={`${formId}-cms`} optional={t.messageOptional} labelClassName={labelClassName}>
+                      <input
+                        id={`${formId}-cms`}
+                        name="cms"
+                        className="kpi-field"
+                        value={state.existingCms}
+                        disabled={sending}
+                        aria-describedby={`${formId}-cms-hint`}
+                        onChange={(event) => setState((current) => ({ ...current, existingCms: event.target.value }))}
+                      />
+                      <p id={`${formId}-cms-hint`} className="kpi-website-enquiry-hint">
+                        {formUi.cmsHint}
+                      </p>
+                    </Field>
+                  </div>
                 </div>
                 <div className="kpi-website-enquiry-group">
                   <p className="kpi-website-enquiry-group-label">{groups.topic}</p>
-                  <Field label={t.message} htmlFor={`${formId}-message`} optional={t.messageOptional} labelClassName={labelClassName}>
-                    <textarea
-                      id={`${formId}-message`}
-                      name="message"
-                      rows={4}
+                  <Field label={formUi.goal} htmlFor={`${formId}-goal`} optional={t.messageOptional} labelClassName={labelClassName}>
+                    <select
+                      id={`${formId}-goal`}
+                      name="goal"
                       className="kpi-field"
-                      placeholder={t.messageHint}
-                      value={state.message}
-                      onChange={(event) => setState((current) => ({ ...current, message: event.target.value }))}
-                    />
+                      value={state.goal}
+                      disabled={sending}
+                      onChange={(event) => setState((current) => ({ ...current, goal: event.target.value }))}
+                    >
+                      <option value="">{formUi.goalEmpty}</option>
+                      <option value="direct">{formUi.goalDirect}</option>
+                      <option value="refresh">{formUi.goalRefresh}</option>
+                      <option value="mobile">{formUi.goalMobile}</option>
+                      <option value="cms">{formUi.goalCms}</option>
+                    </select>
                   </Field>
+                  <div className="kpi-website-enquiry-stack">
+                    <Field
+                      label={formUi.challenge}
+                      htmlFor={`${formId}-message`}
+                      optional={t.messageOptional}
+                      labelClassName={labelClassName}
+                    >
+                      <textarea
+                        id={`${formId}-message`}
+                        name="message"
+                        rows={4}
+                        className="kpi-field"
+                        value={state.message}
+                        disabled={sending}
+                        aria-describedby={`${formId}-challenge-hint`}
+                        onChange={(event) => setState((current) => ({ ...current, message: event.target.value }))}
+                      />
+                      <p id={`${formId}-challenge-hint`} className="kpi-website-enquiry-hint">
+                        {formUi.challengeHint}
+                      </p>
+                    </Field>
+                    <Field label={formUi.timeline} htmlFor={`${formId}-timeline`} optional={t.messageOptional} labelClassName={labelClassName}>
+                      <input
+                        id={`${formId}-timeline`}
+                        name="timeline"
+                        className="kpi-field"
+                        value={state.timeline}
+                        disabled={sending}
+                        aria-describedby={`${formId}-timeline-hint`}
+                        onChange={(event) => setState((current) => ({ ...current, timeline: event.target.value }))}
+                      />
+                      <p id={`${formId}-timeline-hint`} className="kpi-website-enquiry-hint">
+                        {formUi.timelineHint}
+                      </p>
+                    </Field>
+                  </div>
                 </div>
                 <input type="hidden" name="serviceInterest" value={preset?.id ?? "website"} />
                 <div className="kpi-website-enquiry-privacy">
                   <FormPrivacyNotice locale={locale} />
                 </div>
-                <label className="kpi-website-enquiry-consent">
+                <label className="kpi-website-enquiry-consent" htmlFor={`${formId}-consent`}>
                   <input
+                    id={`${formId}-consent`}
                     type="checkbox"
                     checked={state.consent}
+                    disabled={sending}
                     aria-invalid={Boolean(errors.consent)}
+                    aria-describedby={errors.consent ? `${formId}-consent-error` : undefined}
+                    onBlur={() => validate()}
                     onChange={(event) => setState((current) => ({ ...current, consent: event.target.checked }))}
                   />
                   <span>
-                    {t.consent}{" "}
+                    {consentLabel}{" "}
                     <Link href={privacyHref} className="font-semibold text-[#0B6660]">
-                      {t.privacy}
+                      {privacyLabel}
                     </Link>
                   </span>
                 </label>
                 {errors.consent ? (
-                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                  <p id={`${formId}-consent-error`} className="kpi-website-enquiry-error" role="alert">
                     {errors.consent}
                   </p>
                 ) : null}
@@ -2141,27 +2298,21 @@ export function EnquiryForm({
                   className="absolute left-[-10000px] h-px w-px overflow-hidden"
                   onChange={(event) => setState((current) => ({ ...current, companyWebsite: event.target.value }))}
                 />
-                <button className="kpi-button" type="submit" disabled={status === "submitting"}>
-                  {status === "submitting" ? (
-                    t.sending
-                  ) : locale === "th" ? (
-                    <>
-                      ให้ทีมดูเว็บไซต์โรงแรมของคุณ
-                      <span className="kpi-website-enquiry-arrow" aria-hidden="true">
-                        ↗
-                      </span>
-                    </>
-                  ) : (
-                    cta
-                  )}
+                <button className="kpi-button kpi-website-enquiry-submit" type="submit" disabled={sending} aria-busy={sending}>
+                  {sending ? t.sending : cta}
                 </button>
+                {sending ? (
+                  <p className="kpi-website-enquiry-status" role="status" aria-live="polite">
+                    {formUi.loading}
+                  </p>
+                ) : null}
                 {status === "error" ? (
-                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                  <p className="kpi-website-enquiry-error" role="alert">
                     {t.failed}
                   </p>
                 ) : null}
                 {status === "unavailable" ? (
-                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                  <p className="kpi-website-enquiry-error" role="alert">
                     {t.unavailable}
                   </p>
                 ) : null}

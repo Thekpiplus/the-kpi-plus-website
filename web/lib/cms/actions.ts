@@ -43,6 +43,8 @@ import { META_ADS_CMS_TEMPLATE, META_ADS_PAGE_ROUTE, serializeMetaAdsPageBody } 
 import { defaultMetaAdsCms } from "./meta-ads-page-seed";
 import { HOTEL_SEO_CMS_TEMPLATE, HOTEL_SEO_PAGE_ROUTE, serializeHotelSeoPageBody } from "./hotel-seo-page";
 import { defaultHotelSeoCms } from "./hotel-seo-page-seed";
+import { HOTEL_WEBSITE_CMS_TEMPLATE, HOTEL_WEBSITE_PAGE_ROUTE, serializeHotelWebsitePageBody } from "./hotel-website-page";
+import { defaultHotelWebsiteCms } from "./hotel-website-page";
 
 async function requireCms() {
   const user = await requireUser();
@@ -284,6 +286,7 @@ export async function ensurePageFromSite(route: string) {
   const isGoogleAds = normalized === GOOGLE_ADS_PAGE_ROUTE;
   const isMetaAds = normalized === META_ADS_PAGE_ROUTE;
   const isHotelSeo = normalized === HOTEL_SEO_PAGE_ROUTE;
+  const isHotelWebsite = normalized === HOTEL_WEBSITE_PAGE_ROUTE;
   const created = await db.cmsDocument.create({
     data: {
       kind: "page",
@@ -303,6 +306,8 @@ export async function ensurePageFromSite(route: string) {
                 ? META_ADS_CMS_TEMPLATE
                 : isHotelSeo
                   ? HOTEL_SEO_CMS_TEMPLATE
+                  : isHotelWebsite
+                    ? HOTEL_WEBSITE_CMS_TEMPLATE
                 : "general",
       excerpt: sitePage.description || "",
       body: isRevenue
@@ -317,6 +322,8 @@ export async function ensurePageFromSite(route: string) {
                 ? serializeMetaAdsPageBody(defaultMetaAdsCms("th"))
                 : isHotelSeo
                   ? serializeHotelSeoPageBody(defaultHotelSeoCms("th"))
+                  : isHotelWebsite
+                    ? serializeHotelWebsitePageBody(defaultHotelWebsiteCms("th"))
                 : bodyFromMarkdown(markdown),
       tags: "",
       seoTitle: sitePage.title,

@@ -9007,8 +9007,104 @@ a.kpi-revenue-related-item {
   text-wrap: wrap;
 }
 
-.kpi-shell .kpi-website-enquiry .kpi-latin {
-  font-family: Poppins, sans-serif !important;
+.kpi-shell .kpi-website-enquiry .kpi-latin,
+.kpi-shell :lang(th) .kpi-website-enquiry .kpi-latin {
+  font-family: Montserrat, Poppins, sans-serif !important;
+}
+
+.kpi-website-enquiry-receive {
+  margin-top: 1.2rem;
+}
+
+.kpi-website-enquiry-receive-title,
+.kpi-website-enquiry-next-title,
+.kpi-shell :lang(th) .kpi-website-enquiry-receive-title,
+.kpi-shell :lang(th) .kpi-website-enquiry-next-title {
+  margin: 0;
+  color: #0b1f33;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.4 !important;
+}
+
+.kpi-website-enquiry-receive ul {
+  margin: 0.55rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.kpi-website-enquiry-receive li {
+  padding: 0.7rem 0;
+  border-bottom: 1px solid #e3e8eb;
+}
+
+.kpi-website-enquiry-receive li:first-child {
+  border-top: 1px solid #e3e8eb;
+}
+
+.kpi-website-enquiry-receive strong {
+  display: block;
+  color: #0b6660;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+.kpi-website-enquiry-receive span {
+  display: block;
+  margin-top: 0.28rem;
+  color: #555555;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.kpi-website-enquiry-next {
+  margin-top: 1.25rem;
+}
+
+.kpi-website-enquiry-num {
+  color: #0a2472;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.kpi-website-enquiry-stack {
+  display: grid;
+  gap: 0.8rem;
+  margin-top: 0.8rem;
+}
+
+.kpi-website-enquiry-hint,
+.kpi-shell :lang(th) .kpi-website-enquiry-hint {
+  margin: 0.35rem 0 0;
+  color: #6a6a6a;
+  font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.5 !important;
+}
+
+.kpi-website-enquiry-error {
+  margin: 0.45rem 0 0;
+  color: #c45c26;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.kpi-website-enquiry-status {
+  margin: 0.55rem 0 0;
+  color: #0b6660;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.kpi-website-enquiry-done {
+  display: grid;
+  gap: 0.75rem;
 }
 
 .kpi-website-enquiry-lead,
@@ -9176,7 +9272,8 @@ a.kpi-revenue-related-item {
   accent-color: #0B6660;
 }
 
-.kpi-website-enquiry .kpi-button {
+.kpi-website-enquiry .kpi-button,
+.kpi-website-enquiry-submit {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -9191,12 +9288,28 @@ a.kpi-revenue-related-item {
 }
 
 .kpi-website-enquiry .kpi-button:hover,
-.kpi-website-enquiry .kpi-button:active {
+.kpi-website-enquiry .kpi-button:active,
+.kpi-website-enquiry-submit:hover,
+.kpi-website-enquiry-submit:active {
   background: #b6dc00;
   color: #0b1f33;
   box-shadow: none;
   filter: none;
   transform: none;
+}
+
+.kpi-website .kpi-website-enquiry .kpi-button,
+.kpi-website .kpi-website-enquiry-submit {
+  background: #a2dc25;
+  color: #1a3a02;
+}
+
+.kpi-website .kpi-website-enquiry .kpi-button:hover,
+.kpi-website .kpi-website-enquiry .kpi-button:active,
+.kpi-website .kpi-website-enquiry-submit:hover,
+.kpi-website .kpi-website-enquiry-submit:active {
+  background: #a2dc25;
+  color: #1a3a02;
 }
 
 .kpi-website-enquiry-arrow {
@@ -13050,6 +13163,13 @@ a.kpi-revenue-related-item {
   color: var(--kpi-kpi-teal);
 }
 
+.kpi-nav-link[aria-current="page"],
+.kpi-solutions-trigger.is-current,
+.kpi-solutions-link[aria-current="page"] {
+  background: #a2dc25;
+  color: #1a3a02;
+}
+
 .kpi-solutions-root {
   position: relative;
 }
@@ -13170,6 +13290,12 @@ a.kpi-revenue-related-item {
 .kpi-header-lang-option:hover {
   background: var(--kpi-light-lime);
   color: var(--kpi-kpi-teal);
+}
+
+.kpi-header-lang-option[aria-current="true"] {
+  background: #a2dc25;
+  color: #1a3a02;
+  font-weight: 600;
 }
 
 .kpi-solutions-menu {
@@ -13431,6 +13557,14 @@ a.kpi-revenue-related-item {
   text-decoration: none;
 }
 
+.kpi-mobile-link[aria-current="page"] {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.15rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 0.55rem;
+}
+
 .kpi-mobile-link-strong {
   color: #0b6660;
 }
@@ -13519,15 +13653,22 @@ a.kpi-revenue-related-item {
 }
 
 .kpi-mobile-lang {
+  display: inline-flex;
+  align-items: center;
   min-height: 2.15rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 0.55rem;
   color: #555555;
   font-size: 0.8125rem;
   font-weight: 500;
   text-decoration: none;
 }
 
-.kpi-mobile-lang.is-current {
-  color: #0b6660;
+.kpi-mobile-link[aria-current="page"],
+.kpi-mobile-lang.is-current,
+.kpi-mobile-lang[aria-current="true"] {
+  background: #a2dc25;
+  color: #1a3a02;
   font-weight: 700;
 }
 
@@ -16380,7 +16521,7 @@ a.kpi-revenue-related-item {
 }
 
 .kpi-shell .kpi-website-hero .kpi-latin {
-  font-family: Poppins, sans-serif !important;
+  font-family: Montserrat, "Prompt", sans-serif !important;
 }
 
 .kpi-website-hero .kpi-home-hero > * {
@@ -16397,13 +16538,56 @@ a.kpi-revenue-related-item {
 .kpi-website-hero .kpi-home-photo {
   position: relative;
   z-index: 0;
+  overflow: visible;
   width: 100%;
-  max-width: 100%;
+  max-width: min(560px, 100%);
   justify-self: stretch;
+  background: transparent;
+  box-shadow: none;
+}
+
+.kpi-website-hero .kpi-home-photo .web-visual,
+.kpi-website-why-media .web-visual,
+.kpi-website-readiness-visual,
+.kpi-website-cms .web-visual,
+.kpi-website-new .web-visual,
+.kpi-website-method .web-visual,
+.kpi-website-measure .web-visual,
+.kpi-website-related .web-visual {
+  max-width: 100%;
+}
+
+.kpi-website-related .web-visual--related {
+  max-width: min(520px, 100%);
+}
+
+.kpi-website-method .web-visual--workflow {
+  max-width: 40rem;
+}
+
+.kpi-website-measure .web-visual--measure {
+  max-width: 45rem;
+}
+
+.kpi-website-hero .kpi-home-photo .web-visual-frame {
+  width: 100%;
+  max-width: 560px;
+  max-height: 350px;
+  aspect-ratio: 8 / 5;
+}
+
+.kpi-website-why-media .web-visual-frame {
+  width: 100%;
+}
+
+.kpi-website-readiness-visual {
+  margin: 1.25rem 0 1.5rem;
+  max-width: 36rem;
 }
 
 .kpi-website-hero .kpi-home-eyebrow {
   margin: 0;
+  color: #a2dc25;
 }
 
 .kpi-website-hero h1.kpi-home-h1,
@@ -16423,6 +16607,7 @@ a.kpi-revenue-related-item {
 }
 
 .kpi-website-hero .kpi-home-accent {
+  color: #ebe722;
   white-space: nowrap;
 }
 
@@ -16449,46 +16634,110 @@ a.kpi-revenue-related-item {
 }
 
 .kpi-website-hero .kpi-actions {
-  margin-top: 1.35rem;
+  margin-top: 1.25rem;
 }
 
-.kpi-website-hero-note {
-  max-width: 26rem;
-  margin: 0.65rem 0 0;
-  color: rgba(255, 255, 255, 0.64);
-  font-size: 0.8125rem;
-  font-weight: 400;
+.kpi-website-hero a.kpi-button,
+.kpi-website-hero a.kpi-website-hero-cta {
+  background: #a2dc25;
+  color: #1a3a02;
+}
+
+.kpi-website-hero a.kpi-button:hover,
+.kpi-website-hero a.kpi-website-hero-cta:hover {
+  background: #ebe722;
+  color: #1a3a02;
+}
+
+.kpi-website-hero-note,
+.kpi-website-hero-trust {
+  max-width: 32rem;
+  margin: 0.7rem 0 0;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.78rem;
+  font-weight: 500;
   letter-spacing: 0;
   line-height: 1.5;
 }
 
-.kpi-website-hero .kpi-home-trust {
-  margin-top: 0.65rem;
+.kpi-website-hero-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 0;
 }
 
-.kpi-website-hero .kpi-home-trust span:not(:last-child)::after {
-  content: "→";
-  width: auto;
-  height: auto;
-  margin-inline: 0.5rem;
-  background: none;
-  color: rgba(255, 255, 255, 0.45);
-  vertical-align: 0;
+.kpi-website-hero-trust span:not(:last-child)::after {
+  content: "·";
+  margin-inline: 0.45rem;
+  color: #a2dc25;
 }
 
 .kpi-website-hero .kpi-home-photo img {
-  object-position: 48% 45%;
+  aspect-ratio: 8 / 5;
+  object-fit: contain;
+  object-position: center;
+}
+
+.kpi-website-hero .web-visual-caption {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.kpi-website-hero .web-visual-caption strong {
+  color: #ebe722;
+  font-size: 0.78rem;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.kpi-website-hero .web-visual-meta {
+  color: rgba(255, 255, 255, 0.58);
+}
+
+@media (max-width: 63.99rem) {
+  .kpi-website-hero.kpi-hero {
+    padding-block: 1.75rem 1.5rem;
+  }
+
+  .kpi-website-hero .kpi-home-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.1rem;
+  }
+
+  .kpi-website-hero .kpi-home-hero-copy {
+    order: 1;
+  }
+
+  .kpi-website-hero .kpi-home-photo {
+    order: 2;
+    max-width: min(560px, 100%);
+    margin-inline: auto;
+  }
+
+  .kpi-website-hero .kpi-actions {
+    flex-wrap: wrap;
+  }
+
+  .kpi-website-hero .kpi-button,
+  .kpi-website-hero .kpi-button-ghost {
+    min-height: 2.75rem;
+  }
 }
 
 @media (min-width: 64rem) {
+  .kpi-website-hero.kpi-hero {
+    padding-block: 2.5rem 2.2rem;
+  }
+
   .kpi-website-hero .kpi-home-hero {
-    grid-template-columns: minmax(0, 0.98fr) minmax(0, 1fr);
-    column-gap: clamp(2rem, 5vw, 3.75rem);
+    grid-template-columns: minmax(0, 1.05fr) minmax(22rem, 560px);
+    column-gap: clamp(2rem, 4vw, 3.25rem);
     align-items: center;
   }
 
   .kpi-website-hero .kpi-home-photo {
     margin-top: 0;
+    justify-self: end;
   }
 }
 
@@ -16509,7 +16758,7 @@ a.kpi-revenue-related-item {
 }
 
 .kpi-shell .kpi-website-why .kpi-latin {
-  font-family: Poppins, sans-serif !important;
+  font-family: Montserrat, "Prompt", sans-serif !important;
 }
 
 .kpi-website-why-grid {
@@ -16545,8 +16794,8 @@ a.kpi-revenue-related-item {
 
 .kpi-website-why-number {
   display: inline;
-  color: #0A2472;
-  font-family: Poppins, sans-serif !important;
+  color: #0b6660;
+  font-family: Montserrat, "Prompt", sans-serif !important;
   font-size: clamp(2.25rem, 1.85rem + 1.2vw, 3rem);
   font-weight: 700;
   letter-spacing: -0.02em;
@@ -16621,8 +16870,59 @@ a.kpi-revenue-related-item {
   margin-top: 0;
 }
 
+.kpi-website-why-flow-label,
+.kpi-shell :lang(th) .kpi-website-why-flow-label {
+  margin: 1.2rem 0 0.55rem;
+  color: #0b1f33;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0 !important;
+  line-height: 1.45 !important;
+}
+
+.kpi-website-why-flow {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.kpi-website-why-flow li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  min-width: 0;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid #e3e8eb;
+  border-radius: 0.55rem;
+  background: #f2f8e2;
+  color: #3b3b3b;
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.kpi-website-why-flow li span:first-child {
+  flex: none;
+  color: #0b6660;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.kpi-website-why-note,
+.kpi-shell :lang(th) .kpi-website-why-note {
+  max-width: 34rem;
+  margin: 1rem 0 0;
+  color: #555555;
+  font-size: 0.84rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.6 !important;
+}
+
 .kpi-website-why-sources a {
-  color: #0A2472;
+  color: #0b6660;
   font-weight: 500;
   text-decoration: none;
 }
@@ -16644,18 +16944,27 @@ a.kpi-revenue-related-item {
 
 .kpi-website-why-media {
   margin: 0;
-  overflow: hidden;
+  overflow: visible;
+  max-width: min(480px, 100%);
   border-radius: 0.875rem;
   background: transparent;
   box-shadow: none;
 }
 
+.kpi-website-why-media .web-visual-frame {
+  width: 100%;
+  max-width: 480px;
+  max-height: 320px;
+  aspect-ratio: 3 / 2;
+}
+
 .kpi-website-why-media img {
   display: block;
   width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  object-position: 88% 38%;
+  height: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: contain;
+  object-position: center;
 }
 
 .kpi-website-why-br {
@@ -16674,13 +16983,14 @@ a.kpi-revenue-related-item {
 
 @media (min-width: 64rem) {
   .kpi-website-why-grid {
-    grid-template-columns: minmax(0, 0.55fr) minmax(0, 0.42fr);
+    grid-template-columns: minmax(0, 1fr) minmax(16rem, 480px);
     column-gap: 7%;
-    align-items: center;
+    align-items: start;
   }
 
   .kpi-website-why-media {
     margin-top: 0.35rem;
+    justify-self: end;
   }
 }
 
@@ -16698,7 +17008,18 @@ a.kpi-revenue-related-item {
 }
 
 .kpi-shell .kpi-website-questions .kpi-latin {
-  font-family: Poppins, sans-serif !important;
+  font-family: Montserrat, "Prompt", sans-serif !important;
+}
+
+.kpi-website-questions-lead,
+.kpi-shell :lang(th) .kpi-website-questions-lead {
+  max-width: 42rem;
+  margin: 0.85rem 0 0;
+  color: #555555;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
 }
 
 .kpi-website-questions-em {
@@ -16731,8 +17052,8 @@ a.kpi-revenue-related-item {
 
 .kpi-website-questions-num {
   margin-top: 0.2rem;
-  color: #0A2472;
-  font-family: Poppins, sans-serif !important;
+  color: #0b6660;
+  font-family: Montserrat, "Prompt", sans-serif !important;
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.04em;
@@ -16792,12 +17113,15 @@ a.kpi-revenue-related-item {
   align-items: center;
   gap: 0.35rem;
   margin-top: 1.15rem;
-  color: #0A2472;
+  padding: 0.7rem 1.1rem;
+  border-radius: 999px;
+  background: #a2dc25;
+  color: #1a3a02;
   font-size: 0.9375rem;
   font-weight: 600;
   line-height: 1.4;
   text-decoration: none;
-  transition: color 220ms ease;
+  transition: background-color 220ms ease, color 220ms ease;
 }
 
 .kpi-website-questions-cta span[aria-hidden="true"] {
@@ -16808,9 +17132,9 @@ a.kpi-revenue-related-item {
 
 @media (hover: hover) and (pointer: fine) {
   .kpi-website-questions-cta:hover {
-    color: #7d9a16;
-    text-decoration: underline;
-    text-underline-offset: 0.18em;
+    background: #ebe722;
+    color: #1a3a02;
+    text-decoration: none;
   }
 
   .kpi-website-questions-cta:hover span[aria-hidden="true"] {
@@ -16872,6 +17196,18 @@ a.kpi-revenue-related-item {
 
 .kpi-shell .kpi-website-help .kpi-latin {
   font-family: Poppins, sans-serif !important;
+}
+
+.kpi-shell .kpi-website-help .web-framework .kpi-latin,
+.kpi-shell .kpi-website-help .web-visual--framework .kpi-latin {
+  font-family: Montserrat, "Prompt", sans-serif !important;
+}
+
+.kpi-shell .kpi-website-help .web-framework-boundary h3,
+.kpi-shell :lang(th) .kpi-website-help .web-framework-boundary h3 {
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
 }
 
 .kpi-website-help-list {
@@ -17049,6 +17385,11 @@ a.kpi-revenue-related-item {
   font-family: Poppins, sans-serif !important;
 }
 
+.kpi-shell .kpi-website-cms .web-cms-stack .kpi-latin,
+.kpi-shell .kpi-website-cms .web-visual--cms .kpi-latin {
+  font-family: Montserrat, "Prompt", sans-serif !important;
+}
+
 .kpi-website-cms-list {
   display: grid;
   gap: 0;
@@ -17224,8 +17565,183 @@ a.kpi-revenue-related-item {
   text-wrap: wrap;
 }
 
-.kpi-shell .kpi-website-related .kpi-latin {
-  font-family: Poppins, sans-serif !important;
+.kpi-shell .kpi-website-related .kpi-latin,
+.kpi-shell :lang(th) .kpi-website-related .kpi-latin,
+.kpi-shell .kpi-website-related .web-related .kpi-latin,
+.kpi-shell :lang(th) .kpi-website-related .web-related .kpi-latin {
+  font-family: Montserrat, Poppins, sans-serif !important;
+}
+
+.web-related {
+  display: grid;
+  gap: 1.15rem;
+  align-items: start;
+  margin-top: 1.75rem;
+}
+
+.web-related-cards {
+  display: grid;
+  gap: 0.9rem;
+  min-width: 0;
+}
+
+.web-related-stack {
+  display: grid;
+  gap: 0.9rem;
+  align-items: start;
+  align-content: start;
+}
+
+.web-related-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  padding: 1.15rem 1.2rem 1.1rem;
+  border: 1px solid #e3e8eb;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: none;
+  text-decoration: none;
+  transition: border-color 220ms ease;
+}
+
+.web-related-item.is-featured {
+  padding: 1.7rem 1.55rem 1.45rem;
+}
+
+.web-related-accent {
+  display: block;
+  width: 2rem;
+  height: 2px;
+  margin-bottom: 0.9rem;
+  background: #a2dc25;
+}
+
+.kpi-shell .web-related-kicker,
+.kpi-shell :lang(th) .web-related-kicker {
+  margin: 0;
+  color: #0b6660;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.kpi-shell .web-related-item.is-featured h3,
+.kpi-shell :lang(th) .web-related-item.is-featured h3 {
+  margin: 0.55rem 0 0;
+  color: #0b1f33;
+  font-size: clamp(1.35rem, 1.2rem + 0.4vw, 1.75rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+.kpi-shell .web-related-stack h3,
+.kpi-shell :lang(th) .web-related-stack h3 {
+  margin: 0.4rem 0 0;
+  color: #0b1f33;
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+.web-related-desc,
+.kpi-shell :lang(th) .web-related-desc {
+  margin: 0.45rem 0 0;
+  color: #555555;
+  font-size: 0.92rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.6 !important;
+}
+
+.web-related-meta {
+  margin: 0.45rem 0 0;
+  color: #555555;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+.web-related-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 1.05rem;
+  color: #0a2472;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.web-related-item.is-featured .web-related-cta {
+  margin-top: auto;
+  padding-top: 1.2rem;
+}
+
+.web-related-cta svg {
+  width: 0.9rem;
+  height: 0.9rem;
+  transition: transform 220ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .web-related-item:hover {
+    border-color: #c5ced4;
+  }
+
+  .kpi-shell .web-related-item:hover h3,
+  .kpi-shell :lang(th) .web-related-item:hover h3 {
+    color: #0b1f33;
+  }
+
+  .web-related-item:hover .web-related-cta {
+    color: #7d9a16;
+    text-decoration: underline;
+    text-underline-offset: 0.18em;
+  }
+
+  .web-related-item:hover .web-related-cta svg {
+    transform: translate(2px, -2px);
+  }
+}
+
+@media (min-width: 48rem) {
+  .web-related-stack {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  .web-related {
+    grid-template-columns: minmax(16rem, 520px) minmax(0, 1fr);
+    column-gap: 1.5rem;
+    align-items: start;
+  }
+
+  .web-related-stack {
+    grid-template-columns: 1fr;
+  }
+
+  .web-related-item.is-featured {
+    min-height: 100%;
+    padding: 1.85rem 1.9rem 1.6rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .web-related-item,
+  .web-related-cta svg {
+    transition: none;
+  }
+
+  .web-related-item:hover .web-related-cta svg {
+    transform: none;
+  }
 }
 
 .kpi-website-related-layout {
@@ -17400,6 +17916,20 @@ a.kpi-revenue-related-item {
 
 .kpi-shell .kpi-website-measure .kpi-latin {
   font-family: Poppins, sans-serif !important;
+}
+
+.kpi-shell .kpi-website-measure .web-measure .kpi-latin,
+.kpi-shell .kpi-website-measure .web-visual--measure .kpi-latin {
+  font-family: Montserrat, "Prompt", sans-serif !important;
+}
+
+.kpi-shell .kpi-website-measure .web-kpi-group h3,
+.kpi-shell :lang(th) .kpi-website-measure .web-kpi-group h3,
+.kpi-shell .kpi-website-measure .web-kpi-chart-head h3,
+.kpi-shell :lang(th) .kpi-website-measure .web-kpi-chart-head h3 {
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
 }
 
 .kpi-website-measure-list {
@@ -17577,6 +18107,18 @@ a.kpi-revenue-related-item {
   font-family: Poppins, sans-serif !important;
 }
 
+.kpi-shell .kpi-website-new .web-decision .kpi-latin,
+.kpi-shell .kpi-website-new .web-visual--decision .kpi-latin {
+  font-family: Montserrat, "Prompt", sans-serif !important;
+}
+
+.kpi-shell .kpi-website-new .web-decision-card h3,
+.kpi-shell :lang(th) .kpi-website-new .web-decision-card h3 {
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+}
+
 .kpi-website-new-grid {
   display: grid;
   gap: 0;
@@ -17724,6 +18266,18 @@ a.kpi-revenue-related-item {
 
 .kpi-shell .kpi-website-method .kpi-latin {
   font-family: Poppins, sans-serif !important;
+}
+
+.kpi-shell .kpi-website-method .web-workflow .kpi-latin,
+.kpi-shell .kpi-website-method .web-visual--workflow .kpi-latin {
+  font-family: Montserrat, "Prompt", sans-serif !important;
+}
+
+.kpi-shell .kpi-website-method .web-workflow-handover h3,
+.kpi-shell :lang(th) .kpi-website-method .web-workflow-handover h3 {
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
 }
 
 .kpi-website-method-list {
@@ -26332,6 +26886,128 @@ a.kpi-revenue-related-item {
   .kpi-shell:has(.kpi-seo-local-hero) .kpi-footer-statement,
   .kpi-shell:has(.kpi-seo-local-hero) .kpi-footer-copy,
   .kpi-shell:has(.kpi-seo-local-hero) .kpi-footer-legal-links {
+    max-width: none;
+  }
+}
+
+.kpi-shell:has(.kpi-website-hero) .kpi-faq-home {
+  scroll-margin-top: 7.25rem;
+}
+
+.kpi-shell:has(.kpi-website-hero) .kpi-faq-home .kpi-faq-list {
+  max-width: none;
+  padding-inline: 0;
+}
+
+.kpi-shell:has(.kpi-website-hero) .kpi-faq-home .kpi-faq-item.is-open::before {
+  background: #a2dc25;
+}
+
+.kpi-shell:has(.kpi-website-hero) .kpi-faq-home .kpi-faq-item,
+.kpi-shell:has(.kpi-website-hero) #website-enquiry,
+.kpi-shell:has(.kpi-website-hero) #hotel-website-faq {
+  scroll-margin-bottom: 6.5rem;
+}
+
+.kpi-shell:has(.kpi-website-hero) .kpi-faq-home .kpi-faq-trigger {
+  min-height: var(--kpi-touch);
+}
+
+.kpi-shell:has(.kpi-website-hero) .kpi-faq-home .kpi-faq-trigger:focus,
+.kpi-shell:has(.kpi-website-hero) .kpi-faq-home .kpi-faq-trigger:focus-visible {
+  outline: 2px solid #a2dc25 !important;
+  outline-color: #a2dc25 !important;
+  outline-style: solid !important;
+  outline-width: 2px !important;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px #ffffff, 0 0 0 5px #a2dc25 !important;
+}
+
+.kpi-shell:has(.kpi-website-hero) .kpi-faq-home .kpi-faq-item.is-open .kpi-faq-mark {
+  color: #0b6660;
+}
+
+.kpi-shell:has(.kpi-website-hero) .kpi-faq-home .kpi-faq-q,
+.kpi-shell:has(.kpi-website-hero) .kpi-faq-home .kpi-faq-panel p {
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+.kpi-shell:has(.kpi-website-hero) .kpi-faq-home .kpi-faq-panel p {
+  max-width: 40rem;
+  text-wrap: pretty;
+}
+
+.kpi-shell:has(.kpi-website-hero) .kpi-faq-home img,
+.kpi-shell:has(.kpi-website-hero) .kpi-faq-home dialog {
+  display: none;
+}
+
+.kpi-shell.kpi-locale-th:has(.kpi-website-hero) .kpi-faq-home .kpi-faq-trigger,
+.kpi-shell.kpi-locale-th:has(.kpi-website-hero) .kpi-faq-home .kpi-faq-lead,
+.kpi-shell.kpi-locale-th:has(.kpi-website-hero) .kpi-faq-home .kpi-faq-panel p {
+  font-family: Prompt, "Noto Sans Thai", Tahoma, Arial, sans-serif;
+}
+
+.kpi-shell:has(.kpi-website-hero) .kpi-faq-home .kpi-latin,
+.kpi-shell.kpi-locale-th:has(.kpi-website-hero) .kpi-faq-home .kpi-latin {
+  font-family: Montserrat, Poppins, sans-serif !important;
+}
+
+.kpi-shell:has(.kpi-website-hero) .kpi-footer .kpi-button {
+  min-height: var(--kpi-touch);
+  background: #a2dc25;
+  color: #1a3a02;
+  white-space: normal;
+}
+
+.kpi-shell:has(.kpi-website-hero) .kpi-footer .kpi-button:hover,
+.kpi-shell:has(.kpi-website-hero) .kpi-footer .kpi-button:active {
+  background: #93c91f;
+  color: #1a3a02;
+}
+
+.kpi-shell:has(.kpi-website-hero) .kpi-footer a:focus,
+.kpi-shell:has(.kpi-website-hero) .kpi-footer a:focus-visible,
+.kpi-shell:has(.kpi-website-hero) .kpi-footer button:focus,
+.kpi-shell:has(.kpi-website-hero) .kpi-footer button:focus-visible {
+  outline: 2px solid #a2dc25 !important;
+  outline-offset: 3px;
+}
+
+.kpi-shell:has(.kpi-website-hero) .kpi-footer-statement,
+.kpi-shell:has(.kpi-website-hero) .kpi-footer-link,
+.kpi-shell:has(.kpi-website-hero) .kpi-footer-address,
+.kpi-shell:has(.kpi-website-hero) .kpi-footer-copy,
+.kpi-shell:has(.kpi-website-hero) .kpi-footer-legal-links {
+  overflow-wrap: break-word;
+}
+
+.kpi-shell:has(.kpi-website-hero) .kpi-footer-legal a:hover,
+.kpi-shell:has(.kpi-website-hero) .kpi-footer-legal button:hover,
+.kpi-shell:has(.kpi-website-hero) .kpi-footer-lang a:hover {
+  color: #a2dc25;
+}
+
+@media (max-width: 39.99rem) {
+  .kpi-shell:has(.kpi-website-hero) .kpi-faq-home .kpi-faq-trigger {
+    gap: 0.75rem;
+    padding-top: 0.9rem;
+    padding-bottom: 0.9rem;
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .kpi-shell:has(.kpi-website-hero) .kpi-faq-home .kpi-faq-panel p {
+    max-width: none;
+    padding-right: 0;
+    font-size: 0.9375rem;
+    line-height: 1.75;
+  }
+
+  .kpi-shell:has(.kpi-website-hero) .kpi-footer-statement,
+  .kpi-shell:has(.kpi-website-hero) .kpi-footer-copy,
+  .kpi-shell:has(.kpi-website-hero) .kpi-footer-legal-links {
     max-width: none;
   }
 }

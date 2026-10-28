@@ -1415,7 +1415,8 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
 
 .crm-shell-meta,
 .crm-shell-ads,
-.crm-shell-seo {
+.crm-shell-seo,
+.crm-shell-website {
   --crm-rail-active: #a2dc25;
 }
 
@@ -1424,14 +1425,17 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
 .crm-shell-ads .crm-rail-link.is-active,
 .crm-shell-ads .crm-rail-link[aria-current="page"],
 .crm-shell-seo .crm-rail-link.is-active,
-.crm-shell-seo .crm-rail-link[aria-current="page"] {
+.crm-shell-seo .crm-rail-link[aria-current="page"],
+.crm-shell-website .crm-rail-link.is-active,
+.crm-shell-website .crm-rail-link[aria-current="page"] {
   color: #1a3a02;
   box-shadow: 0 10px 24px rgba(162, 220, 37, 0.35);
 }
 
 .crm-shell-meta .crm-app-sub-links a[aria-current="page"],
 .crm-shell-ads .crm-app-sub-links a[aria-current="page"],
-.crm-shell-seo .crm-app-sub-links a[aria-current="page"] {
+.crm-shell-seo .crm-app-sub-links a[aria-current="page"],
+.crm-shell-website .crm-app-sub-links a[aria-current="page"] {
   background: #a2dc25;
   color: #1a3a02;
 }

@@ -17,6 +17,8 @@ import { parseGoogleAdsPageBody, GOOGLE_ADS_CMS_TEMPLATE } from "@/lib/cms/googl
 import { parseMetaAdsPageBody, META_ADS_CMS_TEMPLATE } from "@/lib/cms/meta-ads-page";
 import { parseHotelSeoPageBody, HOTEL_SEO_CMS_TEMPLATE } from "@/lib/cms/hotel-seo-page";
 import { hotelSeoFaqs, hotelSeoFaqsAreStale } from "@/lib/hotel-seo";
+import { parseHotelWebsitePageBody, HOTEL_WEBSITE_CMS_TEMPLATE } from "@/lib/cms/hotel-website-page";
+import { hotelWebsiteFaqs, hotelWebsiteFaqsAreStale } from "@/lib/hotel-website";
 import { faqsForRoute, howToStepsForRoute } from "@/lib/faqs";
 import { pageKind } from "@/lib/page-types";
 import {
@@ -54,7 +56,8 @@ export async function SiteShell({
     stored?.template === B2B_CMS_TEMPLATE ||
     stored?.template === GOOGLE_ADS_CMS_TEMPLATE ||
     stored?.template === META_ADS_CMS_TEMPLATE ||
-    stored?.template === HOTEL_SEO_CMS_TEMPLATE;
+    stored?.template === HOTEL_SEO_CMS_TEMPLATE ||
+    stored?.template === HOTEL_WEBSITE_CMS_TEMPLATE;
   if (stored?.trashedAt) notFound();
   if (stored && !isCmsPageLive(stored) && !specialTemplate) notFound();
 
@@ -85,6 +88,13 @@ export async function SiteShell({
                       ? mapped
                       : hotelSeoFaqs(locale === "th" ? "th" : "en");
                   })()
+                : cmsLive?.template === HOTEL_WEBSITE_CMS_TEMPLATE
+                  ? (() => {
+                      const mapped = parseHotelWebsitePageBody(cmsLive.body, locale)?.faqs.map(({ q, a }) => ({ q, a })) ?? [];
+                      return mapped.length && !hotelWebsiteFaqsAreStale(mapped)
+                        ? mapped
+                        : hotelWebsiteFaqs(locale === "th" ? "th" : "en");
+                    })()
               : null;
   const faqs = kind === "article" ? [] : cmsFaqs?.length ? cmsFaqs : faqsForRoute(route);
   const faqJson = faqSchema(faqs);

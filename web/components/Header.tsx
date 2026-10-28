@@ -38,6 +38,16 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
   const fromHistory = useRef(false);
   const currentLang = locales.find((item) => item.id === locale)?.label ?? "ไทย";
   const isHome = pathname === homeHref(locale);
+  const solutionsHref = solutionsIndexHref(locale);
+  const langMenuId = "kpi-header-lang-menu";
+  const isCurrentHref = (href: string) => {
+    if (!href) return false;
+    if (pathname === href) return true;
+    if (href === homeHref(locale)) return false;
+    return pathname.startsWith(`${href.endsWith("/") ? href : `${href}/`}`);
+  };
+  const solutionsCurrent = pathname === solutionsHref || pathname.includes("/solutions/");
+  const langLabel = locale === "th" ? "เลือกภาษา" : "Choose language";
 
   const clearCloseTimer = () => {
     if (closeTimer.current !== null) {
@@ -157,8 +167,12 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
               onMouseEnter={openSolutionsMenu}
               onMouseLeave={scheduleCloseSolutions}
             >
-              <div className={`kpi-solutions-trigger ${openSolutions ? "is-open" : ""}`}>
-                <Link href={solutionsIndexHref(locale)} className="kpi-solutions-label">
+              <div className={`kpi-solutions-trigger${openSolutions ? " is-open" : ""}${solutionsCurrent ? " is-current" : ""}`}>
+                <Link
+                  href={solutionsHref}
+                  className="kpi-solutions-label"
+                  aria-current={solutionsCurrent ? "page" : undefined}
+                >
                   {t.solutions}
                 </Link>
                 <button
@@ -199,7 +213,13 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
                         <p className="kpi-solutions-heading">{group.title}</p>
                         <div className="kpi-solutions-links">
                           {group.items.map((item) => (
-                            <Link key={item.href} href={item.href} role="menuitem" className="kpi-solutions-link">
+                            <Link
+                              key={item.href}
+                              href={item.href}
+                              role="menuitem"
+                              className="kpi-solutions-link"
+                              aria-current={isCurrentHref(item.href) ? "page" : undefined}
+                            >
                               {item.label}
                             </Link>
                           ))}
@@ -216,12 +236,22 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
             </div>
           ) : null}
           {primaryLinks.map((item) => (
-            <Link key={item.href} href={item.href} className="kpi-nav-link">
+            <Link
+              key={item.href}
+              href={item.href}
+              className="kpi-nav-link"
+              aria-current={isCurrentHref(item.href) ? "page" : undefined}
+            >
               {item.label}
             </Link>
           ))}
           {extraLinks.map((item) => (
-            <Link key={item.href} href={item.href} className="kpi-nav-link">
+            <Link
+              key={item.href}
+              href={item.href}
+              className="kpi-nav-link"
+              aria-current={isCurrentHref(item.href) ? "page" : undefined}
+            >
               {item.label}
             </Link>
           ))}
@@ -244,25 +274,35 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
           <div ref={langRef} className="kpi-header-lang">
             <button
               type="button"
+              aria-label={langLabel}
               aria-expanded={openLang}
               aria-haspopup="menu"
+              aria-controls={langMenuId}
               className="kpi-thai-nav kpi-header-lang-btn"
               onClick={() => {
                 setOpenSolutions(false);
                 setOpenLang((value) => !value);
               }}
             >
-              <Earth className="h-4 w-4" />
+              <Earth className="h-4 w-4" aria-hidden="true" />
               <span>{currentLang}</span>
-              <ChevronDown className={`h-3.5 w-3.5 transition-transform ${openLang ? "rotate-180" : ""}`} />
+              <ChevronDown className={`h-3.5 w-3.5 transition-transform ${openLang ? "rotate-180" : ""}`} aria-hidden="true" />
             </button>
-            <div className="kpi-header-lang-menu" style={{ display: openLang ? "block" : "none", zIndex: 80 }}>
+            <div
+              id={langMenuId}
+              role="menu"
+              aria-label={langLabel}
+              className="kpi-header-lang-menu"
+              style={{ display: openLang ? "block" : "none", zIndex: 80 }}
+            >
               <div className="kpi-header-lang-panel">
                 {locales.map((item) => (
                   <Link
                     key={item.id}
                     href={switchLocale(pathname, item.id)}
+                    role="menuitem"
                     className="kpi-header-lang-option"
+                    aria-current={item.id === locale ? "true" : undefined}
                     onClick={() => setOpenLang(false)}
                   >
                     {item.label}
@@ -356,22 +396,35 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
             ) : null}
             <div className="kpi-mobile-primary">
               {primaryLinks.map((item) => (
-                <Link key={item.href} href={item.href} className="kpi-mobile-link" onClick={() => setOpenMenu(false)}>
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="kpi-mobile-link"
+                  aria-current={isCurrentHref(item.href) ? "page" : undefined}
+                  onClick={() => setOpenMenu(false)}
+                >
                   {item.label}
                 </Link>
               ))}
               {extraLinks.map((item) => (
-                <Link key={item.href} href={item.href} className="kpi-mobile-link" onClick={() => setOpenMenu(false)}>
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="kpi-mobile-link"
+                  aria-current={isCurrentHref(item.href) ? "page" : undefined}
+                  onClick={() => setOpenMenu(false)}
+                >
                   {item.label}
                 </Link>
               ))}
             </div>
-            <div className="kpi-mobile-langs">
+            <div className="kpi-mobile-langs" aria-label={langLabel}>
               {locales.map((item) => (
                 <Link
                   key={item.id}
                   href={switchLocale(pathname, item.id)}
                   className={`kpi-mobile-lang${item.id === locale ? " is-current" : ""}`}
+                  aria-current={item.id === locale ? "true" : undefined}
                   onClick={() => setOpenMenu(false)}
                 >
                   {item.label}

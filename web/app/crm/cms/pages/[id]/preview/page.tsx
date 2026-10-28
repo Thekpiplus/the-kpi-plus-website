@@ -4,6 +4,7 @@ import { B2bView } from "@/components/B2bView";
 import { GoogleAdsView } from "@/components/GoogleAdsView";
 import { MetaAdsView } from "@/components/MetaAdsView";
 import { SeoLocalView } from "@/components/SeoLocalView";
+import { WebsiteView } from "@/components/WebsiteView";
 import { ReservationsView } from "@/components/ReservationsView";
 import { RevenueView } from "@/components/RevenueView";
 import { PageHeader } from "@/components/crm/ui/PageHeader";
@@ -15,6 +16,8 @@ import { loadMetaAdsPagePreview } from "@/lib/cms/meta-ads-page-public";
 import { isMetaAdsPageDocument } from "@/lib/cms/meta-ads-page";
 import { isHotelSeoPageDocument } from "@/lib/cms/hotel-seo-page";
 import { loadHotelSeoPagePreview } from "@/lib/cms/hotel-seo-page-public";
+import { isHotelWebsitePageDocument } from "@/lib/cms/hotel-website-page";
+import { loadHotelWebsitePagePreview } from "@/lib/cms/hotel-website-page-public";
 import { loadReservationsPagePreview } from "@/lib/cms/reservations-page-public";
 import { isReservationsPageDocument } from "@/lib/cms/reservations-page";
 import { loadRevenuePagePreview } from "@/lib/cms/revenue-page-public";
@@ -37,7 +40,8 @@ export default async function PreviewCmsPage({
   const googleAds = isGoogleAdsPageDocument(document);
   const metaAds = isMetaAdsPageDocument(document);
   const hotelSeo = isHotelSeoPageDocument(document);
-  if (!reservations && !revenue && !b2b && !googleAds && !metaAds && !hotelSeo) notFound();
+  const hotelWebsite = isHotelWebsitePageDocument(document);
+  if (!reservations && !revenue && !b2b && !googleAds && !metaAds && !hotelSeo && !hotelWebsite) notFound();
 
   const preview = reservations ? await loadReservationsPagePreview(id) : null;
   const revenuePreview = revenue ? await loadRevenuePagePreview(id) : null;
@@ -45,6 +49,7 @@ export default async function PreviewCmsPage({
   const adsPreview = googleAds ? await loadGoogleAdsPagePreview(id) : null;
   const metaPreview = metaAds ? await loadMetaAdsPagePreview(id) : null;
   const hotelSeoPreview = hotelSeo ? await loadHotelSeoPagePreview(id) : null;
+  const hotelWebsitePreview = hotelWebsite ? await loadHotelWebsitePagePreview(id) : null;
   const live =
     preview?.live ??
     revenuePreview?.live ??
@@ -52,8 +57,9 @@ export default async function PreviewCmsPage({
     adsPreview?.live ??
     metaPreview?.live ??
     hotelSeoPreview?.live ??
+    hotelWebsitePreview?.live ??
     false;
-  if (!preview && !revenuePreview && !b2bPreview && !adsPreview && !metaPreview && !hotelSeoPreview) notFound();
+  if (!preview && !revenuePreview && !b2bPreview && !adsPreview && !metaPreview && !hotelSeoPreview && !hotelWebsitePreview) notFound();
   const path = documentPath(document);
   const title = reservations
     ? "ตัวอย่างหน้า Outsourced Hotel Reservations"
@@ -65,6 +71,8 @@ export default async function PreviewCmsPage({
           ? "ตัวอย่างหน้า Meta Ads Management"
           : hotelSeo
             ? "ตัวอย่างหน้า Hotel SEO, Google Maps และ AI Search"
+          : hotelWebsite
+            ? "ตัวอย่างหน้า Hotel Website Design"
           : "ตัวอย่างหน้า Revenue & Commercial";
 
   return (
@@ -104,6 +112,12 @@ export default async function PreviewCmsPage({
           <SeoLocalView
             locale={hotelSeoPreview.locale === "en" || hotelSeoPreview.locale === "ru" || hotelSeoPreview.locale === "zh" ? hotelSeoPreview.locale : "th"}
             previewContent={hotelSeoPreview.content}
+            embedded
+          />
+        ) : hotelWebsitePreview ? (
+          <WebsiteView
+            locale={hotelWebsitePreview.locale === "en" || hotelWebsitePreview.locale === "ru" || hotelWebsitePreview.locale === "zh" ? hotelWebsitePreview.locale : "th"}
+            previewContent={hotelWebsitePreview.content}
             embedded
           />
         ) : null}
