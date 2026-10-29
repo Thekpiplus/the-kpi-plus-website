@@ -1,200 +1,137 @@
 import Link from "next/link";
 import { IndependentHotelEnquiry } from "@/components/IndependentHotelEnquiry";
 import { IndependentHotelStickyCta } from "@/components/IndependentHotelStickyCta";
+import {
+  IndependentAssessmentVisual,
+  IndependentDeliverablesVisual,
+  IndependentFitVisual,
+  IndependentHeroVisual,
+  IndependentModelVisual,
+  IndependentPlanVisual,
+  IndependentRelatedVisual,
+  IndependentScopeVisual,
+  IndependentServicesVisual,
+  IndependentWorkflowVisual,
+} from "@/components/independent-hotel/IndependentVisuals";
+import "@/components/independent-hotel/independent-visuals.css";
+import { PageFaqs } from "@/components/PageFaqs";
 import { SiteShell } from "@/components/SiteShell";
+import type { CmsIndependentPage } from "@/lib/cms/independent-hotel-page";
+import { splitCmsLines } from "@/lib/cms/independent-hotel-page";
+import {
+  independentHotelFaqsFromCms,
+  loadIndependentHotelPage,
+} from "@/lib/cms/independent-hotel-page-public";
+import {
+  INDEPENDENT_ASSESSMENT_ROWS,
+  INDEPENDENT_CADENCE,
+  INDEPENDENT_DELIVERABLES,
+  INDEPENDENT_DELIVERABLES_BOUNDARY,
+  INDEPENDENT_DELIVERABLES_COLUMNS,
+  INDEPENDENT_FIT_COLUMNS,
+  INDEPENDENT_FIT_NOT,
+  INDEPENDENT_FIT_SCENARIOS,
+  INDEPENDENT_HERO_CAPABILITIES,
+  INDEPENDENT_KPIS,
+  INDEPENDENT_KPI_SAMPLE,
+  INDEPENDENT_MODEL_BOUNDARY,
+  INDEPENDENT_MODEL_STEPS,
+  INDEPENDENT_PLAN,
+  INDEPENDENT_SCOPE_ROWS,
+  INDEPENDENT_SERVICE_FIELDS,
+  INDEPENDENT_SERVICES,
+  INDEPENDENT_SOURCES,
+  INDEPENDENT_WORKFLOW,
+  INDEPENDENT_WORKFLOW_APPROVALS,
+  INDEPENDENT_WORKFLOW_FIELDS,
+  INDEPENDENT_WORKSTREAMS,
+  independentHotelCopy,
+  independentRelatedCards,
+} from "@/lib/independent-hotel";
 import { solutionNavLabel } from "@/lib/nav";
-import { localizePath, type Locale } from "@/lib/seo";
+import { existingHref, localizePath, type Locale } from "@/lib/seo";
 
-const heroPhoto = "/media/b2b-hero-meeting.jpg";
-const needPhoto = "/media/reservations-hero-desk.jpg";
+function independentPublicHref(href: string, locale: Locale, fallback: string) {
+  const next = href.trim() || fallback;
+  if (/^(#|https?:\/\/|mailto:|tel:)/i.test(next)) return next;
+  return existingHref(next, locale) || localizePath(next, locale) || next;
+}
 
-const methodLabels = ["REVIEW", "ALIGN", "START"] as const;
-
-const copy = {
-  th: {
-    crumb: "โซลูชัน",
-    eyebrow: "Independent Hotel Management",
-    title: "บริหารโรงแรมอิสระให้เดินงานได้จริง และเติบโตอย่างมีทิศทาง",
-    lead: "โรงแรมที่ดีต้องมีมากกว่าห้องพักที่พร้อมขาย ต้องมีทีมที่เหมาะสม ระบบงานที่ชัดเจน การบริการที่สม่ำเสมอ และแผนสร้างรายได้ที่สอดคล้องกับตลาด",
-    leadClose:
-      "เดอะ เคพีไอ พลัส ช่วยเจ้าของโรงแรมอิสระวางแนวทางบริหารให้เหมาะกับทรัพย์สินและเป้าหมายของตัวเอง ตั้งแต่การจัดหาทีมบริหาร วางระบบการดำเนินงาน ไปจนถึงการดูแลรายได้ ช่องทางขาย และผลประกอบการ",
-    start: "เราเริ่มจากการพูดคุย เพื่อให้เข้าใจว่าโรงแรมของคุณมีอะไรอยู่แล้ว ต้องการความช่วยเหลือส่วนไหน และควรทำงานร่วมกันอย่างไร",
-    cta: "นัดพูดคุยเรื่องโรงแรมของคุณ",
-    underCta: "ไม่ต้องเตรียมขอบเขตงานไว้ก่อน เล่าให้เราฟังเกี่ยวกับโรงแรมและเป้าหมาย",
-    photoAlt: "เจ้าของและทีมที่ปรึกษาหารือแนวทางบริหารโรงแรม",
-    needPhotoAlt: "ผู้บริหารโรงแรมทบทวนงานดำเนินงานและแผนการทำงาน",
-    needTitle: "โรงแรมของคุณต้องการความช่วยเหลือแบบไหน?",
-    needLead:
-      "บางโรงแรมมีทีมงานพร้อม แต่ต้องการผู้ช่วยวางกลยุทธ์และติดตามผล บางโรงแรมกำลังเปลี่ยนผ่านทีมบริหาร ขณะที่บางแห่งต้องการเริ่มวางระบบใหม่ตั้งแต่ต้น",
-    needClose: "เราไม่ได้กำหนดขอบเขตบริการเหมือนกันทุกแห่ง แต่ร่วมกับเจ้าของออกแบบวิธีบริหารที่ตอบโจทย์โรงแรมจริง",
-    helpTitle: "สิ่งที่เราช่วยโรงแรมได้",
-    help: [
-      ["01", "จัดหาและวางทีมบริหาร", "ประเมินโครงสร้างทีมที่โรงแรมต้องการ ช่วยค้นหาผู้บริหารและบุคลากรที่เหมาะสม พร้อมกำหนดบทบาท หน้าที่ และวิธีทำงานร่วมกันให้ชัดเจน"],
-      ["02", "วางระบบการดำเนินงาน", "ทบทวนและพัฒนาขั้นตอนการทำงานของโรงแรม ทั้งการรับจอง การต้อนรับแขก งานห้องพัก การประสานงานระหว่างแผนก และการติดตามปัญหาหน้างาน เพื่อให้ทีมทำงานได้ต่อเนื่องและรักษามาตรฐานบริการ"],
-      ["03", "บริหารรายได้และช่องทางขาย", "วิเคราะห์ตลาด วางราคาและโปรโมชั่น ดูแลช่องทางจองออนไลน์ และติดตามผลการขาย เพื่อให้โรงแรมปรับตัวตามความต้องการของลูกค้าและใช้ศักยภาพของห้องพักได้ดีขึ้น"],
-      ["04", "พัฒนาการตลาดและการจองตรง", "ดูว่าลูกค้าค้นพบ เปรียบเทียบ และตัดสินใจจองโรงแรมอย่างไร แล้ววางแนวทางพัฒนาเว็บไซต์ ข้อมูลบนช่องทางออนไลน์ และการสื่อสารที่ช่วยสร้างโอกาสในการจองตรง"],
-      ["05", "เลือกใช้ระบบและเทคโนโลยี", "ช่วยประเมินและจัดระบบที่จำเป็นต่อการทำงาน เช่น PMS, Channel Manager และระบบจองตรง รวมถึงนำ AI และ Automation มาใช้ในจุดที่ช่วยลดงานซ้ำและทำให้ทีมมีเวลาดูแลแขกมากขึ้น"],
-      ["06", "ติดตามผลประกอบการร่วมกับเจ้าของ", "กำหนดเป้าหมาย ตัวชี้วัด และรูปแบบรายงานที่เจ้าของใช้ตัดสินใจได้จริง พร้อมพูดคุยอย่างสม่ำเสมอว่าอะไรได้ผล อะไรเป็นปัญหา และควรปรับแผนอย่างไร"],
-    ],
-    methodTitle: "วิธีเริ่มต้นทำงานร่วมกัน",
-    steps: [
-      ["01", "พูดคุยและเข้าใจโรงแรม", "เราเรียนรู้เป้าหมายของเจ้าของ สภาพการดำเนินงาน ทีมที่มีอยู่ ผลประกอบการ และความท้าทายของโรงแรม"],
-      ["02", "กำหนดขอบเขตงานร่วมกัน", "ตกลงให้ชัดว่า เดอะ เคพีไอ พลัส จะรับผิดชอบเรื่องใด ทีมโรงแรมรับผิดชอบเรื่องใด ต้องจัดหาคนเพิ่มเติมหรือไม่ และจะประสานงานกันอย่างไร"],
-      ["03", "วางแผนและเริ่มดำเนินงาน", "จัดลำดับสิ่งที่ต้องทำก่อน กำหนดผู้รับผิดชอบและเป้าหมาย แล้วติดตามผลเพื่อปรับแผนตามสถานการณ์จริง"],
-    ],
-    fitTitle: "เหมาะกับเจ้าของโรงแรมอิสระที่…",
-    fit: [
-      "ต้องการทีมบริหารหรือผู้ช่วยดูแลการดำเนินงาน",
-      "มีทีมอยู่แล้ว แต่อยากให้ระบบงานและความรับผิดชอบชัดขึ้น",
-      "ต้องการพัฒนารายได้ การขาย และผลประกอบการ",
-      "กำลังเตรียมเปิดโรงแรม หรือปรับแนวทางบริหารโรงแรมเดิม",
-      "ต้องการเห็นข้อมูลและความคืบหน้าเพื่อใช้ตัดสินใจในฐานะเจ้าของ",
-    ],
-    closerTitle: "มาคุยกันว่าโรงแรมของคุณควรเริ่มตรงไหน",
-    closerBody:
-      "คุณไม่จำเป็นต้องเตรียมขอบเขตงานไว้ก่อน เพียงเล่าให้เราฟังเกี่ยวกับโรงแรม เป้าหมาย และเรื่องที่อยากให้ช่วย เราจะร่วมกันหาวิธีทำงานที่เหมาะสม พร้อมกำหนดหน้าที่และความรับผิดชอบให้ชัดเจนก่อนเริ่มงาน",
-    closerCta: "นัดพูดคุยเรื่องการบริหารโรงแรม",
-  },
-  en: {
-    crumb: "Solutions",
-    eyebrow: "Independent Hotel Management",
-    title: "Run an independent hotel so the work moves, and growth has a direction",
-    lead: "A good hotel needs more than rooms that are ready to sell. It needs the right team, a clear way of working, consistent service, and a revenue plan that fits the market.",
-    leadClose:
-      "The KPI Plus helps independent hotel owners set a way of running the hotel that fits the property and their own goal, from finding a management team and setting operations through to looking after revenue, sales channels, and the result.",
-    start: "We start with a conversation, so we understand what the hotel already has, which part needs help, and how we should work together.",
-    cta: "Book a conversation about your hotel",
-    underCta: "You do not need a scope in advance. Tell us about the hotel and the goal.",
-    photoAlt: "An owner and advisors discussing how to run the hotel",
-    needPhotoAlt: "A hotel manager reviewing operations and the work plan",
-    needTitle: "What kind of help does the hotel need?",
-    needLead:
-      "Some hotels already have a team, but need someone to set the strategy and follow the result. Some are changing the management team. Others need to set a new way of working from the start.",
-    needClose: "We do not set the same service scope for every hotel. We design the way of running it with the owner, around the real hotel.",
-    helpTitle: "What we can help a hotel with",
-    help: [
-      ["01", "Find and set the management team", "Review the team structure the hotel needs, help find suitable managers and people, and make roles, duties, and how people work together clear."],
-      ["02", "Set the operating system", "Review and develop the hotel’s work steps: taking bookings, receiving guests, housekeeping, work between departments, and following floor problems, so the team can keep going and hold the service standard."],
-      ["03", "Look after revenue and sales channels", "Read the market, set rates and offers, look after online booking channels, and follow sales results, so the hotel can adjust to guest demand and use the rooms better."],
-      ["04", "Develop marketing and direct booking", "See how guests find, compare, and decide to book the hotel, then set a path to improve the website, online facts, and the communication that creates a direct-booking chance."],
-      ["05", "Choose systems and technology", "Help assess and set the systems the work needs, such as the PMS, channel manager, and direct booking system, and use AI and automation where they cut repeated work and free time to look after guests."],
-      ["06", "Follow the result with the owner", "Set goals, measures, and a report format the owner can actually decide from, and talk regularly about what works, what is a problem, and how the plan should change."],
-    ],
-    methodTitle: "How we start working together",
-    steps: [
-      ["01", "Talk and understand the hotel", "We learn the owner’s goal, how the hotel is running, the team in place, the result, and the hotel’s challenges."],
-      ["02", "Agree the scope together", "Make it clear what The KPI Plus will own, what the hotel team will own, whether more people must be found, and how we will coordinate."],
-      ["03", "Plan and start the work", "Put first things first, name owners and goals, then follow the result and adjust the plan to the real situation."],
-    ],
-    fitTitle: "This fits independent hotel owners who…",
-    fit: [
-      "Need a management team, or someone to help look after operations",
-      "Already have a team, but want clearer work systems and ownership",
-      "Want to develop revenue, sales, and the hotel result",
-      "Are preparing to open a hotel, or to change how the current hotel is run",
-      "Want facts and progress they can use to decide as the owner",
-    ],
-    closerTitle: "Let’s talk about where your hotel should start",
-    closerBody:
-      "You do not need a scope in advance. Tell us about the hotel, the goal, and what you want help with. We will find a way of working that fits, and make roles and ownership clear before the work starts.",
-    closerCta: "Book a conversation about hotel management",
-  },
-  ru: {
-    crumb: "Решения",
-    eyebrow: "Independent Hotel Management",
-    title: "Управлять независимым отелем так, чтобы работа шла и рост имел направление",
-    lead: "Хорошему отелю нужно больше, чем номера, готовые к продаже. Нужна подходящая команда, ясный способ работы, стабильный сервис и план дохода, который соответствует рынку.",
-    leadClose:
-      "The KPI Plus помогает владельцам независимых отелей выстроить управление под объект и их цель: от подбора управляющей команды и операционной системы до дохода, каналов продаж и результата.",
-    start: "Мы начинаем с разговора, чтобы понять, что у отеля уже есть, какая часть нужна помощь и как нам работать вместе.",
-    cta: "Назначить разговор об отеле",
-    underCta: "Готовить объём работы заранее не нужно. Расскажите об отеле и цели.",
-    photoAlt: "Владелец и консультанты обсуждают способ управления отелем",
-    needPhotoAlt: "Управляющий отеля разбирает операции и план работы",
-    needTitle: "Какая помощь нужна отелю?",
-    needLead:
-      "У одних отелей команда уже есть, но нужен человек, который выстроит стратегию и будет следить за результатом. Другие меняют управляющую команду. Третьим нужно выстроить систему работы с нуля.",
-    needClose: "Мы не задаём один и тот же объём услуг для каждого отеля. Вместе с владельцем проектируем способ управления под реальный объект.",
-    helpTitle: "Чем мы можем помочь отелю",
-    help: [
-      ["01", "Подобрать и выстроить управляющую команду", "Оценить нужную структуру команды, помочь найти подходящих руководителей и людей, ясно задать роли, обязанности и способ совместной работы."],
-      ["02", "Выстроить операционную систему", "Разобрать и развить шаги работы отеля: приём брони, встречу гостя, работу номерного фонда, взаимодействие отделов и разбор проблем на смене, чтобы команда работала непрерывно и держала стандарт сервиса."],
-      ["03", "Вести доход и каналы продаж", "Читать рынок, ставить цены и акции, вести онлайн-каналы брони и смотреть результат продаж, чтобы отель подстраивался под спрос и лучше использовал номера."],
-      ["04", "Развивать маркетинг и прямое бронирование", "Понять, как гость находит, сравнивает и решает бронировать отель, затем выстроить путь улучшения сайта, онлайн-данных и коммуникации, которая даёт шанс прямой брони."],
-      ["05", "Выбрать системы и технологии", "Помочь оценить и выстроить нужные системы — PMS, Channel Manager и систему прямой брони — и использовать ИИ и автоматизацию там, где они сокращают повторную работу и оставляют команде время на гостя."],
-      ["06", "Следить за результатом вместе с владельцем", "Задать цели, показатели и формат отчёта, по которому владелец реально решает, и регулярно говорить, что работает, что является проблемой и как менять план."],
-    ],
-    methodTitle: "Как мы начинаем работать вместе",
-    steps: [
-      ["01", "Поговорить и понять отель", "Узнать цель владельца, как отель работает сейчас, какая команда есть, какой результат и какие сложности."],
-      ["02", "Совместно задать границы работы", "Ясно договориться, за что отвечает The KPI Plus, за что — команда отеля, нужно ли искать людей дополнительно и как будем координироваться."],
-      ["03", "Спланировать и начать работу", "Поставить сначала то, что нужно раньше, назвать ответственных и цели, затем следить за результатом и править план по реальной ситуации."],
-    ],
-    fitTitle: "Подходит владельцам независимых отелей, которые…",
-    fit: [
-      "Нуждаются в управляющей команде или помощнике по операциям",
-      "Команда уже есть, но хотят яснее систему работы и ответственность",
-      "Хотят развивать доход, продажи и результат отеля",
-      "Готовят открытие отеля или меняют способ управления существующим",
-      "Хотят видеть данные и прогресс, чтобы решать как владелец",
-    ],
-    closerTitle: "Давайте поговорим, с чего начать вашему отелю",
-    closerBody:
-      "Готовить объём работы заранее не нужно. Расскажите об отеле, цели и том, с чем нужна помощь. Вместе найдём подходящий способ работы и ясно зададим роли и ответственность до старта.",
-    closerCta: "Назначить разговор об управлении отелем",
-  },
-  zh: {
-    crumb: "方案",
-    eyebrow: "Independent Hotel Management",
-    title: "讓獨立飯店真正把工作跑起來，成長也有方向",
-    lead: "一間好飯店需要的不只是準備好可賣的客房，還要有合適的團隊、清楚的作業系統、穩定的服務，以及符合市場的收益計畫。",
-    leadClose:
-      "The KPI Plus 協助獨立飯店業主，依自己的資產與目標規劃管理方式：從尋找管理團隊、建立營運系統，到照顧收益、銷售通路與經營結果。",
-    start: "我們從對談開始，先了解飯店已有什麼、需要協助哪一部分，以及雙方該如何合作。",
-    cta: "預約談你的飯店",
-    underCta: "不必先準備工作範圍。告訴我們飯店情況與目標即可。",
-    photoAlt: "業主與顧問討論飯店管理方式",
-    needPhotoAlt: "飯店管理者檢視營運與工作計畫",
-    needTitle: "你的飯店需要哪一種協助？",
-    needLead:
-      "有的飯店已有團隊，但需要有人協助訂策略並追蹤結果；有的正在轉換管理團隊；也有的需要從頭建立新的作業系統。",
-    needClose: "我們不會對每間飯店訂同一套服務範圍，而是與業主一起設計真正符合該飯店的管理方式。",
-    helpTitle: "我們能協助飯店的事",
-    help: [
-      ["01", "尋找並安排管理團隊", "評估飯店需要的團隊結構，協助找到合適的主管與人員，並把角色、職責與合作方式講清楚。"],
-      ["02", "建立營運系統", "檢視並發展飯店工作步驟：接訂、接待客人、客房作業、部門協調，以及追蹤現場問題，讓團隊能持續運作並維持服務標準。"],
-      ["03", "管理收益與銷售通路", "分析市場、規劃價格與促銷、照顧線上預訂通路，並追蹤銷售結果，讓飯店能依客人需求調整，也更好發揮客房產能。"],
-      ["04", "發展行銷與直銷預訂", "看客人如何發現、比較並決定預訂飯店，再規劃網站、線上資料與溝通方式，以創造直銷預訂機會。"],
-      ["05", "選擇系統與科技", "協助評估並安排工作所需系統，例如 PMS、Channel Manager 與直銷預訂系統，並在能減少重複工作、讓團隊有時間照顧客人的地方使用 AI 與 Automation。"],
-      ["06", "與業主一起追蹤經營結果", "約定目標、指標，以及業主能據以決策的報告形式，並定期談什麼有效、什麼是問題，以及計畫該如何調整。"],
-    ],
-    methodTitle: "如何開始合作",
-    steps: [
-      ["01", "對談並理解飯店", "了解業主目標、目前營運狀況、既有團隊、經營結果，以及飯店面對的挑戰。"],
-      ["02", "一起約定工作範圍", "清楚約定 The KPI Plus 負責什麼、飯店團隊負責什麼、是否需要再找人，以及如何協調。"],
-      ["03", "規劃並開始執行", "排出該先做的事、指定負責人與目標，再依實際情況追蹤結果並調整計畫。"],
-    ],
-    fitTitle: "適合這些獨立飯店業主…",
-    fit: [
-      "需要管理團隊，或需要有人協助照顧營運",
-      "已有團隊，但希望作業系統與責任更清楚",
-      "想發展收益、銷售與經營結果",
-      "正在準備開幕，或要調整現有飯店的管理方式",
-      "希望看到資料與進度，以便以業主身份做決定",
-    ],
-    closerTitle: "一起來談，你的飯店該從哪裡開始",
-    closerBody:
-      "你不必先準備好工作範圍。只要告訴我們飯店情況、目標，以及希望協助的事。我們會一起找出合適的合作方式，並在開始前把職責與責任講清楚。",
-    closerCta: "預約談飯店管理",
-  },
-} as const;
-
-export function IndependentHotelView({ locale }: { locale: Locale }) {
-  const t = copy[locale];
+export async function IndependentHotelView({
+  locale,
+  previewContent,
+  embedded = false,
+}: {
+  locale: Locale;
+  previewContent?: CmsIndependentPage;
+  embedded?: boolean;
+}) {
+  const cms = previewContent ? { ...previewContent, fromCms: true } : await loadIndependentHotelPage(locale);
+  const fromCms = cms.fromCms;
+  const t = locale === "th" ? independentHotelCopy.th : independentHotelCopy.en;
   const solutions = localizePath("/solutions", locale);
+  const approach = existingHref("/approach", locale) || localizePath("/approach", locale);
+  const thai = locale === "th";
+  const faqItems = independentHotelFaqsFromCms(fromCms ? cms : null, locale);
+  const related =
+    fromCms && cms.related.cards.length
+      ? cms.related.cards.map((card) => ({
+          id: card.id,
+          href: independentPublicHref(card.href, locale, "/solutions"),
+          title: thai ? card.titleTh || card.titleEn : card.titleEn || card.titleTh,
+          body: thai ? card.bodyTh || card.bodyEn : card.bodyEn || card.bodyTh,
+          cta: thai ? card.ctaTh || card.ctaEn : card.ctaEn || card.ctaTh,
+        }))
+      : independentRelatedCards(locale);
+  const assessmentRows =
+    fromCms && cms.assessment.rows.length
+      ? cms.assessment.rows
+      : INDEPENDENT_ASSESSMENT_ROWS.map((row) => ({
+          id: row.id,
+          num: row.num,
+          titleTh: row.titleTh,
+          titleEn: row.titleEn,
+          questionTh: row.lookTh,
+          questionEn: row.lookEn,
+          symptomTh: "",
+          symptomEn: "",
+          supportTh: "",
+          supportEn: "",
+          output: row.output,
+        }));
+  const workstreams = fromCms && cms.services.workstreams.length ? cms.services.workstreams : INDEPENDENT_WORKSTREAMS.map((row) => ({ ...row, bulletsTh: row.bulletsTh.join("\n"), bulletsEn: row.bulletsEn.join("\n") }));
+  const serviceItems = fromCms && cms.services.items.length ? cms.services.items : INDEPENDENT_SERVICES;
+  const modelSteps = fromCms && cms.model.steps.length ? cms.model.steps : INDEPENDENT_MODEL_STEPS;
+  const deliverableRows = fromCms && cms.deliverables.rows.length ? cms.deliverables.rows : INDEPENDENT_DELIVERABLES;
+  const deliverableSupport = fromCms && cms.deliverables.supportItems.length ? cms.deliverables.supportItems : INDEPENDENT_DELIVERABLES_BOUNDARY.supportItems.map((item, index) => ({ id: `support-${index + 1}`, th: item.th, en: item.en }));
+  const deliverableHotel = fromCms && cms.deliverables.hotelItems.length ? cms.deliverables.hotelItems : INDEPENDENT_DELIVERABLES_BOUNDARY.hotelItems.map((item, index) => ({ id: `hotel-${index + 1}`, th: item.th, en: item.en }));
+  const workflowSteps = fromCms && cms.workflow.steps.length ? cms.workflow.steps : INDEPENDENT_WORKFLOW;
+  const workflowApprovals = fromCms && cms.workflow.approvals.length ? cms.workflow.approvals : INDEPENDENT_WORKFLOW_APPROVALS;
+  const fitScenarios = fromCms && cms.fit.scenarios.length ? cms.fit.scenarios : INDEPENDENT_FIT_SCENARIOS;
+  const fitNot = fromCms && cms.fit.notItems.length ? cms.fit.notItems : INDEPENDENT_FIT_NOT;
+  const scopeRows =
+    fromCms && cms.scope.rows.length
+      ? cms.scope.rows.map((row) => ({ ...row, itemsTh: splitCmsLines(row.itemsTh), itemsEn: splitCmsLines(row.itemsEn) }))
+      : INDEPENDENT_SCOPE_ROWS;
+  const planPhases =
+    fromCms && cms.plan.phases.length
+      ? cms.plan.phases.map((row) => ({ ...row, itemsTh: splitCmsLines(row.itemsTh), itemsEn: splitCmsLines(row.itemsEn) }))
+      : INDEPENDENT_PLAN;
+  const cadenceRows =
+    fromCms && cms.plan.cadence.length
+      ? cms.plan.cadence.map((row) => ({ ...row, itemsTh: splitCmsLines(row.itemsTh), itemsEn: splitCmsLines(row.itemsEn) }))
+      : INDEPENDENT_CADENCE;
+  const kpiRows = (fromCms && cms.measure.kpis.length ? cms.measure.kpis : INDEPENDENT_KPIS).filter(
+    (kpi) => !kpi.hideUntilData,
+  );
+  const sourceRows = fromCms && cms.measure.sources.length ? cms.measure.sources : INDEPENDENT_SOURCES;
+  const primaryHref = independentPublicHref(fromCms ? cms.hero.primaryCta.href : "", locale, "#independent-hotel-enquiry");
+  const secondaryHref = existingHref(fromCms && cms.hero.secondaryCta.href.trim() ? cms.hero.secondaryCta.href : "/approach", locale) || approach;
+  const closerHref = independentPublicHref(fromCms ? cms.related.closerHref : "", locale, "#independent-hotel-enquiry");
+  const sampleLabel = (fromCms && cms.plan.sampleLabel.trim() ? cms.plan.sampleLabel : "Sample plan").trim() || "Sample plan";
 
-  return (
-    <SiteShell locale={locale} route={localizePath("/solutions/independent-hotel-management", locale)}>
+  const inner = (
+    <div className="kpi-independent">
       <section className="kpi-hero kpi-home-hero-section kpi-independent-hero">
         <div className="kpi-wrap">
           <nav aria-label="Breadcrumb" className="kpi-independent-hero-crumb">
@@ -210,12 +147,14 @@ export function IndependentHotelView({ locale }: { locale: Locale }) {
           </nav>
           <div className="kpi-home-hero">
             <div className="kpi-home-hero-copy">
-              <p className="kpi-home-eyebrow kpi-latin">{t.eyebrow}</p>
+              <p className="kpi-home-eyebrow kpi-latin">{fromCms && cms?.hero.eyebrow.trim() ? cms.hero.eyebrow : t.eyebrow}</p>
               <h1 className="kpi-h1 kpi-home-h1">
-                {locale === "th" ? (
+                {fromCms && cms?.hero.title.trim() ? (
+                  cms.hero.title
+                ) : locale === "th" ? (
                   <>
                     <span className="kpi-home-h1-lead">
-                      บริหารโรงแรมอิสระให้<span className="kpi-home-accent">เดินงานได้จริง</span>
+                      บริหารโรงแรมอิสระให้<span className="kpi-home-accent">เดินหน้าได้จริง</span>
                     </span>
                     <span className="kpi-home-h1-rest">และเติบโตอย่างมีทิศทาง</span>
                   </>
@@ -223,21 +162,32 @@ export function IndependentHotelView({ locale }: { locale: Locale }) {
                   t.title
                 )}
               </h1>
-              <p className="kpi-lead kpi-home-lead">{t.lead}</p>
-              <p className="kpi-independent-lead-close">{t.leadClose}</p>
-              <p className="kpi-independent-lead-start">{t.start}</p>
+              <p className="kpi-lead kpi-home-lead">{fromCms && cms?.hero.description.trim() ? cms.hero.description : t.lead}</p>
+              <p className="kpi-independent-lead-close">{fromCms && cms?.hero.close.trim() ? cms.hero.close : t.leadClose}</p>
               <div className="kpi-actions">
-                <a href="#independent-hotel-enquiry" className="kpi-button">
-                  {t.cta} <span aria-hidden="true">↗</span>
+                <a href={primaryHref} className="kpi-button">
+                  {fromCms && cms?.hero.primaryCta.label.trim() ? cms.hero.primaryCta.label : t.cta} <span aria-hidden="true">↗</span>
                 </a>
-                <Link href={solutions} className="kpi-button-ghost">
-                  {locale === "th" ? "ดูโซลูชันทั้งหมด" : locale === "zh" ? "查看全部方案" : locale === "ru" ? "Все решения" : "All solutions"}
+                <Link href={secondaryHref} className="kpi-button-ghost">
+                  {fromCms && cms?.hero.secondaryCta.label.trim() ? cms.hero.secondaryCta.label : t.secondary}
                 </Link>
               </div>
-              <p className="kpi-independent-hero-note">{t.underCta}</p>
+              <p className="kpi-independent-hero-note">{fromCms && cms?.hero.underCta.trim() ? cms.hero.underCta : t.underCta}</p>
+              <p className="kpi-independent-hero-trust kpi-latin" aria-label={thai ? "ขอบเขตงานที่อาจช่วยได้" : "Support capabilities"}>
+                {INDEPENDENT_HERO_CAPABILITIES.map((item) => (
+                  <span key={item.en}>{item.en}</span>
+                ))}
+              </p>
             </div>
             <div className="kpi-hero-visual kpi-home-photo">
-              <img src={heroPhoto} alt={t.photoAlt} width={1200} height={900} />
+              <IndependentHeroVisual
+                locale={locale}
+                src={cms.hero.visual.src}
+                alt={thai ? cms.hero.visual.altTh : cms.hero.visual.altEn}
+                status={cms.hero.visual.status}
+                label={cms.hero.visual.label}
+                caption={cms.hero.visual.caption}
+              />
             </div>
           </div>
         </div>
@@ -246,74 +196,410 @@ export function IndependentHotelView({ locale }: { locale: Locale }) {
       <section className="kpi-section kpi-independent-need">
         <div className="kpi-independent-need-grid">
           <div className="kpi-independent-need-copy">
-            <h2 className="kpi-h2">{t.needTitle}</h2>
-            <p className="kpi-independent-need-lead">{t.needLead}</p>
-            <p className="kpi-independent-need-close">{t.needClose}</p>
+            <h2 className="kpi-h2">{fromCms && cms?.assessment.title.trim() ? cms.assessment.title : t.needTitle}</h2>
+            <p className="kpi-independent-need-lead">{fromCms && cms?.assessment.lead.trim() ? cms.assessment.lead : t.needLead}</p>
+            <p className="kpi-independent-need-close">{fromCms && cms?.assessment.close.trim() ? cms.assessment.close : t.needClose}</p>
+            <div className="kpi-independent-board is-2">
+              {assessmentRows.map((row) => {
+                const question = thai ? row.questionTh : row.questionEn;
+                const symptom = thai ? row.symptomTh : row.symptomEn;
+                const support = thai ? row.supportTh : row.supportEn;
+                return (
+                  <article key={row.id} className="kpi-independent-card">
+                    <span className="kpi-latin">{row.num}</span>
+                    <h3>{thai ? row.titleTh : row.titleEn}</h3>
+                    {question.trim() ? <p>{question}</p> : null}
+                    {symptom.trim() ? <p>{symptom}</p> : null}
+                    {support.trim() ? <p>{support}</p> : null}
+                    {row.output.trim() ? <p className="kpi-independent-need-output kpi-latin">{thai ? `ผลลัพธ์: ${row.output}` : `Output: ${row.output}`}</p> : null}
+                  </article>
+                );
+              })}
+            </div>
           </div>
-          <figure className="kpi-independent-need-media">
-            <img src={needPhoto} alt={t.needPhotoAlt} width={1200} height={900} />
-          </figure>
+          <IndependentAssessmentVisual locale={locale} src={cms.assessment.visual.src} />
         </div>
       </section>
 
       <section className="kpi-independent-help border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section">
-          <h2 className="kpi-h2">{t.helpTitle}</h2>
-          <ol className="kpi-independent-help-list">
-            {t.help.map(([num, title, body]) => (
-              <li key={num} className="kpi-independent-help-item">
-                <span className="kpi-latin kpi-independent-help-num">{num}</span>
-                <div className="kpi-independent-help-copy">
-                  <h3>{title}</h3>
-                  <p>{body}</p>
+          <p className="kpi-independent-help-kicker kpi-latin">Independent Hotel Operating Model</p>
+          <h2 className="kpi-h2">{fromCms && cms?.services.title.trim() ? cms.services.title : t.helpTitle}</h2>
+          <p className="kpi-independent-help-lead">{fromCms && cms.services.lead.trim() ? cms.services.lead : t.helpLead}</p>
+          <IndependentServicesVisual locale={locale} src={cms.services.visual.src} />
+          <div className="kpi-independent-workstreams">
+            {workstreams.map((stream) => (
+              <article key={stream.id} className="kpi-independent-workstream">
+                <p className="kpi-latin">{stream.num}</p>
+                <h3>{thai ? stream.titleTh : stream.titleEn}</h3>
+                <ul>
+                  {splitCmsLines(thai ? stream.bulletsTh : stream.bulletsEn).map((bullet) => (
+                    <li key={bullet}>{bullet}</li>
+                  ))}
+                </ul>
+                <div className="kpi-independent-workstream-items">
+                  {serviceItems.filter((item) => item.stream === stream.id).map((item) => (
+                    <div key={item.id} className="kpi-independent-service">
+                      <h4>{thai ? item.titleTh : item.titleEn}</h4>
+                      <dl>
+                        <div>
+                          <dt>{thai ? INDEPENDENT_SERVICE_FIELDS.input.th : INDEPENDENT_SERVICE_FIELDS.input.en}</dt>
+                          <dd>{thai ? item.inputTh : item.inputEn}</dd>
+                        </div>
+                        <div>
+                          <dt>{thai ? INDEPENDENT_SERVICE_FIELDS.action.th : INDEPENDENT_SERVICE_FIELDS.action.en}</dt>
+                          <dd>{thai ? item.actionTh : item.actionEn}</dd>
+                        </div>
+                        <div>
+                          <dt>{thai ? INDEPENDENT_SERVICE_FIELDS.output.th : INDEPENDENT_SERVICE_FIELDS.output.en}</dt>
+                          <dd className="kpi-latin">{item.output}</dd>
+                        </div>
+                        <div>
+                          <dt>{thai ? INDEPENDENT_SERVICE_FIELDS.approval.th : INDEPENDENT_SERVICE_FIELDS.approval.en}</dt>
+                          <dd>{thai ? item.approvalTh : item.approvalEn}</dd>
+                        </div>
+                        <div>
+                          <dt>{thai ? INDEPENDENT_SERVICE_FIELDS.owner.th : INDEPENDENT_SERVICE_FIELDS.owner.en}</dt>
+                          <dd>{thai ? item.ownerTh : item.ownerEn}</dd>
+                        </div>
+                      </dl>
+                    </div>
+                  ))}
                 </div>
-              </li>
+              </article>
             ))}
-          </ol>
+          </div>
+          <p className="kpi-independent-help-boundary">{fromCms && cms.services.boundary.trim() ? cms.services.boundary : t.helpBoundary}</p>
         </div>
       </section>
 
+      <section className="kpi-section">
+        <h2 className="kpi-h2">{fromCms && cms?.model.title.trim() ? cms.model.title : t.modelTitle}</h2>
+        <div className="kpi-independent-split">
+          <IndependentModelVisual locale={locale} src={cms.model.visual.src} />
+          <div className="kpi-independent-board">
+            {modelSteps.map((step) => (
+              <article key={step.id} className="kpi-independent-card">
+                <p className="kpi-latin">{step.num} {step.label}</p>
+                <h3>{thai ? step.titleTh : step.titleEn}</h3>
+                <p className="kpi-latin">{step.output}</p>
+              </article>
+            ))}
+            <article className="kpi-independent-card is-green">
+              <h3>{fromCms && cms.model.supportTitle.trim() ? cms.model.supportTitle : thai ? INDEPENDENT_MODEL_BOUNDARY.supportTitle.th : INDEPENDENT_MODEL_BOUNDARY.supportTitle.en}</h3>
+              <p>{fromCms && cms.model.support.trim() ? cms.model.support : thai ? INDEPENDENT_MODEL_BOUNDARY.support.th : INDEPENDENT_MODEL_BOUNDARY.support.en}</p>
+            </article>
+            <article className="kpi-independent-card is-amber">
+              <h3>{fromCms && cms.model.hotelTitle.trim() ? cms.model.hotelTitle : thai ? INDEPENDENT_MODEL_BOUNDARY.hotelTitle.th : INDEPENDENT_MODEL_BOUNDARY.hotelTitle.en}</h3>
+              <p>{fromCms && cms.model.hotel.trim() ? cms.model.hotel : thai ? INDEPENDENT_MODEL_BOUNDARY.hotel.th : INDEPENDENT_MODEL_BOUNDARY.hotel.en}</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section className="kpi-section kpi-independent-deliverables">
+        <h2 className="kpi-h2">{fromCms && cms?.deliverables.title.trim() ? cms.deliverables.title : t.deliverablesTitle}</h2>
+        <p className="kpi-independent-deliverables-lead">{fromCms && cms.deliverables.lead.trim() ? cms.deliverables.lead : t.deliverablesLead}</p>
+        <IndependentDeliverablesVisual locale={locale} src={cms.deliverables.visual.src} />
+        <div className="kpi-independent-matrix-wrap">
+          <table className="kpi-independent-matrix">
+            <caption className="sr-only">
+              {thai
+                ? "ตารางขอบเขตงานและผลลัพธ์ที่ส่งมอบ แสดงสิ่งที่ทบทวน เอกสารที่ส่งมอบ และจุดที่โรงแรมอนุมัติ"
+                : "Scope and deliverables table showing what is reviewed or supported, the named deliverable, and the hotel approval point."}
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">{thai ? INDEPENDENT_DELIVERABLES_COLUMNS.area.th : INDEPENDENT_DELIVERABLES_COLUMNS.area.en}</th>
+                <th scope="col">{thai ? INDEPENDENT_DELIVERABLES_COLUMNS.support.th : INDEPENDENT_DELIVERABLES_COLUMNS.support.en}</th>
+                <th scope="col">{thai ? INDEPENDENT_DELIVERABLES_COLUMNS.deliverable.th : INDEPENDENT_DELIVERABLES_COLUMNS.deliverable.en}</th>
+                <th scope="col">{thai ? INDEPENDENT_DELIVERABLES_COLUMNS.approval.th : INDEPENDENT_DELIVERABLES_COLUMNS.approval.en}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {deliverableRows.map((row) => (
+                <tr key={row.id}>
+                  <th scope="row" data-label={thai ? INDEPENDENT_DELIVERABLES_COLUMNS.area.th : INDEPENDENT_DELIVERABLES_COLUMNS.area.en}>
+                    {thai ? row.areaTh : row.areaEn}
+                  </th>
+                  <td data-label={thai ? INDEPENDENT_DELIVERABLES_COLUMNS.support.th : INDEPENDENT_DELIVERABLES_COLUMNS.support.en}>
+                    {thai ? row.supportTh : row.supportEn}
+                  </td>
+                  <td data-label={thai ? INDEPENDENT_DELIVERABLES_COLUMNS.deliverable.th : INDEPENDENT_DELIVERABLES_COLUMNS.deliverable.en}>
+                    <span className="kpi-latin">{row.deliverable}</span>
+                  </td>
+                  <td data-label={thai ? INDEPENDENT_DELIVERABLES_COLUMNS.approval.th : INDEPENDENT_DELIVERABLES_COLUMNS.approval.en}>
+                    {thai ? row.approvalTh : row.approvalEn}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="kpi-independent-deliverables-split">
+          <article className="kpi-independent-card is-green">
+            <h3>{fromCms && cms.deliverables.supportTitle.trim() ? cms.deliverables.supportTitle : thai ? INDEPENDENT_DELIVERABLES_BOUNDARY.supportTitle.th : INDEPENDENT_DELIVERABLES_BOUNDARY.supportTitle.en}</h3>
+            <ul>
+              {deliverableSupport.map((item) => (
+                <li key={item.id}>{thai ? item.th : item.en}</li>
+              ))}
+            </ul>
+          </article>
+          <article className="kpi-independent-card is-amber">
+            <h3>{fromCms && cms.deliverables.hotelTitle.trim() ? cms.deliverables.hotelTitle : thai ? INDEPENDENT_DELIVERABLES_BOUNDARY.hotelTitle.th : INDEPENDENT_DELIVERABLES_BOUNDARY.hotelTitle.en}</h3>
+            <ul>
+              {deliverableHotel.map((item) => (
+                <li key={item.id}>{thai ? item.th : item.en}</li>
+              ))}
+            </ul>
+          </article>
+        </div>
+        <p className="kpi-independent-deliverables-boundary">{fromCms && cms.deliverables.boundary.trim() ? cms.deliverables.boundary : t.deliverablesBoundary}</p>
+      </section>
+
       <section className="kpi-section kpi-independent-method">
-        <h2 className="kpi-h2">{t.methodTitle}</h2>
-        <ol className="kpi-independent-method-list">
-          {t.steps.map(([num, title, body], index) => (
-            <li key={num} className="kpi-independent-method-item">
-              <div className="kpi-independent-method-meta">
-                <span className="kpi-latin kpi-independent-method-num">{num}</span>
-                <span className="kpi-latin kpi-independent-method-label">{methodLabels[index]}</span>
-              </div>
-              <div className="kpi-independent-method-copy">
-                <h3>{title}</h3>
-                <p>{body}</p>
-              </div>
+        <h2 className="kpi-h2">{fromCms && cms?.workflow.title.trim() ? cms.workflow.title : t.methodTitle}</h2>
+        <p className="kpi-independent-method-lead">{fromCms && cms.workflow.lead.trim() ? cms.workflow.lead : t.methodLead}</p>
+        <IndependentWorkflowVisual locale={locale} src={cms.workflow.visual.src} />
+        <ol className="kpi-independent-method-steps">
+          {workflowSteps.map((step) => (
+            <li key={step.id} className="kpi-independent-method-step">
+              <p className="kpi-latin">{step.num} {step.label}</p>
+              <h3>{thai ? step.titleTh : step.titleEn}</h3>
+              <p>{thai ? step.bodyTh : step.bodyEn}</p>
+              <dl>
+                <div>
+                  <dt>{thai ? INDEPENDENT_WORKFLOW_FIELDS.owner.th : INDEPENDENT_WORKFLOW_FIELDS.owner.en}</dt>
+                  <dd>{thai ? step.ownerTh : step.ownerEn}</dd>
+                </div>
+                <div>
+                  <dt>{thai ? INDEPENDENT_WORKFLOW_FIELDS.input.th : INDEPENDENT_WORKFLOW_FIELDS.input.en}</dt>
+                  <dd>{thai ? step.inputTh : step.inputEn}</dd>
+                </div>
+                <div>
+                  <dt>{thai ? INDEPENDENT_WORKFLOW_FIELDS.action.th : INDEPENDENT_WORKFLOW_FIELDS.action.en}</dt>
+                  <dd>{thai ? step.actionTh : step.actionEn}</dd>
+                </div>
+                <div>
+                  <dt>{thai ? INDEPENDENT_WORKFLOW_FIELDS.output.th : INDEPENDENT_WORKFLOW_FIELDS.output.en}</dt>
+                  <dd className="kpi-latin">{step.output}</dd>
+                </div>
+                <div>
+                  <dt>{thai ? INDEPENDENT_WORKFLOW_FIELDS.approval.th : INDEPENDENT_WORKFLOW_FIELDS.approval.en}</dt>
+                  <dd>{thai ? step.approvalTh : step.approvalEn}</dd>
+                </div>
+                <div>
+                  <dt>{thai ? INDEPENDENT_WORKFLOW_FIELDS.next.th : INDEPENDENT_WORKFLOW_FIELDS.next.en}</dt>
+                  <dd>{thai ? step.nextTh : step.nextEn}</dd>
+                </div>
+              </dl>
             </li>
           ))}
         </ol>
+        <div className="kpi-independent-approvals">
+          <h3>{fromCms && cms.workflow.approvalsTitle.trim() ? cms.workflow.approvalsTitle : t.methodApprovals}</h3>
+          <ul>
+            {workflowApprovals.map((item) => (
+              <li key={item.id}>
+                {thai ? <span className="kpi-latin">{item.en}</span> : null}
+                <strong>{thai ? item.th : item.en}</strong>
+              </li>
+            ))}
+          </ul>
+        </div>
       </section>
 
       <section className="kpi-independent-fit border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section">
-          <h2 className="kpi-h2">{t.fitTitle}</h2>
-          <ol className="kpi-independent-fit-list">
-            {t.fit.map((item, index) => (
-              <li key={item} className="kpi-independent-fit-item">
-                <span className="kpi-latin kpi-independent-fit-num">{String(index + 1).padStart(2, "0")}</span>
-                <p>{item}</p>
-              </li>
+          <h2 className="kpi-h2">{fromCms && cms?.fit.title.trim() ? cms.fit.title : t.fitTitle}</h2>
+          <p className="kpi-independent-fit-lead">{fromCms && cms.fit.lead.trim() ? cms.fit.lead : t.fitLead}</p>
+          <IndependentFitVisual locale={locale} src={cms.fit.visual.src} />
+          <div className="kpi-independent-matrix-wrap">
+            <table className="kpi-independent-matrix">
+              <caption className="sr-only">
+                {thai
+                  ? "ตารางตัวอย่างสถานการณ์ที่ Independent Hotel Management อาจเหมาะ ไม่ใช่ผลการวินิจฉัยก่อนประเมิน"
+                  : "Sample situations where Independent Hotel Management may be suitable. Not a diagnosis before assessment."}
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">{thai ? INDEPENDENT_FIT_COLUMNS.situation.th : INDEPENDENT_FIT_COLUMNS.situation.en}</th>
+                  <th scope="col">{thai ? INDEPENDENT_FIT_COLUMNS.symptom.th : INDEPENDENT_FIT_COLUMNS.symptom.en}</th>
+                  <th scope="col">{thai ? INDEPENDENT_FIT_COLUMNS.question.th : INDEPENDENT_FIT_COLUMNS.question.en}</th>
+                  <th scope="col">{thai ? INDEPENDENT_FIT_COLUMNS.support.th : INDEPENDENT_FIT_COLUMNS.support.en}</th>
+                  <th scope="col">{thai ? INDEPENDENT_FIT_COLUMNS.output.th : INDEPENDENT_FIT_COLUMNS.output.en}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {fitScenarios.map((row) => (
+                  <tr key={row.id}>
+                    <th scope="row" data-label={thai ? INDEPENDENT_FIT_COLUMNS.situation.th : INDEPENDENT_FIT_COLUMNS.situation.en}>
+                      {thai ? row.situationTh : row.situationEn}
+                    </th>
+                    <td data-label={thai ? INDEPENDENT_FIT_COLUMNS.symptom.th : INDEPENDENT_FIT_COLUMNS.symptom.en}>
+                      {thai ? row.symptomTh : row.symptomEn}
+                    </td>
+                    <td data-label={thai ? INDEPENDENT_FIT_COLUMNS.question.th : INDEPENDENT_FIT_COLUMNS.question.en}>
+                      {thai ? row.questionTh : row.questionEn}
+                    </td>
+                    <td data-label={thai ? INDEPENDENT_FIT_COLUMNS.support.th : INDEPENDENT_FIT_COLUMNS.support.en}>
+                      {thai ? row.supportTh : row.supportEn}
+                    </td>
+                    <td data-label={thai ? INDEPENDENT_FIT_COLUMNS.output.th : INDEPENDENT_FIT_COLUMNS.output.en}>
+                      <span className="kpi-latin">{row.output}</span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <aside className="kpi-independent-fit-not">
+            <h3>{fromCms && cms.fit.notTitle.trim() ? cms.fit.notTitle : t.fitNotTitle}</h3>
+            <ul>
+              {fitNot.map((item) => (
+                <li key={item.id}>{thai ? item.th : item.en}</li>
+              ))}
+            </ul>
+          </aside>
+        </div>
+      </section>
+
+      <section className="kpi-section">
+        <h2 className="kpi-h2">{fromCms && cms?.scope.title.trim() ? cms.scope.title : t.scopeTitle}</h2>
+        <IndependentScopeVisual locale={locale} src={cms.scope.visual.src} />
+        <div className="kpi-independent-board is-3">
+          {scopeRows.map((row) => (
+            <article key={row.id} className="kpi-independent-card">
+              <h3>{thai ? row.titleTh : row.titleEn}</h3>
+              <ul>
+                {(thai ? row.itemsTh : row.itemsEn).map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </article>
+          ))}
+        </div>
+        <p className="kpi-independent-deliverables-boundary">{fromCms && cms.scope.boundary.trim() ? cms.scope.boundary : t.deliverablesBoundary}</p>
+      </section>
+
+      <section className="kpi-section kpi-independent-plan">
+        <p className="kpi-latin kpi-independent-plan-kicker">{sampleLabel}</p>
+        <h2 className="kpi-h2">{fromCms && cms?.plan.title.trim() ? cms.plan.title : t.planTitle}</h2>
+        <p className="kpi-independent-plan-lead">{fromCms && cms?.plan.lead.trim() ? cms.plan.lead : t.planLead}</p>
+        <IndependentPlanVisual locale={locale} src={cms.plan.visual.src} />
+        <ol className="kpi-independent-plan-phases">
+          {planPhases.map((step) => (
+            <li key={step.id} className="kpi-independent-plan-phase">
+              {thai ? <p className="kpi-latin">{step.label}</p> : null}
+              <h3>{thai ? step.labelTh : step.label}</h3>
+              <ul>
+                {(thai ? step.itemsTh : step.itemsEn).map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+              <p className="kpi-independent-plan-output">
+                <span>{thai ? "ผลลัพธ์" : "Output"}</span>
+                <strong className="kpi-latin">{step.output}</strong>
+              </p>
+            </li>
+          ))}
+        </ol>
+        <div className="kpi-independent-cadence">
+          <h3>{fromCms && cms.plan.cadenceTitle.trim() ? cms.plan.cadenceTitle : t.planCadenceTitle}</h3>
+          <div className="kpi-independent-cadence-grid">
+            {cadenceRows.map((item) => (
+              <article key={item.id} className="kpi-independent-cadence-card">
+                {thai ? <p className="kpi-latin">{item.label}</p> : null}
+                <h4>{thai ? item.labelTh : item.label}</h4>
+                <ul>
+                  {(thai ? item.itemsTh : item.itemsEn).map((point) => (
+                    <li key={point}>{point}</li>
+                  ))}
+                </ul>
+              </article>
             ))}
-          </ol>
-          <aside className="kpi-independent-closer">
-            <h3>{t.closerTitle}</h3>
-            <p>{t.closerBody}</p>
-            <a href="#independent-hotel-enquiry" className="kpi-button kpi-independent-closer-cta">
-              {t.closerCta} <span aria-hidden="true">↗</span>
+          </div>
+        </div>
+        <p className="kpi-independent-plan-close">{fromCms && cms.plan.close.trim() ? cms.plan.close : t.planClose}</p>
+      </section>
+
+      <section className="kpi-section" aria-labelledby="independent-hotel-measure-heading">
+        <h2 id="independent-hotel-measure-heading" className="kpi-h2">
+          {fromCms && cms?.measure.title.trim() ? cms.measure.title : t.measureTitle}
+        </h2>
+        <p id="independent-hotel-measure-desc">
+          {thai
+            ? "ตัวชี้วัดตัวอย่างสำหรับทบทวนจังหวะงาน ไม่ใช่ผลโรงแรมจริง และไม่ใช่ผลที่การันตี"
+            : "Sample review measures for management rhythm. Not a live hotel result, and not a guaranteed outcome."}
+        </p>
+        <p id="independent-hotel-sources">
+          {(sourceRows[0] && (thai ? sourceRows[0].nameTh : sourceRows[0].nameEn)) || (thai ? INDEPENDENT_KPI_SAMPLE.sourceTh : INDEPENDENT_KPI_SAMPLE.source)}
+          {" · "}
+          {sourceRows[0]?.publishedAt || INDEPENDENT_KPI_SAMPLE.updatedAt}
+        </p>
+        <p>
+          <a href={sourceRows[0]?.url || "#independent-hotel-sources"}>{thai ? sourceRows[0]?.nameTh || INDEPENDENT_SOURCES[0].nameTh : sourceRows[0]?.nameEn || INDEPENDENT_SOURCES[0].nameEn}</a>
+        </p>
+        <div className="kpi-independent-kpi" role="group" aria-labelledby="independent-hotel-measure-heading" aria-describedby="independent-hotel-measure-desc">
+          {kpiRows.map((kpi) => {
+            const definition = "definitionEn" in kpi ? (thai ? kpi.definitionTh : kpi.definitionEn || kpi.definitionTh) : thai ? kpi.definitionTh : kpi.definition;
+            const period = "period" in kpi && kpi.period ? kpi.period : thai ? INDEPENDENT_KPI_SAMPLE.periodTh : INDEPENDENT_KPI_SAMPLE.period;
+            const market = "market" in kpi && kpi.market ? kpi.market : thai ? INDEPENDENT_KPI_SAMPLE.marketTh : INDEPENDENT_KPI_SAMPLE.market;
+            const source = "source" in kpi && kpi.source ? kpi.source : thai ? INDEPENDENT_KPI_SAMPLE.sourceTh : INDEPENDENT_KPI_SAMPLE.source;
+            const tone = "tone" in kpi ? kpi.tone : kpi.dataStatus === "not-configured" ? "amber" : kpi.dataStatus === "sample" ? "yellow" : "green";
+            const unit = "unitTh" in kpi && thai ? kpi.unitTh : kpi.unit;
+            return (
+              <article key={kpi.id} className={`kpi-independent-card is-${tone}`}>
+                <h3 className="kpi-latin">{thai ? kpi.nameTh : kpi.nameEn}</h3>
+                <p>{definition}</p>
+                <small className="kpi-latin">{unit}</small>
+                <small className="kpi-latin">{kpi.dataStatus === "not-configured" ? (thai ? "ยังไม่เชื่อมข้อมูล" : "Not configured") : kpi.dataStatus}</small>
+                <small>{period}</small>
+                <small>{market}</small>
+                <small>{source}</small>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="kpi-independent-related">
+        <div className="kpi-section">
+          <h2 className="kpi-h2">{fromCms && cms?.related.title.trim() ? cms.related.title : t.relatedTitle}</h2>
+          <IndependentRelatedVisual locale={locale} src={cms.related.visual.src} />
+          <div className="kpi-independent-related-grid">
+            {related.map((card) => (
+              <Link key={card.id} href={card.href} className="kpi-independent-related-card">
+                <h3>{card.title}</h3>
+                <p>{card.body}</p>
+                <span className="kpi-latin">{card.cta}</span>
+              </Link>
+            ))}
+          </div>
+          <aside className="kpi-independent-closer kpi-independent-card">
+            <h3>{fromCms && cms.related.closerTitle.trim() ? cms.related.closerTitle : t.closerTitle}</h3>
+            <p>{fromCms && cms.related.closerBody.trim() ? cms.related.closerBody : t.closerBody}</p>
+            <a
+              href={closerHref}
+              className="kpi-button kpi-independent-closer-cta"
+              style={{ background: "#a2dc25", color: "#1a3a02" }}
+            >
+              {fromCms && cms.related.closerCta.trim() ? cms.related.closerCta : t.closerCta} <span aria-hidden="true">↗</span>
             </a>
           </aside>
         </div>
       </section>
 
-      <IndependentHotelEnquiry locale={locale} />
-      <IndependentHotelStickyCta label={t.cta} />
+      <IndependentHotelEnquiry locale={locale} visualSrc={cms.form.visual.src} helper={fromCms ? cms.form : undefined} />
+      <PageFaqs items={faqItems} locale={locale} sectionId="independent-hotel-faq" />
+      <IndependentHotelStickyCta label={fromCms && cms?.form.submit.trim() ? cms.form.submit : t.cta} />
+    </div>
+  );
+
+  if (embedded) return inner;
+  return (
+    <SiteShell locale={locale} route={localizePath("/solutions/independent-hotel-management", locale)} hideFaqs>
+      {inner}
     </SiteShell>
   );
 }

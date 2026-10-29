@@ -33,7 +33,7 @@ export function IndependentHotelStickyCta({ label }: { label: string }) {
 
   return (
     <div className="kpi-sticky-cta lg:hidden">
-      <a href="#independent-hotel-enquiry" className="kpi-button w-full">
+      <a href="#independent-hotel-enquiry" className="kpi-button w-full" style={{ background: "#a2dc25", color: "#1a3a02" }}>
         {label}
       </a>
     </div>

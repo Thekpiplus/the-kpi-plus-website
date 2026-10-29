@@ -1,6 +1,7 @@
 import { adsFaqs } from "@/lib/google-ads";
 import { hotelSeoFaqs } from "@/lib/hotel-seo";
 import { hotelDirectBookingFaqs } from "@/lib/direct-bookings";
+import { independentHotelFaqs } from "@/lib/independent-hotel";
 import { hotelWebsiteFaqs } from "@/lib/hotel-website";
 import { metaFaqs } from "@/lib/meta-ads";
 
@@ -871,78 +872,10 @@ const table: Record<string, FaqItem[]> = {
       a: "ไม่ การันตีไม่ได้ทั้งจำนวนรีวิวและรีวิวเชิงบวก ใช้เพื่อให้ลูกค้าเปิดหน้าเขียนรีวิวของธุรกิจนั้นได้ตรงจุด",
     },
   ],
-  "/solutions/independent-hotel-management": [
-    {
-      q: "ขอบเขตบริการเหมือนกันทุกโรงแรมหรือไม่?",
-      a: "ไม่ เราไม่ได้กำหนดขอบเขตบริการเหมือนกันทุกแห่ง แต่ร่วมกับเจ้าของออกแบบวิธีบริหารที่ตอบโจทย์โรงแรมจริง",
-    },
-    {
-      q: "ต้องมีทีมบริหารอยู่แล้วหรือไม่?",
-      a: "ไม่จำเป็น บางโรงแรมมีทีมพร้อมแต่ต้องการผู้ช่วยวางกลยุทธ์ บางแห่งกำลังเปลี่ยนผ่านทีมบริหาร และบางแห่งต้องการเริ่มวางระบบใหม่ตั้งแต่ต้น",
-    },
-    {
-      q: "ต้องเตรียมขอบเขตงานก่อนนัดคุยหรือไม่?",
-      a: "ไม่ต้อง เพียงเล่าเกี่ยวกับโรงแรม เป้าหมาย และเรื่องที่อยากให้ช่วย เราจะร่วมกันหาวิธีทำงานและกำหนดหน้าที่ให้ชัดเจนก่อนเริ่มงาน",
-    },
-    {
-      q: "เดอะ เคพีไอ พลัส รับผิดชอบส่วนไหน?",
-      a: "จะตกลงให้ชัดตั้งแต่ต้นว่าทีมเราดูแลเรื่องใด ทีมโรงแรมดูแลเรื่องใด ต้องจัดหาคนเพิ่มหรือไม่ และจะประสานงานกันอย่างไร",
-    },
-  ],
-  "/en/solutions/independent-hotel-management": [
-    {
-      q: "Is the service scope the same for every hotel?",
-      a: "No. We do not set the same scope for every hotel. We design the way of running it with the owner, around the real hotel.",
-    },
-    {
-      q: "Does the hotel already need a management team?",
-      a: "No. Some hotels already have a team and need strategy and follow-up. Some are changing the management team. Others need to set a new way of working from the start.",
-    },
-    {
-      q: "Do I need a scope before we talk?",
-      a: "No. Tell us about the hotel, the goal, and what you want help with. We will agree roles and ownership before the work starts.",
-    },
-    {
-      q: "What will The KPI Plus own?",
-      a: "We agree up front what The KPI Plus will own, what the hotel team will own, whether more people must be found, and how we will coordinate.",
-    },
-  ],
-  "/ru/solutions/independent-hotel-management": [
-    {
-      q: "Объём услуг одинаковый для каждого отеля?",
-      a: "Нет. Мы не задаём один объём для всех. Вместе с владельцем проектируем способ управления под реальный отель.",
-    },
-    {
-      q: "Управляющая команда уже должна быть?",
-      a: "Не обязательно. У одних команда есть, но нужна стратегия и сопровождение. Другие меняют команду. Третьим нужно выстроить систему работы с нуля.",
-    },
-    {
-      q: "Нужно готовить объём работы до разговора?",
-      a: "Нет. Расскажите об отеле, цели и том, с чем нужна помощь. Роли и ответственность зафиксируем до старта.",
-    },
-    {
-      q: "За что отвечает The KPI Plus?",
-      a: "С самого начала договариваемся, за что отвечаем мы, за что — команда отеля, нужно ли искать людей дополнительно и как будем координироваться.",
-    },
-  ],
-  "/zh/solutions/independent-hotel-management": [
-    {
-      q: "每間飯店的服務範圍都一樣嗎？",
-      a: "不一樣。我們不會對每間飯店訂同一套範圍，而是與業主一起設計真正符合該飯店的管理方式。",
-    },
-    {
-      q: "一定要先有管理團隊嗎？",
-      a: "不一定。有的飯店已有團隊，但需要策略與追蹤；有的正在轉換管理團隊；也有的需要從頭建立作業系統。",
-    },
-    {
-      q: "約談前一定要先準備工作範圍嗎？",
-      a: "不必。只要告訴我們飯店情況、目標，以及希望協助的事。職責與責任會在開始前講清楚。",
-    },
-    {
-      q: "The KPI Plus 負責哪些事？",
-      a: "一開始就會約定我們負責什麼、飯店團隊負責什麼、是否需要再找人，以及如何協調。",
-    },
-  ],
+  "/solutions/independent-hotel-management": independentHotelFaqs("th"),
+  "/en/solutions/independent-hotel-management": independentHotelFaqs("en"),
+  "/ru/solutions/independent-hotel-management": independentHotelFaqs("en"),
+  "/zh/solutions/independent-hotel-management": independentHotelFaqs("en"),
   "/solutions/revenue-commercial-management": [
     {
       q: "Revenue Management กับ Commercial Management ต่างกันอย่างไร?",

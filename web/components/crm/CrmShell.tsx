@@ -94,6 +94,25 @@ const conversionLinks: ContextLink[] = [
   { href: "/crm/conversion/settings", label: "Settings" },
 ];
 
+const managementLinks: ContextLink[] = [
+  { href: "/crm/management", label: "Overview" },
+  { href: "/crm/management/properties", label: "Properties" },
+  { href: "/crm/management/assessment", label: "Hotel Assessments" },
+  { href: "/crm/management/plan", label: "Operating Plans" },
+  { href: "/crm/management/commercial", label: "Commercial / Revenue" },
+  { href: "/crm/management/marketing", label: "Marketing" },
+  { href: "/crm/management/distribution", label: "Distribution" },
+  { href: "/crm/management/operations", label: "Operations" },
+  { href: "/crm/management/guest", label: "Guest Experience" },
+  { href: "/crm/management/people", label: "People and Roles" },
+  { href: "/crm/management/meetings", label: "Meetings / Cadence" },
+  { href: "/crm/management/kpi", label: "KPI and Reports" },
+  { href: "/crm/management/actions", label: "Action Log" },
+  { href: "/crm/management/approvals", label: "Approvals" },
+  { href: "/crm/management/handover", label: "Handover and Ownership" },
+  { href: "/crm/management/settings", label: "Settings" },
+];
+
 const websiteLinks: ContextLink[] = [
   { href: "/crm/website", label: "Website Projects" },
   { href: "/crm/website/discovery", label: "Discovery and Content" },
@@ -138,6 +157,7 @@ const cmsLinks = [
   { href: "/crm/cms/hotel-seo", label: "หน้า Hotel SEO / Local Search" },
   { href: "/crm/cms/hotel-website", label: "หน้า Hotel Website Design" },
   { href: "/crm/cms/hotel-direct-bookings", label: "หน้า Hotel Direct Bookings" },
+  { href: "/crm/cms/independent-hotel", label: "หน้า Independent Hotel Management" },
   { href: "/crm/cms/contacts", label: "ข้อมูลติดต่อ" },
 ];
 
@@ -151,6 +171,7 @@ const contextByWorkspace: Record<Exclude<Workspace, "home">, ContextLink[]> = {
   seo: seoLinks,
   website: websiteLinks,
   conversion: conversionLinks,
+  management: managementLinks,
   users: userLinks,
   cms: cmsLinks,
 };
@@ -166,6 +187,7 @@ const NAV_LABEL: Record<NavKey, string> = {
   seo: "Local Search Operations",
   website: "Website Operations",
   conversion: "Direct Booking Operations",
+  management: "Hotel Management Operations",
   users: "Users Management",
   cms: "Content Management",
   settings: "ตั้งค่า",
@@ -296,6 +318,7 @@ const NAV_ICON: Record<NavKey, () => ReactNode> = {
   seo: IconSeo,
   website: IconSeo,
   conversion: IconSeo,
+  management: IconSeo,
   users: IconUsers,
   cms: IconCms,
   settings: IconSettings,
@@ -312,6 +335,7 @@ function workspaceOf(pathname: string): Workspace {
   if (pathname.startsWith("/crm/seo")) return "seo";
   if (pathname.startsWith("/crm/website")) return "website";
   if (pathname.startsWith("/crm/conversion")) return "conversion";
+  if (pathname.startsWith("/crm/management")) return "management";
   if (
     pathname.startsWith("/crm/sales") ||
     pathname.startsWith("/crm/pipeline") ||
@@ -339,6 +363,7 @@ function isCurrent(pathname: string, search: string, href: string) {
   if (path === "/crm/seo") return pathname === "/crm/seo";
   if (path === "/crm/website") return pathname === "/crm/website";
   if (path === "/crm/conversion") return pathname === "/crm/conversion";
+  if (path === "/crm/management") return pathname === "/crm/management";
   return pathname === path || pathname.startsWith(`${path}/`);
 }
 
@@ -518,7 +543,7 @@ export function CrmShell({
 
   const shell = (
     <div
-      className={`crm-shell crm-shell-app kpi-locale-th${railExpanded ? " is-rail-expanded" : ""}${workspace === "b2b" ? " crm-shell-b2b" : ""}${workspace === "ads" ? " crm-shell-ads" : ""}${workspace === "meta" ? " crm-shell-meta" : ""}${workspace === "seo" ? " crm-shell-seo" : ""}${workspace === "website" ? " crm-shell-website" : ""}${workspace === "conversion" ? " crm-shell-conversion" : ""}`}
+      className={`crm-shell crm-shell-app kpi-locale-th${railExpanded ? " is-rail-expanded" : ""}${workspace === "b2b" ? " crm-shell-b2b" : ""}${workspace === "ads" ? " crm-shell-ads" : ""}${workspace === "meta" ? " crm-shell-meta" : ""}${workspace === "seo" ? " crm-shell-seo" : ""}${workspace === "website" ? " crm-shell-website" : ""}${workspace === "conversion" ? " crm-shell-conversion" : ""}${workspace === "management" ? " crm-shell-management" : ""}`}
       suppressHydrationWarning
     >
       <aside

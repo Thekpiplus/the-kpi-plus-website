@@ -9,6 +9,13 @@ import { AdsEnquiryIntro as MetaAdsEnquiryIntro } from "@/components/meta-ads/Ad
 import { HotelSeoEnquiryIntro } from "@/components/hotel-seo/HotelSeoEnquiryIntro";
 import { ConversionEnquiryIntro } from "@/components/direct-bookings/ConversionEnquiryIntro";
 import { ConversionEnquiryVisual } from "@/components/direct-bookings/ConversionEnquiryVisual";
+import { IndependentEnquiryIntro } from "@/components/independent-hotel/IndependentEnquiryIntro";
+import { IndependentEnquiryVisual } from "@/components/independent-hotel/IndependentVisuals";
+import {
+  INDEPENDENT_HOTEL_CHALLENGES,
+  INDEPENDENT_HOTEL_STATUS,
+  independentEnquiryCopy,
+} from "@/lib/independent-hotel";
 import { WebsiteEnquiryIntro } from "@/components/hotel-website/WebsiteEnquiryIntro";
 import { ReservationsEnquiryIntro } from "@/components/reservations/ReservationsEnquiryIntro";
 import { RevenueEnquiryIntro } from "@/components/revenue-commercial/RevenueEnquiryIntro";
@@ -47,6 +54,9 @@ type FormState = {
   bookingEngine: string;
   existingCms: string;
   timeline: string;
+  rooms: string;
+  hotelStatus: string;
+  teamSize: string;
   message: string;
   consent: boolean;
   companyWebsite: string;
@@ -345,11 +355,48 @@ const conversionGroups = {
 } as const;
 
 const independentHotelGroups = {
-  th: { contact: "ข้อมูลติดต่อ", hotel: "ข้อมูลโรงแรม", topic: "เรื่องที่อยากคุย" },
-  en: { contact: "Contact details", hotel: "About the hotel", topic: "What you'd like to discuss" },
-  ru: { contact: "Contact details", hotel: "About the hotel", topic: "What you'd like to discuss" },
-  zh: { contact: "Contact details", hotel: "About the hotel", topic: "What you'd like to discuss" },
+  th: { contact: "ข้อมูลติดต่อ", hotel: "ข้อมูลโรงแรม", topic: "เป้าหมายและประเด็นหลัก" },
+  en: { contact: "Contact details", hotel: "Hotel / company", topic: "Goal and current challenge" },
+  ru: { contact: "Contact details", hotel: "Hotel / company", topic: "Goal and current challenge" },
+  zh: { contact: "Contact details", hotel: "Hotel / company", topic: "Goal and current challenge" },
 } as const;
+
+function independentOptionLabel(
+  items: readonly { id: string; th: string; en: string }[],
+  id: string,
+  locale: Locale,
+) {
+  const item = items.find((row) => row.id === id);
+  if (!item) return "";
+  return locale === "th" ? `${item.th} / ${item.en}` : item.en;
+}
+
+function composeIndependentHotelMessage(state: FormState, locale: Locale) {
+  const status = independentOptionLabel(INDEPENDENT_HOTEL_STATUS, state.hotelStatus, locale);
+  const challenge = independentOptionLabel(INDEPENDENT_HOTEL_CHALLENGES, state.topic, locale);
+  const thai = locale === "th";
+  const parts = [
+    status ? (thai ? `สถานะโรงแรม: ${status}` : `Hotel status: ${status}`) : "",
+    state.rooms.trim() ? (thai ? `จำนวนห้อง: ${state.rooms.trim()}` : `Number of rooms: ${state.rooms.trim()}`) : "",
+    state.teamSize.trim()
+      ? thai
+        ? `ขนาดทีมปัจจุบัน: ${state.teamSize.trim()}`
+        : `Current team size: ${state.teamSize.trim()}`
+      : "",
+    challenge ? (thai ? `ประเด็นหลัก: ${challenge}` : `Main challenge: ${challenge}`) : "",
+    state.website.trim() ? (thai ? `เว็บไซต์: ${state.website.trim()}` : `Website: ${state.website.trim()}`) : "",
+    state.bookingEngine.trim()
+      ? `PMS / Booking Engine / Channel Manager: ${state.bookingEngine.trim()}`
+      : "",
+    state.goal.trim()
+      ? thai
+        ? `เป้าหมาย 3–6 เดือน: ${state.goal.trim()}`
+        : `Goal for the next 3–6 months: ${state.goal.trim()}`
+      : "",
+    state.message.trim(),
+  ];
+  return parts.filter(Boolean).join("\n\n");
+}
 
 const hotelSystemsGroups = {
   th: { contact: "ข้อมูลติดต่อ", hotel: "ข้อมูลโรงแรม", topic: "เรื่องที่อยากคุย" },
@@ -474,6 +521,11 @@ export function EnquiryForm({
     bookingEngine?: string;
     cms?: string;
     timeline?: string;
+    rooms?: string;
+    hotelStatus?: string;
+    teamSize?: string;
+    systems?: string;
+    message?: string;
     consent?: string;
     privacy?: string;
   };
@@ -500,6 +552,9 @@ export function EnquiryForm({
     bookingEngine: "",
     existingCms: "",
     timeline: "",
+    rooms: "",
+    hotelStatus: "",
+    teamSize: "",
     message: "",
     consent: false,
     companyWebsite: "",
@@ -514,14 +569,17 @@ export function EnquiryForm({
 
   const validate = (next = state) => {
     const nextErrors: FieldError = {};
-    if (!next.name.trim()) nextErrors.name = t.required;
-    if (!next.businessName.trim()) nextErrors.businessName = t.required;
-    if (!next.contact.trim()) nextErrors.contact = t.required;
+    const independentLabels = service === "independent_hotel" ? independentEnquiryCopy(locale).labels : null;
+    const requiredMsg = independentLabels?.required || t.required;
+    const emailMsg = independentLabels?.invalidEmail || t.invalidEmail;
+    if (!next.name.trim()) nextErrors.name = requiredMsg;
+    if (!next.businessName.trim()) nextErrors.businessName = requiredMsg;
+    if (!next.contact.trim()) nextErrors.contact = requiredMsg;
     else if (next.contact.includes("@") && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(next.contact.trim())) {
-      nextErrors.contact = t.invalidEmail;
+      nextErrors.contact = emailMsg;
     }
-    if (!preset && !next.serviceInterest) nextErrors.serviceInterest = t.required;
-    if (service === "revenue" && !next.topic.trim()) nextErrors.topic = t.required;
+    if (!preset && !next.serviceInterest) nextErrors.serviceInterest = requiredMsg;
+    if (service === "revenue" && !next.topic.trim()) nextErrors.topic = requiredMsg;
     if ((service === "google_ads" || service === "meta_ads" || service === "search" || service === "website" || service === "conversion") && next.website.trim() && !looksLikeWebsite(next.website)) {
       nextErrors.website =
         service === "search"
@@ -543,7 +601,10 @@ export function EnquiryForm({
           ? directBookingEnquiryCopy(locale).fields.bookingEngineInvalid
           : websiteEnquiryCopy(locale).fields.bookingEngineInvalid;
     }
-    if (!next.consent) nextErrors.consent = t.required;
+    if (service === "independent_hotel" && next.website.trim() && !looksLikeWebsite(next.website)) {
+      nextErrors.website = independentEnquiryCopy(locale).labels.websiteInvalid;
+    }
+    if (!next.consent) nextErrors.consent = requiredMsg;
     setErrors(nextErrors);
     return nextErrors;
   };
@@ -562,15 +623,18 @@ export function EnquiryForm({
           businessName: state.businessName.trim(),
           contact: state.contact.trim(),
           serviceInterest: serviceId,
-          topic: service === "revenue" || service === "search" ? state.topic : undefined,
+          topic: service === "revenue" || service === "search" || service === "independent_hotel" ? state.topic : undefined,
           channels: service === "reservations" || service === "b2b" ? state.channels.trim() : undefined,
           scope: service === "reservations" ? state.scope.trim() : undefined,
-          website: service === "google_ads" || service === "meta_ads" || service === "search" || service === "website" || service === "conversion" ? state.website.trim() : undefined,
+          website: service === "google_ads" || service === "meta_ads" || service === "search" || service === "website" || service === "conversion" || service === "independent_hotel" ? state.website.trim() : undefined,
           mapsUrl: service === "search" ? state.mapsUrl.trim() : undefined,
-          bookingEngine: service === "website" || service === "conversion" ? state.bookingEngine.trim() : undefined,
+          bookingEngine: service === "website" || service === "conversion" || service === "independent_hotel" ? state.bookingEngine.trim() : undefined,
           cms: service === "website" ? state.existingCms.trim() : undefined,
           timeline: service === "website" ? state.timeline.trim() : undefined,
-          goal: service === "google_ads" || service === "meta_ads" || service === "website" || service === "conversion" ? state.goal.trim() : undefined,
+          rooms: service === "independent_hotel" ? state.rooms.trim() : undefined,
+          hotelStatus: service === "independent_hotel" ? state.hotelStatus.trim() : undefined,
+          teamSize: service === "independent_hotel" ? state.teamSize.trim() : undefined,
+          goal: service === "google_ads" || service === "meta_ads" || service === "website" || service === "conversion" || service === "independent_hotel" ? state.goal.trim() : undefined,
           market: service === "google_ads" || service === "meta_ads" || service === "b2b" ? state.market.trim() : undefined,
           adsStatus: service === "google_ads" || service === "meta_ads" ? state.adsStatus.trim() : undefined,
           analyticsStatus: service === "conversion" ? state.analyticsStatus.trim() : undefined,
@@ -616,6 +680,8 @@ export function EnquiryForm({
                                 state.message,
                                 locale,
                               )
+                          : service === "independent_hotel"
+                            ? composeIndependentHotelMessage(state, locale)
                           : state.message.trim(),
           consent: state.consent,
           honeypot: state.companyWebsite,
@@ -3283,75 +3349,72 @@ export function EnquiryForm({
 
   if (service === "independent_hotel" && !compact) {
     const groups = independentHotelGroups[locale];
+    const copy = independentEnquiryCopy(locale);
+    const labels = copy.labels;
+    const nameLabel = fieldLabels?.name?.trim() || labels.name;
+    const businessLabel = fieldLabels?.business?.trim() || labels.business;
+    const contactLabel = fieldLabels?.contact?.trim() || labels.contact;
+    const roomsLabel = fieldLabels?.rooms?.trim() || labels.rooms;
+    const hotelStatusLabel = fieldLabels?.hotelStatus?.trim() || labels.hotelStatus;
+    const teamSizeLabel = fieldLabels?.teamSize?.trim() || labels.teamSize;
+    const websiteLabel = fieldLabels?.website?.trim() || labels.website;
+    const systemsLabel = fieldLabels?.systems?.trim() || labels.systems;
+    const challengeLabel = fieldLabels?.challenge?.trim() || labels.challenge;
+    const goalLabel = fieldLabels?.goal?.trim() || labels.goal;
+    const messageLabel = fieldLabels?.message?.trim() || labels.message;
+    const consentLabel = fieldLabels?.consent?.trim() || labels.consent;
+    const privacyLabel = fieldLabels?.privacy?.trim() || labels.privacy;
     const labelClassName = "kpi-website-enquiry-label";
+    const sending = status === "submitting";
+    const thaiOptions = locale === "th";
     return (
       <section id={sectionId} className="kpi-website-enquiry kpi-independent-enquiry scroll-mt-28">
         <div className="kpi-section kpi-website-enquiry-grid">
-          <div className="kpi-website-enquiry-intro">
-            <p className="kpi-website-enquiry-kicker kpi-latin">{kickerText}</p>
-            <h2 className="kpi-h2 kpi-website-enquiry-heading">{heading}</h2>
-            {locale === "th" ? (
-              <p className="kpi-website-enquiry-lead">
-                <span>ส่งข้อมูลสั้น ๆ เกี่ยวกับโรงแรม</span>
-                <span className="kpi-website-enquiry-line">แล้วทีมจะช่วยดูว่าควรเริ่มจากจุดไหนก่อน</span>
-              </p>
-            ) : (
-              <p className="kpi-website-enquiry-lead">{lead}</p>
-            )}
-            {locale === "th" ? (
-              <>
-                <ol className="kpi-website-enquiry-points">
-                  <li>
-                    <span className="kpi-latin">01</span>
-                    <span>ดูโครงสร้างงานและหน้าที่ของทีม</span>
-                  </li>
-                  <li>
-                    <span className="kpi-latin">02</span>
-                    <span>ดูระบบ เครื่องมือ และขั้นตอนทำงาน</span>
-                  </li>
-                  <li>
-                    <span className="kpi-latin">03</span>
-                    <span>ดูจุดที่เจ้าของยังต้องลงมือเองมากเกินไป</span>
-                  </li>
-                </ol>
-                <p className="kpi-website-enquiry-note">
-                  ไม่จำเป็นต้องรู้ก่อนว่าต้องการบริการแบบไหน
-                  <span className="kpi-website-enquiry-line">ทีมช่วยประเมินขอบเขตที่เหมาะสมได้</span>
-                </p>
-              </>
-            ) : null}
-          </div>
-          <div className="kpi-website-enquiry-panel">
+          <IndependentEnquiryIntro
+            locale={locale}
+            kicker={kickerText}
+            heading={heading}
+            lead={lead}
+            receiveTitle={introReceiveTitle}
+            receive={introReceive}
+            nextTitle={introNextTitle}
+            steps={introSteps}
+          />
+          <div className="kpi-independent-enquiry-aside">
+            <IndependentEnquiryVisual locale={locale} src={introVisualSrc} />
+            <div className="kpi-website-enquiry-panel">
             {status === "success" ? (
               <div role="status">
                 <p className="kpi-website-enquiry-success">{t.success}</p>
                 <ContactNote locale={locale} className="kpi-website-enquiry-direct" />
               </div>
             ) : (
-              <form className="kpi-website-enquiry-fields" onSubmit={onSubmit} noValidate>
+              <form className="kpi-website-enquiry-fields" onSubmit={onSubmit} noValidate aria-busy={sending}>
                 <div className="kpi-website-enquiry-group">
                   <p className="kpi-website-enquiry-group-label">{groups.contact}</p>
                   <div className="kpi-website-enquiry-pair">
-                    <Field label={t.name} htmlFor={`${formId}-name`} error={errors.name} labelClassName={labelClassName}>
+                    <Field label={nameLabel} htmlFor={`${formId}-name`} error={errors.name} labelClassName={labelClassName}>
                       <input
                         id={`${formId}-name`}
                         name="name"
                         autoComplete="name"
                         className="kpi-field"
                         value={state.name}
+                        disabled={sending}
                         aria-invalid={Boolean(errors.name)}
                         onBlur={() => validate()}
                         onChange={(event) => setState((current) => ({ ...current, name: event.target.value }))}
                       />
                     </Field>
-                    <Field label={t.contact} htmlFor={`${formId}-contact`} error={errors.contact} labelClassName={labelClassName}>
+                    <Field label={contactLabel} htmlFor={`${formId}-contact`} error={errors.contact} labelClassName={labelClassName}>
                       <input
                         id={`${formId}-contact`}
                         name="contact"
-                        autoComplete="tel"
+                        autoComplete="email"
                         inputMode="email"
                         className="kpi-field"
                         value={state.contact}
+                        disabled={sending}
                         aria-invalid={Boolean(errors.contact)}
                         onBlur={() => validate()}
                         onChange={(event) => setState((current) => ({ ...current, contact: event.target.value }))}
@@ -3361,29 +3424,130 @@ export function EnquiryForm({
                 </div>
                 <div className="kpi-website-enquiry-group">
                   <p className="kpi-website-enquiry-group-label">{groups.hotel}</p>
-                  <Field label={t.business} htmlFor={`${formId}-business`} error={errors.businessName} labelClassName={labelClassName}>
+                  <Field label={businessLabel} htmlFor={`${formId}-business`} error={errors.businessName} labelClassName={labelClassName}>
                     <input
                       id={`${formId}-business`}
                       name="organization"
                       autoComplete="organization"
                       className="kpi-field"
                       value={state.businessName}
+                      disabled={sending}
                       aria-invalid={Boolean(errors.businessName)}
                       onBlur={() => validate()}
                       onChange={(event) => setState((current) => ({ ...current, businessName: event.target.value }))}
                     />
                   </Field>
+                  <div className="kpi-website-enquiry-pair">
+                    <Field label={roomsLabel} htmlFor={`${formId}-rooms`} optional={labels.optional} labelClassName={labelClassName}>
+                      <input
+                        id={`${formId}-rooms`}
+                        name="rooms"
+                        inputMode="numeric"
+                        className="kpi-field"
+                        value={state.rooms}
+                        disabled={sending}
+                        onChange={(event) => setState((current) => ({ ...current, rooms: event.target.value }))}
+                      />
+                    </Field>
+                    <Field label={hotelStatusLabel} htmlFor={`${formId}-hotel-status`} optional={labels.optional} labelClassName={labelClassName}>
+                      <select
+                        id={`${formId}-hotel-status`}
+                        name="hotelStatus"
+                        className="kpi-field"
+                        value={state.hotelStatus}
+                        disabled={sending}
+                        onChange={(event) => setState((current) => ({ ...current, hotelStatus: event.target.value }))}
+                      >
+                        <option value="">{labels.hotelStatusPlaceholder}</option>
+                        {INDEPENDENT_HOTEL_STATUS.map((item) => (
+                          <option key={item.id} value={item.id}>
+                            {thaiOptions ? item.th : item.en}
+                          </option>
+                        ))}
+                      </select>
+                    </Field>
+                  </div>
+                  <div className="kpi-website-enquiry-pair">
+                    <Field label={teamSizeLabel} htmlFor={`${formId}-team-size`} optional={labels.optional} labelClassName={labelClassName}>
+                      <input
+                        id={`${formId}-team-size`}
+                        name="teamSize"
+                        className="kpi-field"
+                        value={state.teamSize}
+                        disabled={sending}
+                        onChange={(event) => setState((current) => ({ ...current, teamSize: event.target.value }))}
+                      />
+                    </Field>
+                    <Field
+                      label={websiteLabel}
+                      htmlFor={`${formId}-website`}
+                      optional={labels.optional}
+                      error={errors.website}
+                      labelClassName={labelClassName}
+                    >
+                      <input
+                        id={`${formId}-website`}
+                        name="website"
+                        inputMode="url"
+                        autoComplete="url"
+                        className="kpi-field"
+                        value={state.website}
+                        disabled={sending}
+                        aria-invalid={Boolean(errors.website)}
+                        onBlur={() => validate()}
+                        onChange={(event) => setState((current) => ({ ...current, website: event.target.value }))}
+                      />
+                    </Field>
+                  </div>
+                  <Field label={systemsLabel} htmlFor={`${formId}-systems`} optional={labels.optional} labelClassName={labelClassName}>
+                    <input
+                      id={`${formId}-systems`}
+                      name="bookingEngine"
+                      className="kpi-field"
+                      value={state.bookingEngine}
+                      disabled={sending}
+                      onChange={(event) => setState((current) => ({ ...current, bookingEngine: event.target.value }))}
+                    />
+                  </Field>
                 </div>
                 <div className="kpi-website-enquiry-group">
                   <p className="kpi-website-enquiry-group-label">{groups.topic}</p>
-                  <Field label={t.message} htmlFor={`${formId}-message`} optional={t.messageOptional} labelClassName={labelClassName}>
+                  <Field label={challengeLabel} htmlFor={`${formId}-challenge`} optional={labels.optional} labelClassName={labelClassName}>
+                    <select
+                      id={`${formId}-challenge`}
+                      name="topic"
+                      className="kpi-field"
+                      value={state.topic}
+                      disabled={sending}
+                      onChange={(event) => setState((current) => ({ ...current, topic: event.target.value }))}
+                    >
+                      <option value="">{labels.challengePlaceholder}</option>
+                      {INDEPENDENT_HOTEL_CHALLENGES.map((item) => (
+                        <option key={item.id} value={item.id}>
+                          {thaiOptions ? item.th : item.en}
+                        </option>
+                      ))}
+                    </select>
+                  </Field>
+                  <Field label={goalLabel} htmlFor={`${formId}-goal`} optional={labels.optional} labelClassName={labelClassName}>
+                    <textarea
+                      id={`${formId}-goal`}
+                      name="goal"
+                      rows={3}
+                      className="kpi-field"
+                      value={state.goal}
+                      disabled={sending}
+                      onChange={(event) => setState((current) => ({ ...current, goal: event.target.value }))}
+                    />
+                  </Field>
+                  <Field label={messageLabel} htmlFor={`${formId}-message`} optional={labels.optional} labelClassName={labelClassName}>
                     <textarea
                       id={`${formId}-message`}
                       name="message"
-                      rows={4}
+                      rows={3}
                       className="kpi-field"
-                      placeholder={t.messageHint}
                       value={state.message}
+                      disabled={sending}
                       onChange={(event) => setState((current) => ({ ...current, message: event.target.value }))}
                     />
                   </Field>
@@ -3396,13 +3560,14 @@ export function EnquiryForm({
                   <input
                     type="checkbox"
                     checked={state.consent}
+                    disabled={sending}
                     aria-invalid={Boolean(errors.consent)}
                     onChange={(event) => setState((current) => ({ ...current, consent: event.target.checked }))}
                   />
                   <span>
-                    {t.consent}{" "}
+                    {consentLabel}{" "}
                     <Link href={privacyHref} className="font-semibold text-[#0B6660]">
-                      {t.privacy}
+                      {privacyLabel}
                     </Link>
                   </span>
                 </label>
@@ -3421,33 +3586,43 @@ export function EnquiryForm({
                   className="absolute left-[-10000px] h-px w-px overflow-hidden"
                   onChange={(event) => setState((current) => ({ ...current, companyWebsite: event.target.value }))}
                 />
-                <button className="kpi-button" type="submit" disabled={status === "submitting"}>
-                  {status === "submitting" ? (
+                <button
+                  className="kpi-button"
+                  type="submit"
+                  disabled={sending}
+                  aria-busy={sending}
+                  style={{ background: "#a2dc25", color: "#1a3a02" }}
+                >
+                  {sending ? (
                     t.sending
-                  ) : locale === "th" ? (
+                  ) : (
                     <>
-                      นัดพูดคุยเรื่องโรงแรมของคุณ
+                      {cta}
                       <span className="kpi-website-enquiry-arrow" aria-hidden="true">
                         ↗
                       </span>
                     </>
-                  ) : (
-                    cta
                   )}
                 </button>
+                {sending ? (
+                  <p className="kpi-website-enquiry-status" role="status" aria-live="polite">
+                    {copy.loading}
+                  </p>
+                ) : null}
                 {status === "error" ? (
-                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                  <p className="kpi-website-enquiry-error text-sm font-semibold text-[#C45C26]" role="alert">
                     {t.failed}
                   </p>
                 ) : null}
                 {status === "unavailable" ? (
-                  <p className="text-sm font-semibold text-[#C45C26]" role="alert">
+                  <p className="kpi-website-enquiry-error text-sm font-semibold text-[#C45C26]" role="alert">
                     {t.unavailable}
                   </p>
                 ) : null}
                 <ContactNote locale={locale} className="kpi-website-enquiry-direct" />
               </form>
             )}
+            </div>
           </div>
         </div>
       </section>

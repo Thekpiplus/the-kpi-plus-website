@@ -21,6 +21,8 @@ import { parseHotelWebsitePageBody, HOTEL_WEBSITE_CMS_TEMPLATE } from "@/lib/cms
 import { hotelWebsiteFaqs, hotelWebsiteFaqsAreStale } from "@/lib/hotel-website";
 import { parseDirectBookingPageBody, HOTEL_DIRECT_BOOKINGS_CMS_TEMPLATE } from "@/lib/cms/hotel-direct-bookings-page";
 import { hotelDirectBookingFaqsFromCms } from "@/lib/cms/hotel-direct-bookings-page-public";
+import { parseIndependentHotelPageBody, INDEPENDENT_HOTEL_CMS_TEMPLATE } from "@/lib/cms/independent-hotel-page";
+import { independentHotelFaqsFromCms } from "@/lib/cms/independent-hotel-page-public";
 import { faqsForRoute, howToStepsForRoute } from "@/lib/faqs";
 import { pageKind } from "@/lib/page-types";
 import {
@@ -60,7 +62,8 @@ export async function SiteShell({
     stored?.template === META_ADS_CMS_TEMPLATE ||
     stored?.template === HOTEL_SEO_CMS_TEMPLATE ||
     stored?.template === HOTEL_WEBSITE_CMS_TEMPLATE ||
-    stored?.template === HOTEL_DIRECT_BOOKINGS_CMS_TEMPLATE;
+    stored?.template === HOTEL_DIRECT_BOOKINGS_CMS_TEMPLATE ||
+    stored?.template === INDEPENDENT_HOTEL_CMS_TEMPLATE;
   if (stored?.trashedAt) notFound();
   if (stored && !isCmsPageLive(stored) && !specialTemplate) notFound();
 
@@ -100,6 +103,8 @@ export async function SiteShell({
                     })()
                 : cmsLive?.template === HOTEL_DIRECT_BOOKINGS_CMS_TEMPLATE
                   ? hotelDirectBookingFaqsFromCms(parseDirectBookingPageBody(cmsLive.body, locale), locale)
+                : cmsLive?.template === INDEPENDENT_HOTEL_CMS_TEMPLATE
+                  ? independentHotelFaqsFromCms(parseIndependentHotelPageBody(cmsLive.body, locale), locale)
               : null;
   const faqs = kind === "article" ? [] : cmsFaqs?.length ? cmsFaqs : faqsForRoute(route);
   const faqJson = faqSchema(faqs);

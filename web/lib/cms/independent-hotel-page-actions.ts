@@ -1,0 +1,349 @@
+"use server";
+
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { requireUser } from "@/lib/crm/auth";
+import { hasModule } from "@/lib/crm/modules";
+import { isFullAccessRole } from "@/lib/crm/roles";
+import { randomToken } from "@/lib/crm/security";
+import { CASE_STUDY_IMAGE_TYPES, MAX_CASE_STUDY_IMAGE_BYTES } from "./case-studies";
+import { documentPath } from "./body";
+import { cmsDb, documentById, pageDocumentBySlug, pageDocumentsBySlug, refreshCmsFiles } from "./queries";
+import type { CmsDocumentRow } from "./types";
+import {
+  INDEPENDENT_CMS_INTENTS,
+  INDEPENDENT_HOTEL_CMS_TEMPLATE,
+  INDEPENDENT_HOTEL_PAGE_ROUTE,
+  INDEPENDENT_HOTEL_PAGE_SLUG,
+  defaultIndependentHotelCms,
+  editorStateFromIndependentHotelDocument,
+  isIndependentHotelCmsBody,
+  isIndependentHotelPageDocument,
+  parseIndependentHotelPageBody,
+  serializeIndependentHotelPageBody,
+  validateIndependentHotelPage,
+  type CmsIndependentPage,
+  type CmsIndependentVisual,
+  type IndependentCmsIntent,
+  type IndependentCmsSaveResult,
+} from "./independent-hotel-page";
+import { pages, type Locale } from "@/lib/seo";
+
+async function requireCms() {
+  const user = await requireUser();
+  if (!isFullAccessRole(user.role) && !hasModule(user, "cms")) redirect("/crm?error=forbidden");
+  return user;
+}
+
+function asIntent(value: unknown): IndependentCmsIntent {
+  return INDEPENDENT_CMS_INTENTS.includes(value as IndependentCmsIntent) ? (value as IndependentCmsIntent) : "save";
+}
+
+function asLocale(value: string): Locale {
+  return value === "en" || value === "ru" || value === "zh" ? value : "th";
+}
+
+function revalidateIndependentHotel(doc: Pick<CmsDocumentRow, "slug" | "locale" | "kind">) {
+  const path = documentPath(doc);
+  revalidatePath("/crm/cms");
+  revalidatePath("/crm/cms/pages");
+  revalidatePath("/crm/cms/independent-hotel");
+  revalidatePath("/", "layout");
+  revalidatePath(INDEPENDENT_HOTEL_PAGE_ROUTE);
+  revalidatePath("/en/solutions/independent-hotel-management");
+  revalidatePath("/ru/solutions/independent-hotel-management");
+  revalidatePath("/zh/solutions/independent-hotel-management");
+  revalidatePath(path);
+  revalidatePath(path, "page");
+}
+
+async function storeImage(file: File): Promise<{ ok: true; path: string } | { ok: false; error: string }> {
+  const original = file.name || "";
+  const dot = original.lastIndexOf(".");
+  const ext = dot >= 0 ? original.slice(dot).toLowerCase() : "";
+  if (!CASE_STUDY_IMAGE_TYPES.has(ext) || file.size > MAX_CASE_STUDY_IMAGE_BYTES) {
+    return { ok: false, error: "invalid_image" };
+  }
+  const buffer = Buffer.from(await file.arrayBuffer());
+  const [{ mkdirSync, writeFileSync }, { join }] = await Promise.all([import("node:fs"), import("node:path")]);
+  const name = `${randomToken(8)}${ext || ".jpg"}`;
+  const dir = join(process.cwd(), "public", "media", "cms");
+  mkdirSync(dir, { recursive: true });
+  writeFileSync(join(dir, name), buffer);
+  const path = `/media/cms/${name}`;
+  try {
+    const db = await cmsDb();
+    await db.cmsMedia.create({
+      data: {
+        filename: file.name,
+        path,
+        alt: "",
+        caption: "",
+        mime: file.type || "image/jpeg",
+        size: file.size,
+      },
+    });
+  } catch {
+    /* media table optional */
+  }
+  return { ok: true, path };
+}
+
+async function applyVisualUpload(
+  formData: FormData,
+  visual: CmsIndependentVisual,
+  fileKey: string,
+  clearKey: string,
+): Promise<string | null> {
+  const file = formData.get(fileKey);
+  const hasFile = file instanceof File && file.size > 0;
+  if (hasFile) {
+    const stored = await storeImage(file);
+    if (!stored.ok) return stored.error;
+    visual.src = stored.path;
+    if (visual.status === "placeholder" || visual.status === "replace") visual.status = "sample";
+  }
+  if (formData.get(clearKey) === "1" && !hasFile) {
+    visual.src = "";
+    visual.status = "replace";
+  }
+  return null;
+}
+
+export async function hydrateIndependentHotelDocument(doc: CmsDocumentRow) {
+  if (!isIndependentHotelPageDocument(doc)) return doc;
+  const locale = asLocale(doc.locale);
+  const parsed = isIndependentHotelCmsBody(doc.body) ? parseIndependentHotelPageBody(doc.body, locale) : null;
+  if (doc.template === INDEPENDENT_HOTEL_CMS_TEMPLATE && parsed) return doc;
+  const content = parsed ?? defaultIndependentHotelCms(locale);
+  const db = await cmsDb();
+  return db.cmsDocument.update({
+    where: { id: doc.id },
+    data: {
+      template: INDEPENDENT_HOTEL_CMS_TEMPLATE,
+      body: serializeIndependentHotelPageBody(content),
+    },
+  });
+}
+
+function applyIntent(status: string, intent: IndependentCmsIntent) {
+  if (intent === "draft" || intent === "unpublish") return "draft";
+  if (intent === "publish") return "published";
+  return status === "published" ? "published" : status || "draft";
+}
+
+export async function saveIndependentHotelPage(formData: FormData): Promise<IndependentCmsSaveResult> {
+  const user = await requireCms();
+  const id = String(formData.get("id") ?? "");
+  const intent = asIntent(formData.get("intent"));
+  const existing = id ? await documentById(id) : null;
+  if (!existing || existing.kind !== "page") return { ok: false, error: "missing" };
+
+  const locale = asLocale(String(formData.get("locale") ?? existing.locale));
+  const parsed = parseIndependentHotelPageBody(String(formData.get("contentJson") ?? ""), locale);
+  if (!parsed) return { ok: false, error: "invalid_json" };
+  const content: CmsIndependentPage = parsed;
+
+  const uploads = await Promise.all([
+    applyVisualUpload(formData, content.hero.visual, "heroImageFile", "clearHeroImage"),
+    applyVisualUpload(formData, content.assessment.visual, "assessmentImageFile", "clearAssessmentImage"),
+    applyVisualUpload(formData, content.services.visual, "servicesImageFile", "clearServicesImage"),
+    applyVisualUpload(formData, content.model.visual, "modelImageFile", "clearModelImage"),
+    applyVisualUpload(formData, content.deliverables.visual, "deliverablesImageFile", "clearDeliverablesImage"),
+    applyVisualUpload(formData, content.workflow.visual, "workflowImageFile", "clearWorkflowImage"),
+    applyVisualUpload(formData, content.fit.visual, "fitImageFile", "clearFitImage"),
+    applyVisualUpload(formData, content.scope.visual, "scopeImageFile", "clearScopeImage"),
+    applyVisualUpload(formData, content.plan.visual, "planImageFile", "clearPlanImage"),
+    applyVisualUpload(formData, content.related.visual, "relatedImageFile", "clearRelatedImage"),
+    applyVisualUpload(formData, content.form.visual, "formImageFile", "clearFormImage"),
+    applyVisualUpload(formData, content.seo.social, "ogImageFile", "clearOgImage"),
+  ]);
+  const uploadError = uploads.find(Boolean);
+  if (uploadError) return { ok: false, error: uploadError };
+
+  const seoTitle = String(formData.get("seoTitle") ?? "").trim();
+  const metaDescription = String(formData.get("metaDescription") ?? "").trim();
+  if (intent === "publish" && (!seoTitle || !metaDescription)) return { ok: false, error: "required_fields" };
+
+  const invalid = validateIndependentHotelPage(content, intent);
+  if (invalid) return { ok: false, error: invalid };
+
+  const nextStatus = applyIntent(existing.status, intent);
+  const published = nextStatus === "published";
+  const title = String(formData.get("title") ?? existing.title).trim() || content.hero.title;
+  const excerpt = String(formData.get("excerpt") ?? "").trim() || metaDescription;
+  const db = await cmsDb();
+  const saved = await db.cmsDocument.update({
+    where: { id: existing.id },
+    data: {
+      title,
+      locale,
+      status: nextStatus,
+      template: INDEPENDENT_HOTEL_CMS_TEMPLATE,
+      excerpt,
+      body: serializeIndependentHotelPageBody(content),
+      featuredImage: content.hero.visual.src,
+      imageAlt: content.hero.visual.altTh || content.hero.visual.altEn,
+      ogImage: content.seo.social.src,
+      seoTitle,
+      metaDescription,
+      canonical: content.seo.canonical || existing.canonical,
+      publishedAt: published ? existing.publishedAt ?? new Date() : null,
+      scheduledAt: null,
+      updatedBy: user.email,
+    },
+  });
+  await refreshCmsFiles();
+  revalidateIndependentHotel(saved);
+  revalidatePath(`/crm/cms/pages/${saved.id}`);
+  revalidatePath(`/crm/cms/pages/${saved.id}/preview`);
+  return { ok: true, id: saved.id, intent };
+}
+
+export async function ensureIndependentHotelPageFromSite(locale: Locale = "th") {
+  const user = await requireCms();
+  const slug = INDEPENDENT_HOTEL_PAGE_SLUG;
+  const existing = await pageDocumentBySlug(slug, locale);
+  const db = await cmsDb();
+  if (existing) {
+    if (existing.trashedAt) {
+      await db.cmsDocument.update({
+        where: { id: existing.id },
+        data: { trashedAt: null, updatedBy: user.email },
+      });
+    }
+    const hydrated = await hydrateIndependentHotelDocument(existing);
+    return hydrated.id;
+  }
+
+  const sitePage = pages.find((page) => page.route === INDEPENDENT_HOTEL_PAGE_ROUTE && page.language === "th");
+  const content = defaultIndependentHotelCms(locale);
+  const created = await db.cmsDocument.create({
+    data: {
+      kind: "page",
+      title: sitePage?.title || content.hero.title,
+      slug,
+      locale,
+      status: "draft",
+      template: INDEPENDENT_HOTEL_CMS_TEMPLATE,
+      excerpt: sitePage?.description || content.hero.description,
+      body: serializeIndependentHotelPageBody(content),
+      seoTitle: sitePage?.title || content.hero.title,
+      metaDescription: sitePage?.description || content.hero.description,
+      canonical: INDEPENDENT_HOTEL_PAGE_ROUTE,
+      createdBy: user.email,
+      updatedBy: user.email,
+    },
+  });
+  await refreshCmsFiles();
+  revalidateIndependentHotel(created);
+  return created.id;
+}
+
+function contentForLocaleCopy(content: CmsIndependentPage, locale: Locale): CmsIndependentPage {
+  const variant = content.seo.variants.find((item) => item.locale === locale);
+  const canonical = locale === "th" ? INDEPENDENT_HOTEL_PAGE_ROUTE : `/${locale}${INDEPENDENT_HOTEL_PAGE_ROUTE}`;
+  if (locale !== "en") {
+    return {
+      ...content,
+      seo: { ...content.seo, canonical: variant?.canonical.trim() || canonical },
+    };
+  }
+  return {
+    ...content,
+    hero: {
+      ...content.hero,
+      title: variant?.title.trim() || content.hero.title,
+      description: variant?.description.trim() || content.hero.description,
+    },
+    faqs: content.faqs.map((faq) => ({
+      ...faq,
+      q: faq.qEn.trim() || faq.q,
+      a: faq.aEn.trim() || faq.a,
+    })),
+    seo: { ...content.seo, canonical: variant?.canonical.trim() || canonical },
+  };
+}
+
+export async function duplicateIndependentHotelPageToLocale(formData: FormData): Promise<IndependentCmsSaveResult> {
+  const user = await requireCms();
+  const id = String(formData.get("id") ?? "");
+  const locale = asLocale(String(formData.get("targetLocale") ?? ""));
+  if (!locale || locale === String(formData.get("locale") ?? "")) return { ok: false, error: "invalid_locale" };
+  const existing = id ? await documentById(id) : null;
+  if (!existing || existing.kind !== "page" || !isIndependentHotelPageDocument(existing)) return { ok: false, error: "missing" };
+  const duplicate = await pageDocumentBySlug(INDEPENDENT_HOTEL_PAGE_SLUG, locale);
+  if (duplicate && !duplicate.trashedAt) return { ok: false, error: "locale_exists" };
+
+  const parsed = parseIndependentHotelPageBody(existing.body, asLocale(existing.locale)) ?? defaultIndependentHotelCms(locale);
+  const content = contentForLocaleCopy(parsed, locale);
+  const canonical = locale === "th" ? INDEPENDENT_HOTEL_PAGE_ROUTE : `/${locale}${INDEPENDENT_HOTEL_PAGE_ROUTE}`;
+  const db = await cmsDb();
+  if (duplicate?.trashedAt) {
+    const restored = await db.cmsDocument.update({
+      where: { id: duplicate.id },
+      data: {
+        title: `${existing.title} (${locale})`,
+        locale,
+        status: "draft",
+        template: INDEPENDENT_HOTEL_CMS_TEMPLATE,
+        excerpt: existing.excerpt,
+        body: serializeIndependentHotelPageBody(content),
+        featuredImage: content.hero.visual.src,
+        imageAlt: content.hero.visual.altTh || content.hero.visual.altEn,
+        ogImage: content.seo.social.src,
+        seoTitle: existing.seoTitle,
+        metaDescription: existing.metaDescription,
+        canonical,
+        publishedAt: null,
+        scheduledAt: null,
+        trashedAt: null,
+        updatedBy: user.email,
+      },
+    });
+    await refreshCmsFiles();
+    revalidateIndependentHotel(restored);
+    return { ok: true, id: restored.id, intent: "draft" };
+  }
+
+  const created = await db.cmsDocument.create({
+    data: {
+      kind: "page",
+      title: `${existing.title} (${locale})`,
+      slug: INDEPENDENT_HOTEL_PAGE_SLUG,
+      locale,
+      status: "draft",
+      template: INDEPENDENT_HOTEL_CMS_TEMPLATE,
+      excerpt: existing.excerpt,
+      body: serializeIndependentHotelPageBody(content),
+      featuredImage: content.hero.visual.src,
+      imageAlt: content.hero.visual.altTh || content.hero.visual.altEn,
+      ogImage: content.seo.social.src,
+      seoTitle: existing.seoTitle,
+      metaDescription: existing.metaDescription,
+      canonical,
+      createdBy: user.email,
+      updatedBy: user.email,
+    },
+  });
+  await refreshCmsFiles();
+  revalidateIndependentHotel(created);
+  return { ok: true, id: created.id, intent: "draft" };
+}
+
+export async function editorStateForIndependentHotelDocument(id: string) {
+  const document = await documentById(id);
+  if (!document || document.kind !== "page" || !isIndependentHotelPageDocument(document)) return null;
+  const hydrated = await hydrateIndependentHotelDocument(document);
+  const locales = await pageDocumentsBySlug(INDEPENDENT_HOTEL_PAGE_SLUG);
+  return {
+    document: hydrated,
+    state: editorStateFromIndependentHotelDocument(hydrated),
+    locales: locales.map((row) => ({
+      id: row.id,
+      locale: row.locale,
+      status: row.status,
+      title: row.title,
+    })),
+  };
+}

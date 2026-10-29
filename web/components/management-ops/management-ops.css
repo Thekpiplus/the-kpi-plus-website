@@ -1,0 +1,231 @@
+.mgmt-ops-page,
+.web-ops {
+  font-family: Prompt, "Noto Sans Thai", Tahoma, Arial, sans-serif;
+}
+
+.seo-ops {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+  overflow-x: clip;
+}
+
+.seo-ops a:focus-visible,
+.seo-ops button:focus-visible,
+.seo-ops select:focus-visible,
+.seo-ops input:focus-visible,
+.seo-ops textarea:focus-visible {
+  outline: 2px solid #a2dc25;
+  outline-offset: 2px;
+}
+
+.seo-ops .b2b-table-wrap,
+.seo-ops .crm-pipe-table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.seo-ops .b2b-filters {
+  grid-template-columns: minmax(10rem, 1.5fr) repeat(auto-fit, minmax(8rem, 1fr));
+}
+
+.seo-ops-status-row,
+.seo-ops-stats,
+.seo-ops-duties {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr));
+  gap: 0.55rem;
+}
+
+.seo-ops-duties ul {
+  margin: 0.2rem 0 0;
+  padding-left: 1.1rem;
+  color: #555;
+  font-size: 0.78rem;
+}
+
+.seo-ops-stat {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid #e3e8eb;
+  border-radius: 0.85rem;
+  background: #fff;
+}
+
+.seo-ops-stat strong {
+  color: #0b1f33;
+  font-size: 1.15rem;
+}
+
+.seo-ops-stat span {
+  color: #555;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.seo-ops-stat:nth-child(1) {
+  background: #eef6d6;
+  border-color: #cfeea4;
+}
+
+.seo-ops-stat:nth-child(2) {
+  background: #cfeea4;
+  border-color: #a2dc25;
+}
+
+.seo-ops-stat:nth-child(3) {
+  background: #fff4b8;
+  border-color: #ffe0a3;
+}
+
+.seo-ops .b2b-save,
+.seo-ops .kpi-button.b2b-save,
+.web-ops .kpi-button.b2b-save {
+  background: #a2dc25;
+  color: #1a3a02;
+}
+
+.seo-ops .b2b-status.is-draft,
+.seo-ops .b2b-status.is-archived {
+  background: #f4f4f4;
+  color: #3b3b3b;
+}
+
+.seo-ops .b2b-status.is-assessment_scheduled,
+.seo-ops .b2b-status.is-assessing,
+.seo-ops .b2b-status.is-awaiting_hotel_data {
+  background: #fff4b8;
+  color: #5a4a00;
+}
+
+.seo-ops .b2b-status.is-scope_alignment,
+.seo-ops .b2b-status.is-plan_ready,
+.seo-ops .b2b-status.is-in_review,
+.seo-ops .b2b-status.is-awaiting_approval {
+  background: #ffe0a3;
+  color: #5a3a00;
+}
+
+.seo-ops .b2b-status.is-monitoring,
+.seo-ops .b2b-status.is-completed {
+  background: #cfeea4;
+  color: #1a3a02;
+}
+
+.seo-ops .b2b-status.is-urgent,
+.seo-ops .b2b-status.is-high {
+  background: #ffe0a3;
+  color: #5a3a00;
+}
+
+.seo-ops .b2b-status.is-not_started {
+  background: #f4f4f4;
+  color: #3b3b3b;
+}
+
+.seo-ops .b2b-status.is-in_progress {
+  background: #fff4b8;
+  color: #5a4a00;
+}
+
+.seo-ops .b2b-status.is-blocked {
+  background: #f8ecd2;
+  color: #5c3b00;
+}
+
+.seo-ops .b2b-status.is-ready_for_review {
+  background: #ffe0a3;
+  color: #5a3a00;
+}
+
+.seo-ops .b2b-status.is-completed {
+  background: #cfeea4;
+  color: #1a3a02;
+}
+
+.ads-progress-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 0.2rem;
+  padding: 0.12rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  background: #a2dc25;
+  color: #1a3a02;
+}
+
+.ads-progress-badge.is-blocked {
+  background: #f8ecd2;
+  color: #5c3b00;
+}
+
+.web-ops-drawer {
+  display: grid;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.web-ops-grid,
+.web-ops-list {
+  display: grid;
+  gap: 0.65rem;
+}
+
+.web-ops-list-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.45rem;
+  padding: 0.7rem;
+  border: 1px solid #e3e8eb;
+  border-radius: 0.7rem;
+  background: #fbfdf6;
+}
+
+.web-ops .crm-rail-link.is-active,
+.web-ops .b2b-tab.is-active,
+.web-ops .ads-form-tabs button.is-active {
+  background: #a2dc25;
+  color: #1a3a02;
+}
+
+@media (min-width: 48rem) {
+  .web-ops-grid,
+  .web-ops-list-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 47.99rem) {
+  .web-ops .crm-pipe-table thead {
+    display: none;
+  }
+
+  .web-ops .crm-pipe-table tr {
+    display: grid;
+    gap: 0.45rem;
+    padding: 0.85rem;
+    margin-bottom: 0.75rem;
+    border: 1px solid #e3e8eb;
+    border-radius: 0.85rem;
+    background: #fff;
+  }
+
+  .web-ops .crm-pipe-table td {
+    display: grid;
+    grid-template-columns: 6rem minmax(0, 1fr);
+    gap: 0.4rem;
+  }
+
+  .web-ops .crm-pipe-table td::before {
+    content: attr(data-label);
+    color: #555;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+}
