@@ -2,6 +2,7 @@ import { adsFaqs } from "@/lib/google-ads";
 import { hotelSeoFaqs } from "@/lib/hotel-seo";
 import { hotelDirectBookingFaqs } from "@/lib/direct-bookings";
 import { independentHotelFaqs } from "@/lib/independent-hotel";
+import { hotelSystemsFaqs } from "@/lib/hotel-systems";
 import { hotelWebsiteFaqs } from "@/lib/hotel-website";
 import { metaFaqs } from "@/lib/meta-ads";
 
@@ -1016,78 +1017,10 @@ const table: Record<string, FaqItem[]> = {
   "/en/solutions/hotel-direct-bookings": hotelDirectBookingFaqs("en"),
   "/ru/solutions/hotel-direct-bookings": hotelDirectBookingFaqs("en"),
   "/zh/solutions/hotel-direct-bookings": hotelDirectBookingFaqs("en"),
-  "/solutions/hotel-systems-implementation": [
-    {
-      q: "จำเป็นต้องเปลี่ยน PMS เดิมไหม?",
-      a: "ไม่จำเป็นเสมอไป เราจะตรวจการตั้งค่า การเชื่อมต่อ และวิธีใช้งานก่อน หากพบข้อจำกัดของระบบจึงค่อยพิจารณาทางเลือก",
-    },
-    {
-      q: "ช่วยแก้ OTA Mapping และโครงสร้างราคาได้ไหม?",
-      a: "ได้ตามความสามารถของระบบและสิทธิ์ที่โรงแรมมี ทีมจะตรวจความสัมพันธ์ของประเภทห้อง Rate Plan ราคา และช่องทางขาย พร้อมทดสอบผลหลังปรับ",
-    },
-    {
-      q: "โรงแรมก่อนเปิดใช้บริการได้ไหม?",
-      a: "ได้ การวางโครงสร้างห้อง ราคา ช่องทางขาย และขั้นตอนทีมก่อนเปิด ช่วยให้โรงแรมมีเวลาทดสอบก่อนรับการจองจริง",
-    },
-    {
-      q: "มีอบรมทีมหลังตั้งค่าหรือไม่?",
-      a: "มีได้ตามขอบเขตงาน โดยเน้นงานที่แต่ละตำแหน่งต้องทำจริง วิธีตรวจความถูกต้อง และขั้นตอนเมื่อข้อมูลหรือการเชื่อมต่อมีปัญหา",
-    },
-  ],
-  "/en/solutions/hotel-systems-implementation": [
-    {
-      q: "Do we have to change the current PMS?",
-      a: "Not always. We first review the settings, the connections, and how the team uses the systems. If a system limit appears, we then look at options.",
-    },
-    {
-      q: "Can you fix OTA mapping and the rate structure?",
-      a: "Yes, within the capability of the systems and the access the hotel has. The team reviews how room types, rate plans, rates, and channels relate, then tests the result after a change.",
-    },
-    {
-      q: "Can a hotel use this before opening?",
-      a: "Yes. Setting room structure, rates, sales channels, and team steps before opening gives the hotel time to test before real bookings arrive.",
-    },
-    {
-      q: "Is there team training after setup?",
-      a: "Yes, within the agreed scope. It focuses on the work each role actually does, how to check that facts are correct, and what to do when data or a connection breaks.",
-    },
-  ],
-  "/ru/solutions/hotel-systems-implementation": [
-    {
-      q: "Нужно ли менять текущий PMS?",
-      a: "Не всегда. Сначала смотрим настройки, связи и как команда пользуется системами. Если видно ограничение системы, тогда рассматриваем варианты.",
-    },
-    {
-      q: "Можно ли поправить OTA mapping и структуру цен?",
-      a: "Да, в рамках возможностей систем и доступа отеля. Команда проверяет связь типов номеров, rate plan, цен и каналов продаж, затем тестирует результат после правки.",
-    },
-    {
-      q: "Можно ли пользоваться услугой до открытия отеля?",
-      a: "Да. Задать структуру номеров, цены, каналы продаж и шаги команды до открытия даёт время протестировать до реальных броней.",
-    },
-    {
-      q: "Есть ли обучение команды после настройки?",
-      a: "Есть, в согласованном объёме. Фокус на работе, которую каждая роль реально делает, как проверять данные и что делать, если данные или связь сломались.",
-    },
-  ],
-  "/zh/solutions/hotel-systems-implementation": [
-    {
-      q: "一定要換現有的 PMS 嗎？",
-      a: "不一定。我們會先檢查設定、串接與使用方式。若發現系統限制，再考慮其他選項。",
-    },
-    {
-      q: "可以幫忙處理 OTA Mapping 和價格結構嗎？",
-      a: "可以，依系統能力與飯店擁有的權限。團隊會檢查房型、Rate Plan、價格與銷售通路的關係，並在調整後測試結果。",
-    },
-    {
-      q: "開幕前的飯店可以用這項服務嗎？",
-      a: "可以。開幕前先把客房結構、價格、銷售通路與團隊步驟準備好，飯店才有時間在真正收訂前測試。",
-    },
-    {
-      q: "設定之後有團隊培訓嗎？",
-      a: "有，依談好的範圍。重點是各職位實際要做的工作、如何檢查資料正確，以及資料或串接出問題時該怎麼做。",
-    },
-  ],
+  "/solutions/hotel-systems-implementation": hotelSystemsFaqs("th"),
+  "/en/solutions/hotel-systems-implementation": hotelSystemsFaqs("en"),
+  "/ru/solutions/hotel-systems-implementation": hotelSystemsFaqs("en"),
+  "/zh/solutions/hotel-systems-implementation": hotelSystemsFaqs("en"),
   "/solutions/hotel-ai-automation": [
     {
       q: "The KPI Plus ช่วยติดตั้งและทำ Automation ให้ด้วยหรือไม่?",

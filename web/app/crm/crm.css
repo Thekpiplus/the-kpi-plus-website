@@ -1418,7 +1418,8 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
 .crm-shell-seo,
 .crm-shell-website,
 .crm-shell-conversion,
-.crm-shell-management {
+.crm-shell-management,
+.crm-shell-systems {
   --crm-rail-active: #a2dc25;
 }
 
@@ -1433,7 +1434,9 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
 .crm-shell-conversion .crm-rail-link.is-active,
 .crm-shell-conversion .crm-rail-link[aria-current="page"],
 .crm-shell-management .crm-rail-link.is-active,
-.crm-shell-management .crm-rail-link[aria-current="page"] {
+.crm-shell-management .crm-rail-link[aria-current="page"],
+.crm-shell-systems .crm-rail-link.is-active,
+.crm-shell-systems .crm-rail-link[aria-current="page"] {
   color: #1a3a02;
   box-shadow: 0 10px 24px rgba(162, 220, 37, 0.35);
 }
@@ -1443,7 +1446,8 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
 .crm-shell-seo .crm-app-sub-links a[aria-current="page"],
 .crm-shell-website .crm-app-sub-links a[aria-current="page"],
 .crm-shell-conversion .crm-app-sub-links a[aria-current="page"],
-.crm-shell-management .crm-app-sub-links a[aria-current="page"] {
+.crm-shell-management .crm-app-sub-links a[aria-current="page"],
+.crm-shell-systems .crm-app-sub-links a[aria-current="page"] {
   background: #a2dc25;
   color: #1a3a02;
 }
@@ -9520,7 +9524,8 @@ html[data-crm-theme="dark"] .crm-cms-globals-card,
   gap: 1rem;
 }
 
-.crm-cs-tabs {
+.crm-cs-tabs,
+.crm-cms-tabs {
   display: flex;
   flex-wrap: wrap;
   gap: 0.35rem;

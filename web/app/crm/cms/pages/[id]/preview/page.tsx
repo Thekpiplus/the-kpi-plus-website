@@ -6,6 +6,7 @@ import { MetaAdsView } from "@/components/MetaAdsView";
 import { SeoLocalView } from "@/components/SeoLocalView";
 import { ConversionView } from "@/components/ConversionView";
 import { IndependentHotelView } from "@/components/IndependentHotelView";
+import { HotelSystemsView } from "@/components/HotelSystemsView";
 import { WebsiteView } from "@/components/WebsiteView";
 import { ReservationsView } from "@/components/ReservationsView";
 import { RevenueView } from "@/components/RevenueView";
@@ -24,6 +25,8 @@ import { isHotelDirectBookingsPageDocument } from "@/lib/cms/hotel-direct-bookin
 import { loadDirectBookingPagePreview } from "@/lib/cms/hotel-direct-bookings-page-public";
 import { isIndependentHotelPageDocument } from "@/lib/cms/independent-hotel-page";
 import { loadIndependentHotelPagePreview } from "@/lib/cms/independent-hotel-page-public";
+import { isHotelSystemsPageDocument } from "@/lib/cms/hotel-systems-page";
+import { loadHotelSystemsPagePreview } from "@/lib/cms/hotel-systems-page-public";
 import { loadReservationsPagePreview } from "@/lib/cms/reservations-page-public";
 import { isReservationsPageDocument } from "@/lib/cms/reservations-page";
 import { loadRevenuePagePreview } from "@/lib/cms/revenue-page-public";
@@ -49,7 +52,8 @@ export default async function PreviewCmsPage({
   const hotelWebsite = isHotelWebsitePageDocument(document);
   const hotelDirectBookings = isHotelDirectBookingsPageDocument(document);
   const independentHotel = isIndependentHotelPageDocument(document);
-  if (!reservations && !revenue && !b2b && !googleAds && !metaAds && !hotelSeo && !hotelWebsite && !hotelDirectBookings && !independentHotel) notFound();
+  const hotelSystems = isHotelSystemsPageDocument(document);
+  if (!reservations && !revenue && !b2b && !googleAds && !metaAds && !hotelSeo && !hotelWebsite && !hotelDirectBookings && !independentHotel && !hotelSystems) notFound();
 
   const preview = reservations ? await loadReservationsPagePreview(id) : null;
   const revenuePreview = revenue ? await loadRevenuePagePreview(id) : null;
@@ -60,6 +64,7 @@ export default async function PreviewCmsPage({
   const hotelWebsitePreview = hotelWebsite ? await loadHotelWebsitePagePreview(id) : null;
   const hotelDirectBookingsPreview = hotelDirectBookings ? await loadDirectBookingPagePreview(id) : null;
   const independentHotelPreview = independentHotel ? await loadIndependentHotelPagePreview(id) : null;
+  const hotelSystemsPreview = hotelSystems ? await loadHotelSystemsPagePreview(id) : null;
   const live =
     preview?.live ??
     revenuePreview?.live ??
@@ -70,8 +75,9 @@ export default async function PreviewCmsPage({
     hotelWebsitePreview?.live ??
     hotelDirectBookingsPreview?.live ??
     independentHotelPreview?.live ??
+    hotelSystemsPreview?.live ??
     false;
-  if (!preview && !revenuePreview && !b2bPreview && !adsPreview && !metaPreview && !hotelSeoPreview && !hotelWebsitePreview && !hotelDirectBookingsPreview && !independentHotelPreview) notFound();
+  if (!preview && !revenuePreview && !b2bPreview && !adsPreview && !metaPreview && !hotelSeoPreview && !hotelWebsitePreview && !hotelDirectBookingsPreview && !independentHotelPreview && !hotelSystemsPreview) notFound();
   const path = documentPath(document);
   const title = reservations
     ? "ตัวอย่างหน้า Outsourced Hotel Reservations"
@@ -89,6 +95,8 @@ export default async function PreviewCmsPage({
             ? "ตัวอย่างหน้า Hotel Direct Bookings"
           : independentHotel
             ? "ตัวอย่างหน้า Independent Hotel Management"
+          : hotelSystems
+            ? "ตัวอย่างหน้า Hotel Systems Implementation"
           : "ตัวอย่างหน้า Revenue & Commercial";
 
   return (
@@ -146,6 +154,12 @@ export default async function PreviewCmsPage({
           <IndependentHotelView
             locale={independentHotelPreview.locale === "en" || independentHotelPreview.locale === "ru" || independentHotelPreview.locale === "zh" ? independentHotelPreview.locale : "th"}
             previewContent={independentHotelPreview.content}
+            embedded
+          />
+        ) : hotelSystemsPreview ? (
+          <HotelSystemsView
+            locale={hotelSystemsPreview.locale === "en" || hotelSystemsPreview.locale === "ru" || hotelSystemsPreview.locale === "zh" ? hotelSystemsPreview.locale : "th"}
+            previewContent={hotelSystemsPreview.content}
             embedded
           />
         ) : null}

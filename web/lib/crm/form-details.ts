@@ -51,7 +51,10 @@ const FIELD_LABEL: Record<string, string> = {
   rooms: "จำนวนห้อง",
   pms: "PMS",
   channel: "Channel Manager",
+  channelManager: "Channel Manager",
   booking: "ระบบจอง / Booking Engine",
+  bookingEngine: "Booking Engine",
+  providerContact: "ผู้ติดต่อผู้ให้บริการ / เจ้าของงานเทคนิค",
   website: "เว็บไซต์ / Booking Engine",
   link: "ลิงก์",
   systems: "ระบบที่ใช้อยู่",
@@ -130,6 +133,11 @@ const VALUE_LABEL: Record<string, string> = {
   owner: "เจ้าของ",
   gm: "GM",
   sales: "ขาย",
+  new_setup: "New Setup",
+  integration: "Integration",
+  data_mapping: "Data Mapping",
+  troubleshooting: "Troubleshooting",
+  handover: "Handover",
 };
 
 const FIELD_ORDER = [
@@ -151,7 +159,10 @@ const FIELD_ORDER = [
   "rooms",
   "pms",
   "channel",
+  "channelManager",
   "booking",
+  "bookingEngine",
+  "providerContact",
   "website",
   "link",
   "systems",

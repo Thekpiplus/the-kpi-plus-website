@@ -1,306 +1,430 @@
 import Link from "next/link";
 import { HotelSystemsEnquiry } from "@/components/HotelSystemsEnquiry";
 import { HotelSystemsStickyCta } from "@/components/HotelSystemsStickyCta";
+import {
+  HotelSystemsReviewChecklist,
+} from "@/components/hotel-systems/HotelSystemsReviewChecklist";
+import { HotelSystemsBeforeAfter } from "@/components/hotel-systems/HotelSystemsBeforeAfter";
+import { HotelSystemsLandscape } from "@/components/hotel-systems/HotelSystemsLandscape";
+import { HotelSystemsReadiness } from "@/components/hotel-systems/HotelSystemsReadiness";
+import { HotelSystemsPlatforms } from "@/components/hotel-systems/HotelSystemsPlatforms";
+import { HotelSystemsInventory } from "@/components/hotel-systems/HotelSystemsInventory";
+import { HotelSystemsHandover } from "@/components/hotel-systems/HotelSystemsHandover";
+import { HotelSystemsResponsibility } from "@/components/hotel-systems/HotelSystemsResponsibility";
+import { HotelSystemsTesting } from "@/components/hotel-systems/HotelSystemsTesting";
+import { HotelSystemsWorkflow } from "@/components/hotel-systems/HotelSystemsWorkflow";
+import {
+  HotelSystemsReviewVisual,
+  HotelSystemsHeroVisual,
+  HotelSystemsRelatedVisual,
+} from "@/components/hotel-systems/HotelSystemsVisuals";
+import "@/components/hotel-systems/hotel-systems-visuals.css";
+import { PageFaqs } from "@/components/PageFaqs";
 import { SiteShell } from "@/components/SiteShell";
+import type { CmsSystemsPage } from "@/lib/cms/hotel-systems-page";
+import {
+  hotelSystemsFaqsFromCms,
+  loadHotelSystemsPage,
+} from "@/lib/cms/hotel-systems-page-public";
+import {
+  SYSTEMS_DELIVERABLES_BOUNDARY,
+  SYSTEMS_DELIVERABLES_VISUAL,
+  SYSTEMS_FIT_NOT,
+  SYSTEMS_FIT_VISUAL,
+  SYSTEMS_INVENTORY_VISUAL,
+  SYSTEMS_TESTING_VISUAL,
+  SYSTEMS_ASSESSMENT_VISUAL,
+  SYSTEMS_HERO_JOURNEY,
+  SYSTEMS_HERO_VISUAL,
+  SYSTEMS_KPIS,
+  SYSTEMS_KPI_SAMPLE,
+  SYSTEMS_MODEL_BOUNDARY,
+  SYSTEMS_MODEL_STEPS,
+  SYSTEMS_MODEL_VISUAL,
+  SYSTEMS_HANDOVER_NOTE,
+  SYSTEMS_PLAN_VISUAL,
+  SYSTEMS_SCOPE_BOUNDARY,
+  SYSTEMS_SCOPE_VISUAL,
+  SYSTEMS_SERVICES_VISUAL,
+  SYSTEMS_SOURCES,
+  SYSTEMS_WORKFLOW_APPROVALS,
+  SYSTEMS_WORKFLOW_GATE,
+  SYSTEMS_WORKFLOW_VISUAL,
+  hotelSystemsCopy,
+  hotelSystemsRelatedCards,
+  systemsAssessmentCmsRows,
+  systemsAssessmentRowsAreStale,
+  systemsBeforeAfterCmsFields,
+  systemsBeforeAfterFieldsAreStale,
+  systemsLandscapeCmsItems,
+  systemsLandscapeConnectionsCms,
+  systemsLandscapeItemsAreStale,
+  systemsLandscapeConnectionsAreStale,
+  systemsLandscapePathIsStale,
+  SYSTEMS_LANDSCAPE_PATH,
+  systemsModelStepsAreStale,
+  systemsReadinessCmsRows,
+  systemsReadinessRowsAreStale,
+  systemsFitCmsRows,
+  systemsFitRowsAreStale,
+  systemsDictionaryCmsRows,
+  systemsDictionaryRowsAreStale,
+  systemsInventoryCmsRows,
+  systemsInventoryRowsAreStale,
+  systemsTestingCmsCases,
+  systemsTestingCasesAreStale,
+  systemsTestingErrorCmsSteps,
+  systemsHandoverCmsItems,
+  systemsHandoverItemsAreStale,
+  systemsOwnershipCmsRows,
+  systemsOwnershipRowsAreStale,
+  systemsResponsibilityCmsRows,
+  systemsResponsibilityRowsAreStale,
+  systemsScopeCmsRows,
+  systemsScopeRowsAreStale,
+  systemsWorkflowCmsSteps,
+  systemsWorkflowStepsAreStale,
+} from "@/lib/hotel-systems";
 import { solutionNavLabel } from "@/lib/nav";
 import { existingHref, localizePath, type Locale } from "@/lib/seo";
 
-const heroPhoto = "/media/reservations-hero-desk.jpg";
-const problemPhoto = "/media/b2b-hero-meeting.jpg";
+function systemsPublicHref(href: string, locale: Locale, fallback: string) {
+  const next = href.trim() || fallback;
+  if (/^(#|https?:\/\/|mailto:|tel:)/i.test(next)) return next;
+  return existingHref(next, locale) || localizePath(next, locale) || next;
+}
 
-const methodLabels = ["AUDIT", "MAP", "CONFIGURE", "TEST", "TRAIN", "GO LIVE"] as const;
+function systemsHeroText(cmsValue: string, next: string, staleStarts: string[]) {
+  const value = cmsValue.trim();
+  if (!value || staleStarts.some((start) => value === start || value.startsWith(start))) return next;
+  return value;
+}
 
-const platforms = [
-  { name: "Cloudbeds", src: "/brand/platforms/cloudbeds.png" },
-  { name: "SiteMinder", src: "/brand/platforms/siteminder.png" },
-  { name: "Yanolja Cloud", src: "/brand/platforms/yanolja.png" },
-  { name: "OPERA Cloud", src: "/brand/platforms/opera-cloud.png" },
-  { name: "NAWA", src: "/brand/platforms/nawa.png" },
-  { name: "HotelierGuru", src: "/brand/platforms/hotelierguru.png" },
-] as const;
-
-const copy = {
-  th: {
-    crumb: "โซลูชัน",
-    eyebrow: "Hotel Systems",
-    title: "ระบบเชื่อมกันได้ แต่ทีมและข้อมูลต้องทำงานไปด้วยกัน",
-    lead: "PMS, Channel Manager, Booking Engine และ OTA เป็นส่วนสำคัญของการขายห้องพัก หากประเภทห้อง ราคา หรือจำนวนห้องว่างตั้งค่าไม่ตรงกัน ทีมอาจต้องแก้ข้อมูลซ้ำ ตอบลูกค้าลำบาก และใช้รายงานประกอบการตัดสินใจได้ไม่เต็มที่",
-    leadClose:
-      "เดอะ เคพีไอ พลัส ช่วยโรงแรมเลือก ตั้งค่า เชื่อมต่อ และปรับการใช้ระบบ โดยมองทั้งงานหน้าโรงแรม การสำรองห้องพัก การขายออนไลน์ และการบริหารรายได้ เพื่อให้เทคโนโลยีรองรับวิธีทำงานจริง",
-    cta: "ให้ทีมตรวจโครงสร้างระบบโรงแรม",
-    secondary: "ดูโซลูชันทั้งหมด",
-    underCta: "ส่งชื่อโรงแรม ระบบที่ใช้อยู่ และปัญหาที่พบ ไม่ต้องส่งรหัสผ่าน",
-    photoAlt: "ผู้บริหารโรงแรมตรวจระบบและการดำเนินงานบนคอมพิวเตอร์",
-    problemPhotoAlt: "ทีมโรงแรมหารือการตั้งค่าและเชื่อมต่อระบบ",
-    problemTitle: "โรงแรมของคุณกำลังเจอเรื่องนี้หรือไม่?",
-    problems: [
-      "ประเภทห้องหรือ Rate Plan ในแต่ละระบบจับคู่กันไม่ชัด",
-      "เปลี่ยนราคาในระบบหนึ่งแล้วไม่แน่ใจว่า OTA หรือเว็บไซต์อัปเดตถูกต้องหรือไม่",
-      "จำนวนห้องว่างและเงื่อนไขการขายในแต่ละช่องทางไม่ตรงกัน",
-      "พนักงานต้องทำงานซ้ำ เพราะระบบกับขั้นตอนของทีมไม่สอดคล้องกัน",
-      "มีรายงานจำนวนมาก แต่ตอบไม่ได้ว่ายอดขายมาจากช่องทางไหนหรือควรปรับอะไร",
-      "กำลังจะเปิดโรงแรมหรือย้ายระบบ แต่ยังไม่รู้ว่าต้องเตรียมข้อมูลและทดสอบอะไรบ้าง",
-    ],
-    helpTitle: "เดอะ เคพีไอ พลัส ช่วยส่วนไหนได้บ้าง?",
-    help: [
-      ["01", "PMS และโครงสร้างห้องพัก", "จัดประเภทห้อง จำนวนห้อง ราคา นโยบาย และข้อมูลหลักที่ทีมต้องใช้ เพื่อให้การจองและการทำงานประจำวันมีจุดอ้างอิงที่ชัดเจน"],
-      ["02", "Channel Manager และ OTA", "ตรวจการจับคู่ห้องและ Rate Plan การส่งราคาและห้องว่างไปยังช่องทางขาย รวมถึงทดสอบว่าข้อมูลและการจองกลับมาถูกต้อง"],
-      ["03", "Booking Engine และการจองตรง", "ดูราคา แพ็กเกจ เงื่อนไข และเส้นทางจองบนเว็บไซต์ เพื่อให้ข้อมูลที่ลูกค้าเห็นตรงกับสิ่งที่โรงแรมพร้อมขาย"],
-      ["04", "รายงานที่ใช้ตัดสินใจ", "จัดข้อมูลจากระบบให้ทีมดูรายได้ อัตราเข้าพัก ราคาเฉลี่ย ยอดจองล่วงหน้า และผลงานแต่ละช่องทางตามข้อมูลที่ระบบรองรับ"],
-      ["05", "วิธีทำงานและการอบรมทีม", "กำหนดว่าใครเปลี่ยนราคา ใครตรวจการจอง ใครแก้ข้อมูลเมื่อเกิดปัญหา พร้อมอบรมจากสถานการณ์ที่พนักงานเจอจริง"],
-    ],
-    existingTitle: "เริ่มจากระบบที่มีอยู่ก่อน",
-    existingBody:
-      "โรงแรมไม่จำเป็นต้องเปลี่ยน PMS หรือ Channel Manager ทุกครั้งที่พบปัญหา บางกรณีเกิดจากการตั้งค่า การจับคู่ข้อมูล หรือขั้นตอนทำงานที่แก้ไขได้ในระบบเดิม",
-    existingClose: "หากระบบปัจจุบันมีข้อจำกัด ทีมจะช่วยระบุว่าข้อจำกัดนั้นกระทบงานส่วนใด ก่อนพิจารณาทางเลือกและการย้ายระบบร่วมกับโรงแรม",
-    stageTitle: "รองรับทั้งโรงแรมก่อนเปิดและโรงแรมที่ดำเนินงานอยู่",
-    stages: [
-      ["01", "โรงแรมก่อนเปิด", "วางประเภทห้อง ราคา ระบบจอง ช่องทาง OTA รายงาน และวิธีทำงานให้พร้อมก่อนเริ่มรับแขก"],
-      ["02", "โรงแรมที่เปิดแล้ว", "ตรวจการตั้งค่าที่ใช้อยู่ แก้ปัญหาการเชื่อมต่อ ลดงานซ้ำ และปรับรายงานให้ช่วยการตัดสินใจมากขึ้น"],
-      ["03", "โรงแรมที่กำลังย้ายระบบ", "วางแผนข้อมูลที่ต้องย้าย ขั้นตอนการเชื่อมต่อ การทดสอบ การอบรม และช่วงส่งต่องานกับผู้ให้บริการระบบ"],
-    ],
-    methodTitle: "เราทำงานอย่างไร?",
-    steps: [
-      ["01", "ตรวจระบบและปัญหาจริง", "ดูระบบที่ใช้ โครงสร้างห้องและราคา ช่องทางขาย และขั้นตอนของทีม"],
-      ["02", "ออกแบบวิธีทำงาน", "ระบุว่าข้อมูลใดควรอยู่ในระบบไหน และใครรับผิดชอบการอัปเดต"],
-      ["03", "ตั้งค่าหรือปรับโครงสร้าง", "ทำงานตามสิทธิ์เข้าถึงและความสามารถของแต่ละแพลตฟอร์ม"],
-      ["04", "เชื่อมต่อและทดสอบ", "ตรวจราคา ห้องว่าง เงื่อนไข และการรับจองจากช่องทางสำคัญ"],
-      ["05", "อบรมและส่งต่องาน", "ให้ทีมทดลองทำงานจริงและรู้วิธีตรวจหรือแจ้งปัญหา"],
-      ["06", "ทบทวนหลังเริ่มใช้", "แก้จุดที่พบจากการใช้งานจริงตามขอบเขตที่ตกลงกัน"],
-    ],
-    methodNote: "งานเชื่อมต่อบางส่วนต้องดำเนินการหรืออนุมัติโดยผู้ให้บริการระบบ เดอะ เคพีไอ พลัส จะช่วยประสานและตรวจผลร่วมกับโรงแรม",
-    platformsTitle: "ระบบโรงแรมที่ทีมมีประสบการณ์ในการติดตั้งและประสานงาน",
-    platformsBody:
-      "ขอบเขตงานอาจเกี่ยวข้องกับแพลตฟอร์มที่โรงแรมใช้อยู่ เช่น Cloudbeds, SiteMinder, Yanolja Cloud Solution, Oracle Hospitality OPERA Cloud, NAWA และ HotelierGuru รวมถึงระบบอื่นที่ต้องตรวจความสามารถและสิทธิ์การเข้าถึงเป็นรายกรณี",
-    platformsNote: "ชื่อและโลโก้ใช้เพื่อระบุแพลตฟอร์มที่เกี่ยวข้องกับงานเท่านั้น ไม่ได้หมายถึงการรับรองหรือความร่วมมืออย่างเป็นทางการจากเจ้าของแพลตฟอร์ม",
-    readyTitle: "เราดูอย่างไรว่าระบบพร้อมใช้งาน?",
-    readyBody: "เราไม่ได้ดูเพียงสถานะว่า “เชื่อมต่อแล้ว” แต่ตรวจงานที่โรงแรมต้องใช้จริง เช่น:",
-    ready: [
-      "ห้องและราคาจับคู่ถูกต้องในช่องทางสำคัญ",
-      "การเปลี่ยนราคาและห้องว่างส่งไปถึงช่องทางที่เกี่ยวข้อง",
-      "การจองจาก OTA หรือเว็บไซต์เข้าระบบตามที่ควร",
-      "ทีมรู้ว่าใครเป็นผู้ตรวจและแก้ปัญหา",
-      "รายงานตอบคำถามด้านยอดขายและรายได้ที่โรงแรมต้องใช้",
-    ],
-    readyClose: "รายละเอียดการทดสอบจะกำหนดตามระบบและขอบเขตงานของแต่ละโรงแรม",
-    relatedTitle: "เรื่องที่เกี่ยวข้องกับรายได้ งานจอง และระบบ",
-    details: "ดูรายละเอียด",
-    revenueBody: "ระบบที่ตั้งค่าแล้ว ยังต้องดูร่วมกับราคา ช่องทางขาย และการจองตรงในภาพรวมรายได้",
-    reservationsBody: "เมื่อระบบพร้อมแล้ว ทีมยังต้องมีคนดูแลคำถามและการจองจากช่องทางที่ตกลงกัน",
-  },
-  en: {
-    crumb: "Solutions",
-    eyebrow: "Hotel Systems",
-    title: "Systems can connect. The team and the data still have to work together.",
-    lead: "The PMS, channel manager, booking engine, and OTAs are a core part of selling rooms. If room types, rates, or availability are not set the same way, the team may edit the same facts twice, find it hard to answer guests, and cannot fully use reports to decide.",
-    leadClose:
-      "The KPI Plus helps hotels choose, set up, connect, and adjust how systems are used. We look at the front desk, reservations, online sales, and revenue work, so the technology supports the way the hotel actually works.",
-    cta: "Ask the team to review the hotel system setup",
-    secondary: "All solutions",
-    underCta: "Send the hotel name, the systems in use, and the problem. Do not send a password.",
-    photoAlt: "A hotel manager reviewing systems and operations on a computer",
-    problemPhotoAlt: "A hotel team discussing system setup and connections",
-    problemTitle: "Is the hotel meeting one of these?",
-    problems: [
-      "Room types or rate plans are not clearly mapped across systems",
-      "A rate is changed in one system, and it is unclear whether the OTA or website updated correctly",
-      "Availability and selling conditions do not match across channels",
-      "Staff repeat the same work because the system and the team process do not match",
-      "There are many reports, but they do not say which channel created the sales or what to change",
-      "The hotel is about to open or move systems, and it is still unclear what data to prepare and what to test",
-    ],
-    helpTitle: "What The KPI Plus can help with",
-    help: [
-      ["01", "PMS and room structure", "Set room types, room count, rates, policy, and the core facts the team needs, so daily bookings and work have a clear source."],
-      ["02", "Channel manager and OTAs", "Review room and rate-plan mapping, how rates and availability are sent to sales channels, and test that facts and bookings come back correctly."],
-      ["03", "Booking engine and direct booking", "Review rates, packages, conditions, and the booking path on the website, so what the guest sees matches what the hotel can sell."],
-      ["04", "Reports the team can decide from", "Arrange system data so the team can see revenue, occupancy, average rate, future bookings, and each channel’s result, as far as the systems can support."],
-      ["05", "Ways of working and team training", "Agree who changes the rate, who checks bookings, and who fixes facts when something breaks, then train from the situations staff actually meet."],
-    ],
-    existingTitle: "Start with the systems you already have",
-    existingBody:
-      "A hotel does not have to change the PMS or channel manager every time there is a problem. Some cases come from settings, mapping, or a work step that can be fixed in the current systems.",
-    existingClose: "If the current system has a limit, the team will name which part of the work it affects before looking at options and a move with the hotel.",
-    stageTitle: "For hotels before opening, and hotels already running",
-    stages: [
-      ["01", "Before opening", "Set room types, rates, the booking system, OTA channels, reports, and the way of working before guests arrive."],
-      ["02", "Already operating", "Review the current setup, fix connection problems, reduce repeated work, and make reports more useful for decisions."],
-      ["03", "Moving systems", "Plan the data that must move, the connection steps, testing, training, and the hand-over period with the system provider."],
-    ],
-    methodTitle: "How we work",
-    steps: [
-      ["01", "Review the systems and the real problem", "Look at the systems in use, room and rate structure, sales channels, and the team’s steps."],
-      ["02", "Design the way of working", "Name which facts should sit in which system, and who owns the update."],
-      ["03", "Set up or adjust the structure", "Work within the access and the capability of each platform."],
-      ["04", "Connect and test", "Check rates, availability, conditions, and bookings from the main channels."],
-      ["05", "Train and hand over", "Let the team try the real work, and know how to check or report a problem."],
-      ["06", "Review after go-live", "Fix issues found in real use, within the agreed scope."],
-    ],
-    methodNote: "Some connection work has to be done or approved by the system provider. The KPI Plus helps coordinate and review the result with the hotel.",
-    platformsTitle: "Hotel systems the team has experience implementing and coordinating",
-    platformsBody:
-      "The work may involve platforms the hotel already uses, such as Cloudbeds, SiteMinder, Yanolja Cloud Solution, Oracle Hospitality OPERA Cloud, NAWA, and HotelierGuru, and other systems that have to be reviewed case by case for capability and access.",
-    platformsNote: "Names and logos are used only to name platforms related to the work. They do not mean an endorsement or a formal partnership with the platform owners.",
-    readyTitle: "How do we know a system is ready to use?",
-    readyBody: "We do not only look at a status that says “connected”. We check the work the hotel actually needs, such as:",
-    ready: [
-      "Rooms and rates are mapped correctly on the main channels",
-      "A change to the rate or availability reaches the related channels",
-      "A booking from an OTA or the website enters the system as it should",
-      "The team knows who checks and who fixes a problem",
-      "Reports answer the sales and revenue questions the hotel needs",
-    ],
-    readyClose: "The test detail is set from the systems and the scope of work for each hotel.",
-    relatedTitle: "Related reading on revenue, reservations, and systems",
-    details: "Read more",
-    revenueBody: "Once the systems are set, rates, channels, and direct booking still have to sit in one revenue picture.",
-    reservationsBody: "When the systems are ready, someone still has to look after questions and bookings on the agreed channels.",
-  },
-  ru: {
-    crumb: "Решения",
-    eyebrow: "Hotel Systems",
-    title: "Системы могут быть связаны. Команда и данные всё равно должны работать вместе.",
-    lead: "PMS, channel manager, booking engine и OTA — важная часть продажи номеров. Если типы номеров, цены или наличие настроены по-разному, команда может править одни и те же данные дважды, с трудом отвечать гостям и не полностью использовать отчёты для решений.",
-    leadClose:
-      "The KPI Plus помогает отелю выбрать, настроить, связать и скорректировать использование систем. Смотрим стойку, бронь, онлайн-продажи и работу с доходом, чтобы технология поддерживала реальный способ работы отеля.",
-    cta: "Попросить команду проверить структуру систем отеля",
-    secondary: "Все решения",
-    underCta: "Отправьте название отеля, системы и проблему. Пароль отправлять не нужно.",
-    photoAlt: "Управляющий отеля проверяет системы и операции на компьютере",
-    problemPhotoAlt: "Команда отеля обсуждает настройку и связь систем",
-    problemTitle: "Отель встречает что-то из этого?",
-    problems: [
-      "Типы номеров или rate plan в разных системах сопоставлены неясно",
-      "Цену меняют в одной системе и не уверены, что OTA или сайт обновились верно",
-      "Наличие и условия продажи на разных каналах не совпадают",
-      "Сотрудники делают одну и ту же работу повторно, потому что система и процесс команды не совпадают",
-      "Отчётов много, но они не говорят, какой канал дал продажи и что менять",
-      "Отель скоро откроется или меняет систему и ещё не ясно, какие данные готовить и что тестировать",
-    ],
-    helpTitle: "Чем может помочь The KPI Plus",
-    help: [
-      ["01", "PMS и структура номеров", "Задать типы номеров, число номеров, цены, правила и основные данные, которые нужны команде, чтобы бронь и ежедневная работа имели ясную точку опоры."],
-      ["02", "Channel manager и OTA", "Проверить сопоставление номеров и rate plan, отправку цен и наличия в каналы продаж и протестировать, что данные и брони возвращаются верно."],
-      ["03", "Booking engine и прямое бронирование", "Смотреть цены, пакеты, условия и путь брони на сайте, чтобы гость видел то, что отель реально готов продавать."],
-      ["04", "Отчёты, по которым можно решать", "Собрать данные из систем так, чтобы команда видела доход, загрузку, среднюю цену, будущие брони и результат каждого канала, насколько системы это позволяют."],
-      ["05", "Способ работы и обучение команды", "Договориться, кто меняет цену, кто проверяет брони и кто правит данные при сбое, затем обучать на ситуациях, которые сотрудники реально встречают."],
-    ],
-    existingTitle: "Сначала смотреть текущие системы",
-    existingBody:
-      "Отелю не нужно менять PMS или channel manager каждый раз, когда есть проблема. Иногда дело в настройках, сопоставлении данных или шаге работы, который можно поправить в текущих системах.",
-    existingClose: "Если у текущей системы есть ограничение, команда назовёт, какую часть работы оно бьёт, прежде чем смотреть варианты и переезд вместе с отелем.",
-    stageTitle: "И для отелей до открытия, и для уже работающих",
-    stages: [
-      ["01", "До открытия", "Задать типы номеров, цены, систему брони, каналы OTA, отчёты и способ работы до приёма гостей."],
-      ["02", "Уже работает", "Проверить текущие настройки, починить связи, снизить повторную работу и сделать отчёты полезнее для решений."],
-      ["03", "Переезд на другую систему", "Спланировать данные для переноса, шаги связи, тесты, обучение и период передачи работы с провайдером системы."],
-    ],
-    methodTitle: "Как мы работаем",
-    steps: [
-      ["01", "Проверить системы и реальную проблему", "Системы в работе, структура номеров и цен, каналы продаж и шаги команды."],
-      ["02", "Спроектировать способ работы", "Назвать, какие данные должны жить в какой системе и кто отвечает за обновление."],
-      ["03", "Настроить или поправить структуру", "Работать в рамках доступа и возможностей каждой платформы."],
-      ["04", "Связать и протестировать", "Проверить цены, наличие, условия и приём броней с ключевых каналов."],
-      ["05", "Обучить и передать работу", "Дать команде попробовать реальную работу и знать, как проверять или сообщать о проблеме."],
-      ["06", "Проверить после запуска", "Править то, что всплыло в реальном использовании, в согласованном объёме."],
-    ],
-    methodNote: "Часть работ по связи должна сделать или утвердить провайдер системы. The KPI Plus помогает согласовать и проверить результат вместе с отелем.",
-    platformsTitle: "Системы отеля, с которыми команда имеет опыт внедрения и координации",
-    platformsBody:
-      "Работа может касаться платформ, которые отель уже использует: Cloudbeds, SiteMinder, Yanolja Cloud Solution, Oracle Hospitality OPERA Cloud, NAWA и HotelierGuru, а также других систем, которые нужно смотреть отдельно по возможностям и доступу.",
-    platformsNote: "Названия и логотипы используем только чтобы назвать платформы, связанные с работой. Это не означает одобрение или официальное партнёрство с владельцами платформ.",
-    readyTitle: "Как мы понимаем, что система готова к работе?",
-    readyBody: "Мы смотрим не только статус «подключено». Проверяем работу, которая отелю реально нужна, например:",
-    ready: [
-      "Номера и цены верно сопоставлены на ключевых каналах",
-      "Изменение цены и наличия доходит до связанных каналов",
-      "Бронь с OTA или сайта входит в систему как должна",
-      "Команда знает, кто проверяет и кто чинит проблему",
-      "Отчёты отвечают на вопросы о продажах и доходе, которые нужны отелю",
-    ],
-    readyClose: "Детали теста задаём по системам и объёму работы каждого отеля.",
-    relatedTitle: "Материалы про доход, бронь и системы",
-    details: "Подробнее",
-    revenueBody: "Когда системы настроены, цену, каналы и прямое бронирование всё равно нужно смотреть в общей картине дохода.",
-    reservationsBody: "Когда системы готовы, кто-то всё равно должен вести вопросы и брони по согласованным каналам.",
-  },
-  zh: {
-    crumb: "解決方案",
-    eyebrow: "Hotel Systems",
-    title: "系統可以串起來，但團隊和資料仍須一起運作",
-    lead: "PMS、Channel Manager、Booking Engine 與 OTA 是賣房的核心。若房型、價格或空房設定不一致，團隊可能重複改同一筆資料、難以回覆客人，也無法充分利用報表做決定。",
-    leadClose:
-      "The KPI Plus 協助飯店選擇、設定、串接並調整系統用法。我們會看櫃檯、訂房、線上銷售與收益工作，讓技術支援飯店實際的作業方式。",
-    cta: "請團隊檢查飯店系統結構",
-    secondary: "查看全部方案",
-    underCta: "留下飯店名稱、目前系統與問題。不必傳送密碼。",
-    photoAlt: "飯店管理者在電腦上檢查系統與營運",
-    problemPhotoAlt: "飯店團隊討論系統設定與串接",
-    problemTitle: "飯店正在遇到這些事嗎？",
-    problems: [
-      "各系統的房型或 Rate Plan 對應不清楚",
-      "在一個系統改了價格，卻不確定 OTA 或網站是否更新正確",
-      "各通路的空房與銷售條件不一致",
-      "員工重複作業，因為系統與團隊流程對不上",
-      "報表很多，卻答不出銷售來自哪條通路，或該調整什麼",
-      "即將開幕或換系統，還不知道該準備哪些資料、測試什麼",
-    ],
-    helpTitle: "The KPI Plus 能幫哪些部分？",
-    help: [
-      ["01", "PMS 與客房結構", "整理房型、房數、價格、政策，以及團隊需要的主資料，讓日常預訂與作業有清楚依據。"],
-      ["02", "Channel Manager 與 OTA", "檢查客房與 Rate Plan 對應、價格與空房送到銷售通路的方式，並測試資料與預訂是否正確回來。"],
-      ["03", "Booking Engine 與直銷預訂", "查看網站上的價格、方案、條件與預訂路徑，讓客人看到的內容與飯店能賣的一致。"],
-      ["04", "能用來做決定的報表", "整理系統資料，讓團隊在系統支援的範圍內，看到收益、住房率、平均房價、未來預訂與各通路成果。"],
-      ["05", "作業方式與團隊培訓", "約定誰改價格、誰檢查預訂、出問題時誰改資料，並用員工實際遇到的情況來培訓。"],
-    ],
-    existingTitle: "先從現有系統開始",
-    existingBody: "不是每次出問題都要換 PMS 或 Channel Manager。有些情況來自設定、資料對應或作業步驟，可以在現有系統裡修正。",
-    existingClose: "若現有系統有限制，團隊會先指出它影響哪一段工作，再與飯店一起考慮選項與換系統。",
-    stageTitle: "開幕前的飯店，與已在營運的飯店都適用",
-    stages: [
-      ["01", "開幕前", "在開始接待客人前，把房型、價格、預訂系統、OTA 通路、報表與作業方式準備好。"],
-      ["02", "已在營運", "檢查現有設定、處理串接問題、減少重複作業，並讓報表更能協助決策。"],
-      ["03", "正在換系統", "規劃要搬的資料、串接步驟、測試、培訓，以及與系統供應商交接的期間。"],
-    ],
-    methodTitle: "我們怎麼做？",
-    steps: [
-      ["01", "檢查系統與實際問題", "看正在用的系統、客房與價格結構、銷售通路，以及團隊步驟。"],
-      ["02", "設計作業方式", "指出哪些資料該在哪個系統，以及誰負責更新。"],
-      ["03", "設定或調整結構", "依各平台的權限與能力進行。"],
-      ["04", "串接並測試", "檢查價格、空房、條件，以及主要通路的收訂。"],
-      ["05", "培訓並交接", "讓團隊實際操作，並知道如何檢查或回報問題。"],
-      ["06", "上線後再檢視", "依談好的範圍，修正實際使用後發現的點。"],
-    ],
-    methodNote: "部分串接必須由系統供應商執行或核准。The KPI Plus 會與飯店一起協調並檢查結果。",
-    platformsTitle: "團隊有導入與協調經驗的飯店系統",
-    platformsBody:
-      "工作範圍可能涉及飯店現有平台，例如 Cloudbeds、SiteMinder、Yanolja Cloud Solution、Oracle Hospitality OPERA Cloud、NAWA 與 HotelierGuru，以及其他需依能力與權限個案檢查的系統。",
-    platformsNote: "名稱與標誌僅用來標示與工作相關的平台，不代表平台擁有者的背書或正式合作。",
-    readyTitle: "我們如何判斷系統已可使用？",
-    readyBody: "我們看的不只是「已連接」狀態，而是飯店實際要用的工作，例如：",
-    ready: [
-      "重要通路上的客房與價格對應正確",
-      "價格與空房的變更有送到相關通路",
-      "來自 OTA 或網站的預訂依應有方式進入系統",
-      "團隊知道誰檢查、誰處理問題",
-      "報表能回答飯店需要的銷售與收益問題",
-    ],
-    readyClose: "測試細節會依各飯店的系統與工作範圍決定。",
-    relatedTitle: "與收益、訂房和系統相關的內容",
-    details: "查看詳情",
-    revenueBody: "系統設定好之後，價格、銷售通路與直銷預訂仍須放在同一張收益全貌裡看。",
-    reservationsBody: "系統就緒後，仍需要有人依談好的通路照顧詢問與預訂。",
-  },
-} as const;
-
-export function HotelSystemsView({ locale }: { locale: Locale }) {
-  const t = copy[locale];
+export async function HotelSystemsView({
+  locale,
+  previewContent,
+  embedded = false,
+}: {
+  locale: Locale;
+  previewContent?: CmsSystemsPage;
+  embedded?: boolean;
+}) {
+  const cms = previewContent ? { ...previewContent, fromCms: true } : await loadHotelSystemsPage(locale);
+  const fromCms = cms.fromCms;
+  const t = locale === "th" ? hotelSystemsCopy.th : hotelSystemsCopy.en;
   const solutions = localizePath("/solutions", locale);
-  const revenueHref = existingHref("/solutions/revenue-commercial-management", locale);
-  const reservationsHref = existingHref("/solutions/outsourced-hotel-reservations", locale);
+  const approach = existingHref("/approach", locale) || localizePath("/approach", locale);
+  const thai = locale === "th";
+  const faqItems = hotelSystemsFaqsFromCms(fromCms ? cms : null, locale);
+  const related =
+    fromCms && cms.related.cards.length
+      ? cms.related.cards.map((card) => ({
+          id: card.id,
+          href: systemsPublicHref(card.href, locale, "/solutions"),
+          title: thai ? card.titleTh || card.titleEn : card.titleEn || card.titleTh,
+          body: thai ? card.bodyTh || card.bodyEn : card.bodyEn || card.bodyTh,
+          cta: thai ? card.ctaTh || card.ctaEn : card.ctaEn || card.ctaTh,
+        }))
+      : hotelSystemsRelatedCards(locale);
+  const assessmentRows =
+    fromCms && cms.assessment.rows.length && !systemsAssessmentRowsAreStale(cms.assessment.rows)
+      ? cms.assessment.rows
+      : systemsAssessmentCmsRows();
+  const needTitle = systemsHeroText(fromCms ? cms.assessment.title : "", t.needTitle, [
+    "Is the hotel meeting one of these?",
+  ]);
+  const needLead = systemsHeroText(fromCms ? cms.assessment.lead : "", t.needLead, [
+    "PMS, Channel Manager, OTA, Booking Engine, รายงาน และทีมโรงแรมอาจยังไม่ได้ทำงานจากชุดข้อมูลเดียวกัน",
+    "The PMS, channel manager, OTA, booking engine, reporting, and hotel teams may not work from one consistent data flow.",
+  ]);
+  const needClose = systemsHeroText(fromCms ? cms.assessment.close : "", t.needClose, [
+    "ไม่ใช่ผลตรวจโรงแรมจริง และไม่ใช่สถานะเชื่อมต่อที่ตรวจแล้ว",
+    "It is not a live hotel audit, and not a verified integration status.",
+  ]);
+  const reviewLabel = systemsHeroText(fromCms ? cms.assessment.visual.label : "", thai ? SYSTEMS_ASSESSMENT_VISUAL.labelTh : SYSTEMS_ASSESSMENT_VISUAL.labelEn, [
+    "ตัวอย่าง Data Consistency Audit",
+    "Sample Data Consistency Audit",
+  ]);
+  const reviewCaption = systemsHeroText(fromCms ? cms.assessment.visual.caption : "", thai ? SYSTEMS_ASSESSMENT_VISUAL.captionTh : SYSTEMS_ASSESSMENT_VISUAL.captionEn, [
+    "ตัวอย่างข้อมูล ใช้จัดประเด็นการจับคู่",
+    "Sample data used to locate mapping issues",
+  ]);
+  const landscapeItems =
+    fromCms && cms.services.items.length && !systemsLandscapeItemsAreStale(cms.services.items)
+      ? cms.services.items
+      : systemsLandscapeCmsItems();
+  const helpTitle = systemsHeroText(fromCms ? cms.services.title : "", t.helpTitle, [
+    "ระบบที่ต้องทำงานร่วมกัน",
+    "What hotel systems need to work together",
+  ]);
+  const helpLead = systemsHeroText(fromCms ? cms.services.lead : "", t.helpLead, [
+    "งานแบ่งเป็น PMS โครงสร้างห้อง",
+    "The work is grouped into PMS",
+  ]);
+  const helpBoundary = systemsHeroText(fromCms ? cms.services.boundary : "", t.helpBoundary, []);
+  const landscapeLabel = systemsHeroText(
+    fromCms ? cms.services.visual.label : "",
+    thai ? SYSTEMS_SERVICES_VISUAL.labelTh : SYSTEMS_SERVICES_VISUAL.labelEn,
+    ["ตัวอย่าง Systems Landscape", "Sample Systems Landscape"],
+  );
+  const landscapeCaption = systemsHeroText(
+    fromCms ? cms.services.visual.caption : "",
+    thai ? SYSTEMS_SERVICES_VISUAL.captionTh : SYSTEMS_SERVICES_VISUAL.captionEn,
+    [],
+  );
+  const modelTitle = systemsHeroText(fromCms ? cms.model.title : "", t.modelTitle, [
+    "รองรับทั้งโรงแรมก่อนเปิด",
+    "For hotels before opening",
+  ]);
+  const modelLead = systemsHeroText(fromCms ? cms.model.lead : "", t.modelLead, []);
+  const modelNote = systemsHeroText(fromCms ? cms.model.note : "", t.modelNote, []);
+  const modelLabel = systemsHeroText(
+    fromCms ? cms.model.visual.label : "",
+    SYSTEMS_MODEL_VISUAL.labelEn,
+    ["Before / After", "ก่อนและหลัง"],
+  );
+  const modelCaption = systemsHeroText(
+    fromCms ? cms.model.visual.caption : "",
+    thai ? SYSTEMS_MODEL_VISUAL.captionTh : SYSTEMS_MODEL_VISUAL.captionEn,
+    [],
+  );
+  const modelSteps =
+    fromCms && cms.model.steps.length && !systemsModelStepsAreStale(cms.model.steps) ? cms.model.steps : SYSTEMS_MODEL_STEPS;
+  const modelFields =
+    fromCms && cms.model.fields.length && !systemsBeforeAfterFieldsAreStale(cms.model.fields)
+      ? cms.model.fields
+      : systemsBeforeAfterCmsFields();
+  const deliverablesTitle = systemsHeroText(fromCms ? cms.deliverables.title : "", t.deliverablesTitle, [
+    "เราดูอย่างไรว่าระบบพร้อมใช้งาน?",
+    "How do we know a system is ready to use?",
+  ]);
+  const deliverablesLead = systemsHeroText(fromCms ? cms.deliverables.lead : "", t.deliverablesLead, [
+    "เราไม่ได้ดูเพียงสถานะว่า",
+    "We do not only look at a status that says",
+  ]);
+  const readinessLabel = systemsHeroText(
+    fromCms ? cms.deliverables.visual.label : "",
+    SYSTEMS_DELIVERABLES_VISUAL.labelEn,
+    ["ตัวอย่าง Integration Readiness", "Sample Integration Readiness"],
+  );
+  const readinessCaption = systemsHeroText(
+    fromCms ? cms.deliverables.visual.caption : "",
+    thai ? SYSTEMS_DELIVERABLES_VISUAL.captionTh : SYSTEMS_DELIVERABLES_VISUAL.captionEn,
+    [],
+  );
+  const readinessRows =
+    fromCms && cms.deliverables.rows.length && !systemsReadinessRowsAreStale(cms.deliverables.rows)
+      ? cms.deliverables.rows
+      : systemsReadinessCmsRows();
+  const deliverableSupport = fromCms && cms.deliverables.supportItems.length ? cms.deliverables.supportItems : SYSTEMS_DELIVERABLES_BOUNDARY.supportItems.map((item, index) => ({ id: `support-${index + 1}`, th: item.th, en: item.en }));
+  const deliverableHotel = fromCms && cms.deliverables.hotelItems.length ? cms.deliverables.hotelItems : SYSTEMS_DELIVERABLES_BOUNDARY.hotelItems.map((item, index) => ({ id: `hotel-${index + 1}`, th: item.th, en: item.en }));
+  const workflowTitle = systemsHeroText(fromCms ? cms.workflow.title : "", t.methodTitle, []);
+  const workflowLead = systemsHeroText(fromCms ? cms.workflow.lead : "", t.methodLead, [
+    "งานเริ่มจากสำรวจระบบ แล้วจับคู่ข้อมูล ตั้งค่า ทดสอบ อบรม",
+    "The work starts with a systems review, then mapping, configuration, testing, training",
+  ]);
+  const workflowLabel = systemsHeroText(
+    fromCms ? cms.workflow.visual.label : "",
+    SYSTEMS_WORKFLOW_VISUAL.labelEn,
+    ["ตัวอย่างขั้นตอนนำระบบไปใช้", "Sample implementation workflow"],
+  );
+  const workflowCaption = systemsHeroText(
+    fromCms ? cms.workflow.visual.caption : "",
+    thai ? SYSTEMS_WORKFLOW_VISUAL.captionTh : SYSTEMS_WORKFLOW_VISUAL.captionEn,
+    ["ลำดับตัวอย่าง งานเชื่อมต่อบางส่วน", "A sample sequence. Some connection work"],
+  );
+  const workflowSteps =
+    fromCms && cms.workflow.steps.length && !systemsWorkflowStepsAreStale(cms.workflow.steps)
+      ? cms.workflow.steps
+      : systemsWorkflowCmsSteps();
+  const workflowApprovals =
+    fromCms && cms.workflow.approvals.length && !cms.workflow.approvals.some((item) => item.id === "credentials" || item.id === "access")
+      ? cms.workflow.approvals
+      : SYSTEMS_WORKFLOW_APPROVALS.map((item) => ({ id: item.id, th: item.th, en: item.en }));
+  const workflowGateTitle = systemsHeroText(
+    fromCms ? cms.workflow.gateTitle : "",
+    thai ? SYSTEMS_WORKFLOW_GATE.titleTh : SYSTEMS_WORKFLOW_GATE.titleEn,
+    ["จุดที่โรงแรมหรือผู้ให้บริการต้องอนุมัติ", "Hotel or provider approval points"],
+  );
+  const workflowGate = systemsHeroText(
+    fromCms ? cms.workflow.gate : "",
+    thai ? SYSTEMS_WORKFLOW_GATE.th : SYSTEMS_WORKFLOW_GATE.en,
+    [],
+  );
+  const fitTitle = systemsHeroText(fromCms ? cms.fit.title : "", t.fitTitle, [
+    "ระบบโรงแรมที่ทีมมีประสบการณ์ในการติดตั้งและประสานงาน",
+    "Hotel systems the team has experience implementing and coordinating",
+  ]);
+  const fitLead = systemsHeroText(fromCms ? cms.fit.lead : "", t.fitLead, [
+    "ชื่อและโลโก้ใช้เพื่อระบุแพลตฟอร์มที่เกี่ยวข้องกับงานเท่านั้น",
+    "Names and logos are used only to name platforms related to the work",
+  ]);
+  const fitLabel = systemsHeroText(
+    fromCms ? cms.fit.visual.label : "",
+    SYSTEMS_FIT_VISUAL.labelEn,
+    ["หมวดแพลตฟอร์มตัวอย่าง", "Example platform categories"],
+  );
+  const fitCaption = systemsHeroText(
+    fromCms ? cms.fit.visual.caption : "",
+    thai ? SYSTEMS_FIT_VISUAL.captionTh : SYSTEMS_FIT_VISUAL.captionEn,
+    ["ชื่อและโลโก้ใช้ระบุแพลตฟอร์มที่เกี่ยวข้องกับงานเท่านั้น", "Names and logos identify platforms related to the work"],
+  );
+  const fitScenarios =
+    fromCms && cms.fit.scenarios.length && !systemsFitRowsAreStale(cms.fit.scenarios)
+      ? cms.fit.scenarios
+      : systemsFitCmsRows();
+  const fitNot =
+    fromCms && cms.fit.notItems.length && !cms.fit.notItems.some((item) => item.id === "revenue")
+      ? cms.fit.notItems
+      : SYSTEMS_FIT_NOT.map((item) => ({ id: item.id, th: item.th, en: item.en }));
+  const inventoryTitle = systemsHeroText(fromCms ? cms.inventory.title : "", t.inventoryTitle, []);
+  const inventoryLead = systemsHeroText(fromCms ? cms.inventory.lead : "", t.inventoryLead, []);
+  const inventorySystemsTitle = systemsHeroText(fromCms ? cms.inventory.systemsTitle : "", t.inventorySystemsTitle, []);
+  const inventoryFieldsTitle = systemsHeroText(fromCms ? cms.inventory.fieldsTitle : "", t.inventoryFieldsTitle, []);
+  const inventoryLabel = systemsHeroText(
+    fromCms ? cms.inventory.visual.label : "",
+    SYSTEMS_INVENTORY_VISUAL.labelEn,
+    [],
+  );
+  const inventoryCaption = systemsHeroText(
+    fromCms ? cms.inventory.visual.caption : "",
+    thai ? SYSTEMS_INVENTORY_VISUAL.captionTh : SYSTEMS_INVENTORY_VISUAL.captionEn,
+    [],
+  );
+  const inventoryRows =
+    fromCms && cms.inventory.rows.length && !systemsInventoryRowsAreStale(cms.inventory.rows)
+      ? cms.inventory.rows
+      : systemsInventoryCmsRows();
+  const inventoryFields =
+    fromCms && cms.inventory.fields.length && !systemsDictionaryRowsAreStale(cms.inventory.fields)
+      ? cms.inventory.fields
+      : systemsDictionaryCmsRows();
+  const scopeTitle = systemsHeroText(fromCms ? cms.scope.title : "", t.scopeTitle, [
+    "ขอบเขต ความรับผิดชอบ และการอนุมัติ",
+    "Scope, responsibility, and approval",
+  ]);
+  const scopeLead = systemsHeroText(fromCms ? cms.scope.lead : "", t.scopeLead, []);
+  const scopeSupportTitle = systemsHeroText(fromCms ? cms.scope.supportTitle : "", t.scopeSupportTitle, [
+    "เดอะ เคพีไอ พลัส อาจช่วย",
+    "The KPI Plus may support",
+  ]);
+  const scopeHotelTitle = systemsHeroText(fromCms ? cms.scope.hotelTitle : "", t.scopeHotelTitle, [
+    "โรงแรมและผู้ให้บริการยังคงรับผิดชอบ",
+    "The hotel and providers remain responsible for",
+  ]);
+  const scopeMatrixTitle = systemsHeroText(fromCms ? cms.scope.matrixTitle : "", t.scopeMatrixTitle, []);
+  const scopeLabel = systemsHeroText(fromCms ? cms.scope.visual.label : "", SYSTEMS_SCOPE_VISUAL.labelEn, [
+    "ตารางขอบเขตและความรับผิดชอบ",
+    "Scope / Approval / Hotel",
+  ]);
+  const scopeCaption = systemsHeroText(
+    fromCms ? cms.scope.visual.caption : "",
+    thai ? SYSTEMS_SCOPE_VISUAL.captionTh : SYSTEMS_SCOPE_VISUAL.captionEn,
+    [],
+  );
+  const scopeRows =
+    fromCms && cms.scope.rows.length && !systemsScopeRowsAreStale(cms.scope.rows)
+      ? cms.scope.rows
+      : systemsScopeCmsRows();
+  const scopeMatrix =
+    fromCms && cms.scope.matrix.length && !systemsResponsibilityRowsAreStale(cms.scope.matrix)
+      ? cms.scope.matrix
+      : systemsResponsibilityCmsRows();
+  const scopeBoundary = systemsHeroText(
+    fromCms ? cms.scope.boundary : "",
+    thai ? SYSTEMS_SCOPE_BOUNDARY.th : SYSTEMS_SCOPE_BOUNDARY.en,
+    [hotelSystemsCopy.th.deliverablesBoundary, hotelSystemsCopy.en.deliverablesBoundary],
+  );
+  const planTitle = systemsHeroText(fromCms ? cms.plan.title : "", t.planTitle, [
+    "แผนสำรวจ ตั้งค่า ทดสอบ และส่งมอบ — ตัวอย่าง",
+    "Inventory, configure, test, and handover — Sample",
+    "แผน 30 / 60 / 90 วัน — ตัวอย่าง",
+  ]);
+  const planLead = systemsHeroText(fromCms ? cms.plan.lead : "", t.planLead, [
+    "นี่เป็นลำดับตัวอย่าง",
+    "This is a sample sequence",
+  ]);
+  const planChecklistTitle = systemsHeroText(fromCms ? cms.plan.checklistTitle : "", t.planChecklistTitle, []);
+  const planOwnershipTitle = systemsHeroText(fromCms ? cms.plan.ownershipTitle : "", t.planOwnershipTitle, []);
+  const planClose = systemsHeroText(fromCms ? cms.plan.close : "", t.planClose, [
+    "รายละเอียดการทดสอบจะกำหนดตามระบบ",
+    "The test detail is set from the systems",
+  ]);
+  const planLabel = systemsHeroText(fromCms ? cms.plan.visual.label : "", SYSTEMS_PLAN_VISUAL.labelEn, [
+    "ตัวอย่างแผนทดสอบและส่งมอบ",
+    "Sample handover and test cases",
+    "Sample Architecture",
+  ]);
+  const planCaption = systemsHeroText(
+    fromCms ? cms.plan.visual.caption : "",
+    thai ? SYSTEMS_PLAN_VISUAL.captionTh : SYSTEMS_PLAN_VISUAL.captionEn,
+    ["ลำดับตัวอย่างตามขอบเขตที่ตกลง", "A sample sequence within the agreed scope"],
+  );
+  const planChecklist =
+    fromCms && cms.plan.checklist.length && !systemsHandoverItemsAreStale(cms.plan.checklist)
+      ? cms.plan.checklist
+      : systemsHandoverCmsItems();
+  const planOwnership =
+    fromCms && cms.plan.ownership.length && !systemsOwnershipRowsAreStale(cms.plan.ownership)
+      ? cms.plan.ownership
+      : systemsOwnershipCmsRows();
+  const kpiRows = (fromCms && cms.measure.kpis.length ? cms.measure.kpis : SYSTEMS_KPIS).filter(
+    (kpi) => !kpi.hideUntilData,
+  );
+  const sourceRows = fromCms && cms.measure.sources.length ? cms.measure.sources : SYSTEMS_SOURCES;
+  const heroLead = systemsHeroText(fromCms ? cms.hero.description : "", t.lead, [
+    "PMS, Channel Manager, Booking Engine และ OTA เป็นส่วนสำคัญ",
+    "The PMS, channel manager, booking engine, and OTAs are a core part",
+  ]);
+  const heroClose = systemsHeroText(fromCms ? cms.hero.close : "", t.leadClose, [
+    "เดอะ เคพีไอ พลัส ช่วยโรงแรมเลือก",
+    "The KPI Plus helps hotels choose",
+  ]);
+  const heroCta = systemsHeroText(fromCms ? cms.hero.primaryCta.label : "", t.cta, [
+    "ให้ทีมตรวจโครงสร้างระบบโรงแรม",
+    "Ask the team to review the hotel system setup",
+  ]);
+  const heroSecondary = systemsHeroText(fromCms ? cms.hero.secondaryCta.label : "", t.secondary, ["ดูโซลูชันทั้งหมด", "All solutions"]);
+  const heroLabel = systemsHeroText(fromCms ? cms.hero.visual.label : "", thai ? SYSTEMS_HERO_VISUAL.labelTh : SYSTEMS_HERO_VISUAL.labelEn, [
+    "ตัวอย่างสถาปัตยกรรมระบบโรงแรม",
+    "Sample Architecture",
+  ]);
+  const heroCaption = systemsHeroText(fromCms ? cms.hero.visual.caption : "", thai ? SYSTEMS_HERO_VISUAL.captionTh : SYSTEMS_HERO_VISUAL.captionEn, [
+    "แสดงเส้นทางข้อมูลตัวอย่าง",
+    "A sample data path",
+  ]);
+  const primaryHref = systemsPublicHref(fromCms ? cms.hero.primaryCta.href : "", locale, "#hotel-systems-enquiry");
+  const secondaryPath =
+    fromCms && cms.hero.secondaryCta.href.trim() && cms.hero.secondaryCta.href.trim() !== "/solutions"
+      ? cms.hero.secondaryCta.href
+      : "/approach";
+  const secondaryHref = existingHref(secondaryPath, locale) || approach;
+  const closerHref = systemsPublicHref(fromCms ? cms.related.closerHref : "", locale, "#hotel-systems-enquiry");
+  const sampleLabel = systemsHeroText(fromCms ? cms.plan.sampleLabel : "", SYSTEMS_PLAN_VISUAL.labelEn, [
+    "Sample plan",
+    "Sample Architecture",
+  ]);
+  const testingTitle = systemsHeroText(fromCms ? cms.testing.title : "", t.testingTitle, []);
+  const testingLead = systemsHeroText(fromCms ? cms.testing.lead : "", t.testingLead, []);
+  const testingCasesTitle = systemsHeroText(fromCms ? cms.testing.casesTitle : "", t.testingCasesTitle, []);
+  const testingErrorTitle = systemsHeroText(fromCms ? cms.testing.errorTitle : "", t.testingErrorTitle, []);
+  const testingLabel = systemsHeroText(fromCms ? cms.testing.visual.label : "", SYSTEMS_TESTING_VISUAL.labelEn, []);
+  const testingCaption = systemsHeroText(
+    fromCms ? cms.testing.visual.caption : "",
+    thai ? SYSTEMS_TESTING_VISUAL.captionTh : SYSTEMS_TESTING_VISUAL.captionEn,
+    [],
+  );
+  const testingCases =
+    fromCms && cms.testing.cases.length && !systemsTestingCasesAreStale(cms.testing.cases)
+      ? cms.testing.cases
+      : systemsTestingCmsCases();
+  const testingErrorSteps =
+    fromCms && cms.testing.errorSteps.length && cms.testing.errorSteps.some((item) => item.id === "detect")
+      ? cms.testing.errorSteps
+      : systemsTestingErrorCmsSteps();
 
-  return (
-    <SiteShell locale={locale} route={localizePath("/solutions/hotel-systems-implementation", locale)}>
+  const inner = (
+    <div className="kpi-systems">
       <section className="kpi-hero kpi-home-hero-section kpi-systems-hero">
         <div className="kpi-wrap">
           <nav aria-label="Breadcrumb" className="kpi-systems-hero-crumb">
@@ -316,184 +440,375 @@ export function HotelSystemsView({ locale }: { locale: Locale }) {
           </nav>
           <div className="kpi-home-hero">
             <div className="kpi-home-hero-copy">
-              <p className="kpi-home-eyebrow kpi-latin">{t.eyebrow}</p>
+              <p className="kpi-home-eyebrow kpi-latin">{fromCms && cms?.hero.eyebrow.trim() ? cms.hero.eyebrow : t.eyebrow}</p>
               <h1 className="kpi-h1 kpi-home-h1">
-                {locale === "th" ? (
+                {thai &&
+                (!cms.hero.title.trim() ||
+                  cms.hero.title.trim() === hotelSystemsCopy.th.title ||
+                  cms.hero.title.trim() === "ระบบเชื่อมกันได้ แต่ทีมและข้อมูลต้องทำงานไปด้วยกัน") ? (
                   <>
-                    <span className="kpi-home-h1-lead">ระบบเชื่อมกันได้ แต่ทีมและข้อมูลต้อง</span>
+                    <span className="kpi-home-h1-lead">ระบบเชื่อมต่อได้ แต่ข้อมูลและการทำงานยังไม่</span>
                     <span className="kpi-home-h1-rest">
-                      <span className="kpi-home-accent">ทำงานไปด้วยกัน</span>
+                      <span className="kpi-home-accent">ไปทางเดียวกัน</span>
+                    </span>
+                  </>
+                ) : !thai &&
+                  (!cms.hero.title.trim() ||
+                    cms.hero.title.trim() === hotelSystemsCopy.en.title ||
+                    cms.hero.title.trim() === "Systems can connect. The team and the data still have to work together.") ? (
+                  <>
+                    <span className="kpi-home-h1-lead">Systems can connect.</span>
+                    <span className="kpi-home-h1-rest">
+                      Data and operations still do not run <span className="kpi-home-accent">the same way</span>.
                     </span>
                   </>
                 ) : (
-                  t.title
+                  cms.hero.title.trim() || t.title
                 )}
               </h1>
-              <p className="kpi-lead kpi-home-lead">{t.lead}</p>
-              <p className="kpi-systems-lead-close">{t.leadClose}</p>
+              <p className="kpi-lead kpi-home-lead">{heroLead}</p>
+              <p className="kpi-systems-lead-close">{heroClose}</p>
               <div className="kpi-actions">
-                <a href="#hotel-systems-enquiry" className="kpi-button">
-                  {t.cta} <span aria-hidden="true">↗</span>
+                <a href={primaryHref} className="kpi-button bg-[#a2dc25] text-[#1a3a02]">
+                  {heroCta} <span aria-hidden="true">↗</span>
                 </a>
-                <Link href={solutions} className="kpi-button-ghost">
-                  {t.secondary}
+                <Link href={secondaryHref} className="kpi-button-ghost">
+                  {heroSecondary}
                 </Link>
               </div>
-              <p className="kpi-systems-hero-note">{t.underCta}</p>
+              <p className="kpi-systems-hero-note">{fromCms && cms?.hero.underCta.trim() ? cms.hero.underCta : t.underCta}</p>
+              <p className="kpi-systems-hero-trust" aria-label={thai ? "งานเริ่มจากสำรวจระบบ เส้นทางข้อมูล การจับคู่ และความพร้อม" : "The work starts with inventory, data flow, mapping, and readiness"}>
+                {SYSTEMS_HERO_JOURNEY.map((item) => (
+                  <span key={item.id}>{thai ? item.th : item.en}</span>
+                ))}
+              </p>
             </div>
             <div className="kpi-hero-visual kpi-home-photo">
-              <img src={heroPhoto} alt={t.photoAlt} width={1200} height={900} />
+              <HotelSystemsHeroVisual
+                locale={locale}
+                src={cms.hero.visual.src}
+                alt={thai ? cms.hero.visual.altTh : cms.hero.visual.altEn}
+                status={cms.hero.visual.status}
+                label={heroLabel}
+                caption={heroCaption}
+              />
             </div>
           </div>
         </div>
       </section>
 
-      <section className="kpi-section kpi-systems-problems">
-        <div className="kpi-systems-problems-grid">
-          <div className="kpi-systems-problems-copy">
-            <h2 className="kpi-h2">{t.problemTitle}</h2>
-            <ol className="kpi-systems-problems-list">
-              {t.problems.map((item, index) => (
-                <li key={item} className="kpi-systems-problems-item">
-                  <span className="kpi-latin kpi-systems-num">{String(index + 1).padStart(2, "0")}</span>
-                  <p>{item}</p>
-                </li>
-              ))}
-            </ol>
+      <section className="kpi-section kpi-systems-need">
+        <div className="kpi-systems-need-grid">
+          <div className="kpi-systems-need-copy">
+            <h2 className="kpi-h2">{needTitle}</h2>
+            <p className="kpi-systems-need-lead">{needLead}</p>
+            <p className="kpi-systems-need-close">{needClose}</p>
           </div>
-          <figure className="kpi-systems-problems-media">
-            <img src={problemPhoto} alt={t.problemPhotoAlt} width={1200} height={900} />
-          </figure>
+          <HotelSystemsReviewVisual
+            locale={locale}
+            src={cms.assessment.visual.src}
+            alt={thai ? cms.assessment.visual.altTh : cms.assessment.visual.altEn}
+            status={cms.assessment.visual.status}
+            label={reviewLabel}
+            caption={reviewCaption}
+          />
         </div>
+        <HotelSystemsReviewChecklist locale={locale} rows={assessmentRows} />
       </section>
 
       <section className="kpi-systems-help border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section">
-          <h2 className="kpi-h2">{t.helpTitle}</h2>
-          <ol className="kpi-systems-help-list">
-            {t.help.map(([num, title, body]) => (
-              <li key={num} className="kpi-systems-help-item">
-                <span className="kpi-latin kpi-systems-num">{num}</span>
-                <div className="kpi-systems-help-copy">
-                  <h3>{title}</h3>
-                  <p>{body}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-          <a href="#hotel-systems-enquiry" className="kpi-button kpi-systems-help-cta">
-            {t.cta} <span aria-hidden="true">↗</span>
-          </a>
+          <p className="kpi-systems-help-kicker kpi-latin">PMS · Channel Manager · OTA · Booking Engine · Website · Reporting · Hotel Team</p>
+          <h2 className="kpi-h2">{helpTitle}</h2>
+          <p className="kpi-systems-help-lead">{helpLead}</p>
+          <HotelSystemsLandscape
+            locale={locale}
+            src={cms.services.visual.src}
+            status={cms.services.visual.status}
+            label={landscapeLabel}
+            caption={landscapeCaption}
+            note={helpBoundary}
+            nodes={landscapeItems}
+            categories={cms.services.categories}
+            connections={
+              fromCms && cms.services.connections.length && !systemsLandscapeConnectionsAreStale(cms.services.connections)
+                ? cms.services.connections
+                : systemsLandscapeConnectionsCms()
+            }
+            pathLabel={
+              fromCms && !systemsLandscapePathIsStale(cms.services.pathLabel)
+                ? cms.services.pathLabel
+                : thai
+                  ? SYSTEMS_LANDSCAPE_PATH.th
+                  : SYSTEMS_LANDSCAPE_PATH.en
+            }
+          />
         </div>
       </section>
 
-      <section className="kpi-section kpi-systems-existing">
-        <h2 className="kpi-h2">{t.existingTitle}</h2>
-        <p className="kpi-systems-existing-body">{t.existingBody}</p>
-        <p className="kpi-systems-existing-close">{t.existingClose}</p>
+      <section className="kpi-section">
+        <h2 className="kpi-h2">{modelTitle}</h2>
+        <p className="kpi-systems-help-lead">{modelLead}</p>
+        <HotelSystemsBeforeAfter
+          locale={locale}
+          src={cms.model.visual.src}
+          status={cms.model.visual.status}
+          label={modelLabel}
+          caption={modelCaption}
+          note={modelNote}
+          steps={modelSteps}
+          fields={modelFields}
+        />
+        <div className="kpi-systems-board is-2">
+          <article className="kpi-systems-card is-green">
+            <h3>{fromCms && cms.model.supportTitle.trim() ? cms.model.supportTitle : thai ? SYSTEMS_MODEL_BOUNDARY.supportTitle.th : SYSTEMS_MODEL_BOUNDARY.supportTitle.en}</h3>
+            <p>{fromCms && cms.model.support.trim() ? cms.model.support : thai ? SYSTEMS_MODEL_BOUNDARY.support.th : SYSTEMS_MODEL_BOUNDARY.support.en}</p>
+          </article>
+          <article className="kpi-systems-card is-amber">
+            <h3>{fromCms && cms.model.hotelTitle.trim() ? cms.model.hotelTitle : thai ? SYSTEMS_MODEL_BOUNDARY.hotelTitle.th : SYSTEMS_MODEL_BOUNDARY.hotelTitle.en}</h3>
+            <p>{fromCms && cms.model.hotel.trim() ? cms.model.hotel : thai ? SYSTEMS_MODEL_BOUNDARY.hotel.th : SYSTEMS_MODEL_BOUNDARY.hotel.en}</p>
+          </article>
+        </div>
       </section>
 
-      <section className="kpi-systems-stages border-y border-[#E3E8EB] bg-white">
-        <div className="kpi-section">
-          <h2 className="kpi-h2">{t.stageTitle}</h2>
-          <ol className="kpi-systems-stages-list">
-            {t.stages.map(([num, title, body]) => (
-              <li key={num} className="kpi-systems-stages-item">
-                <span className="kpi-latin kpi-systems-num">{num}</span>
-                <div className="kpi-systems-stages-copy">
-                  <h3>{title}</h3>
-                  <p>{body}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
+      <section className="kpi-section kpi-systems-deliverables">
+        <h2 className="kpi-h2">{deliverablesTitle}</h2>
+        <p className="kpi-systems-deliverables-lead">{deliverablesLead}</p>
+        <HotelSystemsReadiness
+          locale={locale}
+          src={cms.deliverables.visual.src}
+          status={cms.deliverables.visual.status}
+          label={readinessLabel}
+          caption={readinessCaption}
+          rows={readinessRows}
+        />
+        <div className="kpi-systems-deliverables-split">
+          <article className="kpi-systems-card is-green">
+            <h3>{fromCms && cms.deliverables.supportTitle.trim() ? cms.deliverables.supportTitle : thai ? SYSTEMS_DELIVERABLES_BOUNDARY.supportTitle.th : SYSTEMS_DELIVERABLES_BOUNDARY.supportTitle.en}</h3>
+            <ul>
+              {deliverableSupport.map((item) => (
+                <li key={item.id}>{thai ? item.th : item.en}</li>
+              ))}
+            </ul>
+          </article>
+          <article className="kpi-systems-card is-amber">
+            <h3>{fromCms && cms.deliverables.hotelTitle.trim() ? cms.deliverables.hotelTitle : thai ? SYSTEMS_DELIVERABLES_BOUNDARY.hotelTitle.th : SYSTEMS_DELIVERABLES_BOUNDARY.hotelTitle.en}</h3>
+            <ul>
+              {deliverableHotel.map((item) => (
+                <li key={item.id}>{thai ? item.th : item.en}</li>
+              ))}
+            </ul>
+          </article>
         </div>
+        <p className="kpi-systems-deliverables-boundary">{fromCms && cms.deliverables.boundary.trim() ? cms.deliverables.boundary : t.deliverablesBoundary}</p>
       </section>
 
       <section className="kpi-section kpi-systems-method">
-        <h2 className="kpi-h2">{t.methodTitle}</h2>
-        <ol className="kpi-systems-method-list">
-          {t.steps.map(([num, title, body], index) => (
-            <li key={num} className="kpi-systems-method-item">
-              <div className="kpi-systems-method-meta">
-                <span className="kpi-latin kpi-systems-method-num">{num}</span>
-                <span className="kpi-latin kpi-systems-method-label">{methodLabels[index]}</span>
-              </div>
-              <div className="kpi-systems-method-copy">
-                <h3>{title}</h3>
-                <p>{body}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
-        <p className="kpi-systems-method-note">{t.methodNote}</p>
+        <h2 className="kpi-h2">{workflowTitle}</h2>
+        <p className="kpi-systems-method-lead">{workflowLead}</p>
+        <HotelSystemsWorkflow
+          locale={locale}
+          src={cms.workflow.visual.src}
+          status={cms.workflow.visual.status}
+          label={workflowLabel}
+          caption={workflowCaption}
+          steps={workflowSteps}
+          approvals={workflowApprovals}
+          gateTitle={workflowGateTitle}
+          gate={workflowGate}
+        />
       </section>
 
-      <section className="kpi-systems-platforms border-y border-[#E3E8EB] bg-white">
+      <section className="kpi-systems-fit border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section">
-          <h2 className="kpi-h2">{t.platformsTitle}</h2>
-          <p className="kpi-systems-platforms-body">{t.platformsBody}</p>
-          <ul className="kpi-systems-platforms-list">
-            {platforms.map((platform) => (
-              <li key={platform.name} className="kpi-systems-platforms-item">
-                <span className="kpi-systems-platforms-logo">
-                  <img src={platform.src} alt="" width={160} height={40} />
-                </span>
-                <span className="kpi-latin kpi-systems-platforms-name">{platform.name}</span>
-              </li>
-            ))}
-          </ul>
-          <p className="kpi-systems-platforms-note">{t.platformsNote}</p>
+          <h2 className="kpi-h2">{fitTitle}</h2>
+          <p className="kpi-systems-fit-lead">{fitLead}</p>
+          <HotelSystemsPlatforms
+            locale={locale}
+            src={cms.fit.visual.src}
+            status={cms.fit.visual.status}
+            label={fitLabel}
+            caption={fitCaption}
+            rows={fitScenarios}
+            notTitle={fromCms && cms.fit.notTitle.trim() ? cms.fit.notTitle : t.fitNotTitle}
+            notItems={fitNot}
+          />
         </div>
       </section>
 
-      <section className="kpi-section kpi-systems-ready">
-        <h2 className="kpi-h2">{t.readyTitle}</h2>
-        <p className="kpi-systems-ready-body">{t.readyBody}</p>
-        <ol className="kpi-systems-ready-list">
-          {t.ready.map((item, index) => (
-            <li key={item} className="kpi-systems-ready-item">
-              <span className="kpi-latin kpi-systems-num">{String(index + 1).padStart(2, "0")}</span>
-              <p>{item}</p>
-            </li>
-          ))}
-        </ol>
-        <p className="kpi-systems-ready-close">{t.readyClose}</p>
+      <section id="inventory" className="kpi-systems-inventory border-y border-[#E3E8EB] bg-[#F4F4F4]">
+        <div className="kpi-section">
+          <h2 className="kpi-h2">{inventoryTitle}</h2>
+          <p className="kpi-systems-inventory-lead">{inventoryLead}</p>
+          <HotelSystemsInventory
+            locale={locale}
+            src={cms.inventory.visual.src}
+            status={cms.inventory.visual.status}
+            label={inventoryLabel}
+            caption={inventoryCaption}
+            systemsTitle={inventorySystemsTitle}
+            fieldsTitle={inventoryFieldsTitle}
+            rows={inventoryRows}
+            fields={inventoryFields}
+          />
+        </div>
       </section>
 
-      {revenueHref || reservationsHref ? (
-        <section className="kpi-systems-related border-t border-[#E3E8EB] bg-white">
-          <div className="kpi-section">
-            <h2 className="kpi-h2">{t.relatedTitle}</h2>
-            <div className="kpi-systems-related-layout">
-              {revenueHref ? (
-                <article className="kpi-systems-related-primary">
-                  <span className="kpi-systems-related-accent" aria-hidden="true" />
-                  <h3>{solutionNavLabel("/solutions/revenue-commercial-management", locale)}</h3>
-                  <p>{t.revenueBody}</p>
-                  <Link href={revenueHref} className="kpi-systems-related-cta">
-                    {t.details}
-                    <span aria-hidden="true">↗</span>
-                  </Link>
-                </article>
-              ) : null}
-              {reservationsHref ? (
-                <article className="kpi-systems-related-secondary">
-                  <h3>{solutionNavLabel("/solutions/outsourced-hotel-reservations", locale)}</h3>
-                  <p>{t.reservationsBody}</p>
-                  <Link href={reservationsHref} className="kpi-systems-related-cta">
-                    {t.details}
-                    <span aria-hidden="true">↗</span>
-                  </Link>
-                </article>
-              ) : null}
-            </div>
-          </div>
-        </section>
-      ) : null}
+      <section id="scope" className="kpi-systems-scope kpi-section">
+        <h2 className="kpi-h2">{scopeTitle}</h2>
+        <p className="kpi-systems-scope-lead">{scopeLead}</p>
+        <HotelSystemsResponsibility
+          locale={locale}
+          src={cms.scope.visual.src}
+          status={cms.scope.visual.status}
+          label={scopeLabel}
+          caption={scopeCaption}
+          supportTitle={scopeSupportTitle}
+          hotelTitle={scopeHotelTitle}
+          matrixTitle={scopeMatrixTitle}
+          rows={scopeRows}
+          matrix={scopeMatrix}
+          boundary={scopeBoundary}
+        />
+      </section>
 
-      <HotelSystemsEnquiry locale={locale} />
-      <HotelSystemsStickyCta label={t.cta} />
+      <section id="handover" className="kpi-section kpi-systems-plan kpi-systems-handover">
+        <p className="kpi-latin kpi-systems-plan-kicker">{sampleLabel}</p>
+        <h2 className="kpi-h2">{planTitle}</h2>
+        <p className="kpi-systems-plan-lead">{planLead}</p>
+        <HotelSystemsHandover
+          locale={locale}
+          src={cms.plan.visual.src}
+          status={cms.plan.visual.status}
+          label={planLabel}
+          caption={planCaption}
+          checklistTitle={planChecklistTitle}
+          ownershipTitle={planOwnershipTitle}
+          checklist={planChecklist}
+          ownership={planOwnership}
+          note={thai ? SYSTEMS_HANDOVER_NOTE.th : SYSTEMS_HANDOVER_NOTE.en}
+        />
+        <p className="kpi-systems-plan-close">{planClose}</p>
+      </section>
+
+      <section id="testing" className="kpi-systems-testing border-y border-[#E3E8EB] bg-[#F4F4F4]">
+        <div className="kpi-section">
+          <h2 className="kpi-h2">{testingTitle}</h2>
+          <p className="kpi-systems-testing-lead">{testingLead}</p>
+          <HotelSystemsTesting
+            locale={locale}
+            src={cms.testing.visual.src}
+            status={cms.testing.visual.status}
+            label={testingLabel}
+            caption={testingCaption}
+            casesTitle={testingCasesTitle}
+            errorTitle={testingErrorTitle}
+            cases={testingCases}
+            errorSteps={testingErrorSteps}
+          />
+        </div>
+      </section>
+
+      <section className="kpi-section" aria-labelledby="hotel-systems-measure-heading">
+        <h2 id="hotel-systems-measure-heading" className="kpi-h2">
+          {fromCms && cms?.measure.title.trim() ? cms.measure.title : t.measureTitle}
+        </h2>
+        <p id="hotel-systems-measure-desc">
+          {thai
+            ? "ตัวชี้วัดตัวอย่างสำหรับทบทวนจังหวะงาน ไม่ใช่ผลโรงแรมจริง และไม่ใช่ผลที่การันตี"
+            : "Sample review measures for management rhythm. Not a live hotel result, and not a guaranteed outcome."}
+        </p>
+        <p id="hotel-systems-sources">
+          {(sourceRows[0] && (thai ? sourceRows[0].nameTh : sourceRows[0].nameEn)) || (thai ? SYSTEMS_KPI_SAMPLE.sourceTh : SYSTEMS_KPI_SAMPLE.source)}
+          {" · "}
+          {sourceRows[0]?.publishedAt || SYSTEMS_KPI_SAMPLE.updatedAt}
+        </p>
+        <p>
+          <a href={sourceRows[0]?.url || "#hotel-systems-sources"}>{thai ? sourceRows[0]?.nameTh || SYSTEMS_SOURCES[0].nameTh : sourceRows[0]?.nameEn || SYSTEMS_SOURCES[0].nameEn}</a>
+        </p>
+        <div className="kpi-systems-kpi" role="group" aria-labelledby="hotel-systems-measure-heading" aria-describedby="hotel-systems-measure-desc">
+          {kpiRows.map((kpi) => {
+            const definition = "definitionEn" in kpi ? (thai ? kpi.definitionTh : kpi.definitionEn || kpi.definitionTh) : thai ? kpi.definitionTh : kpi.definition;
+            const period = "period" in kpi && kpi.period ? kpi.period : thai ? SYSTEMS_KPI_SAMPLE.periodTh : SYSTEMS_KPI_SAMPLE.period;
+            const market = "market" in kpi && kpi.market ? kpi.market : thai ? SYSTEMS_KPI_SAMPLE.marketTh : SYSTEMS_KPI_SAMPLE.market;
+            const source = "source" in kpi && kpi.source ? kpi.source : thai ? SYSTEMS_KPI_SAMPLE.sourceTh : SYSTEMS_KPI_SAMPLE.source;
+            const tone = "tone" in kpi ? kpi.tone : kpi.dataStatus === "not-configured" ? "amber" : kpi.dataStatus === "sample" ? "yellow" : "green";
+            const unit = "unitTh" in kpi && thai ? kpi.unitTh : kpi.unit;
+            return (
+              <article key={kpi.id} className={`kpi-systems-card is-${tone}`}>
+                <h3 className="kpi-latin">{thai ? kpi.nameTh : kpi.nameEn}</h3>
+                <p>{definition}</p>
+                <small className="kpi-latin">{unit}</small>
+                <small className="kpi-latin">{kpi.dataStatus === "not-configured" ? (thai ? "ยังไม่เชื่อมข้อมูล" : "Not configured") : kpi.dataStatus}</small>
+                <small>{period}</small>
+                <small>{market}</small>
+                <small>{source}</small>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="kpi-systems-related">
+        <div className="kpi-section">
+          <h2 className="kpi-h2">{fromCms && cms?.related.title.trim() ? cms.related.title : t.relatedTitle}</h2>
+          <HotelSystemsRelatedVisual locale={locale} src={cms.related.visual.src} />
+          <div className="kpi-systems-related-grid">
+            {related.map((card) => (
+              <Link key={card.id} href={card.href} className="kpi-systems-related-card">
+                <h3>{card.title}</h3>
+                <p>{card.body}</p>
+                <span className="kpi-latin">{card.cta}</span>
+              </Link>
+            ))}
+          </div>
+          <aside className="kpi-systems-closer kpi-systems-card">
+            <h3>
+              {(() => {
+                const value = fromCms ? cms.related.closerTitle.trim() : "";
+                if (!value || value === "คุยเรื่องระบบโรงแรม" || value === "Talk about hotel systems") return t.closerTitle;
+                return value;
+              })()}
+            </h3>
+            <p>
+              {systemsHeroText(fromCms ? cms.related.closerBody : "", t.closerBody, [
+                "คุณไม่จำเป็นต้องรู้ก่อนว่าต้องเปลี่ยนระบบหรือไม่ เพียงเล่าระบบที่ใช้อยู่และปัญหาที่พบ",
+                "You do not need to know in advance whether the system must change. Tell us the systems in use and the problem.",
+              ])}
+            </p>
+            <a
+              href={closerHref}
+              className="kpi-button kpi-systems-closer-cta bg-[#a2dc25] text-[#1a3a02]"
+            >
+              {systemsHeroText(fromCms ? cms.related.closerCta : "", t.closerCta, [
+                "ให้ทีมตรวจโครงสร้างระบบโรงแรม",
+                "Ask the team to review the hotel system setup",
+                "ส่งข้อความถึงทีม",
+                "Send to the team",
+              ])}{" "}
+              <span aria-hidden="true">↗</span>
+            </a>
+          </aside>
+        </div>
+      </section>
+
+      <HotelSystemsEnquiry locale={locale} visualSrc={cms.form.visual.src} helper={fromCms ? cms.form : undefined} />
+      <PageFaqs items={faqItems} locale={locale} sectionId="hotel-systems-faq" />
+      <HotelSystemsStickyCta
+        label={systemsHeroText(fromCms ? cms.form.submit : "", t.closerCta, [
+          "ให้ทีมตรวจโครงสร้างระบบโรงแรม",
+          "Ask the team to review the hotel system setup",
+          "ส่งข้อความถึงทีม",
+          "Send to the team",
+        ])}
+      />
+    </div>
+  );
+
+  if (embedded) return inner;
+  return (
+    <SiteShell locale={locale} route={localizePath("/solutions/hotel-systems-implementation", locale)} hideFaqs>
+      {inner}
     </SiteShell>
   );
 }

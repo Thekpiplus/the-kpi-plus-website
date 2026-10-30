@@ -88,6 +88,7 @@ export function Footer({
   const isHotelWebsite = path === "/solutions/hotel-website-design";
   const isDirectBooking = path === "/solutions/hotel-direct-bookings";
   const isIndependentHotel = path === "/solutions/independent-hotel-management";
+  const isHotelSystems = path === "/solutions/hotel-systems-implementation";
   const footerCtaHref = isMetaAds
     ? `${pathname.split("#")[0]}#meta-ads-enquiry`
     : isHotelSeo
@@ -98,6 +99,8 @@ export function Footer({
           ? `${pathname.split("#")[0]}#conversion-enquiry`
           : isIndependentHotel
             ? `${pathname.split("#")[0]}#independent-hotel-enquiry`
+          : isHotelSystems
+            ? `${pathname.split("#")[0]}#hotel-systems-enquiry`
           : auditHref(locale);
   const footerCtaLabel = isHotelWebsite
     ? enquiryServiceById("website")?.submit[locale] ?? t.audit
@@ -105,6 +108,8 @@ export function Footer({
       ? enquiryServiceById("conversion")?.submit[locale] ?? t.audit
       : isIndependentHotel
         ? enquiryServiceById("independent_hotel")?.submit[locale] ?? t.audit
+      : isHotelSystems
+        ? enquiryServiceById("hotel_systems")?.submit[locale] ?? t.audit
       : t.audit;
   const contact = contactInfoFromCompany(company, locale);
   const primaryPaths = new Set(["/approach", "/insights", "/case-studies", "/about-us", "/contact-us"]);
@@ -118,7 +123,7 @@ export function Footer({
   const toolsIndexHref = existingHref("/tools", locale);
 
   return (
-    <footer lang={htmlLang(locale)} className={`kpi-footer${isDirectBooking ? " kpi-footer--conversion" : ""}${isIndependentHotel ? " kpi-footer--independent" : ""}`}>
+    <footer lang={htmlLang(locale)} className={`kpi-footer${isDirectBooking ? " kpi-footer--conversion" : ""}${isIndependentHotel ? " kpi-footer--independent" : ""}${isHotelSystems ? " kpi-footer--systems" : ""}`}>
       <div className="kpi-section">
         <div className="kpi-footer-top">
           <section className="kpi-footer-brand">
@@ -140,7 +145,15 @@ export function Footer({
             </div>
             <div className="kpi-footer-brand-actions">
               <Link
-                data-track={isIndependentHotel ? "footer_independent_hotel_cta" : isDirectBooking ? "footer_conversion_cta" : "footer_audit_cta"}
+                data-track={
+                  isHotelSystems
+                    ? "footer_hotel_systems_cta"
+                    : isIndependentHotel
+                      ? "footer_independent_hotel_cta"
+                      : isDirectBooking
+                        ? "footer_conversion_cta"
+                        : "footer_audit_cta"
+                }
                 href={footerCtaHref}
                 className="kpi-button kpi-thai-nav"
               >

@@ -10,10 +10,9 @@ export function HotelSystemsStickyCta({ label }: { label: string }) {
     if (!form) return;
 
     const onScroll = () => {
-      const heroEnd = 420;
       const formTop = form.getBoundingClientRect().top;
       const formVisible = formTop < window.innerHeight - 80;
-      setVisible(window.scrollY > heroEnd && !formVisible);
+      setVisible(window.scrollY > 420 && !formVisible);
     };
 
     onScroll();
@@ -34,7 +33,7 @@ export function HotelSystemsStickyCta({ label }: { label: string }) {
 
   return (
     <div className="kpi-sticky-cta lg:hidden">
-      <a href="#hotel-systems-enquiry" className="kpi-button w-full">
+      <a href="#hotel-systems-enquiry" className="kpi-button w-full bg-[#a2dc25] text-[#1a3a02]">
         {label}
       </a>
     </div>

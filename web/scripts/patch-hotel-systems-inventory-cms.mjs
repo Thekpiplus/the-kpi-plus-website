@@ -1,0 +1,281 @@
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
+
+const SAMPLE_REVIEWED = "Sample — not a live review date";
+const SAMPLE_CONNECTOR = "Sample API / connector";
+const SAMPLE_OWNER = {
+  th: "ยังไม่ระบุ — แทนที่ด้วยข้อมูลโรงแรมที่อนุมัติ",
+  en: "Unassigned — replace with approved hotel data",
+};
+
+const visual = {
+  src: "/images/hotel-systems-inventory-mapping-placeholder.webp",
+  status: "sample",
+  label: "System Inventory and Data Mapping — Sample",
+  altTh:
+    "ตารางตัวอย่าง System Inventory และ Data Dictionary สำหรับ PMS Channel Manager Booking Engine OTA Reporting และ CRM ไม่มีรหัสบัญชี รหัสการจอง ข้อมูลแขก หรือรหัสผ่าน และต้องแทนที่ด้วยข้อมูลโรงแรมที่อนุมัติ",
+  altEn:
+    "Sample System Inventory and Data Dictionary for PMS, Channel Manager, Booking Engine, OTA, Reporting, and CRM. No account IDs, booking IDs, guest data, or passwords. Replace with approved hotel data.",
+};
+
+const copy = {
+  th: {
+    title: "รายการระบบและพจนานุกรมข้อมูล",
+    lead: "นี่เป็นตารางตัวอย่างสำหรับสำรวจระบบและจับคู่ฟิลด์ ต้องแทนที่ด้วยข้อมูลโรงแรมที่อนุมัติ และขึ้นกับการตรวจของผู้ให้บริการ ไม่มีรหัสบัญชี รหัสการจอง ข้อมูลแขก หรือรหัสผ่าน",
+    systemsTitle: "System Inventory",
+    fieldsTitle: "Data Dictionary",
+    caption: "ข้อมูลตัวอย่าง แทนที่ด้วยข้อมูลโรงแรมที่อนุมัติ และขึ้นกับการตรวจของผู้ให้บริการ",
+  },
+  en: {
+    title: "System Inventory and Data Dictionary",
+    lead: "This is a sample table for system inventory and field mapping. Replace with approved hotel data. Subject to provider verification. No account IDs, booking IDs, guest data, or passwords.",
+    systemsTitle: "System Inventory",
+    fieldsTitle: "Data Dictionary",
+    caption: "Sample data. Replace with approved hotel data. Subject to provider verification.",
+  },
+};
+
+const rows = [
+  {
+    id: "pms",
+    systemTh: "PMS",
+    systemEn: "PMS",
+    providerTh: "ผู้ให้บริการ PMS ตัวอย่าง",
+    providerEn: "Sample PMS provider",
+    purposeTh: "แหล่งความจริงของห้อง ราคา และการจอง",
+    purposeEn: "Source of Truth for rooms, rates, and reservations",
+    ownerTh: SAMPLE_OWNER.th,
+    ownerEn: SAMPLE_OWNER.en,
+    dataInTh: "Sample Reservation Status",
+    dataInEn: "Sample Reservation Status",
+    dataOutTh: "Sample Room Type, Sample Rate Plan, Sample Availability",
+    dataOutEn: "Sample Room Type, Sample Rate Plan, Sample Availability",
+    connector: SAMPLE_CONNECTOR,
+    environment: "unknown",
+    status: "needs_mapping",
+    reviewed: SAMPLE_REVIEWED,
+  },
+  {
+    id: "channel",
+    systemTh: "Channel Manager",
+    systemEn: "Channel Manager",
+    providerTh: "ผู้ให้บริการ Channel Manager ตัวอย่าง",
+    providerEn: "Sample channel-manager provider",
+    purposeTh: "กระจายห้องและราคาที่จับคู่แล้วไปยังช่องทางขาย",
+    purposeEn: "Distribute mapped rooms and rates to selling channels",
+    ownerTh: SAMPLE_OWNER.th,
+    ownerEn: SAMPLE_OWNER.en,
+    dataInTh: "Sample Room Type, Sample Rate Plan, Sample Availability",
+    dataInEn: "Sample Room Type, Sample Rate Plan, Sample Availability",
+    dataOutTh: "Sample Channel, Sample Reservation Status",
+    dataOutEn: "Sample Channel, Sample Reservation Status",
+    connector: SAMPLE_CONNECTOR,
+    environment: "sandbox",
+    status: "pending_access",
+    reviewed: SAMPLE_REVIEWED,
+  },
+  {
+    id: "booking",
+    systemTh: "Booking Engine",
+    systemEn: "Booking Engine",
+    providerTh: "ผู้ให้บริการ Booking Engine ตัวอย่าง",
+    providerEn: "Sample booking-engine provider",
+    purposeTh: "เส้นทางจองตรงจากเว็บไซต์",
+    purposeEn: "Direct booking path from the website",
+    ownerTh: SAMPLE_OWNER.th,
+    ownerEn: SAMPLE_OWNER.en,
+    dataInTh: "Sample Availability, Sample Rate Plan",
+    dataInEn: "Sample Availability, Sample Rate Plan",
+    dataOutTh: "Sample Reservation Status",
+    dataOutEn: "Sample Reservation Status",
+    connector: SAMPLE_CONNECTOR,
+    environment: "unknown",
+    status: "not_configured",
+    reviewed: SAMPLE_REVIEWED,
+  },
+  {
+    id: "ota",
+    systemTh: "OTA/Distribution",
+    systemEn: "OTA/Distribution",
+    providerTh: "ผู้ให้บริการช่องทางตัวอย่าง",
+    providerEn: "Sample distribution provider",
+    purposeTh: "รับจองจากช่องทางสาธารณะตามขอบเขตที่ตกลง",
+    purposeEn: "Receive bookings from public channels within the agreed scope",
+    ownerTh: SAMPLE_OWNER.th,
+    ownerEn: SAMPLE_OWNER.en,
+    dataInTh: "Sample Availability, Sample Rate Plan, Sample Channel",
+    dataInEn: "Sample Availability, Sample Rate Plan, Sample Channel",
+    dataOutTh: "Sample Reservation Status",
+    dataOutEn: "Sample Reservation Status",
+    connector: SAMPLE_CONNECTOR,
+    environment: "unknown",
+    status: "requires_provider_support",
+    reviewed: SAMPLE_REVIEWED,
+  },
+  {
+    id: "reporting",
+    systemTh: "Reporting",
+    systemEn: "Reporting",
+    providerTh: "แหล่งรายงานตัวอย่าง",
+    providerEn: "Sample reporting source",
+    purposeTh: "สรุป Occupancy และช่องทางตามนิยามที่ตกลง",
+    purposeEn: "Summarise occupancy and channel pickup using agreed definitions",
+    ownerTh: SAMPLE_OWNER.th,
+    ownerEn: SAMPLE_OWNER.en,
+    dataInTh: "Sample Reservation Status, Sample Channel",
+    dataInEn: "Sample Reservation Status, Sample Channel",
+    dataOutTh: "Sample reports as supported",
+    dataOutEn: "Sample reports as supported",
+    connector: SAMPLE_CONNECTOR,
+    environment: "sandbox",
+    status: "not_configured",
+    reviewed: SAMPLE_REVIEWED,
+  },
+  {
+    id: "crm",
+    systemTh: "CRM/Guest Communication",
+    systemEn: "CRM/Guest Communication",
+    providerTh: "เครื่องมือสื่อสารแขกตัวอย่าง",
+    providerEn: "Sample guest-communication tool",
+    purposeTh: "สื่อสารหลังการจอง โดยไม่ใช้ข้อมูลชำระเงิน",
+    purposeEn: "Communication after booking, without payment data",
+    ownerTh: SAMPLE_OWNER.th,
+    ownerEn: SAMPLE_OWNER.en,
+    dataInTh: "Sample Reservation Status",
+    dataInEn: "Sample Reservation Status",
+    dataOutTh: "Sample stay-date fields only",
+    dataOutEn: "Sample stay-date fields only",
+    connector: SAMPLE_CONNECTOR,
+    environment: "unknown",
+    status: "not_configured",
+    reviewed: SAMPLE_REVIEWED,
+  },
+];
+
+const fields = [
+  {
+    id: "room-type",
+    field: "Sample Room Type",
+    meaningTh: "หมวดห้องที่ใช้ขาย ไม่ใช่รหัสห้องจริง",
+    meaningEn: "Selling room category. Not a live room ID",
+    sourceTh: "PMS",
+    sourceEn: "PMS",
+    destinationTh: "Channel Manager",
+    destinationEn: "Channel Manager",
+    format: "text",
+    required: "required",
+    mappingStatus: "needs_mapping",
+    ownerTh: SAMPLE_OWNER.th,
+    ownerEn: SAMPLE_OWNER.en,
+    notesTh: "ขึ้นกับการตรวจของผู้ให้บริการ",
+    notesEn: "Subject to provider verification",
+  },
+  {
+    id: "rate-plan",
+    field: "Sample Rate Plan",
+    meaningTh: "แผนราคาที่ใช้ขาย ไม่ใช่ราคาจริงของโรงแรม",
+    meaningEn: "Selling rate plan. Not a live hotel rate",
+    sourceTh: "PMS",
+    sourceEn: "PMS",
+    destinationTh: "Booking Engine",
+    destinationEn: "Booking Engine",
+    format: "text",
+    required: "required",
+    mappingStatus: "needs_mapping",
+    ownerTh: SAMPLE_OWNER.th,
+    ownerEn: SAMPLE_OWNER.en,
+    notesTh: "แทนที่ด้วยข้อมูลโรงแรมที่อนุมัติ",
+    notesEn: "Replace with approved hotel data",
+  },
+  {
+    id: "availability",
+    field: "Sample Availability",
+    meaningTh: "จำนวนห้องว่างตามประเภท ไม่ใช่คลังห้องจริง",
+    meaningEn: "Available count by room type. Not live inventory",
+    sourceTh: "PMS",
+    sourceEn: "PMS",
+    destinationTh: "Channel Manager",
+    destinationEn: "Channel Manager",
+    format: "integer",
+    required: "required",
+    mappingStatus: "requires_provider_support",
+    ownerTh: SAMPLE_OWNER.th,
+    ownerEn: SAMPLE_OWNER.en,
+    notesTh: "ขึ้นกับการตรวจของผู้ให้บริการ",
+    notesEn: "Subject to provider verification",
+  },
+  {
+    id: "reservation-status",
+    field: "Sample Reservation Status",
+    meaningTh: "สถานะการจองตัวอย่าง เช่น confirmed หรือ cancelled",
+    meaningEn: "Sample reservation status such as confirmed or cancelled",
+    sourceTh: "Channel Manager",
+    sourceEn: "Channel Manager",
+    destinationTh: "PMS",
+    destinationEn: "PMS",
+    format: "enum",
+    required: "required",
+    mappingStatus: "not_yet_verified",
+    ownerTh: SAMPLE_OWNER.th,
+    ownerEn: SAMPLE_OWNER.en,
+    notesTh: "ไม่มีรหัสการจองหรือข้อมูลแขก",
+    notesEn: "No booking ID or guest data",
+  },
+  {
+    id: "channel",
+    field: "Sample Channel",
+    meaningTh: "ช่องทางขายตัวอย่าง ไม่ใช่บัญชี OTA จริง",
+    meaningEn: "Sample selling channel. Not a live OTA account",
+    sourceTh: "OTA/Distribution",
+    sourceEn: "OTA/Distribution",
+    destinationTh: "Reporting",
+    destinationEn: "Reporting",
+    format: "text",
+    required: "optional",
+    mappingStatus: "not_configured",
+    ownerTh: SAMPLE_OWNER.th,
+    ownerEn: SAMPLE_OWNER.en,
+    notesTh: "ข้อมูลตัวอย่าง แทนที่ด้วยข้อมูลโรงแรมที่อนุมัติ",
+    notesEn: "Sample data. Replace with approved hotel data",
+  },
+];
+
+const docs = await prisma.cmsDocument.findMany({
+  where: {
+    OR: [{ template: "hotel-systems-implementation" }, { slug: { contains: "hotel-systems-implementation" } }],
+  },
+});
+
+for (const doc of docs) {
+  const locale = doc.locale === "en" ? "en" : "th";
+  const nextCopy = copy[locale];
+  const body = typeof doc.body === "string" ? JSON.parse(doc.body) : doc.body;
+  if (!body) continue;
+  body.inventory = {
+    ...(body.inventory || {}),
+    title: nextCopy.title,
+    lead: nextCopy.lead,
+    systemsTitle: nextCopy.systemsTitle,
+    fieldsTitle: nextCopy.fieldsTitle,
+    rows,
+    fields,
+    visual: {
+      ...(body.inventory?.visual || {}),
+      src: visual.src,
+      status: visual.status,
+      label: visual.label,
+      caption: nextCopy.caption,
+      altTh: visual.altTh,
+      altEn: visual.altEn,
+    },
+  };
+  await prisma.cmsDocument.update({
+    where: { id: doc.id },
+    data: { body: JSON.stringify(body) },
+  });
+  console.log("patched inventory", doc.id, doc.locale, doc.slug, doc.status);
+}
+
+console.log("docs", docs.length);
+await prisma.$disconnect();
