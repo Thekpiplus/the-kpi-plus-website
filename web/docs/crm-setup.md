@@ -26,6 +26,14 @@ Without SMTP, device codes and PIN-reset links are printed in the Next.js termin
 
 Legacy SQLite migrations are kept under `prisma/migrations_sqlite/` for reference only.
 
+## Hostinger MySQL
+
+1. Create the database in hPanel → **Databases** (dedicated user, not root).
+2. URL-encode special characters in the password (`#` → `%23`, `;` → `%3B`) and keep `ANSI_QUOTES`.
+3. From this PC use the remote hostname (`srvXXX.hstgr.io`) or its IPv4 address if Prisma fails on IPv6. Enable **Remote MySQL** for your public IP if the connection is refused.
+4. On the Hostinger Node.js app, set `DATABASE_URL` with host `127.0.0.1` (not `localhost`) and `CRM_BASE_URL` to the live site. Do not commit this URL to Git.
+5. Run `npx prisma migrate deploy` (or `npx prisma db push` on an empty database) against that URL.
+
 ## Production settings to confirm
 
 - Confirmed lead notification email

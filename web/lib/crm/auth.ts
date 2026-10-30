@@ -133,11 +133,11 @@ export async function requirePartner() {
   return user;
 }
 
-export async function startPartnerLogin(emailRaw: string, pin: string) {
+export async function startPartnerLogin(emailRaw: string, pin: string, attachCookie = true) {
   if (!isFourDigitPin(pin)) {
     return { ok: false as const, error: "invalid" };
   }
-  return startLogin(emailRaw, pin, "partner");
+  return startLogin(emailRaw, pin, "partner", attachCookie);
 }
 
 function normalizeLoginId(raw: string) {
@@ -154,7 +154,7 @@ async function findUserByLogin(login: string) {
   });
 }
 
-export async function startLogin(loginRaw: string, password: string, expectedRole?: string) {
+export async function startLogin(loginRaw: string, password: string, expectedRole?: string, attachCookie = true) {
   const { ip, userAgent } = await requestContext();
   const login = normalizeLoginId(loginRaw);
   const db = prisma();
@@ -208,7 +208,7 @@ export async function startLogin(loginRaw: string, password: string, expectedRol
   }
 
   await db.user.update({ where: { id: user.id }, data: { failedAttempts: 0, lockedUntil: null } });
-  const sessionToken = await createSession(user.id, ip, userAgent);
+  const sessionToken = await createSession(user.id, ip, userAgent, attachCookie);
   await recordLogin({ email: user.email, ip, userAgent, success: true, reason: "ok", user });
   return {
     ok: true as const,
@@ -260,7 +260,7 @@ export async function verifyDevice(challengeId: string, code: string) {
   };
 }
 
-async function createSession(userId: string, ip: string, userAgent: string) {
+async function createSession(userId: string, ip: string, userAgent: string, attachCookie = true) {
   const token = randomToken();
   const db = prisma();
   await db.session.create({
@@ -272,6 +272,7 @@ async function createSession(userId: string, ip: string, userAgent: string) {
       userAgent,
     },
   });
+  if (!attachCookie) return token;
   try {
     const jar = await cookies();
     jar.set(SESSION_COOKIE, token, {

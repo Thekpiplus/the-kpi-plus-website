@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { requireUser } from "@/lib/crm/auth";
 import { leadOriginCounts, todayLists, userCounts } from "@/lib/crm/queries";
 import { hasModule } from "@/lib/crm/modules";
@@ -14,8 +15,36 @@ import { ModuleCard } from "@/components/crm/ui/ModuleCard";
 import { NewLeadOpenButton } from "@/components/crm/ui/NewLeadModal";
 import { roleLabel } from "@/lib/crm/roles";
 
+function DashboardPending({ name }: { name: string }) {
+  return (
+    <div className="crm-dash" aria-busy="true">
+      <section className="crm-dash-hero">
+        <div className="crm-dash-hero-copy">
+          <div className="crm-dash-hero-meta">
+            <p className="crm-dash-kicker">Admin Workspace</p>
+          </div>
+          <h1 className="crm-dash-hero-title">กำลังเปิดแดชบอร์ด…</h1>
+          <p className="crm-dash-hero-lead">{name ? `สวัสดี ${name}` : "กำลังโหลดงานวันนี้"}</p>
+        </div>
+      </section>
+    </div>
+  );
+}
+
 export default async function AdminHomePage() {
   const user = await requireUser();
+  return (
+    <Suspense fallback={<DashboardPending name={user.name} />}>
+      <DashboardHome user={user} />
+    </Suspense>
+  );
+}
+
+async function DashboardHome({
+  user,
+}: {
+  user: Awaited<ReturnType<typeof requireUser>>;
+}) {
   const [lists, origins, partners, users, cms, reservations, b2b, ads, meta, seo] = await Promise.all([
     todayLists(),
     leadOriginCounts(),

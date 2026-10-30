@@ -19,7 +19,19 @@ export async function ensureUsernameColumn() {
   // username is part of the Prisma schema; keep this as a no-op for older DBs.
 }
 
+let seedJob: Promise<void> | null = null;
+
 export async function ensureCrmSeed() {
+  if (!seedJob) {
+    seedJob = seedCrmOnce().catch((error) => {
+      seedJob = null;
+      throw error;
+    });
+  }
+  await seedJob;
+}
+
+async function seedCrmOnce() {
   const db = prisma();
   await ensureUsernameColumn().catch(() => undefined);
   const count = await db.stage.count();
@@ -170,17 +182,28 @@ export async function ensureAdminUser() {
   const existing = await db.user.findUnique({ where: { email: ADMIN_EMAIL } });
   if (existing) {
     const passwordOk = verifySecret(ADMIN_PASSWORD, existing.pinSalt, existing.pinHash);
+    const nextRole =
+      existing.role === "partner" || existing.role === "partners"
+        ? "superadmin"
+        : existing.role === "owner"
+          ? "superadmin"
+          : existing.role || "superadmin";
+    const nextUsername = existing.username || ADMIN_USERNAME;
+    const nextName = existing.name || "Isara";
+    const alreadyReady =
+      passwordOk &&
+      existing.username === nextUsername &&
+      existing.role === nextRole &&
+      existing.name === nextName &&
+      existing.failedAttempts === 0 &&
+      !existing.lockedUntil;
+    if (alreadyReady) return;
     await db.user.update({
       where: { id: existing.id },
       data: {
-        name: existing.name || "Isara",
-        username: existing.username || ADMIN_USERNAME,
-        role:
-          existing.role === "partner" || existing.role === "partners"
-            ? "superadmin"
-            : existing.role === "owner"
-              ? "superadmin"
-              : existing.role || "superadmin",
+        name: nextName,
+        username: nextUsername,
+        role: nextRole,
         ...(passwordOk ? {} : { pinHash: hashed.hash, pinSalt: hashed.salt }),
         failedAttempts: 0,
         lockedUntil: null,

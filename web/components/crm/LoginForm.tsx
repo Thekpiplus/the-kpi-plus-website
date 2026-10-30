@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 import { CrmThemeToggle } from "@/components/crm/CrmThemeToggle";
 
 const ERRORS: Record<string, string> = {
@@ -8,6 +11,8 @@ const ERRORS: Record<string, string> = {
 };
 
 export function LoginForm({ error }: { error?: string }) {
+  const [pending, setPending] = useState(false);
+
   return (
     <div className="crm-auth">
       <aside className="crm-auth-brand" aria-hidden="true">
@@ -29,7 +34,13 @@ export function LoginForm({ error }: { error?: string }) {
         <div className="crm-auth-theme">
           <CrmThemeToggle />
         </div>
-        <form action="/api/crm/login" method="post" className="crm-auth-card">
+        <form
+          action="/api/crm/login"
+          method="post"
+          className="crm-auth-card"
+          aria-busy={pending}
+          onSubmit={() => setPending(true)}
+        >
           <img
             src="/brand/KPIPlus_Horizontal_FullColor.png"
             alt="The KPI Plus"
@@ -42,17 +53,24 @@ export function LoginForm({ error }: { error?: string }) {
 
           <label className="crm-auth-label">
             อีเมล หรือ ชื่อผู้ใช้
-            <input className="crm-field" type="text" name="email" autoComplete="username" required />
+            <input className="crm-field" type="text" name="email" autoComplete="username" required readOnly={pending} />
           </label>
           <label className="crm-auth-label">
             รหัสผ่าน
-            <input className="crm-field" type="password" name="password" autoComplete="current-password" required />
+            <input
+              className="crm-field"
+              type="password"
+              name="password"
+              autoComplete="current-password"
+              required
+              readOnly={pending}
+            />
           </label>
 
           {error ? <p className="crm-auth-error">{ERRORS[error] ?? ERRORS.invalid}</p> : null}
 
-          <button className="kpi-button crm-auth-submit" type="submit">
-            เข้าสู่ระบบ
+          <button className="kpi-button crm-auth-submit" type="submit" disabled={pending}>
+            {pending ? "กำลังเข้าสู่ระบบ…" : "เข้าสู่ระบบ"}
           </button>
 
           <p className="crm-auth-footer">

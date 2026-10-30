@@ -718,6 +718,11 @@ html[data-crm-theme="dark"] .crm-shell,
   margin-top: 1.35rem;
 }
 
+.crm-auth-submit:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
 .crm-auth-footer {
   margin: 1rem 0 0;
   text-align: center;

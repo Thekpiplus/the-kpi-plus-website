@@ -389,9 +389,7 @@ export async function currentSessionUser() {
 }
 
 export async function loginAction(formData: FormData) {
-  const { ensureCrmSeed } = await import("./seed");
   const { startLogin } = await import("./auth");
-  await ensureCrmSeed();
   const result = await startLogin(String(formData.get("email") ?? ""), String(formData.get("password") ?? ""));
   if (!result.ok) redirect(`/admin?error=${result.error}`);
   redirect(result.next);
