@@ -570,7 +570,7 @@ form .kpi-button {
   font-weight: 400;
 }
 
-.kpi-footer-lang a[aria-current="true"] {
+.kpi-footer-lang a[aria-current="page"] {
   color: #f2f8e2;
   font-weight: 600;
 }
@@ -13314,7 +13314,7 @@ a.kpi-revenue-related-item {
   color: var(--kpi-kpi-teal);
 }
 
-.kpi-header-lang-option[aria-current="true"] {
+.kpi-header-lang-option[aria-current="page"] {
   background: #a2dc25;
   color: #1a3a02;
   font-weight: 600;
@@ -13688,7 +13688,7 @@ a.kpi-revenue-related-item {
 
 .kpi-mobile-link[aria-current="page"],
 .kpi-mobile-lang.is-current,
-.kpi-mobile-lang[aria-current="true"] {
+.kpi-mobile-lang[aria-current="page"] {
   background: #a2dc25;
   color: #1a3a02;
   font-weight: 700;
@@ -19420,12 +19420,23 @@ a.kpi-revenue-related-item {
 }
 
 .kpi-systems-hero .kpi-home-accent {
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .kpi-systems-hero .kpi-home-photo img {
-  object-fit: cover;
-  object-position: 70% 32%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.kpi-systems-hero .kpi-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.kpi-systems-hero .kpi-actions .kpi-button,
+.kpi-systems-hero .kpi-actions .kpi-button-ghost {
+  min-height: var(--kpi-touch, 2.75rem);
 }
 
 /* Keep stacked until true desktop so text and image never compete. */
@@ -23875,7 +23886,7 @@ a.kpi-revenue-related-item {
 }
 
 .kpi-systems-hero .kpi-home-accent {
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .kpi-systems-hero .kpi-home-eyebrow {
@@ -23898,6 +23909,13 @@ a.kpi-revenue-related-item {
   max-width: 560px;
   max-height: 350px;
   aspect-ratio: 8 / 5;
+}
+
+.kpi-systems-hero .kpi-home-photo .hsi-visual-frame:has(.hsi-hero-mock) {
+  max-height: none;
+  height: auto;
+  min-height: 22rem;
+  aspect-ratio: auto;
 }
 
 .kpi-systems-hero .kpi-home-photo img {

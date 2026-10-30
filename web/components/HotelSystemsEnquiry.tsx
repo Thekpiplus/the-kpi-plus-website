@@ -5,6 +5,7 @@ import {
   hotelSystemsEnquiryCopy,
   systemsEnquiryReceiveAreStale,
   systemsEnquiryStepsAreStale,
+  systemsEnquiryVisualSrc,
 } from "@/lib/hotel-systems";
 import type { Locale } from "@/lib/seo";
 
@@ -37,7 +38,11 @@ export function HotelSystemsEnquiry({
     useHelper && helper?.steps.length && !systemsEnquiryStepsAreStale(helper.steps)
       ? helper.steps.map((item) => (locale === "th" ? item.th : item.en)).filter(Boolean)
       : defaults.steps;
-  const labels = useHelper && helper ? helper.labels : defaults.labels;
+  const helperLabels = helper?.labels;
+  const helperLabelsMismatch = Boolean(
+    helperLabels?.name && (locale === "th" ? !looksThai(helperLabels.name) : looksThai(helperLabels.name)),
+  );
+  const labels = useHelper && helperLabels && !helperLabelsMismatch ? helperLabels : defaults.labels;
   const staleTitle = !/และข้อมูล|and data/i.test(helper?.title || "");
   const staleBody = /ทีมจะช่วยดูว่าควรเริ่มจากจุดไหนก่อน|The team can help see where to start/.test(helper?.body || "");
   const staleSubmit = /ให้ทีมตรวจโครงสร้างระบบโรงแรม|Ask the team to review the hotel system setup|ส่งข้อความถึงทีม|Send to the team/.test(
@@ -58,7 +63,12 @@ export function HotelSystemsEnquiry({
       introReceive={receive}
       introNextTitle={useHelper && helper?.nextTitle.trim() ? helper.nextTitle : defaults.nextTitle}
       introSteps={steps}
-      introVisualSrc={visualSrc}
+      introVisualSrc={systemsEnquiryVisualSrc(visualSrc, helper?.visual?.status)}
+      goalOptions={
+        useHelper && helper?.goals?.length
+          ? helper.goals.map((item) => ({ id: item.id, th: item.th, en: item.en }))
+          : undefined
+      }
       fieldLabels={{
         name: labels.name,
         business: labels.business,

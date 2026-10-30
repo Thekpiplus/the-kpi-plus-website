@@ -2,6 +2,7 @@ import type { CmsSystemsBeforeAfterField } from "@/lib/cms/hotel-systems-page";
 import {
   SYSTEMS_BEFORE_AFTER_ISSUES,
   SYSTEMS_BEFORE_AFTER_NOTE,
+  SYSTEMS_BEFORE_AFTER_PATH,
   SYSTEMS_BEFORE_AFTER_SYSTEMS,
   SYSTEMS_MODEL_STEPS,
   SYSTEMS_MODEL_VISUAL,
@@ -23,6 +24,7 @@ function fieldCopy(item: CmsSystemsBeforeAfterField, thai: boolean) {
 export function HotelSystemsBeforeAfter({
   locale,
   src,
+  alt,
   status,
   label,
   caption,
@@ -32,6 +34,7 @@ export function HotelSystemsBeforeAfter({
 }: {
   locale: Locale;
   src?: string;
+  alt?: string;
   status?: string;
   label?: string;
   caption?: string;
@@ -44,8 +47,10 @@ export function HotelSystemsBeforeAfter({
   const fileSrc = systemsRenderableSrc(src, status);
   const displayLabel = label?.trim() || SYSTEMS_MODEL_VISUAL.labelEn;
   const displayCaption = caption?.trim() || (thai ? SYSTEMS_MODEL_VISUAL.captionTh : SYSTEMS_MODEL_VISUAL.captionEn);
+  const displayAlt = alt?.trim() || (thai ? SYSTEMS_MODEL_VISUAL.altTh : SYSTEMS_MODEL_VISUAL.altEn);
   const displayNote = note?.trim() || (thai ? SYSTEMS_BEFORE_AFTER_NOTE.th : SYSTEMS_BEFORE_AFTER_NOTE.en);
   const afterSteps = steps.length ? steps : [...SYSTEMS_MODEL_STEPS];
+  const scopeFields = fields.length ? fields : [];
 
   return (
     <div className="hsi-ba">
@@ -54,7 +59,7 @@ export function HotelSystemsBeforeAfter({
           <div className="hsi-ba-photo">
             <img
               src={fileSrc}
-              alt={thai ? SYSTEMS_MODEL_VISUAL.altTh : SYSTEMS_MODEL_VISUAL.altEn}
+              alt={displayAlt}
               width={SYSTEMS_MODEL_VISUAL.displayWidth}
               height={SYSTEMS_MODEL_VISUAL.displayHeight}
               style={{ aspectRatio: `${SYSTEMS_MODEL_VISUAL.displayWidth} / ${SYSTEMS_MODEL_VISUAL.displayHeight}` }}
@@ -64,7 +69,7 @@ export function HotelSystemsBeforeAfter({
             {sample ? <span className="hsi-visual-badge">Disconnected Systems to Managed Data Flow — Sample</span> : null}
           </div>
         ) : (
-          <div className="hsi-ba-board" role="img" aria-label={thai ? SYSTEMS_MODEL_VISUAL.altTh : SYSTEMS_MODEL_VISUAL.altEn}>
+          <div className="hsi-ba-board" role="img" aria-label={displayAlt}>
             {sample ? <span className="hsi-visual-badge">Disconnected Systems to Managed Data Flow — Sample</span> : null}
             <p className="hsi-mock-kicker kpi-latin">Before: disconnected tools · After: managed and verified within agreed scope</p>
             <div className="hsi-ba-grid">
@@ -85,28 +90,31 @@ export function HotelSystemsBeforeAfter({
                   ))}
                 </ul>
               </article>
+              <div className="hsi-ba-split" aria-hidden="true">
+                <svg className="hsi-ba-split-svg" viewBox="0 0 24 80" preserveAspectRatio="none">
+                  <path d="M4 40 H20 M14 32 L20 40 L14 48" fill="none" stroke="#A2DC25" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                <span>→</span>
+              </div>
               <article className="hsi-ba-pane is-after">
                 <p className="hsi-ba-kicker kpi-latin">After</p>
                 <h3 className="hsi-ba-pane-title">
                   {thai ? "เส้นทางที่จัดการและตรวจแล้วในขอบเขตที่ตกลง" : "Managed and verified within the agreed scope"}
                 </h3>
+                <p className="hsi-ba-path kpi-latin">{SYSTEMS_BEFORE_AFTER_PATH}</p>
                 <ol className="hsi-ba-flow">
-                  {afterSteps.map((step, index) => {
-                    const title = thai ? step.titleTh || step.titleEn : step.titleEn || step.titleTh;
-                    return (
-                      <li key={step.id}>
-                        {index ? (
-                          <span className="hsi-ba-flow-arrow" aria-hidden="true">
-                            ↓
-                          </span>
-                        ) : null}
-                        <span className="hsi-ba-flow-card">
-                          <span className="kpi-latin">{step.label}</span>
-                          {title && title !== step.label ? <small>{title}</small> : null}
+                  {afterSteps.map((step, index) => (
+                    <li key={step.id}>
+                      {index ? (
+                        <span className="hsi-ba-flow-arrow" aria-hidden="true">
+                          →
                         </span>
-                      </li>
-                    );
-                  })}
+                      ) : null}
+                      <span className="hsi-ba-flow-card">
+                        <span className="kpi-latin">{step.label}</span>
+                      </span>
+                    </li>
+                  ))}
                 </ol>
                 <p className="hsi-ba-scope">
                   {thai
@@ -114,6 +122,24 @@ export function HotelSystemsBeforeAfter({
                     : "It does not mean every system is fully automated."}
                 </p>
               </article>
+              {scopeFields.length ? (
+                <ul className="hsi-ba-fields">
+                  {scopeFields.map((item) => {
+                    const copy = fieldCopy(item, thai);
+                    return (
+                      <li key={item.id} className={`is-${copy.status.tone}`}>
+                        <p className="hsi-ba-fields-title">{copy.title}</p>
+                        <em className={`hsi-status is-${copy.status.tone} kpi-latin`}>{copy.status.label}</em>
+                        <p>{copy.body}</p>
+                        <p className="hsi-ba-fields-owner">
+                          <span className="kpi-latin">{thai ? "ผู้รับผิดชอบ" : "Owner"}</span>
+                          {copy.owner}
+                        </p>
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : null}
             </div>
           </div>
         )}
@@ -123,6 +149,8 @@ export function HotelSystemsBeforeAfter({
           <span>{displayCaption}</span>
         </figcaption>
       </figure>
+
+      <p className="hsi-ba-note">{displayNote}</p>
 
       <div className="hsi-ba-table-wrap">
         <table className="hsi-ba-table">
@@ -156,7 +184,6 @@ export function HotelSystemsBeforeAfter({
           </tbody>
         </table>
       </div>
-      <p className="hsi-ba-note">{displayNote}</p>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import {
   SYSTEMS_ASSESSMENT_VISUAL,
+  SYSTEMS_ASSESSMENT_EVIDENCE,
   SYSTEMS_REVIEW_CHECKS,
   SYSTEMS_REVIEW_COMPARE,
   SYSTEMS_DELIVERABLES,
@@ -9,11 +10,13 @@ import {
   SYSTEMS_DELIVERABLES_VISUAL,
   SYSTEMS_ENQUIRY_FLOW,
   SYSTEMS_ENQUIRY_VISUAL,
+  systemsEnquiryVisualSrc,
   SYSTEMS_FIT_COLUMNS,
   SYSTEMS_FIT_SCENARIOS,
   SYSTEMS_FIT_VISUAL,
   SYSTEMS_HERO_FLOW,
   SYSTEMS_HERO_LEGEND,
+  SYSTEMS_HERO_PATH,
   SYSTEMS_HERO_VISUAL,
   SYSTEMS_MODEL_STEPS,
   SYSTEMS_MODEL_VISUAL,
@@ -51,35 +54,60 @@ export function HotelSystemsHeroVisual({
   caption?: string;
 }) {
   const thai = locale === "th";
+  const approved = status === "approved" || status === "real";
+  const displayAlt = alt?.trim() || (thai ? SYSTEMS_HERO_VISUAL.altTh : SYSTEMS_HERO_VISUAL.altEn);
+  const displayLabel = label?.trim() || (thai ? SYSTEMS_HERO_VISUAL.labelTh : SYSTEMS_HERO_VISUAL.labelEn);
+  const displayCaption = caption?.trim() || (thai ? SYSTEMS_HERO_VISUAL.captionTh : SYSTEMS_HERO_VISUAL.captionEn);
+  const badge = thai ? "ตัวอย่าง Hotel Systems และ Data Flow" : "Sample Architecture";
   return (
     <HotelSystemsVisualFrame
       locale={locale}
-      src={src}
-      alt={alt || (thai ? SYSTEMS_HERO_VISUAL.altTh : SYSTEMS_HERO_VISUAL.altEn)}
-      label={label?.trim() || (thai ? SYSTEMS_HERO_VISUAL.labelTh : SYSTEMS_HERO_VISUAL.labelEn)}
-      caption={caption?.trim() || (thai ? SYSTEMS_HERO_VISUAL.captionTh : SYSTEMS_HERO_VISUAL.captionEn)}
+      src={approved ? src : ""}
+      alt={displayAlt}
+      label={displayLabel}
+      caption={displayCaption}
       meta={thai ? SYSTEMS_HERO_VISUAL.metaTh : SYSTEMS_HERO_VISUAL.metaEn}
       status={status || SYSTEMS_HERO_VISUAL.status}
       width={SYSTEMS_HERO_VISUAL.displayWidth}
       height={SYSTEMS_HERO_VISUAL.displayHeight}
       variant="hero"
+      badge={badge}
       eager
     >
-      <div className="hsi-hero-mock" role="img" aria-label={thai ? SYSTEMS_HERO_VISUAL.altTh : SYSTEMS_HERO_VISUAL.altEn}>
-        <div className="hsi-hero-desk">
-          <span className="hsi-visual-badge">{thai ? "ตัวอย่าง Hotel System Architecture และ Data Flow" : "Sample Architecture"}</span>
-          <p className="hsi-mock-kicker kpi-latin">Website → Booking Engine → PMS → Channel Manager → OTA → Reporting → Hotel Team</p>
-          <p className="hsi-mock-title">{thai ? "ตัวอย่างการทบทวนเส้นทางข้อมูล" : "Sample data-flow review"}</p>
-          <ol className="hsi-hero-flow">
-            {SYSTEMS_HERO_FLOW.map((item) => (
-              <li key={item.id} className={`is-${SYSTEMS_HERO_LEGEND.find((row) => row.id === item.status)?.tone || "yellow"}`}>
-                <span className="kpi-latin">{item.num}</span>
-                <strong className="kpi-latin">{thai ? item.titleTh : item.titleEn}</strong>
-                <em className={`hsi-status is-${SYSTEMS_HERO_LEGEND.find((row) => row.id === item.status)?.tone || "yellow"}`}>{item.statusLabel}</em>
-                <small>{thai ? item.bodyTh : item.bodyEn}</small>
-              </li>
-            ))}
-          </ol>
+      <div className="hsi-hero-mock" role="img" aria-label={displayAlt}>
+        <div className="hsi-hero-devices">
+          <div className="hsi-hero-desk">
+            <span className="hsi-visual-badge">{badge}</span>
+            <p className="hsi-mock-kicker kpi-latin">{SYSTEMS_HERO_PATH}</p>
+            <p className="hsi-mock-title">{thai ? "ตัวอย่างสถาปัตยกรรมระบบโรงแรมและเส้นทางข้อมูล" : "Sample hotel system architecture and data flow"}</p>
+            <ol className="hsi-hero-flow">
+              {SYSTEMS_HERO_FLOW.map((item) => {
+                const tone = SYSTEMS_HERO_LEGEND.find((row) => row.id === item.status)?.tone || "muted";
+                return (
+                  <li key={item.id} className={`is-${tone}`}>
+                    <span className="kpi-latin">{item.num}</span>
+                    <strong className="kpi-latin">{thai ? item.titleTh : item.titleEn}</strong>
+                    <em className={`hsi-status is-${tone}`}>{item.statusLabel}</em>
+                    <small>{thai ? item.bodyTh : item.bodyEn}</small>
+                  </li>
+                );
+              })}
+            </ol>
+          </div>
+          <aside className="hsi-hero-mobile" aria-label={thai ? "โหนดระบบที่เกี่ยวข้อง" : "Related architecture nodes"}>
+            <p className="kpi-latin">{thai ? "โหนดระบบ" : "Architecture nodes"}</p>
+            <ul>
+              {SYSTEMS_HERO_FLOW.map((item) => {
+                const tone = SYSTEMS_HERO_LEGEND.find((row) => row.id === item.status)?.tone || "muted";
+                return (
+                  <li key={item.id}>
+                    <strong className="kpi-latin">{thai ? item.titleTh : item.titleEn}</strong>
+                    <span className={`hsi-status is-${tone}`}>{item.statusLabel}</span>
+                  </li>
+                );
+              })}
+            </ul>
+          </aside>
         </div>
         <ul className="hsi-hero-legend" aria-label={thai ? "คำอธิบายสถานะตัวอย่าง ไม่ใช่สถานะเชื่อมต่อที่ตรวจแล้ว" : "Sample status legend. Not a verified integration status."}>
           {SYSTEMS_HERO_LEGEND.map((item) => (
@@ -110,12 +138,14 @@ export function HotelSystemsReviewVisual({
 }) {
   const thai = locale === "th";
   const sample = status !== "approved" && status !== "real";
+  const displayAlt = alt?.trim() || (thai ? SYSTEMS_ASSESSMENT_VISUAL.altTh : SYSTEMS_ASSESSMENT_VISUAL.altEn);
+  const displayLabel = label?.trim() || (thai ? SYSTEMS_ASSESSMENT_VISUAL.labelTh : SYSTEMS_ASSESSMENT_VISUAL.labelEn);
   return (
     <HotelSystemsVisualFrame
       locale={locale}
-      src={src}
-      alt={alt || (thai ? SYSTEMS_ASSESSMENT_VISUAL.altTh : SYSTEMS_ASSESSMENT_VISUAL.altEn)}
-      label={label?.trim() || (thai ? SYSTEMS_ASSESSMENT_VISUAL.labelTh : SYSTEMS_ASSESSMENT_VISUAL.labelEn)}
+      src={sample ? "" : src}
+      alt={displayAlt}
+      label={displayLabel}
       caption={caption?.trim() || (thai ? SYSTEMS_ASSESSMENT_VISUAL.captionTh : SYSTEMS_ASSESSMENT_VISUAL.captionEn)}
       meta={thai ? SYSTEMS_ASSESSMENT_VISUAL.metaTh : SYSTEMS_ASSESSMENT_VISUAL.metaEn}
       status={status || SYSTEMS_ASSESSMENT_VISUAL.status}
@@ -124,7 +154,7 @@ export function HotelSystemsReviewVisual({
       variant="assessment"
       badge={sample ? "Sample review framework" : undefined}
     >
-      <div className="hsi-review-mock" role="img" aria-label={thai ? SYSTEMS_ASSESSMENT_VISUAL.altTh : SYSTEMS_ASSESSMENT_VISUAL.altEn}>
+      <div className="hsi-review-mock" role="img" aria-label={displayAlt}>
         {sample ? <span className="hsi-visual-badge">Sample review framework</span> : null}
         <p className="hsi-mock-kicker kpi-latin">Data Consistency Audit · Redacted</p>
         <p className="hsi-mock-title">{thai ? "ตัวอย่างการเทียบห้อง ราคา และห้องว่าง" : "Room / rate / availability comparison"}</p>
@@ -141,7 +171,7 @@ export function HotelSystemsReviewVisual({
           </thead>
           <tbody>
             {SYSTEMS_REVIEW_COMPARE.map((row) => {
-              const status = systemsReviewStatus(row.status);
+              const rowStatus = systemsReviewStatus(row.status);
               return (
                 <tr key={row.id}>
                   <th scope="row">{thai ? row.itemTh : row.itemEn}</th>
@@ -149,7 +179,7 @@ export function HotelSystemsReviewVisual({
                   <td className="kpi-latin">{row.cm}</td>
                   <td className="kpi-latin">{row.be}</td>
                   <td>
-                    <em className={`hsi-status is-${status.tone}`}>{status.label}</em>
+                    <em className={`hsi-status is-${rowStatus.tone}`}>{rowStatus.label}</em>
                   </td>
                 </tr>
               );
@@ -158,15 +188,26 @@ export function HotelSystemsReviewVisual({
         </table>
         <ul className="hsi-review-checks">
           {SYSTEMS_REVIEW_CHECKS.map((item) => {
-            const status = systemsReviewStatus(item.status);
+            const checkStatus = systemsReviewStatus(item.status);
             return (
               <li key={item.id}>
                 <strong className="kpi-latin">{thai ? item.th : item.en}</strong>
-                <span className={`hsi-status is-${status.tone}`}>{status.label}</span>
+                <span className={`hsi-status is-${checkStatus.tone}`}>{checkStatus.label}</span>
               </li>
             );
           })}
         </ul>
+        <div className="hsi-review-extras">
+          <div className="hsi-review-dash">
+            <p className="kpi-latin">{thai ? "แดชบอร์ด · ปกปิดข้อมูล" : "Dashboard · Redacted"}</p>
+            <p className="kpi-latin">•••• · •••• · ••••</p>
+          </div>
+          <div className="hsi-review-map">
+            <p className="kpi-latin">{thai ? "แผนที่ระบบ" : "Ops system map"}</p>
+            <p>{thai ? "Source of Truth · Owner · Contact" : "Source of Truth · Owner · Contact"}</p>
+          </div>
+        </div>
+        <p className="sr-only">{SYSTEMS_ASSESSMENT_EVIDENCE.map((item) => (thai ? item.th : item.en)).join(" · ")}</p>
       </div>
     </HotelSystemsVisualFrame>
   );
@@ -303,7 +344,7 @@ export function HotelSystemsWorkflowVisual({ locale, src }: { locale: Locale; sr
     >
       <div className="hsi-workflow-model" role="img" aria-label={thai ? SYSTEMS_WORKFLOW_VISUAL.altTh : SYSTEMS_WORKFLOW_VISUAL.altEn}>
         <span className="hsi-visual-badge">Hotel Systems Implementation Workflow — Sample</span>
-        <p className="hsi-mock-kicker kpi-latin">DISCOVER · MAP · CONFIGURE · TEST · HANDOVER</p>
+        <p className="hsi-mock-kicker kpi-latin">01 Discover → 02 Map → 03 Configure → 04 Test → 05 Handover</p>
         <p className="hsi-mock-title">{thai ? "ไทม์ไลน์ จุดส่งต่อ และผลลัพธ์" : "Timeline, handoff map, and deliverables"}</p>
         <ol className="hsi-workflow-timeline">
           {SYSTEMS_WORKFLOW.map((step) => (
@@ -437,13 +478,14 @@ export function HotelSystemsHandoverVisual({ locale, src }: { locale: Locale; sr
   );
 }
 
-export function HotelSystemsRelatedVisual({ locale, src }: { locale: Locale; src?: string }) {
+export function HotelSystemsRelatedVisual({ locale, src, alt }: { locale: Locale; src?: string; alt?: string }) {
   const thai = locale === "th";
+  const displayAlt = alt?.trim() || (thai ? SYSTEMS_RELATED_VISUAL.altTh : SYSTEMS_RELATED_VISUAL.altEn);
   return (
     <HotelSystemsVisualFrame
       locale={locale}
       src={src}
-      alt={thai ? SYSTEMS_RELATED_VISUAL.altTh : SYSTEMS_RELATED_VISUAL.altEn}
+      alt={displayAlt}
       label={thai ? SYSTEMS_RELATED_VISUAL.labelTh : SYSTEMS_RELATED_VISUAL.labelEn}
       caption={thai ? SYSTEMS_RELATED_VISUAL.captionTh : SYSTEMS_RELATED_VISUAL.captionEn}
       meta={thai ? SYSTEMS_RELATED_VISUAL.metaTh : SYSTEMS_RELATED_VISUAL.metaEn}
@@ -452,7 +494,7 @@ export function HotelSystemsRelatedVisual({ locale, src }: { locale: Locale; src
       height={SYSTEMS_RELATED_VISUAL.displayHeight}
       variant="related"
     >
-      <div className="hsi-board-mock" role="img" aria-label={thai ? SYSTEMS_RELATED_VISUAL.altTh : SYSTEMS_RELATED_VISUAL.altEn}>
+      <div className="hsi-board-mock" role="img" aria-label={displayAlt}>
         <span className="hsi-visual-badge">{systemsSampleLabel(locale)}</span>
         <p className="hsi-mock-title kpi-latin">Related Hotel Work</p>
       </div>
@@ -460,17 +502,26 @@ export function HotelSystemsRelatedVisual({ locale, src }: { locale: Locale; src
   );
 }
 
-export function HotelSystemsEnquiryVisual({ locale, src }: { locale: Locale; src?: string }) {
+export function HotelSystemsEnquiryVisual({
+  locale,
+  src,
+  status,
+}: {
+  locale: Locale;
+  src?: string;
+  status?: string;
+}) {
   const thai = locale === "th";
+  const visualStatus = status || SYSTEMS_ENQUIRY_VISUAL.status;
   return (
     <HotelSystemsVisualFrame
       locale={locale}
-      src={src}
+      src={systemsEnquiryVisualSrc(src, visualStatus)}
       alt={thai ? SYSTEMS_ENQUIRY_VISUAL.altTh : SYSTEMS_ENQUIRY_VISUAL.altEn}
       label={thai ? SYSTEMS_ENQUIRY_VISUAL.labelTh : SYSTEMS_ENQUIRY_VISUAL.labelEn}
       caption={thai ? SYSTEMS_ENQUIRY_VISUAL.captionTh : SYSTEMS_ENQUIRY_VISUAL.captionEn}
       meta={thai ? SYSTEMS_ENQUIRY_VISUAL.metaTh : SYSTEMS_ENQUIRY_VISUAL.metaEn}
-      status={SYSTEMS_ENQUIRY_VISUAL.status}
+      status={visualStatus}
       width={SYSTEMS_ENQUIRY_VISUAL.displayWidth}
       height={SYSTEMS_ENQUIRY_VISUAL.displayHeight}
       variant="enquiry"

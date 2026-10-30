@@ -901,6 +901,10 @@ export type SysProjectRow = {
   primarySeverity: SysSeverity;
 };
 
+export function withSysDepartmentFilter(searchParams: Promise<SysListFilters>, department: SysDepartment): Promise<SysListFilters> {
+  return searchParams.then((filters) => ({ ...filters, department }));
+}
+
 export type SysListFilters = {
   q?: string;
   status?: string;

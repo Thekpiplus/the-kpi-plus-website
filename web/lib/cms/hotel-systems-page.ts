@@ -7,6 +7,7 @@ import {
   SYSTEMS_DELIVERABLES_VISUAL,
   SYSTEMS_READINESS_STATUSES,
   systemsReadinessCmsRows,
+  SYSTEMS_ENQUIRY_GOALS,
   SYSTEMS_ENQUIRY_RECEIVE,
   SYSTEMS_ENQUIRY_VISUAL,
   SYSTEMS_FIT_NOT,
@@ -145,6 +146,8 @@ export type CmsSystemsService = {
   status: string;
   providerTh: string;
   providerEn: string;
+  connectorTh: string;
+  connectorEn: string;
   verified: boolean;
 };
 export type CmsSystemsBeforeAfterField = {
@@ -387,6 +390,9 @@ export type CmsSystemsKpi = {
   definitionEn: string;
   unit: string;
   dataStatus: SystemsKpiStatus | string;
+  ownerTh: string;
+  ownerEn: string;
+  updatedAt: string;
   hideUntilData: boolean;
   publicationApproved: boolean;
 };
@@ -485,6 +491,7 @@ export type CmsSystemsPage = {
     lead: string;
     systemsTitle: string;
     fieldsTitle: string;
+    sampleLabel: string;
     visual: CmsSystemsVisual;
     rows: CmsSystemsInventoryRow[];
     fields: CmsSystemsDictionaryRow[];
@@ -519,6 +526,7 @@ export type CmsSystemsPage = {
     lead: string;
     casesTitle: string;
     errorTitle: string;
+    sampleLabel: string;
     visual: CmsSystemsVisual;
     cases: CmsSystemsTestCase[];
     errorSteps: CmsSystemsLine[];
@@ -544,6 +552,7 @@ export type CmsSystemsPage = {
     steps: CmsSystemsLine[];
     note: string;
     labels: CmsSystemsFormLabels;
+    goals: CmsSystemsLine[];
     visual: CmsSystemsVisual;
   };
   faqs: CmsSystemsFaq[];
@@ -658,7 +667,7 @@ export function emptyHotelSystemsCms(): CmsSystemsPage {
     },
     workflow: { title: "", lead: "", visual: emptyVisual(), steps: [], approvalsTitle: "", approvals: [], gateTitle: "", gate: "" },
     fit: { title: "", lead: "", visual: emptyVisual(), scenarios: [], notTitle: "", notItems: [] },
-    inventory: { title: "", lead: "", systemsTitle: "", fieldsTitle: "", visual: emptyVisual(), rows: [], fields: [] },
+    inventory: { title: "", lead: "", systemsTitle: "", fieldsTitle: "", sampleLabel: "System Inventory and Data Dictionary — Sample", visual: emptyVisual(), rows: [], fields: [] },
     scope: {
       title: "",
       lead: "",
@@ -684,7 +693,7 @@ export function emptyHotelSystemsCms(): CmsSystemsPage {
       checklist: [],
       ownership: [],
     },
-    testing: { title: "", lead: "", casesTitle: "", errorTitle: "", visual: emptyVisual(), cases: [], errorSteps: [] },
+    testing: { title: "", lead: "", casesTitle: "", errorTitle: "", sampleLabel: "Hotel Systems Testing and QA — Sample", visual: emptyVisual(), cases: [], errorSteps: [] },
     measure: { title: "", kpis: [], sources: [] },
     related: { title: "", visual: emptyVisual(), cards: [], closerTitle: "", closerBody: "", closerCta: "", closerHref: "#hotel-systems-enquiry" },
     form: {
@@ -698,6 +707,7 @@ export function emptyHotelSystemsCms(): CmsSystemsPage {
       steps: [],
       note: "",
       labels: emptyLabels(),
+      goals: [],
       visual: emptyVisual(),
     },
     faqs: [],
@@ -813,6 +823,7 @@ export function defaultHotelSystemsCms(locale: Locale): CmsSystemsPage {
     lead: copy.inventoryLead,
     systemsTitle: copy.inventorySystemsTitle,
     fieldsTitle: copy.inventoryFieldsTitle,
+    sampleLabel: SYSTEMS_INVENTORY_VISUAL.labelEn,
     visual: fromLibraryVisual(SYSTEMS_INVENTORY_VISUAL, locale),
     rows: systemsInventoryCmsRows(),
     fields: systemsDictionaryCmsRows(),
@@ -860,6 +871,7 @@ export function defaultHotelSystemsCms(locale: Locale): CmsSystemsPage {
     lead: copy.testingLead,
     casesTitle: copy.testingCasesTitle,
     errorTitle: copy.testingErrorTitle,
+    sampleLabel: SYSTEMS_TESTING_VISUAL.labelEn,
     visual: fromLibraryVisual(SYSTEMS_TESTING_VISUAL, locale),
     cases: systemsTestingCmsCases(),
     errorSteps: systemsTestingErrorCmsSteps(),
@@ -877,6 +889,9 @@ export function defaultHotelSystemsCms(locale: Locale): CmsSystemsPage {
       definitionEn: row.definition,
       unit: row.unit,
       dataStatus: row.dataStatus,
+      ownerTh: row.ownerTh,
+      ownerEn: row.ownerEn,
+      updatedAt: row.updatedAt,
       hideUntilData: row.hideUntilData,
       publicationApproved: false,
     })),
@@ -948,6 +963,7 @@ export function defaultHotelSystemsCms(locale: Locale): CmsSystemsPage {
       consent: enquiry.labels.consent,
       privacy: enquiry.labels.privacy,
     },
+    goals: SYSTEMS_ENQUIRY_GOALS.map((item) => ({ id: item.id, th: item.th, en: item.en })),
     visual: fromLibraryVisual(SYSTEMS_ENQUIRY_VISUAL, locale),
   };
   next.seo.variants = [
@@ -1097,6 +1113,8 @@ export function parseHotelSystemsPageBody(body: string, locale: Locale = "th"): 
           status: String(row.status ?? item.status ?? "not_configured"),
           providerTh: String(row.providerTh ?? item.providerTh ?? row.approvalTh ?? item.approvalTh),
           providerEn: String(row.providerEn ?? item.providerEn ?? row.approvalEn ?? item.approvalEn),
+          connectorTh: String(row.connectorTh ?? item.connectorTh ?? ""),
+          connectorEn: String(row.connectorEn ?? item.connectorEn ?? ""),
           verified: Boolean(row.verified ?? item.verified),
         })),
         categories: asList(services.categories, seeded.services.categories, (row, index, item) => ({
@@ -1251,6 +1269,7 @@ export function parseHotelSystemsPageBody(body: string, locale: Locale = "th"): 
         lead: asText(inventory, "lead", seeded.inventory.lead),
         systemsTitle: asText(inventory, "systemsTitle", seeded.inventory.systemsTitle),
         fieldsTitle: asText(inventory, "fieldsTitle", seeded.inventory.fieldsTitle),
+        sampleLabel: asText(inventory, "sampleLabel", seeded.inventory.sampleLabel),
         visual: asVisual(parsed.inventory?.visual, seeded.inventory.visual),
         rows: asList(inventory.rows, seeded.inventory.rows, (row, index, item) => ({
           id: String(row.id || item.id || `inventory-${index + 1}`),
@@ -1381,6 +1400,7 @@ export function parseHotelSystemsPageBody(body: string, locale: Locale = "th"): 
         lead: asText(testing, "lead", seeded.testing.lead),
         casesTitle: asText(testing, "casesTitle", seeded.testing.casesTitle),
         errorTitle: asText(testing, "errorTitle", seeded.testing.errorTitle),
+        sampleLabel: asText(testing, "sampleLabel", seeded.testing.sampleLabel),
         visual: asVisual(parsed.testing?.visual, seeded.testing.visual),
         cases: asList(testing.cases, seeded.testing.cases, (row, index, item) => ({
           id: String(row.id || item.id || `test-${index + 1}`),
@@ -1422,6 +1442,9 @@ export function parseHotelSystemsPageBody(body: string, locale: Locale = "th"): 
           definitionEn: String(row.definitionEn ?? item.definitionEn),
           unit: String(row.unit ?? item.unit),
           dataStatus: String(row.dataStatus ?? item.dataStatus),
+          ownerTh: String(row.ownerTh ?? item.ownerTh ?? ""),
+          ownerEn: String(row.ownerEn ?? item.ownerEn ?? ""),
+          updatedAt: String(row.updatedAt ?? item.updatedAt ?? ""),
           hideUntilData: Boolean(row.hideUntilData ?? item.hideUntilData),
           publicationApproved: Boolean(row.publicationApproved ?? item.publicationApproved),
         })),
@@ -1493,6 +1516,7 @@ export function parseHotelSystemsPageBody(body: string, locale: Locale = "th"): 
           consent: String(labels.consent ?? seeded.form.labels.consent),
           privacy: String(labels.privacy ?? seeded.form.labels.privacy),
         },
+        goals: asList(form.goals, seeded.form.goals, asLine),
         visual: asVisual(parsed.form?.visual, seeded.form.visual),
       },
       faqs: Array.isArray(parsed.faqs) && parsed.faqs.length
@@ -1563,17 +1587,23 @@ const SECRET_TOKEN_RE = /\b(sk_live_|pk_live_|sk_test_|rk_live_|Bearer\s+[A-Za-z
 const CONNECTED_RE = /^(connected|live|ready)$/i;
 const CONNECTED_CLAIM_RE = /\bconnected\b|เชื่อมต่อแล้ว|เชื่อมสำเร็จ/i;
 const CLAIM_SOURCE_RE =
-  /subject to technical verification|ขึ้นกับ.{0,40}ตรวจ|provider confirmation|ยืนยันจากผู้ให้บริการ|sample|ตัวอย่าง|guidance|แหล่งที่มา/;
+  /subject to technical verification|ขึ้นกับ.{0,40}ตรวจ|ต้องตรวจทางเทคนิค|provider confirmation|ยืนยันจากผู้ให้บริการ|sample|ตัวอย่าง|guidance|แหล่งที่มา/i;
 const CLAIM_NEGATION_RE =
-  /ไม่(ได้)?ทำเครื่องหมาย|not marked|not a live|ไม่ได้หมายความ|does not mean|do not mark|until hotel approval|จนกว่า|ห้าม/;
+  /ไม่(ได้)?ทำเครื่องหมาย|ไม่ใช่หลักฐาน|ไม่ได้หมายถึง|ไม่ได้หมายความ|not marked|not a live|not proof|is not proof|does not mean|do not mark|until hotel approval|จนกว่า|ห้าม/i;
 const BARE_CLAIM_RE = /เชื่อมต่อแล้ว|fully connected|live integration|production-ready|ทำงานอัตโนมัติเต็มที่/;
-const VERIFIED_PLATFORM = new Set(["existing_client_system"]);
+const HONEST_DENIAL_RE =
+  /ไม่ใช่รูปทีม|ไม่มีรูปทีม|ไม่ใช่โลโก้วอลล์|not a logo wall|is not a logo wall|not a .{0,24}team (photo|photograph)|without.{0,24}(team photo|client logo)/i;
+const VERIFIED_PLATFORM = new Set(["existing_client_system", "verified_integration"]);
 const APPROVED_LOGO = new Set(["approved", "sample"]);
 
 function walkStrings(value: unknown, visit: (text: string) => void) {
   if (typeof value === "string") visit(value);
   else if (Array.isArray(value)) value.forEach((item) => walkStrings(item, visit));
   else if (value && typeof value === "object") Object.values(value).forEach((item) => walkStrings(item, visit));
+}
+
+function hasSampleMark(text: string) {
+  return /sample|ตัวอย่าง/i.test(text);
 }
 
 function visualIsPublishable(visual: CmsSystemsVisual, bilingual: boolean) {
@@ -1586,6 +1616,7 @@ function visualIsPublishable(visual: CmsSystemsVisual, bilingual: boolean) {
   if (status !== "approved" && status !== "sample" && status !== "real") return "placeholder_status";
   if (!APPROVED_LOGO.has(status === "real" ? "approved" : status) && status !== "real") return "placeholder_status";
   if (PLACEHOLDER_RE.test(`${visual.src} ${visual.label} ${visual.caption}`) && status !== "sample") return "placeholder_label";
+  if (status === "sample" && !hasSampleMark(`${visual.label} ${visual.caption}`)) return "missing_sample_label";
   if (status === "approved" && !PLACEHOLDER_RE.test(visual.src) && !visual.publicationApproved) return "screenshot_approval";
   return null;
 }
@@ -1638,7 +1669,9 @@ export function validateHotelSystemsPage(content: CmsSystemsPage, intent: System
   if (intent !== "publish") return null;
   if (!content.hero.title.trim() || !content.hero.description.trim()) return "required_fields";
   if (!content.scope.boundary.trim()) return "empty_scope_boundary";
-  if (!content.plan.sampleLabel.trim()) return "missing_sample_label";
+  if (!hasSampleMark(content.plan.sampleLabel) || !hasSampleMark(content.inventory.sampleLabel) || !hasSampleMark(content.testing.sampleLabel)) {
+    return "missing_sample_label";
+  }
   if (!content.seo.canonical.trim() || !CTA_RE.test(content.seo.canonical.trim())) return "invalid_cta";
   const ctas = [
     content.hero.primaryCta,
@@ -1686,6 +1719,12 @@ export function validateHotelSystemsPage(content: CmsSystemsPage, intent: System
   }
   for (const row of content.testing.cases) {
     if (missingOwner(row.ownerTh, row.ownerEn, content.bilingualPublish) || !row.status.trim()) return "empty_owner_status";
+    if (row.status === "passed" && !hasSampleMark(`${row.actualTh} ${row.actualEn} ${row.evidenceTh} ${row.evidenceEn}`)) {
+      return "missing_sample_label";
+    }
+    if (row.status === "failed" && (!(row.issueTh.trim() || row.issueEn.trim()) || !row.severity.trim())) {
+      return "empty_failed_issue";
+    }
   }
   for (const row of content.plan.ownership) {
     if (missingOwner(row.ownerTh, row.ownerEn, content.bilingualPublish) || !row.status.trim()) return "empty_owner_status";
@@ -1710,7 +1749,15 @@ export function validateHotelSystemsPage(content: CmsSystemsPage, intent: System
   }
   for (const kpi of content.measure.kpis) {
     if (kpi.hideUntilData || kpi.dataStatus === "draft" || kpi.dataStatus === "not-configured") continue;
-    if (!kpi.period.trim() || !kpi.market.trim() || !kpi.source.trim() || !(kpi.definitionTh.trim() || kpi.definitionEn.trim()) || !kpi.dataStatus) {
+    if (
+      !kpi.period.trim() ||
+      !kpi.market.trim() ||
+      !kpi.source.trim() ||
+      !(kpi.definitionTh.trim() || kpi.definitionEn.trim()) ||
+      !kpi.dataStatus ||
+      !(kpi.ownerTh.trim() || kpi.ownerEn.trim()) ||
+      !kpi.updatedAt.trim()
+    ) {
       return "kpi_incomplete";
     }
     if ((kpi.dataStatus === "approved" || kpi.dataStatus === "anonymised") && !kpi.publicationApproved && !content.approvals.results) {
@@ -1734,15 +1781,16 @@ export function validateHotelSystemsPage(content: CmsSystemsPage, intent: System
   let clientLogo = false;
   let unverifiedClaim = false;
   walkStrings(content, (text) => {
-    if (COMMERCIAL_RE.test(text)) commercial = true;
+    const honestDenial = HONEST_DENIAL_RE.test(text);
+    if (COMMERCIAL_RE.test(text) && !honestDenial) commercial = true;
     if (
       GUARANTEE_RE.test(text) &&
-      !/(ไม่(ได้)?การันตี|ไม่รับประกัน|not a guaranteed|does not guarantee|do not guarantee|does this guarantee|no guarantee|without guaranteeing|expects guaranteed|ต้องการ.{0,40}การันตี|หรือไม่\s*\??\s*$)/i.test(text)
+      !/(ไม่(ได้)?การันตี|ไม่ใช่ผล.{0,16}ที่การันตี|ไม่รับประกัน|not a guaranteed|does not guarantee|do not guarantee|does this guarantee|no guarantee|without guaranteeing|expects guaranteed|ต้องการ.{0,40}การันตี|หรือไม่\s*\??\s*$)/i.test(text)
     ) {
       guarantee = true;
     }
-    if (/team photo|รูปทีม|headshot/i.test(text)) teamPhoto = true;
-    if (/client logo|โลโก้ลูกค้า|logo wall/i.test(text)) clientLogo = true;
+    if (/team photo|รูปทีม|headshot/i.test(text) && !honestDenial) teamPhoto = true;
+    if (/client logo|โลโก้ลูกค้า|logo wall/i.test(text) && !honestDenial) clientLogo = true;
     if (isBareTechnicalClaim(text)) unverifiedClaim = true;
   });
   if (unverifiedClaim) return "unverified_claim";
@@ -1803,12 +1851,12 @@ export const SYSTEMS_CMS_ERRORS_TH: Record<string, string> = {
   empty_faq: "คำถามที่พบบ่อยต้องมีคำถามและคำตอบ",
   empty_faq_bilingual: "คำถามที่พบบ่อยต้องมีภาษาไทยและภาษาอังกฤษก่อนเผยแพร่สองภาษา",
   empty_scope_boundary: "ขอบเขตงาน (Scope Boundary) ต้องไม่ว่างก่อนเผยแพร่",
-  missing_sample_label: "ส่วนการส่งมอบต้องมีป้าย Sample ก่อนเผยแพร่",
+  missing_sample_label: "Inventory, Testing/QA และการส่งมอบต้องมีป้าย Sample ที่มองเห็นก่อนเผยแพร่",
   invalid_cta: "ลิงก์ปุ่มต้องเป็น /path, #anchor, mailto, tel หรือ http(s)",
   missing_alt: "รูปที่เผยแพร่ต้องมีคำอธิบายภาพภาษาไทยและภาษาอังกฤษ",
   placeholder_status: "เปลี่ยนสถานะรูปเป็น Sample หรือ Approved ก่อนเผยแพร่",
   placeholder_label: "อย่าเผยแพร่ข้อความ Placeholder ถ้าสถานะไม่ใช่ Sample",
-  kpi_incomplete: "KPI ที่เผยแพร่ต้องมีช่วงเวลา บริบทโรงแรม แหล่งที่มา คำนิยาม และสถานะข้อมูล",
+  kpi_incomplete: "KPI ที่เผยแพร่ต้องมีช่วงเวลา บริบท แหล่งที่มา คำนิยาม สถานะ ผู้รับผิดชอบ และวันที่อัปเดต",
   source_incomplete: "แหล่งที่มาต้องมีชื่อ และ URL หรือวันที่",
   publication_approval: "ชื่อโรงแรม รูปทีม โลโก้ลูกค้า หรือผลลัพธ์ต้องได้รับอนุมัติก่อนเผยแพร่",
   guarantee_claim: "ห้ามการันตีรายได้ Occupancy ADR RevPAR กำไร คะแนนแขก หรือการเติบโต ถ้ายังไม่มีหลักฐานและอนุมัติ",
@@ -1816,6 +1864,7 @@ export const SYSTEMS_CMS_ERRORS_TH: Record<string, string> = {
   unverified_connected: "ห้ามติดป้าย Connected ถ้ายังไม่มีการตรวจทางเทคนิคหรือยืนยันจากผู้ให้บริการ",
   unverified_claim: "ข้อความทางเทคนิคต้องมีแหล่งที่มา การยืนยันจากผู้ให้บริการ หรือสถานะ Subject to technical verification",
   empty_owner_status: "ตาราง Inventory Dictionary Test Case Ownership และ Responsibility ต้องมีผู้รับผิดชอบและสถานะก่อนเผยแพร่",
+  empty_failed_issue: "เคส Failed ต้องมีคำอธิบายปัญหาและความรุนแรงก่อนเผยแพร่",
   logo_unapproved: "โลโก้แพลตฟอร์มต้องมีสถานะ Approved หรือ Sample และสถานะความสัมพันธ์ก่อนเผยแพร่",
   screenshot_approval: "ภาพหน้าจอโรงแรมหรือระบบจริงต้องได้รับอนุมัติเผยแพร่",
   invalid_image: "ไฟล์รูปไม่ถูกต้อง",
@@ -1829,12 +1878,12 @@ export const SYSTEMS_CMS_ERRORS_EN: Record<string, string> = {
   empty_faq: "FAQs need a question and an answer",
   empty_faq_bilingual: "FAQs need Thai and English before bilingual publish",
   empty_scope_boundary: "Scope Boundary cannot be empty before publishing",
-  missing_sample_label: "The handover section needs a visible Sample label",
+  missing_sample_label: "Inventory, Testing/QA, and handover need a visible Sample label before publishing",
   invalid_cta: "CTA URLs must be /path, #anchor, mailto, tel, or http(s)",
   missing_alt: "Published images need Thai and English alt text",
   placeholder_status: "Set the image status to Sample or Approved before publishing",
   placeholder_label: "Do not publish Placeholder copy unless the status is Sample",
-  kpi_incomplete: "Published KPIs need period, property context, source, definition, and data status",
+  kpi_incomplete: "Published KPIs need period, context, source, definition, status, owner, and updated date",
   source_incomplete: "Sources need a name and a URL or date",
   publication_approval: "Hotel names, team photos, client logos, and results need publication approval",
   guarantee_claim: "Revenue, Occupancy, ADR, RevPAR, profit, guest-score, or growth guarantees need approval and evidence",
@@ -1842,6 +1891,7 @@ export const SYSTEMS_CMS_ERRORS_EN: Record<string, string> = {
   unverified_connected: "A platform cannot be labelled Connected without technical verification",
   unverified_claim: "Technical claims need a source, provider confirmation, or status Subject to technical verification",
   empty_owner_status: "System Inventory, Data Dictionary, Test Case, Ownership, and Responsibility records need owner and status before publishing",
+  empty_failed_issue: "Failed test cases need an issue description and severity before publishing",
   logo_unapproved: "Platform logos need Approved or Sample asset status and a relationship status before publishing",
   screenshot_approval: "Real hotel or system screenshots need publication approval",
   invalid_image: "The image file is not valid",

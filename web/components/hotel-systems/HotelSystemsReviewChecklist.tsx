@@ -9,10 +9,19 @@ import {
 } from "@/lib/hotel-systems";
 import type { Locale } from "@/lib/seo";
 
-const STORAGE_KEY = "kpi-systems-review-checklist";
+function storageKey(locale: Locale) {
+  return `kpi-systems-review-checklist-v2-${locale}`;
+}
 
-function rowStatus(row: CmsSystemsAssessmentRow, overrides: Record<string, string>) {
-  return overrides[row.id] || row.status || "needs_review";
+type ReviewDraft = {
+  status?: string;
+  evidence?: string;
+  owner?: string;
+  action?: string;
+};
+
+function rowDraft(row: CmsSystemsAssessmentRow, drafts: Record<string, ReviewDraft>): ReviewDraft {
+  return drafts[row.id] || {};
 }
 
 export function HotelSystemsReviewChecklist({
@@ -23,41 +32,53 @@ export function HotelSystemsReviewChecklist({
   rows: CmsSystemsAssessmentRow[];
 }) {
   const thai = locale === "th";
-  const [overrides, setOverrides] = useState<Record<string, string>>({});
+  const [drafts, setDrafts] = useState<Record<string, ReviewDraft>>({});
   const [saved, setSaved] = useState("");
   const columns = SYSTEMS_REVIEW_COLUMNS;
 
   useEffect(() => {
+    setDrafts({});
     try {
-      const raw = window.sessionStorage.getItem(STORAGE_KEY);
+      const raw = window.sessionStorage.getItem(storageKey(locale));
       if (!raw) return;
-      const parsed = JSON.parse(raw) as Record<string, string>;
-      if (parsed && typeof parsed === "object") setOverrides(parsed);
+      const parsed = JSON.parse(raw) as Record<string, ReviewDraft>;
+      if (parsed && typeof parsed === "object") setDrafts(parsed);
     } catch {
       /* ignore */
     }
-  }, []);
+  }, [locale]);
 
   const items = useMemo(
     () =>
       rows.map((row) => {
-        const status = systemsReviewStatus(rowStatus(row, overrides));
+        const draft = rowDraft(row, drafts);
+        const status = systemsReviewStatus(draft.status || row.status || "needs_review");
         return {
           ...row,
           question: thai ? row.questionTh || row.questionEn : row.questionEn || row.questionTh,
-          evidence: thai ? row.evidenceTh || row.evidenceEn || row.output : row.evidenceEn || row.evidenceTh || row.output,
-          owner: thai ? row.ownerTh || row.ownerEn : row.ownerEn || row.ownerTh,
-          action: thai ? row.actionTh || row.actionEn || row.supportTh : row.actionEn || row.actionTh || row.supportEn,
+          evidence: draft.evidence ?? (thai ? row.evidenceTh || row.evidenceEn || row.output : row.evidenceEn || row.evidenceTh || row.output),
+          owner: draft.owner ?? (thai ? row.ownerTh || row.ownerEn : row.ownerEn || row.ownerTh),
+          action: draft.action ?? (thai ? row.actionTh || row.actionEn || row.supportTh : row.actionEn || row.actionTh || row.supportEn),
           status,
         };
       }),
-    [overrides, rows, thai],
+    [drafts, rows, thai],
   );
 
+  function patch(id: string, next: ReviewDraft) {
+    setSaved("");
+    setDrafts((current) => ({ ...current, [id]: { ...current[id], ...next } }));
+  }
+
   function saveSample() {
-    const next = Object.fromEntries(items.map((row) => [row.id, row.status.id]));
+    const next = Object.fromEntries(
+      items.map((row) => [
+        row.id,
+        { status: row.status.id, evidence: row.evidence, owner: row.owner, action: row.action },
+      ]),
+    );
     try {
-      window.sessionStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      window.sessionStorage.setItem(storageKey(locale), JSON.stringify(next));
     } catch {
       /* ignore quota / private mode */
     }
@@ -95,10 +116,7 @@ export function HotelSystemsReviewChecklist({
                     <span className="sr-only">{thai ? columns.status.th : columns.status.en}</span>
                     <select
                       value={row.status.id}
-                      onChange={(event) => {
-                        setSaved("");
-                        setOverrides((current) => ({ ...current, [row.id]: event.target.value }));
-                      }}
+                      onChange={(event) => patch(row.id, { status: event.target.value })}
                     >
                       {SYSTEMS_REVIEW_STATUSES.map((status) => (
                         <option key={status.id} value={status.id}>
@@ -108,9 +126,36 @@ export function HotelSystemsReviewChecklist({
                     </select>
                   </label>
                 </td>
-                <td data-label={thai ? columns.evidence.th : columns.evidence.en}>{row.evidence}</td>
-                <td data-label={thai ? columns.owner.th : columns.owner.en}>{row.owner}</td>
-                <td data-label={thai ? columns.action.th : columns.action.en}>{row.action}</td>
+                <td data-label={thai ? columns.evidence.th : columns.evidence.en}>
+                  <label>
+                    <span className="sr-only">{thai ? columns.evidence.th : columns.evidence.en}</span>
+                    <input
+                      className="hsi-review-field"
+                      value={row.evidence}
+                      onChange={(event) => patch(row.id, { evidence: event.target.value })}
+                    />
+                  </label>
+                </td>
+                <td data-label={thai ? columns.owner.th : columns.owner.en}>
+                  <label>
+                    <span className="sr-only">{thai ? columns.owner.th : columns.owner.en}</span>
+                    <input
+                      className="hsi-review-field"
+                      value={row.owner}
+                      onChange={(event) => patch(row.id, { owner: event.target.value })}
+                    />
+                  </label>
+                </td>
+                <td data-label={thai ? columns.action.th : columns.action.en}>
+                  <label>
+                    <span className="sr-only">{thai ? columns.action.th : columns.action.en}</span>
+                    <input
+                      className="hsi-review-field"
+                      value={row.action}
+                      onChange={(event) => patch(row.id, { action: event.target.value })}
+                    />
+                  </label>
+                </td>
               </tr>
             ))}
           </tbody>

@@ -1,57 +1,91 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
 import type { CmsSystemsDictionaryRow, CmsSystemsInventoryRow } from "@/lib/cms/hotel-systems-page";
 import {
   SYSTEMS_DICTIONARY_COLUMNS,
   SYSTEMS_INVENTORY_COLUMNS,
   SYSTEMS_INVENTORY_ENVIRONMENTS,
   SYSTEMS_INVENTORY_LABELS,
+  SYSTEMS_INVENTORY_STATUSES,
   SYSTEMS_INVENTORY_VISUAL,
-  SYSTEMS_LANDSCAPE_STATUSES,
   SYSTEMS_MAPPING_STATUSES,
   systemsInventoryEnvironment,
-  systemsLandscapeStatus,
+  systemsInventoryStatus,
   systemsMappingStatus,
   systemsRenderableSrc,
+  systemsSampleSafeText,
 } from "@/lib/hotel-systems";
 import type { Locale } from "@/lib/seo";
 
-function inventoryCopy(row: CmsSystemsInventoryRow, thai: boolean, sample: boolean) {
+function storageKey(locale: Locale) {
+  return `kpi-systems-inventory-dictionary-v1-${locale}`;
+}
+
+type InvDraft = {
+  environment?: string;
+  status?: string;
+  owner?: string;
+  reviewed?: string;
+};
+
+type DictDraft = {
+  mapping?: string;
+  owner?: string;
+  notes?: string;
+};
+
+type StoreDraft = {
+  inventory?: Record<string, InvDraft>;
+  dictionary?: Record<string, DictDraft>;
+};
+
+function safe(value?: string) {
+  return systemsSampleSafeText(value) || "";
+}
+
+function inventoryCopy(row: CmsSystemsInventoryRow, thai: boolean, sample: boolean, draft: InvDraft) {
+  const rawStatus = draft.status || row.status;
+  const status = systemsInventoryStatus((sample || !row.verified) && rawStatus === "connected" ? "not_configured" : rawStatus);
   return {
     id: row.id,
-    system: thai ? row.systemTh || row.systemEn : row.systemEn || row.systemTh,
-    provider: thai ? row.providerTh || row.providerEn : row.providerEn || row.providerTh,
-    purpose: thai ? row.purposeTh || row.purposeEn : row.purposeEn || row.purposeTh,
-    owner: thai ? row.ownerTh || row.ownerEn : row.ownerEn || row.ownerTh,
-    dataIn: thai ? row.dataInTh || row.dataInEn : row.dataInEn || row.dataInTh,
-    dataOut: thai ? row.dataOutTh || row.dataOutEn : row.dataOutEn || row.dataOutTh,
-    connector: row.connector,
-    environment: systemsInventoryEnvironment(row.environment),
-    status: systemsLandscapeStatus((sample || !row.verified) && row.status === "connected" ? "not_configured" : row.status),
-    reviewed: row.reviewed,
+    system: safe(thai ? row.systemTh || row.systemEn : row.systemEn || row.systemTh),
+    provider: safe(thai ? row.providerTh || row.providerEn : row.providerEn || row.providerTh),
+    purpose: safe(thai ? row.purposeTh || row.purposeEn : row.purposeEn || row.purposeTh),
+    owner: safe(draft.owner ?? (thai ? row.ownerTh || row.ownerEn : row.ownerEn || row.ownerTh)),
+    dataIn: safe(thai ? row.dataInTh || row.dataInEn : row.dataInEn || row.dataInTh),
+    dataOut: safe(thai ? row.dataOutTh || row.dataOutEn : row.dataOutEn || row.dataOutTh),
+    connector: safe(row.connector),
+    environment: systemsInventoryEnvironment(draft.environment || row.environment),
+    status,
+    reviewed: safe(draft.reviewed ?? row.reviewed),
   };
 }
 
-function dictionaryCopy(row: CmsSystemsDictionaryRow, thai: boolean) {
+function dictionaryCopy(row: CmsSystemsDictionaryRow, thai: boolean, draft: DictDraft) {
   const required = String(row.required || "").toLowerCase() === "required";
   return {
     id: row.id,
-    field: row.field,
-    meaning: thai ? row.meaningTh || row.meaningEn : row.meaningEn || row.meaningTh,
-    source: thai ? row.sourceTh || row.sourceEn : row.sourceEn || row.sourceTh,
-    destination: thai ? row.destinationTh || row.destinationEn : row.destinationEn || row.destinationTh,
-    format: row.format,
+    field: safe(row.field),
+    meaning: safe(thai ? row.meaningTh || row.meaningEn : row.meaningEn || row.meaningTh),
+    source: safe(thai ? row.sourceTh || row.sourceEn : row.sourceEn || row.sourceTh),
+    destination: safe(thai ? row.destinationTh || row.destinationEn : row.destinationEn || row.destinationTh),
+    format: safe(row.format),
     required: required ? (thai ? "จำเป็น" : "Required") : thai ? "ไม่บังคับ" : "Optional",
-    mapping: systemsMappingStatus(row.mappingStatus),
-    owner: thai ? row.ownerTh || row.ownerEn : row.ownerEn || row.ownerTh,
-    notes: thai ? row.notesTh || row.notesEn : row.notesEn || row.notesTh,
+    mapping: systemsMappingStatus(draft.mapping || row.mappingStatus),
+    owner: safe(draft.owner ?? (thai ? row.ownerTh || row.ownerEn : row.ownerEn || row.ownerTh)),
+    notes: safe(draft.notes ?? (thai ? row.notesTh || row.notesEn : row.notesEn || row.notesTh)),
   };
 }
 
 export function HotelSystemsInventory({
   locale,
   src,
+  alt,
   status,
   label,
   caption,
+  sampleLabel,
   systemsTitle,
   fieldsTitle,
   rows,
@@ -59,9 +93,11 @@ export function HotelSystemsInventory({
 }: {
   locale: Locale;
   src?: string;
+  alt?: string;
   status?: string;
   label?: string;
   caption?: string;
+  sampleLabel?: string;
   systemsTitle?: string;
   fieldsTitle?: string;
   rows: CmsSystemsInventoryRow[];
@@ -73,14 +109,75 @@ export function HotelSystemsInventory({
   const labels = SYSTEMS_INVENTORY_LABELS;
   const invCols = SYSTEMS_INVENTORY_COLUMNS;
   const dictCols = SYSTEMS_DICTIONARY_COLUMNS;
-  const displayLabel = label?.trim() || SYSTEMS_INVENTORY_VISUAL.labelEn;
+  const displaySample = sampleLabel?.trim() || SYSTEMS_INVENTORY_VISUAL.labelEn;
+  const displayLabel = label?.trim() || displaySample;
   const displayCaption = caption?.trim() || (thai ? SYSTEMS_INVENTORY_VISUAL.captionTh : SYSTEMS_INVENTORY_VISUAL.captionEn);
-  const systems = rows.map((row) => inventoryCopy(row, thai, sample));
-  const dictionary = fields.map((row) => dictionaryCopy(row, thai));
-  const usedStatuses = SYSTEMS_LANDSCAPE_STATUSES.filter(
-    (item) => item.id !== "connected" && systems.some((row) => row.status.id === item.id),
+  const displayAlt = alt?.trim() || (thai ? SYSTEMS_INVENTORY_VISUAL.altTh : SYSTEMS_INVENTORY_VISUAL.altEn);
+  const [inventoryDrafts, setInventoryDrafts] = useState<Record<string, InvDraft>>({});
+  const [dictionaryDrafts, setDictionaryDrafts] = useState<Record<string, DictDraft>>({});
+  const [saved, setSaved] = useState("");
+
+  useEffect(() => {
+    setInventoryDrafts({});
+    setDictionaryDrafts({});
+    try {
+      const raw = window.sessionStorage.getItem(storageKey(locale));
+      if (!raw) return;
+      const parsed = JSON.parse(raw) as StoreDraft;
+      if (parsed?.inventory && typeof parsed.inventory === "object") setInventoryDrafts(parsed.inventory);
+      if (parsed?.dictionary && typeof parsed.dictionary === "object") setDictionaryDrafts(parsed.dictionary);
+    } catch {
+      /* ignore */
+    }
+  }, [locale]);
+
+  const systems = useMemo(
+    () => rows.map((row) => inventoryCopy(row, thai, sample, inventoryDrafts[row.id] || {})),
+    [inventoryDrafts, rows, sample, thai],
   );
-  const usedMapping = SYSTEMS_MAPPING_STATUSES.filter((item) => dictionary.some((row) => row.mapping.id === item.id));
+  const dictionary = useMemo(
+    () => fields.map((row) => dictionaryCopy(row, thai, dictionaryDrafts[row.id] || {})),
+    [dictionaryDrafts, fields, thai],
+  );
+
+  function patchInventory(id: string, next: InvDraft) {
+    setSaved("");
+    setInventoryDrafts((current) => ({
+      ...current,
+      [id]: {
+        ...current[id],
+        ...next,
+        owner: next.owner !== undefined ? safe(next.owner) : current[id]?.owner,
+        reviewed: next.reviewed !== undefined ? safe(next.reviewed) : current[id]?.reviewed,
+      },
+    }));
+  }
+
+  function patchDictionary(id: string, next: DictDraft) {
+    setSaved("");
+    setDictionaryDrafts((current) => ({
+      ...current,
+      [id]: {
+        ...current[id],
+        ...next,
+        owner: next.owner !== undefined ? safe(next.owner) : current[id]?.owner,
+        notes: next.notes !== undefined ? safe(next.notes) : current[id]?.notes,
+      },
+    }));
+  }
+
+  function saveSample() {
+    const next: StoreDraft = {
+      inventory: Object.fromEntries(systems.map((row) => [row.id, { environment: row.environment.id, status: row.status.id, owner: row.owner, reviewed: row.reviewed }])),
+      dictionary: Object.fromEntries(dictionary.map((row) => [row.id, { mapping: row.mapping.id, owner: row.owner, notes: row.notes }])),
+    };
+    try {
+      window.sessionStorage.setItem(storageKey(locale), JSON.stringify(next));
+    } catch {
+      /* ignore quota / private mode */
+    }
+    setSaved(thai ? "บันทึกบนอุปกรณ์นี้แล้ว เป็นตัวอย่าง ไม่ใช่บัญชีโรงแรมจริง" : "Saved on this device as a sample. Not a live hotel account.");
+  }
 
   return (
     <div className="hsi-inv">
@@ -95,18 +192,18 @@ export function HotelSystemsInventory({
           <div className="hsi-inv-photo">
             <img
               src={fileSrc}
-              alt={thai ? SYSTEMS_INVENTORY_VISUAL.altTh : SYSTEMS_INVENTORY_VISUAL.altEn}
+              alt={displayAlt}
               width={SYSTEMS_INVENTORY_VISUAL.displayWidth}
               height={SYSTEMS_INVENTORY_VISUAL.displayHeight}
               style={{ aspectRatio: `${SYSTEMS_INVENTORY_VISUAL.displayWidth} / ${SYSTEMS_INVENTORY_VISUAL.displayHeight}` }}
               loading="lazy"
               decoding="async"
             />
-            {sample ? <span className="hsi-visual-badge">System Inventory and Data Mapping — Sample</span> : null}
+            {sample ? <span className="hsi-visual-badge">{displaySample}</span> : null}
           </div>
         ) : (
-          <div className="hsi-inv-board" role="img" aria-label={thai ? SYSTEMS_INVENTORY_VISUAL.altTh : SYSTEMS_INVENTORY_VISUAL.altEn}>
-            {sample ? <span className="hsi-visual-badge">System Inventory and Data Mapping — Sample</span> : null}
+          <div className="hsi-inv-board" role="img" aria-label={displayAlt}>
+            {sample ? <span className="hsi-visual-badge">{displaySample}</span> : null}
             <p className="hsi-mock-kicker kpi-latin">Sample data · Replace with approved hotel data · Subject to provider verification</p>
             <p className="hsi-inv-board-title">{thai ? "ตารางสำรวจระบบ ไม่ใช่บัญชีโรงแรมจริง" : "Inventory table, not a live hotel account"}</p>
             <ul className="hsi-inv-preview">
@@ -130,18 +227,16 @@ export function HotelSystemsInventory({
       <p className="hsi-inv-note kpi-latin">Sample data. Replace with approved hotel data. Subject to provider verification. No account IDs, booking IDs, guest data, or passwords.</p>
 
       <ul className="hsi-inv-legend" aria-label={thai ? "คำอธิบายสถานะตัวอย่าง ไม่ใช่สถานะเชื่อมต่อของโรงแรมจริง" : "Sample status legend. Not a live hotel integration status."}>
-        {usedStatuses.map((item) => (
+        {SYSTEMS_INVENTORY_STATUSES.map((item) => (
           <li key={item.id}>
             <span className={`hsi-status is-${item.tone} kpi-latin`}>{item.label}</span>
           </li>
         ))}
-        {usedMapping
-          .filter((item) => !usedStatuses.some((status) => status.id === item.id))
-          .map((item) => (
-            <li key={`map-${item.id}`}>
-              <span className={`hsi-status is-${item.tone} kpi-latin`}>{item.label}</span>
-            </li>
-          ))}
+        {SYSTEMS_MAPPING_STATUSES.filter((item) => !SYSTEMS_INVENTORY_STATUSES.some((status) => status.id === item.id)).map((item) => (
+          <li key={`map-${item.id}`}>
+            <span className={`hsi-status is-${item.tone} kpi-latin`}>{item.label}</span>
+          </li>
+        ))}
         {SYSTEMS_INVENTORY_ENVIRONMENTS.map((item) => (
           <li key={item.id}>
             <span className={`hsi-inv-env is-${item.id} kpi-latin`}>{item.label}</span>
@@ -155,8 +250,8 @@ export function HotelSystemsInventory({
           <table className="hsi-inv-table">
             <caption className="sr-only">
               {thai
-                ? "ตารางตัวอย่าง System Inventory แสดงระบบ ผู้ให้บริการ วัตถุประสงค์ ผู้รับผิดชอบ ข้อมูลเข้า ข้อมูลออก API หรือ Connector สภาพแวดล้อม สถานะ และวันที่ตรวจล่าสุด ไม่มีรหัสบัญชี รหัสการจอง ข้อมูลแขก หรือรหัสผ่าน"
-                : "Sample System Inventory of system, provider, purpose, owner, data in, data out, API or connector, environment, status, and last reviewed. No account IDs, booking IDs, guest data, or passwords."}
+                ? "ตารางตัวอย่าง System Inventory ที่แก้ไขได้บนอุปกรณ์นี้ แสดงระบบ ผู้ให้บริการ วัตถุประสงค์ ผู้รับผิดชอบ ข้อมูลเข้า ข้อมูลออก API หรือ Connector สภาพแวดล้อม สถานะ และวันที่ตรวจล่าสุด ไม่มีรหัสบัญชี รหัสการจอง ข้อมูลแขก หรือรหัสผ่าน"
+                : "Editable sample System Inventory of system, provider, purpose, owner, data in, data out, API or connector, environment, status, and last reviewed. No account IDs, booking IDs, guest data, or passwords."}
             </caption>
             <thead>
               <tr>
@@ -178,7 +273,12 @@ export function HotelSystemsInventory({
                   <th scope="row">{row.system}</th>
                   <td data-label={thai ? invCols.provider.th : invCols.provider.en}>{row.provider}</td>
                   <td data-label={thai ? invCols.purpose.th : invCols.purpose.en}>{row.purpose}</td>
-                  <td data-label={thai ? invCols.owner.th : invCols.owner.en}>{row.owner}</td>
+                  <td data-label={thai ? invCols.owner.th : invCols.owner.en}>
+                    <label>
+                      <span className="sr-only">{thai ? invCols.owner.th : invCols.owner.en}</span>
+                      <input className="hsi-review-field" value={row.owner} onChange={(event) => patchInventory(row.id, { owner: event.target.value })} />
+                    </label>
+                  </td>
                   <td data-label={thai ? invCols.dataIn.th : invCols.dataIn.en} className="kpi-latin">
                     {row.dataIn}
                   </td>
@@ -189,13 +289,34 @@ export function HotelSystemsInventory({
                     {row.connector}
                   </td>
                   <td data-label={thai ? invCols.environment.th : invCols.environment.en}>
-                    <span className={`hsi-inv-env is-${row.environment.id} kpi-latin`}>{row.environment.label}</span>
+                    <label>
+                      <span className="sr-only">{thai ? invCols.environment.th : invCols.environment.en}</span>
+                      <select className={`hsi-inv-env is-${row.environment.id}`} value={row.environment.id} onChange={(event) => patchInventory(row.id, { environment: event.target.value })}>
+                        {SYSTEMS_INVENTORY_ENVIRONMENTS.map((item) => (
+                          <option key={item.id} value={item.id}>
+                            {item.label}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
                   </td>
                   <td data-label={thai ? invCols.status.th : invCols.status.en}>
-                    <em className={`hsi-status is-${row.status.tone} kpi-latin`}>{row.status.label}</em>
+                    <label className={`hsi-review-status is-${row.status.tone}`}>
+                      <span className="sr-only">{thai ? invCols.status.th : invCols.status.en}</span>
+                      <select value={row.status.id} onChange={(event) => patchInventory(row.id, { status: event.target.value })}>
+                        {SYSTEMS_INVENTORY_STATUSES.map((item) => (
+                          <option key={item.id} value={item.id}>
+                            {item.label}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
                   </td>
-                  <td data-label={thai ? invCols.reviewed.th : invCols.reviewed.en} className="kpi-latin">
-                    {row.reviewed}
+                  <td data-label={thai ? invCols.reviewed.th : invCols.reviewed.en}>
+                    <label>
+                      <span className="sr-only">{thai ? invCols.reviewed.th : invCols.reviewed.en}</span>
+                      <input className="hsi-review-field" value={row.reviewed} onChange={(event) => patchInventory(row.id, { reviewed: event.target.value })} />
+                    </label>
                   </td>
                 </tr>
               ))}
@@ -210,8 +331,8 @@ export function HotelSystemsInventory({
           <table className="hsi-inv-table is-fields">
             <caption className="sr-only">
               {thai
-                ? "ตารางตัวอย่าง Data Dictionary แสดงชื่อฟิลด์ ความหมายทางธุรกิจ ระบบต้นทาง ระบบปลายทาง รูปแบบ จำเป็นหรือไม่บังคับ สถานะการจับคู่ ผู้รับผิดชอบ และหมายเหตุ ไม่มีรหัสบัญชี รหัสการจอง ข้อมูลแขก หรือรหัสผ่าน"
-                : "Sample Data Dictionary of field name, business meaning, source system, destination system, format, required or optional, mapping status, owner, and notes. No account IDs, booking IDs, guest data, or passwords."}
+                ? "ตารางตัวอย่าง Data Dictionary ที่แก้ไขได้บนอุปกรณ์นี้ แสดงชื่อฟิลด์ ความหมายทางธุรกิจ ระบบต้นทาง ระบบปลายทาง รูปแบบ จำเป็นหรือไม่บังคับ สถานะการจับคู่ ผู้รับผิดชอบ และหมายเหตุ ไม่มีรหัสบัญชี รหัสการจอง ข้อมูลแขก หรือรหัสผ่าน"
+                : "Editable sample Data Dictionary of field name, business meaning, source system, destination system, format, required or optional, mapping status, owner, and notes. No account IDs, booking IDs, guest data, or passwords."}
             </caption>
             <thead>
               <tr>
@@ -244,10 +365,29 @@ export function HotelSystemsInventory({
                   </td>
                   <td data-label={thai ? dictCols.required.th : dictCols.required.en}>{row.required}</td>
                   <td data-label={thai ? dictCols.mapping.th : dictCols.mapping.en}>
-                    <em className={`hsi-status is-${row.mapping.tone} kpi-latin`}>{row.mapping.label}</em>
+                    <label className={`hsi-review-status is-${row.mapping.tone}`}>
+                      <span className="sr-only">{thai ? dictCols.mapping.th : dictCols.mapping.en}</span>
+                      <select value={row.mapping.id} onChange={(event) => patchDictionary(row.id, { mapping: event.target.value })}>
+                        {SYSTEMS_MAPPING_STATUSES.map((item) => (
+                          <option key={item.id} value={item.id}>
+                            {item.label}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
                   </td>
-                  <td data-label={thai ? dictCols.owner.th : dictCols.owner.en}>{row.owner}</td>
-                  <td data-label={thai ? dictCols.notes.th : dictCols.notes.en}>{row.notes}</td>
+                  <td data-label={thai ? dictCols.owner.th : dictCols.owner.en}>
+                    <label>
+                      <span className="sr-only">{thai ? dictCols.owner.th : dictCols.owner.en}</span>
+                      <input className="hsi-review-field" value={row.owner} onChange={(event) => patchDictionary(row.id, { owner: event.target.value })} />
+                    </label>
+                  </td>
+                  <td data-label={thai ? dictCols.notes.th : dictCols.notes.en}>
+                    <label>
+                      <span className="sr-only">{thai ? dictCols.notes.th : dictCols.notes.en}</span>
+                      <input className="hsi-review-field" value={row.notes} onChange={(event) => patchDictionary(row.id, { notes: event.target.value })} />
+                    </label>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -255,11 +395,20 @@ export function HotelSystemsInventory({
         </div>
       </div>
 
-      <p className="hsi-inv-footnote">
-        {thai
-          ? "ตารางนี้แก้ไขได้ใน CMS หน้าสาธารณะแสดงข้อมูลตัวอย่างเท่านั้น ไม่มีรหัสบัญชี รหัสการจอง ข้อมูลแขก หรือรหัสผ่าน"
-          : "This table is editable in the CMS. The public page shows sample values only. No account IDs, booking IDs, guest data, or passwords."}
-      </p>
+      <div className="hsi-review-save">
+        <button type="button" className="kpi-button bg-[#a2dc25] text-[#1a3a02]" onClick={saveSample}>
+          {thai ? "บันทึกตัวอย่าง" : "Save sample"}
+        </button>
+        {saved ? (
+          <p className="hsi-review-saved">{saved}</p>
+        ) : (
+          <p className="hsi-review-save-note">
+            {thai
+              ? "การบันทึกอยู่บนอุปกรณ์นี้เท่านั้น ไม่มีรหัสบัญชี รหัสการจอง ข้อมูลแขก หรือรหัสผ่าน"
+              : "Save stays on this device. No account IDs, booking IDs, guest data, or passwords."}
+          </p>
+        )}
+      </div>
     </div>
   );
 }

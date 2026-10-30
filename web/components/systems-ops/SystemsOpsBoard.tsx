@@ -16,7 +16,7 @@ import {
   removeSystemsSubtask,
   removeWebsiteWork,
   saveSystemsSubtask,
-  saveWebsiteWork,
+  saveSystemsWork,
 } from "@/lib/systems-ops/actions";
 import {
   SYS_APPROVAL_LABEL,
@@ -285,7 +285,7 @@ export function SystemsOpsBoard({
     data.set("handoverAssetsJson", JSON.stringify(draft.handoverAssets));
     data.set("kpisJson", JSON.stringify(draft.kpis));
     data.set("sourcesJson", JSON.stringify([]));
-    run(() => saveWebsiteWork(data), draft.id ? "บันทึกแล้ว" : "สร้างโปรเจกต์แล้ว");
+    run(() => saveSystemsWork(data), draft.id ? "บันทึกแล้ว" : "สร้างโปรเจกต์แล้ว");
   }
 
   const query = new URLSearchParams();

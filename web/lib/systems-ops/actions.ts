@@ -129,7 +129,7 @@ async function storePrivateFile(file: File, folder: string) {
   };
 }
 
-export async function saveWebsiteWork(formData: FormData) {
+export async function saveSystemsWork(formData: FormData) {
   const { user, access } = await requireManagement();
   if (!access.canEditBoard) return { ok: false as const, error: "forbidden" };
   const hotelName = text(formData, "hotelName");
@@ -286,6 +286,8 @@ export async function saveWebsiteWork(formData: FormData) {
   revalidateManagement();
   return { ok: true as const, id };
 }
+
+export const saveWebsiteWork = saveSystemsWork;
 
 export async function removeWebsiteWork(formData: FormData) {
   const { user, access } = await requireManagement();
@@ -524,7 +526,7 @@ export async function completeSystemsSubtask(formData: FormData) {
     if (!text(formData, "source")) formData.set("source", String(existing.source ?? ""));
     if (!text(formData, "providerDependency")) formData.set("providerDependency", String(existing.providerDependency ?? ""));
   }
-  formData.set("status", done ? "completed" : "not_started");
+  formData.set("status", done ? "completed" : "in_progress");
   formData.set("completed", done ? "1" : "0");
   return saveSystemsSubtask(formData);
 }

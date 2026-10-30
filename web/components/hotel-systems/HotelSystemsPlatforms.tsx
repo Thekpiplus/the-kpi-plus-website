@@ -4,6 +4,7 @@ import {
   SYSTEMS_FIT_NOT,
   SYSTEMS_FIT_VISUAL,
   SYSTEMS_PLATFORM_STATUSES,
+  systemsPlatformLogoSrc,
   systemsPlatformStatus,
   systemsRenderableSrc,
 } from "@/lib/hotel-systems";
@@ -14,10 +15,7 @@ function rowCopy(row: CmsSystemsFitScenario, thai: boolean) {
     id: row.id,
     category: thai ? row.categoryTh || row.situationTh || row.categoryEn : row.categoryEn || row.situationEn || row.categoryTh,
     example: row.example || row.output,
-    logoSrc:
-      row.logoSrc?.trim() && (row.logoStatus === "approved" || row.logoStatus === "sample") && (row.relationshipStatus || row.integrationStatus)
-        ? row.logoSrc.trim()
-        : "",
+    logoSrc: systemsPlatformLogoSrc(row.logoSrc, row.logoStatus),
     role: thai ? row.roleTh || row.symptomTh || row.roleEn : row.roleEn || row.symptomEn || row.roleTh,
     flow: thai ? row.flowTh || row.questionTh || row.flowEn : row.flowEn || row.questionEn || row.flowTh,
     provider: thai ? row.providerTh || row.supportTh || row.providerEn : row.providerEn || row.supportEn || row.providerTh,
@@ -29,6 +27,7 @@ function rowCopy(row: CmsSystemsFitScenario, thai: boolean) {
 export function HotelSystemsPlatforms({
   locale,
   src,
+  alt,
   status,
   label,
   caption,
@@ -38,6 +37,7 @@ export function HotelSystemsPlatforms({
 }: {
   locale: Locale;
   src?: string;
+  alt?: string;
   status?: string;
   label?: string;
   caption?: string;
@@ -51,6 +51,7 @@ export function HotelSystemsPlatforms({
   const cols = SYSTEMS_FIT_COLUMNS;
   const displayLabel = label?.trim() || SYSTEMS_FIT_VISUAL.labelEn;
   const displayCaption = caption?.trim() || (thai ? SYSTEMS_FIT_VISUAL.captionTh : SYSTEMS_FIT_VISUAL.captionEn);
+  const displayAlt = alt?.trim() || (thai ? SYSTEMS_FIT_VISUAL.altTh : SYSTEMS_FIT_VISUAL.altEn);
   const copies = rows.map((row) => rowCopy(row, thai));
   const notes = notItems.length ? notItems : SYSTEMS_FIT_NOT.map((item) => ({ id: item.id, th: item.th, en: item.en }));
 
@@ -61,7 +62,7 @@ export function HotelSystemsPlatforms({
           <div className="hsi-plat-photo">
             <img
               src={fileSrc}
-              alt={thai ? SYSTEMS_FIT_VISUAL.altTh : SYSTEMS_FIT_VISUAL.altEn}
+              alt={displayAlt}
               width={SYSTEMS_FIT_VISUAL.displayWidth}
               height={SYSTEMS_FIT_VISUAL.displayHeight}
               style={{ aspectRatio: `${SYSTEMS_FIT_VISUAL.displayWidth} / ${SYSTEMS_FIT_VISUAL.displayHeight}` }}
@@ -71,13 +72,13 @@ export function HotelSystemsPlatforms({
             {sample ? <span className="hsi-visual-badge">Hotel Technology Landscape — Example Categories</span> : null}
           </div>
         ) : (
-          <div className="hsi-plat-board" role="img" aria-label={thai ? SYSTEMS_FIT_VISUAL.altTh : SYSTEMS_FIT_VISUAL.altEn}>
+          <div className="hsi-plat-board" role="img" aria-label={displayAlt}>
             {sample ? <span className="hsi-visual-badge">Hotel Technology Landscape — Example Categories</span> : null}
             <p className="hsi-mock-kicker kpi-latin">Examples / Subject to technical verification</p>
             <p className="hsi-plat-board-title">{thai ? "แผนที่หมวด ไม่ใช่โลโก้วอลล์" : "Category map, not a logo wall"}</p>
             <ul className="hsi-plat-preview">
               {copies.map((row) => (
-                <li key={row.id}>
+                <li key={row.id} className={`is-${row.integration.tone}`}>
                   <strong className="kpi-latin">{row.category}</strong>
                   <span className="kpi-latin">{row.example}</span>
                   <em className={`hsi-status is-${row.integration.tone} kpi-latin`}>{row.integration.label}</em>
@@ -130,14 +131,14 @@ export function HotelSystemsPlatforms({
                     <span className="hsi-plat-mark">
                       <img
                         src={row.logoSrc}
-                        alt=""
+                        alt={row.example || row.category}
                         width={96}
                         height={32}
                         loading="lazy"
                         decoding="async"
-                        style={{ width: 96, height: 32, objectFit: "contain", objectPosition: "left center" }}
                       />
                       <span className="kpi-latin">{row.example}</span>
+                      <small className="kpi-latin">Example / Subject to technical verification</small>
                     </span>
                   ) : (
                     <span className="kpi-latin">{row.example}</span>

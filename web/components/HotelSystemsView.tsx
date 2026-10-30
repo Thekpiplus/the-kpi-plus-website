@@ -37,7 +37,9 @@ import {
   SYSTEMS_HERO_JOURNEY,
   SYSTEMS_HERO_VISUAL,
   SYSTEMS_KPIS,
+  SYSTEMS_KPI_FIELDS,
   SYSTEMS_KPI_SAMPLE,
+  systemsKpiStatusLabel,
   SYSTEMS_MODEL_BOUNDARY,
   SYSTEMS_MODEL_STEPS,
   SYSTEMS_MODEL_VISUAL,
@@ -56,6 +58,7 @@ import {
   systemsAssessmentRowsAreStale,
   systemsBeforeAfterCmsFields,
   systemsBeforeAfterFieldsAreStale,
+  systemsBeforeAfterNoteIsStale,
   systemsLandscapeCmsItems,
   systemsLandscapeConnectionsCms,
   systemsLandscapeItemsAreStale,
@@ -74,6 +77,7 @@ import {
   systemsTestingCmsCases,
   systemsTestingCasesAreStale,
   systemsTestingErrorCmsSteps,
+  systemsTestingErrorStepsAreStale,
   systemsHandoverCmsItems,
   systemsHandoverItemsAreStale,
   systemsOwnershipCmsRows,
@@ -83,6 +87,7 @@ import {
   systemsScopeCmsRows,
   systemsScopeRowsAreStale,
   systemsWorkflowCmsSteps,
+  systemsWorkflowGateIsStale,
   systemsWorkflowStepsAreStale,
 } from "@/lib/hotel-systems";
 import { solutionNavLabel } from "@/lib/nav";
@@ -136,6 +141,7 @@ export async function HotelSystemsView({
   const needLead = systemsHeroText(fromCms ? cms.assessment.lead : "", t.needLead, [
     "PMS, Channel Manager, OTA, Booking Engine, รายงาน และทีมโรงแรมอาจยังไม่ได้ทำงานจากชุดข้อมูลเดียวกัน",
     "The PMS, channel manager, OTA, booking engine, reporting, and hotel teams may not work from one consistent data flow.",
+    "ข้อมูลห้อง ราคา หรือห้องว่างอาจไม่ตรงกัน พนักงานต้องกรอกซ้ำ ไม่ชัดว่าระบบใดเป็น Source of Truth ข้อมูล PMS, Channel Manager, Booking Engine หรือรายงานไม่ครบ และยังไม่มีผู้รับผิดชอบเมื่อข้อมูลผิดหรือการเชื่อมต่อล้ม",
   ]);
   const needClose = systemsHeroText(fromCms ? cms.assessment.close : "", t.needClose, [
     "ไม่ใช่ผลตรวจโรงแรมจริง และไม่ใช่สถานะเชื่อมต่อที่ตรวจแล้ว",
@@ -177,7 +183,9 @@ export async function HotelSystemsView({
     "For hotels before opening",
   ]);
   const modelLead = systemsHeroText(fromCms ? cms.model.lead : "", t.modelLead, []);
-  const modelNote = systemsHeroText(fromCms ? cms.model.note : "", t.modelNote, []);
+  const modelNote = systemsBeforeAfterNoteIsStale(fromCms ? cms.model.note : "")
+    ? t.modelNote
+    : systemsHeroText(fromCms ? cms.model.note : "", t.modelNote, []);
   const modelLabel = systemsHeroText(
     fromCms ? cms.model.visual.label : "",
     SYSTEMS_MODEL_VISUAL.labelEn,
@@ -222,6 +230,8 @@ export async function HotelSystemsView({
   const workflowLead = systemsHeroText(fromCms ? cms.workflow.lead : "", t.methodLead, [
     "งานเริ่มจากสำรวจระบบ แล้วจับคู่ข้อมูล ตั้งค่า ทดสอบ อบรม",
     "The work starts with a systems review, then mapping, configuration, testing, training",
+    "Audit, Map, Configure, Test, Train",
+    "AUDIT, MAP, CONFIGURE, TEST, TRAIN",
   ]);
   const workflowLabel = systemsHeroText(
     fromCms ? cms.workflow.visual.label : "",
@@ -247,9 +257,9 @@ export async function HotelSystemsView({
     ["จุดที่โรงแรมหรือผู้ให้บริการต้องอนุมัติ", "Hotel or provider approval points"],
   );
   const workflowGate = systemsHeroText(
-    fromCms ? cms.workflow.gate : "",
+    fromCms && !systemsWorkflowGateIsStale(cms.workflow.gate) ? cms.workflow.gate : "",
     thai ? SYSTEMS_WORKFLOW_GATE.th : SYSTEMS_WORKFLOW_GATE.en,
-    [],
+    ["จุดที่โรงแรมหรือผู้ให้บริการต้องอนุมัติ", "Hotel or provider approval points", "Some connection work may need provider approval"],
   );
   const fitTitle = systemsHeroText(fromCms ? cms.fit.title : "", t.fitTitle, [
     "ระบบโรงแรมที่ทีมมีประสบการณ์ในการติดตั้งและประสานงาน",
@@ -281,6 +291,11 @@ export async function HotelSystemsView({
   const inventoryLead = systemsHeroText(fromCms ? cms.inventory.lead : "", t.inventoryLead, []);
   const inventorySystemsTitle = systemsHeroText(fromCms ? cms.inventory.systemsTitle : "", t.inventorySystemsTitle, []);
   const inventoryFieldsTitle = systemsHeroText(fromCms ? cms.inventory.fieldsTitle : "", t.inventoryFieldsTitle, []);
+  const inventorySampleLabel = systemsHeroText(
+    fromCms ? cms.inventory.sampleLabel : "",
+    SYSTEMS_INVENTORY_VISUAL.labelEn,
+    [],
+  );
   const inventoryLabel = systemsHeroText(
     fromCms ? cms.inventory.visual.label : "",
     SYSTEMS_INVENTORY_VISUAL.labelEn,
@@ -408,6 +423,11 @@ export async function HotelSystemsView({
   const testingLead = systemsHeroText(fromCms ? cms.testing.lead : "", t.testingLead, []);
   const testingCasesTitle = systemsHeroText(fromCms ? cms.testing.casesTitle : "", t.testingCasesTitle, []);
   const testingErrorTitle = systemsHeroText(fromCms ? cms.testing.errorTitle : "", t.testingErrorTitle, []);
+  const testingSampleLabel = systemsHeroText(
+    fromCms ? cms.testing.sampleLabel : "",
+    SYSTEMS_TESTING_VISUAL.labelEn,
+    [],
+  );
   const testingLabel = systemsHeroText(fromCms ? cms.testing.visual.label : "", SYSTEMS_TESTING_VISUAL.labelEn, []);
   const testingCaption = systemsHeroText(
     fromCms ? cms.testing.visual.caption : "",
@@ -419,7 +439,7 @@ export async function HotelSystemsView({
       ? cms.testing.cases
       : systemsTestingCmsCases();
   const testingErrorSteps =
-    fromCms && cms.testing.errorSteps.length && cms.testing.errorSteps.some((item) => item.id === "detect")
+    fromCms && cms.testing.errorSteps.length && !systemsTestingErrorStepsAreStale(cms.testing.errorSteps)
       ? cms.testing.errorSteps
       : systemsTestingErrorCmsSteps();
 
@@ -518,12 +538,13 @@ export async function HotelSystemsView({
 
       <section className="kpi-systems-help border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section">
-          <p className="kpi-systems-help-kicker kpi-latin">PMS · Channel Manager · OTA · Booking Engine · Website · Reporting · Hotel Team</p>
+          <p className="kpi-systems-help-kicker kpi-latin">Guest / Booking Source · Website / Booking Engine · PMS / Reservation System · Channel Manager · OTA / Distribution · Reporting / Dashboard · Hotel Team / Decisions</p>
           <h2 className="kpi-h2">{helpTitle}</h2>
           <p className="kpi-systems-help-lead">{helpLead}</p>
           <HotelSystemsLandscape
             locale={locale}
             src={cms.services.visual.src}
+            alt={thai ? cms.services.visual.altTh : cms.services.visual.altEn}
             status={cms.services.visual.status}
             label={landscapeLabel}
             caption={landscapeCaption}
@@ -552,6 +573,7 @@ export async function HotelSystemsView({
         <HotelSystemsBeforeAfter
           locale={locale}
           src={cms.model.visual.src}
+          alt={thai ? cms.model.visual.altTh : cms.model.visual.altEn}
           status={cms.model.visual.status}
           label={modelLabel}
           caption={modelCaption}
@@ -577,6 +599,7 @@ export async function HotelSystemsView({
         <HotelSystemsReadiness
           locale={locale}
           src={cms.deliverables.visual.src}
+          alt={thai ? cms.deliverables.visual.altTh : cms.deliverables.visual.altEn}
           status={cms.deliverables.visual.status}
           label={readinessLabel}
           caption={readinessCaption}
@@ -603,12 +626,13 @@ export async function HotelSystemsView({
         <p className="kpi-systems-deliverables-boundary">{fromCms && cms.deliverables.boundary.trim() ? cms.deliverables.boundary : t.deliverablesBoundary}</p>
       </section>
 
-      <section className="kpi-section kpi-systems-method">
+      <section id="method" className="kpi-section kpi-systems-method">
         <h2 className="kpi-h2">{workflowTitle}</h2>
         <p className="kpi-systems-method-lead">{workflowLead}</p>
         <HotelSystemsWorkflow
           locale={locale}
           src={cms.workflow.visual.src}
+          alt={thai ? cms.workflow.visual.altTh : cms.workflow.visual.altEn}
           status={cms.workflow.visual.status}
           label={workflowLabel}
           caption={workflowCaption}
@@ -619,13 +643,14 @@ export async function HotelSystemsView({
         />
       </section>
 
-      <section className="kpi-systems-fit border-y border-[#E3E8EB] bg-white">
+      <section id="platforms" className="kpi-systems-fit border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section">
           <h2 className="kpi-h2">{fitTitle}</h2>
           <p className="kpi-systems-fit-lead">{fitLead}</p>
           <HotelSystemsPlatforms
             locale={locale}
             src={cms.fit.visual.src}
+            alt={thai ? cms.fit.visual.altTh : cms.fit.visual.altEn}
             status={cms.fit.visual.status}
             label={fitLabel}
             caption={fitCaption}
@@ -638,14 +663,17 @@ export async function HotelSystemsView({
 
       <section id="inventory" className="kpi-systems-inventory border-y border-[#E3E8EB] bg-[#F4F4F4]">
         <div className="kpi-section">
+          <p className="kpi-latin kpi-systems-plan-kicker">{inventorySampleLabel}</p>
           <h2 className="kpi-h2">{inventoryTitle}</h2>
           <p className="kpi-systems-inventory-lead">{inventoryLead}</p>
           <HotelSystemsInventory
             locale={locale}
             src={cms.inventory.visual.src}
+            alt={thai ? cms.inventory.visual.altTh : cms.inventory.visual.altEn}
             status={cms.inventory.visual.status}
             label={inventoryLabel}
             caption={inventoryCaption}
+            sampleLabel={inventorySampleLabel}
             systemsTitle={inventorySystemsTitle}
             fieldsTitle={inventoryFieldsTitle}
             rows={inventoryRows}
@@ -660,6 +688,7 @@ export async function HotelSystemsView({
         <HotelSystemsResponsibility
           locale={locale}
           src={cms.scope.visual.src}
+          alt={thai ? cms.scope.visual.altTh : cms.scope.visual.altEn}
           status={cms.scope.visual.status}
           label={scopeLabel}
           caption={scopeCaption}
@@ -679,6 +708,7 @@ export async function HotelSystemsView({
         <HotelSystemsHandover
           locale={locale}
           src={cms.plan.visual.src}
+          alt={thai ? cms.plan.visual.altTh : cms.plan.visual.altEn}
           status={cms.plan.visual.status}
           label={planLabel}
           caption={planCaption}
@@ -693,14 +723,17 @@ export async function HotelSystemsView({
 
       <section id="testing" className="kpi-systems-testing border-y border-[#E3E8EB] bg-[#F4F4F4]">
         <div className="kpi-section">
+          <p className="kpi-latin kpi-systems-plan-kicker">{testingSampleLabel}</p>
           <h2 className="kpi-h2">{testingTitle}</h2>
           <p className="kpi-systems-testing-lead">{testingLead}</p>
           <HotelSystemsTesting
             locale={locale}
             src={cms.testing.visual.src}
+            alt={thai ? cms.testing.visual.altTh : cms.testing.visual.altEn}
             status={cms.testing.visual.status}
             label={testingLabel}
             caption={testingCaption}
+            sampleLabel={testingSampleLabel}
             casesTitle={testingCasesTitle}
             errorTitle={testingErrorTitle}
             cases={testingCases}
@@ -713,11 +746,7 @@ export async function HotelSystemsView({
         <h2 id="hotel-systems-measure-heading" className="kpi-h2">
           {fromCms && cms?.measure.title.trim() ? cms.measure.title : t.measureTitle}
         </h2>
-        <p id="hotel-systems-measure-desc">
-          {thai
-            ? "ตัวชี้วัดตัวอย่างสำหรับทบทวนจังหวะงาน ไม่ใช่ผลโรงแรมจริง และไม่ใช่ผลที่การันตี"
-            : "Sample review measures for management rhythm. Not a live hotel result, and not a guaranteed outcome."}
-        </p>
+        <p id="hotel-systems-measure-desc">{t.measureLead}</p>
         <p id="hotel-systems-sources">
           {(sourceRows[0] && (thai ? sourceRows[0].nameTh : sourceRows[0].nameEn)) || (thai ? SYSTEMS_KPI_SAMPLE.sourceTh : SYSTEMS_KPI_SAMPLE.source)}
           {" · "}
@@ -732,17 +761,42 @@ export async function HotelSystemsView({
             const period = "period" in kpi && kpi.period ? kpi.period : thai ? SYSTEMS_KPI_SAMPLE.periodTh : SYSTEMS_KPI_SAMPLE.period;
             const market = "market" in kpi && kpi.market ? kpi.market : thai ? SYSTEMS_KPI_SAMPLE.marketTh : SYSTEMS_KPI_SAMPLE.market;
             const source = "source" in kpi && kpi.source ? kpi.source : thai ? SYSTEMS_KPI_SAMPLE.sourceTh : SYSTEMS_KPI_SAMPLE.source;
+            const owner =
+              "ownerTh" in kpi
+                ? thai
+                  ? kpi.ownerTh || kpi.ownerEn || SYSTEMS_KPI_SAMPLE.ownerTh
+                  : kpi.ownerEn || kpi.ownerTh || SYSTEMS_KPI_SAMPLE.owner
+                : thai
+                  ? SYSTEMS_KPI_SAMPLE.ownerTh
+                  : SYSTEMS_KPI_SAMPLE.owner;
+            const updated = "updatedAt" in kpi && kpi.updatedAt ? kpi.updatedAt : SYSTEMS_KPI_SAMPLE.updatedAt;
             const tone = "tone" in kpi ? kpi.tone : kpi.dataStatus === "not-configured" ? "amber" : kpi.dataStatus === "sample" ? "yellow" : "green";
             const unit = "unitTh" in kpi && thai ? kpi.unitTh : kpi.unit;
+            const statusLabel = systemsKpiStatusLabel(String(kpi.dataStatus), locale);
+            const fields = [
+              { id: "definition", label: thai ? SYSTEMS_KPI_FIELDS.definition.th : SYSTEMS_KPI_FIELDS.definition.en, value: definition },
+              { id: "period", label: thai ? SYSTEMS_KPI_FIELDS.period.th : SYSTEMS_KPI_FIELDS.period.en, value: period },
+              { id: "context", label: thai ? SYSTEMS_KPI_FIELDS.context.th : SYSTEMS_KPI_FIELDS.context.en, value: market },
+              { id: "source", label: thai ? SYSTEMS_KPI_FIELDS.source.th : SYSTEMS_KPI_FIELDS.source.en, value: source },
+              { id: "status", label: thai ? SYSTEMS_KPI_FIELDS.status.th : SYSTEMS_KPI_FIELDS.status.en, value: statusLabel },
+              { id: "owner", label: thai ? SYSTEMS_KPI_FIELDS.owner.th : SYSTEMS_KPI_FIELDS.owner.en, value: owner },
+              { id: "updated", label: thai ? SYSTEMS_KPI_FIELDS.updated.th : SYSTEMS_KPI_FIELDS.updated.en, value: updated },
+              { id: "unit", label: thai ? SYSTEMS_KPI_FIELDS.unit.th : SYSTEMS_KPI_FIELDS.unit.en, value: unit },
+            ];
             return (
               <article key={kpi.id} className={`kpi-systems-card is-${tone}`}>
                 <h3 className="kpi-latin">{thai ? kpi.nameTh : kpi.nameEn}</h3>
-                <p>{definition}</p>
-                <small className="kpi-latin">{unit}</small>
-                <small className="kpi-latin">{kpi.dataStatus === "not-configured" ? (thai ? "ยังไม่เชื่อมข้อมูล" : "Not configured") : kpi.dataStatus}</small>
-                <small>{period}</small>
-                <small>{market}</small>
-                <small>{source}</small>
+                <p className={`hsi-status is-${tone}`}>{statusLabel}</p>
+                <dl className="kpi-systems-kpi-meta">
+                  {fields.map((field) =>
+                    field.value ? (
+                      <div key={field.id}>
+                        <dt>{field.label}</dt>
+                        <dd>{field.value}</dd>
+                      </div>
+                    ) : null,
+                  )}
+                </dl>
               </article>
             );
           })}
@@ -752,7 +806,11 @@ export async function HotelSystemsView({
       <section className="kpi-systems-related">
         <div className="kpi-section">
           <h2 className="kpi-h2">{fromCms && cms?.related.title.trim() ? cms.related.title : t.relatedTitle}</h2>
-          <HotelSystemsRelatedVisual locale={locale} src={cms.related.visual.src} />
+          <HotelSystemsRelatedVisual
+            locale={locale}
+            src={cms.related.visual.src}
+            alt={thai ? cms.related.visual.altTh : cms.related.visual.altEn}
+          />
           <div className="kpi-systems-related-grid">
             {related.map((card) => (
               <Link key={card.id} href={card.href} className="kpi-systems-related-card">

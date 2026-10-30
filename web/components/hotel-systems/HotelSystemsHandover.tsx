@@ -6,6 +6,7 @@ import {
   SYSTEMS_OWNERSHIP_COLUMNS,
   SYSTEMS_OWNERSHIP_STATUSES,
   SYSTEMS_PLAN_VISUAL,
+  systemsCredentialSafeText,
   systemsHandoverChecklistStatus,
   systemsOwnershipStatus,
   systemsRenderableSrc,
@@ -18,8 +19,8 @@ function checklistCopy(row: CmsSystemsHandoverItem, thai: boolean, sample: boole
     id: row.id,
     item: thai ? row.itemTh || row.itemEn : row.itemEn || row.itemTh,
     status,
-    owner: thai ? row.ownerTh || row.ownerEn : row.ownerEn || row.ownerTh,
-    evidence: thai ? row.evidenceTh || row.evidenceEn : row.evidenceEn || row.evidenceTh,
+    owner: systemsCredentialSafeText(thai ? row.ownerTh || row.ownerEn : row.ownerEn || row.ownerTh),
+    evidence: systemsCredentialSafeText(thai ? row.evidenceTh || row.evidenceEn : row.evidenceEn || row.evidenceTh),
   };
 }
 
@@ -28,10 +29,10 @@ function ownershipCopy(row: CmsSystemsOwnershipRow, thai: boolean, sample: boole
   return {
     id: row.id,
     asset: thai ? row.assetTh || row.assetEn : row.assetEn || row.assetTh,
-    owner: thai ? row.ownerTh || row.ownerEn : row.ownerEn || row.ownerTh,
-    contact: thai ? row.contactTh || row.contactEn : row.contactEn || row.contactTh,
-    approval: thai ? row.approvalTh || row.approvalEn : row.approvalEn || row.approvalTh,
-    access: thai ? row.accessTh || row.accessEn : row.accessEn || row.accessTh,
+    owner: systemsCredentialSafeText(thai ? row.ownerTh || row.ownerEn : row.ownerEn || row.ownerTh),
+    contact: systemsCredentialSafeText(thai ? row.contactTh || row.contactEn : row.contactEn || row.contactTh),
+    approval: systemsCredentialSafeText(thai ? row.approvalTh || row.approvalEn : row.approvalEn || row.approvalTh),
+    access: systemsCredentialSafeText(thai ? row.accessTh || row.accessEn : row.accessEn || row.accessTh),
     renewal: thai ? row.renewalTh || row.renewalEn : row.renewalEn || row.renewalTh,
     reviewed: row.reviewed,
     status,
@@ -41,6 +42,7 @@ function ownershipCopy(row: CmsSystemsOwnershipRow, thai: boolean, sample: boole
 export function HotelSystemsHandover({
   locale,
   src,
+  alt,
   status,
   label,
   caption,
@@ -52,6 +54,7 @@ export function HotelSystemsHandover({
 }: {
   locale: Locale;
   src?: string;
+  alt?: string;
   status?: string;
   label?: string;
   caption?: string;
@@ -68,10 +71,9 @@ export function HotelSystemsHandover({
   const ownCols = SYSTEMS_OWNERSHIP_COLUMNS;
   const displayLabel = label?.trim() || SYSTEMS_PLAN_VISUAL.labelEn;
   const displayCaption = caption?.trim() || (thai ? SYSTEMS_PLAN_VISUAL.captionTh : SYSTEMS_PLAN_VISUAL.captionEn);
+  const displayAlt = alt?.trim() || (thai ? SYSTEMS_PLAN_VISUAL.altTh : SYSTEMS_PLAN_VISUAL.altEn);
   const items = checklist.map((row) => checklistCopy(row, thai, sample));
   const assets = ownership.map((row) => ownershipCopy(row, thai, sample));
-  const usedCheckStatuses = SYSTEMS_HANDOVER_CHECKLIST_STATUSES.filter((item) => items.some((row) => row.status.id === item.id));
-  const usedOwnStatuses = SYSTEMS_OWNERSHIP_STATUSES.filter((item) => assets.some((row) => row.status.id === item.id));
 
   return (
     <div className="hsi-hand">
@@ -86,7 +88,7 @@ export function HotelSystemsHandover({
           <div className="hsi-hand-photo">
             <img
               src={fileSrc}
-              alt={thai ? SYSTEMS_PLAN_VISUAL.altTh : SYSTEMS_PLAN_VISUAL.altEn}
+              alt={displayAlt}
               width={SYSTEMS_PLAN_VISUAL.displayWidth}
               height={SYSTEMS_PLAN_VISUAL.displayHeight}
               style={{ aspectRatio: `${SYSTEMS_PLAN_VISUAL.displayWidth} / ${SYSTEMS_PLAN_VISUAL.displayHeight}` }}
@@ -122,12 +124,12 @@ export function HotelSystemsHandover({
       </figure>
 
       <ul className="hsi-hand-legend" aria-label={thai ? "คำอธิบายสถานะส่งมอบตัวอย่าง" : "Sample handover status legend"}>
-        {usedCheckStatuses.map((item) => (
+        {SYSTEMS_HANDOVER_CHECKLIST_STATUSES.map((item) => (
           <li key={`check-${item.id}`}>
             <span className={`hsi-status is-${item.tone} kpi-latin`}>{item.label}</span>
           </li>
         ))}
-        {usedOwnStatuses.map((item) => (
+        {SYSTEMS_OWNERSHIP_STATUSES.map((item) => (
           <li key={`own-${item.id}`}>
             <span className={`hsi-status is-${item.tone} kpi-latin`}>{item.label}</span>
           </li>

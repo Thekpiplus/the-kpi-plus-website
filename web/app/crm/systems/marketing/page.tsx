@@ -1,5 +1,6 @@
-import { redirect } from "next/navigation";
+import { SystemsWorkspace } from "@/components/systems-ops/SystemsWorkspace";
+import { withSysDepartmentFilter, type SysListFilters } from "@/lib/systems-ops/types";
 
-export default function SystemsMarketingRedirectPage() {
-  redirect("/crm/systems?department=marketing");
+export default function SystemsMarketingPage({ searchParams }: { searchParams: Promise<SysListFilters> }) {
+  return <SystemsWorkspace section="overview" searchParams={withSysDepartmentFilter(searchParams, "marketing")} />;
 }

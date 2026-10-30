@@ -41,6 +41,7 @@ export function SaveBar({
   ok,
   error,
   idle = "พร้อมบันทึก",
+  dirty = false,
   onSave,
   saveLabel = "บันทึก",
 }: {
@@ -48,16 +49,18 @@ export function SaveBar({
   ok: string;
   error: string;
   idle?: string;
+  dirty?: boolean;
   onSave: () => void;
   saveLabel?: string;
 }) {
   const state = pending ? "กำลังบันทึก…" : error ? error : ok || idle;
+  const stateClass = error ? " is-error" : ok ? " is-ok" : dirty && !pending ? " is-dirty" : "";
   return (
     <div className="crm-cs-savebar b2b-savebar">
       <button className="kpi-button b2b-save" type="button" onClick={onSave} disabled={pending}>
         {pending ? "กำลังบันทึก…" : saveLabel}
       </button>
-      <p className={`crm-cs-save-state${error ? " is-error" : ok ? " is-ok" : ""}`} role="status">
+      <p className={`crm-cs-save-state${stateClass}`} role="status">
         {state}
       </p>
     </div>

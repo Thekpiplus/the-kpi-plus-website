@@ -23,6 +23,13 @@ import {
 
 const ACADEMY_HREF = "https://thekpiplus.co.th/";
 
+const HOTEL_SYSTEMS_FOOTER_STATEMENT: Record<Locale, string> = {
+  th: "งานนำไปใช้ระบบโรงแรมและข้อมูล ตามผู้ให้บริการ สิทธิ์ และขอบเขตที่ตกลง",
+  en: "Hotel systems implementation and data work, subject to the provider, access, and agreed scope.",
+  ru: "Hotel systems implementation and data work, subject to the provider, access, and agreed scope.",
+  zh: "Hotel systems implementation and data work, subject to the provider, access, and agreed scope.",
+};
+
 function existingNav(items: readonly { href: string; label: string }[], locale: Locale) {
   return items.flatMap((item) => {
     const href = existingHref(item.href, locale);
@@ -141,7 +148,9 @@ export function Footer({
                   className="object-contain object-left"
                 />
               </Link>
-              <p className="kpi-footer-statement kpi-thai-nav">{t.statement}</p>
+              <p className="kpi-footer-statement kpi-thai-nav">
+                {isHotelSystems ? HOTEL_SYSTEMS_FOOTER_STATEMENT[locale] : t.statement}
+              </p>
             </div>
             <div className="kpi-footer-brand-actions">
               <Link
@@ -155,7 +164,7 @@ export function Footer({
                         : "footer_audit_cta"
                 }
                 href={footerCtaHref}
-                className="kpi-button kpi-thai-nav"
+                className={`kpi-button kpi-thai-nav${isHotelSystems ? " bg-[#a2dc25] text-[#1a3a02]" : ""}`}
               >
                 {footerCtaLabel} <ArrowUpRight className="h-4 w-4" />
               </Link>
@@ -236,7 +245,7 @@ export function Footer({
             <button type="button" onClick={() => window.dispatchEvent(new Event("kpi-open-cookie-settings"))}>
               {t.cookieSettings}
             </button>
-            <span className="kpi-footer-lang kpi-thai-nav" aria-label={t.language}>
+            <nav className="kpi-footer-lang kpi-thai-nav" aria-label={t.language}>
               <span className="kpi-footer-lang-label">
                 <Earth className="h-3.5 w-3.5" aria-hidden="true" />
                 {t.language}
@@ -245,12 +254,12 @@ export function Footer({
                 <Link
                   key={item.id}
                   href={switchLocale(pathname, item.id)}
-                  aria-current={item.id === locale ? "true" : undefined}
+                  aria-current={item.id === locale ? "page" : undefined}
                 >
                   {item.label}
                 </Link>
               ))}
-            </span>
+            </nav>
           </div>
         </div>
       </div>

@@ -411,15 +411,23 @@ const hotelSystemsGroups = {
   zh: { contact: "Contact details", hotel: "Hotel systems", topic: "Goal and main issue" },
 } as const;
 
-function systemsGoalLabel(id: string, locale: Locale) {
-  const item = SYSTEMS_ENQUIRY_GOALS.find((row) => row.id === id);
+function systemsGoalLabel(
+  id: string,
+  locale: Locale,
+  goals: Array<{ id: string; th: string; en: string }> = [...SYSTEMS_ENQUIRY_GOALS],
+) {
+  const item = goals.find((row) => row.id === id);
   if (!item) return "";
   return locale === "th" ? item.th : item.en;
 }
 
-function composeHotelSystemsMessage(state: FormState, locale: Locale) {
+function composeHotelSystemsMessage(
+  state: FormState,
+  locale: Locale,
+  goals: Array<{ id: string; th: string; en: string }> = [...SYSTEMS_ENQUIRY_GOALS],
+) {
   const thai = locale === "th";
-  const goal = systemsGoalLabel(state.goal, locale);
+  const goal = systemsGoalLabel(state.goal, locale, goals);
   const parts = [
     state.rooms.trim() ? (thai ? `จำนวนห้อง: ${state.rooms.trim()}` : `Number of rooms: ${state.rooms.trim()}`) : "",
     state.pms.trim() ? `PMS: ${state.pms.trim()}` : "",
@@ -522,6 +530,7 @@ export function EnquiryForm({
   introReceive,
   introVisualSrc,
   fieldLabels,
+  goalOptions,
 }: {
   locale: Locale;
   /** When set, service is preselected and the selector is hidden. */
@@ -569,9 +578,11 @@ export function EnquiryForm({
     consent?: string;
     privacy?: string;
   };
+  goalOptions?: Array<{ id: string; th: string; en: string }>;
 }) {
   const preset = service ? enquiryServiceById(service) : null;
   const t = ENQUIRY_UI[locale];
+  const systemsGoals = goalOptions?.length ? goalOptions : [...SYSTEMS_ENQUIRY_GOALS];
   const formId = useId();
   const privacyHref = localizePath("/privacy", locale);
   const [state, setState] = useState<FormState>({
@@ -735,7 +746,7 @@ export function EnquiryForm({
                           : service === "independent_hotel"
                             ? composeIndependentHotelMessage(state, locale)
                           : service === "hotel_systems"
-                            ? composeHotelSystemsMessage(state, locale)
+                            ? composeHotelSystemsMessage(state, locale, systemsGoals)
                           : state.message.trim(),
           consent: state.consent,
           honeypot: state.companyWebsite,
@@ -3260,8 +3271,8 @@ export function EnquiryForm({
           />
           <div className="kpi-website-enquiry-panel">
             {status === "success" ? (
-              <div role="status">
-                <p className="kpi-website-enquiry-success">{t.success}</p>
+              <div role="status" aria-live="polite">
+                <p className="kpi-website-enquiry-success">{copy.success}</p>
                 <ContactNote locale={locale} className="kpi-website-enquiry-direct" />
               </div>
             ) : (
@@ -3413,7 +3424,7 @@ export function EnquiryForm({
                       onChange={(event) => setState((current) => ({ ...current, goal: event.target.value }))}
                     >
                       <option value="">{copy.goalEmpty}</option>
-                      {SYSTEMS_ENQUIRY_GOALS.map((item) => (
+                      {systemsGoals.map((item) => (
                         <option key={item.id} value={item.id}>
                           {locale === "th" ? item.th : item.en}
                         </option>
@@ -3495,7 +3506,7 @@ export function EnquiryForm({
                 ) : null}
                 {status === "error" ? (
                   <p className="kpi-website-enquiry-error text-sm font-semibold text-[#C45C26]" role="alert">
-                    {t.failed}
+                    {copy.failed}
                   </p>
                 ) : null}
                 {status === "unavailable" ? (

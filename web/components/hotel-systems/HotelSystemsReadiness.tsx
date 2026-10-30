@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
 import type { CmsSystemsDeliverableRow } from "@/lib/cms/hotel-systems-page";
 import {
   SYSTEMS_DELIVERABLES_COLUMNS,
@@ -8,14 +11,24 @@ import {
 } from "@/lib/hotel-systems";
 import type { Locale } from "@/lib/seo";
 
-function rowCopy(row: CmsSystemsDeliverableRow, thai: boolean) {
-  const status = systemsReadinessStatus(row.status);
+function storageKey(locale: Locale) {
+  return `kpi-systems-readiness-matrix-v1-${locale}`;
+}
+
+type ReadyDraft = {
+  status?: string;
+  owner?: string;
+  action?: string;
+};
+
+function rowCopy(row: CmsSystemsDeliverableRow, thai: boolean, draft: ReadyDraft) {
+  const status = systemsReadinessStatus(draft.status || row.status || "needs_review");
   return {
     area: thai ? row.areaTh || row.areaEn : row.areaEn || row.areaTh,
     inspect: thai ? row.inspectTh || row.supportTh || row.inspectEn : row.inspectEn || row.supportEn || row.inspectTh,
     evidence: thai ? row.evidenceTh || row.evidenceEn : row.evidenceEn || row.evidenceTh,
-    owner: thai ? row.ownerTh || row.ownerEn : row.ownerEn || row.ownerTh,
-    action: thai ? row.actionTh || row.approvalTh || row.actionEn : row.actionEn || row.approvalEn || row.actionTh,
+    owner: draft.owner ?? (thai ? row.ownerTh || row.ownerEn : row.ownerEn || row.ownerTh),
+    action: draft.action ?? (thai ? row.actionTh || row.approvalTh || row.actionEn : row.actionEn || row.approvalEn || row.actionTh),
     output: row.output || row.deliverable,
     status,
   };
@@ -24,6 +37,7 @@ function rowCopy(row: CmsSystemsDeliverableRow, thai: boolean) {
 export function HotelSystemsReadiness({
   locale,
   src,
+  alt,
   status,
   label,
   caption,
@@ -31,6 +45,7 @@ export function HotelSystemsReadiness({
 }: {
   locale: Locale;
   src?: string;
+  alt?: string;
   status?: string;
   label?: string;
   caption?: string;
@@ -42,6 +57,41 @@ export function HotelSystemsReadiness({
   const cols = SYSTEMS_DELIVERABLES_COLUMNS;
   const displayLabel = label?.trim() || SYSTEMS_DELIVERABLES_VISUAL.labelEn;
   const displayCaption = caption?.trim() || (thai ? SYSTEMS_DELIVERABLES_VISUAL.captionTh : SYSTEMS_DELIVERABLES_VISUAL.captionEn);
+  const displayAlt = alt?.trim() || (thai ? SYSTEMS_DELIVERABLES_VISUAL.altTh : SYSTEMS_DELIVERABLES_VISUAL.altEn);
+  const [drafts, setDrafts] = useState<Record<string, ReadyDraft>>({});
+  const [saved, setSaved] = useState("");
+
+  useEffect(() => {
+    setDrafts({});
+    try {
+      const raw = window.sessionStorage.getItem(storageKey(locale));
+      if (!raw) return;
+      const parsed = JSON.parse(raw) as Record<string, ReadyDraft>;
+      if (parsed && typeof parsed === "object") setDrafts(parsed);
+    } catch {
+      /* ignore */
+    }
+  }, [locale]);
+
+  const items = useMemo(
+    () => rows.map((row) => ({ id: row.id, ...rowCopy(row, thai, drafts[row.id] || {}) })),
+    [drafts, rows, thai],
+  );
+
+  function patch(id: string, next: ReadyDraft) {
+    setSaved("");
+    setDrafts((current) => ({ ...current, [id]: { ...current[id], ...next } }));
+  }
+
+  function saveSample() {
+    const next = Object.fromEntries(items.map((row) => [row.id, { status: row.status.id, owner: row.owner, action: row.action }]));
+    try {
+      window.sessionStorage.setItem(storageKey(locale), JSON.stringify(next));
+    } catch {
+      /* ignore quota / private mode */
+    }
+    setSaved(thai ? "บันทึกบนอุปกรณ์นี้แล้ว เป็นตัวอย่าง ไม่ใช่สถานะ Ready ของโรงแรม" : "Saved on this device as a sample. Not a hotel Ready status.");
+  }
 
   return (
     <div className="hsi-ready">
@@ -50,7 +100,7 @@ export function HotelSystemsReadiness({
           <div className="hsi-ready-photo">
             <img
               src={fileSrc}
-              alt={thai ? SYSTEMS_DELIVERABLES_VISUAL.altTh : SYSTEMS_DELIVERABLES_VISUAL.altEn}
+              alt={displayAlt}
               width={SYSTEMS_DELIVERABLES_VISUAL.displayWidth}
               height={SYSTEMS_DELIVERABLES_VISUAL.displayHeight}
               style={{ aspectRatio: `${SYSTEMS_DELIVERABLES_VISUAL.displayWidth} / ${SYSTEMS_DELIVERABLES_VISUAL.displayHeight}` }}
@@ -60,22 +110,22 @@ export function HotelSystemsReadiness({
             {sample ? <span className="hsi-visual-badge">Hotel Systems Implementation Readiness — Sample</span> : null}
           </div>
         ) : (
-          <div className="hsi-ready-board" role="img" aria-label={thai ? SYSTEMS_DELIVERABLES_VISUAL.altTh : SYSTEMS_DELIVERABLES_VISUAL.altEn}>
+          <div className="hsi-ready-board" role="img" aria-label={displayAlt}>
             {sample ? <span className="hsi-visual-badge">Hotel Systems Implementation Readiness — Sample</span> : null}
-            <p className="hsi-mock-kicker kpi-latin">Area · What to check · Evidence · Status · Owner · Next action · Output</p>
+            <p className="hsi-mock-kicker kpi-latin">Area · What to check · Evidence · Current status · Owner · Next action · Output</p>
             <p className="hsi-ready-board-title">{thai ? "โรงแรมต้องเตรียมก่อนเริ่มงาน" : "Prepare these before implementation"}</p>
             <ul className="hsi-ready-preview">
-              {rows.map((row) => {
-                const copy = rowCopy(row, thai);
-                return (
-                  <li key={row.id}>
-                    <strong>{copy.area}</strong>
-                    <em className={`hsi-status is-${copy.status.tone} kpi-latin`}>{copy.status.label}</em>
-                    <span className="kpi-latin">{copy.output}</span>
-                  </li>
-                );
-              })}
+              {items.map((row) => (
+                <li key={row.id} className={`is-${row.status.tone}`}>
+                  <strong>{row.area}</strong>
+                  <em className={`hsi-status is-${row.status.tone} kpi-latin`}>{row.status.label}</em>
+                  <span className="kpi-latin">{row.output}</span>
+                </li>
+              ))}
             </ul>
+            <p className="hsi-ready-board-note">
+              {thai ? "ไม่ได้ทำเครื่องหมาย Ready ทั้งตาราง" : "Not every row is marked Ready."}
+            </p>
           </div>
         )}
         <figcaption className="hsi-visual-caption">
@@ -85,6 +135,7 @@ export function HotelSystemsReadiness({
         </figcaption>
       </figure>
 
+      <p className="hsi-review-framework kpi-latin">Sample review framework</p>
       <ul className="hsi-ready-legend" aria-label={thai ? "คำอธิบายสถานะตัวอย่าง ไม่ใช่สถานะ Ready ของโรงแรมจริง" : "Sample status legend. Not a live hotel Ready status."}>
         {SYSTEMS_READINESS_STATUSES.map((item) => (
           <li key={item.id}>
@@ -112,26 +163,54 @@ export function HotelSystemsReadiness({
             </tr>
           </thead>
           <tbody>
-            {rows.map((row) => {
-              const copy = rowCopy(row, thai);
-              return (
-                <tr key={row.id}>
-                  <th scope="row">{copy.area}</th>
-                  <td data-label={thai ? cols.inspect.th : cols.inspect.en}>{copy.inspect}</td>
-                  <td data-label={thai ? cols.evidence.th : cols.evidence.en}>{copy.evidence}</td>
-                  <td data-label={thai ? cols.status.th : cols.status.en}>
-                    <em className={`hsi-status is-${copy.status.tone} kpi-latin`}>{copy.status.label}</em>
-                  </td>
-                  <td data-label={thai ? cols.owner.th : cols.owner.en}>{copy.owner}</td>
-                  <td data-label={thai ? cols.action.th : cols.action.en}>{copy.action}</td>
-                  <td data-label={thai ? cols.output.th : cols.output.en}>
-                    <span className="kpi-latin">{copy.output}</span>
-                  </td>
-                </tr>
-              );
-            })}
+            {items.map((row) => (
+              <tr key={row.id}>
+                <th scope="row">{row.area}</th>
+                <td data-label={thai ? cols.inspect.th : cols.inspect.en}>{row.inspect}</td>
+                <td data-label={thai ? cols.evidence.th : cols.evidence.en}>{row.evidence}</td>
+                <td data-label={thai ? cols.status.th : cols.status.en}>
+                  <label className={`hsi-review-status is-${row.status.tone}`}>
+                    <span className="sr-only">{thai ? cols.status.th : cols.status.en}</span>
+                    <select value={row.status.id} onChange={(event) => patch(row.id, { status: event.target.value })}>
+                      {SYSTEMS_READINESS_STATUSES.map((item) => (
+                        <option key={item.id} value={item.id}>
+                          {item.label}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                </td>
+                <td data-label={thai ? cols.owner.th : cols.owner.en}>
+                  <label>
+                    <span className="sr-only">{thai ? cols.owner.th : cols.owner.en}</span>
+                    <input className="hsi-review-field" value={row.owner} onChange={(event) => patch(row.id, { owner: event.target.value })} />
+                  </label>
+                </td>
+                <td data-label={thai ? cols.action.th : cols.action.en}>
+                  <label>
+                    <span className="sr-only">{thai ? cols.action.th : cols.action.en}</span>
+                    <input className="hsi-review-field" value={row.action} onChange={(event) => patch(row.id, { action: event.target.value })} />
+                  </label>
+                </td>
+                <td data-label={thai ? cols.output.th : cols.output.en}>
+                  <span className="kpi-latin">{row.output}</span>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
+      </div>
+      <div className="hsi-review-save">
+        <button type="button" className="kpi-button bg-[#a2dc25] text-[#1a3a02]" onClick={saveSample}>
+          {thai ? "บันทึกตัวอย่าง" : "Save sample"}
+        </button>
+        {saved ? (
+          <p className="hsi-review-saved">{saved}</p>
+        ) : (
+          <p className="hsi-review-save-note">
+            {thai ? "การบันทึกอยู่บนอุปกรณ์นี้เท่านั้น ไม่ใช่สถานะ Ready ของโรงแรม" : "Save stays on this device. It is not a hotel Ready status."}
+          </p>
+        )}
       </div>
     </div>
   );

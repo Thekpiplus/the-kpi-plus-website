@@ -150,13 +150,13 @@ function listActions(index: number, total: number, onUp: () => void, onDown: () 
   return (
     <div className="crm-cs-metric-actions">
       <button type="button" className="crm-users-secondary" disabled={index === 0} onClick={onUp}>
-        ขึ้น
+        ขึ้น / Up
       </button>
       <button type="button" className="crm-users-secondary" disabled={index === total - 1} onClick={onDown}>
-        ลง
+        ลง / Down
       </button>
       <button type="button" className="crm-users-secondary" onClick={onRemove}>
-        ลบ
+        ลบ / Delete
       </button>
     </div>
   );
@@ -192,6 +192,7 @@ export function HotelSystemsPageEditor({
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
   const fileHolders = useRef<Partial<Record<VisualSlot, HTMLInputElement | null>>>({});
+  const fitLogoHolders = useRef<Record<string, HTMLInputElement | null>>({});
   const [tab, setTab] = useState<Tab>(isTab(initialTab) ? initialTab : "hero");
   const [meta, setMeta] = useState({
     title: initial.title,
@@ -224,6 +225,8 @@ export function HotelSystemsPageEditor({
     form: initial.content.form.visual.src,
     social: initial.content.seo.social.src,
   });
+  const [fitLogoPreviews, setFitLogoPreviews] = useState<Record<string, string>>({});
+  const [fitLogoClears, setFitLogoClears] = useState<Record<string, boolean>>({});
   const [clears, setClears] = useState<Record<VisualSlot, boolean>>({
     hero: false,
     assessment: false,
@@ -370,6 +373,9 @@ export function HotelSystemsPageEditor({
     (Object.keys(clears) as VisualSlot[]).forEach((slot) => {
       if (clears[slot]) data.set(CLEAR_FIELD_NAMES[slot], "1");
     });
+    content.fit.scenarios.forEach((row) => {
+      if (fitLogoClears[row.id]) data.set(`clearFitLogo-${row.id}`, "1");
+    });
     startTransition(async () => {
       setOk("");
       setStatus("");
@@ -426,19 +432,19 @@ export function HotelSystemsPageEditor({
         {pending ? hotelSystemsCmsNotice("pending") : "บันทึก / Save"}
       </button>
       <button className="crm-users-secondary" type="submit" name="intent" value="draft" disabled={pending}>
-        บันทึกฉบับร่าง
+        บันทึกฉบับร่าง / Save Draft
       </button>
       <button className="crm-users-secondary" type="submit" name="intent" value="preview" disabled={pending}>
-        บันทึกแล้วดูตัวอย่าง
+        บันทึกแล้วดูตัวอย่าง / Save and Preview
       </button>
       <button className="kpi-button" type="submit" name="intent" value="publish" disabled={pending} style={{ background: "#a2dc25", color: "#1a3a02" }}>
-        เผยแพร่
+        เผยแพร่ / Publish
       </button>
       <button className="crm-users-secondary" type="submit" name="intent" value="unpublish" disabled={pending}>
-        ยกเลิกเผยแพร่
+        ยกเลิกเผยแพร่ / Unpublish
       </button>
       <button type="button" className="crm-users-secondary" disabled={pending} onClick={() => setDialog("duplicate")}>
-        คัดลอกไปภาษาอื่น
+        คัดลอกไปภาษาอื่น / Duplicate to another language
       </button>
     </>
   );
@@ -482,6 +488,20 @@ export function HotelSystemsPageEditor({
             }}
             type="file"
             name={VISUAL_FILE_NAMES[slot]}
+            accept=".jpg,.jpeg,.png,.webp"
+            hidden
+            aria-hidden="true"
+            tabIndex={-1}
+          />
+        ))}
+        {content.fit.scenarios.map((row) => (
+          <input
+            key={`fit-logo-${row.id}`}
+            ref={(node) => {
+              fitLogoHolders.current[row.id] = node;
+            }}
+            type="file"
+            name={`fitLogoFile-${row.id}`}
             accept=".jpg,.jpeg,.png,.webp"
             hidden
             aria-hidden="true"
@@ -743,6 +763,12 @@ export function HotelSystemsPageEditor({
                   <Field label="Provider dependency (EN)">
                     <textarea className="crm-field" rows={2} value={row.providerEn || ""} onChange={(event) => patchContent({ ...content, services: { ...content.services, items: content.services.items.map((item, rowIndex) => (rowIndex === index ? { ...item, providerEn: event.target.value, approvalEn: event.target.value } : item)) } })} />
                   </Field>
+                  <Field label="Connector / API (ไทย)" hint="ไม่ใส่คีย์ API รหัสผ่าน หรือ URL ส่วนตัว">
+                    <textarea className="crm-field" rows={2} value={row.connectorTh || ""} onChange={(event) => patchContent({ ...content, services: { ...content.services, items: content.services.items.map((item, rowIndex) => (rowIndex === index ? { ...item, connectorTh: event.target.value } : item)) } })} />
+                  </Field>
+                  <Field label="Connector / API (EN)">
+                    <textarea className="crm-field" rows={2} value={row.connectorEn || ""} onChange={(event) => patchContent({ ...content, services: { ...content.services, items: content.services.items.map((item, rowIndex) => (rowIndex === index ? { ...item, connectorEn: event.target.value } : item)) } })} />
+                  </Field>
                   {listActions(
                     index,
                     content.services.items.length,
@@ -785,6 +811,8 @@ export function HotelSystemsPageEditor({
                           status: "not_configured",
                           providerTh: "",
                           providerEn: "",
+                          connectorTh: "",
+                          connectorEn: "",
                           verified: false,
                         },
                       ],
@@ -1149,6 +1177,7 @@ export function HotelSystemsPageEditor({
           {tab === "workflow" ? (
             <section className="crm-cms-block">
               <h2>Hotel Systems Implementation Workflow</h2>
+              <p className="crm-cms-editor-note">ห้าขั้น Discover, Map, Configure, Test, Handover · รหัส discover, map, configure, test, handover · แสดง Owner Input Action Output Approval point Dependency Next decision · Go-live gate ต้องมีผลทดสอบที่อนุมัติแล้ว · หน้าสาธารณะใช้ไทม์ไลน์ HTML ไม่ใช้รูปทีมประชุม</p>
               <Field label="หัวข้อ">
                 <input className="crm-field" value={content.workflow.title} onChange={(event) => patchContent({ ...content, workflow: { ...content.workflow, title: event.target.value } })} />
               </Field>
@@ -1273,6 +1302,7 @@ export function HotelSystemsPageEditor({
           {tab === "fit" ? (
             <section className="crm-cms-block">
               <h2>Hotel Technology Landscape</h2>
+              <p className="crm-cms-editor-note">แผนที่หมวด 6 กลุ่ม ไม่ใช่โลโก้วอลล์ · โลโก้ใช้ &lt;img&gt; เฉพาะไฟล์ที่อนุมัติหรือตัวอย่างใน /public · ห้ามวาดโลโก้ด้วย SVG หรือข้อความ · อย่าทำเครื่องหมาย Verified integration ทั้งตาราง · ติดป้าย Examples / Subject to technical verification</p>
               <Field label="หัวข้อ">
                 <input className="crm-field" value={content.fit.title} onChange={(event) => patchContent({ ...content, fit: { ...content.fit, title: event.target.value } })} />
               </Field>
@@ -1293,6 +1323,64 @@ export function HotelSystemsPageEditor({
                   <Field label="Logo src (ใช้ <img> เมื่อมีไฟล์จริงใน /public เท่านั้น)">
                     <input className="crm-field" value={row.logoSrc || ""} onChange={(event) => patchContent({ ...content, fit: { ...content.fit, scenarios: content.fit.scenarios.map((item, rowIndex) => (rowIndex === index ? { ...item, logoSrc: event.target.value } : item)) } })} />
                   </Field>
+                  <Field label="แทนที่โลโก้ / Replace logo" hint="ไฟล์ที่อนุมัติหรือตัวอย่างใน /public เท่านั้น">
+                    <input
+                      className="crm-field"
+                      type="file"
+                      accept=".jpg,.jpeg,.png,.webp"
+                      onChange={(event) => {
+                        const file = event.target.files?.[0];
+                        if (!file) return;
+                        const transfer = new DataTransfer();
+                        transfer.items.add(file);
+                        const holder = fitLogoHolders.current[row.id];
+                        if (holder) holder.files = transfer.files;
+                        setFitLogoPreviews((current) => ({ ...current, [row.id]: URL.createObjectURL(file) }));
+                        setFitLogoClears((current) => ({ ...current, [row.id]: false }));
+                        if (row.logoStatus === "replace" || row.logoStatus === "placeholder" || !row.logoStatus) {
+                          patchContent({
+                            ...content,
+                            fit: {
+                              ...content.fit,
+                              scenarios: content.fit.scenarios.map((item, rowIndex) => (rowIndex === index ? { ...item, logoStatus: "sample" } : item)),
+                            },
+                          });
+                        } else {
+                          markDirty();
+                        }
+                      }}
+                    />
+                  </Field>
+                  {fitLogoClears[row.id] ? null : (
+                    <ImagePreview
+                      src={fitLogoPreviews[row.id] || row.logoSrc || ""}
+                      alt={row.example || row.categoryEn || "Platform logo"}
+                      recommended="โลโก้แพลตฟอร์มที่อนุมัติหรือตัวอย่าง"
+                    />
+                  )}
+                  {(fitLogoPreviews[row.id] || row.logoSrc) && !fitLogoClears[row.id] ? (
+                    <button
+                      type="button"
+                      className="crm-users-secondary"
+                      onClick={() => {
+                        const holder = fitLogoHolders.current[row.id];
+                        if (holder) holder.value = "";
+                        setFitLogoClears((current) => ({ ...current, [row.id]: true }));
+                        setFitLogoPreviews((current) => ({ ...current, [row.id]: "" }));
+                        patchContent({
+                          ...content,
+                          fit: {
+                            ...content.fit,
+                            scenarios: content.fit.scenarios.map((item, rowIndex) =>
+                              rowIndex === index ? { ...item, logoSrc: "", logoStatus: "replace" } : item,
+                            ),
+                          },
+                        });
+                      }}
+                    >
+                      ลบโลโก้ / Remove logo
+                    </button>
+                  ) : null}
                   <Field label="สถานะโลโก้ / Logo usage" hint="โลโก้ที่เผยแพร่ต้องเป็น Approved หรือ Sample">
                     <select className="crm-field" value={row.logoStatus || "replace"} onChange={(event) => patchContent({ ...content, fit: { ...content.fit, scenarios: content.fit.scenarios.map((item, rowIndex) => (rowIndex === index ? { ...item, logoStatus: event.target.value } : item)) } })}>
                       {VISUAL_STATUS_OPTIONS.map((item) => (
@@ -1434,6 +1522,9 @@ export function HotelSystemsPageEditor({
               </Field>
               <Field label="คำนำ">
                 <textarea className="crm-field" rows={3} value={content.inventory.lead} onChange={(event) => patchContent({ ...content, inventory: { ...content.inventory, lead: event.target.value } })} />
+              </Field>
+              <Field label="ป้าย Sample (สาธารณะ)" hint="ต้องมีคำว่า Sample หรือ ตัวอย่าง ก่อนเผยแพร่">
+                <input className="crm-field" value={content.inventory.sampleLabel} onChange={(event) => patchContent({ ...content, inventory: { ...content.inventory, sampleLabel: event.target.value } })} />
               </Field>
               <Field label="หัวข้อ System Inventory">
                 <input className="crm-field" value={content.inventory.systemsTitle} onChange={(event) => patchContent({ ...content, inventory: { ...content.inventory, systemsTitle: event.target.value } })} />
@@ -1998,6 +2089,9 @@ export function HotelSystemsPageEditor({
               <Field label="คำนำ">
                 <textarea className="crm-field" rows={3} value={content.testing.lead} onChange={(event) => patchContent({ ...content, testing: { ...content.testing, lead: event.target.value } })} />
               </Field>
+              <Field label="ป้าย Sample (สาธารณะ)" hint="ต้องมีคำว่า Sample หรือ ตัวอย่าง ก่อนเผยแพร่">
+                <input className="crm-field" value={content.testing.sampleLabel} onChange={(event) => patchContent({ ...content, testing: { ...content.testing, sampleLabel: event.target.value } })} />
+              </Field>
               <Field label="หัวข้อ Error Handling">
                 <input className="crm-field" value={content.testing.errorTitle} onChange={(event) => patchContent({ ...content, testing: { ...content.testing, errorTitle: event.target.value } })} />
               </Field>
@@ -2182,6 +2276,15 @@ export function HotelSystemsPageEditor({
                   <Field label="แหล่งที่มา / Source">
                     <input className="crm-field" value={row.source} onChange={(event) => patchContent({ ...content, measure: { ...content.measure, kpis: content.measure.kpis.map((item, rowIndex) => (rowIndex === index ? { ...item, source: event.target.value } : item)) } })} />
                   </Field>
+                  <Field label="ผู้รับผิดชอบ (ไทย)">
+                    <input className="crm-field" value={row.ownerTh} onChange={(event) => patchContent({ ...content, measure: { ...content.measure, kpis: content.measure.kpis.map((item, rowIndex) => (rowIndex === index ? { ...item, ownerTh: event.target.value } : item)) } })} />
+                  </Field>
+                  <Field label="Owner (EN)">
+                    <input className="crm-field" value={row.ownerEn} onChange={(event) => patchContent({ ...content, measure: { ...content.measure, kpis: content.measure.kpis.map((item, rowIndex) => (rowIndex === index ? { ...item, ownerEn: event.target.value } : item)) } })} />
+                  </Field>
+                  <Field label="วันที่อัปเดต / Updated">
+                    <input className="crm-field" type="date" value={row.updatedAt} onChange={(event) => patchContent({ ...content, measure: { ...content.measure, kpis: content.measure.kpis.map((item, rowIndex) => (rowIndex === index ? { ...item, updatedAt: event.target.value } : item)) } })} />
+                  </Field>
                   <Field label="คำนิยามไทย">
                     <textarea className="crm-field" rows={2} value={row.definitionTh} onChange={(event) => patchContent({ ...content, measure: { ...content.measure, kpis: content.measure.kpis.map((item, rowIndex) => (rowIndex === index ? { ...item, definitionTh: event.target.value } : item)) } })} />
                   </Field>
@@ -2225,7 +2328,7 @@ export function HotelSystemsPageEditor({
                 onClick={() =>
                   patchContent({
                     ...content,
-                    measure: { ...content.measure, kpis: [...content.measure.kpis, { id: newSystemsItemId("kpi"), nameTh: "", nameEn: "", period: "", market: "", source: "", definitionTh: "", definitionEn: "", unit: "", dataStatus: "draft", hideUntilData: true, publicationApproved: false }] },
+                    measure: { ...content.measure, kpis: [...content.measure.kpis, { id: newSystemsItemId("kpi"), nameTh: "", nameEn: "", period: "", market: "", source: "", definitionTh: "", definitionEn: "", unit: "", dataStatus: "draft", ownerTh: "", ownerEn: "", updatedAt: "", hideUntilData: true, publicationApproved: false }] },
                   })
                 }
               >
@@ -2483,6 +2586,70 @@ export function HotelSystemsPageEditor({
               <Field label="ป้ายนโยบายความเป็นส่วนตัว">
                 <input className="crm-field" value={content.form.labels.privacy} onChange={(event) => patchLabels({ privacy: event.target.value })} />
               </Field>
+              <h3>ตัวเลือกเป้าหมาย / Goal options</h3>
+              {(content.form.goals ?? []).map((row, index) => (
+                <article key={row.id} className="crm-cms-block">
+                  <Field label={`รหัสเป้าหมาย ${index + 1} / Goal id`}>
+                    <input
+                      className="crm-field"
+                      value={row.id}
+                      onChange={(event) =>
+                        patchContent({
+                          ...content,
+                          form: {
+                            ...content.form,
+                            goals: content.form.goals.map((item, rowIndex) => (rowIndex === index ? { ...item, id: event.target.value } : item)),
+                          },
+                        })
+                      }
+                    />
+                  </Field>
+                  <Field label={`เป้าหมาย ${index + 1} (ไทย)`}>
+                    <input
+                      className="crm-field"
+                      value={row.th}
+                      onChange={(event) =>
+                        patchContent({
+                          ...content,
+                          form: {
+                            ...content.form,
+                            goals: content.form.goals.map((item, rowIndex) => (rowIndex === index ? { ...item, th: event.target.value } : item)),
+                          },
+                        })
+                      }
+                    />
+                  </Field>
+                  <Field label="Goal (EN)">
+                    <input
+                      className="crm-field"
+                      value={row.en}
+                      onChange={(event) =>
+                        patchContent({
+                          ...content,
+                          form: {
+                            ...content.form,
+                            goals: content.form.goals.map((item, rowIndex) => (rowIndex === index ? { ...item, en: event.target.value } : item)),
+                          },
+                        })
+                      }
+                    />
+                  </Field>
+                  {listActions(
+                    index,
+                    content.form.goals.length,
+                    () => patchContent({ ...content, form: { ...content.form, goals: moveItem(content.form.goals, index, -1) } }),
+                    () => patchContent({ ...content, form: { ...content.form, goals: moveItem(content.form.goals, index, 1) } }),
+                    () => patchContent({ ...content, form: { ...content.form, goals: content.form.goals.filter((_, rowIndex) => rowIndex !== index) } }),
+                  )}
+                </article>
+              ))}
+              <button
+                type="button"
+                className="crm-users-secondary"
+                onClick={() => patchContent({ ...content, form: { ...content.form, goals: [...(content.form.goals ?? []), emptyLine("goal")] } })}
+              >
+                เพิ่มตัวเลือกเป้าหมาย / Add goal option
+              </button>
               <VisualFields slot="form" visual={content.form.visual} hint="Dummy 1200×600 · 2:1 · display 420×210 · /images/hotel-systems-contact-process-placeholder.webp · ป้าย What Happens Next — Sample implementation process · หน้าสาธารณะใช้แผนภาพ HTML และรายการ What Happens Next เป็นหลัก ไม่ใช้รูปบุคคลที่สร้างด้วย AI" />
             </section>
           ) : null}
@@ -2505,13 +2672,13 @@ export function HotelSystemsPageEditor({
                   </Field>
                   <div className="crm-cs-metric-actions">
                     <button type="button" className="crm-users-secondary" disabled={index === 0} onClick={() => patchContent({ ...content, faqs: moveItem(content.faqs, index, -1) })}>
-                      ขึ้น
+                      ขึ้น / Up
                     </button>
                     <button type="button" className="crm-users-secondary" disabled={index === content.faqs.length - 1} onClick={() => patchContent({ ...content, faqs: moveItem(content.faqs, index, 1) })}>
-                      ลง
+                      ลง / Down
                     </button>
                     <button type="button" className="crm-users-secondary" onClick={() => patchContent({ ...content, faqs: content.faqs.filter((_, rowIndex) => rowIndex !== index) })}>
-                      ลบ
+                      ลบ / Delete
                     </button>
                   </div>
                 </article>
@@ -2633,11 +2800,11 @@ export function HotelSystemsPageEditor({
       {dialog ? (
         <div className="crm-dialog" role="dialog" aria-modal="true" aria-labelledby="hotel-systems-dialog-title">
           <div className="crm-dialog-card">
-            <h2 id="hotel-systems-dialog-title">{dialog === "unpublish" ? "ยกเลิกเผยแพร่" : "คัดลอกไปภาษาอื่น"}</h2>
+            <h2 id="hotel-systems-dialog-title">{dialog === "unpublish" ? "ยกเลิกเผยแพร่ / Unpublish" : "คัดลอกไปภาษาอื่น / Duplicate to another language"}</h2>
             {dialog === "unpublish" ? (
-              <p>หน้าสาธารณะจะกลับไปใช้เนื้อหาในโค้ดจนกว่าจะเผยแพร่อีกครั้ง</p>
+              <p>หน้าสาธารณะจะกลับไปใช้เนื้อหาในโค้ดจนกว่าจะเผยแพร่อีกครั้ง / The public page will use the in-code copy until this document is published again.</p>
             ) : (
-              <Field label="ภาษาปลายทาง">
+              <Field label="ภาษาปลายทาง / Destination language">
                 <select className="crm-field" value={targetLocale} onChange={(event) => setTargetLocale(event.target.value)}>
                   {LOCALE_OPTIONS.filter((item) => item.id !== meta.locale).map((item) => (
                     <option key={item.id} value={item.id}>
@@ -2649,7 +2816,7 @@ export function HotelSystemsPageEditor({
             )}
             <div className="crm-cs-metric-actions">
               <button type="button" className="crm-users-secondary" onClick={() => setDialog(null)}>
-                ยกเลิก
+                ยกเลิก / Cancel
               </button>
               <button
                 type="button"
@@ -2662,7 +2829,7 @@ export function HotelSystemsPageEditor({
                   else duplicateToLocale();
                 }}
               >
-                ยืนยัน
+                ยืนยัน / Confirm
               </button>
             </div>
           </div>

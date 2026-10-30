@@ -160,7 +160,28 @@ export async function saveHotelSystemsPage(formData: FormData): Promise<SystemsC
     applyVisualUpload(formData, content.form.visual, "formImageFile", "clearFormImage"),
     applyVisualUpload(formData, content.seo.social, "ogImageFile", "clearOgImage"),
   ]);
-  const uploadError = uploads.find(Boolean);
+  const logoUploads: Array<string | null> = [];
+  for (const row of content.fit.scenarios) {
+    const shim: CmsSystemsVisual = {
+      src: row.logoSrc,
+      altTh: "",
+      altEn: "",
+      status: row.logoStatus || "replace",
+      label: "",
+      caption: "",
+      source: "",
+      approvalNote: "",
+      publicationApproved: false,
+    };
+    const logoError = await applyVisualUpload(formData, shim, `fitLogoFile-${row.id}`, `clearFitLogo-${row.id}`);
+    logoUploads.push(logoError);
+    row.logoSrc = shim.src;
+    if (!row.logoSrc) row.logoStatus = "replace";
+    else if (shim.status === "sample" && (row.logoStatus === "replace" || row.logoStatus === "placeholder" || !row.logoStatus)) {
+      row.logoStatus = "sample";
+    }
+  }
+  const uploadError = [...uploads, ...logoUploads].find(Boolean);
   if (uploadError) return { ok: false, error: uploadError };
 
   const seoTitle = String(formData.get("seoTitle") ?? "").trim();

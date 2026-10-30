@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Field, SaveBar, toDateInput } from "@/components/b2b-ops/ui";
 import {
   MASKED_VALUE,
@@ -150,6 +150,17 @@ export type SysRecordDraft = {
 
 function nid(prefix: string) {
   return `${prefix}_${Math.random().toString(36).slice(2, 10)}`;
+}
+
+function ProgressNote({ row }: { row?: SysProjectRow }) {
+  if (!row) return null;
+  return (
+    <p className="b2b-muted">
+      <span className={`ads-progress-badge is-${row.progress.readiness}`}>{row.progress.countLabel}</span>
+      {" · "}
+      {row.progress.percent}% (งานเสร็จ ÷ งานทั้งหมด × 100) · {SYS_READINESS_LABEL[row.progress.readiness]}
+    </p>
+  );
 }
 
 export function emptySysDraft(ownerId = "", workstream: SysWorkstream = "properties"): SysRecordDraft {
@@ -400,8 +411,25 @@ export function SystemsRecordForm({
   onCloseRecord?: () => void;
 }) {
   const [tab, setTab] = useState<SysFormTab>(webSectionFormTab(section));
-  const patch = (next: Partial<SysRecordDraft>) => onChange({ ...draft, ...next });
-  const saveBar = <SaveBar pending={pending} ok={ok} error={error} onSave={onSave} saveLabel={draft.id ? "บันทึก" : "สร้างโปรเจกต์"} />;
+  const [dirty, setDirty] = useState(false);
+  const patch = (next: Partial<SysRecordDraft>) => {
+    setDirty(true);
+    onChange({ ...draft, ...next });
+  };
+  useEffect(() => {
+    if (ok || error) setDirty(false);
+  }, [ok, error]);
+  const saveBar = (
+    <SaveBar
+      pending={pending}
+      ok={ok}
+      error={error}
+      dirty={dirty}
+      idle={dirty ? "มีการแก้ไขที่ยังไม่บันทึก / Unsaved changes" : "พร้อมบันทึก / Ready to save"}
+      onSave={onSave}
+      saveLabel={draft.id ? "บันทึก" : "สร้างโปรเจกต์"}
+    />
+  );
   const providerValue = access.canSeePrivateIds || !draft.providerContact ? draft.providerContact : MASKED_VALUE;
 
   return (
@@ -621,6 +649,7 @@ export function SystemsRecordForm({
 
         {tab === "inventory" ? (
           <div className="web-ops-list" role="tabpanel" id="sys-panel-inventory" aria-labelledby="sys-tab-inventory">
+            <p className="b2b-muted">อย่าใส่รหัสผ่าน คีย์ API หรือโทเคนในช่อง API/Connector · ใช้สถานะ Connected เมื่อตรวจทางเทคนิคแล้วเท่านั้น</p>
             {draft.inventory.map((item, index) => (
               <article key={item.id || index} className="web-ops-list-row">
                 <input className="crm-field" value={item.system} placeholder="System" onChange={(event) => patch({ inventory: draft.inventory.map((row, i) => (i === index ? { ...row, system: event.target.value } : row)) })} />
@@ -747,6 +776,7 @@ export function SystemsRecordForm({
 
         {tab === "readiness" ? (
           <div className="web-ops-list" role="tabpanel" id="sys-panel-readiness" aria-labelledby="sys-tab-readiness">
+            <ProgressNote row={row} />
             {draft.readinessItems.map((item, index) => (
               <article key={item.id || index} className="web-ops-list-row">
                 <select className="crm-select" value={item.area} onChange={(event) => patch({ readinessItems: draft.readinessItems.map((row, i) => (i === index ? { ...row, area: event.target.value as SysReadinessRow["area"] } : row)) })}>
@@ -834,6 +864,7 @@ export function SystemsRecordForm({
 
         {tab === "issues" ? (
           <div className="web-ops-list" role="tabpanel" id="sys-panel-issues" aria-labelledby="sys-tab-issues">
+            <ProgressNote row={row} />
             {draft.issues.map((item, index) => (
               <article key={item.id || index} className="web-ops-list-row">
                 <input className="crm-field" value={item.issue} placeholder="Issue" onChange={(event) => patch({ issues: draft.issues.map((row, i) => (i === index ? { ...row, issue: event.target.value } : row)) })} />

@@ -2,10 +2,12 @@ import type { CmsSystemsLine, CmsSystemsTestCase } from "@/lib/cms/hotel-systems
 import {
   SYSTEMS_TESTING_COLUMNS,
   SYSTEMS_TESTING_ERROR_FLOW,
+  SYSTEMS_TESTING_ERROR_PATH,
   SYSTEMS_TESTING_ISSUE_FIELDS,
   SYSTEMS_TESTING_STATUSES,
   SYSTEMS_TESTING_VISUAL,
   systemsRenderableSrc,
+  systemsSampleSafeText,
   systemsTestingPassedIsSample,
   systemsTestingSeverity,
   systemsTestingStatus,
@@ -30,12 +32,12 @@ function caseCopy(row: CmsSystemsTestCase, thai: boolean, sample: boolean) {
     name: thai ? row.caseTh || row.caseEn : row.caseEn || row.caseTh,
     trigger: thai ? row.triggerTh || row.triggerEn : row.triggerEn || row.triggerTh,
     expected: thai ? row.expectedTh || row.expectedEn : row.expectedEn || row.expectedTh,
-    actual: thai ? row.actualTh || row.actualEn : row.actualEn || row.actualTh,
+    actual: systemsSampleSafeText(thai ? row.actualTh || row.actualEn : row.actualEn || row.actualTh),
     status: systemsTestingStatus(statusId),
     owner: thai ? row.ownerTh || row.ownerEn : row.ownerEn || row.ownerTh,
-    evidence: thai ? row.evidenceTh || row.evidenceEn : row.evidenceEn || row.evidenceTh,
+    evidence: systemsSampleSafeText(thai ? row.evidenceTh || row.evidenceEn : row.evidenceEn || row.evidenceTh),
     testedDate: row.testedDate,
-    issue: thai ? row.issueTh || row.issueEn : row.issueEn || row.issueTh,
+    issue: systemsSampleSafeText(thai ? row.issueTh || row.issueEn : row.issueEn || row.issueTh),
     severity: systemsTestingSeverity(row.severity),
     provider: thai ? row.providerTh || row.providerEn : row.providerEn || row.providerTh,
     next: thai ? row.nextTh || row.nextEn : row.nextEn || row.nextTh,
@@ -47,9 +49,11 @@ function caseCopy(row: CmsSystemsTestCase, thai: boolean, sample: boolean) {
 export function HotelSystemsTesting({
   locale,
   src,
+  alt,
   status,
   label,
   caption,
+  sampleLabel,
   casesTitle,
   errorTitle,
   cases,
@@ -57,9 +61,11 @@ export function HotelSystemsTesting({
 }: {
   locale: Locale;
   src?: string;
+  alt?: string;
   status?: string;
   label?: string;
   caption?: string;
+  sampleLabel?: string;
   casesTitle?: string;
   errorTitle?: string;
   cases: CmsSystemsTestCase[];
@@ -70,13 +76,14 @@ export function HotelSystemsTesting({
   const fileSrc = systemsRenderableSrc(src, status);
   const cols = SYSTEMS_TESTING_COLUMNS;
   const issueCols = SYSTEMS_TESTING_ISSUE_FIELDS;
-  const displayLabel = label?.trim() || SYSTEMS_TESTING_VISUAL.labelEn;
+  const displaySample = sampleLabel?.trim() || SYSTEMS_TESTING_VISUAL.labelEn;
+  const displayLabel = label?.trim() || displaySample;
   const displayCaption = caption?.trim() || (thai ? SYSTEMS_TESTING_VISUAL.captionTh : SYSTEMS_TESTING_VISUAL.captionEn);
+  const displayAlt = alt?.trim() || (thai ? SYSTEMS_TESTING_VISUAL.altTh : SYSTEMS_TESTING_VISUAL.altEn);
   const copies = cases.map((row) => caseCopy(row, thai, sample));
   const flow = errorSteps.length
     ? errorSteps
     : SYSTEMS_TESTING_ERROR_FLOW.map((item) => ({ id: item.id, th: item.th, en: item.en }));
-  const usedStatuses = SYSTEMS_TESTING_STATUSES.filter((item) => copies.some((row) => row.status.id === item.id));
 
   return (
     <div className="hsi-qa">
@@ -91,20 +98,21 @@ export function HotelSystemsTesting({
           <div className="hsi-qa-photo">
             <img
               src={fileSrc}
-              alt={thai ? SYSTEMS_TESTING_VISUAL.altTh : SYSTEMS_TESTING_VISUAL.altEn}
+              alt={displayAlt}
               width={SYSTEMS_TESTING_VISUAL.displayWidth}
               height={SYSTEMS_TESTING_VISUAL.displayHeight}
               style={{ aspectRatio: `${SYSTEMS_TESTING_VISUAL.displayWidth} / ${SYSTEMS_TESTING_VISUAL.displayHeight}` }}
               loading="lazy"
               decoding="async"
             />
-            {sample ? <span className="hsi-visual-badge">Hotel Systems Test Cases and QA — Sample</span> : null}
+            {sample ? <span className="hsi-visual-badge">{displaySample}</span> : null}
           </div>
         ) : (
           <div className="hsi-qa-board" role="img" aria-label={thai ? SYSTEMS_TESTING_VISUAL.altTh : SYSTEMS_TESTING_VISUAL.altEn}>
-            {sample ? <span className="hsi-visual-badge">Hotel Systems Test Cases and QA — Sample</span> : null}
+            {sample ? <span className="hsi-visual-badge">{displaySample}</span> : null}
             <p className="hsi-mock-kicker kpi-latin">Sample data · No guest or payment data</p>
             <p className="hsi-qa-board-title">{thai ? "เคสทดสอบ ไม่ใช่ผลโรงแรมจริง" : "Test cases, not a live hotel result"}</p>
+            <p className="hsi-qa-path kpi-latin">{SYSTEMS_TESTING_ERROR_PATH}</p>
             <ol className="hsi-qa-flow-preview">
               {SYSTEMS_TESTING_ERROR_FLOW.map((item) => (
                 <li key={item.id}>
@@ -127,7 +135,7 @@ export function HotelSystemsTesting({
       </p>
 
       <ul className="hsi-qa-legend" aria-label={thai ? "คำอธิบายสถานะทดสอบตัวอย่าง" : "Sample test status legend"}>
-        {usedStatuses.map((item) => (
+        {SYSTEMS_TESTING_STATUSES.map((item) => (
           <li key={item.id}>
             <span className={`hsi-status is-${item.tone} kpi-latin`}>{item.label}</span>
           </li>
@@ -136,6 +144,7 @@ export function HotelSystemsTesting({
 
       <div className="hsi-qa-block">
         <h3 className="hsi-qa-heading kpi-latin">{errorTitle?.trim() || "Error Handling"}</h3>
+        <p className="hsi-qa-path kpi-latin">{SYSTEMS_TESTING_ERROR_PATH}</p>
         <ol className="hsi-qa-flow">
           {flow.map((item, index) => {
             const step = SYSTEMS_TESTING_ERROR_FLOW[index] || SYSTEMS_TESTING_ERROR_FLOW.find((row) => row.id === item.id);

@@ -30,6 +30,7 @@ function matrixCopy(row: CmsSystemsResponsibilityRow, thai: boolean) {
 export function HotelSystemsResponsibility({
   locale,
   src,
+  alt,
   status,
   label,
   caption,
@@ -42,6 +43,7 @@ export function HotelSystemsResponsibility({
 }: {
   locale: Locale;
   src?: string;
+  alt?: string;
   status?: string;
   label?: string;
   caption?: string;
@@ -58,6 +60,7 @@ export function HotelSystemsResponsibility({
   const cols = SYSTEMS_SCOPE_COLUMNS;
   const displayLabel = label?.trim() || SYSTEMS_SCOPE_VISUAL.labelEn;
   const displayCaption = caption?.trim() || (thai ? SYSTEMS_SCOPE_VISUAL.captionTh : SYSTEMS_SCOPE_VISUAL.captionEn);
+  const displayAlt = alt?.trim() || (thai ? SYSTEMS_SCOPE_VISUAL.altTh : SYSTEMS_SCOPE_VISUAL.altEn);
   const support = rows.find((row) => row.id === "support") || rows[0];
   const hotel = rows.find((row) => row.id === "hotel") || rows[1];
   const events = matrix.map((row) => matrixCopy(row, thai));
@@ -75,7 +78,7 @@ export function HotelSystemsResponsibility({
           <div className="hsi-resp-photo">
             <img
               src={fileSrc}
-              alt={thai ? SYSTEMS_SCOPE_VISUAL.altTh : SYSTEMS_SCOPE_VISUAL.altEn}
+              alt={displayAlt}
               width={SYSTEMS_SCOPE_VISUAL.displayWidth}
               height={SYSTEMS_SCOPE_VISUAL.displayHeight}
               style={{ aspectRatio: `${SYSTEMS_SCOPE_VISUAL.displayWidth} / ${SYSTEMS_SCOPE_VISUAL.displayHeight}` }}

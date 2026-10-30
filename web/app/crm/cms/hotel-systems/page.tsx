@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { ensureHotelSystemsPageFromSite } from "@/lib/cms/hotel-systems-page-actions";
 
-export default async function IndependentHotelCmsRedirect({
+export default async function HotelSystemsCmsRedirect({
   searchParams,
 }: {
   searchParams: Promise<{ tab?: string }>;

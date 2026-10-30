@@ -16,6 +16,7 @@ export type SystemsPlatformKind =
   | "existing_client_system"
   | "example_category"
   | "supported_via_provider"
+  | "verified_integration"
   | "requires_verification"
   | "not_yet_verified"
   | "not_in_scope";
@@ -37,6 +38,12 @@ export function systemsRenderableSrc(src?: string, status?: string) {
   if (!next) return "";
   if (systemsIsLibraryPlaceholder(next) && systemsShowsSampleBadge(status)) return "";
   return next;
+}
+
+export function systemsEnquiryVisualSrc(src?: string, status?: string) {
+  if (status !== "approved" && status !== "real") return "";
+  if (systemsIsLibraryPlaceholder(src)) return "";
+  return src?.trim() || "";
 }
 
 const VISUAL_META = {
@@ -108,8 +115,8 @@ export const SYSTEMS_HERO_VISUAL = {
   ...visual(
     "implementation-hero",
     "Sample Architecture",
-    "แผนภาพตัวอย่าง Hotel System Architecture และ Data Flow แสดง Website ไป Booking Engine ไป PMS ไป Channel Manager ไป OTA และ Reporting ก่อนถึงทีมโรงแรม พร้อมสถานะ Needs Mapping Pending Access Requires Provider Support และ Not Configured ไม่ใช่รูปโน้ตบุ๊กทั่วไป และไม่ใช่โรงแรมลูกค้าจริง",
-    "Sample Hotel System Architecture and Data Flow diagram showing Website to Booking Engine to PMS to Channel Manager to OTA and Reporting, then to the hotel team, with Needs Mapping, Pending Access, Requires Provider Support, and Not Configured statuses. Not a generic laptop photo and not a live client hotel.",
+    "แผนภาพตัวอย่าง Hotel System Architecture and Data Flow แสดง PMS ไป Channel Manager ไป OTA หรือ Booking Engine แล้วไป Reporting พร้อมสถานะ Needs Mapping Pending Access Requires Provider Support และ Not Configured ไม่ใช่รูปโน้ตบุ๊กทั่วไป และไม่ใช่โรงแรมลูกค้าจริง",
+    "Sample Hotel System Architecture and Data Flow diagram showing PMS to Channel Manager to OTA or Booking Engine, then Reporting, with Needs Mapping, Pending Access, Requires Provider Support, and Not Configured statuses. Not a generic laptop photo and not a live client hotel.",
     560,
     350,
   ),
@@ -123,37 +130,18 @@ export const SYSTEMS_HERO_VISUAL = {
 };
 
 export const SYSTEMS_HERO_LEGEND = [
-  { id: "connected", label: "Connected", tone: "green" },
   { id: "needs_mapping", label: "Needs Mapping", tone: "yellow" },
   { id: "requires_provider_support", label: "Requires Provider Support", tone: "amber" },
   { id: "pending_access", label: "Pending Access", tone: "yellow" },
-  { id: "not_configured", label: "Not Configured", tone: "red" },
+  { id: "not_configured", label: "Not Configured", tone: "muted" },
 ] as const;
+
+export const SYSTEMS_HERO_PATH = "PMS → Channel Manager → OTA / Booking Engine → Reporting";
 
 export const SYSTEMS_HERO_FLOW = [
   {
-    id: "website",
-    num: "01",
-    titleTh: "Website",
-    titleEn: "Website",
-    status: "needs_mapping",
-    statusLabel: "Needs Mapping",
-    bodyTh: "หน้าสาธารณะและเส้นทางจอง ยังต้องจับคู่กับระบบจอง",
-    bodyEn: "Public pages and the booking path. Still needs mapping to the engine.",
-  },
-  {
-    id: "engine",
-    num: "02",
-    titleTh: "Booking Engine",
-    titleEn: "Booking Engine",
-    status: "not_configured",
-    statusLabel: "Not Configured",
-    bodyTh: "ยังไม่ได้ตั้งค่าในขอบเขตตัวอย่างนี้",
-    bodyEn: "Not configured in this sample scope.",
-  },
-  {
     id: "pms",
-    num: "03",
+    num: "01",
     titleTh: "PMS",
     titleEn: "PMS",
     status: "needs_mapping",
@@ -163,7 +151,7 @@ export const SYSTEMS_HERO_FLOW = [
   },
   {
     id: "channel",
-    num: "04",
+    num: "02",
     titleTh: "Channel Manager",
     titleEn: "Channel Manager",
     status: "pending_access",
@@ -173,9 +161,9 @@ export const SYSTEMS_HERO_FLOW = [
   },
   {
     id: "distribution",
-    num: "05",
-    titleTh: "OTA / Distribution",
-    titleEn: "OTA / Distribution",
+    num: "03",
+    titleTh: "OTA / Booking Engine",
+    titleEn: "OTA / Booking Engine",
     status: "requires_provider_support",
     statusLabel: "Requires Provider Support",
     bodyTh: "ตัวเชื่อมหรือ API ต้องตรวจกับผู้ให้บริการ",
@@ -183,13 +171,13 @@ export const SYSTEMS_HERO_FLOW = [
   },
   {
     id: "reporting",
-    num: "06",
-    titleTh: "Reporting / Hotel Team",
-    titleEn: "Reporting / Hotel Team",
+    num: "04",
+    titleTh: "Reporting",
+    titleEn: "Reporting",
     status: "not_configured",
     statusLabel: "Not Configured",
-    bodyTh: "รายงานและผู้รับผิดชอบหลัง Go-live ยังไม่ได้ตั้งค่า",
-    bodyEn: "Reporting and the post go-live owner are not configured in this sample.",
+    bodyTh: "รายงานหลัง Go-live ยังไม่ได้ตั้งค่าในตัวอย่างนี้",
+    bodyEn: "Post go-live reporting is not configured in this sample.",
   },
 ] as const;
 
@@ -197,8 +185,8 @@ export const SYSTEMS_ASSESSMENT_VISUAL = {
   ...visual(
     "review",
     "Sample Hotel Systems Review and Data Consistency Audit",
-    "ตารางตัวอย่าง Hotel Systems Review และ Data Consistency Audit แสดงการเทียบประเภทห้อง ราคา และห้องว่างแบบปกปิดข้อมูล พร้อมสถานะ Needs Review Pending Access และ Not Configured ไม่ใช่ผลตรวจโรงแรมจริง และไม่ใช่รูปประชุมทีม",
-    "Sample Hotel Systems Review and Data Consistency Audit showing a redacted room, rate, and availability comparison with Needs Review, Pending Access, and Not Configured statuses. Not a live hotel diagnosis and not a team-meeting photo.",
+    "ตารางตัวอย่าง Hotel Systems Review และ Data Consistency Audit แสดงการเทียบประเภทห้อง ราคา และห้องว่างแบบปกปิด System Inventory Integration checklist และแดชบอร์ดที่ปิดข้อมูลส่วนตัว พร้อมสถานะ Needs Review Pending Access Blocked และ Not Configured ไม่ใช่ผลตรวจโรงแรมจริง และไม่ใช่รูปประชุมทีม",
+    "Sample Hotel Systems Review and Data Consistency Audit showing a redacted room, rate, and availability comparison, system inventory, integration checklist, and a dashboard with private data redacted, with Needs Review, Pending Access, Blocked, and Not Configured statuses. Not a live hotel diagnosis and not a team-meeting photo.",
     480,
     320,
   ),
@@ -235,6 +223,7 @@ export const SYSTEMS_REVIEW_CHECKS = [
   { id: "inventory", th: "System inventory", en: "System inventory", status: "needs_review" },
   { id: "errors", th: "Error handling", en: "Error handling", status: "not_configured" },
   { id: "test", th: "Test process", en: "Test process", status: "not_configured" },
+  { id: "contact", th: "Failure contact", en: "Failure contact", status: "blocked" },
 ] as const;
 
 export const SYSTEMS_ASSESSMENT_PANELS = SYSTEMS_REVIEW_COMPARE.map((row, index) => ({
@@ -251,14 +240,16 @@ export const SYSTEMS_ASSESSMENT_EVIDENCE = [
   { id: "inventory", th: "System Inventory ตัวอย่าง", en: "Sample system inventory review" },
   { id: "compare", th: "เทียบห้อง ราคา และห้องว่าง", en: "Room / rate / availability comparison" },
   { id: "checklist", th: "Integration checklist ตัวอย่าง", en: "Sample integration checklist" },
+  { id: "ops", th: "แผนที่ระบบให้ทีมปฏิบัติการทบทวน", en: "Operations system map" },
+  { id: "dashboard", th: "แดชบอร์ดแบบปกปิดข้อมูล", en: "Dashboard with private data redacted" },
 ] as const;
 
 export const SYSTEMS_SERVICES_VISUAL = {
   ...visual(
     "landscape",
     "Hotel Systems Landscape — Sample",
-    "แผนภาพตัวอย่าง Hotel Systems Landscape แสดงเส้นทาง Guest ไป Website ไป Booking Engine ไป PMS ไป Channel Manager แล้วแยกไป OTA และ Reporting ก่อนถึงทีมโรงแรม พร้อมสถานะ Needs Mapping Pending Access Requires Provider Support Testing และ Not Configured ไม่ใช่โลโก้วอลล์ และไม่ใช่สถานะเชื่อมต่อที่ตรวจแล้ว",
-    "Sample Hotel Systems Landscape showing Guest to Website to Booking Engine to PMS to Channel Manager, then to OTA and Reporting, then to the hotel team, with Needs Mapping, Pending Access, Requires Provider Support, Testing, and Not Configured statuses. Not a logo wall and not a verified integration status.",
+    "แผนภาพตัวอย่าง Hotel Systems Landscape แสดงเส้นทาง Guest / Booking Source ไป Website / Booking Engine ไป PMS / Reservation System ไป Channel Manager แล้วแยกไป OTA / Distribution และ Reporting / Dashboard ก่อนถึง Hotel Team / Decisions พร้อมบทบาท ข้อมูลเข้า ข้อมูลออก Source of Truth ผู้รับผิดชอบ สถานะการเชื่อม และการพึ่งพาผู้ให้บริการ ไม่ใช่โลโก้วอลล์ และไม่ใช่หลักฐานว่าข้อมูลไหลครบทุกจุดโดยอัตโนมัติ",
+    "Sample Hotel Systems Landscape showing Guest / Booking Source to Website / Booking Engine to PMS / Reservation System to Channel Manager, then branching to OTA / Distribution and Reporting / Dashboard, then to Hotel Team / Decisions, with role, data in, data out, Source of Truth, owner, integration status, and provider dependency. Not a logo wall, and not proof that every system shares data automatically.",
     720,
     405,
   ),
@@ -277,11 +268,18 @@ export const SYSTEMS_LANDSCAPE_STATUSES = [
   { id: "requires_provider_support", label: "Requires Provider Support", tone: "amber" },
   { id: "pending_access", label: "Pending Access", tone: "yellow" },
   { id: "testing", label: "Testing", tone: "testing" },
+  { id: "blocked", label: "Blocked", tone: "red" },
   { id: "not_configured", label: "Not Configured", tone: "muted" },
 ] as const;
 
+export const SYSTEMS_LANDSCAPE_LEGEND = SYSTEMS_LANDSCAPE_STATUSES.filter((row) => row.id !== "blocked");
+
 export function systemsLandscapeStatus(id?: string) {
-  return SYSTEMS_LANDSCAPE_STATUSES.find((row) => row.id === id) || SYSTEMS_LANDSCAPE_STATUSES[5];
+  return (
+    SYSTEMS_LANDSCAPE_STATUSES.find((row) => row.id === id) ||
+    SYSTEMS_LANDSCAPE_STATUSES.find((row) => row.id === "not_configured") ||
+    SYSTEMS_LANDSCAPE_STATUSES[0]
+  );
 }
 
 export const SYSTEMS_LANDSCAPE_CATEGORIES = [
@@ -303,6 +301,7 @@ export const SYSTEMS_LANDSCAPE_FIELDS = {
   owner: { th: "ผู้รับผิดชอบ", en: "Owner" },
   status: { th: "สถานะการเชื่อม", en: "Integration status" },
   provider: { th: "การพึ่งพาผู้ให้บริการ", en: "Provider dependency" },
+  connector: { th: "Connector / API", en: "Connector / API" },
 } as const;
 
 export const SYSTEMS_LANDSCAPE_NOTE = {
@@ -311,14 +310,13 @@ export const SYSTEMS_LANDSCAPE_NOTE = {
 } as const;
 
 export const SYSTEMS_LANDSCAPE_PATH = {
-  th: "Guest → Website → Booking Engine → PMS → Channel Manager → OTA / Reporting → Hotel Team",
-  en: "Guest → Website → Booking Engine → PMS → Channel Manager → OTA / Reporting → Hotel Team",
+  th: "Guest / Booking Source → Website / Booking Engine → PMS / Reservation System → Channel Manager → OTA / Distribution · Reporting / Dashboard → Hotel Team / Decisions",
+  en: "Guest / Booking Source → Website / Booking Engine → PMS / Reservation System → Channel Manager → OTA / Distribution · Reporting / Dashboard → Hotel Team / Decisions",
 } as const;
 
 export const SYSTEMS_LANDSCAPE_CONNECTIONS = [
   { id: "guest-website", from: "guest", to: "website", labelTh: "คำขอจอง", labelEn: "Booking request" },
-  { id: "website-engine", from: "website", to: "engine", labelTh: "ราคาและห้องว่างที่แสดง", labelEn: "Displayed rates and availability" },
-  { id: "engine-pms", from: "engine", to: "pms", labelTh: "ห้อง / ราคา / การจอง", labelEn: "Room / rate / reservation" },
+  { id: "website-pms", from: "website", to: "pms", labelTh: "ห้อง / ราคา / การจอง", labelEn: "Room / rate / reservation" },
   { id: "pms-cm", from: "pms", to: "cm", labelTh: "ห้องว่างและราคาที่จับคู่", labelEn: "Mapped availability and rates" },
   { id: "cm-ota", from: "cm", to: "ota", labelTh: "กระจายช่องทาง", labelEn: "Channel distribution" },
   { id: "cm-reporting", from: "cm", to: "reporting", labelTh: "ข้อมูลผลงาน", labelEn: "Performance data" },
@@ -359,44 +357,29 @@ export const SYSTEMS_LANDSCAPE_NODES = [
     status: "not_configured" as const,
     providerTh: "ขึ้นกับช่องทางที่โรงแรมเปิดขาย",
     providerEn: "Depends on the channel the hotel has opened",
+    connectorTh: "ไม่มี API ของโรงแรมในโหนดนี้",
+    connectorEn: "No hotel API on this node",
   },
   {
     id: "website",
     area: "web",
-    titleTh: "Website",
-    titleEn: "Website",
-    roleTh: "หน้าสาธารณะที่แขกอ่านโรงแรม ห้อง และเส้นทางจอง",
-    roleEn: "The public pages where guests read the hotel, rooms, and booking path",
-    dataInTh: "เนื้อหาห้อง ราคาที่แสดง และลิงก์ไป Booking Engine",
-    dataInEn: "Room content, displayed rates, and the link to the booking engine",
-    dataOutTh: "คำขอเข้าสู่เส้นทางจองตรง",
-    dataOutEn: "A request into the direct booking path",
-    sourceOfTruthTh: "ไม่ใช่ Source of Truth ของห้อง ราคา หรือห้องว่าง",
-    sourceOfTruthEn: "Not the Source of Truth for rooms, rates, or availability",
-    ownerTh: "โรงแรม / เจ้าของเว็บไซต์",
-    ownerEn: "Hotel / website owner",
-    status: "needs_mapping" as const,
-    providerTh: "CMS และสิทธิ์แก้ไขเนื้อหา ไม่ใช่หลักฐานว่าเชื่อมระบบแล้ว",
-    providerEn: "CMS and content access. Not proof that systems are connected",
-  },
-  {
-    id: "engine",
-    area: "be",
-    titleTh: "Booking Engine",
-    titleEn: "Booking Engine",
-    roleTh: "เส้นทางจองตรงที่แขกเห็นราคา เงื่อนไข และยืนยันการจอง",
-    roleEn: "The direct booking path where the guest sees rates, conditions, and confirms a stay",
-    dataInTh: "ประเภทห้อง Rate Plan ห้องว่าง และเงื่อนไขที่จับคู่แล้ว",
-    dataInEn: "Room type, rate plan, availability, and conditions, if mapped",
-    dataOutTh: "คำขอจอง สถานะการจอง และการยกเลิกตามที่ระบบรองรับ",
-    dataOutEn: "Reservation requests, booking status, and cancellations as far as the engine supports",
+    titleTh: "Website / Booking Engine",
+    titleEn: "Website / Booking Engine",
+    roleTh: "หน้าสาธารณะที่แขกอ่านโรงแรม ห้อง และเส้นทางจอง และเส้นทางจองตรงที่แขกเห็นราคา เงื่อนไข และยืนยันการจอง",
+    roleEn: "The public pages where guests read the hotel, rooms, and booking path, and the direct booking path where the guest sees rates, conditions, and confirms a stay",
+    dataInTh: "เนื้อหาห้อง ราคาที่แสดง ประเภทห้อง Rate Plan ห้องว่าง และเงื่อนไขที่จับคู่แล้ว",
+    dataInEn: "Room content, displayed rates, room type, rate plan, availability, and conditions, if mapped",
+    dataOutTh: "คำขอเข้าสู่เส้นทางจองตรง คำขอจอง สถานะการจอง และการยกเลิกตามที่ระบบรองรับ",
+    dataOutEn: "A request into the direct booking path, plus reservation requests, booking status, and cancellations as far as the engine supports",
     sourceOfTruthTh: "ไม่ใช่ Source of Truth ของห้องและราคา เว้นแต่โรงแรมกำหนด",
     sourceOfTruthEn: "Not the Source of Truth for rooms and rates unless the hotel agrees it is",
-    ownerTh: "โรงแรม / ผู้ให้บริการ Booking Engine",
-    ownerEn: "Hotel / booking-engine provider",
-    status: "not_configured" as const,
-    providerTh: "ผู้ให้บริการ Booking Engine และสิทธิ์ API หรือตัวเชื่อม",
-    providerEn: "Booking-engine provider, plus API or connector access",
+    ownerTh: "โรงแรม / เจ้าของเว็บไซต์ / ผู้ให้บริการ Booking Engine",
+    ownerEn: "Hotel / website owner / booking-engine provider",
+    status: "needs_mapping" as const,
+    providerTh: "CMS และสิทธิ์แก้ไขเนื้อหา ไม่ใช่หลักฐานว่าเชื่อมระบบแล้ว ผู้ให้บริการ Booking Engine และสิทธิ์ API หรือตัวเชื่อม",
+    providerEn: "CMS and content access. Not proof that systems are connected. Booking-engine provider, plus API or connector access",
+    connectorTh: "Sample API / connector — ต้องตรวจกับผู้ให้บริการ",
+    connectorEn: "Sample API / connector — subject to provider verification",
   },
   {
     id: "pms",
@@ -416,6 +399,8 @@ export const SYSTEMS_LANDSCAPE_NODES = [
     status: "needs_mapping" as const,
     providerTh: "ผู้ให้บริการ PMS ไลเซนส์ และสิทธิ์เข้าถึง",
     providerEn: "PMS vendor, licence, and access",
+    connectorTh: "Sample API / connector — ต้องตรวจกับผู้ให้บริการ",
+    connectorEn: "Sample API / connector — subject to provider verification",
   },
   {
     id: "cm",
@@ -435,6 +420,8 @@ export const SYSTEMS_LANDSCAPE_NODES = [
     status: "pending_access" as const,
     providerTh: "ผู้ให้บริการ CM ต้องอนุมัติตัวเชื่อมหรือ API",
     providerEn: "The CM provider must approve the connector or API",
+    connectorTh: "Sample API / connector — รอสิทธิ์จากผู้ให้บริการ",
+    connectorEn: "Sample API / connector — pending provider access",
   },
   {
     id: "ota",
@@ -454,6 +441,8 @@ export const SYSTEMS_LANDSCAPE_NODES = [
     status: "requires_provider_support" as const,
     providerTh: "แต่ละ OTA แยกกัน โรงแรมเชื่อมได้ไม่ครบทุกช่องทางเสมอ",
     providerEn: "Each OTA is separate. Not every channel can connect",
+    connectorTh: "ตัวเชื่อมช่องทางของผู้ให้บริการ ไม่สมมติว่ามีครบทุก OTA",
+    connectorEn: "Provider channel connection. Not assumed for every OTA",
   },
   {
     id: "reporting",
@@ -473,6 +462,8 @@ export const SYSTEMS_LANDSCAPE_NODES = [
     status: "not_configured" as const,
     providerTh: "PMS, Channel Manager หรือผู้ให้บริการรายงาน",
     providerEn: "PMS, channel manager, or reporting vendor",
+    connectorTh: "การส่งออกหรือตัวเชื่อมรายงาน ถ้าต้นทางเปิดให้ใช้",
+    connectorEn: "Export or reporting connector, if the source system allows it",
   },
   {
     id: "team",
@@ -492,6 +483,8 @@ export const SYSTEMS_LANDSCAPE_NODES = [
     status: "testing" as const,
     providerTh: "โรงแรม และผู้ให้บริการเมื่อการเชื่อมต่อล้ม",
     providerEn: "The hotel, and the provider when an integration fails",
+    connectorTh: "ไม่มี API ใช้ขั้นตอนปฏิบัติและผู้รับผิดชอบที่ระบุชื่อได้",
+    connectorEn: "No API. Operating procedure and a named owner",
   },
 ] as const;
 
@@ -519,29 +512,33 @@ export function systemsLandscapeCmsItems() {
     status: row.status,
     providerTh: row.providerTh,
     providerEn: row.providerEn,
+    connectorTh: row.connectorTh,
+    connectorEn: row.connectorEn,
     verified: false,
   }));
 }
 
+export const SYSTEMS_LANDSCAPE_REQUIRED_IDS = ["guest", "website", "pms", "cm", "ota", "reporting", "team"] as const;
+
 export function systemsLandscapeItemsAreStale(items: Array<{ id?: string; status?: string; titleEn?: string; titleTh?: string }>) {
   if (!items.length) return true;
   const ids = new Set(items.map((item) => item.id));
-  if (!ids.has("guest") || !ids.has("website") || !ids.has("engine") || !ids.has("pms") || !ids.has("cm") || !ids.has("ota") || !ids.has("reporting") || !ids.has("team")) {
-    return true;
-  }
-  return items.some((item) => /Website\s*\/\s*Booking Engine/i.test(`${item.titleEn || ""} ${item.titleTh || ""}`));
+  if (ids.has("engine")) return true;
+  if (!SYSTEMS_LANDSCAPE_REQUIRED_IDS.every((id) => ids.has(id))) return true;
+  return !items.some((item) => /Website\s*\/\s*Booking Engine/i.test(`${item.titleEn || ""} ${item.titleTh || ""}`));
 }
 
 export function systemsLandscapeConnectionsAreStale(items: Array<{ id?: string; from?: string; to?: string }>) {
   if (!items.length) return true;
   const ids = new Set(items.map((item) => item.id));
-  return !ids.has("website-engine") || !ids.has("engine-pms") || ids.has("website-pms");
+  return ids.has("website-engine") || ids.has("engine-pms") || !ids.has("website-pms") || !ids.has("cm-ota") || !ids.has("cm-reporting");
 }
 
 export function systemsLandscapePathIsStale(value?: string) {
   const next = String(value || "").trim();
   if (!next) return true;
-  return /Website\s*\/\s*Booking Engine|Website or Booking Engine/i.test(next) || !/Website → Booking Engine/i.test(next);
+  if (/Website → Booking Engine/i.test(next)) return true;
+  return !["Guest / Booking Source", "Website / Booking Engine", "PMS / Reservation System", "OTA / Distribution", "Reporting / Dashboard", "Hotel Team / Decisions"].every((part) => next.includes(part));
 }
 
 export const SYSTEMS_MODEL_VISUAL = {
@@ -649,9 +646,18 @@ export function systemsBeforeAfterCmsFields() {
   }));
 }
 
+export const SYSTEMS_BEFORE_AFTER_FIELD_IDS = ["connected", "mapping", "provider", "manual", "next-owner"] as const;
+
 export function systemsBeforeAfterFieldsAreStale(items: Array<{ id?: string; status?: string }>) {
   if (!items.length) return true;
-  return !items.some((item) => item.id === "connected" && String(item.status || "").trim());
+  const ids = new Set(items.map((item) => item.id));
+  return !SYSTEMS_BEFORE_AFTER_FIELD_IDS.every((id) => ids.has(id));
+}
+
+export function systemsBeforeAfterNoteIsStale(value?: string) {
+  const next = String(value || "").trim();
+  if (!next) return true;
+  return !/Data Mapping,\s*Owner,\s*Error Handling/.test(next);
 }
 
 export function systemsModelStepsAreStale(items: Array<{ id?: string }>) {
@@ -670,6 +676,8 @@ export const SYSTEMS_DELIVERABLES_VISUAL = {
     405,
   ),
   src: SYSTEMS_DELIVERABLES_VISUAL_CANDIDATE,
+  sourceWidth: 1600,
+  sourceHeight: 900,
   labelTh: "Hotel Systems Implementation Readiness — Sample",
   labelEn: "Hotel Systems Implementation Readiness — Sample",
   captionTh: "กรอบความพร้อมตัวอย่าง โรงแรมต้องเตรียมระบบ การจับคู่ สิทธิ์เข้าถึง ข้อจำกัดผู้ให้บริการ เคสทดสอบ และผู้รับผิดชอบก่อนเริ่มงาน ไม่ใช่สถานะ Ready ของโรงแรมจริง",
@@ -701,6 +709,8 @@ export const SYSTEMS_WORKFLOW_VISUAL = {
     360,
   ),
   src: SYSTEMS_WORKFLOW_VISUAL_CANDIDATE,
+  sourceWidth: 1600,
+  sourceHeight: 900,
   labelTh: "Hotel Systems Implementation Workflow — Sample",
   labelEn: "Hotel Systems Implementation Workflow — Sample",
   captionTh: "ลำดับตัวอย่างห้าขั้น พร้อมผู้รับผิดชอบ ข้อมูลเข้า การกระทำ ผลลัพธ์ จุดอนุมัติ ข้อจำกัด และการตัดสินใจถัดไป ไม่ใช่ตารางเวลาโรงแรมจริง",
@@ -719,6 +729,8 @@ export const SYSTEMS_FIT_VISUAL = {
     405,
   ),
   src: SYSTEMS_FIT_VISUAL_CANDIDATE,
+  sourceWidth: 1600,
+  sourceHeight: 900,
   labelTh: "Hotel Technology Landscape — Example Categories",
   labelEn: "Hotel Technology Landscape — Example Categories",
   captionTh: "หมวดตัวอย่าง / ต้องตรวจทางเทคนิคก่อน ชื่อแพลตฟอร์มใช้ระบุหมวด ไม่ใช่โลโก้วอลล์ และไม่ใช่สถานะเชื่อมต่อที่ตรวจแล้ว",
@@ -737,6 +749,8 @@ export const SYSTEMS_INVENTORY_VISUAL = {
     405,
   ),
   src: SYSTEMS_INVENTORY_VISUAL_CANDIDATE,
+  sourceWidth: 1600,
+  sourceHeight: 900,
   labelTh: "System Inventory and Data Mapping — Sample",
   labelEn: "System Inventory and Data Mapping — Sample",
   captionTh: "ข้อมูลตัวอย่าง แทนที่ด้วยข้อมูลโรงแรมที่อนุมัติ และขึ้นกับการตรวจของผู้ให้บริการ",
@@ -755,6 +769,8 @@ export const SYSTEMS_SCOPE_VISUAL = {
     405,
   ),
   src: SYSTEMS_SCOPE_VISUAL_CANDIDATE,
+  sourceWidth: 1600,
+  sourceHeight: 900,
   labelTh: "Implementation Responsibility Matrix — Sample",
   labelEn: "Implementation Responsibility Matrix — Sample",
   captionTh: "ตัวอย่างขอบเขตงาน ขึ้นกับขอบเขตที่ตกลง ไม่ได้เป็นเจ้าของระบบภายนอก และไม่การันตีพฤติกรรมของผู้ให้บริการ",
@@ -773,6 +789,8 @@ export const SYSTEMS_PLAN_VISUAL = {
     405,
   ),
   src: SYSTEMS_PLAN_VISUAL_CANDIDATE,
+  sourceWidth: 1600,
+  sourceHeight: 900,
   labelTh: "Hotel Systems Handover and Ownership — Sample",
   labelEn: "Hotel Systems Handover and Ownership — Sample",
   captionTh: "ตัวอย่างการส่งมอบ เก็บเฉพาะเจ้าของ บทบาท และระดับสิทธิ์ ไม่เก็บรหัสผ่าน และไม่ทำเครื่องหมาย Live หรือ Handed Over จนกว่าจะอนุมัติครบ",
@@ -791,6 +809,8 @@ export const SYSTEMS_TESTING_VISUAL = {
     405,
   ),
   src: SYSTEMS_TESTING_VISUAL_CANDIDATE,
+  sourceWidth: 1600,
+  sourceHeight: 900,
   labelTh: "Hotel Systems Test Cases and QA — Sample",
   labelEn: "Hotel Systems Test Cases and QA — Sample",
   captionTh: "เคสตัวอย่าง แทนที่ด้วยผลทดสอบที่อนุมัติ ไม่มีข้อมูลแขกหรือข้อมูลชำระเงิน",
@@ -824,6 +844,8 @@ export const SYSTEMS_ENQUIRY_VISUAL = {
   captionEn: "A sample sequence after the conversation starts. Do not send passwords, keys, or guest data.",
   metaTh: "Sample process · 1200 × 600 px · Display 420 × 210 px · 2:1",
   metaEn: "Sample process · 1200 × 600 px · Display 420 × 210 px · 2:1",
+  sourceWidth: 1200,
+  sourceHeight: 600,
 };
 
 export const SYSTEMS_ENQUIRY_FLOW = [
@@ -878,7 +900,7 @@ export const SYSTEMS_PLATFORMS = [
   { name: "HotelierGuru", src: "/brand/platforms/hotelierguru.png", kind: "example_category" as SystemsPlatformKind },
 ] as const;
 
-export const SYSTEMS_METHOD_LABELS = ["AUDIT", "MAP", "CONFIGURE", "TEST", "TRAIN", "GO LIVE"] as const;
+export const SYSTEMS_METHOD_LABELS = ["Discover", "Map", "Configure", "Test", "Handover"] as const;
 
 export const SYSTEMS_HOTEL_STATUS = [
   { id: "operating", th: "เปิดให้บริการแล้ว", en: "Operating" },
@@ -1050,7 +1072,10 @@ export function systemsAssessmentCmsRows() {
 
 export function systemsAssessmentRowsAreStale(rows: Array<{ id?: string; status?: string }>) {
   if (!rows.length) return true;
-  return !rows.some((row) => row.id === "fail-contact" && String(row.status || "").trim());
+  const ids = new Set(rows.map((row) => row.id));
+  return !["data-mismatch", "duplicate-entry", "source-of-truth", "incomplete-data", "no-owner", "report-definitions", "no-test-process", "fail-contact"].every(
+    (id) => ids.has(id),
+  );
 }
 
 export const SYSTEMS_OPERATING_FLOW = [
@@ -1183,6 +1208,8 @@ export const SYSTEMS_MODEL_STEPS = [
   { id: "review", num: "06", label: "Review", titleTh: "ทบทวน", titleEn: "Review", output: "Scheduled review, not a one-time connect" },
 ] as const;
 
+export const SYSTEMS_BEFORE_AFTER_PATH = SYSTEMS_MODEL_STEPS.map((step) => step.label).join(" → ");
+
 export const SYSTEMS_MODEL_BOUNDARY = {
   supportTitle: { th: "เดอะ เคพีไอ พลัส อาจช่วย", en: "The KPI Plus may support" },
   support: {
@@ -1245,7 +1272,7 @@ export const SYSTEMS_DELIVERABLES = [
     areaTh: "สิทธิ์เข้าถึง",
     areaEn: "Access",
     inspectTh: "ผู้ดูแลระบบ ผู้ติดต่อด้านเทคนิค และสิทธิ์ API หรือตัวเชื่อม",
-    inspectEn: "Administrator, technical contact, and API or connector permission",
+    inspectEn: "Administrator, technical contact, and API/connector permission",
     evidenceTh: "รายการสิทธิ์ที่อนุมัติแล้ว",
     evidenceEn: "Approved access list",
     output: "Access Plan",
@@ -1260,7 +1287,7 @@ export const SYSTEMS_DELIVERABLES = [
     areaTh: "การเชื่อมระบบ",
     areaEn: "Integration",
     inspectTh: "การรองรับ API หรือตัวเชื่อม ข้อจำกัด ไลเซนส์ และการพึ่งพาผู้ให้บริการ",
-    inspectEn: "API or connector support, limitations, licence, and provider dependency",
+    inspectEn: "API/connector support, limitations, license, and provider dependency",
     evidenceTh: "เอกสารผู้ให้บริการและการยืนยัน",
     evidenceEn: "Provider documentation and confirmation",
     output: "Integration Plan",
@@ -1292,7 +1319,7 @@ export const SYSTEMS_DELIVERABLES = [
     inspectTh: "ผู้รับผิดชอบเมื่อข้อมูลผิดหรือการซิงค์ล้ม",
     inspectEn: "Owner when data is wrong or sync fails",
     evidenceTh: "RACI / รายชื่อผู้รับผิดชอบ",
-    evidenceEn: "RACI / Owner List",
+    evidenceEn: "RACI/Owner List",
     output: "Handover Plan",
     status: "blocked" as const,
     ownerTh: "ยังไม่ระบุ",
@@ -1325,10 +1352,14 @@ export function systemsReadinessCmsRows() {
   }));
 }
 
+export const SYSTEMS_READINESS_REQUIRED_IDS = ["current-systems", "data-mapping", "access", "integration", "testing", "ownership"] as const;
+
 export function systemsReadinessRowsAreStale(rows: Array<{ id?: string; status?: string }>) {
   if (!rows.length) return true;
-  if (rows.some((row) => row.id === "configure" || row.id === "handover" || row.id === "inventory")) return true;
-  return !rows.some((row) => row.id === "ownership" && String(row.status || "").trim());
+  const ids = new Set(rows.map((row) => row.id));
+  if (!SYSTEMS_READINESS_REQUIRED_IDS.every((id) => ids.has(id))) return true;
+  if (rows.every((row) => row.status === "ready")) return true;
+  return false;
 }
 
 export const SYSTEMS_DELIVERABLES_BOUNDARY = {
@@ -1355,7 +1386,7 @@ export const SYSTEMS_WORKFLOW_FIELDS = {
   input: { th: "ข้อมูลเข้า", en: "Input" },
   action: { th: "การกระทำ", en: "Action" },
   output: { th: "ผลลัพธ์", en: "Output" },
-  approval: { th: "จุดที่โรงแรมหรือผู้ให้บริการอนุมัติ", en: "Approval point" },
+  approval: { th: "จุดอนุมัติ", en: "Approval point" },
   dependency: { th: "ข้อจำกัดที่ต้องมีก่อน", en: "Dependency" },
   next: { th: "การตัดสินใจถัดไป", en: "Next decision" },
 } as const;
@@ -1378,7 +1409,7 @@ export const SYSTEMS_WORKFLOW = [
   {
     id: "discover",
     num: "01",
-    label: "DISCOVER",
+    label: "Discover",
     titleTh: "สำรวจ",
     titleEn: "Discover",
     bodyTh: "รวบรวมรายการระบบ เป้าหมาย ผู้รับผิดชอบ ข้อกำหนด ข้อจำกัด และผู้ติดต่อของผู้ให้บริการ",
@@ -1400,7 +1431,7 @@ export const SYSTEMS_WORKFLOW = [
   {
     id: "map",
     num: "02",
-    label: "MAP",
+    label: "Map",
     titleTh: "จับคู่",
     titleEn: "Map",
     bodyTh: "กำหนดสถาปัตยกรรมระบบ Source of Truth การจับคู่ฟิลด์ เส้นทางข้อมูล และสิ่งที่ต้องพึ่งพา",
@@ -1422,7 +1453,7 @@ export const SYSTEMS_WORKFLOW = [
   {
     id: "configure",
     num: "03",
-    label: "CONFIGURE",
+    label: "Configure",
     titleTh: "ตั้งค่า",
     titleEn: "Configure",
     bodyTh: "ตั้งค่าตามที่อนุมัติ และประสานงานกับผู้ให้บริการภายในสิทธิ์เข้าถึงและขอบเขตงาน",
@@ -1444,7 +1475,7 @@ export const SYSTEMS_WORKFLOW = [
   {
     id: "test",
     num: "04",
-    label: "TEST",
+    label: "Test",
     titleTh: "ทดสอบ",
     titleEn: "Test",
     bodyTh: "ทดสอบงานปกติ การแก้ไข การยกเลิก ฟิลด์ที่ขาด ข้อผิดพลาด สิทธิ์ และการส่งต่อผู้ใช้",
@@ -1466,7 +1497,7 @@ export const SYSTEMS_WORKFLOW = [
   {
     id: "handover",
     num: "05",
-    label: "HANDOVER",
+    label: "Handover",
     titleTh: "ส่งมอบ",
     titleEn: "Handover",
     bodyTh: "ส่งมอบเอกสาร SOP รายชื่อผู้รับผิดชอบ เส้นทางแก้ปัญหา และบันทึกการอนุมัติ",
@@ -1512,31 +1543,69 @@ export function systemsWorkflowCmsSteps() {
   }));
 }
 
+export const SYSTEMS_WORKFLOW_REQUIRED_IDS = ["discover", "map", "configure", "test", "handover"] as const;
+
+export const SYSTEMS_WORKFLOW_OUTPUTS = [
+  "System Inventory and Requirements Brief",
+  "Architecture Diagram and Data Mapping",
+  "Configuration/Integration Checklist",
+  "Test Cases and QA Report",
+  "Documentation, SOP, and Ownership Matrix",
+] as const;
+
 export function systemsWorkflowStepsAreStale(
-  steps: Array<{ id?: string; output?: string; dependencyTh?: string; dependencyEn?: string }>,
+  steps: Array<{ id?: string; label?: string; titleEn?: string; output?: string; bodyEn?: string; dependencyTh?: string; dependencyEn?: string }>,
 ) {
   if (!steps.length) return true;
-  if (steps.some((step) => step.id === "audit" || step.id === "train" || step.id === "golive")) return true;
+  if (steps.some((step) => step.id === "audit" || step.id === "train" || step.id === "golive" || step.id === "go-live")) return true;
+  if (steps.some((step) => /AUDIT|TRAIN|GO LIVE/i.test(String(step.label || "")))) return true;
+  if (steps[0] && !/Discover/i.test(String(steps[0].label || steps[0].titleEn || ""))) return true;
   if (steps.length !== SYSTEMS_WORKFLOW.length) return true;
+  const ids = new Set(steps.map((step) => step.id));
+  if (!SYSTEMS_WORKFLOW_REQUIRED_IDS.every((id) => ids.has(id))) return true;
+  const outputs = steps.map((step) => String(step.output || "").trim());
+  if (!SYSTEMS_WORKFLOW_OUTPUTS.every((output) => outputs.includes(output))) return true;
   return !steps.some(
     (step) =>
       step.id === "discover" &&
-      String(step.output || "").trim() &&
+      /System Inventory/.test(String(step.bodyEn || step.output || "")) &&
       (String(step.dependencyTh || "").trim() || String(step.dependencyEn || "").trim()),
   );
 }
 
+export function systemsWorkflowGateIsStale(value?: string) {
+  const text = String(value || "").trim();
+  if (!text) return true;
+  return !/approved test results|ผลทดสอบที่อนุมัติ/i.test(text);
+}
+
 export const SYSTEMS_PLATFORM_STATUSES = [
-  { id: "existing_client_system", label: "Existing", tone: "green" },
-  { id: "example_category", label: "Example", tone: "muted" },
-  { id: "supported_via_provider", label: "Supported via Provider/API", tone: "amber" },
-  { id: "requires_verification", label: "Requires Verification", tone: "yellow" },
-  { id: "not_yet_verified", label: "Requires Verification", tone: "yellow" },
-  { id: "not_in_scope", label: "Not in Scope", tone: "muted" },
+  { id: "existing_client_system", label: "Existing client system", tone: "green" },
+  { id: "example_category", label: "Example category", tone: "muted" },
+  { id: "supported_via_provider", label: "Supported via provider/API", tone: "amber" },
+  { id: "requires_verification", label: "Requires technical verification", tone: "yellow" },
+  { id: "not_yet_verified", label: "Not yet verified", tone: "yellow" },
+  { id: "not_in_scope", label: "Not in current scope", tone: "muted" },
 ] as const;
 
 export function systemsPlatformStatus(id?: string) {
-  return SYSTEMS_PLATFORM_STATUSES.find((row) => row.id === id) || SYSTEMS_PLATFORM_STATUSES[4];
+  if (id === "verified_integration" || id === "connected") {
+    return SYSTEMS_PLATFORM_STATUSES.find((row) => row.id === "requires_verification") || SYSTEMS_PLATFORM_STATUSES[3];
+  }
+  return (
+    SYSTEMS_PLATFORM_STATUSES.find((row) => row.id === id) ||
+    SYSTEMS_PLATFORM_STATUSES.find((row) => row.id === "not_yet_verified") ||
+    SYSTEMS_PLATFORM_STATUSES[4]
+  );
+}
+
+export function systemsPlatformLogoSrc(src?: string, status?: string) {
+  const next = src?.trim() || "";
+  if (!next) return "";
+  if (systemsIsLibraryPlaceholder(next)) return "";
+  if (!/\.(png|jpe?g|webp|svg|gif)$/i.test(next.split("?")[0] || "")) return "";
+  if (status !== "approved" && status !== "sample") return "";
+  return next;
 }
 
 export const SYSTEMS_FIT_COLUMNS = {
@@ -1676,14 +1745,26 @@ export function systemsFitCmsRows() {
   }));
 }
 
+export const SYSTEMS_FIT_REQUIRED_IDS = ["pms", "channel", "booking", "revenue", "analytics", "communication"] as const;
+
 export function systemsFitRowsAreStale(
-  rows: Array<{ id?: string; integrationStatus?: string; verificationStatus?: string; categoryEn?: string }>,
+  rows: Array<{ id?: string; integrationStatus?: string; verificationStatus?: string; categoryEn?: string; logoSrc?: string }>,
 ) {
   if (!rows.length) return true;
-  if (rows.some((row) => row.id === "cloudbeds" || row.id === "siteminder" || row.id === "yanolja" || row.id === "opera" || row.id === "other")) {
+  if (rows.some((row) => row.id === "cloudbeds" || row.id === "siteminder" || row.id === "yanolja" || row.id === "opera" || row.id === "nawa" || row.id === "other")) {
     return true;
   }
-  return !rows.some((row) => row.id === "pms" && String(row.integrationStatus || "").trim() && String(row.verificationStatus || "").trim());
+  const ids = new Set(rows.map((row) => row.id));
+  if (!SYSTEMS_FIT_REQUIRED_IDS.every((id) => ids.has(id))) return true;
+  if (rows.filter((row) => String(row.logoSrc || "").trim()).length > 2) return true;
+  if (rows.every((row) => row.integrationStatus === "verified_integration")) return true;
+  return !rows.some(
+    (row) =>
+      row.id === "pms" &&
+      /PMS \/ Property Management/.test(String(row.categoryEn || "")) &&
+      String(row.integrationStatus || "").trim() &&
+      String(row.verificationStatus || "").trim(),
+  );
 }
 
 export const SYSTEMS_FIT_NOT = [
@@ -1712,6 +1793,32 @@ export function systemsMappingStatus(id?: string) {
 
 export function systemsInventoryEnvironment(id?: string) {
   return SYSTEMS_INVENTORY_ENVIRONMENTS.find((row) => row.id === id) || SYSTEMS_INVENTORY_ENVIRONMENTS[2];
+}
+
+export const SYSTEMS_INVENTORY_STATUSES = SYSTEMS_LANDSCAPE_STATUSES.filter((row) => row.id !== "connected");
+
+export function systemsInventoryStatus(id?: string) {
+  return (
+    SYSTEMS_INVENTORY_STATUSES.find((row) => row.id === id) ||
+    SYSTEMS_INVENTORY_STATUSES.find((row) => row.id === "not_configured") ||
+    SYSTEMS_INVENTORY_STATUSES[SYSTEMS_INVENTORY_STATUSES.length - 1]!
+  );
+}
+
+export function systemsSampleSafeText(value?: string) {
+  const text = String(value || "").replace(/\s+/g, " ").trim();
+  if (!text) return "";
+  if (/(password|passwd|secret|api[_-]?key|\btoken\b|bearer|credit.?card)/i.test(text)) return "";
+  if (/\b(acc(ount)?|booking|res(ervation)?|guest)[-_ ]?#?\d{4,}\b/i.test(text)) return "";
+  return text;
+}
+
+export function systemsCredentialSafeText(value?: string) {
+  const text = String(value || "").replace(/\s+/g, " ").trim();
+  if (!text) return "";
+  if (/\b(password|passwd|secret|api[_-]?key|\btoken\b|bearer|credit.?card)\s*[:=]\s*\S+/i.test(text)) return "";
+  if (/\b(sk_live_|pk_live_|rk_live_|Bearer\s+[A-Za-z0-9\-._]{8,})/i.test(text)) return "";
+  return text;
 }
 
 export const SYSTEMS_INVENTORY_LABELS = {
@@ -1997,14 +2104,28 @@ export function systemsDictionaryCmsRows() {
   }));
 }
 
+export const SYSTEMS_INVENTORY_REQUIRED_IDS = ["pms", "channel", "booking", "ota", "reporting", "crm"] as const;
+export const SYSTEMS_DICTIONARY_REQUIRED_FIELDS = [
+  "Sample Room Type",
+  "Sample Rate Plan",
+  "Sample Availability",
+  "Sample Reservation Status",
+  "Sample Channel",
+] as const;
+
 export function systemsInventoryRowsAreStale(rows: Array<{ id?: string; environment?: string; status?: string }>) {
   if (!rows.length) return true;
+  const ids = new Set(rows.map((row) => row.id));
+  if (!SYSTEMS_INVENTORY_REQUIRED_IDS.every((id) => ids.has(id))) return true;
+  if (rows.every((row) => row.status === "connected")) return true;
   return !rows.some((row) => row.id === "pms" && String(row.environment || "").trim() && String(row.status || "").trim());
 }
 
 export function systemsDictionaryRowsAreStale(rows: Array<{ id?: string; field?: string }>) {
   if (!rows.length) return true;
-  return !rows.some((row) => row.id === "room-type" && String(row.field || "").trim());
+  const fields = new Set(rows.map((row) => String(row.field || "").trim()));
+  if (!SYSTEMS_DICTIONARY_REQUIRED_FIELDS.every((field) => fields.has(field))) return true;
+  return false;
 }
 
 export const SYSTEMS_TESTING_STATUSES = [
@@ -2074,6 +2195,24 @@ export const SYSTEMS_TESTING_ERROR_FLOW = [
   { id: "retest", num: "06", label: "Retest", th: "ทดสอบซ้ำ", en: "Retest" },
   { id: "close", num: "07", label: "Close", th: "ปิดงาน", en: "Close" },
 ] as const;
+
+export const SYSTEMS_TESTING_ERROR_PATH = SYSTEMS_TESTING_ERROR_FLOW.map((row) => row.label).join(" → ");
+export const SYSTEMS_TESTING_REQUIRED_IDS = [
+  "new-reservation",
+  "modification",
+  "cancellation",
+  "room-rate",
+  "availability",
+  "failed-sync",
+  "duplicate",
+  "missing-field",
+  "wrong-mapping",
+  "permission",
+  "booking-handoff",
+  "confirmation",
+  "report-reconciliation",
+] as const;
+export const SYSTEMS_TESTING_ERROR_REQUIRED_IDS = ["detect", "log", "assign", "notify", "correct", "retest", "close"] as const;
 
 export const SYSTEMS_TESTING_CASES = [
   {
@@ -2440,20 +2579,37 @@ export function systemsTestingErrorCmsSteps() {
 }
 
 export function systemsTestingCasesAreStale(
-  rows: Array<{ id?: string; status?: string; actualEn?: string; actualTh?: string; evidenceEn?: string; evidenceTh?: string }>,
+  rows: Array<{
+    id?: string;
+    status?: string;
+    actualEn?: string;
+    actualTh?: string;
+    evidenceEn?: string;
+    evidenceTh?: string;
+    issueEn?: string;
+    issueTh?: string;
+  }>,
 ) {
   if (!rows.length) return true;
-  const hasNew = rows.some((row) => row.id === "new-reservation" && String(row.status || "").trim());
-  const failed = rows.find((row) => row.id === "failed-sync");
-  if (!hasNew || !failed || String(failed.status || "") !== "failed") return true;
-  const passed = rows.find((row) => row.id === "report-reconciliation");
-  if (passed && String(passed.status || "") === "passed") {
-    return !systemsTestingPassedIsSample(
-      `${passed.actualEn || ""} ${passed.actualTh || ""}`,
-      `${passed.evidenceEn || ""} ${passed.evidenceTh || ""}`,
-    );
-  }
-  return false;
+  const ids = new Set(rows.map((row) => String(row.id || "").trim()));
+  if (!SYSTEMS_TESTING_REQUIRED_IDS.every((id) => ids.has(id))) return true;
+  const failed = rows.filter((row) => String(row.status || "") === "failed");
+  if (!failed.length) return true;
+  if (failed.some((row) => !String(row.issueEn || row.issueTh || "").trim())) return true;
+  return rows.some(
+    (row) =>
+      String(row.status || "") === "passed" &&
+      !systemsTestingPassedIsSample(
+        `${row.actualEn || ""} ${row.actualTh || ""}`,
+        `${row.evidenceEn || ""} ${row.evidenceTh || ""}`,
+      ),
+  );
+}
+
+export function systemsTestingErrorStepsAreStale(rows: Array<{ id?: string }>) {
+  if (!rows.length) return true;
+  const ids = new Set(rows.map((row) => String(row.id || "").trim()));
+  return !SYSTEMS_TESTING_ERROR_REQUIRED_IDS.every((id) => ids.has(id));
 }
 
 export const SYSTEMS_SCOPE_ROWS = [
@@ -2666,14 +2822,33 @@ export function systemsResponsibilityCmsRows() {
   }));
 }
 
+export const SYSTEMS_SCOPE_REQUIRED_ROW_IDS = ["support", "hotel"] as const;
+export const SYSTEMS_RESPONSIBILITY_REQUIRED_IDS = [
+  "rate-mismatch",
+  "booking-missing",
+  "api-expired",
+  "duplicate",
+  "report-mismatch",
+  "provider-outage",
+  "go-live",
+] as const;
+
 export function systemsScopeRowsAreStale(rows: Array<{ id?: string; itemsEn?: string; itemsTh?: string }>) {
   if (!rows.length) return true;
-  return !rows.some((row) => row.id === "support" && /System Architecture|Data Mapping framework/i.test(`${row.itemsEn || ""} ${row.itemsTh || ""}`));
+  const support = rows.find((row) => row.id === "support");
+  const hotel = rows.find((row) => row.id === "hotel");
+  if (!support || !hotel) return true;
+  const supportText = `${support.itemsEn || ""}\n${support.itemsTh || ""}`;
+  const hotelText = `${hotel.itemsEn || ""}\n${hotel.itemsTh || ""}`;
+  if (!SYSTEMS_SCOPE_ROWS[0].itemsEn.every((item) => supportText.includes(item))) return true;
+  if (!SYSTEMS_SCOPE_ROWS[1].itemsEn.every((item) => hotelText.includes(item))) return true;
+  return false;
 }
 
 export function systemsResponsibilityRowsAreStale(rows: Array<{ id?: string; eventEn?: string }>) {
   if (!rows.length) return true;
-  return !rows.some((row) => row.id === "rate-mismatch" && String(row.eventEn || "").trim());
+  const ids = new Set(rows.map((row) => String(row.id || "").trim()));
+  return !SYSTEMS_RESPONSIBILITY_REQUIRED_IDS.every((id) => ids.has(id));
 }
 
 const HANDOVER_LIVE_RE = /^(live|handed[_-]?over|handed over|complete|production|go[_-]?live)$/i;
@@ -3075,21 +3250,54 @@ export function systemsOwnershipCmsRows() {
   }));
 }
 
+export const SYSTEMS_HANDOVER_REQUIRED_IDS = [
+  "inventory",
+  "architecture",
+  "mapping",
+  "tests",
+  "issues",
+  "contacts",
+  "access",
+  "sop",
+  "error",
+  "rollback",
+  "signoff",
+  "post-owner",
+] as const;
+
+export const SYSTEMS_OWNERSHIP_REQUIRED_IDS = [
+  "pms",
+  "channel",
+  "booking",
+  "analytics",
+  "domain",
+  "hosting",
+  "api",
+  "reporting",
+  "form-inbox",
+  "documentation",
+] as const;
+
 export function systemsHandoverItemsAreStale(rows: Array<{ id?: string; itemEn?: string; status?: string }>) {
-  if (rows.length < 12) return true;
+  if (!rows.length) return true;
+  const ids = new Set(rows.map((row) => String(row.id || "").trim()));
+  if (!SYSTEMS_HANDOVER_REQUIRED_IDS.every((id) => ids.has(id))) return true;
   const inventory = rows.find((row) => row.id === "inventory");
-  const signoff = rows.find((row) => row.id === "signoff");
-  if (!inventory || !signoff) return true;
-  if (!/System inventory delivered/i.test(String(inventory.itemEn || ""))) return true;
-  return HANDOVER_LIVE_RE.test(String(signoff.status || ""));
+  if (!/System inventory delivered/i.test(String(inventory?.itemEn || ""))) return true;
+  return rows.some((row) => HANDOVER_LIVE_RE.test(String(row.status || "")));
 }
 
-export function systemsOwnershipRowsAreStale(rows: Array<{ id?: string; assetEn?: string; accessEn?: string; status?: string }>) {
-  if (rows.length < 10) return true;
-  const hasForm = rows.some((row) => row.id === "form-inbox" || /Form inbox/i.test(String(row.assetEn || "")));
-  const hasApi = rows.some((row) => row.id === "api" || /API\/Connector/i.test(String(row.assetEn || "")));
-  if (!hasForm || !hasApi) return true;
-  return rows.some((row) => HANDOVER_LIVE_RE.test(String(row.status || "")) || /password|secret|api key/i.test(String(row.accessEn || "")));
+export function systemsOwnershipRowsAreStale(
+  rows: Array<{ id?: string; assetEn?: string; accessEn?: string; contactEn?: string; status?: string }>,
+) {
+  if (!rows.length) return true;
+  const ids = new Set(rows.map((row) => String(row.id || "").trim()));
+  if (!SYSTEMS_OWNERSHIP_REQUIRED_IDS.every((id) => ids.has(id))) return true;
+  return rows.some(
+    (row) =>
+      HANDOVER_LIVE_RE.test(String(row.status || "")) ||
+      /\b(password|passwd|secret|api[_-]?key|\btoken\b)\s*[:=]\s*\S+/i.test(`${row.accessEn || ""} ${row.contactEn || ""}`),
+  );
 }
 
 export const SYSTEMS_PLAN = [
@@ -3155,8 +3363,35 @@ export const SYSTEMS_KPI_SAMPLE = {
   sourceTh: "ดัชนีตัวอย่างภายใน",
   comparison: "No hotel baseline published",
   comparisonTh: "ยังไม่เผยแพร่เส้นฐานของโรงแรม",
+  owner: "Hotel systems implementation owner (sample)",
+  ownerTh: "ผู้รับผิดชอบงานนำไปใช้ระบบโรงแรม (ตัวอย่าง)",
   updatedAt: "2026-10-29",
 };
+
+export const SYSTEMS_KPI_FIELDS = {
+  period: { th: "ช่วงเวลา", en: "Period" },
+  context: { th: "บริบท", en: "Context" },
+  definition: { th: "คำนิยาม", en: "Definition" },
+  source: { th: "แหล่งที่มา", en: "Source" },
+  status: { th: "สถานะ", en: "Status" },
+  owner: { th: "ผู้รับผิดชอบ", en: "Owner" },
+  updated: { th: "วันที่อัปเดต", en: "Updated" },
+  unit: { th: "หน่วย", en: "Unit" },
+} as const;
+
+export const SYSTEMS_KPI_STATUS_LABEL: Record<SystemsKpiStatus, { th: string; en: string }> = {
+  draft: { th: "ฉบับร่าง", en: "Draft" },
+  sample: { th: "ตัวอย่างข้อมูล", en: "Sample" },
+  approved: { th: "อนุมัติแล้ว", en: "Approved" },
+  anonymised: { th: "ปกปิดข้อมูล", en: "Anonymised" },
+  "not-configured": { th: "ยังไม่เชื่อมข้อมูล", en: "Not Configured" },
+};
+
+export function systemsKpiStatusLabel(status: string, locale: Locale) {
+  const row = SYSTEMS_KPI_STATUS_LABEL[status as SystemsKpiStatus];
+  if (!row) return status;
+  return locale === "th" ? row.th : row.en;
+}
 
 export const SYSTEMS_KPIS = [
   {
@@ -3171,6 +3406,9 @@ export const SYSTEMS_KPIS = [
     dataStatus: "sample" as SystemsKpiStatus,
     hideUntilData: false,
     tone: "yellow" as const,
+    ownerTh: "ผู้รับผิดชอบงานนำไปใช้ระบบโรงแรม (ตัวอย่าง)",
+    ownerEn: "Hotel systems implementation owner (sample)",
+    updatedAt: "2026-10-29",
   },
   {
     id: "pending-access",
@@ -3184,6 +3422,9 @@ export const SYSTEMS_KPIS = [
     dataStatus: "sample" as SystemsKpiStatus,
     hideUntilData: false,
     tone: "amber" as const,
+    ownerTh: "โรงแรม / ผู้ให้บริการ (ตัวอย่าง)",
+    ownerEn: "Hotel / provider (sample)",
+    updatedAt: "2026-10-29",
   },
   {
     id: "occupancy",
@@ -3197,6 +3438,9 @@ export const SYSTEMS_KPIS = [
     dataStatus: "not-configured" as SystemsKpiStatus,
     hideUntilData: true,
     tone: "amber" as const,
+    ownerTh: "โรงแรม (ยังไม่เผยแพร่)",
+    ownerEn: "Hotel (not published)",
+    updatedAt: "",
   },
   {
     id: "revenue",
@@ -3210,6 +3454,9 @@ export const SYSTEMS_KPIS = [
     dataStatus: "not-configured" as SystemsKpiStatus,
     hideUntilData: true,
     tone: "amber" as const,
+    ownerTh: "โรงแรม (ยังไม่เผยแพร่)",
+    ownerEn: "Hotel (not published)",
+    updatedAt: "",
   },
 ] as const;
 
@@ -3315,6 +3562,12 @@ export function hotelSystemsEnquiryCopy(locale: Locale) {
       : "You do not need to know in advance whether the system must change. This conversation is not a verified integration status, and not a guaranteed result. Do not send a password.",
     submit: thai ? "ส่งเรื่องให้ทีมดูระบบโรงแรม" : "Send a hotel systems enquiry",
     loading: thai ? "กำลังส่งข้อมูล กรุณารอสักครู่" : "Sending your message. Please wait.",
+    success: thai
+      ? "ได้รับเรื่องแล้ว ทีมจะติดต่อกลับผ่านช่องทางที่ให้ไว้"
+      : "Message received. The team will reply on the channel you shared.",
+    failed: thai
+      ? "ส่งไม่สำเร็จ กรุณาลองอีกครั้ง หรือติดต่อทีมโดยตรง"
+      : "Could not send. Please try again, or contact the team directly.",
     goalEmpty: thai ? "เลือกเป้าหมาย" : "Choose a goal",
     labels: {
       name: thai ? "ชื่อผู้ติดต่อ" : "Contact name",
@@ -3367,8 +3620,8 @@ const SYSTEMS_FAQS = [
   {
     qTh: "ทำงานร่วมกับ PMS, Channel Manager และ Booking Engine เดิมได้หรือไม่",
     qEn: "Can this work with the current PMS, Channel Manager, and Booking Engine?",
-    aTh: "ทำร่วมได้เมื่อผู้ให้บริการ ไลเซนส์ สิทธิ์ และตัวเชื่อมรองรับ ทีมจะตรวจว่าระบบเดิมส่งและรับข้อมูลอะไรได้จริง ไม่สมมติว่าเชื่อมแล้วใช้ได้ทุกฟิลด์",
-    aEn: "Yes, when the provider, licence, permission, and connector support it. The team checks what the current systems can actually send and receive. A connection is not assumed to cover every field.",
+    aTh: "ทำร่วมได้เมื่อผู้ให้บริการ API หรือตัวเชื่อม ไลเซนส์ สิทธิ์ โครงสร้างข้อมูล ความปลอดภัย และขอบเขตที่ตกลงรองรับ ทีมจะตรวจว่า PMS, Channel Manager และ Booking Engine เดิมส่งและรับข้อมูลอะไรได้จริง ไม่สมมติว่าเชื่อมแล้วใช้ได้ทุกฟิลด์",
+    aEn: "Yes, when the provider, API or connector, licence, permission, data structure, security, and agreed scope support it. The team checks what the current PMS, Channel Manager, and Booking Engine can actually send and receive. A connection is not assumed to cover every field.",
   },
   {
     qTh: "ทุกระบบสามารถเชื่อมต่อกันได้หรือไม่",
@@ -3401,16 +3654,10 @@ const SYSTEMS_FAQS = [
     aEn: "There is no fixed duration. It depends on the system inventory, mapping, access, provider response, test cases, and hotel approval. This page is not a live client timeline, and it does not set a time-to-result.",
   },
   {
-    qTh: "ทดสอบระบบอย่างไร และถ้าเคสไม่ผ่านจะทำอย่างไร",
-    qEn: "How is testing done, and what happens if a case fails?",
-    aTh: "งานทดสอบใช้เคสที่ระบุ Trigger ผลที่คาดหวัง ผลจริง ผู้รับผิดชอบ และหลักฐาน หากไม่ผ่านจะบันทึก Failed, Blocked หรือ Retest Required แล้วไล่ Error Handling ตามเจ้าของงานและผู้ให้บริการ Go-live ถูกบล็อกจนกว่าเคสที่จำเป็นและการอนุมัติของโรงแรมจะครบ หน้านี้เป็นตัวอย่าง ไม่ใช่ผลทดสอบโรงแรมจริง",
-    aEn: "Testing uses cases with a trigger, expected result, actual result, owner, and evidence. A failed case is logged as Failed, Blocked, or Retest Required, then followed through the error path with the named owner and provider. Go-live stays blocked until required cases and hotel approval are complete. This page is a sample, not a live hotel QA result.",
-  },
-  {
     qTh: "มี Test Environment หรือ Sandbox หรือไม่",
     qEn: "Is there a test environment or sandbox?",
-    aTh: "ใช้ได้เมื่อโรงแรมหรือผู้ให้บริการมีสภาพแวดล้อมทดสอบ หากไม่มี ต้องตกลงขอบเขตความเสี่ยงก่อนแตะข้อมูลจริง ไม่ใช่ทุกผู้ให้บริการที่มี sandbox",
-    aEn: "A test environment is used when the hotel or provider has one. If none exists, the risk and test scope must be agreed before live data is touched. Not every provider offers a sandbox.",
+    aTh: "ใช้ได้เมื่อโรงแรมหรือผู้ให้บริการมีสภาพแวดล้อมทดสอบ หากไม่มี ต้องตกลงขอบเขตความเสี่ยงก่อนแตะข้อมูลจริง ไม่ใช่ทุกผู้ให้บริการที่มี sandbox เคสที่ไม่ผ่านจะบันทึกปัญหา ผู้รับผิดชอบ ความรุนแรง และวันที่ทดสอบซ้ำ และไม่ถือว่าผ่านจนกว่าจะทดสอบซ้ำ",
+    aEn: "A test environment is used when the hotel or provider has one. If none exists, the risk and test scope must be agreed before live data is touched. Not every provider offers a sandbox. Failed cases are logged with an owner, severity, and a retest date, and are not treated as passed until they are retested.",
   },
   {
     qTh: "รองรับ Data Mapping และ Documentation หรือไม่",
@@ -3459,18 +3706,12 @@ export function hotelSystemsFaqs(locale: Locale): FaqItem[] {
 }
 
 export function hotelSystemsFaqsAreStale(items: Array<{ q: string; a: string }>) {
-  if (items.length < 15) return true;
-  const current = [
-    "ต้องเปลี่ยนระบบเดิมทั้งหมดหรือไม่",
-    "Do we have to replace every current system?",
-    "ทดสอบระบบอย่างไร และถ้าเคสไม่ผ่านจะทำอย่างไร",
-    "How is testing done, and what happens if a case fails?",
-    "การเชื่อมระบบทำให้รายได้เพิ่มขึ้นทันทีหรือไม่",
-    "Does connecting systems increase revenue immediately?",
-    "ใครเป็นผู้อนุมัติ Go-live",
-    "Who approves Go-live?",
-  ];
-  return !items.some((item) => current.includes(item.q.trim()));
+  if (items.length !== SYSTEMS_FAQS.length) return true;
+  const questions = items.map((item) => item.q.trim());
+  if (questions.some((question) => /ทดสอบระบบอย่างไร|How is testing done, and what happens if a case fails/i.test(question))) {
+    return true;
+  }
+  return !SYSTEMS_FAQS.every((item) => questions.includes(item.qTh) || questions.includes(item.qEn));
 }
 
 export const hotelSystemsCopy = {
@@ -3486,7 +3727,7 @@ export const hotelSystemsCopy = {
     underCta: "ส่งชื่อโรงแรม ระบบที่ใช้อยู่ และปัญหาที่พบ ไม่ต้องส่งรหัสผ่าน",
     needTitle: "โรงแรมของคุณกำลังเจอเรื่องนี้หรือไม่?",
     needLead:
-      "ข้อมูลห้อง ราคา หรือห้องว่างอาจไม่ตรงกัน พนักงานต้องกรอกซ้ำ ไม่ชัดว่าระบบใดเป็น Source of Truth ข้อมูล PMS, Channel Manager, Booking Engine หรือรายงานไม่ครบ และยังไม่มีผู้รับผิดชอบเมื่อข้อมูลผิดหรือการเชื่อมต่อล้ม",
+      "ข้อมูลห้อง ราคา หรือห้องว่างอาจไม่ตรงกันในแต่ละระบบ พนักงานต้องกรอกข้อมูลชุดเดียวกันหลายที่ ไม่ชัดว่าระบบใดเป็น Source of Truth ข้อมูล PMS, Channel Manager, Booking Engine หรือรายงานไม่ครบ เมื่อข้อมูลผิดยังไม่มีผู้รับผิดชอบชัดเจน รายงานมาจากหลายแหล่งและใช้นิยามต่างกัน ระบบอาจเชื่อมแล้วแต่ยังไม่มี error handling หรือขั้นตอนทดสอบ และเมื่อการเชื่อมต่อล้มทีมอาจไม่รู้จะติดต่อใคร",
     needClose: "นี่เป็นกรอบทบทวนตัวอย่าง ไม่ใช่ผลตรวจโรงแรมจริง และไม่ใช่สถานะเชื่อมต่อที่ตรวจแล้ว",
     helpTitle: "ระบบและข้อมูลที่อาจต้องทำงานร่วมกัน",
     helpLead:
@@ -3532,10 +3773,12 @@ export const hotelSystemsCopy = {
     testingCasesTitle: "Test Cases",
     testingErrorTitle: "Error Handling",
     measureTitle: "ตัวชี้วัดที่ใช้ทบทวน ไม่ใช่ผลที่การันตี",
+    measureLead: "ตัวชี้วัดตัวอย่างสำหรับทบทวนจังหวะงาน ไม่ใช่ผลโรงแรมจริง และไม่ใช่ผลที่การันตี",
     relatedTitle: "เรื่องที่เกี่ยวข้องกับรายได้ งานจอง และระบบ",
     closerTitle: "คุยเรื่องระบบโรงแรมและข้อมูล",
     closerBody: "คุณไม่จำเป็นต้องรู้ก่อนว่าต้องเปลี่ยนระบบหรือไม่ เพียงส่งรายการระบบและปัญหาที่พบ เราจะช่วยดู Architecture, Data Flow และขอบเขตก่อนเริ่มงาน",
     closerCta: "ส่งเรื่องให้ทีมดูระบบโรงแรม",
+    footerStatement: "งานนำไปใช้ระบบโรงแรมและข้อมูล ตามผู้ให้บริการ สิทธิ์ และขอบเขตที่ตกลง",
   },
   en: {
     crumb: "Solutions",
@@ -3595,9 +3838,11 @@ export const hotelSystemsCopy = {
     testingCasesTitle: "Test Cases",
     testingErrorTitle: "Error Handling",
     measureTitle: "Measures used in review. Not a guaranteed result.",
+    measureLead: "Sample review measures for management rhythm. Not a live hotel result, and not a guaranteed outcome.",
     relatedTitle: "Related reading on revenue, reservations, and systems",
     closerTitle: "Talk about hotel systems and data",
     closerBody: "You do not need to know in advance whether the system must change. Send the system list and the problem. We will review Architecture, Data Flow, and scope before the work starts.",
     closerCta: "Send a hotel systems enquiry",
+    footerStatement: "Hotel systems implementation and data work, subject to the provider, access, and agreed scope.",
   },
 } as const;

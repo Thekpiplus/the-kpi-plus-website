@@ -302,7 +302,7 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
                     href={switchLocale(pathname, item.id)}
                     role="menuitem"
                     className="kpi-header-lang-option"
-                    aria-current={item.id === locale ? "true" : undefined}
+                    aria-current={item.id === locale ? "page" : undefined}
                     onClick={() => setOpenLang(false)}
                   >
                     {item.label}
@@ -418,19 +418,19 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
                 </Link>
               ))}
             </div>
-            <div className="kpi-mobile-langs" aria-label={langLabel}>
+            <nav className="kpi-mobile-langs" aria-label={langLabel}>
               {locales.map((item) => (
                 <Link
                   key={item.id}
                   href={switchLocale(pathname, item.id)}
                   className={`kpi-mobile-lang${item.id === locale ? " is-current" : ""}`}
-                  aria-current={item.id === locale ? "true" : undefined}
+                  aria-current={item.id === locale ? "page" : undefined}
                   onClick={() => setOpenMenu(false)}
                 >
                   {item.label}
                 </Link>
               ))}
-            </div>
+            </nav>
           </nav>
         </div>
       ) : null}

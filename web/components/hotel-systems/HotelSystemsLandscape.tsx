@@ -3,9 +3,9 @@ import {
   SYSTEMS_LANDSCAPE_CATEGORIES,
   SYSTEMS_LANDSCAPE_CONNECTIONS,
   SYSTEMS_LANDSCAPE_FIELDS,
+  SYSTEMS_LANDSCAPE_LEGEND,
   SYSTEMS_LANDSCAPE_NOTE,
   SYSTEMS_LANDSCAPE_PATH,
-  SYSTEMS_LANDSCAPE_STATUSES,
   SYSTEMS_SERVICES_VISUAL,
   systemsLandscapeStatus,
   systemsRenderableSrc,
@@ -23,6 +23,7 @@ function nodeCopy(item: CmsSystemsService, thai: boolean, sample: boolean) {
     sourceOfTruth: thai ? item.sourceOfTruthTh || item.sourceOfTruthEn : item.sourceOfTruthEn || item.sourceOfTruthTh,
     owner: thai ? item.ownerTh || item.ownerEn : item.ownerEn || item.ownerTh,
     provider: thai ? item.providerTh || item.approvalTh || item.providerEn : item.providerEn || item.approvalEn || item.providerTh,
+    connector: thai ? item.connectorTh || item.connectorEn : item.connectorEn || item.connectorTh,
     status,
   };
 }
@@ -31,18 +32,36 @@ function LandscapeNode({
   item,
   thai,
   area,
+  fields,
 }: {
   item?: CmsSystemsService;
   thai: boolean;
   area: string;
+  fields: typeof SYSTEMS_LANDSCAPE_FIELDS;
 }) {
   if (!item) return null;
   const copy = nodeCopy(item, thai, true);
+  const facts = [
+    { key: "role", label: thai ? fields.role.th : fields.role.en, value: copy.role },
+    { key: "dataIn", label: thai ? fields.dataIn.th : fields.dataIn.en, value: copy.dataIn },
+    { key: "dataOut", label: thai ? fields.dataOut.th : fields.dataOut.en, value: copy.dataOut },
+    { key: "sourceOfTruth", label: thai ? fields.sourceOfTruth.th : fields.sourceOfTruth.en, value: copy.sourceOfTruth },
+    { key: "owner", label: thai ? fields.owner.th : fields.owner.en, value: copy.owner },
+    { key: "status", label: thai ? fields.status.th : fields.status.en, value: copy.status.label, latin: true },
+    { key: "provider", label: thai ? fields.provider.th : fields.provider.en, value: copy.provider },
+  ];
   return (
     <article className={`hsi-landscape-node is-${copy.status.tone}`} style={{ gridArea: area }}>
       <p className="hsi-landscape-node-name kpi-latin">{copy.title}</p>
       <em className={`hsi-status is-${copy.status.tone} kpi-latin`}>{copy.status.label}</em>
-      <p>{copy.role}</p>
+      <dl className="hsi-landscape-facts">
+        {facts.map((fact) => (
+          <div key={fact.key}>
+            <dt className="kpi-latin">{fact.label}</dt>
+            <dd className={fact.latin ? "kpi-latin" : undefined}>{fact.value}</dd>
+          </div>
+        ))}
+      </dl>
     </article>
   );
 }
@@ -50,6 +69,7 @@ function LandscapeNode({
 export function HotelSystemsLandscape({
   locale,
   src,
+  alt,
   status,
   label,
   caption,
@@ -61,6 +81,7 @@ export function HotelSystemsLandscape({
 }: {
   locale: Locale;
   src?: string;
+  alt?: string;
   status?: string;
   label?: string;
   caption?: string;
@@ -79,6 +100,7 @@ export function HotelSystemsLandscape({
   const displayCaption = caption?.trim() || (thai ? SYSTEMS_SERVICES_VISUAL.captionTh : SYSTEMS_SERVICES_VISUAL.captionEn);
   const displayNote = note?.trim() || (thai ? SYSTEMS_LANDSCAPE_NOTE.th : SYSTEMS_LANDSCAPE_NOTE.en);
   const displayPath = pathLabel?.trim() || (thai ? SYSTEMS_LANDSCAPE_PATH.th : SYSTEMS_LANDSCAPE_PATH.en);
+  const displayAlt = alt?.trim() || (thai ? SYSTEMS_SERVICES_VISUAL.altTh : SYSTEMS_SERVICES_VISUAL.altEn);
   const cats = categories?.length ? categories : SYSTEMS_LANDSCAPE_CATEGORIES.map((item) => ({ id: item.id, th: item.th, en: item.en }));
   const links = connections?.length
     ? connections
@@ -91,7 +113,7 @@ export function HotelSystemsLandscape({
           <div className="hsi-landscape-photo">
             <img
               src={fileSrc}
-              alt={thai ? SYSTEMS_SERVICES_VISUAL.altTh : SYSTEMS_SERVICES_VISUAL.altEn}
+              alt={displayAlt}
               width={SYSTEMS_SERVICES_VISUAL.displayWidth}
               height={SYSTEMS_SERVICES_VISUAL.displayHeight}
               style={{ aspectRatio: `${SYSTEMS_SERVICES_VISUAL.displayWidth} / ${SYSTEMS_SERVICES_VISUAL.displayHeight}` }}
@@ -101,41 +123,36 @@ export function HotelSystemsLandscape({
             {sample ? <span className="hsi-visual-badge">Hotel Systems Landscape — Sample</span> : null}
           </div>
         ) : (
-          <div
-            className="hsi-landscape-board"
-            role="img"
-            aria-label={thai ? SYSTEMS_SERVICES_VISUAL.altTh : SYSTEMS_SERVICES_VISUAL.altEn}
-          >
+          <div className="hsi-landscape-board" role="img" aria-label={displayAlt}>
             {sample ? <span className="hsi-visual-badge">Hotel Systems Landscape — Sample</span> : null}
             <p className="hsi-mock-kicker kpi-latin">{displayPath}</p>
             <div className="hsi-landscape-flow">
-              <LandscapeNode item={byId.guest} thai={thai} area="guest" />
+              <LandscapeNode item={byId.guest} thai={thai} area="guest" fields={fields} />
               <span className="hsi-landscape-arrow" style={{ gridArea: "a1" }} aria-hidden="true">
                 ↓
               </span>
-              <LandscapeNode item={byId.website} thai={thai} area="web" />
-              <span className="hsi-landscape-arrow is-across" style={{ gridArea: "a2be" }} aria-hidden="true">
-                →
-              </span>
-              <LandscapeNode item={byId.engine} thai={thai} area="be" />
+              <LandscapeNode item={byId.website} thai={thai} area="web" fields={fields} />
               <span className="hsi-landscape-arrow" style={{ gridArea: "a2" }} aria-hidden="true">
                 ↓
               </span>
-              <LandscapeNode item={byId.pms} thai={thai} area="pms" />
+              <LandscapeNode item={byId.pms} thai={thai} area="pms" fields={fields} />
               <span className="hsi-landscape-arrow" style={{ gridArea: "a3" }} aria-hidden="true">
                 ↓
               </span>
-              <LandscapeNode item={byId.cm} thai={thai} area="cm" />
-              <span className="hsi-landscape-fork" style={{ gridArea: "fork" }} aria-hidden="true">
+              <LandscapeNode item={byId.cm} thai={thai} area="cm" fields={fields} />
+              <div className="hsi-landscape-fork" style={{ gridArea: "fork" }} aria-hidden="true">
+                <svg className="hsi-landscape-fork-svg" viewBox="0 0 200 36" preserveAspectRatio="none">
+                  <path d="M100 2 V14 M100 14 L24 34 M100 14 L176 34" fill="none" stroke="#A2DC25" strokeWidth="3" strokeLinecap="round" />
+                </svg>
                 <span>↙</span>
                 <span>↘</span>
-              </span>
-              <LandscapeNode item={byId.ota} thai={thai} area="ota" />
-              <LandscapeNode item={byId.reporting} thai={thai} area="reporting" />
+              </div>
+              <LandscapeNode item={byId.ota} thai={thai} area="ota" fields={fields} />
+              <LandscapeNode item={byId.reporting} thai={thai} area="reporting" fields={fields} />
               <span className="hsi-landscape-arrow" style={{ gridArea: "a5" }} aria-hidden="true">
                 ↓
               </span>
-              <LandscapeNode item={byId.team} thai={thai} area="team" />
+              <LandscapeNode item={byId.team} thai={thai} area="team" fields={fields} />
             </div>
           </div>
         )}
@@ -172,7 +189,7 @@ export function HotelSystemsLandscape({
       </ul>
 
       <ul className="hsi-landscape-legend" aria-label={thai ? "คำอธิบายสถานะตัวอย่าง ไม่ใช่สถานะเชื่อมต่อที่ตรวจแล้ว" : "Sample status legend. Not a verified integration status."}>
-        {SYSTEMS_LANDSCAPE_STATUSES.map((item) => (
+        {SYSTEMS_LANDSCAPE_LEGEND.map((item) => (
           <li key={item.id}>
             <span className={`hsi-status is-${item.tone} kpi-latin`}>{item.label}</span>
           </li>
@@ -183,8 +200,8 @@ export function HotelSystemsLandscape({
         <table className="hsi-landscape-table">
           <caption className="sr-only">
             {thai
-              ? "ตารางตัวอย่างบทบาท ข้อมูลเข้า ข้อมูลออก Source of Truth ผู้รับผิดชอบ สถานะ และการพึ่งพาผู้ให้บริการ ของแต่ละระบบ ไม่ใช่สถานะโรงแรมจริง"
-              : "Sample table of role, data in, data out, source of truth, owner, integration status, and provider dependency for each system. Not a live hotel status."}
+              ? "ตารางตัวอย่างบทบาท ข้อมูลเข้า ข้อมูลออก Source of Truth ผู้รับผิดชอบ สถานะ การพึ่งพาผู้ให้บริการ และ Connector / API ของแต่ละระบบ ไม่ใช่สถานะโรงแรมจริง"
+              : "Sample table of role, data in, data out, source of truth, owner, integration status, provider dependency, and connector or API for each system. Not a live hotel status."}
           </caption>
           <thead>
             <tr>
@@ -196,6 +213,7 @@ export function HotelSystemsLandscape({
               <th scope="col">{thai ? fields.owner.th : fields.owner.en}</th>
               <th scope="col">{thai ? fields.status.th : fields.status.en}</th>
               <th scope="col">{thai ? fields.provider.th : fields.provider.en}</th>
+              <th scope="col">{thai ? fields.connector.th : fields.connector.en}</th>
             </tr>
           </thead>
           <tbody>
@@ -215,6 +233,7 @@ export function HotelSystemsLandscape({
                     <em className={`hsi-status is-${copy.status.tone} kpi-latin`}>{copy.status.label}</em>
                   </td>
                   <td data-label={thai ? fields.provider.th : fields.provider.en}>{copy.provider}</td>
+                  <td data-label={thai ? fields.connector.th : fields.connector.en}>{copy.connector}</td>
                 </tr>
               );
             })}
