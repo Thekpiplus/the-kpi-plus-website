@@ -1,13 +1,12 @@
 .kpi-systems {
-  font-family: Prompt, "Noto Sans Thai", Tahoma, Arial, sans-serif;
   min-width: 0;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 .kpi-shell:has(.kpi-systems) {
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 .kpi-systems section,
@@ -23,9 +22,25 @@
 .kpi-systems .hsi-qa-table-wrap,
 .kpi-systems .hsi-resp-table-wrap,
 .kpi-systems .hsi-hand-table-wrap,
-.kpi-systems .hsi-review-table-wrap {
+.kpi-systems .hsi-review-table-wrap,
+.kpi-systems .hsi-ba-table-wrap,
+.kpi-systems .hsi-ready-table-wrap {
   min-width: 0;
   max-width: 100%;
+}
+
+.kpi-systems .hsi-landscape-table-wrap,
+.kpi-systems .hsi-plat-table-wrap,
+.kpi-systems .hsi-inv-table-wrap,
+.kpi-systems .hsi-qa-table-wrap,
+.kpi-systems .hsi-resp-table-wrap,
+.kpi-systems .hsi-hand-table-wrap,
+.kpi-systems .hsi-review-table-wrap,
+.kpi-systems .hsi-ba-table-wrap,
+.kpi-systems .hsi-ready-table-wrap {
+  contain: inline-size;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
 }
 
 .kpi-systems .kpi-latin,
@@ -94,10 +109,12 @@
 }
 
 .hsi-visual--hero .hsi-visual-frame:has(.hsi-hero-mock) {
-  max-height: none;
+  max-width: min(560px, 100%);
+  max-height: 350px;
   height: auto;
-  min-height: 22rem;
-  aspect-ratio: auto;
+  min-height: 0;
+  aspect-ratio: 8 / 5;
+  overflow: hidden;
 }
 
 .hsi-visual--assessment {
@@ -916,7 +933,7 @@
   }
 }
 
-@media (max-width: 47.99rem) {
+@media (max-width: 63.99rem) {
   .hsi-landscape-board {
     padding: 0.8rem 0.75rem 0.9rem;
   }
@@ -1398,7 +1415,7 @@
   line-height: 1.6;
 }
 
-@media (max-width: 47.99rem) {
+@media (max-width: 63.99rem) {
   .hsi-ba-board {
     padding: 0.8rem 0.75rem 0.9rem;
   }
@@ -1678,7 +1695,7 @@
   border-bottom: 0;
 }
 
-@media (max-width: 47.99rem) {
+@media (max-width: 63.99rem) {
   .hsi-ready-board {
     padding: 0.8rem 0.75rem 0.9rem;
   }
@@ -2543,7 +2560,7 @@
   line-height: 1.3;
 }
 
-@media (max-width: 47.99rem) {
+@media (max-width: 63.99rem) {
   .hsi-plat-board {
     min-height: 0;
   }
@@ -2857,7 +2874,7 @@
   }
 }
 
-@media (max-width: 47.99rem) {
+@media (max-width: 63.99rem) {
   .hsi-inv-board {
     aspect-ratio: auto;
     min-height: 16rem;
@@ -3144,8 +3161,8 @@
   gap: 0.32rem;
   box-sizing: border-box;
   min-height: 0;
-  height: auto;
-  overflow: visible;
+  height: 100%;
+  overflow: hidden;
   padding: 0.5rem 0.55rem 0.45rem;
 }
 
@@ -3164,7 +3181,7 @@
   align-content: start;
   min-width: 0;
   min-height: 0;
-  overflow: visible;
+  overflow: hidden;
 }
 
 .hsi-hero-desk .hsi-visual-badge {
@@ -3248,12 +3265,24 @@
   text-transform: uppercase;
 }
 
+.hsi-hero-mock .hsi-mock-kicker {
+  margin: 0;
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+}
+
 .hsi-mock-title {
   margin: 0.35rem 0 0.85rem;
   color: #fff;
   font-size: 1.05rem;
   font-weight: 700;
   line-height: 1.35;
+}
+
+.hsi-hero-mock .hsi-mock-title {
+  margin: 0.08rem 0 0.15rem;
+  font-size: 0.78rem;
+  line-height: 1.25;
 }
 
 .hsi-hero-flow,
@@ -3272,7 +3301,7 @@
   gap: 0.3rem;
   min-height: 0;
   margin-top: 0.2rem;
-  overflow: visible;
+  overflow: hidden;
 }
 
 @media (max-width: 27.99rem) {
@@ -3531,11 +3560,11 @@
 .kpi-systems-journey {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem 0.2rem;
-  margin: 1rem 0 0;
-  color: rgba(255, 255, 255, 0.86);
-  font-size: 0.8125rem;
-  font-weight: 600;
+  gap: 0.2rem 0;
+  margin: 0.7rem 0 0;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.78rem;
+  font-weight: 500;
 }
 
 .kpi-systems-board {
@@ -3643,6 +3672,25 @@
 .kpi-systems-split {
   display: grid;
   gap: 1.5rem;
+}
+
+@media (max-width: 63.99rem) {
+  .kpi-systems-need-grid .hsi-visual--assessment,
+  .hsi-visual--hero {
+    width: 100%;
+    max-width: min(480px, 100%);
+    margin-inline: auto;
+    justify-self: center;
+  }
+
+  .hsi-visual--hero {
+    max-width: min(560px, 100%);
+  }
+
+  .hsi-ba-board,
+  .hsi-ba-photo {
+    min-height: 0;
+  }
 }
 
 @media (min-width: 64rem) {
@@ -4067,7 +4115,7 @@
   }
 }
 
-@media (max-width: 47.99rem) {
+@media (max-width: 63.99rem) {
   .hsi-qa-board {
     aspect-ratio: auto;
     min-height: 16rem;
@@ -4353,7 +4401,7 @@
   }
 }
 
-@media (max-width: 47.99rem) {
+@media (max-width: 63.99rem) {
   .hsi-resp-board {
     aspect-ratio: auto;
     min-height: 14rem;
@@ -4597,7 +4645,7 @@
   }
 }
 
-@media (max-width: 47.99rem) {
+@media (max-width: 63.99rem) {
   .hsi-hand-board {
     aspect-ratio: auto;
     min-height: 14rem;

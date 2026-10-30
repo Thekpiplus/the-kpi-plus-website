@@ -467,9 +467,9 @@ export async function HotelSystemsView({
                   cms.hero.title.trim() === hotelSystemsCopy.th.title ||
                   cms.hero.title.trim() === "ระบบเชื่อมกันได้ แต่ทีมและข้อมูลต้องทำงานไปด้วยกัน") ? (
                   <>
-                    <span className="kpi-home-h1-lead">ระบบเชื่อมต่อได้ แต่ข้อมูลและการทำงานยังไม่</span>
+                    <span className="kpi-home-h1-lead">ระบบเชื่อมต่อได้</span>
                     <span className="kpi-home-h1-rest">
-                      <span className="kpi-home-accent">ไปทางเดียวกัน</span>
+                      แต่ข้อมูลและการทำงานยังไม่ <span className="kpi-home-accent">ไปทางเดียวกัน</span>
                     </span>
                   </>
                 ) : !thai &&

@@ -19378,7 +19378,7 @@ a.kpi-revenue-related-item {
 }
 
 .kpi-shell .kpi-systems-hero .kpi-latin {
-  font-family: Poppins, sans-serif !important;
+  font-family: Montserrat, "Prompt", sans-serif !important;
 }
 
 .kpi-systems-hero .kpi-home-hero > * {
@@ -19388,26 +19388,30 @@ a.kpi-revenue-related-item {
 .kpi-systems-hero .kpi-home-hero-copy {
   position: relative;
   z-index: 1;
-  overflow: hidden;
-  max-width: 36rem;
+  overflow: visible;
+  max-width: 34rem;
 }
 
 .kpi-systems-hero .kpi-home-photo {
   position: relative;
   z-index: 0;
+  overflow: visible;
   width: 100%;
-  max-width: 28rem;
+  max-width: min(560px, 100%);
   margin-top: 0.35rem;
-  justify-self: start;
+  justify-self: stretch;
+  background: transparent;
+  box-shadow: none;
 }
 
 .kpi-systems-hero h1.kpi-home-h1,
 .kpi-shell :lang(th) .kpi-systems-hero h1.kpi-home-h1 {
-  max-width: 18em;
-  font-size: clamp(1.55rem, 1.15rem + 1.25vw, 2.4rem) !important;
-  line-height: 1.3 !important;
+  max-width: 100%;
+  margin-top: 0.85rem;
+  line-height: 1.28 !important;
   letter-spacing: 0 !important;
   text-wrap: wrap;
+  word-break: keep-all;
 }
 
 .kpi-systems-hero .kpi-home-h1-lead,
@@ -19420,60 +19424,39 @@ a.kpi-revenue-related-item {
 }
 
 .kpi-systems-hero .kpi-home-accent {
-  white-space: normal;
+  background-image: none;
+  -webkit-text-fill-color: #ebe722;
+  color: #ebe722;
+  white-space: nowrap;
 }
 
 .kpi-systems-hero .kpi-home-photo img {
+  aspect-ratio: 8 / 5;
   object-fit: contain;
   object-position: center;
+}
+
+.kpi-systems-hero .kpi-home-lead,
+.kpi-shell :lang(th) .kpi-systems-hero .kpi-home-lead {
+  max-width: 32rem;
+  margin-top: 1rem;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 1.025rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.62 !important;
 }
 
 .kpi-systems-hero .kpi-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
+  margin-top: 1.25rem;
 }
 
 .kpi-systems-hero .kpi-actions .kpi-button,
 .kpi-systems-hero .kpi-actions .kpi-button-ghost {
   min-height: var(--kpi-touch, 2.75rem);
-}
-
-/* Keep stacked until true desktop so text and image never compete. */
-@media (max-width: 71.99rem) {
-  .kpi-systems-hero .kpi-home-hero {
-    grid-template-columns: minmax(0, 1fr);
-    row-gap: 1.5rem;
-  }
-}
-
-@media (min-width: 72rem) {
-  .kpi-systems-hero .kpi-home-hero {
-    grid-template-columns: minmax(0, 0.55fr) minmax(0, 0.42fr);
-    column-gap: 7%;
-    align-items: center;
-  }
-
-  .kpi-systems-hero .kpi-home-hero-copy {
-    max-width: none;
-    padding-right: 0.5rem;
-  }
-
-  .kpi-systems-hero .kpi-home-photo {
-    max-width: none;
-    margin-top: 0;
-    justify-self: stretch;
-  }
-
-  .kpi-systems-hero h1.kpi-home-h1,
-  .kpi-shell :lang(th) .kpi-systems-hero h1.kpi-home-h1 {
-    max-width: 16.5em;
-  }
-}
-
-.kpi-systems-hero .kpi-home-lead,
-.kpi-shell :lang(th) .kpi-systems-hero .kpi-home-lead {
-  max-width: 30rem;
 }
 
 .kpi-systems-lead-close,
@@ -19981,6 +19964,38 @@ a.kpi-revenue-related-item {
 @media (min-width: 64rem) {
   .kpi-systems-platforms-list {
     grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .kpi-systems-need-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 480px);
+    column-gap: 2rem;
+    align-items: start;
+  }
+
+  .kpi-systems-help-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .kpi-systems-help-item:nth-child(odd),
+  .kpi-systems-help-item:nth-child(even) {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+
+  .kpi-systems-help-item:nth-child(3n + 1) {
+    padding-left: 0;
+  }
+
+  .kpi-systems-help-item:nth-child(3n) {
+    padding-right: 0;
+  }
+
+  .kpi-systems-help-item:not(:nth-child(even)) {
+    border-right: 0;
+  }
+
+  .kpi-systems-help-item:not(:nth-child(3n)) {
+    border-right: 1px solid #e3e8eb;
   }
 }
 
@@ -23873,7 +23888,10 @@ a.kpi-revenue-related-item {
 .kpi-shell :lang(th) .kpi-systems-hero h1.kpi-home-h1 {
   max-width: 100%;
   margin-top: 0.85rem;
+  line-height: 1.28 !important;
+  letter-spacing: 0 !important;
   text-wrap: wrap;
+  word-break: keep-all;
 }
 
 .kpi-systems-hero .kpi-home-h1-lead,
@@ -23886,7 +23904,8 @@ a.kpi-revenue-related-item {
 }
 
 .kpi-systems-hero .kpi-home-accent {
-  white-space: normal;
+  color: #ebe722;
+  white-space: nowrap;
 }
 
 .kpi-systems-hero .kpi-home-eyebrow {
@@ -23912,10 +23931,12 @@ a.kpi-revenue-related-item {
 }
 
 .kpi-systems-hero .kpi-home-photo .hsi-visual-frame:has(.hsi-hero-mock) {
-  max-height: none;
+  max-width: 560px;
+  max-height: 350px;
+  min-height: 0;
   height: auto;
-  min-height: 22rem;
-  aspect-ratio: auto;
+  aspect-ratio: 8 / 5;
+  overflow: hidden;
 }
 
 .kpi-systems-hero .kpi-home-photo img {
@@ -23944,15 +23965,32 @@ a.kpi-revenue-related-item {
   color: #ebe722;
 }
 
+.kpi-systems-hero-note,
+.kpi-systems-hero-trust {
+  max-width: 32rem;
+  margin: 0.7rem 0 0;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.5;
+}
+
+.kpi-systems-hero-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 0;
+}
+
 .kpi-systems-hero-trust span:not(:last-child)::after {
   content: "·";
-  margin-left: 0.85rem;
+  margin-inline: 0.45rem;
   color: #a2dc25;
 }
 
 @media (max-width: 63.99rem) {
   .kpi-systems-hero.kpi-hero {
-    padding-block: 1.35rem 1.15rem;
+    padding-block: 1.75rem 1.5rem;
   }
 
   .kpi-systems-hero .kpi-home-hero {
@@ -23991,18 +24029,34 @@ a.kpi-revenue-related-item {
 
 @media (min-width: 64rem) {
   .kpi-systems-hero.kpi-hero {
-    padding-block: 2.1rem 1.7rem;
+    padding-block: 2.5rem 2.2rem;
   }
 
   .kpi-systems-hero .kpi-home-hero {
-    grid-template-columns: minmax(0, 1.05fr) minmax(22rem, 560px);
-    column-gap: clamp(2rem, 4vw, 3.25rem);
+    grid-template-columns: minmax(0, 1.2fr) minmax(18rem, 26.25rem);
+    column-gap: clamp(1.25rem, 3vw, 2.5rem);
     align-items: center;
+  }
+
+  .kpi-systems-hero .kpi-home-hero-copy {
+    max-width: none;
   }
 
   .kpi-systems-hero .kpi-home-photo {
     margin-top: 0;
     justify-self: end;
+  }
+
+  .kpi-systems-hero .kpi-home-photo .hsi-visual-frame,
+  .kpi-systems-hero .kpi-home-photo .hsi-visual-frame:has(.hsi-hero-mock) {
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 80rem) {
+  .kpi-systems-hero .kpi-home-hero {
+    grid-template-columns: minmax(0, 1.05fr) minmax(22rem, 560px);
+    column-gap: clamp(2rem, 4vw, 3.25rem);
   }
 }
 
@@ -24021,11 +24075,12 @@ a.kpi-revenue-related-item {
 
 .kpi-systems-hero-note,
 .kpi-shell :lang(th) .kpi-systems-hero-note {
-  margin: 0.85rem 0 0;
+  margin: 0.7rem 0 0;
   color: rgba(255, 255, 255, 0.62);
-  font-size: 0.875rem;
+  font-size: 0.78rem;
+  font-weight: 500;
   letter-spacing: 0 !important;
-  line-height: 1.6 !important;
+  line-height: 1.5 !important;
 }
 
 .kpi-systems-need,
@@ -24062,7 +24117,7 @@ a.kpi-revenue-related-item {
 }
 
 .kpi-shell .kpi-systems-need .kpi-latin {
-  font-family: Poppins, sans-serif !important;
+  font-family: Montserrat, "Prompt", sans-serif !important;
 }
 
 .kpi-shell .kpi-systems-fit .kpi-latin,
@@ -24998,7 +25053,12 @@ a.kpi-revenue-related-item {
   background: #f8f8f8;
 }
 
-@media (max-width: 47.99rem) {
+@media (max-width: 63.99rem) {
+  .kpi-systems-need-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.25rem;
+  }
+
   .kpi-systems-need .hsi-visual--assessment {
     max-width: min(480px, 100%);
     justify-self: stretch;
@@ -25007,33 +25067,6 @@ a.kpi-revenue-related-item {
 }
 
 @media (min-width: 48rem) {
-  .kpi-systems-need-grid {
-    grid-template-columns: minmax(0, 1fr) minmax(280px, 480px);
-    column-gap: 2rem;
-    align-items: start;
-  }
-
-  .kpi-systems-help-list {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    column-gap: 0;
-  }
-
-  .kpi-systems-help-item {
-    padding: 1.35rem 1.25rem;
-  }
-
-  .kpi-systems-help-item:nth-child(3n + 1) {
-    padding-left: 0;
-  }
-
-  .kpi-systems-help-item:nth-child(3n) {
-    padding-right: 0;
-  }
-
-  .kpi-systems-help-item:not(:nth-child(3n)) {
-    border-right: 1px solid #e3e8eb;
-  }
-
   .kpi-systems-method-item {
     grid-template-columns: 6rem minmax(0, 1fr);
     column-gap: 1.35rem;
