@@ -517,23 +517,25 @@ export async function HotelSystemsView({
         </div>
       </section>
 
-      <section className="kpi-section kpi-systems-need">
-        <div className="kpi-systems-need-grid">
-          <div className="kpi-systems-need-copy">
-            <h2 className="kpi-h2">{needTitle}</h2>
-            <p className="kpi-systems-need-lead">{needLead}</p>
-            <p className="kpi-systems-need-close">{needClose}</p>
+      <section className="kpi-systems-need">
+        <div className="kpi-section">
+          <div className="kpi-systems-need-grid">
+            <div className="kpi-systems-need-copy">
+              <h2 className="kpi-h2">{needTitle}</h2>
+              <p className="kpi-systems-need-lead">{needLead}</p>
+              <p className="kpi-systems-need-close">{needClose}</p>
+            </div>
+            <HotelSystemsReviewVisual
+              locale={locale}
+              src={cms.assessment.visual.src}
+              alt={thai ? cms.assessment.visual.altTh : cms.assessment.visual.altEn}
+              status={cms.assessment.visual.status}
+              label={reviewLabel}
+              caption={reviewCaption}
+            />
           </div>
-          <HotelSystemsReviewVisual
-            locale={locale}
-            src={cms.assessment.visual.src}
-            alt={thai ? cms.assessment.visual.altTh : cms.assessment.visual.altEn}
-            status={cms.assessment.visual.status}
-            label={reviewLabel}
-            caption={reviewCaption}
-          />
+          <HotelSystemsReviewChecklist locale={locale} rows={assessmentRows} />
         </div>
-        <HotelSystemsReviewChecklist locale={locale} rows={assessmentRows} />
       </section>
 
       <section className="kpi-systems-help border-y border-[#E3E8EB] bg-white">
@@ -567,80 +569,86 @@ export async function HotelSystemsView({
         </div>
       </section>
 
-      <section className="kpi-section">
-        <h2 className="kpi-h2">{modelTitle}</h2>
-        <p className="kpi-systems-help-lead">{modelLead}</p>
-        <HotelSystemsBeforeAfter
-          locale={locale}
-          src={cms.model.visual.src}
-          alt={thai ? cms.model.visual.altTh : cms.model.visual.altEn}
-          status={cms.model.visual.status}
-          label={modelLabel}
-          caption={modelCaption}
-          note={modelNote}
-          steps={modelSteps}
-          fields={modelFields}
-        />
-        <div className="kpi-systems-board is-2">
-          <article className="kpi-systems-card is-green">
-            <h3>{fromCms && cms.model.supportTitle.trim() ? cms.model.supportTitle : thai ? SYSTEMS_MODEL_BOUNDARY.supportTitle.th : SYSTEMS_MODEL_BOUNDARY.supportTitle.en}</h3>
-            <p>{fromCms && cms.model.support.trim() ? cms.model.support : thai ? SYSTEMS_MODEL_BOUNDARY.support.th : SYSTEMS_MODEL_BOUNDARY.support.en}</p>
-          </article>
-          <article className="kpi-systems-card is-amber">
-            <h3>{fromCms && cms.model.hotelTitle.trim() ? cms.model.hotelTitle : thai ? SYSTEMS_MODEL_BOUNDARY.hotelTitle.th : SYSTEMS_MODEL_BOUNDARY.hotelTitle.en}</h3>
-            <p>{fromCms && cms.model.hotel.trim() ? cms.model.hotel : thai ? SYSTEMS_MODEL_BOUNDARY.hotel.th : SYSTEMS_MODEL_BOUNDARY.hotel.en}</p>
-          </article>
+      <section className="kpi-systems-model">
+        <div className="kpi-section">
+          <h2 className="kpi-h2">{modelTitle}</h2>
+          <p className="kpi-systems-help-lead">{modelLead}</p>
+          <HotelSystemsBeforeAfter
+            locale={locale}
+            src={cms.model.visual.src}
+            alt={thai ? cms.model.visual.altTh : cms.model.visual.altEn}
+            status={cms.model.visual.status}
+            label={modelLabel}
+            caption={modelCaption}
+            note={modelNote}
+            steps={modelSteps}
+            fields={modelFields}
+          />
+          <div className="kpi-systems-board is-2">
+            <article className="kpi-systems-card is-green">
+              <h3>{fromCms && cms.model.supportTitle.trim() ? cms.model.supportTitle : thai ? SYSTEMS_MODEL_BOUNDARY.supportTitle.th : SYSTEMS_MODEL_BOUNDARY.supportTitle.en}</h3>
+              <p>{fromCms && cms.model.support.trim() ? cms.model.support : thai ? SYSTEMS_MODEL_BOUNDARY.support.th : SYSTEMS_MODEL_BOUNDARY.support.en}</p>
+            </article>
+            <article className="kpi-systems-card is-amber">
+              <h3>{fromCms && cms.model.hotelTitle.trim() ? cms.model.hotelTitle : thai ? SYSTEMS_MODEL_BOUNDARY.hotelTitle.th : SYSTEMS_MODEL_BOUNDARY.hotelTitle.en}</h3>
+              <p>{fromCms && cms.model.hotel.trim() ? cms.model.hotel : thai ? SYSTEMS_MODEL_BOUNDARY.hotel.th : SYSTEMS_MODEL_BOUNDARY.hotel.en}</p>
+            </article>
+          </div>
         </div>
       </section>
 
-      <section className="kpi-section kpi-systems-deliverables">
-        <h2 className="kpi-h2">{deliverablesTitle}</h2>
-        <p className="kpi-systems-deliverables-lead">{deliverablesLead}</p>
-        <HotelSystemsReadiness
-          locale={locale}
-          src={cms.deliverables.visual.src}
-          alt={thai ? cms.deliverables.visual.altTh : cms.deliverables.visual.altEn}
-          status={cms.deliverables.visual.status}
-          label={readinessLabel}
-          caption={readinessCaption}
-          rows={readinessRows}
-        />
-        <div className="kpi-systems-deliverables-split">
-          <article className="kpi-systems-card is-green">
-            <h3>{fromCms && cms.deliverables.supportTitle.trim() ? cms.deliverables.supportTitle : thai ? SYSTEMS_DELIVERABLES_BOUNDARY.supportTitle.th : SYSTEMS_DELIVERABLES_BOUNDARY.supportTitle.en}</h3>
-            <ul>
-              {deliverableSupport.map((item) => (
-                <li key={item.id}>{thai ? item.th : item.en}</li>
-              ))}
-            </ul>
-          </article>
-          <article className="kpi-systems-card is-amber">
-            <h3>{fromCms && cms.deliverables.hotelTitle.trim() ? cms.deliverables.hotelTitle : thai ? SYSTEMS_DELIVERABLES_BOUNDARY.hotelTitle.th : SYSTEMS_DELIVERABLES_BOUNDARY.hotelTitle.en}</h3>
-            <ul>
-              {deliverableHotel.map((item) => (
-                <li key={item.id}>{thai ? item.th : item.en}</li>
-              ))}
-            </ul>
-          </article>
+      <section className="kpi-systems-deliverables">
+        <div className="kpi-section">
+          <h2 className="kpi-h2">{deliverablesTitle}</h2>
+          <p className="kpi-systems-deliverables-lead">{deliverablesLead}</p>
+          <HotelSystemsReadiness
+            locale={locale}
+            src={cms.deliverables.visual.src}
+            alt={thai ? cms.deliverables.visual.altTh : cms.deliverables.visual.altEn}
+            status={cms.deliverables.visual.status}
+            label={readinessLabel}
+            caption={readinessCaption}
+            rows={readinessRows}
+          />
+          <div className="kpi-systems-deliverables-split">
+            <article className="kpi-systems-card is-green">
+              <h3>{fromCms && cms.deliverables.supportTitle.trim() ? cms.deliverables.supportTitle : thai ? SYSTEMS_DELIVERABLES_BOUNDARY.supportTitle.th : SYSTEMS_DELIVERABLES_BOUNDARY.supportTitle.en}</h3>
+              <ul>
+                {deliverableSupport.map((item) => (
+                  <li key={item.id}>{thai ? item.th : item.en}</li>
+                ))}
+              </ul>
+            </article>
+            <article className="kpi-systems-card is-amber">
+              <h3>{fromCms && cms.deliverables.hotelTitle.trim() ? cms.deliverables.hotelTitle : thai ? SYSTEMS_DELIVERABLES_BOUNDARY.hotelTitle.th : SYSTEMS_DELIVERABLES_BOUNDARY.hotelTitle.en}</h3>
+              <ul>
+                {deliverableHotel.map((item) => (
+                  <li key={item.id}>{thai ? item.th : item.en}</li>
+                ))}
+              </ul>
+            </article>
+          </div>
+          <p className="kpi-systems-deliverables-boundary">{fromCms && cms.deliverables.boundary.trim() ? cms.deliverables.boundary : t.deliverablesBoundary}</p>
         </div>
-        <p className="kpi-systems-deliverables-boundary">{fromCms && cms.deliverables.boundary.trim() ? cms.deliverables.boundary : t.deliverablesBoundary}</p>
       </section>
 
-      <section id="method" className="kpi-section kpi-systems-method">
-        <h2 className="kpi-h2">{workflowTitle}</h2>
-        <p className="kpi-systems-method-lead">{workflowLead}</p>
-        <HotelSystemsWorkflow
-          locale={locale}
-          src={cms.workflow.visual.src}
-          alt={thai ? cms.workflow.visual.altTh : cms.workflow.visual.altEn}
-          status={cms.workflow.visual.status}
-          label={workflowLabel}
-          caption={workflowCaption}
-          steps={workflowSteps}
-          approvals={workflowApprovals}
-          gateTitle={workflowGateTitle}
-          gate={workflowGate}
-        />
+      <section id="method" className="kpi-systems-method">
+        <div className="kpi-section">
+          <h2 className="kpi-h2">{workflowTitle}</h2>
+          <p className="kpi-systems-method-lead">{workflowLead}</p>
+          <HotelSystemsWorkflow
+            locale={locale}
+            src={cms.workflow.visual.src}
+            alt={thai ? cms.workflow.visual.altTh : cms.workflow.visual.altEn}
+            status={cms.workflow.visual.status}
+            label={workflowLabel}
+            caption={workflowCaption}
+            steps={workflowSteps}
+            approvals={workflowApprovals}
+            gateTitle={workflowGateTitle}
+            gate={workflowGate}
+          />
+        </div>
       </section>
 
       <section id="platforms" className="kpi-systems-fit border-y border-[#E3E8EB] bg-white">
@@ -682,43 +690,47 @@ export async function HotelSystemsView({
         </div>
       </section>
 
-      <section id="scope" className="kpi-systems-scope kpi-section">
-        <h2 className="kpi-h2">{scopeTitle}</h2>
-        <p className="kpi-systems-scope-lead">{scopeLead}</p>
-        <HotelSystemsResponsibility
-          locale={locale}
-          src={cms.scope.visual.src}
-          alt={thai ? cms.scope.visual.altTh : cms.scope.visual.altEn}
-          status={cms.scope.visual.status}
-          label={scopeLabel}
-          caption={scopeCaption}
-          supportTitle={scopeSupportTitle}
-          hotelTitle={scopeHotelTitle}
-          matrixTitle={scopeMatrixTitle}
-          rows={scopeRows}
-          matrix={scopeMatrix}
-          boundary={scopeBoundary}
-        />
+      <section id="scope" className="kpi-systems-scope">
+        <div className="kpi-section">
+          <h2 className="kpi-h2">{scopeTitle}</h2>
+          <p className="kpi-systems-scope-lead">{scopeLead}</p>
+          <HotelSystemsResponsibility
+            locale={locale}
+            src={cms.scope.visual.src}
+            alt={thai ? cms.scope.visual.altTh : cms.scope.visual.altEn}
+            status={cms.scope.visual.status}
+            label={scopeLabel}
+            caption={scopeCaption}
+            supportTitle={scopeSupportTitle}
+            hotelTitle={scopeHotelTitle}
+            matrixTitle={scopeMatrixTitle}
+            rows={scopeRows}
+            matrix={scopeMatrix}
+            boundary={scopeBoundary}
+          />
+        </div>
       </section>
 
-      <section id="handover" className="kpi-section kpi-systems-plan kpi-systems-handover">
-        <p className="kpi-latin kpi-systems-plan-kicker">{sampleLabel}</p>
-        <h2 className="kpi-h2">{planTitle}</h2>
-        <p className="kpi-systems-plan-lead">{planLead}</p>
-        <HotelSystemsHandover
-          locale={locale}
-          src={cms.plan.visual.src}
-          alt={thai ? cms.plan.visual.altTh : cms.plan.visual.altEn}
-          status={cms.plan.visual.status}
-          label={planLabel}
-          caption={planCaption}
-          checklistTitle={planChecklistTitle}
-          ownershipTitle={planOwnershipTitle}
-          checklist={planChecklist}
-          ownership={planOwnership}
-          note={thai ? SYSTEMS_HANDOVER_NOTE.th : SYSTEMS_HANDOVER_NOTE.en}
-        />
-        <p className="kpi-systems-plan-close">{planClose}</p>
+      <section id="handover" className="kpi-systems-plan kpi-systems-handover">
+        <div className="kpi-section">
+          <p className="kpi-latin kpi-systems-plan-kicker">{sampleLabel}</p>
+          <h2 className="kpi-h2">{planTitle}</h2>
+          <p className="kpi-systems-plan-lead">{planLead}</p>
+          <HotelSystemsHandover
+            locale={locale}
+            src={cms.plan.visual.src}
+            alt={thai ? cms.plan.visual.altTh : cms.plan.visual.altEn}
+            status={cms.plan.visual.status}
+            label={planLabel}
+            caption={planCaption}
+            checklistTitle={planChecklistTitle}
+            ownershipTitle={planOwnershipTitle}
+            checklist={planChecklist}
+            ownership={planOwnership}
+            note={thai ? SYSTEMS_HANDOVER_NOTE.th : SYSTEMS_HANDOVER_NOTE.en}
+          />
+          <p className="kpi-systems-plan-close">{planClose}</p>
+        </div>
       </section>
 
       <section id="testing" className="kpi-systems-testing border-y border-[#E3E8EB] bg-[#F4F4F4]">
@@ -742,7 +754,8 @@ export async function HotelSystemsView({
         </div>
       </section>
 
-      <section className="kpi-section" aria-labelledby="hotel-systems-measure-heading">
+      <section className="kpi-systems-measure" aria-labelledby="hotel-systems-measure-heading">
+        <div className="kpi-section">
         <h2 id="hotel-systems-measure-heading" className="kpi-h2">
           {fromCms && cms?.measure.title.trim() ? cms.measure.title : t.measureTitle}
         </h2>
@@ -800,6 +813,7 @@ export async function HotelSystemsView({
               </article>
             );
           })}
+        </div>
         </div>
       </section>
 

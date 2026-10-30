@@ -9,6 +9,19 @@
   overflow-x: clip;
 }
 
+.kpi-systems-hero.kpi-hero {
+  padding-inline: 0;
+}
+
+.kpi-systems-hero > .kpi-wrap,
+.kpi-systems > section > .kpi-section {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--kpi-wrap);
+  margin-inline: auto;
+  padding-inline: var(--kpi-gutter);
+}
+
 .kpi-systems section,
 .kpi-systems .hsi-qa,
 .kpi-systems .hsi-resp,
@@ -26,7 +39,6 @@
 .kpi-systems .hsi-ba-table-wrap,
 .kpi-systems .hsi-ready-table-wrap {
   min-width: 0;
-  max-width: 100%;
 }
 
 .kpi-systems .hsi-landscape-table-wrap,
@@ -38,6 +50,7 @@
 .kpi-systems .hsi-review-table-wrap,
 .kpi-systems .hsi-ba-table-wrap,
 .kpi-systems .hsi-ready-table-wrap {
+  max-width: 100%;
   contain: inline-size;
   overflow-x: auto;
   overscroll-behavior-x: contain;

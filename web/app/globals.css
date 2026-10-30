@@ -23988,6 +23988,10 @@ a.kpi-revenue-related-item {
   color: #a2dc25;
 }
 
+.kpi-systems-hero.kpi-hero {
+  padding-inline: 0;
+}
+
 @media (max-width: 63.99rem) {
   .kpi-systems-hero.kpi-hero {
     padding-block: 1.75rem 1.5rem;
