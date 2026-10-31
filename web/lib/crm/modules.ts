@@ -1,7 +1,7 @@
 import type { User } from "@prisma/client";
 import { isFullAccessRole, isPartnerRoleValue, normalizeRole } from "@/lib/crm/roles";
 
-export const ADMIN_MODULES = ["leads", "partners", "reservations", "b2b", "ads", "meta", "seo", "website", "conversion", "management", "systems", "users", "cms"] as const;
+export const ADMIN_MODULES = ["leads", "partners", "reservations", "b2b", "ads", "meta", "seo", "website", "conversion", "management", "systems", "hotel_ai", "users", "cms"] as const;
 export type AdminModule = (typeof ADMIN_MODULES)[number];
 
 export const MODULE_LABEL: Record<AdminModule, string> = {
@@ -16,6 +16,7 @@ export const MODULE_LABEL: Record<AdminModule, string> = {
   conversion: "Direct Booking Operations",
   management: "Hotel Management Operations",
   systems: "Hotel Systems Operations",
+  hotel_ai: "Hotel AI & Automation Workflow",
   users: "Users Management",
   cms: "Content Management System",
 };
@@ -32,6 +33,7 @@ export const MODULE_PATH: Record<AdminModule, string> = {
   conversion: "/crm/conversion",
   management: "/crm/management",
   systems: "/crm/systems",
+  hotel_ai: "/crm/hotel-ai",
   users: "/crm/users",
   cms: "/crm/cms",
 };
@@ -102,6 +104,7 @@ export function moduleForPath(pathname: string): AdminModule | null {
   if (pathname.startsWith("/crm/conversion")) return "conversion";
   if (pathname.startsWith("/crm/management")) return "management";
   if (pathname.startsWith("/crm/systems")) return "systems";
+  if (pathname.startsWith("/crm/hotel-ai")) return "hotel_ai";
   if (
     pathname.startsWith("/crm/sales") ||
     pathname.startsWith("/crm/pipeline") ||

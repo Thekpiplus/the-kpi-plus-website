@@ -112,6 +112,31 @@ const systemsLinks: ContextLink[] = [
   { href: "/crm/systems/settings", label: "Settings" },
 ];
 
+const hotelAiLinks: ContextLink[] = [
+  { href: "/crm/hotel-ai", label: "Overview" },
+  { href: "/crm/hotel-ai/inventory", label: "Workflow Inventory" },
+  { href: "/crm/hotel-ai/backlog", label: "Automation Backlog" },
+  { href: "/crm/hotel-ai/pilots", label: "Pilot Projects" },
+  { href: "/crm/hotel-ai/use-cases", label: "Use Cases" },
+  { href: "/crm/hotel-ai/data-access", label: "Data and Access Review" },
+  { href: "/crm/hotel-ai/approvals", label: "Human Review / Approvals" },
+  { href: "/crm/hotel-ai/tests", label: "Test Cases" },
+  { href: "/crm/hotel-ai/issues", label: "Exceptions and Issue Log" },
+  { href: "/crm/hotel-ai/metrics", label: "Metrics / Pilot Scorecards" },
+  { href: "/crm/hotel-ai/handover", label: "Handover / SOP" },
+  { href: "/crm/hotel-ai/departments", label: "Department Workspaces" },
+  { href: "/crm/hotel-ai/departments/reservations", label: "Reservations" },
+  { href: "/crm/hotel-ai/departments/revenue", label: "Revenue" },
+  { href: "/crm/hotel-ai/departments/distribution", label: "Distribution" },
+  { href: "/crm/hotel-ai/departments/marketing", label: "Marketing" },
+  { href: "/crm/hotel-ai/departments/operations", label: "Operations / Guest Experience" },
+  { href: "/crm/hotel-ai/departments/sales", label: "Sales" },
+  { href: "/crm/hotel-ai/departments/management", label: "Management" },
+  { href: "/crm/hotel-ai/departments/it-data", label: "IT / Data" },
+  { href: "/crm/hotel-ai/audit", label: "Audit History" },
+  { href: "/crm/hotel-ai/settings", label: "Settings" },
+];
+
 const managementLinks: ContextLink[] = [
   { href: "/crm/management", label: "Overview" },
   { href: "/crm/management/properties", label: "Properties" },
@@ -177,6 +202,7 @@ const cmsLinks = [
   { href: "/crm/cms/hotel-direct-bookings", label: "หน้า Hotel Direct Bookings" },
   { href: "/crm/cms/independent-hotel", label: "หน้า Independent Hotel Management" },
   { href: "/crm/cms/hotel-systems", label: "หน้า Hotel Systems Implementation" },
+  { href: "/crm/cms/hotel-ai", label: "หน้า Hotel AI & Automation" },
   { href: "/crm/cms/contacts", label: "ข้อมูลติดต่อ" },
 ];
 
@@ -192,6 +218,7 @@ const contextByWorkspace: Record<Exclude<Workspace, "home">, ContextLink[]> = {
   conversion: conversionLinks,
   management: managementLinks,
   systems: systemsLinks,
+  hotel_ai: hotelAiLinks,
   users: userLinks,
   cms: cmsLinks,
 };
@@ -209,6 +236,7 @@ const NAV_LABEL: Record<NavKey, string> = {
   conversion: "Direct Booking Operations",
   management: "Hotel Management Operations",
   systems: "Hotel Systems Operations",
+  hotel_ai: "Hotel AI & Automation Workflow",
   users: "Users Management",
   cms: "Content Management",
   settings: "ตั้งค่า",
@@ -341,6 +369,7 @@ const NAV_ICON: Record<NavKey, () => ReactNode> = {
   conversion: IconSeo,
   management: IconSeo,
   systems: IconSeo,
+  hotel_ai: IconSeo,
   users: IconUsers,
   cms: IconCms,
   settings: IconSettings,
@@ -359,6 +388,7 @@ function workspaceOf(pathname: string): Workspace {
   if (pathname.startsWith("/crm/conversion")) return "conversion";
   if (pathname.startsWith("/crm/management")) return "management";
   if (pathname.startsWith("/crm/systems")) return "systems";
+  if (pathname.startsWith("/crm/hotel-ai")) return "hotel_ai";
   if (
     pathname.startsWith("/crm/sales") ||
     pathname.startsWith("/crm/pipeline") ||
@@ -567,7 +597,7 @@ export function CrmShell({
 
   const shell = (
     <div
-      className={`crm-shell crm-shell-app kpi-locale-th${railExpanded ? " is-rail-expanded" : ""}${workspace === "b2b" ? " crm-shell-b2b" : ""}${workspace === "ads" ? " crm-shell-ads" : ""}${workspace === "meta" ? " crm-shell-meta" : ""}${workspace === "seo" ? " crm-shell-seo" : ""}${workspace === "website" ? " crm-shell-website" : ""}${workspace === "conversion" ? " crm-shell-conversion" : ""}${workspace === "management" ? " crm-shell-management" : ""}${workspace === "systems" ? " crm-shell-systems" : ""}`}
+      className={`crm-shell crm-shell-app kpi-locale-th${railExpanded ? " is-rail-expanded" : ""}${workspace === "b2b" ? " crm-shell-b2b" : ""}${workspace === "ads" ? " crm-shell-ads" : ""}${workspace === "meta" ? " crm-shell-meta" : ""}${workspace === "seo" ? " crm-shell-seo" : ""}${workspace === "website" ? " crm-shell-website" : ""}${workspace === "conversion" ? " crm-shell-conversion" : ""}${workspace === "management" ? " crm-shell-management" : ""}${workspace === "systems" ? " crm-shell-systems" : ""}${workspace === "hotel_ai" ? " crm-shell-hotel-ai" : ""}`}
       suppressHydrationWarning
     >
       <aside

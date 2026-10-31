@@ -30,6 +30,13 @@ const HOTEL_SYSTEMS_FOOTER_STATEMENT: Record<Locale, string> = {
   zh: "Hotel systems implementation and data work, subject to the provider, access, and agreed scope.",
 };
 
+const HOTEL_AI_FOOTER_STATEMENT: Record<Locale, string> = {
+  th: "งาน AI และ Automation เริ่มจากเวิร์กโฟลว์จริง ตามระบบ สิทธิ์ ข้อมูล ขอบเขตที่ตกลง และการมีคนตรวจ",
+  en: "AI and Automation work starts from a real workflow, subject to systems, permissions, data, agreed scope, and human review.",
+  ru: "AI and Automation work starts from a real workflow, subject to systems, permissions, data, agreed scope, and human review.",
+  zh: "AI and Automation work starts from a real workflow, subject to systems, permissions, data, agreed scope, and human review.",
+};
+
 function existingNav(items: readonly { href: string; label: string }[], locale: Locale) {
   return items.flatMap((item) => {
     const href = existingHref(item.href, locale);
@@ -96,6 +103,7 @@ export function Footer({
   const isDirectBooking = path === "/solutions/hotel-direct-bookings";
   const isIndependentHotel = path === "/solutions/independent-hotel-management";
   const isHotelSystems = path === "/solutions/hotel-systems-implementation";
+  const isHotelAi = path === "/solutions/hotel-ai-automation";
   const footerCtaHref = isMetaAds
     ? `${pathname.split("#")[0]}#meta-ads-enquiry`
     : isHotelSeo
@@ -108,6 +116,8 @@ export function Footer({
             ? `${pathname.split("#")[0]}#independent-hotel-enquiry`
           : isHotelSystems
             ? `${pathname.split("#")[0]}#hotel-systems-enquiry`
+          : isHotelAi
+            ? `${pathname.split("#")[0]}#technology-enquiry`
           : auditHref(locale);
   const footerCtaLabel = isHotelWebsite
     ? enquiryServiceById("website")?.submit[locale] ?? t.audit
@@ -117,6 +127,8 @@ export function Footer({
         ? enquiryServiceById("independent_hotel")?.submit[locale] ?? t.audit
       : isHotelSystems
         ? enquiryServiceById("hotel_systems")?.submit[locale] ?? t.audit
+      : isHotelAi
+        ? enquiryServiceById("technology")?.submit[locale] ?? t.audit
       : t.audit;
   const contact = contactInfoFromCompany(company, locale);
   const primaryPaths = new Set(["/approach", "/insights", "/case-studies", "/about-us", "/contact-us"]);
@@ -130,7 +142,7 @@ export function Footer({
   const toolsIndexHref = existingHref("/tools", locale);
 
   return (
-    <footer lang={htmlLang(locale)} className={`kpi-footer${isDirectBooking ? " kpi-footer--conversion" : ""}${isIndependentHotel ? " kpi-footer--independent" : ""}${isHotelSystems ? " kpi-footer--systems" : ""}`}>
+    <footer lang={htmlLang(locale)} className={`kpi-footer${isDirectBooking ? " kpi-footer--conversion" : ""}${isIndependentHotel ? " kpi-footer--independent" : ""}${isHotelSystems ? " kpi-footer--systems" : ""}${isHotelAi ? " kpi-footer--tech" : ""}`}>
       <div className="kpi-section">
         <div className="kpi-footer-top">
           <section className="kpi-footer-brand">
@@ -149,22 +161,28 @@ export function Footer({
                 />
               </Link>
               <p className="kpi-footer-statement kpi-thai-nav">
-                {isHotelSystems ? HOTEL_SYSTEMS_FOOTER_STATEMENT[locale] : t.statement}
+                {isHotelAi
+                  ? HOTEL_AI_FOOTER_STATEMENT[locale]
+                  : isHotelSystems
+                    ? HOTEL_SYSTEMS_FOOTER_STATEMENT[locale]
+                    : t.statement}
               </p>
             </div>
             <div className="kpi-footer-brand-actions">
               <Link
                 data-track={
-                  isHotelSystems
-                    ? "footer_hotel_systems_cta"
-                    : isIndependentHotel
-                      ? "footer_independent_hotel_cta"
-                      : isDirectBooking
-                        ? "footer_conversion_cta"
-                        : "footer_audit_cta"
+                  isHotelAi
+                    ? "footer_hotel_ai_cta"
+                    : isHotelSystems
+                      ? "footer_hotel_systems_cta"
+                      : isIndependentHotel
+                        ? "footer_independent_hotel_cta"
+                        : isDirectBooking
+                          ? "footer_conversion_cta"
+                          : "footer_audit_cta"
                 }
                 href={footerCtaHref}
-                className={`kpi-button kpi-thai-nav${isHotelSystems ? " bg-[#a2dc25] text-[#1a3a02]" : ""}`}
+                className={`kpi-button kpi-thai-nav${isHotelSystems || isHotelAi ? " bg-[#a2dc25] text-[#1a3a02]" : ""}`}
               >
                 {footerCtaLabel} <ArrowUpRight className="h-4 w-4" />
               </Link>

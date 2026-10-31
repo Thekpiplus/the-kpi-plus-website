@@ -1424,8 +1424,15 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
 .crm-shell-website,
 .crm-shell-conversion,
 .crm-shell-management,
-.crm-shell-systems {
-  --crm-rail-active: #a2dc25;
+.crm-shell-systems,
+.crm-shell-hotel-ai {
+  --crm-rail-active: #A2DC25;
+}
+
+.crm-shell-hotel-ai,
+.crm-shell-hotel-ai .crm-app,
+.crm-shell-hotel-ai .crm-main {
+  font-family: Prompt, "Noto Sans Thai", Tahoma, Arial, sans-serif;
 }
 
 .crm-shell-meta .crm-rail-link.is-active,
@@ -1441,7 +1448,9 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
 .crm-shell-management .crm-rail-link.is-active,
 .crm-shell-management .crm-rail-link[aria-current="page"],
 .crm-shell-systems .crm-rail-link.is-active,
-.crm-shell-systems .crm-rail-link[aria-current="page"] {
+.crm-shell-systems .crm-rail-link[aria-current="page"],
+.crm-shell-hotel-ai .crm-rail-link.is-active,
+.crm-shell-hotel-ai .crm-rail-link[aria-current="page"] {
   color: #1a3a02;
   box-shadow: 0 10px 24px rgba(162, 220, 37, 0.35);
 }
@@ -1452,8 +1461,9 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
 .crm-shell-website .crm-app-sub-links a[aria-current="page"],
 .crm-shell-conversion .crm-app-sub-links a[aria-current="page"],
 .crm-shell-management .crm-app-sub-links a[aria-current="page"],
-.crm-shell-systems .crm-app-sub-links a[aria-current="page"] {
-  background: #a2dc25;
+.crm-shell-systems .crm-app-sub-links a[aria-current="page"],
+.crm-shell-hotel-ai .crm-app-sub-links a[aria-current="page"] {
+  background: #A2DC25;
   color: #1a3a02;
 }
 

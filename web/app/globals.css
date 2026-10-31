@@ -20029,7 +20029,11 @@ a.kpi-revenue-related-item {
 }
 
 .kpi-shell .kpi-tech-hero .kpi-latin {
-  font-family: Poppins, sans-serif !important;
+  font-family: Montserrat, Prompt, sans-serif !important;
+}
+
+.kpi-tech-hero.kpi-hero {
+  padding-inline: 0;
 }
 
 .kpi-tech-hero .kpi-home-hero > * {
@@ -20039,26 +20043,29 @@ a.kpi-revenue-related-item {
 .kpi-tech-hero .kpi-home-hero-copy {
   position: relative;
   z-index: 1;
-  overflow: hidden;
-  max-width: 36rem;
+  overflow: visible;
+  max-width: 34rem;
 }
 
 .kpi-tech-hero .kpi-home-photo {
   position: relative;
   z-index: 0;
   width: 100%;
-  max-width: 28rem;
+  max-width: min(560px, 100%);
   margin-top: 0.35rem;
-  justify-self: start;
+  justify-self: stretch;
+  background: transparent;
+  box-shadow: none;
 }
 
 .kpi-tech-hero h1.kpi-home-h1,
 .kpi-shell :lang(th) .kpi-tech-hero h1.kpi-home-h1 {
-  max-width: 18em;
-  font-size: clamp(1.55rem, 1.15rem + 1.25vw, 2.4rem) !important;
-  line-height: 1.3 !important;
+  max-width: 100%;
+  margin-top: 0.85rem;
+  line-height: 1.28 !important;
   letter-spacing: 0 !important;
   text-wrap: wrap;
+  word-break: keep-all;
 }
 
 .kpi-tech-hero .kpi-home-h1-lead,
@@ -20071,42 +20078,79 @@ a.kpi-revenue-related-item {
 }
 
 .kpi-tech-hero .kpi-home-accent {
+  color: #ebe722;
   white-space: nowrap;
 }
 
-.kpi-tech-hero .kpi-home-photo img {
-  object-fit: cover;
-  object-position: 62% 38%;
-}
-
-@media (max-width: 71.99rem) {
-  .kpi-tech-hero .kpi-home-hero {
-    grid-template-columns: minmax(0, 1fr);
-    row-gap: 1.5rem;
+@media (max-width: 24.375rem) {
+  .kpi-tech-hero .kpi-home-accent {
+    white-space: normal;
   }
 }
 
-@media (min-width: 72rem) {
+.kpi-tech-hero-trust {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 32rem;
+  margin: 0.7rem 0 0;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.78rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.kpi-tech-hero-trust span:not(:last-child)::after {
+  content: "·";
+  margin-inline: 0.45rem;
+  color: #a2dc25;
+}
+
+@media (max-width: 63.99rem) {
+  .kpi-tech-hero.kpi-hero {
+    padding-block: 1.75rem 1.5rem;
+  }
+
   .kpi-tech-hero .kpi-home-hero {
-    grid-template-columns: minmax(0, 0.55fr) minmax(0, 0.42fr);
-    column-gap: 7%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.1rem;
+  }
+
+  .kpi-tech-hero .kpi-home-hero-copy {
+    order: 1;
+  }
+
+  .kpi-tech-hero .kpi-home-photo {
+    order: 2;
+    max-width: min(560px, 100%);
+    margin-inline: auto;
+  }
+}
+
+@media (min-width: 64rem) {
+  .kpi-tech-hero.kpi-hero {
+    padding-block: 2.5rem 2.2rem;
+  }
+
+  .kpi-tech-hero .kpi-home-hero {
+    grid-template-columns: minmax(0, 1.15fr) minmax(18rem, 26.25rem);
+    column-gap: clamp(1.25rem, 3vw, 2.5rem);
     align-items: center;
   }
 
   .kpi-tech-hero .kpi-home-hero-copy {
     max-width: none;
-    padding-right: 0.5rem;
   }
 
   .kpi-tech-hero .kpi-home-photo {
-    max-width: none;
     margin-top: 0;
-    justify-self: stretch;
+    justify-self: end;
   }
+}
 
-  .kpi-tech-hero h1.kpi-home-h1,
-  .kpi-shell :lang(th) .kpi-tech-hero h1.kpi-home-h1 {
-    max-width: 16.5em;
+@media (min-width: 80rem) {
+  .kpi-tech-hero .kpi-home-hero {
+    grid-template-columns: minmax(0, 1.05fr) minmax(22rem, 560px);
   }
 }
 
@@ -20137,6 +20181,7 @@ a.kpi-revenue-related-item {
 
 .kpi-tech-problems,
 .kpi-tech-cases,
+.kpi-tech-evidence,
 .kpi-tech-measure,
 .kpi-tech-audience {
   background: #f8f8f8;
@@ -20154,6 +20199,8 @@ a.kpi-revenue-related-item {
 .kpi-shell :lang(th) .kpi-tech-cases h2.kpi-h2,
 .kpi-shell .kpi-tech-study h2.kpi-h2,
 .kpi-shell :lang(th) .kpi-tech-study h2.kpi-h2,
+.kpi-shell .kpi-tech-evidence h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-tech-evidence h2.kpi-h2,
 .kpi-shell .kpi-tech-measure h2.kpi-h2,
 .kpi-shell :lang(th) .kpi-tech-measure h2.kpi-h2,
 .kpi-shell .kpi-tech-ownership h2.kpi-h2,
@@ -20161,7 +20208,9 @@ a.kpi-revenue-related-item {
 .kpi-shell .kpi-tech-audience h2.kpi-h2,
 .kpi-shell :lang(th) .kpi-tech-audience h2.kpi-h2,
 .kpi-shell .kpi-tech-related h2.kpi-h2,
-.kpi-shell :lang(th) .kpi-tech-related h2.kpi-h2 {
+.kpi-shell :lang(th) .kpi-tech-related h2.kpi-h2,
+.kpi-shell .kpi-tech .kpi-faq-home h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-tech .kpi-faq-home h2.kpi-h2 {
   max-width: none;
   color: #3b3b3b;
   font-size: clamp(1.5rem, 1.05rem + 1.35vw, 2.25rem) !important;
@@ -20176,11 +20225,43 @@ a.kpi-revenue-related-item {
 .kpi-shell .kpi-tech-method .kpi-latin,
 .kpi-shell .kpi-tech-cases .kpi-latin,
 .kpi-shell .kpi-tech-study .kpi-latin,
+.kpi-shell .kpi-tech-evidence .kpi-latin,
 .kpi-shell .kpi-tech-measure .kpi-latin,
 .kpi-shell .kpi-tech-ownership .kpi-latin,
 .kpi-shell .kpi-tech-audience .kpi-latin,
 .kpi-shell .kpi-tech-related .kpi-latin {
-  font-family: Poppins, sans-serif !important;
+  font-family: Montserrat, Prompt, sans-serif !important;
+}
+
+.kpi-tech-subhead {
+  margin: 1.75rem 0 0.75rem;
+  color: #0b1f33;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.kpi-tech-case-review {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+  margin: 0.75rem 0 0;
+  color: #555555;
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.kpi-tech-related-card {
+  display: grid;
+  gap: 0.4rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.kpi-tech-related-card span {
+  color: #0b6660;
+  font-size: 0.78rem;
+  font-weight: 700;
 }
 
 .kpi-tech-num,
@@ -34825,6 +34906,118 @@ a.kpi-contact-card-value:focus-visible {
 
   .kpi-shell:has(.kpi-systems) .kpi-footer .kpi-button,
   .kpi-footer--systems .kpi-button {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+.kpi-shell.kpi-locale-th:has(.kpi-tech) .kpi-faq-home .kpi-faq-trigger,
+.kpi-shell.kpi-locale-th:has(.kpi-tech) .kpi-faq-home .kpi-faq-lead,
+.kpi-shell.kpi-locale-th:has(.kpi-tech) .kpi-faq-home .kpi-faq-panel p {
+  font-family: Prompt, "Noto Sans Thai", Tahoma, Arial, sans-serif;
+}
+
+.kpi-shell:has(.kpi-tech) .kpi-faq-home {
+  scroll-margin-top: 7.25rem;
+}
+
+.kpi-shell:has(.kpi-tech) .kpi-faq-home .kpi-faq-lead {
+  max-width: 40rem;
+  margin: 0.75rem 0 0;
+  color: #555555;
+  font-size: 1rem;
+  line-height: 1.7;
+  text-wrap: pretty;
+}
+
+.kpi-shell:has(.kpi-tech) .kpi-faq-home .kpi-faq-trigger {
+  min-height: var(--kpi-touch);
+}
+
+.kpi-shell:has(.kpi-tech) .kpi-faq-home .kpi-faq-trigger:focus,
+.kpi-shell:has(.kpi-tech) .kpi-faq-home .kpi-faq-trigger:focus-visible {
+  outline: 2px solid #a2dc25 !important;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px #ffffff, 0 0 0 5px #a2dc25 !important;
+}
+
+.kpi-shell:has(.kpi-tech) .kpi-faq-home .kpi-faq-item.is-open::before {
+  background: #a2dc25;
+}
+
+.kpi-shell:has(.kpi-tech) .kpi-faq-home .kpi-faq-q,
+.kpi-shell:has(.kpi-tech) .kpi-faq-home .kpi-faq-panel p {
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.kpi-shell:has(.kpi-tech) .kpi-faq-home .kpi-faq-panel p {
+  max-width: 40rem;
+  text-wrap: pretty;
+}
+
+.kpi-shell:has(.kpi-tech) .kpi-faq-home img,
+.kpi-shell:has(.kpi-tech) .kpi-faq-home dialog {
+  display: none;
+}
+
+.kpi-shell:has(.kpi-tech) .kpi-footer .kpi-button,
+.kpi-footer--tech .kpi-button {
+  min-height: var(--kpi-touch);
+  background: #a2dc25 !important;
+  color: #1a3a02 !important;
+  white-space: normal;
+}
+
+.kpi-shell:has(.kpi-tech) .kpi-footer .kpi-button:hover,
+.kpi-shell:has(.kpi-tech) .kpi-footer .kpi-button:active,
+.kpi-footer--tech .kpi-button:hover,
+.kpi-footer--tech .kpi-button:active {
+  background: #a2dc25 !important;
+  color: #1a3a02 !important;
+}
+
+.kpi-shell:has(.kpi-tech) .kpi-footer a:focus,
+.kpi-shell:has(.kpi-tech) .kpi-footer a:focus-visible,
+.kpi-shell:has(.kpi-tech) .kpi-footer button:focus,
+.kpi-shell:has(.kpi-tech) .kpi-footer button:focus-visible {
+  outline: 2px solid #a2dc25 !important;
+  outline-offset: 3px;
+}
+
+.kpi-shell:has(.kpi-tech) .kpi-footer-statement,
+.kpi-shell:has(.kpi-tech) .kpi-footer-link,
+.kpi-shell:has(.kpi-tech) .kpi-footer-address,
+.kpi-shell:has(.kpi-tech) .kpi-footer-copy,
+.kpi-shell:has(.kpi-tech) .kpi-footer-legal-links {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 39.99rem) {
+  .kpi-shell:has(.kpi-tech) .kpi-faq-home .kpi-faq-lead {
+    max-width: none;
+    font-size: 0.9375rem;
+    line-height: 1.7;
+  }
+
+  .kpi-shell:has(.kpi-tech) .kpi-faq-home .kpi-faq-trigger {
+    gap: 0.75rem;
+    padding-top: 0.9rem;
+    padding-bottom: 0.9rem;
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+
+  .kpi-shell:has(.kpi-tech) .kpi-faq-home .kpi-faq-panel p {
+    max-width: none;
+    padding-right: 0;
+    font-size: 0.9375rem;
+    line-height: 1.75;
+  }
+
+  .kpi-shell:has(.kpi-tech) .kpi-footer .kpi-button,
+  .kpi-footer--tech .kpi-button {
     width: 100%;
     justify-content: center;
     text-align: center;

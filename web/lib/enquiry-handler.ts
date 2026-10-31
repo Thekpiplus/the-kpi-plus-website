@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { respondFromForm } from "@/lib/crm/from-form";
 import { enquiryServiceByForm, enquiryServiceById, isEnquiryServiceId } from "@/lib/enquiry";
+import { hotelAiEnquiryHasSecrets } from "@/lib/hotel-ai";
 
 type Payload = {
   name?: string;
@@ -78,6 +79,26 @@ export async function handleEnquiry(body: Payload) {
   }
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && contact.includes("@")) {
     return NextResponse.json({ error: "invalid_email" }, { status: 400 });
+  }
+  if (
+    service.id === "technology" &&
+    hotelAiEnquiryHasSecrets(
+      [
+        message,
+        name,
+        businessName,
+        contact,
+        text(body.role),
+        text(body.workload),
+        text(body.systems),
+        text(body.goal),
+        text(body.topic),
+        text(body.channels),
+        text(body.scope),
+      ].join("\n"),
+    )
+  ) {
+    return NextResponse.json({ error: "blocked_secret" }, { status: 400 });
   }
 
   const payload = {

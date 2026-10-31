@@ -1,4 +1,5 @@
 import { adsFaqs } from "@/lib/google-ads";
+import { hotelAiFaqs } from "@/lib/hotel-ai";
 import { hotelSeoFaqs } from "@/lib/hotel-seo";
 import { hotelDirectBookingFaqs } from "@/lib/direct-bookings";
 import { independentHotelFaqs } from "@/lib/independent-hotel";
@@ -1021,94 +1022,10 @@ const table: Record<string, FaqItem[]> = {
   "/en/solutions/hotel-systems-implementation": hotelSystemsFaqs("en"),
   "/ru/solutions/hotel-systems-implementation": hotelSystemsFaqs("en"),
   "/zh/solutions/hotel-systems-implementation": hotelSystemsFaqs("en"),
-  "/solutions/hotel-ai-automation": [
-    {
-      q: "The KPI Plus ช่วยติดตั้งและทำ Automation ให้ด้วยหรือไม่?",
-      a: "ได้ เราสามารถช่วยตั้งแต่สำรวจงาน ออกแบบ Workflow ตั้งค่าและเชื่อมเครื่องมือที่รองรับ ทดลองใช้ อบรมทีม และทบทวนผล โดยกำหนดขอบเขตงานตามระบบที่องค์กรมี",
-    },
-    {
-      q: "จำเป็นต้องเปลี่ยน PMS หรือระบบเดิมก่อนหรือไม่?",
-      a: "ไม่จำเป็นเสมอไป เราจะตรวจว่าระบบเดิมส่งออกข้อมูลหรือเชื่อมต่อด้วยวิธีใดได้บ้าง แล้วจึงเสนอแนวทางที่เหมาะกับข้อจำกัดนั้น",
-    },
-    {
-      q: "AI จะตอบลูกค้าแทนพนักงานทั้งหมดหรือไม่?",
-      a: "องค์กรเลือกได้ว่าจะให้ระบบช่วยขั้นตอนไหน เช่น ค้นข้อมูล จัดประเภทคำถาม หรือเตรียมร่างคำตอบ พร้อมกำหนดกรณีที่ต้องส่งต่อให้พนักงานดูแล",
-    },
-    {
-      q: "ข้อมูลลูกค้าจะปลอดภัยอย่างไร?",
-      a: "ก่อนใช้งานต้องกำหนดขอบเขตข้อมูล สิทธิ์เข้าถึง เครื่องมือที่ใช้ และจุดตรวจทานร่วมกัน เราจะประเมินสิ่งเหล่านี้ตาม Workflow และระบบขององค์กร",
-    },
-    {
-      q: "เริ่มต้นกับโครงการเล็กได้หรือไม่?",
-      a: "ได้ การเลือกหนึ่งงานที่มีผู้รับผิดชอบและวิธีวัดผลชัดเจนช่วยให้ทีมทดลอง เรียนรู้ และตัดสินใจเรื่องการขยายงานจากข้อมูลที่เกิดขึ้นจริง",
-    },
-  ],
-  "/en/solutions/hotel-ai-automation": [
-    {
-      q: "Does The KPI Plus also set up and build the automation?",
-      a: "Yes. We can help from reviewing the work, designing the workflow, setting up and connecting tools that the systems support, trying it, training the team, and reviewing the result. The scope is set from the systems the organisation already has.",
-    },
-    {
-      q: "Does the hotel have to change the PMS or current systems first?",
-      a: "Not always. We first check how the current systems can export or connect data, then propose an approach that fits those limits.",
-    },
-    {
-      q: "Will AI answer guests instead of staff in every case?",
-      a: "The organisation chooses which steps the system helps, such as finding facts, sorting question types, or preparing a draft reply, and which cases must still go to a person.",
-    },
-    {
-      q: "How is guest data kept safe?",
-      a: "Before use, we agree the data scope, who can access it, which tools are used, and where a person reviews the result. We assess these from the organisation’s workflow and systems.",
-    },
-    {
-      q: "Can this start as a small project?",
-      a: "Yes. Choosing one task with a clear owner and a way to measure it helps the team try, learn, and decide on a wider roll-out from real results.",
-    },
-  ],
-  "/ru/solutions/hotel-ai-automation": [
-    {
-      q: "The KPI Plus также настраивает и делает автоматизацию?",
-      a: "Да. Мы можем помочь от разбора работы и проектирования Workflow до настройки и связи поддерживаемых инструментов, пробы, обучения команды и разбора результата. Границы работы задаём по системам организации.",
-    },
-    {
-      q: "Нужно ли сначала менять PMS или текущие системы?",
-      a: "Не всегда. Сначала смотрим, как текущие системы могут отдавать или связывать данные, затем предлагаем подход под эти ограничения.",
-    },
-    {
-      q: "ИИ будет отвечать гостю вместо сотрудников во всех случаях?",
-      a: "Организация выбирает, какие шаги помогает система — например найти данные, разделить тип вопроса или подготовить черновик ответа — и какие случаи нужно передавать сотруднику.",
-    },
-    {
-      q: "Как защищены данные гостя?",
-      a: "До использования договариваемся о границах данных, доступе, инструментах и точке проверки. Оцениваем это по Workflow и системам организации.",
-    },
-    {
-      q: "Можно начать с небольшого проекта?",
-      a: "Да. Одна задача с ясным владельцем и способом измерения помогает команде попробовать, научиться и решить о расширении по реальным данным.",
-    },
-  ],
-  "/zh/solutions/hotel-ai-automation": [
-    {
-      q: "The KPI Plus 也會幫忙安裝並做 Automation 嗎？",
-      a: "會。我們可以從檢視工作、設計 Workflow、設定並串接系統支援的工具、試用、培訓團隊，到回顧結果。工作範圍依組織現有系統約定。",
-    },
-    {
-      q: "一定要先換 PMS 或原有系統嗎？",
-      a: "不一定。我們會先看原有系統能如何匯出或串接資料，再提出符合這些限制的做法。",
-    },
-    {
-      q: "AI 會完全代替員工回覆客人嗎？",
-      a: "組織可以選擇系統幫忙哪個步驟，例如找資料、分類問題或準備回覆草稿，並約定哪些情況必須交給員工處理。",
-    },
-    {
-      q: "客人資料如何受到保護？",
-      a: "開始使用前，必須一起約定資料範圍、存取權、使用的工具，以及檢查點。我們會依該組織的 Workflow 與系統評估這些事項。",
-    },
-    {
-      q: "可以從小專案開始嗎？",
-      a: "可以。先選一件有負責人、也有明確衡量方式的工作，能讓團隊試用、學習，再依實際結果決定要不要擴大。",
-    },
-  ],
+  "/solutions/hotel-ai-automation": hotelAiFaqs("th"),
+  "/en/solutions/hotel-ai-automation": hotelAiFaqs("en"),
+  "/ru/solutions/hotel-ai-automation": hotelAiFaqs("en"),
+  "/zh/solutions/hotel-ai-automation": hotelAiFaqs("en"),
   "/solutions/hotel-training-team-development": [
     {
       q: "อบรมเฉพาะโรงแรมหรือไม่?",

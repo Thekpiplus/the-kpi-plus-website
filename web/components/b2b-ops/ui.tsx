@@ -74,6 +74,7 @@ export function B2bDialog({
   pending,
   onCancel,
   onConfirm,
+  children,
 }: {
   title: string;
   body: string;
@@ -81,6 +82,7 @@ export function B2bDialog({
   pending: boolean;
   onCancel: () => void;
   onConfirm: () => void;
+  children?: ReactNode;
 }) {
   return (
     <div className="b2b-dialog" role="dialog" aria-modal="true" aria-labelledby="b2b-dialog-title">
@@ -88,6 +90,7 @@ export function B2bDialog({
       <div className="b2b-dialog-panel">
         <h2 id="b2b-dialog-title">{title}</h2>
         <p>{body}</p>
+        {children}
         <div className="b2b-dialog-actions">
           <button type="button" className="crm-users-secondary" onClick={onCancel} disabled={pending}>
             ยกเลิก

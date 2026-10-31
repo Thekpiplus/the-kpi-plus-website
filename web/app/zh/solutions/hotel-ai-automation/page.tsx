@@ -1,7 +1,9 @@
 import { TechnologyView } from "@/components/TechnologyView";
-import { metadataFor } from "@/lib/seo";
+import { hotelAiPublicMetadata } from "@/lib/cms/hotel-ai-page-public";
 
-export const metadata = metadataFor("/zh/solutions/hotel-ai-automation");
+export async function generateMetadata() {
+  return hotelAiPublicMetadata("/zh/solutions/hotel-ai-automation");
+}
 
 export default function TechnologyPageZh() {
   return <TechnologyView locale="zh" />;

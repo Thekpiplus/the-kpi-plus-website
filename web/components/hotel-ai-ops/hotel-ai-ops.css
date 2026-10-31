@@ -1,0 +1,160 @@
+.hai-ops,
+.hai-ops-page,
+.hai-subtasks {
+  font-family: Prompt, "Noto Sans Thai", Tahoma, Arial, sans-serif;
+}
+
+.hai-ops .b2b-filters {
+  grid-template-columns: minmax(10rem, 1.6fr) repeat(auto-fit, minmax(8rem, 1fr));
+}
+
+.hai-ops-notice {
+  margin: 0;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid #e3e8eb;
+  background: #f2f8e2;
+  color: #0b1f33;
+}
+
+.hai-ops .kpi-button.b2b-save,
+.hai-ops .b2b-save,
+.hai-subtasks .kpi-button.b2b-save {
+  background: #a2dc25;
+  color: #1a3a02;
+}
+
+.hai-ops .seo-ops-status-row .seo-ops-stat:nth-child(1) {
+  background: #cfeea4;
+  border-color: #a2dc25;
+  color: #1a3a02;
+}
+
+.hai-ops .seo-ops-status-row .seo-ops-stat:nth-child(2) {
+  background: #fff4b8;
+  border-color: #e6d36a;
+  color: #5a4a00;
+}
+
+.hai-ops .seo-ops-status-row .seo-ops-stat:nth-child(3) {
+  background: #ffe0a3;
+  border-color: #e0b15a;
+  color: #5a3a00;
+}
+
+.hai-ops .seo-ops-status-row .seo-ops-stat:nth-child(4) {
+  background: #f8d4d4;
+  border-color: #e08a8a;
+  color: #7a1212;
+}
+
+.hai-ops .ads-progress-badge.is-completed {
+  background: #cfeea4;
+  color: #1a3a02;
+}
+
+.hai-ops .ads-progress-badge.is-in_progress {
+  background: #fff4b8;
+  color: #5a4a00;
+}
+
+.hai-ops .ads-progress-badge.is-ready_for_review {
+  background: #ffe0a3;
+  color: #5a3a00;
+}
+
+.hai-ops .ads-progress-badge.is-blocked {
+  background: #f8d4d4;
+  color: #7a1212;
+}
+
+.hai-ops .b2b-status.is-backlog,
+.hai-ops .b2b-status.is-not_started,
+.hai-ops .b2b-status.is-low,
+.hai-ops .b2b-status.is-none {
+  background: #f4f4f4;
+  color: #3b3b3b;
+}
+
+.hai-ops .b2b-status.is-discovery,
+.hai-ops .b2b-status.is-simplify,
+.hai-ops .b2b-status.is-ready_for_pilot,
+.hai-ops .b2b-status.is-pilot_running,
+.hai-ops .b2b-status.is-in_progress,
+.hai-ops .b2b-status.is-medium {
+  background: #fff4b8;
+  color: #5a4a00;
+}
+
+.hai-ops .b2b-status.is-needs_review,
+.hai-ops .b2b-status.is-adjust,
+.hai-ops .b2b-status.is-ready_for_review,
+.hai-ops .b2b-status.is-high,
+.hai-ops .b2b-status.is-urgent,
+.hai-ops .b2b-status.is-access,
+.hai-ops .b2b-status.is-privacy {
+  background: #ffe0a3;
+  color: #5a3a00;
+}
+
+.hai-ops .b2b-status.is-approved_to_scale,
+.hai-ops .b2b-status.is-handed_over,
+.hai-ops .b2b-status.is-completed {
+  background: #cfeea4;
+  color: #1a3a02;
+}
+
+.hai-ops .b2b-status.is-blocked,
+.hai-ops .b2b-status.is-stopped,
+.hai-ops .b2b-status.is-critical,
+.hai-ops .b2b-status.is-safety {
+  background: #f8d4d4;
+  color: #7a1212;
+}
+
+.hai-gate-alert {
+  margin: 0;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid #f8d4d4;
+  border-radius: 0.7rem;
+  background: #fdecec;
+  color: #7a1212;
+  font-weight: 700;
+}
+
+.hai-collaborate {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.hai-gate-actions {
+  margin: 0.4rem 0 0.8rem;
+}
+
+@media (max-width: 860px) {
+  .hai-ops-page .b2b-table thead,
+  .hai-ops .b2b-table thead {
+    display: none;
+  }
+
+  .hai-ops-page .b2b-table tr,
+  .hai-ops .b2b-table tr {
+    display: grid;
+    gap: 0.35rem;
+    padding: 0.85rem 0.7rem;
+    border-bottom: 1px solid #e3e8eb;
+  }
+
+  .hai-ops-page .b2b-table td,
+  .hai-ops .b2b-table td {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .hai-ops-page .b2b-table td::before,
+  .hai-ops .b2b-table td::before {
+    content: attr(data-label);
+    font-weight: 700;
+    color: #3b3b3b;
+  }
+}
