@@ -21933,7 +21933,7 @@ a.kpi-revenue-related-item {
 }
 
 .kpi-shell .kpi-train-hero .kpi-latin {
-  font-family: Poppins, sans-serif !important;
+  font-family: Montserrat, Prompt, sans-serif !important;
 }
 
 .kpi-train-hero .kpi-home-hero > * {
@@ -21951,7 +21951,7 @@ a.kpi-revenue-related-item {
   position: relative;
   z-index: 0;
   width: 100%;
-  max-width: 28rem;
+  max-width: 35rem;
   margin-top: 0.35rem;
   justify-self: start;
 }
@@ -21979,8 +21979,9 @@ a.kpi-revenue-related-item {
 }
 
 .kpi-train-hero .kpi-home-photo img {
+  aspect-ratio: 8 / 5;
   object-fit: cover;
-  object-position: 55% 35%;
+  object-position: center;
 }
 
 @media (max-width: 71.99rem) {
@@ -21992,8 +21993,8 @@ a.kpi-revenue-related-item {
 
 @media (min-width: 72rem) {
   .kpi-train-hero .kpi-home-hero {
-    grid-template-columns: minmax(0, 0.55fr) minmax(0, 0.42fr);
-    column-gap: 7%;
+    grid-template-columns: minmax(0, 1fr) 35rem;
+    column-gap: 2.5rem;
     align-items: center;
   }
 
@@ -22003,9 +22004,10 @@ a.kpi-revenue-related-item {
   }
 
   .kpi-train-hero .kpi-home-photo {
-    max-width: none;
+    width: 35rem;
+    max-width: 35rem;
     margin-top: 0;
-    justify-self: stretch;
+    justify-self: end;
   }
 
   .kpi-train-hero h1.kpi-home-h1,
@@ -22090,7 +22092,7 @@ a.kpi-revenue-related-item {
 .kpi-shell .kpi-train-method .kpi-latin,
 .kpi-shell .kpi-train-measure .kpi-latin,
 .kpi-shell .kpi-train-related .kpi-latin {
-  font-family: Poppins, sans-serif !important;
+  font-family: Montserrat, Prompt, sans-serif !important;
 }
 
 .kpi-train-num,
@@ -22353,7 +22355,8 @@ a.kpi-revenue-related-item {
 .kpi-train-nate-media img {
   display: block;
   width: 100%;
-  aspect-ratio: 3 / 4;
+  max-width: 20rem;
+  aspect-ratio: 4 / 5;
   object-fit: cover;
   object-position: center 12%;
 }
@@ -22651,9 +22654,9 @@ a.kpi-revenue-related-item {
   }
 
   .kpi-train-nate-grid {
-    grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
+    grid-template-columns: minmax(0, 20rem) minmax(0, 1fr);
     column-gap: 2.25rem;
-    align-items: center;
+    align-items: start;
   }
 
   .kpi-train-method-item {
@@ -34783,6 +34786,28 @@ a.kpi-contact-card-value:focus-visible {
 
 .kpi-shell:has(.kpi-systems) .kpi-faq-home .kpi-faq-trigger {
   min-height: var(--kpi-touch);
+}
+
+/* Hotel Training & Team Development: Prompt for Thai copy, with Noto Sans Thai fallback. */
+.kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-train,
+.kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-train :is(h1, h2, h3, h4, p, li, dt, dd, label, button, a, figcaption, strong, small),
+.kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-train .kpi-h1,
+.kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-train .kpi-h2,
+.kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-train .kpi-home-h1,
+.kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-train .kpi-home-h1-lead,
+.kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-train .kpi-home-h1-rest,
+.kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-train .kpi-lead,
+.kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-train .kpi-button,
+.kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-website-enquiry :is(h2, h3, p, li, label, button, span),
+.kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-faq-home :is(h2, p, button) {
+  font-family: Prompt, "Noto Sans Thai", Tahoma, Arial, sans-serif !important;
+}
+
+.kpi-shell:has(.kpi-train) .kpi-train .kpi-latin,
+.kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-train .kpi-latin,
+.kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-website-enquiry .kpi-latin,
+.kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-faq-home .kpi-latin {
+  font-family: Montserrat, Prompt, sans-serif !important;
 }
 
 .kpi-shell:has(.kpi-independent) .kpi-faq-home .kpi-faq-trigger:focus,

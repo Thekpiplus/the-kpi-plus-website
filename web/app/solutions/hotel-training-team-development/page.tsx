@@ -1,8 +1,11 @@
 import { TrainingView } from "@/components/TrainingView";
-import { metadataFor } from "@/lib/seo";
+import { hotelTrainingPublicMetadata } from "@/lib/cms/hotel-training-page-public";
 
-export const metadata = metadataFor("/solutions/hotel-training-team-development");
+export function generateMetadata() {
+  return hotelTrainingPublicMetadata("/solutions/hotel-training-team-development");
+}
 
 export default function TrainingPage() {
   return <TrainingView locale="th" />;
 }
+

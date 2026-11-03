@@ -57,6 +57,12 @@ import {
   serializeIndependentHotelPageBody,
   defaultIndependentHotelCms,
 } from "./independent-hotel-page";
+import {
+  HOTEL_TRAINING_CMS_TEMPLATE,
+  HOTEL_TRAINING_PAGE_ROUTE,
+  serializeHotelTrainingPageBody,
+  defaultHotelTrainingCms,
+} from "./hotel-training-page";
 
 async function requireCms() {
   const user = await requireUser();
@@ -283,6 +289,11 @@ export async function ensurePageFromSite(route: string) {
       const hydrated = await hydrateIndependentHotelDocument(existing);
       return hydrated.id;
     }
+    if (normalized === HOTEL_TRAINING_PAGE_ROUTE) {
+      const { hydrateHotelTrainingDocument } = await import("./hotel-training-page-actions");
+      const hydrated = await hydrateHotelTrainingDocument(existing);
+      return hydrated.id;
+    }
     return existing.id;
   }
 
@@ -306,6 +317,7 @@ export async function ensurePageFromSite(route: string) {
   const isHotelWebsite = normalized === HOTEL_WEBSITE_PAGE_ROUTE;
   const isHotelDirectBookings = normalized === HOTEL_DIRECT_BOOKINGS_PAGE_ROUTE;
   const isIndependentHotel = normalized === INDEPENDENT_HOTEL_PAGE_ROUTE;
+  const isHotelTraining = normalized === HOTEL_TRAINING_PAGE_ROUTE;
   const created = await db.cmsDocument.create({
     data: {
       kind: "page",
@@ -331,6 +343,8 @@ export async function ensurePageFromSite(route: string) {
                     ? HOTEL_DIRECT_BOOKINGS_CMS_TEMPLATE
                   : isIndependentHotel
                     ? INDEPENDENT_HOTEL_CMS_TEMPLATE
+                  : isHotelTraining
+                    ? HOTEL_TRAINING_CMS_TEMPLATE
                 : "general",
       excerpt: sitePage.description || "",
       body: isRevenue
@@ -351,6 +365,8 @@ export async function ensurePageFromSite(route: string) {
                     ? serializeDirectBookingPageBody(defaultDirectBookingCms("th"))
                   : isIndependentHotel
                     ? serializeIndependentHotelPageBody(defaultIndependentHotelCms("th"))
+                  : isHotelTraining
+                    ? serializeHotelTrainingPageBody(defaultHotelTrainingCms("th"))
                 : bodyFromMarkdown(markdown),
       tags: "",
       seoTitle: sitePage.title,

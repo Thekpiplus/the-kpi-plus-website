@@ -8,6 +8,7 @@ import { cmsOverview } from "@/lib/cms/queries";
 import { adsOpsOverview } from "@/lib/ads-ops/queries";
 import { metaOpsOverview } from "@/lib/meta-ops/queries";
 import { seoOpsOverview } from "@/lib/seo-ops/queries";
+import { trainingOpsOverview } from "@/lib/training-ops/queries";
 import { b2bOpsOverview } from "@/lib/b2b-ops/queries";
 import { reservationOpsOverview } from "@/lib/reservations-ops/queries";
 import { EmptyState } from "@/components/crm/ui/EmptyState";
@@ -45,7 +46,7 @@ async function DashboardHome({
 }: {
   user: Awaited<ReturnType<typeof requireUser>>;
 }) {
-  const [lists, origins, partners, users, cms, reservations, b2b, ads, meta, seo] = await Promise.all([
+  const [lists, origins, partners, users, cms, reservations, b2b, ads, meta, seo, training] = await Promise.all([
     todayLists(),
     leadOriginCounts(),
     partnerOverview().catch(() => ({
@@ -62,6 +63,7 @@ async function DashboardHome({
     adsOpsOverview(user).catch(() => ({ total: 0, live: 0, due: 0 })),
     metaOpsOverview(user).catch(() => ({ total: 0, live: 0, due: 0 })),
     seoOpsOverview(user).catch(() => ({ total: 0, live: 0, due: 0 })),
+    trainingOpsOverview(user).catch(() => ({ total: 0, live: 0, due: 0 })),
   ]);
 
   const dueToday = lists.dueToday.length + lists.overdue.length;
@@ -182,6 +184,22 @@ async function DashboardHome({
           cta: "เปิด Local Search Operations",
         }
       : null,
+    hasModule(user, "training")
+      ? {
+          href: "/crm/training",
+          accent: "training" as const,
+          icon: "▣",
+          category: "TRAINING",
+          title: "Hotel Training Operations",
+          body: "บอร์ดคำขออบรม ปฏิทิน โปรแกรม กลุ่มผู้เรียน และการติดตามภายใน — ไม่แสดงบนหน้าสาธารณะ",
+          stats: [
+            { label: "รายการ", value: training.total },
+            { label: "Active", value: training.live },
+            { label: "ติดตาม", value: training.due },
+          ],
+          cta: "เปิด Hotel Training Operations",
+        }
+      : null,
     hasModule(user, "users")
       ? {
           href: "/crm/users",
@@ -216,7 +234,7 @@ async function DashboardHome({
       : null,
   ].filter(Boolean) as Array<{
     href: string;
-    accent: "leads" | "partners" | "reservations" | "b2b" | "users" | "cms";
+    accent: "leads" | "partners" | "reservations" | "b2b" | "ads" | "meta" | "seo" | "users" | "cms" | "training";
     icon: string;
     category: string;
     title: string;
@@ -271,6 +289,15 @@ async function DashboardHome({
       meta: "B2B",
       priority: "medium",
       href: "/crm/b2b/activities",
+    });
+  }
+
+  if (hasModule(user, "training") && training.due > 0 && tasks.length < 5) {
+    tasks.push({
+      title: `งานอบรมที่รอตรวจ ${training.due} รายการ`,
+      meta: "Training",
+      priority: "medium",
+      href: "/crm/training/approvals",
     });
   }
 

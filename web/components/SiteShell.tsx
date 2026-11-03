@@ -27,6 +27,8 @@ import { parseHotelSystemsPageBody, HOTEL_SYSTEMS_CMS_TEMPLATE } from "@/lib/cms
 import { hotelSystemsFaqsFromCms } from "@/lib/cms/hotel-systems-page-public";
 import { parseHotelAiPageBody, HOTEL_AI_CMS_TEMPLATE } from "@/lib/cms/hotel-ai-page";
 import { hotelAiFaqsFromCms } from "@/lib/cms/hotel-ai-page-public";
+import { HOTEL_TRAINING_CMS_TEMPLATE, parseHotelTrainingPageBody } from "@/lib/cms/hotel-training-page";
+import { hotelTrainingFaqsFromCms } from "@/lib/cms/hotel-training-page-public";
 import { faqsForRoute, howToStepsForRoute } from "@/lib/faqs";
 import { pageKind } from "@/lib/page-types";
 import {
@@ -69,7 +71,8 @@ export async function SiteShell({
     stored?.template === HOTEL_DIRECT_BOOKINGS_CMS_TEMPLATE ||
     stored?.template === INDEPENDENT_HOTEL_CMS_TEMPLATE ||
     stored?.template === HOTEL_SYSTEMS_CMS_TEMPLATE ||
-    stored?.template === HOTEL_AI_CMS_TEMPLATE;
+    stored?.template === HOTEL_AI_CMS_TEMPLATE ||
+    stored?.template === HOTEL_TRAINING_CMS_TEMPLATE;
   if (stored?.trashedAt) notFound();
   if (stored && !isCmsPageLive(stored) && !specialTemplate) notFound();
 
@@ -115,6 +118,8 @@ export async function SiteShell({
                   ? hotelSystemsFaqsFromCms(parseHotelSystemsPageBody(cmsLive.body, locale), locale)
                 : cmsLive?.template === HOTEL_AI_CMS_TEMPLATE
                   ? hotelAiFaqsFromCms(parseHotelAiPageBody(cmsLive.body, locale), locale)
+                : cmsLive?.template === HOTEL_TRAINING_CMS_TEMPLATE
+                  ? hotelTrainingFaqsFromCms(parseHotelTrainingPageBody(cmsLive.body, locale), locale)
               : null;
   const faqs = kind === "article" ? [] : cmsFaqs?.length ? cmsFaqs : faqsForRoute(route);
   const faqJson = faqSchema(faqs);

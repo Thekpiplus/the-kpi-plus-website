@@ -133,7 +133,7 @@ export function AuditSection({ locale, leftExtra }: { locale: Locale; leftExtra?
   };
 
   return (
-    <section id="audit" data-audit-layout={AUDIT_LAYOUT} className="kpi-home-audit border-t border-[#E3E8EB] bg-[#F4F4F4]">
+    <section id="audit" data-audit-layout={AUDIT_LAYOUT} className="kpi-home-audit kpi-scroll-section border-t border-[#E3E8EB] bg-[#F4F4F4]">
       <div className={`kpi-section kpi-split-audit${leftExtra ? " kpi-split-audit-fill" : ""}`}>
         <div className="kpi-audit-copy">
           <div className="kpi-audit-lead">
@@ -511,7 +511,7 @@ export function AuditSectionHost({ locale, leftExtra }: { locale: Locale; leftEx
   return (
     <Suspense
       fallback={
-        <section id="audit" className="border-t border-[#E3E8EB] bg-[#F4F4F4]">
+        <section id="audit" className="kpi-scroll-section border-t border-[#E3E8EB] bg-[#F4F4F4]">
           <div className="kpi-section min-h-80" />
         </section>
       }

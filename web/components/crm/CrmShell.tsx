@@ -137,6 +137,35 @@ const hotelAiLinks: ContextLink[] = [
   { href: "/crm/hotel-ai/settings", label: "Settings" },
 ];
 
+const trainingLinks: ContextLink[] = [
+  { href: "/crm/training", label: "Overview" },
+  { href: "/crm/training/requests", label: "Training Requests" },
+  { href: "/crm/training/calendar", label: "Training Calendar" },
+  { href: "/crm/training/programs", label: "Programs / Courses" },
+  { href: "/crm/training/groups", label: "Learner Groups" },
+  { href: "/crm/training/needs", label: "Training Needs Assessment" },
+  { href: "/crm/training/materials", label: "Materials / Agenda" },
+  { href: "/crm/training/sessions", label: "Sessions / Attendance" },
+  { href: "/crm/training/assessment", label: "Assessment" },
+  { href: "/crm/training/follow-up", label: "Action Plans / Workplace Follow-up" },
+  { href: "/crm/training/trainers", label: "Trainer Directory" },
+  { href: "/crm/training/departments", label: "Department Workspaces" },
+  { href: "/crm/training/departments/reservations", label: "Reservations" },
+  { href: "/crm/training/departments/revenue", label: "Revenue" },
+  { href: "/crm/training/departments/distribution", label: "Distribution" },
+  { href: "/crm/training/departments/marketing", label: "Marketing" },
+  { href: "/crm/training/departments/operations", label: "Operations / Guest Experience" },
+  { href: "/crm/training/departments/sales", label: "Sales" },
+  { href: "/crm/training/departments/management", label: "Management" },
+  { href: "/crm/training/departments/hr-ld", label: "HR / Learning & Development" },
+  { href: "/crm/training/departments/it-data", label: "IT / Data" },
+  { href: "/crm/training/feedback", label: "Feedback / Outcomes" },
+  { href: "/crm/training/reports", label: "Reports / KPI" },
+  { href: "/crm/training/approvals", label: "Approvals" },
+  { href: "/crm/training/audit", label: "Audit History" },
+  { href: "/crm/training/settings", label: "Settings" },
+];
+
 const managementLinks: ContextLink[] = [
   { href: "/crm/management", label: "Overview" },
   { href: "/crm/management/properties", label: "Properties" },
@@ -203,6 +232,7 @@ const cmsLinks = [
   { href: "/crm/cms/independent-hotel", label: "หน้า Independent Hotel Management" },
   { href: "/crm/cms/hotel-systems", label: "หน้า Hotel Systems Implementation" },
   { href: "/crm/cms/hotel-ai", label: "หน้า Hotel AI & Automation" },
+  { href: "/crm/cms/hotel-training", label: "หน้า Hotel Training & Team Development" },
   { href: "/crm/cms/contacts", label: "ข้อมูลติดต่อ" },
 ];
 
@@ -219,6 +249,7 @@ const contextByWorkspace: Record<Exclude<Workspace, "home">, ContextLink[]> = {
   management: managementLinks,
   systems: systemsLinks,
   hotel_ai: hotelAiLinks,
+  training: trainingLinks,
   users: userLinks,
   cms: cmsLinks,
 };
@@ -237,6 +268,7 @@ const NAV_LABEL: Record<NavKey, string> = {
   management: "Hotel Management Operations",
   systems: "Hotel Systems Operations",
   hotel_ai: "Hotel AI & Automation Workflow",
+  training: "Hotel Training Operations",
   users: "Users Management",
   cms: "Content Management",
   settings: "ตั้งค่า",
@@ -370,6 +402,7 @@ const NAV_ICON: Record<NavKey, () => ReactNode> = {
   management: IconSeo,
   systems: IconSeo,
   hotel_ai: IconSeo,
+  training: IconLeads,
   users: IconUsers,
   cms: IconCms,
   settings: IconSettings,
@@ -389,6 +422,7 @@ function workspaceOf(pathname: string): Workspace {
   if (pathname.startsWith("/crm/management")) return "management";
   if (pathname.startsWith("/crm/systems")) return "systems";
   if (pathname.startsWith("/crm/hotel-ai")) return "hotel_ai";
+  if (pathname.startsWith("/crm/training")) return "training";
   if (
     pathname.startsWith("/crm/sales") ||
     pathname.startsWith("/crm/pipeline") ||
@@ -418,6 +452,9 @@ function isCurrent(pathname: string, search: string, href: string) {
   if (path === "/crm/conversion") return pathname === "/crm/conversion";
   if (path === "/crm/management") return pathname === "/crm/management";
   if (path === "/crm/systems") return pathname === "/crm/systems";
+  if (path === "/crm/hotel-ai") return pathname === "/crm/hotel-ai";
+  if (path === "/crm/training") return pathname === "/crm/training";
+  if (path === "/crm/training/departments") return pathname === "/crm/training/departments";
   return pathname === path || pathname.startsWith(`${path}/`);
 }
 
@@ -597,7 +634,7 @@ export function CrmShell({
 
   const shell = (
     <div
-      className={`crm-shell crm-shell-app kpi-locale-th${railExpanded ? " is-rail-expanded" : ""}${workspace === "b2b" ? " crm-shell-b2b" : ""}${workspace === "ads" ? " crm-shell-ads" : ""}${workspace === "meta" ? " crm-shell-meta" : ""}${workspace === "seo" ? " crm-shell-seo" : ""}${workspace === "website" ? " crm-shell-website" : ""}${workspace === "conversion" ? " crm-shell-conversion" : ""}${workspace === "management" ? " crm-shell-management" : ""}${workspace === "systems" ? " crm-shell-systems" : ""}${workspace === "hotel_ai" ? " crm-shell-hotel-ai" : ""}`}
+      className={`crm-shell crm-shell-app kpi-locale-th${railExpanded ? " is-rail-expanded" : ""}${workspace === "b2b" ? " crm-shell-b2b" : ""}${workspace === "ads" ? " crm-shell-ads" : ""}${workspace === "meta" ? " crm-shell-meta" : ""}${workspace === "seo" ? " crm-shell-seo" : ""}${workspace === "website" ? " crm-shell-website" : ""}${workspace === "conversion" ? " crm-shell-conversion" : ""}${workspace === "management" ? " crm-shell-management" : ""}${workspace === "systems" ? " crm-shell-systems" : ""}${workspace === "hotel_ai" ? " crm-shell-hotel-ai" : ""}${workspace === "training" ? " crm-shell-training" : ""}`}
       suppressHydrationWarning
     >
       <aside

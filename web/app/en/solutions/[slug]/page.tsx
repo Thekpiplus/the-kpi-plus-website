@@ -17,6 +17,7 @@ import { b2bPublicMetadata } from "@/lib/cms/b2b-page-public";
 import { googleAdsPublicMetadata } from "@/lib/cms/google-ads-page-public";
 import { hotelSeoPublicMetadata } from "@/lib/cms/hotel-seo-page-public";
 import { hotelAiPublicMetadata } from "@/lib/cms/hotel-ai-page-public";
+import { hotelTrainingPublicMetadata } from "@/lib/cms/hotel-training-page-public";
 import { reservationsPublicMetadata } from "@/lib/cms/reservations-page-public";
 import { revenuePublicMetadata } from "@/lib/cms/revenue-page-public";
 import { metadataFor, pageByRoute } from "@/lib/seo";
@@ -37,6 +38,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }) 
   if (slug === "google-ads-management") return googleAdsPublicMetadata(route);
   if (slug === "hotel-seo-google-maps-ai-search") return hotelSeoPublicMetadata(route);
   if (slug === "hotel-ai-automation") return hotelAiPublicMetadata(route);
+  if (slug === "hotel-training-team-development") return hotelTrainingPublicMetadata(route);
   return metadataFor(route);
 }
 

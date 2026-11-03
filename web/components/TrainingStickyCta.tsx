@@ -33,7 +33,7 @@ export function TrainingStickyCta({ label }: { label: string }) {
 
   return (
     <div className="kpi-sticky-cta lg:hidden">
-      <a href="#training-enquiry" className="kpi-button w-full">
+      <a href="#training-enquiry" className="kpi-button w-full bg-[#a2dc25] text-[#1a3a02]">
         {label}
       </a>
     </div>

@@ -1,7 +1,9 @@
 import { TrainingView } from "@/components/TrainingView";
-import { metadataFor } from "@/lib/seo";
+import { hotelTrainingPublicMetadata } from "@/lib/cms/hotel-training-page-public";
 
-export const metadata = metadataFor("/zh/solutions/hotel-training-team-development");
+export function generateMetadata() {
+  return hotelTrainingPublicMetadata("/zh/solutions/hotel-training-team-development");
+}
 
 export default function TrainingPageZh() {
   return <TrainingView locale="zh" />;

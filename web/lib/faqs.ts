@@ -1,5 +1,6 @@
 import { adsFaqs } from "@/lib/google-ads";
 import { hotelAiFaqs } from "@/lib/hotel-ai";
+import { hotelTrainingFaqs } from "@/lib/hotel-training";
 import { hotelSeoFaqs } from "@/lib/hotel-seo";
 import { hotelDirectBookingFaqs } from "@/lib/direct-bookings";
 import { independentHotelFaqs } from "@/lib/independent-hotel";
@@ -1026,94 +1027,10 @@ const table: Record<string, FaqItem[]> = {
   "/en/solutions/hotel-ai-automation": hotelAiFaqs("en"),
   "/ru/solutions/hotel-ai-automation": hotelAiFaqs("en"),
   "/zh/solutions/hotel-ai-automation": hotelAiFaqs("en"),
-  "/solutions/hotel-training-team-development": [
-    {
-      q: "อบรมเฉพาะโรงแรมหรือไม่?",
-      a: "ไม่จำกัดเฉพาะโรงแรม เราทำงานด้านการบริการ การพัฒนาคน ภาวะผู้นำ Team Building และทักษะดิจิทัลที่องค์กรประเภทอื่นนำไปใช้ได้ด้วย",
-    },
-    {
-      q: "อบรมเฉพาะองค์กรต่างจาก The KPI Plus Academy อย่างไร?",
-      a: "การอบรมเฉพาะองค์กรเริ่มจากโจทย์และผู้เข้าร่วมของทีมนั้น ส่วน Academy มีหลักสูตรและกิจกรรมตามหัวข้อให้เลือก และมีช่องทางปรึกษาการอบรมสำหรับองค์กรด้วย",
-    },
-    {
-      q: "จัด Team Building ให้เชื่อมกับงานได้หรือไม่?",
-      a: "ได้ เราจะคุยก่อนว่าทีมอยากพัฒนาเรื่องใด เช่น การสื่อสาร ความไว้วางใจ หรือการแก้ปัญหาร่วมกัน แล้วจึงออกแบบกิจกรรมให้สอดคล้องกับเป้าหมาย",
-    },
-    {
-      q: "ใครควรเข้าร่วม?",
-      a: "ขึ้นอยู่กับหัวข้อ อาจเป็นผู้บริหาร หัวหน้าแผนก พนักงานบริการ ทีม Commercial หรือทีมที่ต้องทำงานร่วมกันในโครงการเดียว",
-    },
-    {
-      q: "หลังจบกิจกรรมมีการติดตามหรือไม่?",
-      a: "สามารถกำหนดสิ่งที่จะนำไปทดลองใช้และช่วงเวลาทบทวนร่วมกันได้ โดยตกลงรูปแบบการติดตามตั้งแต่ก่อนเริ่มงาน",
-    },
-  ],
-  "/en/solutions/hotel-training-team-development": [
-    {
-      q: "Is this only for hotels?",
-      a: "No. We also work on service, people development, leadership, team building, and digital skills that other organisations can use.",
-    },
-    {
-      q: "How is in-house training different from The KPI Plus Academy?",
-      a: "In-house training starts from that team’s brief and participants. The Academy has courses and events by topic, and also a path for organisations that want team training.",
-    },
-    {
-      q: "Can team building connect to real work?",
-      a: "Yes. We first talk about what the team wants to develop, such as communication, trust, or solving problems together, then design the activity around that goal.",
-    },
-    {
-      q: "Who should join?",
-      a: "It depends on the topic. It may be executives, department heads, service staff, the commercial team, or people who have to work together on one project.",
-    },
-    {
-      q: "Is there follow-up after the activity?",
-      a: "We can agree what will be tried and when it will be reviewed. The follow-up format is set before the work starts.",
-    },
-  ],
-  "/ru/solutions/hotel-training-team-development": [
-    {
-      q: "Это только для отелей?",
-      a: "Нет. Мы также работаем с сервисом, развитием людей, лидерством, Team Building и цифровыми навыками, которые могут использовать другие организации.",
-    },
-    {
-      q: "Чем внутреннее обучение отличается от The KPI Plus Academy?",
-      a: "Внутреннее обучение начинается с задачи и участников этой команды. В Academy есть курсы и события по темам, а также путь для организаций, которым нужно обучение команды.",
-    },
-    {
-      q: "Можно ли связать Team Building с реальной работой?",
-      a: "Да. Сначала обсуждаем, что команда хочет развить — общение, доверие или совместное решение задач — затем проектируем активность под эту цель.",
-    },
-    {
-      q: "Кто должен участвовать?",
-      a: "Зависит от темы. Это могут быть руководители, главы отделов, сервисный персонал, коммерческая команда или люди, которым нужно работать вместе в одном проекте.",
-    },
-    {
-      q: "Есть ли сопровождение после активности?",
-      a: "Можно согласовать, что будут пробовать и когда это пересмотреть. Формат сопровождения фиксируется до начала работы.",
-    },
-  ],
-  "/zh/solutions/hotel-training-team-development": [
-    {
-      q: "只做飯店培訓嗎？",
-      a: "不限飯店。我們也做服務、人才發展、領導力、Team Building 與數位技能，其他類型組織也能使用。",
-    },
-    {
-      q: "企業內訓和 The KPI Plus Academy 差在哪裡？",
-      a: "企業內訓從該團隊的課題與參加者開始。Academy 則有依主題可選的課程與活動，也有給想辦團隊培訓的組織的諮詢入口。",
-    },
-    {
-      q: "Team Building 能接到實際工作嗎？",
-      a: "可以。我們會先談團隊想發展什麼，例如溝通、信任或一起解題，再依這個目標設計活動。",
-    },
-    {
-      q: "誰應該參加？",
-      a: "依主題而定。可能是高階主管、部門主管、服務人員、Commercial 團隊，或必須在同一專案一起工作的人。",
-    },
-    {
-      q: "活動結束後有追蹤嗎？",
-      a: "可以約定接下來要試用的事與回顧時間。追蹤方式會在開始前談好。",
-    },
-  ],
+  "/solutions/hotel-training-team-development": hotelTrainingFaqs("th"),
+  "/en/solutions/hotel-training-team-development": hotelTrainingFaqs("en"),
+  "/ru/solutions/hotel-training-team-development": hotelTrainingFaqs("en"),
+  "/zh/solutions/hotel-training-team-development": hotelTrainingFaqs("en"),
   "/hotel-revenue-management": [
     {
       q: "Hotel Revenue Management คืออะไร?",

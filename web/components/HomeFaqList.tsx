@@ -30,6 +30,9 @@ export function HomeFaqList({ items }: { items: FaqItem[] }) {
     } else if (event.key === "End") {
       event.preventDefault();
       focusItem(last);
+    } else if (event.key === "Escape") {
+      event.preventDefault();
+      setOpen((current) => (current === index ? null : current));
     }
   };
 
