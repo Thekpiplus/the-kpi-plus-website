@@ -484,7 +484,7 @@ export async function SolutionsIndexView({
               height={600}
               className="kpi-solutions-unsure-photo"
               decoding="async"
-              loading="lazy"
+              loading="eager"
             />
           </figure>
         </div>
