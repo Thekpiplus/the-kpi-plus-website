@@ -336,7 +336,6 @@ export async function SolutionsIndexView({
                       className="kpi-solutions-marketing-journey"
                       role="img"
                       aria-label={MARKETING_CATEGORY_VISUAL.alt[locale] ?? MARKETING_CATEGORY_VISUAL.alt.en}
-                      style={{ ["--kpi-marketing-journey-bg" as string]: `url(${MARKETING_CATEGORY_VISUAL.src})` }}
                     >
                       <ol className="kpi-solutions-marketing-journey-list">
                         {MARKETING_CATEGORY_JOURNEY.map((step, stepIndex) => (
@@ -372,7 +371,6 @@ export async function SolutionsIndexView({
                       className="kpi-solutions-systems-relation"
                       role="img"
                       aria-label={SYSTEMS_CATEGORY_VISUAL.alt[locale] ?? SYSTEMS_CATEGORY_VISUAL.alt.en}
-                      style={{ ["--kpi-systems-relation-bg" as string]: `url(${SYSTEMS_CATEGORY_VISUAL.src})` }}
                     >
                       <ol className="kpi-solutions-systems-relation-list">
                         {SYSTEMS_CATEGORY_RELATION.map((node, nodeIndex) => (

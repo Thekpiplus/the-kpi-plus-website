@@ -29,7 +29,7 @@ export function SolutionsConnectVisual({
       <ol className="kpi-solutions-connect-list">
         {steps.map((step, index) => (
           <li key={`${chainId}-${step}-${index}`}>
-            <span className="kpi-latin">{step}</span>
+            <span className="kpi-solutions-connect-step kpi-latin">{step}</span>
             {index < steps.length - 1 ? (
               <span className="kpi-solutions-connect-arrow" aria-hidden="true">
                 →
