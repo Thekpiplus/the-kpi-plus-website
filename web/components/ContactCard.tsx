@@ -148,23 +148,6 @@ export function ContactCard({
   const heading = showName && companyName ? companyName : "";
 
   const Tag = variant === "footer" ? "div" : "aside";
-  const locationRow = address ? (
-    <Row icon={<MapPin />} label={t.address}>
-      {maps ? (
-        <a href={maps} className="kpi-contact-card-value">
-          {address}
-        </a>
-      ) : (
-        <p className="kpi-contact-card-value">{address}</p>
-      )}
-    </Row>
-  ) : maps ? (
-    <Row icon={<MapPin />} label={t.maps}>
-      <a href={maps} className="kpi-contact-card-value">
-        {t.maps}
-      </a>
-    </Row>
-  ) : null;
 
   return (
     <Tag
@@ -209,7 +192,6 @@ export function ContactCard({
                 </a>
               </Row>
             ) : null}
-            {locationRow}
           </>
         ) : (
           <>
