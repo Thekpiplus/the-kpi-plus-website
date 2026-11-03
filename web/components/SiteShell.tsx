@@ -29,6 +29,8 @@ import { parseHotelAiPageBody, HOTEL_AI_CMS_TEMPLATE } from "@/lib/cms/hotel-ai-
 import { hotelAiFaqsFromCms } from "@/lib/cms/hotel-ai-page-public";
 import { HOTEL_TRAINING_CMS_TEMPLATE, parseHotelTrainingPageBody } from "@/lib/cms/hotel-training-page";
 import { hotelTrainingFaqsFromCms } from "@/lib/cms/hotel-training-page-public";
+import { SOLUTIONS_INDEX_CMS_TEMPLATE, parseSolutionsIndexPageBody } from "@/lib/cms/solutions-index-page";
+import { solutionsIndexFaqsFromCms } from "@/lib/cms/solutions-index-page-public";
 import { faqsForRoute, howToStepsForRoute } from "@/lib/faqs";
 import { pageKind } from "@/lib/page-types";
 import {
@@ -72,7 +74,8 @@ export async function SiteShell({
     stored?.template === INDEPENDENT_HOTEL_CMS_TEMPLATE ||
     stored?.template === HOTEL_SYSTEMS_CMS_TEMPLATE ||
     stored?.template === HOTEL_AI_CMS_TEMPLATE ||
-    stored?.template === HOTEL_TRAINING_CMS_TEMPLATE;
+    stored?.template === HOTEL_TRAINING_CMS_TEMPLATE ||
+    stored?.template === SOLUTIONS_INDEX_CMS_TEMPLATE;
   if (stored?.trashedAt) notFound();
   if (stored && !isCmsPageLive(stored) && !specialTemplate) notFound();
 
@@ -120,6 +123,8 @@ export async function SiteShell({
                   ? hotelAiFaqsFromCms(parseHotelAiPageBody(cmsLive.body, locale), locale)
                 : cmsLive?.template === HOTEL_TRAINING_CMS_TEMPLATE
                   ? hotelTrainingFaqsFromCms(parseHotelTrainingPageBody(cmsLive.body, locale), locale)
+                : cmsLive?.template === SOLUTIONS_INDEX_CMS_TEMPLATE
+                  ? solutionsIndexFaqsFromCms(parseSolutionsIndexPageBody(cmsLive.body, locale), locale)
               : null;
   const faqs = kind === "article" ? [] : cmsFaqs?.length ? cmsFaqs : faqsForRoute(route);
   const faqJson = faqSchema(faqs);
@@ -149,7 +154,13 @@ export async function SiteShell({
         <Header extraLinks={extraHeader} />
         <main>
           {children}
-          {hideFaqs ? null : <PageFaqs items={faqs} locale={locale} />}
+          {hideFaqs ? null : (
+            <PageFaqs
+              items={faqs}
+              locale={locale}
+              sectionId={kind === "solutionsIndex" ? "solutions-faq" : undefined}
+            />
+          )}
         </main>
         <Footer extraLinks={extraFooter} company={company} />
         <CookieConsent />

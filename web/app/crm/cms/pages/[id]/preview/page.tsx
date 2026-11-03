@@ -9,6 +9,7 @@ import { IndependentHotelView } from "@/components/IndependentHotelView";
 import { HotelSystemsView } from "@/components/HotelSystemsView";
 import { TechnologyView } from "@/components/TechnologyView";
 import { TrainingView } from "@/components/TrainingView";
+import { SolutionsIndexView } from "@/components/SolutionsIndexView";
 import { WebsiteView } from "@/components/WebsiteView";
 import { ReservationsView } from "@/components/ReservationsView";
 import { RevenueView } from "@/components/RevenueView";
@@ -33,6 +34,8 @@ import { isHotelAiPageDocument } from "@/lib/cms/hotel-ai-page";
 import { loadHotelAiPagePreview } from "@/lib/cms/hotel-ai-page-public";
 import { isHotelTrainingPageDocument } from "@/lib/cms/hotel-training-page";
 import { loadHotelTrainingPagePreview } from "@/lib/cms/hotel-training-page-public";
+import { isSolutionsIndexPageDocument } from "@/lib/cms/solutions-index-page";
+import { loadSolutionsIndexPagePreview } from "@/lib/cms/solutions-index-page-public";
 import { loadReservationsPagePreview } from "@/lib/cms/reservations-page-public";
 import { isReservationsPageDocument } from "@/lib/cms/reservations-page";
 import { loadRevenuePagePreview } from "@/lib/cms/revenue-page-public";
@@ -61,7 +64,8 @@ export default async function PreviewCmsPage({
   const hotelSystems = isHotelSystemsPageDocument(document);
   const hotelAi = isHotelAiPageDocument(document);
   const hotelTraining = isHotelTrainingPageDocument(document);
-  if (!reservations && !revenue && !b2b && !googleAds && !metaAds && !hotelSeo && !hotelWebsite && !hotelDirectBookings && !independentHotel && !hotelSystems && !hotelAi && !hotelTraining) notFound();
+  const solutionsIndex = isSolutionsIndexPageDocument(document);
+  if (!reservations && !revenue && !b2b && !googleAds && !metaAds && !hotelSeo && !hotelWebsite && !hotelDirectBookings && !independentHotel && !hotelSystems && !hotelAi && !hotelTraining && !solutionsIndex) notFound();
 
   const preview = reservations ? await loadReservationsPagePreview(id) : null;
   const revenuePreview = revenue ? await loadRevenuePagePreview(id) : null;
@@ -75,6 +79,7 @@ export default async function PreviewCmsPage({
   const hotelSystemsPreview = hotelSystems ? await loadHotelSystemsPagePreview(id) : null;
   const hotelAiPreview = hotelAi ? await loadHotelAiPagePreview(id) : null;
   const hotelTrainingPreview = hotelTraining ? await loadHotelTrainingPagePreview(id) : null;
+  const solutionsIndexPreview = solutionsIndex ? await loadSolutionsIndexPagePreview(id) : null;
   const live =
     preview?.live ??
     revenuePreview?.live ??
@@ -88,8 +93,9 @@ export default async function PreviewCmsPage({
     hotelSystemsPreview?.live ??
     hotelAiPreview?.live ??
     hotelTrainingPreview?.live ??
+    solutionsIndexPreview?.live ??
     false;
-  if (!preview && !revenuePreview && !b2bPreview && !adsPreview && !metaPreview && !hotelSeoPreview && !hotelWebsitePreview && !hotelDirectBookingsPreview && !independentHotelPreview && !hotelSystemsPreview && !hotelAiPreview && !hotelTrainingPreview) notFound();
+  if (!preview && !revenuePreview && !b2bPreview && !adsPreview && !metaPreview && !hotelSeoPreview && !hotelWebsitePreview && !hotelDirectBookingsPreview && !independentHotelPreview && !hotelSystemsPreview && !hotelAiPreview && !hotelTrainingPreview && !solutionsIndexPreview) notFound();
   const path = documentPath(document);
   const title = reservations
     ? "ตัวอย่างหน้า Outsourced Hotel Reservations"
@@ -113,6 +119,8 @@ export default async function PreviewCmsPage({
             ? "ตัวอย่างหน้า Hotel AI & Automation"
           : hotelTraining
             ? "ตัวอย่างหน้า Hotel Training & Team Development"
+          : solutionsIndex
+            ? "ตัวอย่างหน้า Hotel Solutions"
           : "ตัวอย่างหน้า Revenue & Commercial";
 
   return (
@@ -188,6 +196,12 @@ export default async function PreviewCmsPage({
           <TrainingView
             locale={hotelTrainingPreview.locale === "en" || hotelTrainingPreview.locale === "ru" || hotelTrainingPreview.locale === "zh" ? hotelTrainingPreview.locale : "th"}
             previewContent={hotelTrainingPreview.content}
+            embedded
+          />
+        ) : solutionsIndexPreview ? (
+          <SolutionsIndexView
+            locale={solutionsIndexPreview.locale === "en" || solutionsIndexPreview.locale === "ru" || solutionsIndexPreview.locale === "zh" ? solutionsIndexPreview.locale : "th"}
+            previewContent={solutionsIndexPreview.content}
             embedded
           />
         ) : null}

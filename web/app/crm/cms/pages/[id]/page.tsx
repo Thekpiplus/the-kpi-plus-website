@@ -43,6 +43,9 @@ import { isHotelAiPageDocument } from "@/lib/cms/hotel-ai-page";
 import { HotelTrainingPageEditor } from "@/components/cms/HotelTrainingPageEditor";
 import { duplicateHotelTrainingPageToLocale, editorStateForHotelTrainingDocument, saveHotelTrainingPage } from "@/lib/cms/hotel-training-page-actions";
 import { isHotelTrainingPageDocument } from "@/lib/cms/hotel-training-page";
+import { SolutionsIndexPageEditor } from "@/components/cms/SolutionsIndexPageEditor";
+import { duplicateSolutionsIndexPageToLocale, editorStateForSolutionsIndexDocument, saveSolutionsIndexPage } from "@/lib/cms/solutions-index-page-actions";
+import { isSolutionsIndexPageDocument } from "@/lib/cms/solutions-index-page";
 import { documentById } from "@/lib/cms/queries";
 import { documentPath } from "@/lib/cms/body";
 
@@ -71,6 +74,60 @@ export default async function EditCmsPage({
   const hotelSystems = isHotelSystemsPageDocument(document);
   const hotelAi = isHotelAiPageDocument(document);
   const hotelTraining = isHotelTrainingPageDocument(document);
+  const solutionsIndex = isSolutionsIndexPageDocument(document);
+
+  if (solutionsIndex) {
+    const hydrated = await editorStateForSolutionsIndexDocument(id);
+    if (!hydrated) notFound();
+    return (
+      <div className="crm-cms">
+        <PageHeader
+          eyebrow="Content Management"
+          title={hydrated.document.title}
+          description={path}
+          actions={
+            <div className="crm-cms-actions">
+              <Link href="/crm/cms" className="crm-users-secondary">
+                ← หน้าเพจทั้งหมด
+              </Link>
+              <Link href={`/crm/cms/pages/${hydrated.document.id}/preview`} className="crm-users-secondary">
+                ดูตัวอย่าง
+              </Link>
+            </div>
+          }
+        />
+        <SolutionsIndexPageEditor
+          initial={hydrated.state}
+          notice={saved === "1" ? "บันทึกแล้ว" : undefined}
+          error={error}
+          saveAction={saveSolutionsIndexPage}
+          duplicateAction={duplicateSolutionsIndexPageToLocale}
+          updatedAt={hydrated.document.updatedAt.toISOString()}
+          initialTab={tab}
+          previewHref={`/crm/cms/pages/${hydrated.document.id}/preview`}
+          publicHref={path}
+          locales={hydrated.locales}
+        />
+        <div className="crm-cms-editor-danger">
+          <div>
+            <p>ลบหน้าเพจ</p>
+            <span>ย้ายเข้าถังขยะ หน้าสาธารณะจะกลับไปใช้เนื้อหาในโค้ด</span>
+          </div>
+          <ConfirmDeleteButton
+            action={trashDocument}
+            fields={{ id: hydrated.document.id, returnTo: "/crm/cms" }}
+            itemName={hydrated.document.title}
+            eyebrow="Content"
+            title="ย้ายเข้าถังขยะ"
+            message={`ยืนยันย้าย “${hydrated.document.title}” เข้าถังขยะ?`}
+            buttonLabel="ลบหน้าเพจ"
+            confirmLabel="ลบหน้าเพจ"
+            className="kpi-button crm-users-delete-btn"
+          />
+        </div>
+      </div>
+    );
+  }
 
   if (googleAds) {
     const hydrated = await editorStateForGoogleAdsDocument(id);

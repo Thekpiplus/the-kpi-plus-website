@@ -1,7 +1,9 @@
 import { SolutionsIndexView } from "@/components/SolutionsIndexView";
-import { metadataFor } from "@/lib/seo";
+import { solutionsIndexPublicMetadata } from "@/lib/cms/solutions-index-page-public";
 
-export const metadata = metadataFor("/solutions");
+export async function generateMetadata() {
+  return solutionsIndexPublicMetadata("/solutions");
+}
 
 export default function SolutionsPage() {
   return <SolutionsIndexView locale="th" />;

@@ -12,7 +12,7 @@ import { ProfileMenu } from "@/components/crm/ui/ProfileMenu";
 
 type Workspace = "home" | AdminModule;
 type NavKey = "home" | AdminModule | "settings";
-type ContextLink = { href: string; label: string };
+type ContextLink = { href: string; label: string; children?: ContextLink[] };
 
 const leadLinks: ContextLink[] = [
   { href: "/crm/sales", label: "วันนี้" },
@@ -166,6 +166,37 @@ const trainingLinks: ContextLink[] = [
   { href: "/crm/training/settings", label: "Settings" },
 ];
 
+const solutionsLinks: ContextLink[] = [
+  { href: "/crm/solutions", label: "Overview" },
+  { href: "/crm/solutions/catalog", label: "Service Catalog" },
+  { href: "/crm/solutions/categories", label: "Service Categories" },
+  { href: "/crm/solutions/relationships", label: "Service Relationships" },
+  { href: "/crm/solutions/preview", label: "Public Page Preview" },
+  { href: "/crm/solutions/inquiries", label: "Inquiry Queue" },
+  { href: "/crm/solutions/proof", label: "Case Studies / Proof" },
+  { href: "/crm/solutions/assets", label: "Asset and Permission Review" },
+  { href: "/crm/solutions/translations", label: "Translation Review" },
+  { href: "/crm/solutions/seo", label: "SEO / Page Metadata" },
+  { href: "/crm/solutions/approvals", label: "Approvals" },
+  { href: "/crm/solutions/audit", label: "Activity / Audit Log" },
+  { href: "/crm/solutions/settings", label: "Settings" },
+  {
+    href: "/crm/solutions/departments",
+    label: "Departments",
+    children: [
+      { href: "/crm/solutions/departments/revenue", label: "Revenue" },
+      { href: "/crm/solutions/departments/marketing", label: "Marketing" },
+      { href: "/crm/solutions/departments/distribution", label: "Distribution" },
+      { href: "/crm/solutions/departments/reservations", label: "Reservations" },
+      { href: "/crm/solutions/departments/sales", label: "Sales" },
+      { href: "/crm/solutions/departments/operations", label: "Operations / Guest Experience" },
+      { href: "/crm/solutions/departments/systems-it-data", label: "Systems / IT / Data" },
+      { href: "/crm/solutions/departments/training-hr-ld", label: "Training / HR / Learning & Development" },
+      { href: "/crm/solutions/departments/management", label: "Management" },
+    ],
+  },
+];
+
 const managementLinks: ContextLink[] = [
   { href: "/crm/management", label: "Overview" },
   { href: "/crm/management/properties", label: "Properties" },
@@ -233,6 +264,7 @@ const cmsLinks = [
   { href: "/crm/cms/hotel-systems", label: "หน้า Hotel Systems Implementation" },
   { href: "/crm/cms/hotel-ai", label: "หน้า Hotel AI & Automation" },
   { href: "/crm/cms/hotel-training", label: "หน้า Hotel Training & Team Development" },
+  { href: "/crm/cms/solutions", label: "หน้า Hotel Solutions (index)" },
   { href: "/crm/cms/contacts", label: "ข้อมูลติดต่อ" },
 ];
 
@@ -250,6 +282,7 @@ const contextByWorkspace: Record<Exclude<Workspace, "home">, ContextLink[]> = {
   systems: systemsLinks,
   hotel_ai: hotelAiLinks,
   training: trainingLinks,
+  solutions: solutionsLinks,
   users: userLinks,
   cms: cmsLinks,
 };
@@ -269,6 +302,7 @@ const NAV_LABEL: Record<NavKey, string> = {
   systems: "Hotel Systems Operations",
   hotel_ai: "Hotel AI & Automation Workflow",
   training: "Hotel Training Operations",
+  solutions: "Hotel Solutions Service Directory",
   users: "Users Management",
   cms: "Content Management",
   settings: "ตั้งค่า",
@@ -403,6 +437,7 @@ const NAV_ICON: Record<NavKey, () => ReactNode> = {
   systems: IconSeo,
   hotel_ai: IconSeo,
   training: IconLeads,
+  solutions: IconCms,
   users: IconUsers,
   cms: IconCms,
   settings: IconSettings,
@@ -423,6 +458,7 @@ function workspaceOf(pathname: string): Workspace {
   if (pathname.startsWith("/crm/systems")) return "systems";
   if (pathname.startsWith("/crm/hotel-ai")) return "hotel_ai";
   if (pathname.startsWith("/crm/training")) return "training";
+  if (pathname.startsWith("/crm/solutions")) return "solutions";
   if (
     pathname.startsWith("/crm/sales") ||
     pathname.startsWith("/crm/pipeline") ||
@@ -455,6 +491,8 @@ function isCurrent(pathname: string, search: string, href: string) {
   if (path === "/crm/hotel-ai") return pathname === "/crm/hotel-ai";
   if (path === "/crm/training") return pathname === "/crm/training";
   if (path === "/crm/training/departments") return pathname === "/crm/training/departments";
+  if (path === "/crm/solutions") return pathname === "/crm/solutions";
+  if (path === "/crm/solutions/departments") return pathname === "/crm/solutions/departments";
   return pathname === path || pathname.startsWith(`${path}/`);
 }
 
@@ -517,6 +555,7 @@ export function CrmShell({
   const contextLinks = workspace === "home" ? [] : contextByWorkspace[workspace];
   const allowed = ADMIN_MODULES.filter((module) => modules.includes(module));
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
   const [railExpanded, setRailExpanded] = useState(true);
   const [railReady, setRailReady] = useState(false);
   const drawerId = useId();
@@ -634,7 +673,7 @@ export function CrmShell({
 
   const shell = (
     <div
-      className={`crm-shell crm-shell-app kpi-locale-th${railExpanded ? " is-rail-expanded" : ""}${workspace === "b2b" ? " crm-shell-b2b" : ""}${workspace === "ads" ? " crm-shell-ads" : ""}${workspace === "meta" ? " crm-shell-meta" : ""}${workspace === "seo" ? " crm-shell-seo" : ""}${workspace === "website" ? " crm-shell-website" : ""}${workspace === "conversion" ? " crm-shell-conversion" : ""}${workspace === "management" ? " crm-shell-management" : ""}${workspace === "systems" ? " crm-shell-systems" : ""}${workspace === "hotel_ai" ? " crm-shell-hotel-ai" : ""}${workspace === "training" ? " crm-shell-training" : ""}`}
+      className={`crm-shell crm-shell-app kpi-locale-th${railExpanded ? " is-rail-expanded" : ""}${workspace === "b2b" ? " crm-shell-b2b" : ""}${workspace === "ads" ? " crm-shell-ads" : ""}${workspace === "meta" ? " crm-shell-meta" : ""}${workspace === "seo" ? " crm-shell-seo" : ""}${workspace === "website" ? " crm-shell-website" : ""}${workspace === "conversion" ? " crm-shell-conversion" : ""}${workspace === "management" ? " crm-shell-management" : ""}${workspace === "systems" ? " crm-shell-systems" : ""}${workspace === "hotel_ai" ? " crm-shell-hotel-ai" : ""}${workspace === "training" ? " crm-shell-training" : ""}${workspace === "solutions" ? " crm-shell-solutions" : ""}`}
       suppressHydrationWarning
     >
       <aside
@@ -734,15 +773,52 @@ export function CrmShell({
           <div className="crm-app-sub" aria-label={`${MODULE_LABEL[workspace]} submenu`}>
             <p className="crm-app-sub-title">{NAV_LABEL[workspace]}</p>
             <div className="crm-app-sub-links">
-              {contextLinks.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  aria-current={isCurrent(pathname, search, item.href) ? "page" : undefined}
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {contextLinks.map((item) => {
+                const children = item.children;
+                if (!children?.length) {
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      aria-current={isCurrent(pathname, search, item.href) ? "page" : undefined}
+                    >
+                      {item.label}
+                    </Link>
+                  );
+                }
+                const groupOpen = openGroups[item.href] ?? (pathname === item.href || pathname.startsWith(`${item.href}/`));
+                const childrenId = `${drawerId}-sub-${item.href.replace(/[^a-z0-9]+/gi, "-")}`;
+                return (
+                  <span key={item.href} className="crm-subnav-group" style={{ display: "contents" }}>
+                    <Link href={item.href} aria-current={isCurrent(pathname, search, item.href) ? "page" : undefined}>
+                      {item.label}
+                    </Link>
+                    <button
+                      type="button"
+                      className="crm-subnav-toggle"
+                      aria-expanded={groupOpen}
+                      aria-controls={childrenId}
+                      aria-label={`${groupOpen ? "ย่อ" : "ขยาย"} ${item.label}`}
+                      onClick={() => setOpenGroups({ ...openGroups, [item.href]: !groupOpen })}
+                    >
+                      <span aria-hidden="true">{groupOpen ? "▾" : "▸"}</span> {children.length}
+                    </button>
+                    {groupOpen ? (
+                      <span id={childrenId} className="crm-subnav-children">
+                        {children.map((child) => (
+                          <Link
+                            key={child.href}
+                            href={child.href}
+                            aria-current={isCurrent(pathname, search, child.href) ? "page" : undefined}
+                          >
+                            {child.label}
+                          </Link>
+                        ))}
+                      </span>
+                    ) : null}
+                  </span>
+                );
+              })}
             </div>
           </div>
         ) : null}

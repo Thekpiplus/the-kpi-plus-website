@@ -63,6 +63,12 @@ import {
   serializeHotelTrainingPageBody,
   defaultHotelTrainingCms,
 } from "./hotel-training-page";
+import {
+  SOLUTIONS_INDEX_CMS_TEMPLATE,
+  SOLUTIONS_INDEX_PAGE_ROUTE,
+  serializeSolutionsIndexPageBody,
+  defaultSolutionsIndexCms,
+} from "./solutions-index-page";
 
 async function requireCms() {
   const user = await requireUser();
@@ -292,6 +298,11 @@ export async function ensurePageFromSite(route: string) {
     if (normalized === HOTEL_TRAINING_PAGE_ROUTE) {
       const { hydrateHotelTrainingDocument } = await import("./hotel-training-page-actions");
       const hydrated = await hydrateHotelTrainingDocument(existing);
+      return hydrated.id;
+    }
+    if (normalized === SOLUTIONS_INDEX_PAGE_ROUTE) {
+      const { hydrateSolutionsIndexDocument } = await import("./solutions-index-page-actions");
+      const hydrated = await hydrateSolutionsIndexDocument(existing);
       return hydrated.id;
     }
     return existing.id;

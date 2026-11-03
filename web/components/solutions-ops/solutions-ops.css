@@ -1,0 +1,587 @@
+@import "../b2b-ops/b2b-ops.css";
+
+.sol-ops,
+.sol-ops-page {
+  font-family: Sarabun, "Noto Sans Thai", Tahoma, Arial, sans-serif;
+}
+
+.sol-ops h2,
+.sol-ops-page h2,
+.sol-dept-card strong,
+.sol-stat span {
+  font-family: Montserrat, Sarabun, "Noto Sans Thai", Tahoma, Arial, sans-serif;
+}
+
+/* Save buttons: Lime gradient, Charcoal text (never white on Lime). */
+.sol-ops .kpi-button.b2b-save,
+.sol-ops .b2b-save,
+.sol-ops-page .kpi-button.b2b-save {
+  background: linear-gradient(135deg, #e6e81f, #a3ce39);
+  color: #3b3b3b;
+  font-family: Montserrat, Sarabun, "Noto Sans Thai", Tahoma, Arial, sans-serif;
+  font-weight: 700;
+}
+
+.sol-ops .kpi-button.b2b-save:disabled {
+  opacity: 0.65;
+  cursor: progress;
+}
+
+.sol-ops .b2b-filters {
+  grid-template-columns: minmax(10rem, 1.6fr) repeat(auto-fit, minmax(8rem, 1fr));
+}
+
+/* Status chips */
+.sol-ops .b2b-status.is-draft,
+.sol-ops .b2b-status.is-not_started,
+.sol-ops .b2b-status.is-unreviewed,
+.sol-ops .b2b-status.is-new,
+.sol-ops .b2b-status.is-archived,
+.sol-ops .b2b-status.is-hidden {
+  background: #f4f4f4;
+  color: #3b3b3b;
+}
+
+.sol-ops .b2b-status.is-review,
+.sol-ops .b2b-status.is-in_review,
+.sol-ops .b2b-status.is-pending,
+.sol-ops .b2b-status.is-contacted,
+.sol-ops .b2b-status.is-qualified,
+.sol-ops .b2b-status.is-proposal {
+  background: #ffe0a3;
+  color: #5a3a00;
+}
+
+.sol-ops .b2b-status.is-approved,
+.sol-ops .b2b-status.is-published,
+.sol-ops .b2b-status.is-cleared,
+.sol-ops .b2b-status.is-active,
+.sol-ops .b2b-status.is-given,
+.sol-ops .b2b-status.is-closed {
+  background: #f2f8e2;
+  color: #0b6660;
+}
+
+.sol-ops .b2b-status.is-restricted,
+.sol-ops .b2b-status.is-declined,
+.sol-ops .b2b-status.is-not_a_fit {
+  background: #f8d4d4;
+  color: #7a1212;
+}
+
+.sol-note {
+  margin: 0 0 0.75rem;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid #e3e8eb;
+  background: #f2f8e2;
+  color: #0b1f33;
+}
+
+.sol-note.is-warn {
+  background: #fff7e0;
+  border-color: #f0dfa5;
+}
+
+.sol-stats {
+  display: grid;
+  gap: 0.6rem;
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  margin: 0 0 1rem;
+}
+
+.sol-stat {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid #e3e8eb;
+  background: #fff;
+}
+
+.sol-stat strong {
+  color: #0b6660;
+  font-size: 1.5rem;
+  line-height: 1.1;
+}
+
+.sol-stat span {
+  color: #3b3b3b;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.sol-dept-hub {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  margin: 0 0 1.1rem;
+}
+
+.sol-dept-card {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid #e3e8eb;
+  background: #fff;
+  color: #0b1f33;
+  text-decoration: none;
+}
+
+.sol-dept-card:hover,
+.sol-dept-card:focus-visible {
+  border-color: #a3ce39;
+  background: #f2f8e2;
+}
+
+.sol-dept-card strong {
+  color: #0b6660;
+}
+
+.sol-dept-card span {
+  color: #555;
+  font-size: 0.9rem;
+}
+
+.sol-form-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+@media (min-width: 900px) {
+  .sol-form-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.sol-span-2 {
+  grid-column: 1 / -1;
+}
+
+.sol-fieldset {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0.85rem;
+  border: 1px solid #e3e8eb;
+}
+
+.sol-fieldset legend {
+  padding: 0 0.4rem;
+  color: #0b6660;
+  font-family: Montserrat, Sarabun, "Noto Sans Thai", Tahoma, Arial, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.sol-group-toggle {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 0.7rem 0.85rem;
+  border: 0;
+  background: #eef6d6;
+  color: #0b1f33;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sol-group-toggle strong::before {
+  content: "▾ ";
+}
+
+.sol-group-toggle[aria-expanded="false"] strong::before {
+  content: "▸ ";
+}
+
+.sol-group-toggle .sol-count {
+  display: inline-flex;
+  min-width: 1.5rem;
+  justify-content: center;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  background: #a3ce39;
+  color: #0b1f33;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.sol-chip {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0.25rem 0.25rem 0;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  background: #f4f4f4;
+  color: #3b3b3b;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.sol-chip.is-yes {
+  background: #f2f8e2;
+  color: #0b6660;
+}
+
+.sol-chip.is-no {
+  background: #fff7e0;
+  color: #5a3a00;
+}
+
+.sol-preview-frame {
+  width: 100%;
+  height: 34rem;
+  border: 1px solid #e3e8eb;
+  background: #fff;
+}
+
+.sol-inline-note {
+  min-width: 10rem;
+}
+
+.sol-inline-state {
+  margin: 0;
+  font-size: 0.78rem;
+  color: #555;
+}
+
+.sol-inline-state.is-error {
+  color: #7a1212;
+  font-weight: 700;
+}
+
+.sol-inline-state.is-ok {
+  color: #0b6660;
+  font-weight: 700;
+}
+
+/* Sub-navigation: expandable department group (CrmShell) */
+.crm-app-sub-links .crm-subnav-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-height: 2.1rem;
+  padding: 0.3rem 0.75rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.crm-app-sub-links .crm-subnav-toggle:hover,
+.crm-app-sub-links .crm-subnav-toggle[aria-current="true"] {
+  background: var(--crm-lime-soft, #f2f8e2);
+  color: #08233d;
+}
+
+.crm-app-sub-links .crm-subnav-children {
+  display: flex;
+  flex-basis: 100%;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  padding: 0.35rem 0 0.1rem 1rem;
+  border-left: 3px solid #a3ce39;
+}
+
+.crm-app-sub-links .crm-subnav-children a {
+  font-size: 0.8rem;
+}
+
+@media (max-width: 860px) {
+  .sol-ops .b2b-table thead {
+    display: none;
+  }
+
+  .sol-ops .b2b-table tr {
+    display: grid;
+    gap: 0.35rem;
+    padding: 0.85rem 0.7rem;
+    border-bottom: 1px solid #e3e8eb;
+  }
+
+  .sol-ops .b2b-table td {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .sol-ops .b2b-table td::before {
+    content: attr(data-label);
+    font-weight: 700;
+    color: #3b3b3b;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* Cross-department subtasks                                                  */
+/* -------------------------------------------------------------------------- */
+
+.sol-progress-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.12rem 0.55rem;
+  border-radius: 999px;
+  background: #f4f4f4;
+  color: #3b3b3b;
+  font-family: Montserrat, Sarabun, "Noto Sans Thai", Tahoma, Arial, sans-serif;
+  font-size: 0.74rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.sol-progress-badge.is-in_progress {
+  background: #fff7e0;
+  color: #5a3a00;
+}
+
+.sol-progress-badge.is-ready_for_review {
+  background: #e3f1f0;
+  color: #0b6660;
+}
+
+.sol-progress-badge.is-completed {
+  background: linear-gradient(135deg, #e6e81f, #a3ce39);
+  color: #3b3b3b;
+}
+
+.sol-progress-badge.is-blocked {
+  background: #f8d4d4;
+  color: #7a1212;
+}
+
+.sol-subtasks {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0.9rem 0 0;
+  padding: 0.85rem;
+  border: 1px solid #e3e8eb;
+  background: #fff;
+}
+
+.sol-subtasks-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+}
+
+.sol-subtasks-head h3 {
+  margin: 0;
+  color: #0b6660;
+  font-family: Montserrat, Sarabun, "Noto Sans Thai", Tahoma, Arial, sans-serif;
+  font-size: 0.95rem;
+}
+
+.sol-progress-bar {
+  height: 0.4rem;
+  background: #e3e8eb;
+  overflow: hidden;
+}
+
+.sol-progress-bar span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #e6e81f, #a3ce39);
+}
+
+.sol-gate-alert {
+  margin: 0;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #e3b4b4;
+  background: #fdeeee;
+  color: #7a1212;
+  font-weight: 700;
+}
+
+.sol-dept-subtasks {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.sol-dept-subtasks .sol-group-toggle {
+  flex-wrap: wrap;
+}
+
+.sol-subtask-list {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sol-subtask-list > li {
+  display: grid;
+  gap: 0.4rem;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid #e3e8eb;
+  border-left: 4px solid #a3ce39;
+  background: #fff;
+}
+
+.sol-subtask-list > li.is-done {
+  background: #f2f8e2;
+}
+
+.sol-subtask-list > li.is-blocked {
+  border-left-color: #c7a24a;
+  background: #fff7e0;
+}
+
+.sol-subtask-list > li.is-gate-blocked {
+  border-left-color: #b03a3a;
+  background: #fdeeee;
+}
+
+.sol-subtask-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #0b1f33;
+  font-weight: 700;
+}
+
+.sol-subtask-list > li.is-done .sol-subtask-check span {
+  text-decoration: line-through;
+  text-decoration-color: #a3ce39;
+}
+
+.sol-subtask-meta,
+.sol-subtask-note {
+  margin: 0;
+  color: #555;
+  font-size: 0.85rem;
+  overflow-wrap: anywhere;
+}
+
+.sol-subtask-thread {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0.4rem 0.6rem;
+  list-style: none;
+  background: #f4f4f4;
+  font-size: 0.82rem;
+  color: #3b3b3b;
+}
+
+.sol-subtask-action {
+  display: grid;
+  gap: 0.6rem;
+  padding: 0.7rem;
+  border: 1px dashed #a3ce39;
+  background: #f9fcf0;
+}
+
+.sol-subtask-form {
+  margin-top: 0.4rem;
+}
+
+.sol-overdue {
+  color: #7a1212;
+  font-weight: 700;
+}
+
+.sol-ops .b2b-status.is-overdue {
+  background: #f8d4d4;
+  color: #7a1212;
+}
+
+.sol-ops .b2b-status.is-in_progress,
+.sol-ops .b2b-status.is-needs_review {
+  background: #ffe0a3;
+  color: #5a3a00;
+}
+
+.sol-ops .b2b-status.is-blocked,
+.sol-ops .b2b-status.is-priority_urgent {
+  background: #f8d4d4;
+  color: #7a1212;
+}
+
+.sol-ops .b2b-status.is-completed,
+.sol-ops .b2b-status.is-priority_low {
+  background: #f2f8e2;
+  color: #0b6660;
+}
+
+.sol-ops .b2b-status.is-priority_high {
+  background: #ffe0a3;
+  color: #5a3a00;
+}
+
+.sol-ops .b2b-status.is-priority_normal {
+  background: #f4f4f4;
+  color: #3b3b3b;
+}
+
+.sol-ops .b2b-status.is-gate_permission,
+.sol-ops .b2b-status.is-gate_evidence,
+.sol-ops .b2b-status.is-gate_privacy,
+.sol-ops .b2b-status.is-gate_approval {
+  background: #e3f1f0;
+  color: #0b1f33;
+  border: 1px solid #0b6660;
+}
+
+/* Form view: one expanded record per card, comfortable reading width. */
+.sol-form-view {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.sol-form-view .b2b-group-body {
+  display: grid;
+  gap: 0.9rem;
+}
+
+/* Filters wrap into a single column on narrow screens. */
+@media (max-width: 720px) {
+  .sol-ops .b2b-filters {
+    grid-template-columns: 1fr;
+  }
+
+  .sol-ops .b2b-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .sol-ops .b2b-tabs {
+    width: 100%;
+  }
+
+  .sol-ops .b2b-row-actions {
+    flex-wrap: wrap;
+  }
+
+  .sol-subtasks {
+    padding: 0.6rem;
+  }
+}
+
+/* Table → card: keep labels readable and let long cells wrap. */
+@media (max-width: 860px) {
+  .sol-ops .b2b-table td {
+    align-items: flex-start;
+    overflow-wrap: anywhere;
+  }
+
+  .sol-ops .b2b-table td:last-child {
+    display: block;
+  }
+
+  .sol-ops .b2b-table td > .b2b-expand,
+  .sol-ops .b2b-table tr > td[colspan] {
+    display: block;
+  }
+
+  .sol-ops .b2b-table td[colspan]::before {
+    content: none;
+  }
+}

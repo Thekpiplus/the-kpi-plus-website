@@ -1426,7 +1426,8 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
 .crm-shell-management,
 .crm-shell-systems,
 .crm-shell-hotel-ai,
-.crm-shell-training {
+.crm-shell-training,
+.crm-shell-solutions {
   --crm-rail-active: #A2DC25;
 }
 
@@ -1456,7 +1457,9 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
 .crm-shell-hotel-ai .crm-rail-link.is-active,
 .crm-shell-hotel-ai .crm-rail-link[aria-current="page"],
 .crm-shell-training .crm-rail-link.is-active,
-.crm-shell-training .crm-rail-link[aria-current="page"] {
+.crm-shell-training .crm-rail-link[aria-current="page"],
+.crm-shell-solutions .crm-rail-link.is-active,
+.crm-shell-solutions .crm-rail-link[aria-current="page"] {
   color: #1a3a02;
   box-shadow: 0 10px 24px rgba(162, 220, 37, 0.35);
 }
@@ -1469,7 +1472,8 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
 .crm-shell-management .crm-app-sub-links a[aria-current="page"],
 .crm-shell-systems .crm-app-sub-links a[aria-current="page"],
 .crm-shell-hotel-ai .crm-app-sub-links a[aria-current="page"],
-.crm-shell-training .crm-app-sub-links a[aria-current="page"] {
+.crm-shell-training .crm-app-sub-links a[aria-current="page"],
+.crm-shell-solutions .crm-app-sub-links a[aria-current="page"] {
   background: #A2DC25;
   color: #1a3a02;
 }
@@ -2333,7 +2337,8 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
 .crm-dash-module-ads .crm-dash-module-cta,
 .crm-dash-module-meta .crm-dash-module-cta,
 .crm-dash-module-seo .crm-dash-module-cta,
-.crm-dash-module-training .crm-dash-module-cta {
+.crm-dash-module-training .crm-dash-module-cta,
+.crm-dash-module-solutions .crm-dash-module-cta {
   background: #a2dc25;
   color: #1a3a02;
 }
@@ -2341,7 +2346,8 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
 .crm-dash-module-ads .crm-dash-module-icon,
 .crm-dash-module-meta .crm-dash-module-icon,
 .crm-dash-module-seo .crm-dash-module-icon,
-.crm-dash-module-training .crm-dash-module-icon {
+.crm-dash-module-training .crm-dash-module-icon,
+.crm-dash-module-solutions .crm-dash-module-icon {
   background: rgba(162, 220, 37, 0.28);
   color: #1a3a02;
 }

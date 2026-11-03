@@ -4,7 +4,12 @@ import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 import "lenis/dist/lenis.css";
-import { scrollPageToTop, setPageLenis, scrollPageToHash } from "@/lib/page-scroll";
+import {
+  ensurePageScrollPosition,
+  scrollPageToHashWhenReady,
+  scrollPageToTop,
+  setPageLenis,
+} from "@/lib/page-scroll";
 
 function isModifiedClick(event: MouseEvent) {
   return event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0;
@@ -21,6 +26,9 @@ export function PageScroll() {
   const fromHistory = useRef(false);
 
   useEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
     const onPopState = () => {
       fromHistory.current = true;
     };
@@ -29,12 +37,15 @@ export function PageScroll() {
   }, []);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const hash = window.location.hash;
+
+    if (reduceMotion) {
       if (fromHistory.current) {
         fromHistory.current = false;
         return;
       }
-      if (!window.location.hash) scrollPageToTop({ immediate: true });
+      ensurePageScrollPosition(hash || undefined);
       return;
     }
 
@@ -43,20 +54,16 @@ export function PageScroll() {
       lerp: 0.085,
       wheelMultiplier: 0.88,
       touchMultiplier: 1.15,
-      anchors: true,
+      anchors: false,
       allowNestedScroll: true,
     });
     setPageLenis(lenis);
 
-    const hash = window.location.hash;
-    if (hash) {
-      requestAnimationFrame(() => {
-        scrollPageToHash(hash, { immediate: false });
-      });
-    } else if (fromHistory.current) {
+    if (fromHistory.current) {
       fromHistory.current = false;
+      if (hash) ensurePageScrollPosition(hash);
     } else {
-      scrollPageToTop({ immediate: true });
+      ensurePageScrollPosition(hash || undefined);
     }
 
     return () => {
@@ -83,18 +90,33 @@ export function PageScroll() {
       }
       if (url.origin !== window.location.origin) return;
 
-      // Section links keep their own target (e.g. /#audit).
-      if (url.hash) return;
-
       const samePath = url.pathname === window.location.pathname && url.search === window.location.search;
-      if (!samePath) return;
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      // Same page menu click: scroll up to the sticky header.
-      requestAnimationFrame(() => {
-        scrollPageToTop({
-          immediate: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+      // Same-route hash (e.g. footer category → /solutions#grow-revenue): pathname
+      // does not change, so the route effect will not run — scroll here.
+      if (samePath && url.hash) {
+        requestAnimationFrame(() => {
+          scrollPageToHashWhenReady(url.hash, { immediate: reduceMotion, attempts: 16 });
         });
-      });
+        return;
+      }
+
+      // Same-route plain link (e.g. "ดูโซลูชันทั้งหมด" while already on /solutions):
+      // jump back up under the sticky header.
+      if (samePath && !url.hash) {
+        requestAnimationFrame(() => {
+          scrollPageToTop({ immediate: true });
+          window.setTimeout(() => scrollPageToTop({ immediate: true }), 120);
+        });
+        return;
+      }
+
+      // Cross-route menu/footer link without hash: preemptively reset so the new
+      // page does not inherit the previous mid-page Lenis offset.
+      if (!samePath && !url.hash) {
+        scrollPageToTop({ immediate: true });
+      }
     };
 
     document.addEventListener("click", onClick, true);

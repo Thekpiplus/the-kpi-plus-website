@@ -5,6 +5,7 @@ import { ensureMetaOpsSchema } from "@/lib/meta-ops/ensure";
 import { ensureSeoOpsSchema } from "@/lib/seo-ops/ensure";
 import { ensureHotelAiOpsSchema } from "@/lib/hotel-ai-ops/ensure";
 import { ensureTrainingOpsSchema } from "@/lib/training-ops/ensure";
+import { ensureSolutionsOpsSchema } from "@/lib/solutions-ops/ensure";
 import { ensureB2bOpsSchema } from "@/lib/b2b-ops/ensure";
 import { ensureReservationOpsSchema } from "@/lib/reservations-ops/ensure";
 import { refreshCmsFiles } from "@/lib/cms/queries";
@@ -66,6 +67,7 @@ async function seedCrmOnce() {
   await ensureSeoOpsSchema().catch(() => undefined);
   await ensureHotelAiOpsSchema().catch(() => undefined);
   await ensureTrainingOpsSchema().catch(() => undefined);
+  await ensureSolutionsOpsSchema().catch(() => undefined);
   await refreshCmsFiles().catch(() => undefined);
 }
 

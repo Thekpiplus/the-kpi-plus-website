@@ -9,6 +9,7 @@ import { adsOpsOverview } from "@/lib/ads-ops/queries";
 import { metaOpsOverview } from "@/lib/meta-ops/queries";
 import { seoOpsOverview } from "@/lib/seo-ops/queries";
 import { trainingOpsOverview } from "@/lib/training-ops/queries";
+import { solutionsOpsOverview } from "@/lib/solutions-ops/queries";
 import { b2bOpsOverview } from "@/lib/b2b-ops/queries";
 import { reservationOpsOverview } from "@/lib/reservations-ops/queries";
 import { EmptyState } from "@/components/crm/ui/EmptyState";
@@ -46,7 +47,7 @@ async function DashboardHome({
 }: {
   user: Awaited<ReturnType<typeof requireUser>>;
 }) {
-  const [lists, origins, partners, users, cms, reservations, b2b, ads, meta, seo, training] = await Promise.all([
+  const [lists, origins, partners, users, cms, reservations, b2b, ads, meta, seo, training, solutions] = await Promise.all([
     todayLists(),
     leadOriginCounts(),
     partnerOverview().catch(() => ({
@@ -64,6 +65,9 @@ async function DashboardHome({
     metaOpsOverview(user).catch(() => ({ total: 0, live: 0, due: 0 })),
     seoOpsOverview(user).catch(() => ({ total: 0, live: 0, due: 0 })),
     trainingOpsOverview(user).catch(() => ({ total: 0, live: 0, due: 0 })),
+    hasModule(user, "solutions")
+      ? solutionsOpsOverview().catch(() => ({ total: 0, byStatus: {} as Record<string, number>, byDepartment: {}, dueReview: 0, needsApproval: 0, imagePending: 0, categories: 0 }))
+      : Promise.resolve({ total: 0, byStatus: {} as Record<string, number>, byDepartment: {}, dueReview: 0, needsApproval: 0, imagePending: 0, categories: 0 }),
   ]);
 
   const dueToday = lists.dueToday.length + lists.overdue.length;
@@ -200,6 +204,22 @@ async function DashboardHome({
           cta: "เปิด Hotel Training Operations",
         }
       : null,
+    hasModule(user, "solutions")
+      ? {
+          href: "/crm/solutions",
+          accent: "solutions" as const,
+          icon: "▦",
+          category: "SOLUTIONS",
+          title: "Hotel Solutions Service Directory",
+          body: "ไดเรกทอรีบริการภายใน หมวด ความสัมพันธ์ หลักฐาน สิทธิ์รูป และคิวคำขอ — แยกจากตัวแก้ไข CMS และไม่แสดงข้อมูลลูกค้าบนหน้าสาธารณะ",
+          stats: [
+            { label: "บริการ", value: solutions.total },
+            { label: "รออนุมัติ", value: solutions.needsApproval },
+            { label: "ทบทวน", value: solutions.dueReview },
+          ],
+          cta: "เปิด Solutions Directory",
+        }
+      : null,
     hasModule(user, "users")
       ? {
           href: "/crm/users",
@@ -234,7 +254,7 @@ async function DashboardHome({
       : null,
   ].filter(Boolean) as Array<{
     href: string;
-    accent: "leads" | "partners" | "reservations" | "b2b" | "ads" | "meta" | "seo" | "users" | "cms" | "training";
+    accent: "leads" | "partners" | "reservations" | "b2b" | "ads" | "meta" | "seo" | "users" | "cms" | "training" | "solutions";
     icon: string;
     category: string;
     title: string;

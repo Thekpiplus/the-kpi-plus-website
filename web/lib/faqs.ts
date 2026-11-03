@@ -7,6 +7,7 @@ import { independentHotelFaqs } from "@/lib/independent-hotel";
 import { hotelSystemsFaqs } from "@/lib/hotel-systems";
 import { hotelWebsiteFaqs } from "@/lib/hotel-website";
 import { metaFaqs } from "@/lib/meta-ads";
+import { solutionsIndexFaqs } from "@/lib/solutions-faqs";
 
 export type FaqItem = { q: string; a: string };
 
@@ -549,38 +550,10 @@ const table: Record<string, FaqItem[]> = {
       a: "There is no fee for the initial conversation and review. Send the form when you are ready. Cost is discussed later, if the hotel wants the team to continue the work.",
     },
   ],
-  "/solutions": [
-    {
-      q: "โซลูชันของ เดอะ เคพีไอ พลัส ครอบคลุมอะไรบ้าง?",
-      a: "ครอบคลุมรายได้ ช่องทางการขาย การตลาด การจองตรง และการบริหารโรงแรม จัดเป็นสามกลุ่ม: บริหารรายได้และการขาย การตลาดและการจองตรง และบริหารและพัฒนาโรงแรม",
-    },
-    {
-      q: "ควรเลือกโซลูชันไหนก่อน?",
-      a: "หากยังไม่แน่ใจ เดอะ เคพีไอ พลัส สามารถทบทวนสถานการณ์ธุรกิจก่อน แล้วแนะนำลำดับความสำคัญที่ควรเริ่ม",
-    },
-  ],
-  "/en/solutions": [
-    {
-      q: "What do The KPI Plus solutions cover?",
-      a: "Three groups: Grow Revenue, Grow Demand, and Strengthen Operations — including Independent Hotel Management, systems, AI, and team development.",
-    },
-    {
-      q: "Which solution should a hotel start with?",
-      a: "Start with the part of the hotel that needs the most attention: revenue and sales, marketing and direct bookings, or operations and hotel management.",
-    },
-  ],
-  "/ru/solutions": [
-    {
-      q: "Какие решения предлагает The KPI Plus?",
-      a: "Три группы: рост дохода, рост спроса и усиление операций — включая управление независимым отелем, системы, ИИ и развитие команды.",
-    },
-  ],
-  "/zh/solutions": [
-    {
-      q: "The KPI Plus 的方案涵蓋什麼？",
-      a: "三個群組：提升收益、提升需求、強化營運，包括獨立飯店管理、系統、AI 與團隊發展。",
-    },
-  ],
+  "/solutions": solutionsIndexFaqs("th"),
+  "/en/solutions": solutionsIndexFaqs("en"),
+  "/ru/solutions": solutionsIndexFaqs("en"),
+  "/zh/solutions": solutionsIndexFaqs("en"),
   "/insights": [
     {
       q: "บทความเหมาะกับโรงแรมประเภทใด",
