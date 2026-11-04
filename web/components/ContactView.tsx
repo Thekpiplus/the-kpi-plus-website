@@ -15,7 +15,6 @@ const copy = {
     titleLead: "เห็นข้อมูลให้ชัด",
     titleRest: "แล้วเลือกสิ่งที่ควรทำต่อ",
     lead: "พูดคุยกับ เดอะ เคพีไอ พลัส เรื่องรายได้ Demand การจองตรง การมองเห็นบนออนไลน์ เทคโนโลยี และการลงมือทำเพื่อเพิ่มรายได้และการเติบโตของโรงแรม",
-    officeEyebrow: "สำนักงานภูเก็ต",
     locationEyebrow: "ที่ตั้งสำนักงาน",
     office: "เดอะ เคพีไอ พลัส, ภูเก็ต",
     mapTitle: "แผนที่สำนักงาน เดอะ เคพีไอ พลัส",
@@ -31,7 +30,6 @@ const copy = {
     titleLead: "Find the signal.",
     titleRest: "Make the move.",
     lead: "Contact The KPI Plus for a focused conversation about hotel revenue, demand, direct booking, local presence, technology, and commercial execution.",
-    officeEyebrow: "Phuket Office",
     locationEyebrow: "Location",
     office: "The KPI Plus, Phuket",
     mapTitle: "Map of The KPI Plus office",
@@ -47,7 +45,6 @@ const copy = {
     titleLead: "Find the signal.",
     titleRest: "Make the move.",
     lead: "Свяжитесь с The KPI Plus, чтобы обсудить доход отеля, спрос, прямые бронирования, локальный поиск, технологии и коммерческое исполнение.",
-    officeEyebrow: "Phuket Office",
     locationEyebrow: "Location",
     office: "The KPI Plus, Пхукет",
     mapTitle: "Карта офиса The KPI Plus",
@@ -63,7 +60,6 @@ const copy = {
     titleLead: "Find the signal.",
     titleRest: "Make the move.",
     lead: "聯絡 The KPI Plus，討論酒店收益、需求、直訂、在地搜尋、科技與商業執行。",
-    officeEyebrow: "Phuket Office",
     locationEyebrow: "Location",
     office: "The KPI Plus，普吉",
     mapTitle: "The KPI Plus 辦公室地圖",
@@ -117,7 +113,6 @@ export async function ContactView({ locale }: { locale: Locale }) {
                   </div>
                 )}
               </figure>
-              <ContactCard locale={locale} contact={contact} variant="hero" eyebrow={t.officeEyebrow} />
             </div>
           </div>
         </div>
