@@ -111,8 +111,8 @@ export const COMPANY: CompanyContact = {
   },
   hoursTh: "",
   hoursEn: "",
-  officePhoto: "",
-  officePhotoAlt: "",
+  officePhoto: "/media/kpi-plus-office-phuket_9e2a59c5.jpg",
+  officePhotoAlt: "The KPI Plus office, Phuket",
   consultantPhoto: "",
   consultantPhotoAlt: "",
 };

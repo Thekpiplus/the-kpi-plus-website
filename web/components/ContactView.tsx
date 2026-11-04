@@ -5,7 +5,7 @@ import { ContactLocationMap } from "@/components/ContactLocationMap";
 import { ContactNextSteps } from "@/components/ContactNextSteps";
 import { HeroCta } from "@/components/HeroCta";
 import { SiteShell } from "@/components/SiteShell";
-import { contactInfoFromCompany } from "@/lib/company";
+import { COMPANY, contactInfoFromCompany } from "@/lib/company";
 import { getPublicCompany } from "@/lib/company-public";
 import { localizePath, type Locale } from "@/lib/seo";
 
@@ -20,8 +20,6 @@ const copy = {
     mapTitle: "แผนที่สำนักงาน เดอะ เคพีไอ พลัส",
     openMap: "เปิดใน Google Maps",
     officePhotoAlt: "สำนักงาน เดอะ เคพีไอ พลัส",
-    photoCaption: "สถานที่นัดหมายของ The KPI Plus — Phuket",
-    photoPlaceholder: "Replace with verified office / meeting location photo",
     formTitle: "ส่งข้อความถึงทีม",
     formBody: "กรอกเฉพาะข้อมูลที่จำเป็น ทีมจะติดต่อกลับเพื่อถามรายละเอียดต่อหากต้องการ",
   },
@@ -35,8 +33,6 @@ const copy = {
     mapTitle: "Map of The KPI Plus office",
     openMap: "Open in Google Maps",
     officePhotoAlt: "The KPI Plus office",
-    photoCaption: "The KPI Plus meeting location — Phuket",
-    photoPlaceholder: "Replace with verified office / meeting location photo",
     formTitle: "Send a message to the team",
     formBody: "Share only what is needed to start. The team will ask for more detail later if useful.",
   },
@@ -50,8 +46,6 @@ const copy = {
     mapTitle: "Карта офиса The KPI Plus",
     openMap: "Открыть в Google Maps",
     officePhotoAlt: "Офис The KPI Plus",
-    photoCaption: "The KPI Plus meeting location — Phuket",
-    photoPlaceholder: "Replace with verified office / meeting location photo",
     formTitle: "Написать команде",
     formBody: "Укажите только необходимое для старта. Команда уточнит детали позже, если нужно.",
   },
@@ -65,8 +59,6 @@ const copy = {
     mapTitle: "The KPI Plus 辦公室地圖",
     openMap: "在 Google Maps 開啟",
     officePhotoAlt: "The KPI Plus 辦公室",
-    photoCaption: "The KPI Plus meeting location — Phuket",
-    photoPlaceholder: "Replace with verified office / meeting location photo",
     formTitle: "傳送訊息給團隊",
     formBody: "先填啟動所需資料即可，若有需要團隊稍後再補問細節。",
   },
@@ -77,6 +69,8 @@ export async function ContactView({ locale }: { locale: Locale }) {
   const company = await getPublicCompany();
   const contact = contactInfoFromCompany(company, locale);
   const isTh = locale === "th";
+  const officePhoto = company.officePhoto?.trim() || COMPANY.officePhoto;
+  const officePhotoAlt = company.officePhotoAlt?.trim() || COMPANY.officePhotoAlt || t.officePhotoAlt;
 
   return (
     <SiteShell locale={locale} route={localizePath("/contact-us", locale)}>
@@ -97,21 +91,12 @@ export async function ContactView({ locale }: { locale: Locale }) {
 
             <div className="kpi-contact-hero-aside">
               <figure className="kpi-contact-hero-media">
-                {company.officePhoto ? (
-                  <>
-                    <img
-                      src={company.officePhoto}
-                      alt={company.officePhotoAlt || t.officePhotoAlt}
-                      width={1200}
-                      height={900}
-                    />
-                    <figcaption className="kpi-contact-hero-caption">{t.photoCaption}</figcaption>
-                  </>
-                ) : (
-                  <div className="kpi-contact-hero-placeholder" role="img" aria-label={t.photoPlaceholder}>
-                    <span>{t.photoPlaceholder}</span>
-                  </div>
-                )}
+                <img
+                  src={officePhoto}
+                  alt={officePhotoAlt}
+                  width={1200}
+                  height={900}
+                />
               </figure>
             </div>
           </div>
@@ -124,17 +109,15 @@ export async function ContactView({ locale }: { locale: Locale }) {
           <div className="kpi-contact-main-grid">
             <div className="kpi-contact-location">
               <p className={`kpi-contact-eyebrow${isTh ? "" : " kpi-latin"}`}>{t.locationEyebrow}</p>
-              {company.officePhoto ? (
-                <figure className="kpi-contact-photo">
-                  <img
-                    src={company.officePhoto}
-                    alt={company.officePhotoAlt || t.officePhotoAlt}
-                    width={1600}
-                    height={1067}
-                    loading="lazy"
-                  />
-                </figure>
-              ) : null}
+              <figure className="kpi-contact-photo">
+                <img
+                  src={officePhoto}
+                  alt={officePhotoAlt}
+                  width={1600}
+                  height={1067}
+                  loading="lazy"
+                />
+              </figure>
               {company.consultantPhoto ? (
                 <figure className="kpi-contact-photo kpi-contact-consultant">
                   <img
