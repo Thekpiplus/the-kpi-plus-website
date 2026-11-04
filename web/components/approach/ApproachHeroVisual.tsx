@@ -24,7 +24,6 @@ const heroCopy = {
     paceVs: "vs ปีก่อน · 60 วัน",
     axis: "Occupancy %",
     sample: "Sample data",
-    decision: "ใช้มุมมองนี้เพื่อระบุวันที่ควรตัดสินใจเรื่องราคาหรือช่องทาง",
     alt: "ตัวอย่างแดชบอร์ดทบทวน Occupancy Forecast และ Booking Pace มุมมอง 60 วัน เทียบเป้า 75 เปอร์เซ็นต์ ข้อมูลตัวอย่าง",
   },
   en: {
@@ -40,7 +39,6 @@ const heroCopy = {
     paceVs: "vs last year · 60-day",
     axis: "Occupancy %",
     sample: "Sample data",
-    decision: "Use this view to identify dates that need a pricing or channel action",
     alt: "Sample dashboard reviewing occupancy forecast and booking pace for a 60-day outlook, compared with a 75 percent target. Sample data.",
   },
 } as const;
@@ -103,19 +101,16 @@ export function ApproachHeroVisual({
   locale,
   src = "",
   alt,
-  caption,
   className = "",
 }: {
   locale: Locale;
   src?: string;
   alt?: string;
-  caption?: string;
   className?: string;
 }) {
   const ui = locale === "th" ? heroCopy.th : heroCopy.en;
   const hasAsset = Boolean(src.trim());
   const resolvedAlt = alt ?? ui.alt;
-  const decision = caption ?? ui.decision;
 
   // TODO: Insert a verified dashboard screenshot at APPROACH_HERO_DASHBOARD_SRC. Do not use stock people, hotel photos, or invented client names.
   return (
@@ -137,10 +132,6 @@ export function ApproachHeroVisual({
           <HeroDashboardMock locale={locale} />
         )}
       </div>
-      <figcaption className="kpi-approach-slot-caption">
-        <span>{locale === "th" ? "ทบทวนสัญญาณ Revenue และ Demand · มุมมอง 60 วัน · Sample data" : "Revenue & Demand review · 60-day outlook · Sample data"}</span>
-        <span>{decision}</span>
-      </figcaption>
     </figure>
   );
 }

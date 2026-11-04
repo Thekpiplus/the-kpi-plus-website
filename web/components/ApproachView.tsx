@@ -12,7 +12,6 @@ const copy = {
     lead: "ราคา ช่องทางการขาย และ Demand จะสร้างรายได้ได้เต็มที่ เมื่อทีมโรงแรมเห็นข้อมูลชุดเดียวกัน รู้ว่าใครรับผิดชอบ และวัดผลได้ทั้ง ADR, Occupancy และรายได้สุทธิหลังหักค่าคอมมิชชัน",
     subline: "ขายห้องให้ถูกคน ในราคาที่เหมาะสม ผ่านช่องทางที่คุ้มค่าที่สุด",
     photoAlt: "ตัวอย่างแดชบอร์ดทบทวน Occupancy Forecast และ Booking Pace มุมมอง 60 วัน เทียบเป้า 75 เปอร์เซ็นต์ ข้อมูลตัวอย่าง",
-    heroCaption: "ใช้มุมมองนี้เพื่อระบุวันที่ควรตัดสินใจเรื่องราคาหรือช่องทาง",
     workshopAlt: "Replace with real workshop / report review photo",
     reportAlt: "ตัวอย่าง Report",
     method: "แนวทางการทำงานของ เดอะ เคพีไอ พลัส",
@@ -74,7 +73,6 @@ const copy = {
     lead: "Pricing, channels, and demand deliver their full revenue potential when your hotel team works from the same data, knows who owns each action, and can measure results across ADR, occupancy, and net revenue after commissions.",
     subline: "Sell the right room to the right guest, at the right price, through the most profitable channel.",
     photoAlt: "Sample dashboard reviewing occupancy forecast and booking pace for a 60-day outlook, compared with a 75 percent target. Sample data.",
-    heroCaption: "Use this view to identify dates that need a pricing or channel action",
     workshopAlt: "Replace with real workshop / report review photo",
     reportAlt: "Sample report preview",
     method: "The KPI Plus Approach",
@@ -136,7 +134,6 @@ const copy = {
     lead: "Цена, каналы и спрос дают полный доход, когда команда отеля работает с одним набором данных, знает, кто за что отвечает, и может измерить ADR, загрузку и чистый доход после комиссии.",
     subline: "Продавать нужный номер нужному гостю, по нужной цене, через самый выгодный канал.",
     photoAlt: "Sample dashboard reviewing occupancy forecast and booking pace for a 60-day outlook, compared with a 75 percent target. Sample data.",
-    heroCaption: "Use this view to identify dates that need a pricing or channel action",
     workshopAlt: "Replace with real workshop / report review photo",
     reportAlt: "Sample report preview",
     method: "Подход The KPI Plus",
@@ -198,7 +195,6 @@ const copy = {
     lead: "當飯店團隊用同一組資料做事、知道誰負責、並能量 ADR、住房率與扣除佣金後的淨收益時，價格、通路與需求才能把收益做滿。",
     subline: "把對的房間，用對的價格，透過最划算的通路，賣給對的客人。",
     photoAlt: "Sample dashboard reviewing occupancy forecast and booking pace for a 60-day outlook, compared with a 75 percent target. Sample data.",
-    heroCaption: "Use this view to identify dates that need a pricing or channel action",
     workshopAlt: "Replace with real workshop / report review photo",
     reportAlt: "Sample report preview",
     method: "The KPI Plus 的做法",
@@ -282,7 +278,7 @@ export function ApproachView({ locale }: { locale: Locale }) {
               <p className="kpi-approach-subline">{t.subline}</p>
               <HeroCta locale={locale} className="kpi-approach-hero-cta" />
             </div>
-            <ApproachHeroVisual locale={locale} alt={t.photoAlt} caption={t.heroCaption} />
+            <ApproachHeroVisual locale={locale} alt={t.photoAlt} />
           </div>
         </div>
       </section>

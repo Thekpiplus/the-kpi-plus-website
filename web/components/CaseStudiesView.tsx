@@ -32,8 +32,10 @@ const chrome = {
   th: {
     pageTitle: "ผลงานลูกค้า",
     heroEyebrow: "ผลลัพธ์โรงแรมจริง",
-    heroHeadlineLines: ["วัดผลจากรายได้", "ไม่ใช่ตัวเลขที่ดูดี", "แต่ไม่สร้างผล"] as const,
-    heroDescription: `ตั้งแต่การบริหารราคาและช่องทางการขาย${br} ไปจนถึงแคมเปญจองตรง${br} เราโฟกัสผลลัพธ์เชิงพาณิชย์ที่วัดได้${br} เช่น Room Revenue, ADR, Occupancy, RevPAR และ ROAS`,
+    heroHeadlineLead: "วัดผลจากรายได้",
+    heroHeadlineRest: "ไม่ใช่ตัวเลขที่ดูดี",
+    heroHeadlineAccent: "แต่ไม่สร้างผล",
+    heroDescription: `ตั้งแต่การบริหารราคาและช่องทางการขาย ไปจนถึงแคมเปญจองตรง เราโฟกัสผลลัพธ์เชิงพาณิชย์ที่วัดได้ — Room Revenue, ADR, Occupancy, RevPAR และ ROAS`,
     viewGrid: "ดูผลงาน",
     viewStudy: "ดูรายละเอียดผลงาน",
     clientsLabelLines: ["โรงแรมและที่พักที่เคยร่วมงานกับเรา"] as const,
@@ -50,9 +52,11 @@ const chrome = {
   en: {
     pageTitle: "Case Studies",
     heroEyebrow: "Real Hotel Performance",
-    heroHeadlineLines: ["Results Measured in Revenue, Not Vanity Metrics."] as const,
+    heroHeadlineLead: "Results measured in revenue,",
+    heroHeadlineRest: "not vanity metrics.",
+    heroHeadlineAccent: "",
     heroDescription:
-      "From pricing and distribution to direct-booking campaigns, we focus on measurable commercial performance — including Room Revenue, ADR, Occupancy, RevPAR, Direct Booking Revenue and ROAS.",
+      "From pricing and distribution to direct-booking campaigns, we focus on measurable commercial results — Room Revenue, ADR, Occupancy, RevPAR and ROAS.",
     viewGrid: "View Case Studies",
     viewStudy: "View Case Study",
     clientsLabelLines: ["Selected hotels and properties we've worked with"] as const,
@@ -70,9 +74,11 @@ const chrome = {
   ru: {
     pageTitle: "Кейсы",
     heroEyebrow: "Real Hotel Performance",
-    heroHeadlineLines: ["Results Measured in Revenue, Not Vanity Metrics."] as const,
+    heroHeadlineLead: "Results measured in revenue,",
+    heroHeadlineRest: "not vanity metrics.",
+    heroHeadlineAccent: "",
     heroDescription:
-      "From pricing and distribution to direct-booking campaigns, we focus on measurable commercial performance — including Room Revenue, ADR, Occupancy, RevPAR, Direct Booking Revenue and ROAS.",
+      "From pricing and distribution to direct-booking campaigns, we focus on measurable commercial results — Room Revenue, ADR, Occupancy, RevPAR and ROAS.",
     viewGrid: "View Case Studies",
     viewStudy: "View Case Study",
     clientsLabelLines: ["Selected hotels and properties we've worked with"] as const,
@@ -90,9 +96,11 @@ const chrome = {
   zh: {
     pageTitle: "客戶案例",
     heroEyebrow: "Real Hotel Performance",
-    heroHeadlineLines: ["Results Measured in Revenue, Not Vanity Metrics."] as const,
+    heroHeadlineLead: "Results measured in revenue,",
+    heroHeadlineRest: "not vanity metrics.",
+    heroHeadlineAccent: "",
     heroDescription:
-      "From pricing and distribution to direct-booking campaigns, we focus on measurable commercial performance — including Room Revenue, ADR, Occupancy, RevPAR, Direct Booking Revenue and ROAS.",
+      "From pricing and distribution to direct-booking campaigns, we focus on measurable commercial results — Room Revenue, ADR, Occupancy, RevPAR and ROAS.",
     viewGrid: "View Case Studies",
     viewStudy: "View Case Study",
     clientsLabelLines: ["Selected hotels and properties we've worked with"] as const,
@@ -152,7 +160,7 @@ export async function CaseStudiesView({ locale }: { locale: Locale }) {
   const localizedStudies = (await loadPublishedCaseStudies()).map((study) => localizeCaseStudy(study, locale));
   const featured = localizedStudies.find((study) => study.isFeatured) ?? localizedStudies[0];
   const heroStats = caseStudyHeroStatsFor(locale);
-  const heroVisual = caseStudiesHeroVisual();
+  const heroVisual = caseStudiesHeroVisual(locale);
   const disclaimer = caseStudyDisclaimerFor(locale);
   const stackTh = locale === "th";
   const partnerLogos = await loadVisibleClientLogos();
@@ -161,44 +169,23 @@ export async function CaseStudiesView({ locale }: { locale: Locale }) {
     ? caseStudyOverviewChart(featured, featured.comparison ?? caseStudyComparisonFor(featured.slug, locale), locale)
     : null;
   const overviewFallback = caseStudiesResultsChartFallback();
+  const heroSrc = heroVisual.src || CASE_STUDIES_HERO_VISUAL.approvedSrc || "";
+  const heroApproved = Boolean(heroSrc);
 
   return (
     <SiteShell locale={locale} route={indexHref}>
-      <section className="kpi-hero kpi-home-hero-section kpi-cs-hero">
-        <div className="kpi-wrap kpi-cs-hero-grid">
+      <section className={`kpi-hero kpi-cs-hero${heroApproved ? " kpi-cs-hero--photo" : ""}`}>
+        <div className="kpi-wrap kpi-cs-hero-stage">
           <div className="kpi-cs-hero-copy">
             <p className={`kpi-home-eyebrow${locale === "th" ? "" : " kpi-latin"}`}>{t.heroEyebrow}</p>
-            <h1 className="kpi-h1 kpi-home-h1 kpi-cs-hero-title">
-              <StackedLines lines={t.heroHeadlineLines} stacked={stackTh} />
+            <h1 className={`kpi-h1 kpi-cs-hero-title${locale === "th" ? "" : " kpi-latin"}`}>
+              <span className="kpi-cs-hero-title-lead">{t.heroHeadlineLead}</span>
+              <span className="kpi-cs-hero-title-rest">
+                {t.heroHeadlineRest}
+                {t.heroHeadlineAccent ? <span className="kpi-home-accent"> {t.heroHeadlineAccent}</span> : null}
+              </span>
             </h1>
-            <p className="kpi-lead kpi-home-lead kpi-cs-hero-lead">{t.heroDescription}</p>
-            <div className="kpi-cs-hero-stats" aria-label={locale === "th" ? "ไฮไลต์ผลลัพธ์" : "Performance highlights"}>
-              {heroStats.map((stat, index) => (
-                <div
-                  key={stat.id}
-                  className={`kpi-cs-hero-stat is-${stat.tone ?? "lime"}${index === 0 ? " is-primary" : ""}`}
-                >
-                  <p className="kpi-cs-stat-value kpi-latin">
-                    {stat.value}
-                    <span className={`kpi-cs-stat-name${/[A-Za-z]/.test(stat.label) ? " kpi-latin" : ""}`}>
-                      {stat.label}
-                    </span>
-                  </p>
-                  {stat.currency && !/[฿%×]/.test(stat.value) && !/pts/i.test(stat.value) ? (
-                    <p className="kpi-cs-stat-unit kpi-latin">{stat.currency}</p>
-                  ) : null}
-                  {stat.period ? <p className="kpi-cs-stat-period">{stat.period}</p> : null}
-                  {stat.comparison ? (
-                    <p className="kpi-cs-stat-baseline kpi-latin">{stat.comparison}</p>
-                  ) : stat.baseline ? (
-                    <p className="kpi-cs-stat-baseline">
-                      {locale === "th" ? "เทียบกับ" : "Compared with"} {stat.baseline}
-                    </p>
-                  ) : null}
-                  <p className="kpi-cs-stat-status">{caseStudyHeroStatusLabel(stat.status, locale)}</p>
-                </div>
-              ))}
-            </div>
+            <p className="kpi-lead kpi-cs-hero-lead">{t.heroDescription}</p>
             <div className="kpi-actions kpi-cs-hero-actions">
               <a href="#case-studies" className="kpi-button">
                 {t.viewGrid} <span aria-hidden="true">↗</span>
@@ -208,20 +195,34 @@ export async function CaseStudiesView({ locale }: { locale: Locale }) {
               </Link>
             </div>
           </div>
+
           <div className="kpi-cs-hero-visual">
-            <DummyImage
-              src={heroVisual.src}
-              alt={heroVisual.alt}
-              label={heroVisual.label}
-              recommendedSize="1600 × 900 px"
-              ratio={CASE_STUDIES_HERO_VISUAL.ratio}
-              fit="cover"
-              locale={locale}
-              status={heroVisual.status}
-              width={CASE_STUDIES_HERO_VISUAL.sourceWidth}
-              height={CASE_STUDIES_HERO_VISUAL.sourceHeight}
-              className="kpi-cs-hero-visual-frame"
-            />
+            {heroApproved ? (
+              <figure className="kpi-cs-hero-visual-frame">
+                <img
+                  src={heroSrc}
+                  alt={heroVisual.alt}
+                  width={CASE_STUDIES_HERO_VISUAL.sourceWidth}
+                  height={CASE_STUDIES_HERO_VISUAL.sourceHeight}
+                  decoding="async"
+                  fetchPriority="high"
+                />
+              </figure>
+            ) : (
+              <DummyImage
+                src={heroVisual.src}
+                alt={heroVisual.alt}
+                label={heroVisual.label}
+                recommendedSize="1600 × 900 px"
+                ratio={CASE_STUDIES_HERO_VISUAL.ratio}
+                fit="cover"
+                locale={locale}
+                status={heroVisual.status}
+                width={CASE_STUDIES_HERO_VISUAL.sourceWidth}
+                height={CASE_STUDIES_HERO_VISUAL.sourceHeight}
+                className="kpi-cs-hero-visual-frame"
+              />
+            )}
           </div>
         </div>
       </section>

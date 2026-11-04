@@ -14,17 +14,17 @@ function existingPublicSrc(src: string | undefined) {
 }
 
 export const CASE_STUDIES_HERO_VISUAL = {
-  /** Set only after an approved property, report-review, or redacted case photo exists. */
-  approvedSrc: undefined as string | undefined,
-  approvedAlt: undefined as string | undefined,
+  /** Approved poolside property visual with Room Revenue / ADR / ROAS highlights. */
+  approvedSrc: "/media/case-studies-hero-poolside_5539abd3.jpg" as string | undefined,
+  approvedAlt: "Hotel poolside with Room Revenue, ADR and ROAS performance highlights",
+  approvedAltTh: "วิวโรงแรมริมสระ พร้อมไฮไลต์ผล Room Revenue, ADR และ ROAS",
   reservedSrc: "/images/case-studies-hero-property-placeholder.webp",
-  sourceWidth: 1600,
-  sourceHeight: 900,
-  displayWidth: 600,
-  displayHeight: 338,
+  sourceWidth: 1024,
+  sourceHeight: 576,
+  displayWidth: 640,
+  displayHeight: 360,
   ratio: "16 / 9",
   label: "Replace with approved hotel / case study visual",
-  // TODO: Replace /images/case-studies-hero-property-placeholder.webp with one approved 1600×900 hotel property photo, team reviewing a report, or redacted case report. Do not invent a client property image or add multiple dashboards.
 } as const;
 
 export const CASE_STUDIES_RESULTS_CHART = {
@@ -179,12 +179,15 @@ export function caseStudyReportEvidence(study: { slug: string; reportPreview?: s
   };
 }
 
-export function caseStudiesHeroVisual() {
+export function caseStudiesHeroVisual(locale: "th" | "en" | "ru" | "zh" = "en") {
   const approved = existingPublicSrc(CASE_STUDIES_HERO_VISUAL.approvedSrc);
   if (approved) {
     return {
       src: approved,
-      alt: CASE_STUDIES_HERO_VISUAL.approvedAlt || "ภาพประกอบ Case Study",
+      alt:
+        locale === "th"
+          ? CASE_STUDIES_HERO_VISUAL.approvedAltTh
+          : CASE_STUDIES_HERO_VISUAL.approvedAlt || "Case study visual",
       status: "approved" as const,
       label: CASE_STUDIES_HERO_VISUAL.label,
     };
@@ -192,7 +195,7 @@ export function caseStudiesHeroVisual() {
 
   return {
     src: existingPublicSrc(CASE_STUDIES_HERO_VISUAL.reservedSrc) || undefined,
-    alt: "ภาพประกอบ Case Study",
+    alt: locale === "th" ? "ภาพประกอบ Case Study" : "Case study visual",
     status: "placeholder" as const,
     label: CASE_STUDIES_HERO_VISUAL.label,
   };
