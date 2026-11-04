@@ -4,7 +4,10 @@ import type { Locale } from "./seo";
 export type InsightCoverStatus = "real" | "approved" | "sample" | "placeholder";
 
 export type InsightSource = {
+  /** Fallback / default descriptive label (usually English). */
   label: string;
+  /** Locale-specific descriptive link text when available. */
+  labelByLocale?: Partial<Record<Locale, string>>;
   url?: string;
 };
 
@@ -25,6 +28,8 @@ export type InsightPost = {
   /** Named author only when approved. Empty posts use the editorial-team byline or hide it. */
   authorName?: string;
   authorRole?: string;
+  /** Named reviewer only when a real review is recorded in CMS/content. Do not invent. */
+  reviewerName?: string;
   publishedAt: string;
   updatedAt?: string;
   readingTimeMinutes: number;
@@ -34,6 +39,17 @@ export type InsightPost = {
   isPublished?: boolean;
   sampleVisual?: boolean;
 };
+
+/** Descriptive label for a source link in the active locale. */
+export function insightSourceLabel(source: InsightSource, locale: Locale) {
+  const localized = source.labelByLocale?.[locale]?.trim();
+  if (localized) return localized;
+  if (locale !== "en") {
+    const english = source.labelByLocale?.en?.trim();
+    if (english) return english;
+  }
+  return source.label.trim();
+}
 
 const EDITORIAL_AUTHOR_NAME = "The KPI Plus Editorial Team";
 
@@ -77,14 +93,73 @@ export const insightPosts: InsightPost[] = [
     slug: "hotel-marketing",
     href: "/insights/hotel-marketing",
     publishedAt: "2026-08-31",
+    updatedAt: "2026-11-04",
     readingTimeMinutes: 10,
-    coverImage: "/images/insights-hotel-marketing-placeholder.webp",
-    coverImageAlt: "ตัวอย่างเส้นทางแคมเปญ Hotel Marketing จาก Visibility ถึง Booking ไม่ใช่ภาพผลงานลูกค้า",
+    coverImage: "/images/insights/hotel-marketing-cover-placeholder.webp",
+    coverImageAlt:
+      "แผนภาพตัวอย่าง Guest Journey ของ Hotel Marketing: Visibility → Interest → Consideration → Booking → Revenue ไม่ใช่ภาพผลงานลูกค้า",
     coverImageFit: "contain",
     coverImageStatus: "placeholder",
     sampleVisual: true,
     authorName: EDITORIAL_AUTHOR_NAME,
+    // No reviewerName: CMS/content has no recorded review for this article.
     isPublished: true,
+    sources: [
+      {
+        label: "Google Search Central — SEO Starter Guide",
+        labelByLocale: {
+          th: "Google Search Central — คู่มือเริ่มต้น SEO",
+          en: "Google Search Central — SEO Starter Guide",
+        },
+        url: "https://developers.google.com/search/docs/fundamentals/seo-starter-guide",
+      },
+      {
+        label: "Google Business Profile Help Center",
+        labelByLocale: {
+          th: "ศูนย์ช่วยเหลือ Google Business Profile",
+          en: "Google Business Profile Help Center",
+        },
+        url: "https://support.google.com/business/",
+      },
+      {
+        label: "Google Ads Help Center",
+        labelByLocale: {
+          th: "ศูนย์ช่วยเหลือ Google Ads",
+          en: "Google Ads Help Center",
+        },
+        url: "https://support.google.com/google-ads/",
+      },
+      {
+        label: "Meta Business Help Center",
+        labelByLocale: {
+          th: "ศูนย์ช่วยเหลือ Meta Business",
+          en: "Meta Business Help Center",
+        },
+        url: "https://www.facebook.com/business/help",
+      },
+      {
+        label: "Booking.com Partner Help",
+        labelByLocale: {
+          th: "ศูนย์ช่วยเหลือพาร์ทเนอร์ Booking.com",
+          en: "Booking.com Partner Help",
+        },
+        url: "https://partner.booking.com/en-us/help",
+      },
+      {
+        label: "Agoda Property Partner Help Center",
+        labelByLocale: {
+          th: "ศูนย์ช่วยเหลือพาร์ทเนอร์ที่พัก Agoda",
+          en: "Agoda Property Partner Help Center",
+        },
+        url: "https://agodapropertypartnerhelp.zendesk.com/hc/en-us",
+      },
+    ],
+    relatedArticleIds: [
+      "hotel-revenue-meetings-that-lead-to-decisions",
+      "hotel-technology-adoption-commercial-project",
+      "direct-booking-journey-audit",
+      "seo-vs-sem-for-hotels-which-one-should-you-focus-on",
+    ],
     category: {
       th: "การตลาดโรงแรม",
       en: "Hotel Digital Marketing",
@@ -92,16 +167,16 @@ export const insightPosts: InsightPost[] = [
       zh: "酒店數位行銷",
     },
     title: {
-      th: "การตลาดโรงแรม (Hotel Marketing) คืออะไร? 8 กลยุทธ์เพิ่มยอดจองและรายได้",
-      en: "What is hotel marketing? 8 ways to grow bookings and revenue",
-      ru: "Что такое маркетинг отеля? 8 способов увеличить бронирования и доход",
-      zh: "什麼是酒店行銷？8 個增加預訂與收益的做法",
+      th: "การตลาดโรงแรม (Hotel Marketing) คืออะไร? 8 กลยุทธ์เชื่อมการค้นพบจนถึงการจอง",
+      en: "What is hotel marketing? 8 ways hotels connect discovery to booking",
+      ru: "Что такое маркетинг отеля? 8 способов связать обнаружение с бронированием",
+      zh: "什麼是酒店行銷？8 個把發現連到預訂的做法",
     },
     excerpt: {
-      th: "การตลาดโรงแรมคือการเชื่อม Google, OTA, Website, Direct Booking, Distribution และ Revenue Management ให้ผู้เข้าพักค้นพบ เปรียบเทียบ และเลือกจองด้วยข้อมูลที่ชัดเจน",
-      en: "Hotel marketing connects Google, OTAs, the website, direct booking, distribution, and revenue management so guests can find, compare, and book with a clear picture.",
-      ru: "Маркетинг отеля связывает Google, OTA, сайт, прямое бронирование, дистрибуцию и revenue management, чтобы гости находили, сравнивали и бронировали по понятной картине.",
-      zh: "酒店行銷把 Google、OTA、網站、直銷預訂、通路與收益管理連在一起，讓旅客能找到、比較，並用清楚的資訊選擇預訂。",
+      th: "การตลาดโรงแรมคือการเชื่อม Google, OTA, Website, Direct Booking, Distribution และ Revenue Management ให้ผู้เข้าพักค้นพบ เปรียบเทียบ และเลือกจองด้วยข้อมูลที่ชัดเจน โดยไม่รับประกันยอดจองหรือรายได้",
+      en: "Hotel marketing connects Google, OTAs, the website, direct booking, distribution, and revenue management so guests can find, compare, and book with a clear picture — without guaranteeing booking or revenue outcomes.",
+      ru: "Маркетинг отеля связывает Google, OTA, сайт, прямое бронирование, дистрибуцию и revenue management, чтобы гости находили, сравнивали и бронировали по понятной картине — без гарантии роста бронирований или дохода.",
+      zh: "酒店行銷把 Google、OTA、網站、直銷預訂、通路與收益管理連在一起，讓旅客能找到、比較，並用清楚的資訊選擇預訂——不保證預訂量或收益結果。",
     },
   },
   {
@@ -352,6 +427,24 @@ export function insightUpdatedAt(post: InsightPost) {
   return updated;
 }
 
+/** Reading time from article blocks. Thai uses character pace; Latin uses word pace. */
+export function estimateInsightReadingMinutes(blocks: HandoffBlock[]) {
+  const text = blocks
+    .map((block) => {
+      if ("text" in block && typeof block.text === "string") return block.text;
+      if (block.type === "list") return block.items.join(" ");
+      if (block.type === "table") return [...block.headers, ...block.rows.flat()].join(" ");
+      return "";
+    })
+    .join(" ")
+    .trim();
+  if (!text) return 0;
+  const thaiChars = [...text].filter((char) => /[\u0E00-\u0E7F]/.test(char)).length;
+  if (thaiChars >= 400) return Math.max(1, Math.round(thaiChars / 500));
+  const words = text.split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 180));
+}
+
 export function isPublishedInsight(post: InsightPost) {
   return post.isPublished !== false;
 }
@@ -403,6 +496,9 @@ export const insightsIndexCopy = {
     seoReplace: "SEO vs SEM · Replace with real search performance visual",
     seoSampleKicker: "SEO vs SEM",
     sources: "แหล่งข้อมูล",
+    sourcesNote:
+      "ชื่อผลิตภัณฑ์ นโยบาย และอินเทอร์เฟซของแพลตฟอร์มอาจเปลี่ยนแปลงได้ ตรวจสอบคำแนะนำล่าสุดจากศูนย์ช่วยเหลือทางการที่ลิงก์ไว้ ตัวเลขในบทความนี้เป็นชื่อตัวชี้วัดที่โรงแรมควรนิยามและเลือกช่วงเวลาจากระบบของตนเอง ไม่ใช่ผลวิจัยภายนอกที่อ้างในบทความ",
+    reviewedBy: "ตรวจทาน",
     cta: "ขอวิเคราะห์โรงแรม",
     ctaTitle: "ต้องการดูว่าโรงแรมของคุณควรเริ่มจากตรงไหน?",
     ctaBody: "ทีม The KPI Plus ช่วยดูข้อมูลและวิธีทำงานของโรงแรม เพื่อจัดลำดับสิ่งที่ควรลงมือทำต่อไป",
@@ -414,7 +510,8 @@ export const insightsIndexCopy = {
       "นำคำแนะนำไปใช้เป็น Action ได้จริง",
     ],
     toc: "สารบัญบทความ",
-    tocOpen: "สารบัญบทความ",
+    tocOpen: "ในบทความนี้",
+    tocCurrent: "ส่วนที่กำลังอ่าน",
     takeaway: "สรุปสั้น ๆ",
     services: "บริการที่เกี่ยวข้อง",
   },
@@ -464,6 +561,9 @@ export const insightsIndexCopy = {
     seoReplace: "SEO vs SEM · Replace with real search performance visual",
     seoSampleKicker: "SEO vs SEM",
     sources: "Sources",
+    sourcesNote:
+      "Platform product names, policies, and interfaces can change. Confirm current guidance in the linked official help centres. Metric names in this article are labels hotels should define and periodise from their own systems — not external research figures cited here.",
+    reviewedBy: "Reviewed by",
     cta: "Request a Hotel Performance Audit",
     ctaTitle: "Want to know where your hotel should start?",
     ctaBody: "The KPI Plus reviews the hotel’s facts and way of working, then helps sequence the next useful move.",
@@ -475,7 +575,8 @@ export const insightsIndexCopy = {
       "Leave with advice the team can put into action",
     ],
     toc: "Table of contents",
-    tocOpen: "Table of contents",
+    tocOpen: "In this article",
+    tocCurrent: "current section",
     takeaway: "In brief",
     services: "Related services",
   },
@@ -525,6 +626,9 @@ export const insightsIndexCopy = {
     seoReplace: "SEO vs SEM · Replace with real search performance visual",
     seoSampleKicker: "SEO vs SEM",
     sources: "Sources",
+    sourcesNote:
+      "Platform product names, policies, and interfaces can change. Confirm current guidance in the linked official help centres. Metric names in this article are labels hotels should define and periodise from their own systems — not external research figures cited here.",
+    reviewedBy: "Reviewed by",
     cta: "Запросить аудит",
     ctaTitle: "Хотите понять, с чего начать именно вашему отелю?",
     ctaBody: "The KPI Plus смотрит данные и способ работы отеля, чтобы выстроить порядок следующих шагов.",
@@ -536,7 +640,8 @@ export const insightsIndexCopy = {
       "Leave with advice the team can put into action",
     ],
     toc: "Содержание",
-    tocOpen: "Содержание",
+    tocOpen: "В этой статье",
+    tocCurrent: "current section",
     takeaway: "Кратко",
     services: "Связанные услуги",
   },
@@ -586,6 +691,9 @@ export const insightsIndexCopy = {
     seoReplace: "SEO vs SEM · Replace with real search performance visual",
     seoSampleKicker: "SEO vs SEM",
     sources: "Sources",
+    sourcesNote:
+      "Platform product names, policies, and interfaces can change. Confirm current guidance in the linked official help centres. Metric names in this article are labels hotels should define and periodise from their own systems — not external research figures cited here.",
+    reviewedBy: "Reviewed by",
     cta: "申請評估",
     ctaTitle: "想知道你的飯店該從哪裡開始？",
     ctaBody: "The KPI Plus 會看飯店的資料與做事方式，再協助排出下一步該做的事。",
@@ -597,7 +705,8 @@ export const insightsIndexCopy = {
       "Leave with advice the team can put into action",
     ],
     toc: "文章目錄",
-    tocOpen: "文章目錄",
+    tocOpen: "本文內容",
+    tocCurrent: "current section",
     takeaway: "簡要",
     services: "相關服務",
   },
@@ -708,6 +817,17 @@ export function insightHeadingId(text: string) {
     .replace(/-+/g, "-")
     .replace(/^-|-$/g, "")
     .slice(0, 90);
+}
+
+/** Stable unique IDs for article h2 anchors / TOC links (handles duplicate titles). */
+export function buildInsightHeadingIds(texts: string[]) {
+  const seen = new Map<string, number>();
+  return texts.map((text) => {
+    const base = insightHeadingId(text) || "section";
+    const next = (seen.get(base) ?? 0) + 1;
+    seen.set(base, next);
+    return next === 1 ? base : `${base}-${next}`;
+  });
 }
 
 export function insightBody(blocks: HandoffBlock[]) {

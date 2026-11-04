@@ -31,6 +31,7 @@ export function documentToInsight(doc: CmsDocumentRow): InsightPost {
     coverImageStatus: media.imageStatus,
     authorName: doc.author?.trim() || undefined,
     authorRole: media.authorRole,
+    reviewerName: media.reviewerName,
     sources: media.sources,
     relatedArticleIds: media.relatedArticleIds,
     isFeatured: media.isFeatured,

@@ -5,7 +5,12 @@ import type { Locale } from "@/lib/seo";
 
 export type InsightImageFit = "cover" | "contain";
 export type InsightImageStatus = "real" | "approved" | "sample" | "placeholder";
-export type InsightMediaVariant = "featured" | "card" | "guide";
+export type InsightMediaVariant = "featured" | "card" | "related" | "guide";
+
+/** Preferred related/card cover path: /public/images/insights/covers/{slug}.webp (1200×800, display ~360×240, 3:2). */
+export function insightCoverFilePath(slug: string) {
+  return `/images/insights/covers/${slug}.webp`;
+}
 
 export type InsightMediaSlot = {
   id: string;
@@ -27,6 +32,8 @@ export type InsightImageMeta = {
   imageFit: InsightImageFit;
   imageStatus: InsightImageStatus;
   authorRole?: string;
+  /** Named reviewer only when a real review is recorded. Do not invent. */
+  reviewerName?: string;
   sources?: InsightSource[];
   relatedArticleIds?: string[];
   isFeatured?: boolean;
@@ -74,23 +81,24 @@ export const INSIGHT_MEDIA_SLOTS = {
   "hotel-marketing": {
     id: "hotel-marketing",
     slug: "hotel-marketing",
-    reservedSrc: "/images/insights-hotel-marketing-placeholder.webp",
-    sourceWidth: 1200,
-    sourceHeight: 675,
-    displayWidth: 380,
-    displayHeight: 214,
+    reservedSrc: "/images/insights/hotel-marketing-cover-placeholder.webp",
+    sourceWidth: 1600,
+    sourceHeight: 900,
+    displayWidth: 780,
+    displayHeight: 440,
     ratio: "16:9",
     fit: "contain",
     label: {
-      th: "เส้นทางแคมเปญ Hotel Marketing",
-      en: "Hotel marketing campaign funnel",
+      th: "Hotel Marketing Guest Journey — Sample Visual",
+      en: "Hotel Marketing Guest Journey — Sample Visual",
     },
     defaultAlt: {
-      th: "ตัวอย่างเส้นทางแคมเปญ Hotel Marketing จาก Visibility ถึง Booking ไม่ใช่ภาพผลงานลูกค้า",
-      en: "Sample hotel marketing campaign funnel from visibility to booking, not a client result",
+      th: "แผนภาพตัวอย่าง Guest Journey ของ Hotel Marketing: Visibility → Interest → Consideration → Booking → Revenue ไม่ใช่ภาพผลงานลูกค้า",
+      en: "Sample Hotel Marketing guest journey diagram: Visibility → Interest → Consideration → Booking → Revenue. Not a client result.",
     },
-    // TODO: Replace /images/insights-hotel-marketing-placeholder.webp with a unique 1200×675 campaign performance report, direct-booking funnel, content planning board, hotel website conversion view, or team planning a hotel marketing strategy. Redact client names, account IDs, emails, and confidential metrics. No Google/Meta/OTA logos without permission. No generic hotel room or exterior unless it has a clear marketing context.
-    todo: "Replace /images/insights-hotel-marketing-placeholder.webp with a unique 1200×675 approved campaign / funnel visual before production.",
+    // Public cover is the native HTML Guest Journey diagram. Drop an approved 1600×900 photo at reservedSrc only with publication permission; keep Sample Visual label until then.
+    // CMS editorial TODOs (not public copy): no named reviewer in CMS — do not invent one. Do not publish industry volume/% claims without a named source URL + definition + period. Any EN/ru/zh body must keep equivalent official source links/context (GBP, Ads, Meta, Booking.com Partner Help, Agoda Partner Help, Search Central).
+    todo: "Optional: add approved 1600×900 hotel/marketing visual at /images/insights/hotel-marketing-cover-placeholder.webp with publication permission. CMS editorial TODO: (1) do not invent reviewerName until a named review is recorded; (2) keep insightPosts sources + inline markdown help links in sync; (3) no research %/rank claims without a dated primary source; (4) EN body is not authored yet — do not invent a translation; TH/EN source labels already cover platform context.",
   },
   "direct-booking": {
     id: "direct-booking",
@@ -230,6 +238,17 @@ export function isInsightImageStatus(value: string | undefined): value is Insigh
   return value === "real" || value === "approved" || value === "sample" || value === "placeholder";
 }
 
+function parseSourceLocaleLabels(raw: unknown): InsightSource["labelByLocale"] | undefined {
+  if (!raw || typeof raw !== "object") return undefined;
+  const record = raw as Record<string, unknown>;
+  const labelByLocale: NonNullable<InsightSource["labelByLocale"]> = {};
+  for (const locale of ["th", "en", "ru", "zh"] as const) {
+    const value = String(record[locale] ?? "").trim();
+    if (value) labelByLocale[locale] = value;
+  }
+  return Object.keys(labelByLocale).length ? labelByLocale : undefined;
+}
+
 function parseInsightSources(raw: unknown): InsightSource[] | undefined {
   if (!Array.isArray(raw)) return undefined;
   const sources = raw.flatMap((item) => {
@@ -238,9 +257,21 @@ function parseInsightSources(raw: unknown): InsightSource[] | undefined {
       return label ? [{ label, url: url || undefined }] : [];
     }
     if (item && typeof item === "object" && "label" in item) {
-      const label = String((item as InsightSource).label ?? "").trim();
-      const url = String((item as InsightSource).url ?? "").trim();
-      return label ? [{ label, url: url || undefined }] : [];
+      const row = item as InsightSource & { labelTh?: string; labelEn?: string };
+      const label = String(row.label ?? "").trim();
+      const url = String(row.url ?? "").trim();
+      const labelByLocale =
+        parseSourceLocaleLabels(row.labelByLocale) ??
+        (() => {
+          const th = String(row.labelTh ?? "").trim();
+          const en = String(row.labelEn ?? "").trim();
+          if (!th && !en) return undefined;
+          return {
+            ...(th ? { th } : {}),
+            ...(en ? { en } : {}),
+          };
+        })();
+      return label ? [{ label, url: url || undefined, ...(labelByLocale ? { labelByLocale } : {}) }] : [];
     }
     return [];
   });
@@ -257,10 +288,12 @@ export function parseInsightImageMeta(raw: string | undefined | null): InsightIm
   try {
     const parsed = JSON.parse(raw || "") as Partial<InsightImageMeta>;
     const authorRole = parsed.authorRole?.trim();
+    const reviewerName = parsed.reviewerName?.trim();
     return {
       imageFit: isInsightImageFit(parsed.imageFit) ? parsed.imageFit : "cover",
       imageStatus: isInsightImageStatus(parsed.imageStatus) ? parsed.imageStatus : "placeholder",
       authorRole: authorRole || undefined,
+      reviewerName: reviewerName || undefined,
       sources: parseInsightSources(parsed.sources),
       relatedArticleIds: parseRelatedIds(parsed.relatedArticleIds),
       isFeatured: parsed.isFeatured === true ? true : undefined,
@@ -275,6 +308,7 @@ export function serializeInsightImageMeta(meta: InsightImageMeta) {
     imageFit: isInsightImageFit(meta.imageFit) ? meta.imageFit : "cover",
     imageStatus: isInsightImageStatus(meta.imageStatus) ? meta.imageStatus : "placeholder",
     ...(meta.authorRole?.trim() ? { authorRole: meta.authorRole.trim() } : {}),
+    ...(meta.reviewerName?.trim() ? { reviewerName: meta.reviewerName.trim() } : {}),
     ...(meta.sources?.length ? { sources: meta.sources } : {}),
     ...(meta.relatedArticleIds?.length ? { relatedArticleIds: meta.relatedArticleIds } : {}),
     ...(meta.isFeatured ? { isFeatured: true } : {}),
@@ -306,7 +340,11 @@ export function insightSampleLabel(locale: Locale) {
 }
 
 export function displaySizeForVariant(slot: InsightMediaSlot, variant: InsightMediaVariant) {
-  if (variant === "featured") return { width: 620, height: 350 };
+  if (variant === "featured") {
+    if (slot.slug === "hotel-marketing") return { width: 780, height: 440 };
+    return { width: 620, height: 350 };
+  }
+  if (variant === "related") return { width: 360, height: 240 };
   if (variant === "guide") return { width: slot.displayWidth, height: slot.displayHeight };
   return { width: 380, height: 214 };
 }
@@ -321,7 +359,12 @@ export function resolveInsightMedia(
   const slot = insightSlotForSlug(post.slug) ?? GENERIC_CARD_SLOT;
   const display = displaySizeForVariant(slot, variant);
   const status: InsightImageStatus = post.coverImageStatus ?? (post.sampleVisual ? "placeholder" : "placeholder");
-  const src = existingPublicSrc(post.coverImage) || existingPublicSrc(slot.reservedSrc);
+  const preferredCover = insightCoverFilePath(post.slug);
+  const src =
+    existingPublicSrc(post.coverImage) ||
+    existingPublicSrc(preferredCover) ||
+    existingPublicSrc(slot.reservedSrc);
+  const useRelatedCoverMetrics = variant === "related";
   return {
     slot,
     src,
@@ -330,8 +373,8 @@ export function resolveInsightMedia(
     status,
     displayWidth: display.width,
     displayHeight: display.height,
-    sourceWidth: slot.sourceWidth,
-    sourceHeight: slot.sourceHeight,
+    sourceWidth: useRelatedCoverMetrics ? 1200 : slot.sourceWidth,
+    sourceHeight: useRelatedCoverMetrics ? 800 : slot.sourceHeight,
     hasAsset: Boolean(src),
     showSampleLabel: insightShowsSampleLabel(status, Boolean(src)),
   };

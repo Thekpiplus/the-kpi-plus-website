@@ -25,11 +25,18 @@ export function InsightCover({
   const media = resolveInsightMedia(post, variant);
   const copy = locale === "th" ? media.slot.label.th : media.slot.label.en;
   const isCard = variant === "card";
+  const isRelated = variant === "related";
+  const useCompactCover = isCard || isRelated;
 
-  if (isCard && !media.hasAsset) {
-    if (post.slug === HOTEL_MARKETING_SLUG) {
-      return <InsightHotelMarketingVisual post={post} locale={locale} />;
-    }
+  const useHotelMarketingDiagram =
+    post.slug === HOTEL_MARKETING_SLUG &&
+    !(media.hasAsset && (post.coverImageStatus === "approved" || post.coverImageStatus === "real"));
+
+  if (useHotelMarketingDiagram) {
+    return <InsightHotelMarketingVisual post={post} locale={locale} variant={variant} />;
+  }
+
+  if (useCompactCover && !media.hasAsset) {
     if (post.slug === DIRECT_BOOKING_SLUG) {
       return <InsightDirectBookingVisual post={post} locale={locale} />;
     }
@@ -52,13 +59,17 @@ export function InsightCover({
       status={media.status}
       displayWidth={media.displayWidth}
       displayHeight={media.displayHeight}
-      sourceWidth={isCard ? 1200 : media.sourceWidth}
-      sourceHeight={isCard ? 675 : media.sourceHeight}
+      sourceWidth={useCompactCover ? (isRelated ? 1200 : 1200) : media.sourceWidth}
+      sourceHeight={useCompactCover ? (isRelated ? 800 : 675) : media.sourceHeight}
       lazy={variant !== "featured"}
       priority={variant === "featured"}
-      fill={isCard}
-      className={isCard ? "kpi-insight-card-media" : "kpi-insight-featured-media"}
-      imageClassName={isCard ? "kpi-insight-card-image" : "kpi-insight-featured-image"}
+      fill={useCompactCover}
+      className={
+        isRelated ? "kpi-insight-related-media" : isCard ? "kpi-insight-card-media" : "kpi-insight-featured-media"
+      }
+      imageClassName={
+        isRelated ? "kpi-insight-related-image" : isCard ? "kpi-insight-card-image" : "kpi-insight-featured-image"
+      }
       objectPosition={post.coverImagePosition}
     />
   );

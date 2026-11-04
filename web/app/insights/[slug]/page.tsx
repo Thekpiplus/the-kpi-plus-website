@@ -2,6 +2,12 @@ import { notFound, permanentRedirect, redirect } from "next/navigation";
 import { CmsDocumentView } from "@/components/CmsDocumentView";
 import { InsightArticle } from "@/components/InsightArticle";
 import { matchCmsRedirect } from "@/lib/cms/files";
+import { isHotelMarketingCmsBody, parseHotelMarketingInsightBody } from "@/lib/cms/hotel-marketing-insight";
+import {
+  hotelMarketingBlocksFromContent,
+  hotelMarketingInsightPostFromContent,
+  hotelMarketingMetadata,
+} from "@/lib/cms/hotel-marketing-insight-public";
 import { cmsInsightBySlug, cmsMetadata, isCmsPageLive } from "@/lib/cms/public";
 import { insightDocumentBySlug } from "@/lib/cms/queries";
 import { loadHandoff } from "@/lib/handoff";
@@ -25,7 +31,14 @@ export async function generateMetadata({ params }: { params: Promise<Params> }) 
   if (stored?.trashedAt) return {};
   if (stored && !isCmsPageLive(stored)) return {};
   const cms = stored && isCmsPageLive(stored) ? stored : await cmsInsightBySlug(slug);
-  if (cms && isCmsPageLive(cms)) return cmsMetadata(cms);
+  if (cms && isCmsPageLive(cms)) {
+    // Structured Hotel Marketing documents carry their SEO fields inside the JSON body.
+    if (isHotelMarketingCmsBody(cms.body)) {
+      const content = parseHotelMarketingInsightBody(cms.body);
+      if (content) return hotelMarketingMetadata(content, cms);
+    }
+    return cmsMetadata(cms);
+  }
   const post = insightBySlug(slug);
   const route = `/insights/${slug}`;
   if (post && isPublishedInsight(post) && pageByRoute.has(route)) {
@@ -52,7 +65,16 @@ export default async function InsightPage({ params }: { params: Promise<Params> 
   const stored = await insightDocumentBySlug(slug);
   if (stored?.trashedAt) notFound();
   if (stored && !isCmsPageLive(stored)) notFound();
-  if (stored && isCmsPageLive(stored)) {
+  // Structured Hotel Marketing documents store JSON, not markdown blocks: render them with the CMS-driven article.
+  if (stored && isCmsPageLive(stored) && isHotelMarketingCmsBody(stored.body)) {
+    const content = parseHotelMarketingInsightBody(stored.body);
+    if (content) {
+      const cmsPost = hotelMarketingInsightPostFromContent(content, stored);
+      const cmsBlocks = hotelMarketingBlocksFromContent(content, "th");
+      return <InsightArticle post={cmsPost} blocks={cmsBlocks} locale="th" marketingCms={content} />;
+    }
+    // Unparseable JSON is never dumped through CmsDocumentView: fall through to the code-built article.
+  } else if (stored && isCmsPageLive(stored)) {
     return <CmsDocumentView doc={stored} />;
   }
   if (post && post.href === route && isPublishedInsight(post)) {

@@ -22,6 +22,9 @@ export function InsightArticleMeta({
   const updatedAt = insightUpdatedAt(post);
   const author = showAuthor ? insightAuthor(post, locale) : "";
   const role = author && post.authorRole?.trim() ? post.authorRole.trim() : "";
+  const reviewer = post.reviewerName?.trim() || "";
+
+  const minutes = post.readingTimeMinutes > 0 ? post.readingTimeMinutes : 0;
 
   return (
     <p className="kpi-insight-meta">
@@ -40,14 +43,26 @@ export function InsightArticleMeta({
           </span>
         </>
       ) : null}
-      <span aria-hidden="true"> · </span>
-      <span>{`${post.readingTimeMinutes} ${t.minutes}`}</span>
+      {minutes ? (
+        <>
+          <span aria-hidden="true"> · </span>
+          <span>{`${minutes} ${t.minutes}`}</span>
+        </>
+      ) : null}
       {author ? (
         <>
           <span aria-hidden="true"> · </span>
           <span>
             {author}
             {role ? ` · ${role}` : ""}
+          </span>
+        </>
+      ) : null}
+      {reviewer ? (
+        <>
+          <span aria-hidden="true"> · </span>
+          <span>
+            {t.reviewedBy} {reviewer}
           </span>
         </>
       ) : null}

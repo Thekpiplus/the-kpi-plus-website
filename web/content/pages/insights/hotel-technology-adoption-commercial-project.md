@@ -96,7 +96,7 @@ Revenue · Direct Booking · Commercial Growth
 [ขอรับการวิเคราะห์โรงแรม](../index.html#audit)
 แชร์บทความ
 บทความที่เกี่ยวข้อง
-[Hotel Digital Marketing การตลาดโรงแรม (Hotel Marketing) คืออะไร? 8 กลยุทธ์เพิ่มยอดจองและรายได้ การตลาดโรงแรมคือการเชื่อม Google, OTA, Website, Direct Booking, Distribution และ Revenue Management ให้ผู้เข้าพักค้นพบ เปรียบเทียบ และเลือกจองด้วยข้อมูลที่ชัดเจน อ่านบทความ](/insights/hotel-marketing)
+[Hotel Digital Marketing การตลาดโรงแรม (Hotel Marketing) คืออะไร? 8 กลยุทธ์เชื่อมการค้นพบจนถึงการจอง การตลาดโรงแรมคือการเชื่อม Google, OTA, Website, Direct Booking, Distribution และ Revenue Management ให้ผู้เข้าพักค้นพบ เปรียบเทียบ และเลือกจองด้วยข้อมูลที่ชัดเจน อ่านบทความ](/insights/hotel-marketing)
 [การจองตรง วิเคราะห์เส้นทาง Direct Booking ของโรงแรม แนวทางตรวจสอบเส้นทางผู้เข้าพักตั้งแต่เริ่มสนใจจนถึงการจองตรงอย่างมั่นใจ โดยไม่ตั้งสมมติฐานว่าปัญหาเกิดจากจำนวนทราฟฟิกเพียงอย่างเดียว อ่านบทความ](direct-booking-journey-audit.html)
 [การบริหารรายได้ ประชุม Revenue อย่างไรให้จบด้วยการตัดสินใจที่นำไปใช้ได้จริง กรอบการประชุมรายได้โรงแรมที่ช่วยให้ทีมเปลี่ยนสัญญาณด้านรายได้และการเติบโตเป็นการตัดสินใจ เจ้าของงาน และจุดทบทวนที่ชัดเจน อ่านบทความ](hotel-revenue-meetings-that-lead-to-decisions.html)
 
@@ -214,7 +214,7 @@ Revenue · Direct Booking · Commercial Growth
 - H3: โรงแรมควรเลือกโครงการ Technology อย่างไร?
 - H3: หลังใช้ระบบใหม่ โรงแรมควรวัดอะไร?
 - H3: AI จะมาแทนทีมโรงแรมหรือไม่?
-- H2: การตลาดโรงแรม (Hotel Marketing) คืออะไร? 8 กลยุทธ์เพิ่มยอดจองและรายได้
+- H2: การตลาดโรงแรม (Hotel Marketing) คืออะไร? 8 กลยุทธ์เชื่อมการค้นพบจนถึงการจอง
 - H2: วิเคราะห์เส้นทาง Direct Booking ของโรงแรม
 - H2: ประชุม Revenue อย่างไรให้จบด้วยการตัดสินใจที่นำไปใช้ได้จริง
 - H2: โซลูชัน

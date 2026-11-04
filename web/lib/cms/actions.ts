@@ -43,6 +43,7 @@ import { META_ADS_CMS_TEMPLATE, META_ADS_PAGE_ROUTE, serializeMetaAdsPageBody } 
 import { defaultMetaAdsCms } from "./meta-ads-page-seed";
 import { HOTEL_SEO_CMS_TEMPLATE, HOTEL_SEO_PAGE_ROUTE, serializeHotelSeoPageBody } from "./hotel-seo-page";
 import { defaultHotelSeoCms } from "./hotel-seo-page-seed";
+import { HOTEL_MARKETING_SLUG } from "./hotel-marketing-insight";
 import { HOTEL_WEBSITE_CMS_TEMPLATE, HOTEL_WEBSITE_PAGE_ROUTE, serializeHotelWebsitePageBody } from "./hotel-website-page";
 import { defaultHotelWebsiteCms } from "./hotel-website-page";
 import {
@@ -109,6 +110,7 @@ function insightSeedTags(post: InsightPost) {
     imageFit: post.coverImageFit ?? "cover",
     imageStatus: post.coverImageStatus ?? "placeholder",
     authorRole: post.authorRole,
+    reviewerName: post.reviewerName,
     sources: post.sources,
     relatedArticleIds: post.relatedArticleIds,
     isFeatured: post.isFeatured,
@@ -144,6 +146,7 @@ function formDocument(formData: FormData, kind: "page" | "insight", existingTags
             imageFit: isInsightImageFit(imageFitRaw) ? imageFitRaw : "cover",
             imageStatus: isInsightImageStatus(imageStatusRaw) ? imageStatusRaw : "placeholder",
             authorRole: existingMeta.authorRole,
+            reviewerName: existingMeta.reviewerName,
             sources: existingMeta.sources,
             relatedArticleIds: existingMeta.relatedArticleIds,
             isFeatured: existingMeta.isFeatured,
@@ -210,6 +213,11 @@ export async function ensureInsightFromSite(slug: string) {
         data: { trashedAt: null, status: existing.status === "draft" ? "published" : existing.status, updatedBy: user.email },
       });
     }
+    if (slug === HOTEL_MARKETING_SLUG) {
+      const { hydrateHotelMarketingInsightDocument } = await import("./hotel-marketing-insight-actions");
+      const hydrated = await hydrateHotelMarketingInsightDocument(existing);
+      return hydrated.id;
+    }
     return existing.id;
   }
   const markdown = blocksToMarkdown(loadHandoff(post.href));
@@ -236,6 +244,11 @@ export async function ensureInsightFromSite(slug: string) {
   });
   await refreshCmsFiles();
   revalidatePublic(post.href);
+  if (slug === HOTEL_MARKETING_SLUG) {
+    const { hydrateHotelMarketingInsightDocument } = await import("./hotel-marketing-insight-actions");
+    const hydrated = await hydrateHotelMarketingInsightDocument(created);
+    return hydrated.id;
+  }
   return created.id;
 }
 

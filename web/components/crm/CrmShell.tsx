@@ -166,6 +166,33 @@ const trainingLinks: ContextLink[] = [
   { href: "/crm/training/settings", label: "Settings" },
 ];
 
+const hotelMarketingLinks: ContextLink[] = [
+  { href: "/crm/hotel-marketing", label: "Overview" },
+  { href: "/crm/hotel-marketing/editorial-calendar", label: "Editorial Calendar" },
+  { href: "/crm/hotel-marketing/backlog", label: "Article Backlog" },
+  { href: "/crm/hotel-marketing/drafts", label: "Drafts / Reviews" },
+  { href: "/crm/hotel-marketing/seo-briefs", label: "SEO Briefs" },
+  { href: "/crm/hotel-marketing/campaigns", label: "Campaign Calendar" },
+  { href: "/crm/hotel-marketing/channels", label: "Channel Plan" },
+  { href: "/crm/hotel-marketing/metrics", label: "Metrics / KPI Definitions" },
+  { href: "/crm/hotel-marketing/assets", label: "Assets / Permissions" },
+  { href: "/crm/hotel-marketing/approvals", label: "Approvals" },
+  { href: "/crm/hotel-marketing/related-links", label: "Related Links" },
+  { href: "/crm/hotel-marketing/translation", label: "Translation" },
+  { href: "/crm/hotel-marketing/reports", label: "Reports" },
+  { href: "/crm/hotel-marketing/departments", label: "Department Workspaces" },
+  { href: "/crm/hotel-marketing/departments/marketing-content", label: "Marketing / Content" },
+  { href: "/crm/hotel-marketing/departments/revenue", label: "Revenue Management" },
+  { href: "/crm/hotel-marketing/departments/distribution", label: "Distribution" },
+  { href: "/crm/hotel-marketing/departments/sales", label: "Sales" },
+  { href: "/crm/hotel-marketing/departments/reservations", label: "Reservations" },
+  { href: "/crm/hotel-marketing/departments/operations", label: "Operations / Guest Experience" },
+  { href: "/crm/hotel-marketing/departments/management", label: "Management" },
+  { href: "/crm/hotel-marketing/departments/it-data", label: "IT / Data" },
+  { href: "/crm/hotel-marketing/audit", label: "Audit History" },
+  { href: "/crm/hotel-marketing/settings", label: "Settings" },
+];
+
 const solutionsLinks: ContextLink[] = [
   { href: "/crm/solutions", label: "Overview" },
   { href: "/crm/solutions/catalog", label: "Service Catalog" },
@@ -247,6 +274,7 @@ const seoLinks: ContextLink[] = [
 const cmsLinks = [
   { href: "/crm/cms", label: "หน้าเพจทั้งหมด" },
   { href: "/crm/cms/insights", label: "บทความ" },
+  { href: "/crm/cms/hotel-marketing", label: "บทความ Hotel Marketing" },
   { href: "/crm/cms/case-studies", label: "ผลงานลูกค้า" },
   { href: "/crm/cms/client-logos", label: "โลโก้ลูกค้า" },
   { href: "/crm/cms/trash", label: "ถังขยะ" },
@@ -282,6 +310,7 @@ const contextByWorkspace: Record<Exclude<Workspace, "home">, ContextLink[]> = {
   systems: systemsLinks,
   hotel_ai: hotelAiLinks,
   training: trainingLinks,
+  hotel_marketing: hotelMarketingLinks,
   solutions: solutionsLinks,
   users: userLinks,
   cms: cmsLinks,
@@ -302,6 +331,7 @@ const NAV_LABEL: Record<NavKey, string> = {
   systems: "Hotel Systems Operations",
   hotel_ai: "Hotel AI & Automation Workflow",
   training: "Hotel Training Operations",
+  hotel_marketing: "Hotel Marketing Editorial Operations",
   solutions: "Hotel Solutions Service Directory",
   users: "Users Management",
   cms: "Content Management",
@@ -437,6 +467,7 @@ const NAV_ICON: Record<NavKey, () => ReactNode> = {
   systems: IconSeo,
   hotel_ai: IconSeo,
   training: IconLeads,
+  hotel_marketing: IconCms,
   solutions: IconCms,
   users: IconUsers,
   cms: IconCms,
@@ -458,6 +489,7 @@ function workspaceOf(pathname: string): Workspace {
   if (pathname.startsWith("/crm/systems")) return "systems";
   if (pathname.startsWith("/crm/hotel-ai")) return "hotel_ai";
   if (pathname.startsWith("/crm/training")) return "training";
+  if (pathname.startsWith("/crm/hotel-marketing")) return "hotel_marketing";
   if (pathname.startsWith("/crm/solutions")) return "solutions";
   if (
     pathname.startsWith("/crm/sales") ||
@@ -491,6 +523,8 @@ function isCurrent(pathname: string, search: string, href: string) {
   if (path === "/crm/hotel-ai") return pathname === "/crm/hotel-ai";
   if (path === "/crm/training") return pathname === "/crm/training";
   if (path === "/crm/training/departments") return pathname === "/crm/training/departments";
+  if (path === "/crm/hotel-marketing") return pathname === "/crm/hotel-marketing";
+  if (path === "/crm/hotel-marketing/departments") return pathname === "/crm/hotel-marketing/departments";
   if (path === "/crm/solutions") return pathname === "/crm/solutions";
   if (path === "/crm/solutions/departments") return pathname === "/crm/solutions/departments";
   return pathname === path || pathname.startsWith(`${path}/`);
@@ -673,7 +707,7 @@ export function CrmShell({
 
   const shell = (
     <div
-      className={`crm-shell crm-shell-app kpi-locale-th${railExpanded ? " is-rail-expanded" : ""}${workspace === "b2b" ? " crm-shell-b2b" : ""}${workspace === "ads" ? " crm-shell-ads" : ""}${workspace === "meta" ? " crm-shell-meta" : ""}${workspace === "seo" ? " crm-shell-seo" : ""}${workspace === "website" ? " crm-shell-website" : ""}${workspace === "conversion" ? " crm-shell-conversion" : ""}${workspace === "management" ? " crm-shell-management" : ""}${workspace === "systems" ? " crm-shell-systems" : ""}${workspace === "hotel_ai" ? " crm-shell-hotel-ai" : ""}${workspace === "training" ? " crm-shell-training" : ""}${workspace === "solutions" ? " crm-shell-solutions" : ""}`}
+      className={`crm-shell crm-shell-app kpi-locale-th${railExpanded ? " is-rail-expanded" : ""}${workspace === "b2b" ? " crm-shell-b2b" : ""}${workspace === "ads" ? " crm-shell-ads" : ""}${workspace === "meta" ? " crm-shell-meta" : ""}${workspace === "seo" ? " crm-shell-seo" : ""}${workspace === "website" ? " crm-shell-website" : ""}${workspace === "conversion" ? " crm-shell-conversion" : ""}${workspace === "management" ? " crm-shell-management" : ""}${workspace === "systems" ? " crm-shell-systems" : ""}${workspace === "hotel_ai" ? " crm-shell-hotel-ai" : ""}${workspace === "training" ? " crm-shell-training" : ""}${workspace === "hotel_marketing" ? " crm-shell-hotel-marketing" : ""}${workspace === "solutions" ? " crm-shell-solutions" : ""}`}
       suppressHydrationWarning
     >
       <aside

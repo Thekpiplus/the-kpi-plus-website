@@ -1,26 +1,33 @@
 "use client";
 
-import { useEffect, useId, useState } from "react";
-import { insightHeadingId } from "@/lib/insights";
+import { useEffect, useId, useRef, useState } from "react";
 
-type Heading = { text: string };
+export type ArticleTocHeading = {
+  id: string;
+  text: string;
+};
 
 export function ArticleToc({
   headings,
   label,
   openLabel,
+  currentLabel = "current section",
 }: {
-  headings: Heading[];
+  headings: ArticleTocHeading[];
   label: string;
   openLabel: string;
+  currentLabel?: string;
 }) {
   const titleId = useId();
-  const [activeId, setActiveId] = useState<string>("");
+  const panelId = useId();
+  const railRef = useRef<HTMLElement>(null);
+  const [activeId, setActiveId] = useState<string>(headings[0]?.id ?? "");
   const [open, setOpen] = useState(false);
+  const [stickySafe, setStickySafe] = useState(true);
 
   useEffect(() => {
     const nodes = headings
-      .map((heading) => document.getElementById(insightHeadingId(heading.text)))
+      .map((heading) => document.getElementById(heading.id))
       .filter((node): node is HTMLElement => Boolean(node));
     if (!nodes.length) return;
 
@@ -29,9 +36,21 @@ export function ArticleToc({
         const visible = entries
           .filter((entry) => entry.isIntersecting)
           .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-        if (visible[0]?.target?.id) setActiveId(visible[0].target.id);
+        if (visible[0]?.target?.id) {
+          setActiveId(visible[0].target.id);
+          return;
+        }
+
+        // Fallback: nearest section above the reading line.
+        const marker = window.scrollY + Math.min(window.innerHeight * 0.28, 180);
+        let current = headings[0]?.id ?? "";
+        for (const node of nodes) {
+          const top = node.getBoundingClientRect().top + window.scrollY;
+          if (top <= marker) current = node.id;
+        }
+        if (current) setActiveId(current);
       },
-      { rootMargin: "-20% 0px -65% 0px", threshold: [0, 0.25, 0.5, 1] },
+      { rootMargin: "-18% 0px -62% 0px", threshold: [0, 0.1, 0.25, 0.5, 1] },
     );
 
     nodes.forEach((node) => observer.observe(node));
@@ -46,21 +65,48 @@ export function ArticleToc({
     return () => window.removeEventListener("hashchange", onHash);
   }, []);
 
+  useEffect(() => {
+    const rail = railRef.current;
+    if (!rail) return;
+
+    function updateStickySafe() {
+      if (!rail) return;
+      // Desktop TOC sits in its own column, so sticky never overlays article text.
+      // Enable sticky whenever the shell has room for a side rail.
+      setStickySafe(window.matchMedia("(min-width: 64rem)").matches);
+    }
+
+    updateStickySafe();
+    window.addEventListener("resize", updateStickySafe);
+    return () => window.removeEventListener("resize", updateStickySafe);
+  }, [headings]);
+
+  useEffect(() => {
+    if (!activeId || !railRef.current) return;
+    const activeLink = [...railRef.current.querySelectorAll<HTMLAnchorElement>("a")].find(
+      (link) => link.getAttribute("href") === `#${activeId}`,
+    );
+    activeLink?.scrollIntoView({ block: "nearest" });
+  }, [activeId]);
+
   function renderList(keyPrefix: string) {
     return (
       <ol className="kpi-article-toc-list">
         {headings.map((heading, index) => {
-          const id = insightHeadingId(heading.text);
+          const isActive = activeId === heading.id;
           return (
-            <li key={`${keyPrefix}-${id}`}>
+            <li key={`${keyPrefix}-${heading.id}`}>
               <a
-                href={`#${id}`}
-                className={activeId === id ? "is-active" : undefined}
-                aria-current={activeId === id ? "location" : undefined}
+                href={`#${heading.id}`}
+                className={isActive ? "is-active" : undefined}
+                aria-current={isActive ? "location" : undefined}
                 onClick={() => setOpen(false)}
               >
-                <span className="kpi-article-toc-num">{String(index + 1).padStart(2, "0")}</span>
+                <span className="kpi-article-toc-num" aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
                 <span className="kpi-article-toc-text">{heading.text}</span>
+                {isActive ? <span className="sr-only">{` (${currentLabel})`}</span> : null}
               </a>
             </li>
           );
@@ -76,16 +122,22 @@ export function ArticleToc({
         open={open}
         onToggle={(event) => setOpen((event.target as HTMLDetailsElement).open)}
       >
-        <summary>
+        <summary aria-expanded={open} aria-controls={panelId}>
           <span>{openLabel}</span>
           <span aria-hidden="true" className="kpi-article-toc-chevron">
             {open ? "−" : "+"}
           </span>
         </summary>
-        {renderList("mobile")}
+        <nav id={panelId} className="kpi-article-toc-mobile-panel" aria-label={label}>
+          {renderList("mobile")}
+        </nav>
       </details>
 
-      <nav className="kpi-article-toc kpi-article-toc-rail" aria-labelledby={titleId}>
+      <nav
+        ref={railRef}
+        className={`kpi-article-toc kpi-article-toc-rail${stickySafe ? " is-sticky-safe" : ""}`}
+        aria-labelledby={titleId}
+      >
         <p id={titleId} className="kpi-article-toc-title">
           {label}
         </p>

@@ -978,8 +978,8 @@
   {
     "route": "/insights/hotel-marketing",
     "language": "th",
-    "title": "การตลาดโรงแรมคืออะไร? 8 กลยุทธ์เพิ่มยอดจอง | เดอะ เคพีไอ พลัส",
-    "description": "การตลาดโรงแรมคือการเชื่อม Google, OTA, Website, Direct Booking, Distribution และ Revenue Management ให้ผู้เข้าพักค้นพบ เปรียบเทียบ และเลือกจองด้วยข้อมูลที่ชัดเจน",
+    "title": "การตลาดโรงแรมคืออะไร? 8 กลยุทธ์เชื่อมการค้นพบจนถึงการจอง | เดอะ เคพีไอ พลัส",
+    "description": "การตลาดโรงแรมคือการเชื่อม Google, OTA, Website, Direct Booking, Distribution และ Revenue Management ให้ผู้เข้าพักค้นพบ เปรียบเทียบ และเลือกจองด้วยข้อมูลที่ชัดเจน โดยไม่รับประกันยอดจองหรือรายได้",
     "canonical": "https://thekpiplus.com/insights/hotel-marketing",
     "alternates": [
       {
