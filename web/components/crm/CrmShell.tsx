@@ -970,17 +970,23 @@ export function CrmShell({
           <button
             type="button"
             className="crm-menu-toggle"
-            aria-label="เปิดเมนู"
+            aria-label="เปิดเมนูนำทาง"
+            title="เปิดเมนูนำทาง"
             aria-expanded={drawerOpen}
             aria-controls={drawerId}
             onClick={() => setDrawerOpen(true)}
           >
-            ☰
+            <span aria-hidden="true">☰</span>
           </button>
-          <label className="crm-app-search" title="การค้นหาทั้งระบบจะเปิดใช้เมื่อพร้อม">
+          <label
+            className="crm-app-search"
+            title="การค้นหาทั้งระบบจะเปิดใช้เมื่อพร้อม"
+            tabIndex={0}
+            aria-label="ค้นหาทั้งระบบ (ยังไม่เปิดใช้)"
+          >
             <span className="sr-only">ค้นหาทั้งระบบ (ยังไม่เปิดใช้)</span>
             <span aria-hidden="true">⌕</span>
-            <input type="search" placeholder="ค้นหาข้อมูล เมนู หรือคำสั่ง..." disabled aria-disabled="true" />
+            <input type="search" placeholder="ค้นหาข้อมูล เมนู หรือคำสั่ง..." disabled aria-disabled="true" tabIndex={-1} />
             <kbd aria-hidden="true">⌘ K</kbd>
           </label>
           <div className="crm-app-top-right">

@@ -487,7 +487,10 @@ async function DashboardHome({
                       <strong>{task.title}</strong>
                       <em>{task.meta}</em>
                     </span>
-                    <b className={`crm-dash-priority is-${task.priority}`}>{priorityLabel[task.priority]}</b>
+                    <b className={`crm-dash-priority is-${task.priority}`}>
+                      <span className="sr-only">ความสำคัญ: </span>
+                      {priorityLabel[task.priority]}
+                    </b>
                   </div>
                   <Link href={task.href} className="crm-dash-task-link">
                     เปิด
