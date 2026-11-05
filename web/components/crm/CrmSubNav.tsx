@@ -16,6 +16,8 @@ export function isCrmSubNavCurrent(pathname: string, search: string, href: strin
   if (path === "/crm/sales") return pathname === "/crm/sales";
   if (path === "/crm/leads") return pathname === "/crm/leads" && !currentQuery;
   if (path === "/crm/users/new") return pathname === "/crm/users/new";
+  if (path === "/crm/users/logs") return pathname === "/crm/users/logs" || pathname.startsWith("/crm/users/logs/");
+  if (path === "/crm/users/roles") return pathname === "/crm/users/roles" || pathname.startsWith("/crm/users/roles/");
   if (path === "/crm/users") return pathname === "/crm/users";
   if (path === "/crm/cms") return pathname === "/crm/cms";
   if (path === "/crm/partners") return pathname === "/crm/partners";

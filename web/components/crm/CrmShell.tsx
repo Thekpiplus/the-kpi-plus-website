@@ -40,7 +40,11 @@ const reservationLinks: ContextLink[] = [
   { href: "/crm/reservations?status=escalated", label: "เร่งด่วน" },
 ];
 
-const userLinks: { href: string; label: string }[] = [];
+const userLinks: ContextLink[] = [
+  { href: "/crm/users", label: "รายชื่อผู้ใช้" },
+  { href: "/crm/users/logs", label: "Login Log" },
+  { href: "/crm/users/roles", label: "บทบาทและสิทธิ์" },
+];
 
 const b2bLinks: ContextLink[] = [
   { href: "/crm/b2b", label: "Partner Pipeline" },
