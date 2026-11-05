@@ -85,9 +85,9 @@ async function DashboardHome({
           title: "Lead Management",
           body: "ติดตามลีด คัดกรอง และดู Pipeline",
           stats: [
-            { label: "วันนี้", value: dueToday },
-            { label: "ทั้งหมด", value: origins.web + origins.manual },
-            { label: "ต้องติดตาม", value: overdueCount },
+            { label: "ครบกำหนดวันนี้", value: dueToday },
+            { label: "งานทั้งหมด", value: origins.web + origins.manual },
+            { label: "เกินกำหนด", value: overdueCount },
           ],
           cta: "เปิด Lead Management",
         }
@@ -102,7 +102,7 @@ async function DashboardHome({
           body: "อนุมัติพาร์ตเนอร์และติดตามค่าคอมมิชชัน",
           stats: [
             { label: "รออนุมัติ", value: partners.applications },
-            { label: "ค่าคอม", value: partners.commissions },
+            { label: "ค่าคอมมิชชัน", value: partners.commissions },
             { label: "รอจ่าย", value: partners.payouts + partners.overdue },
           ],
           cta: "เปิด Partner Management",
@@ -117,9 +117,9 @@ async function DashboardHome({
           title: "Reservation Operations",
           body: "คิว Inquiry, Booking, Modification, Cancellation และ Confirmation",
           stats: [
-            { label: "เปิดอยู่", value: reservations.open },
+            { label: "งานเปิดอยู่", value: reservations.open },
             { label: "ครบกำหนด", value: reservations.due },
-            { label: "Escalated", value: reservations.escalated },
+            { label: "ส่งต่อแล้ว", value: reservations.escalated },
           ],
           cta: "เปิดคิวงานจอง",
         }
@@ -133,9 +133,9 @@ async function DashboardHome({
           title: "B2B Sales Operations",
           body: "Pipeline พาร์ตเนอร์ท่องเที่ยว เรท และงานติดตามภายใน",
           stats: [
-            { label: "พาร์ตเนอร์", value: b2b.total },
-            { label: "Active", value: b2b.active },
-            { label: "ติดตาม", value: b2b.due },
+            { label: "พาร์ตเนอร์ทั้งหมด", value: b2b.total },
+            { label: "กำลังใช้งาน", value: b2b.active },
+            { label: "ต้องติดตาม", value: b2b.due },
           ],
           cta: "เปิด B2B Sales Operations",
         }
@@ -149,9 +149,9 @@ async function DashboardHome({
           title: "Google Ads Operations",
           body: "บอร์ดแคมเปญ Search Ads, Hotel Ads และ Free Booking Links ภายใน",
           stats: [
-            { label: "แคมเปญ", value: ads.total },
-            { label: "Active", value: ads.live },
-            { label: "ติดตาม", value: ads.due },
+            { label: "แคมเปญทั้งหมด", value: ads.total },
+            { label: "กำลังใช้งาน", value: ads.live },
+            { label: "ต้องติดตาม", value: ads.due },
           ],
           cta: "เปิด Google Ads Operations",
         }
@@ -165,9 +165,9 @@ async function DashboardHome({
           title: "Meta Ads Operations",
           body: "บอร์ดแคมเปญ Awareness, Traffic, Leads, Conversion และ Remarketing ภายใน",
           stats: [
-            { label: "แคมเปญ", value: meta.total },
-            { label: "Active", value: meta.live },
-            { label: "ติดตาม", value: meta.due },
+            { label: "แคมเปญทั้งหมด", value: meta.total },
+            { label: "กำลังใช้งาน", value: meta.live },
+            { label: "ต้องติดตาม", value: meta.due },
           ],
           cta: "เปิด Meta Ads Operations",
         }
@@ -181,9 +181,9 @@ async function DashboardHome({
           title: "Local Search Operations",
           body: "บอร์ดงาน Search Visibility, Website / SEO, Google Business Profile, Maps และ AEO ภายใน",
           stats: [
-            { label: "งาน", value: seo.total },
-            { label: "เผยแพร่", value: seo.live },
-            { label: "ติดตาม", value: seo.due },
+            { label: "งานทั้งหมด", value: seo.total },
+            { label: "เผยแพร่แล้ว", value: seo.live },
+            { label: "ต้องติดตาม", value: seo.due },
           ],
           cta: "เปิด Local Search Operations",
         }
@@ -197,9 +197,9 @@ async function DashboardHome({
           title: "Hotel Training Operations",
           body: "บอร์ดคำขออบรม ปฏิทิน โปรแกรม กลุ่มผู้เรียน และการติดตามภายใน — ไม่แสดงบนหน้าสาธารณะ",
           stats: [
-            { label: "รายการ", value: training.total },
-            { label: "Active", value: training.live },
-            { label: "ติดตาม", value: training.due },
+            { label: "รายการทั้งหมด", value: training.total },
+            { label: "กำลังใช้งาน", value: training.live },
+            { label: "ต้องติดตาม", value: training.due },
           ],
           cta: "เปิด Hotel Training Operations",
         }
@@ -213,9 +213,9 @@ async function DashboardHome({
           title: "Hotel Solutions Service Directory",
           body: "ไดเรกทอรีบริการภายใน หมวด ความสัมพันธ์ หลักฐาน สิทธิ์รูป และคิวคำขอ — แยกจากตัวแก้ไข CMS และไม่แสดงข้อมูลลูกค้าบนหน้าสาธารณะ",
           stats: [
-            { label: "บริการ", value: solutions.total },
+            { label: "บริการทั้งหมด", value: solutions.total },
             { label: "รออนุมัติ", value: solutions.needsApproval },
-            { label: "ทบทวน", value: solutions.dueReview },
+            { label: "ถึงกำหนดทบทวน", value: solutions.dueReview },
           ],
           cta: "เปิด Solutions Directory",
         }
@@ -229,9 +229,9 @@ async function DashboardHome({
           title: "Users Management",
           body: "จัดการผู้ใช้และสิทธิ์การเข้าถึงระบบ",
           stats: [
-            { label: "ทีม", value: users.staff },
-            { label: "Partner", value: users.partners },
-            { label: "ทั้งหมด", value: users.total },
+            { label: "ทีมภายใน", value: users.staff },
+            { label: "พาร์ตเนอร์", value: users.partners },
+            { label: "ผู้ใช้ทั้งหมด", value: users.total },
           ],
           cta: "เปิด Users Management",
         }
@@ -245,9 +245,9 @@ async function DashboardHome({
           title: "Content Management",
           body: "จัดการหน้า บทความ และสื่อบนเว็บไซต์",
           stats: [
-            { label: "Pages", value: cms.pages },
-            { label: "Articles", value: cms.insights },
-            { label: "Drafts", value: cms.drafts },
+            { label: "หน้าเว็บ", value: cms.pages },
+            { label: "บทความ", value: cms.insights },
+            { label: "ฉบับร่าง", value: cms.drafts },
           ],
           cta: "เปิด Content Management",
         }
@@ -371,11 +371,11 @@ async function DashboardHome({
           <h1 className="crm-dash-hero-title">
             {greeting}, {user.name || "ทีม KPI Plus"}
           </h1>
-          <p className="crm-dash-hero-lead">เลือกเมนูหรือจัดการงานสำคัญได้จากพื้นที่เดียว</p>
+          <p className="crm-dash-hero-lead">ดูสิ่งที่ต้องทำต่อ แล้วเปิดโมดูลที่ใช้บ่อยจากหน้าเดียว</p>
           <div className="crm-dash-hero-actions">
             {hasModule(user, "leads") ? (
               <Link href="/crm/sales" className="crm-dash-btn crm-dash-btn-lime">
-                งานวันนี้
+                งานที่ต้องทำวันนี้
                 {dueToday > 0 ? <span className="crm-dash-btn-count">{dueToday}</span> : null}
               </Link>
             ) : null}
@@ -392,23 +392,23 @@ async function DashboardHome({
         <aside className="crm-dash-hero-card" aria-label="สรุปงานวันนี้">
           <div className="crm-dash-hero-card-head">
             <div>
-              <p className="crm-dash-hero-card-label">งานค้างวันนี้</p>
-              <p className="crm-dash-hero-card-hint">จากคิวติดตามจริงในระบบ</p>
+              <p className="crm-dash-hero-card-label">งานที่ต้องจัดการ</p>
+              <p className="crm-dash-hero-card-hint">สรุปจากคิวติดตามจริงในระบบ</p>
             </div>
             <span className={`crm-dash-hero-card-pulse${dueToday > 0 ? " is-hot" : ""}`}>
-              {dueToday > 0 ? "ต้องทำ" : "ว่าง"}
+              {dueToday > 0 ? "ต้องดำเนินการ" : "ว่าง"}
             </span>
           </div>
 
           <div className="crm-dash-hero-card-main">
             <p className="crm-dash-hero-card-value">{dueToday}</p>
-            <p className="crm-dash-hero-card-unit">รายการ</p>
+            <p className="crm-dash-hero-card-unit">รายการทั้งหมด</p>
           </div>
 
           <div className="crm-dash-hero-card-split">
             <div className="crm-dash-hero-stat is-today">
               <strong>{lists.dueToday.length}</strong>
-              <span>วันนี้</span>
+              <span>ครบกำหนดวันนี้</span>
             </div>
             <div className="crm-dash-hero-stat is-overdue">
               <strong>{overdueCount}</strong>
@@ -425,48 +425,7 @@ async function DashboardHome({
         </aside>
       </section>
 
-      <section className="crm-dash-modules" aria-label="จัดการโมดูล">
-        <div className="crm-dash-section-head">
-          <h2>จัดการโมดูล</h2>
-          <p>แสดงเฉพาะโมดูลที่บัญชีนี้เข้าถึงได้</p>
-        </div>
-        {modules.length ? (
-          <div className="crm-dash-module-grid">
-            {modules.map((module) => (
-              <ModuleCard key={module.href} {...module} />
-            ))}
-          </div>
-        ) : (
-          <EmptyState
-            title="ยังไม่มีโมดูลที่เข้าได้"
-            body="ติดต่อ Superadmin เพื่อเปิดสิทธิ์ Lead / Partner / Reservations / B2B / Users / CMS"
-          />
-        )}
-      </section>
-
-      <section className="crm-dash-bottom">
-        <article className="crm-dash-panel">
-          <div className="crm-dash-section-head">
-            <h2>กิจกรรมล่าสุดในระบบ</h2>
-            <p>สรุปจากข้อมูลที่มีในระบบตอนนี้</p>
-          </div>
-          {activity.length ? (
-            <ul className="crm-dash-activity">
-              {activity.map((item) => (
-                <li key={item.title} className={`is-${item.tone}`}>
-                  <span className="crm-dash-activity-dot" aria-hidden="true" />
-                  <div>
-                    <p className="crm-dash-activity-title">{item.title}</p>
-                    <p className="crm-dash-activity-meta">{item.meta}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <EmptyState title="ยังไม่มีกิจกรรมล่าสุด" body="เมื่อมีลีด พาร์ตเนอร์ หรือเนื้อหาใหม่ จะแสดงที่นี่" />
-          )}
-        </article>
-
+      <section className="crm-dash-bottom" aria-label="งานและกิจกรรม">
         <article className="crm-dash-panel">
           <div className="crm-dash-section-head crm-dash-section-head-row">
             <div>
@@ -474,7 +433,7 @@ async function DashboardHome({
                 งานที่ต้องดำเนินการ
                 {dueToday > 0 ? <span className="crm-dash-count">{dueToday}</span> : null}
               </h2>
-              <p>จากกิจกรรมและคิวงานจริง</p>
+              <p>รายการที่ควรจัดการต่อจากคิวงานจริง</p>
             </div>
           </div>
           {tasks.length ? (
@@ -510,6 +469,47 @@ async function DashboardHome({
             />
           )}
         </article>
+
+        <article className="crm-dash-panel">
+          <div className="crm-dash-section-head">
+            <h2>กิจกรรมล่าสุดในระบบ</h2>
+            <p>สรุปสถานะจากข้อมูลที่มีตอนนี้</p>
+          </div>
+          {activity.length ? (
+            <ul className="crm-dash-activity">
+              {activity.map((item) => (
+                <li key={item.title} className={`is-${item.tone}`}>
+                  <span className="crm-dash-activity-dot" aria-hidden="true" />
+                  <div>
+                    <p className="crm-dash-activity-title">{item.title}</p>
+                    <p className="crm-dash-activity-meta">{item.meta}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <EmptyState title="ยังไม่มีกิจกรรมล่าสุด" body="เมื่อมีลีด พาร์ตเนอร์ หรือเนื้อหาใหม่ จะแสดงที่นี่" />
+          )}
+        </article>
+      </section>
+
+      <section className="crm-dash-modules" aria-label="ทางลัดโมดูล">
+        <div className="crm-dash-section-head">
+          <h2>ทางลัดโมดูล</h2>
+          <p>แสดงเฉพาะโมดูลที่บัญชีนี้เข้าถึงได้</p>
+        </div>
+        {modules.length ? (
+          <div className="crm-dash-module-grid">
+            {modules.map((module) => (
+              <ModuleCard key={module.href} {...module} />
+            ))}
+          </div>
+        ) : (
+          <EmptyState
+            title="ยังไม่มีโมดูลที่เข้าได้"
+            body="ติดต่อ Superadmin เพื่อเปิดสิทธิ์ Lead / Partner / Reservations / B2B / Users / CMS"
+          />
+        )}
       </section>
     </div>
   );
