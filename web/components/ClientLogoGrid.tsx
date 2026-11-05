@@ -17,8 +17,8 @@ export function ClientLogoGrid({
             src={client.src}
             alt={client.name}
             title={client.name}
-            width={240}
-            height={80}
+            width={250}
+            height={120}
             loading="lazy"
             decoding="async"
           />

@@ -35364,9 +35364,10 @@ html.kpi-consent-open {
   flex: 0 0 auto;
   align-items: center;
   justify-content: center;
-  width: min(10.75rem, calc(50% - 0.4rem));
-  height: 5rem;
-  padding: 0.7rem 0.85rem;
+  box-sizing: border-box;
+  width: 250px;
+  height: 120px;
+  padding: 0.75rem 1rem;
   border: 1px solid #e3e8eb;
   border-radius: 0.85rem;
   background: #fff;
@@ -35376,30 +35377,17 @@ html.kpi-consent-open {
 
 .kpi-cs-logo-tile img {
   max-width: 100%;
-  max-height: 2.85rem;
+  max-height: 100%;
   width: auto;
   height: auto;
   object-fit: contain;
   filter: grayscale(0.2);
 }
 
-@media (min-width: 40rem) {
-  .kpi-cs-logo-tile {
-    width: 10.75rem;
-    height: 5.15rem;
-  }
-}
-
 @media (min-width: 64rem) {
   .kpi-cs-logo-grid {
     gap: 0.85rem;
     margin-top: 2rem;
-  }
-
-  .kpi-cs-logo-tile {
-    width: 11rem;
-    height: 5.35rem;
-    padding: 0.8rem 1rem;
   }
 }
 

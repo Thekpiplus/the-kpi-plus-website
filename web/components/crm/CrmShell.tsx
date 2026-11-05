@@ -338,6 +338,47 @@ const NAV_LABEL: Record<NavKey, string> = {
   settings: "ตั้งค่า",
 };
 
+/** Sidebar groups — only existing routes/modules; no invented menu items. */
+type NavSectionId = "sales" | "hotel" | "marketing" | "content" | "system";
+
+const NAV_SECTIONS: { id: NavSectionId; label: string; items: NavKey[] }[] = [
+  { id: "sales", label: "การขายและลูกค้า", items: ["leads", "partners", "b2b"] },
+  {
+    id: "hotel",
+    label: "การจองและโรงแรม",
+    items: ["reservations", "conversion", "management", "training", "systems", "hotel_ai"],
+  },
+  {
+    id: "marketing",
+    label: "การตลาดและช่องทางออนไลน์",
+    items: ["ads", "meta", "seo", "website", "hotel_marketing"],
+  },
+  { id: "content", label: "ข้อมูลและเนื้อหา", items: ["solutions", "cms"] },
+  { id: "system", label: "จัดการระบบ", items: ["users", "settings"] },
+];
+
+const SECTION_STORAGE_KEY = "crm-rail-sections";
+
+function sectionIdForNavKey(key: NavKey): NavSectionId | null {
+  for (const section of NAV_SECTIONS) {
+    if (section.items.includes(key)) return section.id;
+  }
+  return null;
+}
+
+function navHref(key: NavKey) {
+  if (key === "home") return "/crm";
+  if (key === "settings") return "/crm/settings";
+  return MODULE_PATH[key];
+}
+
+function userInitials(name: string) {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+  if (!parts.length) return "KP";
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return `${parts[0][0] ?? ""}${parts[1][0] ?? ""}`.toUpperCase();
+}
+
 function IconHome() {
   return (
     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -452,20 +493,74 @@ function IconExternal() {
   );
 }
 
+function IconAds() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M5 18.5 10.2 5.5h3.6L19 18.5M8.2 14.2h7.6" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function IconMeta() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M4.5 14.5c1.8-4.2 3.6-6.5 5.5-6.5 1.5 0 2.4 1.2 3.5 3.2 1.1 2 2.1 3.3 3.5 3.3 1.9 0 3.7-2.3 5.5-6.5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IconSystems() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <rect x="4.5" y="4.5" width="6.2" height="6.2" rx="1.2" stroke="currentColor" strokeWidth="1.7" />
+      <rect x="13.3" y="4.5" width="6.2" height="6.2" rx="1.2" stroke="currentColor" strokeWidth="1.7" />
+      <rect x="4.5" y="13.3" width="6.2" height="6.2" rx="1.2" stroke="currentColor" strokeWidth="1.7" />
+      <rect x="13.3" y="13.3" width="6.2" height="6.2" rx="1.2" stroke="currentColor" strokeWidth="1.7" />
+    </svg>
+  );
+}
+
+function IconHotel() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M4.5 19.5V8.2L12 4.5l7.5 3.7v11.3" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
+      <path d="M9 19.5v-5h6v5M9.5 10.5h.1M12 10.5h.1M14.5 10.5h.1M9.5 13h.1M12 13h.1M14.5 13h.1" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IconWebsite() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="12" cy="12" r="8" stroke="currentColor" strokeWidth="1.7" />
+      <path d="M4.5 12h15M12 4.5c2.2 2.3 3.3 4.8 3.3 7.5S14.2 17.2 12 19.5C9.8 17.2 8.7 14.7 8.7 12S9.8 6.8 12 4.5Z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function IconAi() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M12 4.5v2.2M12 17.3v2.2M4.5 12h2.2M17.3 12h2.2M7 7l1.5 1.5M15.5 15.5 17 17M17 7l-1.5 1.5M8.5 15.5 7 17" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+      <circle cx="12" cy="12" r="3.2" stroke="currentColor" strokeWidth="1.7" />
+    </svg>
+  );
+}
+
 const NAV_ICON: Record<NavKey, () => ReactNode> = {
   home: IconHome,
   leads: IconLeads,
   partners: IconPartners,
   reservations: IconReservations,
   b2b: IconB2b,
-  ads: IconB2b,
-  meta: IconB2b,
+  ads: IconAds,
+  meta: IconMeta,
   seo: IconSeo,
-  website: IconSeo,
-  conversion: IconSeo,
-  management: IconSeo,
-  systems: IconSeo,
-  hotel_ai: IconSeo,
+  website: IconWebsite,
+  conversion: IconHotel,
+  management: IconHotel,
+  systems: IconSystems,
+  hotel_ai: IconAi,
   training: IconLeads,
   hotel_marketing: IconCms,
   solutions: IconCms,
@@ -534,36 +629,44 @@ function RailLink({
   href,
   navKey,
   current,
-  showChevron = false,
+  nested = false,
   onNavigate,
 }: {
   href: string;
   navKey: NavKey;
   current: boolean;
-  showChevron?: boolean;
+  nested?: boolean;
   onNavigate?: () => void;
 }) {
   const Icon = NAV_ICON[navKey];
+  const label = NAV_LABEL[navKey];
   return (
     <Link
       href={href}
-      className={`crm-rail-link${current ? " is-active" : ""}`}
+      className={`crm-rail-link${nested ? " is-nested" : ""}${current ? " is-active" : ""}`}
       aria-current={current ? "page" : undefined}
-      title={NAV_LABEL[navKey]}
+      aria-label={label}
+      title={label}
       onClick={onNavigate}
     >
       <span className="crm-rail-ico" aria-hidden="true">
         <Icon />
       </span>
-      <em>{NAV_LABEL[navKey]}</em>
-      {showChevron ? <IconChevron /> : null}
+      <em>{label}</em>
     </Link>
   );
+}
+
+function isNavKeyCurrent(key: NavKey, workspace: Workspace, pathname: string) {
+  if (key === "home") return workspace === "home";
+  if (key === "settings") return pathname.startsWith("/crm/settings");
+  return workspace === key;
 }
 
 export function CrmShell({
   userName,
   userRole = "Administrator",
+  userTeam,
   modules,
   showLogout = false,
   leadForm,
@@ -572,6 +675,8 @@ export function CrmShell({
 }: {
   userName: string;
   userRole?: string;
+  /** Optional team / org label from profile. Empty → show muted placeholder. */
+  userTeam?: string | null;
   modules: AdminModule[];
   showLogout?: boolean;
   leadForm?: {
@@ -588,11 +693,21 @@ export function CrmShell({
   const workspace = workspaceOf(pathname);
   const contextLinks = workspace === "home" ? [] : contextByWorkspace[workspace];
   const allowed = ADMIN_MODULES.filter((module) => modules.includes(module));
+  const allowedSet = new Set<NavKey>(["home", "settings", ...allowed]);
+  const currentSectionId: NavSectionId | null = pathname.startsWith("/crm/settings")
+    ? "system"
+    : workspace === "home"
+      ? null
+      : sectionIdForNavKey(workspace);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
+  const [sectionOpen, setSectionOpen] = useState<Partial<Record<NavSectionId, boolean>>>({});
+  const [sectionsReady, setSectionsReady] = useState(false);
   const [railExpanded, setRailExpanded] = useState(true);
   const [railReady, setRailReady] = useState(false);
   const drawerId = useId();
+  const teamLabel = userTeam?.trim() || "ยังไม่ระบุทีม";
+  const initials = userInitials(userName);
   const newLeadOpen = searchParams.get("newLead") === "1";
   const newLeadDuplicate = searchParams.get("duplicate") || undefined;
   const newLeadError = searchParams.get("error") || undefined;
@@ -620,6 +735,36 @@ export function CrmShell({
   }, [railExpanded, railReady]);
 
   useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem(SECTION_STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw) as Partial<Record<NavSectionId, boolean>>;
+        if (parsed && typeof parsed === "object") setSectionOpen(parsed);
+      }
+    } catch {
+      // ignore
+    }
+    setSectionsReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (!sectionsReady) return;
+    try {
+      window.localStorage.setItem(SECTION_STORAGE_KEY, JSON.stringify(sectionOpen));
+    } catch {
+      // ignore
+    }
+  }, [sectionOpen, sectionsReady]);
+
+  useEffect(() => {
+    if (!currentSectionId) return;
+    setSectionOpen((prev) => {
+      if (prev[currentSectionId] === true) return prev;
+      return { ...prev, [currentSectionId]: true };
+    });
+  }, [currentSectionId]);
+
+  useEffect(() => {
     setDrawerOpen(false);
   }, [pathname, search]);
 
@@ -636,43 +781,90 @@ export function CrmShell({
     };
   }, [drawerOpen]);
 
-  const navBody = (onNavigate?: () => void) => (
-    <>
-      <RailLink href="/crm" navKey="home" current={workspace === "home"} onNavigate={onNavigate} />
+  function sectionIsOpen(id: NavSectionId, containsCurrent: boolean) {
+    if (Object.prototype.hasOwnProperty.call(sectionOpen, id)) return Boolean(sectionOpen[id]);
+    return containsCurrent;
+  }
 
-      {allowed.length ? (
-        <div className="crm-rail-group">
-          <p className="crm-rail-section">จัดการข้อมูลหลัก</p>
-          {allowed.map((module) => (
-            <RailLink
-              key={module}
-              href={MODULE_PATH[module]}
-              navKey={module}
-              current={workspace === module}
-              showChevron
-              onNavigate={onNavigate}
-            />
-          ))}
+  function toggleSection(id: NavSectionId, containsCurrent: boolean) {
+    const next = !sectionIsOpen(id, containsCurrent);
+    setSectionOpen((prev) => ({ ...prev, [id]: next }));
+  }
+
+  const navBody = (onNavigate?: () => void, opts?: { forceExpanded?: boolean }) => {
+    const expandedChrome = Boolean(opts?.forceExpanded || railExpanded);
+    return (
+      <>
+        <div className="crm-rail-group crm-rail-group-home">
+          {expandedChrome ? <p className="crm-rail-section">หน้าหลัก</p> : null}
+          <RailLink href="/crm" navKey="home" current={workspace === "home"} onNavigate={onNavigate} />
         </div>
-      ) : null}
 
-      <div className="crm-rail-divider" role="separator" />
+        {NAV_SECTIONS.map((section) => {
+          const visibleItems = section.items.filter((item) => allowedSet.has(item));
+          if (!visibleItems.length) return null;
+          const containsCurrent = visibleItems.some((item) => isNavKeyCurrent(item, workspace, pathname));
+          const open = sectionIsOpen(section.id, containsCurrent);
+          const panelId = `${drawerId}-section-${section.id}`;
 
-      <div className="crm-rail-group">
-        <p className="crm-rail-section">ระบบและการตั้งค่า</p>
-        <RailLink
-          href="/crm/settings"
-          navKey="settings"
-          current={pathname.startsWith("/crm/settings")}
-          showChevron
-          onNavigate={onNavigate}
-        />
-      </div>
-    </>
-  );
+          return (
+            <div
+              key={section.id}
+              className={`crm-rail-group${containsCurrent ? " is-current" : ""}${open ? " is-open" : ""}`}
+            >
+              <button
+                type="button"
+                className={`crm-rail-section-toggle${containsCurrent ? " is-current" : ""}`}
+                aria-expanded={open}
+                aria-controls={panelId}
+                title={section.label}
+                onClick={() => toggleSection(section.id, containsCurrent)}
+              >
+                <span className="crm-rail-section-label">{section.label}</span>
+                <span className={`crm-rail-section-chevron${open ? " is-open" : ""}`} aria-hidden="true">
+                  <IconChevron />
+                </span>
+              </button>
+              <div
+                id={panelId}
+                className={`crm-rail-section-panel${open ? " is-open" : ""}`}
+                hidden={!open && expandedChrome}
+                role="group"
+                aria-label={section.label}
+              >
+                {visibleItems.map((item) => (
+                  <RailLink
+                    key={item}
+                    href={navHref(item)}
+                    navKey={item}
+                    current={isNavKeyCurrent(item, workspace, pathname)}
+                    nested
+                    onNavigate={onNavigate}
+                  />
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </>
+    );
+  };
 
   const railCards = (
     <div className="crm-rail-cards">
+      <div
+        className="crm-rail-user"
+        title={`${userName} · ${userRole}${teamLabel ? ` · ${teamLabel}` : ""}`}
+      >
+        <span className="crm-rail-user-avatar" aria-hidden="true">
+          {initials}
+        </span>
+        <span className="crm-rail-user-copy">
+          <strong>{userName}</strong>
+          <em>{userRole}</em>
+          <span className={`crm-rail-user-team${userTeam?.trim() ? "" : " is-empty"}`}>{teamLabel}</span>
+        </span>
+      </div>
       <a className="crm-rail-support" href="mailto:support@thekpiplus.com" title="ติดต่อทีม Support">
         <span className="crm-rail-support-ico" aria-hidden="true">
           <IconHeadset />
@@ -685,7 +877,7 @@ export function CrmShell({
           <IconExternal />
         </span>
       </a>
-      <div className="crm-rail-workspace">
+      <div className="crm-rail-workspace" title="KPI PLUS Admin Workspace">
         <span className="crm-rail-workspace-plus" aria-hidden="true">
           +
         </span>
@@ -759,14 +951,8 @@ export function CrmShell({
             ✕
           </button>
         </div>
-        <nav className="crm-drawer-nav">{navBody(() => setDrawerOpen(false))}</nav>
-        <div className="crm-drawer-foot">
-          {railCards}
-          <p className="crm-drawer-user">
-            <strong>{userName}</strong>
-            <em>{userRole}</em>
-          </p>
-        </div>
+        <nav className="crm-drawer-nav">{navBody(() => setDrawerOpen(false), { forceExpanded: true })}</nav>
+        <div className="crm-drawer-foot">{railCards}</div>
       </aside>
 
       <div className="crm-app">
