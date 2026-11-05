@@ -203,68 +203,119 @@ export function ReservationQueue({
         </p>
       ) : null}
 
-      <form className="crm-ops-filters" method="get">
-        <input className="crm-field" name="q" defaultValue={filters.q ?? ""} placeholder="ค้นหารหัสหรือชื่องาน" />
-        <select className="crm-select" name="type" defaultValue={filters.type ?? ""}>
-          <option value="">ทุกประเภท</option>
-          {RESERVATION_OP_TYPES.map((item) => (
-            <option key={item} value={item}>
-              {TYPE_LABEL[item]}
-            </option>
-          ))}
-        </select>
-        <select className="crm-select" name="status" defaultValue={filters.status ?? ""}>
-          <option value="">ทุกสถานะ</option>
-          {RESERVATION_OP_STATUSES.map((item) => (
-            <option key={item} value={item}>
-              {STATUS_LABEL[item]}
-            </option>
-          ))}
-        </select>
-        <select className="crm-select" name="channel" defaultValue={filters.channel ?? ""}>
-          <option value="">ทุกช่องทาง</option>
-          {RESERVATION_OP_CHANNELS.map((item) => (
-            <option key={item} value={item}>
-              {CHANNEL_LABEL[item]}
-            </option>
-          ))}
-        </select>
-        <select className="crm-select" name="assigneeId" defaultValue={filters.assigneeId ?? ""}>
-          <option value="">ทุกผู้รับงาน</option>
-          {staff.map((item) => (
-            <option key={item.id} value={item.id}>
-              {item.name}
-            </option>
-          ))}
-        </select>
-        <button className="crm-users-secondary" type="submit">
-          กรอง
-        </button>
-        <button className="kpi-button" type="button" onClick={openCreate}>
-          เพิ่มงาน
-        </button>
-      </form>
+      <section className="crm-ops-toolbar">
+        <form className="crm-ops-filters" method="get">
+          <label>
+            ค้นหา
+            <input className="crm-field" name="q" defaultValue={filters.q ?? ""} placeholder="ค้นหารหัสหรือชื่องาน" />
+          </label>
+          <label>
+            ประเภท
+            <select className="crm-select" name="type" defaultValue={filters.type ?? ""}>
+              <option value="">ทุกประเภท</option>
+              {RESERVATION_OP_TYPES.map((item) => (
+                <option key={item} value={item}>
+                  {TYPE_LABEL[item]}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            สถานะ
+            <select className="crm-select" name="status" defaultValue={filters.status ?? ""}>
+              <option value="">ทุกสถานะ</option>
+              {RESERVATION_OP_STATUSES.map((item) => (
+                <option key={item} value={item}>
+                  {STATUS_LABEL[item]}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            ช่องทาง
+            <select className="crm-select" name="channel" defaultValue={filters.channel ?? ""}>
+              <option value="">ทุกช่องทาง</option>
+              {RESERVATION_OP_CHANNELS.map((item) => (
+                <option key={item} value={item}>
+                  {CHANNEL_LABEL[item]}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label>
+            ผู้รับงาน
+            <select className="crm-select" name="assigneeId" defaultValue={filters.assigneeId ?? ""}>
+              <option value="">ทุกผู้รับงาน</option>
+              {staff.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <div className="crm-ops-filters-actions">
+            <button className="crm-users-secondary" type="submit">
+              กรอง
+            </button>
+            <button className="kpi-button" type="button" onClick={openCreate}>
+              เพิ่มงาน
+            </button>
+          </div>
+        </form>
+        {Boolean(filters.q?.trim() || filters.type || filters.status || filters.channel || filters.assigneeId) ? (
+          <div className="crm-filter-chips" aria-label="ตัวกรองที่ใช้งาน">
+            {filters.q?.trim() ? <span className="crm-filter-chip">ค้นหา: {filters.q.trim()}</span> : null}
+            {filters.type ? (
+              <span className="crm-filter-chip">
+                ประเภท: {TYPE_LABEL[filters.type as ReservationOpType] ?? filters.type}
+              </span>
+            ) : null}
+            {filters.status ? (
+              <span className="crm-filter-chip">
+                สถานะ: {STATUS_LABEL[filters.status as ReservationOpStatus] ?? filters.status}
+              </span>
+            ) : null}
+            {filters.channel ? (
+              <span className="crm-filter-chip">
+                ช่องทาง: {CHANNEL_LABEL[filters.channel as ReservationOpChannel] ?? filters.channel}
+              </span>
+            ) : null}
+            {filters.assigneeId ? (
+              <span className="crm-filter-chip">
+                ผู้รับงาน: {staff.find((item) => item.id === filters.assigneeId)?.name ?? "เลือกแล้ว"}
+              </span>
+            ) : null}
+            <a href="/crm/reservations" className="crm-filter-chip-clear">
+              ล้างทั้งหมด
+            </a>
+          </div>
+        ) : null}
+      </section>
 
       <div className="crm-pipe-table-wrap">
         {items.length === 0 ? (
-          <p className="crm-pipe-table-empty">ยังไม่มีงานในคิว Reservation Operations</p>
+          <p className="crm-pipe-table-empty">
+            {filters.q?.trim() || filters.type || filters.status || filters.channel || filters.assigneeId
+              ? "ไม่พบงานตามเงื่อนไข — ลองล้างตัวกรองหรือเปลี่ยนคำค้น"
+              : "ยังไม่มีงานในคิว Reservation Operations"}
+          </p>
         ) : (
           <table className="crm-pipe-table crm-ops-table">
             <thead>
               <tr>
-                <th>รหัส</th>
-                <th>งาน</th>
-                <th>ประเภท</th>
-                <th>ช่องทาง</th>
-                <th>สถานะ</th>
-                <th>ความสำคัญ</th>
-                <th>ผู้รับงาน</th>
-                <th>ครบกำหนด</th>
-                <th>สร้าง</th>
-                <th>อัปเดต</th>
-                <th>ความคืบหน้า</th>
-                <th>แขก</th>
-                <th>การดำเนินการ</th>
+                <th scope="col">รหัส</th>
+                <th scope="col">งาน</th>
+                <th scope="col">ประเภท</th>
+                <th scope="col">ช่องทาง</th>
+                <th scope="col">สถานะ</th>
+                <th scope="col">ความสำคัญ</th>
+                <th scope="col">ผู้รับงาน</th>
+                <th scope="col">ครบกำหนด</th>
+                <th scope="col">สร้าง</th>
+                <th scope="col">อัปเดต</th>
+                <th scope="col">ความคืบหน้า</th>
+                <th scope="col">แขก</th>
+                <th scope="col">การดำเนินการ</th>
               </tr>
             </thead>
             <tbody>

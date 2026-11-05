@@ -173,6 +173,19 @@ export default async function UsersPage({
             </Link>
           ) : null}
         </form>
+        {filtered ? (
+          <div className="crm-filter-chips" aria-label="ตัวกรองที่ใช้งาน">
+            {params.q?.trim() ? <span className="crm-filter-chip">ค้นหา: {params.q.trim()}</span> : null}
+            {params.role ? (
+              <span className="crm-filter-chip">
+                บทบาท: {ROLE_LABEL[normalizeRole(params.role)] ?? params.role}
+              </span>
+            ) : null}
+            <Link href="/crm/users" className="crm-filter-chip-clear">
+              ล้างทั้งหมด
+            </Link>
+          </div>
+        ) : null}
       </section>
 
       <section className="crm-users-panel">
@@ -189,8 +202,13 @@ export default async function UsersPage({
 
         {users.length === 0 ? (
           <EmptyState
-            title="ไม่พบผู้ใช้"
-            body="ลองเปลี่ยนคำค้นหรือตัวกรองบทบาท"
+            filtered={filtered}
+            title={filtered ? "ไม่พบผู้ใช้ตามเงื่อนไข" : "ยังไม่มีผู้ใช้"}
+            body={
+              filtered
+                ? "ลองเปลี่ยนคำค้นหรือตัวกรองบทบาท หรือล้างตัวกรองเพื่อดูรายการทั้งหมด"
+                : "เพิ่มผู้ใช้ใหม่เพื่อเปิดสิทธิ์เข้าใช้งานระบบ"
+            }
             action={
               canEdit ? <NewUserOpenButton className="kpi-button">เพิ่มผู้ใช้</NewUserOpenButton> : null
             }

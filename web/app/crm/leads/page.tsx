@@ -156,6 +156,25 @@ export default async function LeadsPage({
             ) : null}
           </div>
         </form>
+        {filtered ? (
+          <div className="crm-filter-chips" aria-label="ตัวกรองที่ใช้งาน">
+            {params.q?.trim() ? <span className="crm-filter-chip">ค้นหา: {params.q.trim()}</span> : null}
+            {origin ? <span className="crm-filter-chip">แหล่ง: {originLabel(origin)}</span> : null}
+            {params.stageId ? (
+              <span className="crm-filter-chip">
+                ขั้น: {stages.find((stage) => stage.id === params.stageId)?.nameTh ?? "เลือกแล้ว"}
+              </span>
+            ) : null}
+            {params.ownerId ? (
+              <span className="crm-filter-chip">
+                ผู้ดูแล: {ownersById[params.ownerId] ?? "เลือกแล้ว"}
+              </span>
+            ) : null}
+            <Link href={leadsListHref({}, archive)} className="crm-filter-chip-clear">
+              ล้างทั้งหมด
+            </Link>
+          </div>
+        ) : null}
       </section>
 
       <section className="crm-leads-panel">
@@ -175,8 +194,13 @@ export default async function LeadsPage({
 
         {leads.length === 0 ? (
           <EmptyState
-            title="ยังไม่มีลีดในเงื่อนไขนี้"
-            body="ลองเปลี่ยนตัวกรอง หรือคีย์ลีดใหม่"
+            filtered={filtered}
+            title={filtered ? "ไม่พบลีดตามเงื่อนไข" : "ยังไม่มีลีด"}
+            body={
+              filtered
+                ? "ลองเปลี่ยนคำค้นหรือตัวกรอง หรือล้างตัวกรองเพื่อดูรายการทั้งหมด"
+                : "คีย์ลีดใหม่เพื่อเริ่มติดตามในรายการนี้"
+            }
             action={<NewLeadOpenButton className="kpi-button">คีย์ลีด</NewLeadOpenButton>}
           />
         ) : (
@@ -184,16 +208,18 @@ export default async function LeadsPage({
             <table className="crm-leads-table">
               <thead>
                 <tr>
-                  <th>ผู้ติดต่อ</th>
-                  <th>กิจการ</th>
-                  <th>ลำดับขั้น</th>
-                  <th>แหล่งที่มา</th>
-                  <th>ผู้ดูแล</th>
-                  <th>มูลค่า</th>
-                  <th>อัปเดต</th>
-                  <th>ย้ายขั้น</th>
-                  <th>มอบหมาย</th>
-                  <th className="crm-leads-table-actions-col">การดำเนินการ</th>
+                  <th scope="col">ผู้ติดต่อ</th>
+                  <th scope="col">กิจการ</th>
+                  <th scope="col">ลำดับขั้น</th>
+                  <th scope="col">แหล่งที่มา</th>
+                  <th scope="col">ผู้ดูแล</th>
+                  <th scope="col">มูลค่า</th>
+                  <th scope="col">อัปเดต</th>
+                  <th scope="col">ย้ายขั้น</th>
+                  <th scope="col">มอบหมาย</th>
+                  <th scope="col" className="crm-leads-table-actions-col">
+                    การดำเนินการ
+                  </th>
                 </tr>
               </thead>
               <tbody>

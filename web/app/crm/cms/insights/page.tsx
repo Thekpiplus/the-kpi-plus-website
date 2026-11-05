@@ -112,14 +112,39 @@ export default async function CmsInsightsPage({
             ) : null}
           </div>
         </form>
+        {filtered ? (
+          <div className="crm-filter-chips" aria-label="ตัวกรองที่ใช้งาน">
+            {params.q?.trim() ? <span className="crm-filter-chip">ค้นหา: {params.q.trim()}</span> : null}
+            {params.status ? (
+              <span className="crm-filter-chip">
+                สถานะ:{" "}
+                {params.status === "draft"
+                  ? "ฉบับร่าง"
+                  : params.status === "published"
+                    ? "เผยแพร่"
+                    : params.status === "scheduled"
+                      ? "ตั้งเวลา"
+                      : params.status}
+              </span>
+            ) : null}
+            <Link href="/crm/cms/insights" className="crm-filter-chip-clear">
+              ล้างทั้งหมด
+            </Link>
+          </div>
+        ) : null}
         <p className="crm-cms-count">แสดง {total} บทความ</p>
       </section>
 
       <section className="crm-cms-panel">
         {total === 0 ? (
           <EmptyState
-            title="ยังไม่มีบทความ"
-            body="สร้างบทความใหม่เพื่อเผยแพร่ที่ /insights/[slug]"
+            filtered={filtered}
+            title={filtered ? "ไม่พบบทความตามเงื่อนไข" : "ยังไม่มีบทความ"}
+            body={
+              filtered
+                ? "ลองเปลี่ยนคำค้นหรือสถานะ หรือล้างตัวกรองเพื่อดูรายการทั้งหมด"
+                : "สร้างบทความใหม่เพื่อเผยแพร่ที่ /insights/[slug]"
+            }
             action={
               <Link href="/crm/cms/insights/new" className="kpi-button">
                 สร้างบทความ

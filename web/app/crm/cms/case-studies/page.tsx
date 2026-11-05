@@ -35,20 +35,20 @@ function StatusBadge({ row }: { row: CmsCaseStudyRow }) {
 function StudyRow({ row }: { row: CmsCaseStudyRow }) {
   return (
     <tr>
-      <td>
+      <td data-label="ชื่อเรื่อง">
         <Link href={`/crm/cms/case-studies/${row.id}`} className="crm-cms-inline-link">
           {row.title || row.slug || "Untitled"}
         </Link>
         <p className="crm-cs-row-slug">{row.slug}</p>
       </td>
-      <td>
+      <td data-label="สถานะ">
         <StatusBadge row={row} />
       </td>
-      <td>{dataStatusLabel(row.dataStatus)}</td>
-      <td>{row.serviceArea || "—"}</td>
-      <td>{row.hotelType || "—"}</td>
-      <td>{formatDate(row.updatedAt)}</td>
-      <td>
+      <td data-label="สถานะข้อมูล">{dataStatusLabel(row.dataStatus)}</td>
+      <td data-label="สายบริการ">{row.serviceArea || "—"}</td>
+      <td data-label="ประเภทโรงแรม">{row.hotelType || "—"}</td>
+      <td data-label="อัปเดต">{formatDate(row.updatedAt)}</td>
+      <td data-label="จัดการ">
         <div className="crm-cs-row-actions">
           <Link href={`/crm/cms/case-studies/${row.id}`} className="crm-cms-inline-link">
             แก้ไข
@@ -226,14 +226,29 @@ export default async function CmsCaseStudiesPage({
           <button className="kpi-button" type="submit">
             กรอง
           </button>
-          <Link href="/crm/cms/case-studies" className="crm-users-secondary">
-            ล้างตัวกรอง
-          </Link>
+          {statusFilter || serviceArea || hotelType || dataStatus || updatedFrom || updatedTo ? (
+            <Link href="/crm/cms/case-studies" className="crm-users-secondary">
+              ล้างตัวกรอง
+            </Link>
+          ) : null}
         </div>
       </form>
+      {statusFilter || serviceArea || hotelType || dataStatus || updatedFrom || updatedTo ? (
+        <div className="crm-filter-chips" aria-label="ตัวกรองที่ใช้งาน">
+          {statusFilter ? <span className="crm-filter-chip">สถานะ: {listStatusLabel(statusFilter)}</span> : null}
+          {serviceArea ? <span className="crm-filter-chip">สายบริการ: {serviceArea}</span> : null}
+          {hotelType ? <span className="crm-filter-chip">ประเภทโรงแรม: {hotelType}</span> : null}
+          {dataStatus ? <span className="crm-filter-chip">สถานะข้อมูล: {dataStatusLabel(dataStatus as (typeof CASE_STUDY_DATA_STATUSES)[number])}</span> : null}
+          {updatedFrom ? <span className="crm-filter-chip">ตั้งแต่: {updatedFrom}</span> : null}
+          {updatedTo ? <span className="crm-filter-chip">ถึง: {updatedTo}</span> : null}
+          <Link href="/crm/cms/case-studies" className="crm-filter-chip-clear">
+            ล้างทั้งหมด
+          </Link>
+        </div>
+      ) : null}
 
       <p className="crm-cms-count">
-        {rows.length} จาก {allRows.length} เคส · Draft และ Review ไม่แสดงบนเว็บสาธารณะ
+        แสดง {rows.length} จาก {allRows.length} เคส · Draft และ Review ไม่แสดงบนเว็บสาธารณะ
       </p>
 
       {allRows.length === 0 ? (
@@ -247,7 +262,11 @@ export default async function CmsCaseStudiesPage({
           }
         />
       ) : rows.length === 0 ? (
-        <EmptyState title="ไม่พบเคสตามตัวกรอง" body="ลองล้างตัวกรองหรือเลือกแผนกอื่น" />
+        <EmptyState
+          filtered
+          title="ไม่พบเคสตามตัวกรอง"
+          body="ลองล้างตัวกรองหรือเลือกแผนกอื่น"
+        />
       ) : (
         <div className="crm-cs-departments">
           {byDepartment.map((department) => (
@@ -263,13 +282,13 @@ export default async function CmsCaseStudiesPage({
                   <table className="crm-users-table crm-cs-table">
                     <thead>
                       <tr>
-                        <th>ชื่อเรื่อง</th>
-                        <th>Draft / Review / Approved / Published</th>
-                        <th>สถานะข้อมูล</th>
-                        <th>สายบริการ</th>
-                        <th>ประเภทโรงแรม</th>
-                        <th>อัปเดต</th>
-                        <th>จัดการ</th>
+                        <th scope="col">ชื่อเรื่อง</th>
+                        <th scope="col">สถานะ</th>
+                        <th scope="col">สถานะข้อมูล</th>
+                        <th scope="col">สายบริการ</th>
+                        <th scope="col">ประเภทโรงแรม</th>
+                        <th scope="col">อัปเดต</th>
+                        <th scope="col">จัดการ</th>
                       </tr>
                     </thead>
                     <tbody>

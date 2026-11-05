@@ -74,14 +74,39 @@ export default async function CmsPagesPage({
             ) : null}
           </div>
         </form>
+        {filtered ? (
+          <div className="crm-filter-chips" aria-label="ตัวกรองที่ใช้งาน">
+            {params.q?.trim() ? <span className="crm-filter-chip">ค้นหา: {params.q.trim()}</span> : null}
+            {params.status ? (
+              <span className="crm-filter-chip">
+                สถานะ:{" "}
+                {params.status === "draft"
+                  ? "ฉบับร่าง"
+                  : params.status === "published"
+                    ? "เผยแพร่"
+                    : params.status === "scheduled"
+                      ? "ตั้งเวลา"
+                      : params.status}
+              </span>
+            ) : null}
+            <Link href="/crm/cms/pages" className="crm-filter-chip-clear">
+              ล้างทั้งหมด
+            </Link>
+          </div>
+        ) : null}
         <p className="crm-cms-count">แสดง {pages.length} หน้า</p>
       </section>
 
       <section className="crm-cms-panel">
         {pages.length === 0 ? (
           <EmptyState
-            title="ยังไม่มีหน้าใน CMS"
-            body="สร้างหน้าใหม่ด้วย slug ที่ยังไม่มีบนเว็บ"
+            filtered={filtered}
+            title={filtered ? "ไม่พบหน้าตามเงื่อนไข" : "ยังไม่มีหน้าใน CMS"}
+            body={
+              filtered
+                ? "ลองเปลี่ยนคำค้นหรือสถานะ หรือล้างตัวกรองเพื่อดูรายการทั้งหมด"
+                : "สร้างหน้าใหม่ด้วย slug ที่ยังไม่มีบนเว็บ"
+            }
             action={
               <Link href="/crm/cms/pages/new" className="kpi-button">
                 สร้างหน้าเพจใหม่

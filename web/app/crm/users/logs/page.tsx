@@ -118,6 +118,16 @@ export default async function LoginLogPage({
             </Link>
           ) : null}
         </form>
+        {filtered ? (
+          <div className="crm-filter-chips" aria-label="ตัวกรองที่ใช้งาน">
+            {emailQuery ? <span className="crm-filter-chip">อีเมล: {emailQuery}</span> : null}
+            {success === "yes" ? <span className="crm-filter-chip">ผลลัพธ์: สำเร็จ</span> : null}
+            {success === "no" ? <span className="crm-filter-chip">ผลลัพธ์: ไม่สำเร็จ</span> : null}
+            <Link href="/crm/users/logs" className="crm-filter-chip-clear">
+              ล้างทั้งหมด
+            </Link>
+          </div>
+        ) : null}
       </section>
 
       <section className="crm-logs-panel">
@@ -135,8 +145,13 @@ export default async function LoginLogPage({
 
         {logs.length === 0 ? (
           <EmptyState
-            title="ยังไม่มีบันทึกในเงื่อนไขนี้"
-            body="ลองเปลี่ยนอีเมลหรือตัวกรองผลลัพธ์"
+            filtered={filtered}
+            title={filtered ? "ไม่พบบันทึกตามเงื่อนไข" : "ยังไม่มีบันทึกการเข้าใช้งาน"}
+            body={
+              filtered
+                ? "ลองเปลี่ยนอีเมลหรือตัวกรองผลลัพธ์ หรือล้างตัวกรองเพื่อดูรายการล่าสุด"
+                : "เมื่อมีผู้ใช้เข้าสู่ระบบ บันทึกจะแสดงที่นี่"
+            }
             action={
               filtered ? (
                 <Link href="/crm/users/logs" className="kpi-button">

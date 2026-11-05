@@ -138,6 +138,17 @@ export default async function PartnerListPage({
             ) : null}
           </div>
         </form>
+        {filtered ? (
+          <div className="crm-filter-chips" aria-label="ตัวกรองที่ใช้งาน">
+            {params.q?.trim() ? <span className="crm-filter-chip">ค้นหา: {params.q.trim()}</span> : null}
+            {params.tier ? <span className="crm-filter-chip">Tier: {partnerTierLabel(params.tier)}</span> : null}
+            {params.status ? <span className="crm-filter-chip">สถานะ: {statusLabel(params.status)}</span> : null}
+            {params.kyc ? <span className="crm-filter-chip">KYC: {statusLabel(params.kyc)}</span> : null}
+            <Link href="/crm/partners/list" className="crm-filter-chip-clear">
+              ล้างทั้งหมด
+            </Link>
+          </div>
+        ) : null}
       </section>
 
       <section className="crm-partners-panel">
@@ -154,8 +165,13 @@ export default async function PartnerListPage({
 
         {partners.length === 0 ? (
           <EmptyState
-            title="ยังไม่มีพาร์ตเนอร์"
-            body="เพิ่มพาร์ตเนอร์ใหม่ หรือปรับตัวกรอง"
+            filtered={filtered}
+            title={filtered ? "ไม่พบพาร์ตเนอร์ตามเงื่อนไข" : "ยังไม่มีพาร์ตเนอร์"}
+            body={
+              filtered
+                ? "ลองปรับตัวกรอง หรือล้างตัวกรองเพื่อดูรายการทั้งหมด"
+                : "เพิ่มพาร์ตเนอร์ใหม่เพื่อเริ่มอนุมัติและติดตามค่าคอมมิชชัน"
+            }
             action={<NewPartnerOpenButton className="kpi-button">เพิ่มพาร์ตเนอร์</NewPartnerOpenButton>}
           />
         ) : (
