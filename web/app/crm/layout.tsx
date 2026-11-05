@@ -52,7 +52,30 @@ export default async function CrmLayout({ children }: { children: React.ReactNod
   } catch {
     // Keep the admin shell available while optional partner tables catch up.
   }
-  const user = await requireUser();
+
+  let user: Awaited<ReturnType<typeof requireUser>>;
+  try {
+    user = await requireUser();
+  } catch (error) {
+    const digest = typeof error === "object" && error && "digest" in error ? String((error as { digest: unknown }).digest) : "";
+    if (digest.includes("NEXT_REDIRECT")) throw error;
+    return (
+      <>
+        <CrmThemeScript />
+        <div className="crm-shell kpi-locale-th">
+          <main className="crm-main">
+            <div className="crm-card">
+              <h1 className="text-2xl font-extrabold text-[#3B3B3B]">เชื่อมต่อฐานข้อมูลไม่ได้ชั่วคราว</h1>
+              <p className="mt-3">
+                MySQL ถึงขีดจำกัดการเชื่อมต่อรายชั่วโมงแล้ว หรือเซิร์ฟเวอร์ฐานข้อมูลยังไม่พร้อม ลองใหม่อีกครั้งในอีกสักครู่
+                หรือออกจากระบบแล้วเข้าใหม่ผ่าน /admin
+              </p>
+            </div>
+          </main>
+        </div>
+      </>
+    );
+  }
   if (isPartnerRole(user)) redirect("/partners");
   if (!isStaff(user)) redirect("/admin");
   const modules = allowedModules(user);
@@ -68,7 +91,7 @@ export default async function CrmLayout({ children }: { children: React.ReactNod
             select: { id: true, displayName: true, tier: true },
           })
           .catch(() => [] as { id: string; displayName: string; tier: string }[]),
-        staffDirectory(),
+        staffDirectory().catch(() => [] as Awaited<ReturnType<typeof staffDirectory>>),
       ]).then(([partners, owners]) => ({
         partners,
         owners: owners.map((owner) => ({ id: owner.id, name: owner.name })),
