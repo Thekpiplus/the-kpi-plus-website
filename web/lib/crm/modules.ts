@@ -73,7 +73,13 @@ export function inferredModules(user: AccessUser): AdminModule[] {
   const legacy = String(user.role).toLowerCase();
   if (legacy === "crm") return ["leads"];
   if (legacy === "reviewer" || legacy === "approver" || legacy === "payout") return ["partners"];
-  if (normalizeRole(user.role) === "staff" || normalizeRole(user.role) === "user") return [];
+  if (
+    normalizeRole(user.role) === "staff" ||
+    normalizeRole(user.role) === "user" ||
+    normalizeRole(user.role) === "sales"
+  ) {
+    return [];
+  }
   return [];
 }
 

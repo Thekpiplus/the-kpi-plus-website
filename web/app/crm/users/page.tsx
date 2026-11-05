@@ -30,6 +30,7 @@ function roleTone(role: string): "lime" | "info" | "success" | "warning" | "neut
   if (key === "superadmin") return "lime";
   if (key === "admin") return "info";
   if (key === "staff") return "success";
+  if (key === "sales") return "info";
   if (key === "partner") return "warning";
   return "neutral";
 }
@@ -71,6 +72,7 @@ export default async function UsersPage({
     { id: "admin", label: "Admin" },
     { id: "user", label: "User" },
     { id: "staff", label: "Staff" },
+    { id: "sales", label: "Sales" },
     { id: "partner", label: "Partners", count: counts.partners },
   ];
 

@@ -1,8 +1,8 @@
-export const USER_ROLES = ["superadmin", "admin", "user", "staff", "partner"] as const;
+export const USER_ROLES = ["superadmin", "admin", "user", "staff", "sales", "partner"] as const;
 export type UserRole = (typeof USER_ROLES)[number];
 
 /** Internal admin-workspace roles (exclude partner portal). */
-export const INTERNAL_ROLES = ["superadmin", "admin", "user", "staff"] as const;
+export const INTERNAL_ROLES = ["superadmin", "admin", "user", "staff", "sales"] as const;
 export type InternalRole = (typeof INTERNAL_ROLES)[number];
 
 export const ROLE_LABEL: Record<UserRole, string> = {
@@ -10,6 +10,7 @@ export const ROLE_LABEL: Record<UserRole, string> = {
   admin: "Admin",
   user: "User",
   staff: "Staff",
+  sales: "Sales",
   partner: "Partners",
 };
 
@@ -24,6 +25,7 @@ export function normalizeRole(role: string | null | undefined): UserRole {
   if (key === "admin") return "admin";
   if (key === "user") return "user";
   if (key === "staff") return "staff";
+  if (key === "sales" || key === "sale") return "sales";
   if (key === "partner" || key === "partners") return "partner";
   if (key === "crm" || key === "reviewer" || key === "approver" || key === "payout") return "staff";
   return "user";
@@ -52,9 +54,9 @@ export function isSuperadminRole(role: string) {
 /** Roles an actor may assign when creating/editing team users (not Partners). */
 export function assignableInternalRoles(actorRole: string): InternalRole[] {
   const actor = normalizeRole(actorRole);
-  if (actor === "superadmin") return ["superadmin", "admin", "user", "staff"];
-  if (actor === "admin") return ["admin", "user", "staff"];
-  return ["user", "staff"];
+  if (actor === "superadmin") return ["superadmin", "admin", "user", "staff", "sales"];
+  if (actor === "admin") return ["admin", "user", "staff", "sales"];
+  return ["user", "staff", "sales"];
 }
 
 /** Prisma `role` filter values, including legacy DB values. */
@@ -63,6 +65,7 @@ export function roleQueryValues(role?: string | null): string[] | undefined {
   const normalized = normalizeRole(role);
   if (normalized === "superadmin") return ["superadmin", "owner"];
   if (normalized === "staff") return ["staff", "crm", "reviewer", "approver", "payout"];
+  if (normalized === "sales") return ["sales", "sale"];
   if (normalized === "partner") return ["partner", "partners"];
   return [normalized];
 }

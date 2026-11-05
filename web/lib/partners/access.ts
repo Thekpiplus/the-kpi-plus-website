@@ -4,7 +4,7 @@ import { hasModule } from "@/lib/crm/modules";
 import { isFullAccessRole, isPartnerRoleValue, isStaffRole, normalizeRole } from "@/lib/crm/roles";
 
 /** @deprecated Use INTERNAL_ROLES / isStaffRole from @/lib/crm/roles */
-export const STAFF_ROLES = ["superadmin", "admin", "user", "staff", "owner", "crm", "reviewer", "approver", "payout"] as const;
+export const STAFF_ROLES = ["superadmin", "admin", "user", "staff", "sales", "owner", "crm", "reviewer", "approver", "payout"] as const;
 export type StaffRole = (typeof STAFF_ROLES)[number];
 
 export function isStaff(user: Pick<User, "role"> | null | undefined) {

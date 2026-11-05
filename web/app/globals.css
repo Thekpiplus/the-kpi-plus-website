@@ -35367,11 +35367,11 @@ html.kpi-consent-open {
   box-sizing: border-box;
   width: 250px;
   height: 120px;
-  padding: 0.75rem 1rem;
-  border: 1px solid #e3e8eb;
-  border-radius: 0.85rem;
-  background: #fff;
-  box-shadow: 0 1px 0 rgba(11, 31, 51, 0.03);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
   cursor: default;
 }
 
@@ -35392,13 +35392,6 @@ html.kpi-consent-open {
 }
 
 @media (hover: hover) {
-  .kpi-cs-logo-tile {
-    transition:
-      border-color 180ms ease,
-      box-shadow 180ms ease,
-      transform 180ms ease;
-  }
-
   .kpi-cs-logo-tile img {
     transition: filter 180ms ease;
   }
@@ -35406,9 +35399,6 @@ html.kpi-consent-open {
   .kpi-cs-logo-tile:hover,
   .kpi-cs-logo-tile:focus-within {
     z-index: 2;
-    border-color: #0b6660;
-    box-shadow: 0 8px 22px rgba(11, 31, 51, 0.08);
-    transform: translateY(-2px);
   }
 
   .kpi-cs-logo-tile:hover img,
@@ -35439,13 +35429,8 @@ html.kpi-consent-open {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .kpi-cs-logo-tile,
   .kpi-cs-logo-tile img {
     transition: none;
-  }
-
-  .kpi-cs-logo-tile:hover {
-    transform: none;
   }
 }
 
