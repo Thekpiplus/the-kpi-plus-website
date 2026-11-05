@@ -4,15 +4,16 @@ import Link from "next/link";
 import { useEffect, useId, useState, type ReactNode } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { logoutAction } from "@/lib/crm/actions";
-import { ADMIN_MODULES, MODULE_LABEL, MODULE_PATH, type AdminModule } from "@/lib/crm/modules";
+import { ADMIN_MODULES, MODULE_PATH, type AdminModule } from "@/lib/crm/modules";
 import { CrmThemeToggle } from "@/components/crm/CrmThemeToggle";
+import { CrmSubNav, type CrmSubNavItem } from "@/components/crm/CrmSubNav";
 import { NewLeadModalProvider } from "@/components/crm/ui/NewLeadModal";
 import { NewPartnerModalProvider } from "@/components/crm/ui/NewPartnerModal";
 import { ProfileMenu } from "@/components/crm/ui/ProfileMenu";
 
 type Workspace = "home" | AdminModule;
 type NavKey = "home" | AdminModule | "settings";
-type ContextLink = { href: string; label: string; children?: ContextLink[] };
+type ContextLink = CrmSubNavItem;
 
 const leadLinks: ContextLink[] = [
   { href: "/crm/sales", label: "วันนี้" },
@@ -26,17 +27,17 @@ const leadLinks: ContextLink[] = [
 const partnerLinks: ContextLink[] = [
   { href: "/crm/partners", label: "คิวงาน" },
   { href: "/crm/partners/list", label: "อนุมัติพาร์ตเนอร์" },
-  { href: "/crm/partners/referrals", label: "Referral" },
-  { href: "/crm/partners/commissions", label: "ค่าคอม" },
-  { href: "/crm/partners/payouts", label: "Payouts" },
+  { href: "/crm/partners/referrals", label: "แนะนำลูกค้า" },
+  { href: "/crm/partners/commissions", label: "ค่าคอมมิชชัน" },
+  { href: "/crm/partners/payouts", label: "การจ่ายเงิน" },
   { href: "/crm/partners/settings", label: "กติกา" },
 ];
 
 const reservationLinks: ContextLink[] = [
   { href: "/crm/reservations", label: "คิวงาน" },
-  { href: "/crm/reservations?status=new", label: "New" },
-  { href: "/crm/reservations?status=in_progress", label: "In Progress" },
-  { href: "/crm/reservations?status=escalated", label: "Escalated" },
+  { href: "/crm/reservations?status=new", label: "ใหม่" },
+  { href: "/crm/reservations?status=in_progress", label: "กำลังดำเนินการ" },
+  { href: "/crm/reservations?status=escalated", label: "เร่งด่วน" },
 ];
 
 const userLinks: { href: string; label: string }[] = [];
@@ -118,48 +119,58 @@ const hotelAiLinks: ContextLink[] = [
   { href: "/crm/hotel-ai/backlog", label: "Automation Backlog" },
   { href: "/crm/hotel-ai/pilots", label: "Pilot Projects" },
   { href: "/crm/hotel-ai/use-cases", label: "Use Cases" },
-  { href: "/crm/hotel-ai/data-access", label: "Data and Access Review" },
-  { href: "/crm/hotel-ai/approvals", label: "Human Review / Approvals" },
+  { href: "/crm/hotel-ai/data-access", label: "Data & Access" },
+  { href: "/crm/hotel-ai/approvals", label: "Approvals" },
   { href: "/crm/hotel-ai/tests", label: "Test Cases" },
-  { href: "/crm/hotel-ai/issues", label: "Exceptions and Issue Log" },
-  { href: "/crm/hotel-ai/metrics", label: "Metrics / Pilot Scorecards" },
+  { href: "/crm/hotel-ai/issues", label: "Issue Log" },
+  { href: "/crm/hotel-ai/metrics", label: "Pilot Metrics" },
   { href: "/crm/hotel-ai/handover", label: "Handover / SOP" },
-  { href: "/crm/hotel-ai/departments", label: "Department Workspaces" },
-  { href: "/crm/hotel-ai/departments/reservations", label: "Reservations" },
-  { href: "/crm/hotel-ai/departments/revenue", label: "Revenue" },
-  { href: "/crm/hotel-ai/departments/distribution", label: "Distribution" },
-  { href: "/crm/hotel-ai/departments/marketing", label: "Marketing" },
-  { href: "/crm/hotel-ai/departments/operations", label: "Operations / Guest Experience" },
-  { href: "/crm/hotel-ai/departments/sales", label: "Sales" },
-  { href: "/crm/hotel-ai/departments/management", label: "Management" },
-  { href: "/crm/hotel-ai/departments/it-data", label: "IT / Data" },
+  {
+    href: "/crm/hotel-ai/departments",
+    label: "Departments",
+    children: [
+      { href: "/crm/hotel-ai/departments/reservations", label: "Reservations" },
+      { href: "/crm/hotel-ai/departments/revenue", label: "Revenue" },
+      { href: "/crm/hotel-ai/departments/distribution", label: "Distribution" },
+      { href: "/crm/hotel-ai/departments/marketing", label: "Marketing" },
+      { href: "/crm/hotel-ai/departments/operations", label: "Operations" },
+      { href: "/crm/hotel-ai/departments/sales", label: "Sales" },
+      { href: "/crm/hotel-ai/departments/management", label: "Management" },
+      { href: "/crm/hotel-ai/departments/it-data", label: "IT / Data" },
+    ],
+  },
   { href: "/crm/hotel-ai/audit", label: "Audit History" },
   { href: "/crm/hotel-ai/settings", label: "Settings" },
 ];
 
 const trainingLinks: ContextLink[] = [
   { href: "/crm/training", label: "Overview" },
-  { href: "/crm/training/requests", label: "Training Requests" },
-  { href: "/crm/training/calendar", label: "Training Calendar" },
-  { href: "/crm/training/programs", label: "Programs / Courses" },
+  { href: "/crm/training/requests", label: "Requests" },
+  { href: "/crm/training/calendar", label: "Calendar" },
+  { href: "/crm/training/programs", label: "Programs" },
   { href: "/crm/training/groups", label: "Learner Groups" },
-  { href: "/crm/training/needs", label: "Training Needs Assessment" },
-  { href: "/crm/training/materials", label: "Materials / Agenda" },
-  { href: "/crm/training/sessions", label: "Sessions / Attendance" },
+  { href: "/crm/training/needs", label: "Needs Assessment" },
+  { href: "/crm/training/materials", label: "Materials" },
+  { href: "/crm/training/sessions", label: "Sessions" },
   { href: "/crm/training/assessment", label: "Assessment" },
-  { href: "/crm/training/follow-up", label: "Action Plans / Workplace Follow-up" },
-  { href: "/crm/training/trainers", label: "Trainer Directory" },
-  { href: "/crm/training/departments", label: "Department Workspaces" },
-  { href: "/crm/training/departments/reservations", label: "Reservations" },
-  { href: "/crm/training/departments/revenue", label: "Revenue" },
-  { href: "/crm/training/departments/distribution", label: "Distribution" },
-  { href: "/crm/training/departments/marketing", label: "Marketing" },
-  { href: "/crm/training/departments/operations", label: "Operations / Guest Experience" },
-  { href: "/crm/training/departments/sales", label: "Sales" },
-  { href: "/crm/training/departments/management", label: "Management" },
-  { href: "/crm/training/departments/hr-ld", label: "HR / Learning & Development" },
-  { href: "/crm/training/departments/it-data", label: "IT / Data" },
-  { href: "/crm/training/feedback", label: "Feedback / Outcomes" },
+  { href: "/crm/training/follow-up", label: "Follow-up" },
+  { href: "/crm/training/trainers", label: "Trainers" },
+  {
+    href: "/crm/training/departments",
+    label: "Departments",
+    children: [
+      { href: "/crm/training/departments/reservations", label: "Reservations" },
+      { href: "/crm/training/departments/revenue", label: "Revenue" },
+      { href: "/crm/training/departments/distribution", label: "Distribution" },
+      { href: "/crm/training/departments/marketing", label: "Marketing" },
+      { href: "/crm/training/departments/operations", label: "Operations" },
+      { href: "/crm/training/departments/sales", label: "Sales" },
+      { href: "/crm/training/departments/management", label: "Management" },
+      { href: "/crm/training/departments/hr-ld", label: "HR / L&D" },
+      { href: "/crm/training/departments/it-data", label: "IT / Data" },
+    ],
+  },
+  { href: "/crm/training/feedback", label: "Feedback" },
   { href: "/crm/training/reports", label: "Reports / KPI" },
   { href: "/crm/training/approvals", label: "Approvals" },
   { href: "/crm/training/audit", label: "Audit History" },
@@ -170,25 +181,30 @@ const hotelMarketingLinks: ContextLink[] = [
   { href: "/crm/hotel-marketing", label: "Overview" },
   { href: "/crm/hotel-marketing/editorial-calendar", label: "Editorial Calendar" },
   { href: "/crm/hotel-marketing/backlog", label: "Article Backlog" },
-  { href: "/crm/hotel-marketing/drafts", label: "Drafts / Reviews" },
+  { href: "/crm/hotel-marketing/drafts", label: "Drafts" },
   { href: "/crm/hotel-marketing/seo-briefs", label: "SEO Briefs" },
-  { href: "/crm/hotel-marketing/campaigns", label: "Campaign Calendar" },
-  { href: "/crm/hotel-marketing/channels", label: "Channel Plan" },
-  { href: "/crm/hotel-marketing/metrics", label: "Metrics / KPI Definitions" },
-  { href: "/crm/hotel-marketing/assets", label: "Assets / Permissions" },
+  { href: "/crm/hotel-marketing/campaigns", label: "Campaigns" },
+  { href: "/crm/hotel-marketing/channels", label: "Channels" },
+  { href: "/crm/hotel-marketing/metrics", label: "Metrics" },
+  { href: "/crm/hotel-marketing/assets", label: "Assets" },
   { href: "/crm/hotel-marketing/approvals", label: "Approvals" },
   { href: "/crm/hotel-marketing/related-links", label: "Related Links" },
   { href: "/crm/hotel-marketing/translation", label: "Translation" },
   { href: "/crm/hotel-marketing/reports", label: "Reports" },
-  { href: "/crm/hotel-marketing/departments", label: "Department Workspaces" },
-  { href: "/crm/hotel-marketing/departments/marketing-content", label: "Marketing / Content" },
-  { href: "/crm/hotel-marketing/departments/revenue", label: "Revenue Management" },
-  { href: "/crm/hotel-marketing/departments/distribution", label: "Distribution" },
-  { href: "/crm/hotel-marketing/departments/sales", label: "Sales" },
-  { href: "/crm/hotel-marketing/departments/reservations", label: "Reservations" },
-  { href: "/crm/hotel-marketing/departments/operations", label: "Operations / Guest Experience" },
-  { href: "/crm/hotel-marketing/departments/management", label: "Management" },
-  { href: "/crm/hotel-marketing/departments/it-data", label: "IT / Data" },
+  {
+    href: "/crm/hotel-marketing/departments",
+    label: "Departments",
+    children: [
+      { href: "/crm/hotel-marketing/departments/marketing-content", label: "Marketing / Content" },
+      { href: "/crm/hotel-marketing/departments/revenue", label: "Revenue" },
+      { href: "/crm/hotel-marketing/departments/distribution", label: "Distribution" },
+      { href: "/crm/hotel-marketing/departments/sales", label: "Sales" },
+      { href: "/crm/hotel-marketing/departments/reservations", label: "Reservations" },
+      { href: "/crm/hotel-marketing/departments/operations", label: "Operations" },
+      { href: "/crm/hotel-marketing/departments/management", label: "Management" },
+      { href: "/crm/hotel-marketing/departments/it-data", label: "IT / Data" },
+    ],
+  },
   { href: "/crm/hotel-marketing/audit", label: "Audit History" },
   { href: "/crm/hotel-marketing/settings", label: "Settings" },
 ];
@@ -216,9 +232,9 @@ const solutionsLinks: ContextLink[] = [
       { href: "/crm/solutions/departments/distribution", label: "Distribution" },
       { href: "/crm/solutions/departments/reservations", label: "Reservations" },
       { href: "/crm/solutions/departments/sales", label: "Sales" },
-      { href: "/crm/solutions/departments/operations", label: "Operations / Guest Experience" },
-      { href: "/crm/solutions/departments/systems-it-data", label: "Systems / IT / Data" },
-      { href: "/crm/solutions/departments/training-hr-ld", label: "Training / HR / Learning & Development" },
+      { href: "/crm/solutions/departments/operations", label: "Operations" },
+      { href: "/crm/solutions/departments/systems-it-data", label: "Systems / IT" },
+      { href: "/crm/solutions/departments/training-hr-ld", label: "Training / HR" },
       { href: "/crm/solutions/departments/management", label: "Management" },
     ],
   },
@@ -271,30 +287,51 @@ const seoLinks: ContextLink[] = [
   { href: "/crm/seo/settings", label: "Settings" },
 ];
 
-const cmsLinks = [
-  { href: "/crm/cms", label: "หน้าเพจทั้งหมด" },
+const cmsLinks: ContextLink[] = [
+  { href: "/crm/cms", label: "ทุกหน้า" },
   { href: "/crm/cms/insights", label: "บทความ" },
-  { href: "/crm/cms/hotel-marketing", label: "บทความ Hotel Marketing" },
+  { href: "/crm/cms/hotel-marketing", label: "Hotel Marketing" },
   { href: "/crm/cms/case-studies", label: "ผลงานลูกค้า" },
   { href: "/crm/cms/client-logos", label: "โลโก้ลูกค้า" },
   { href: "/crm/cms/trash", label: "ถังขยะ" },
-  { href: "/crm/cms/media", label: "สื่อ/ไฟล์รูปภาพ" },
+  { href: "/crm/cms/media", label: "สื่อและรูปภาพ" },
   { href: "/crm/cms/redirects", label: "Redirect" },
   { href: "/crm/cms/globals", label: "ตั้งค่าเว็บ" },
-  { href: "/crm/cms/reservations", label: "เส้นแบ่งงาน Reservations" },
-  { href: "/crm/cms/b2b", label: "หน้า B2B Agent Sales" },
-  { href: "/crm/cms/google-ads", label: "หน้า Google Ads Management" },
-  { href: "/crm/cms/meta-ads", label: "หน้า Meta Ads Management" },
-  { href: "/crm/cms/hotel-seo", label: "หน้า Hotel SEO / Local Search" },
-  { href: "/crm/cms/hotel-website", label: "หน้า Hotel Website Design" },
-  { href: "/crm/cms/hotel-direct-bookings", label: "หน้า Hotel Direct Bookings" },
-  { href: "/crm/cms/independent-hotel", label: "หน้า Independent Hotel Management" },
-  { href: "/crm/cms/hotel-systems", label: "หน้า Hotel Systems Implementation" },
-  { href: "/crm/cms/hotel-ai", label: "หน้า Hotel AI & Automation" },
-  { href: "/crm/cms/hotel-training", label: "หน้า Hotel Training & Team Development" },
-  { href: "/crm/cms/solutions", label: "หน้า Hotel Solutions (index)" },
+  { href: "/crm/cms/reservations", label: "Reservations" },
+  { href: "/crm/cms/b2b", label: "B2B Agent Sales" },
+  { href: "/crm/cms/google-ads", label: "Google Ads" },
+  { href: "/crm/cms/meta-ads", label: "Meta Ads" },
+  { href: "/crm/cms/hotel-seo", label: "Hotel SEO" },
+  { href: "/crm/cms/hotel-website", label: "Hotel Website" },
+  { href: "/crm/cms/hotel-direct-bookings", label: "Direct Bookings" },
+  { href: "/crm/cms/independent-hotel", label: "Independent Hotel" },
+  { href: "/crm/cms/hotel-systems", label: "Hotel Systems" },
+  { href: "/crm/cms/hotel-ai", label: "Hotel AI" },
+  { href: "/crm/cms/hotel-training", label: "Hotel Training" },
+  { href: "/crm/cms/solutions", label: "Hotel Solutions" },
   { href: "/crm/cms/contacts", label: "ข้อมูลติดต่อ" },
 ];
+
+/** Shorter module titles for the context subnav (sidebar keeps full NAV_LABEL). */
+const SUBNAV_MODULE_LABEL: Record<Exclude<Workspace, "home">, string> = {
+  leads: "Lead Management",
+  partners: "Partner Management",
+  reservations: "Reservations",
+  b2b: "B2B Sales",
+  ads: "Google Ads",
+  meta: "Meta Ads",
+  seo: "Local Search",
+  website: "Website",
+  conversion: "Direct Booking",
+  management: "Hotel Management",
+  systems: "Hotel Systems",
+  hotel_ai: "Hotel AI",
+  training: "Hotel Training",
+  hotel_marketing: "Hotel Marketing",
+  solutions: "Hotel Solutions",
+  users: "Users",
+  cms: "CMS",
+};
 
 const contextByWorkspace: Record<Exclude<Workspace, "home">, ContextLink[]> = {
   leads: leadLinks,
@@ -597,34 +634,6 @@ function workspaceOf(pathname: string): Workspace {
   return "home";
 }
 
-function isCurrent(pathname: string, search: string, href: string) {
-  const [path, query] = href.split("?");
-  const currentQuery = search.startsWith("?") ? search.slice(1) : search;
-  if (query) return pathname === path && currentQuery === query;
-  if (path === "/crm/sales") return pathname === "/crm/sales";
-  if (path === "/crm/leads") return pathname === "/crm/leads" && !currentQuery;
-  if (path === "/crm/users/new") return pathname === "/crm/users/new";
-  if (path === "/crm/users") return pathname === "/crm/users";
-  if (path === "/crm/cms") return pathname === "/crm/cms";
-  if (path === "/crm/partners") return pathname === "/crm/partners";
-  if (path === "/crm/b2b") return pathname === "/crm/b2b";
-  if (path === "/crm/ads") return pathname === "/crm/ads";
-  if (path === "/crm/meta") return pathname === "/crm/meta";
-  if (path === "/crm/seo") return pathname === "/crm/seo";
-  if (path === "/crm/website") return pathname === "/crm/website";
-  if (path === "/crm/conversion") return pathname === "/crm/conversion";
-  if (path === "/crm/management") return pathname === "/crm/management";
-  if (path === "/crm/systems") return pathname === "/crm/systems";
-  if (path === "/crm/hotel-ai") return pathname === "/crm/hotel-ai";
-  if (path === "/crm/training") return pathname === "/crm/training";
-  if (path === "/crm/training/departments") return pathname === "/crm/training/departments";
-  if (path === "/crm/hotel-marketing") return pathname === "/crm/hotel-marketing";
-  if (path === "/crm/hotel-marketing/departments") return pathname === "/crm/hotel-marketing/departments";
-  if (path === "/crm/solutions") return pathname === "/crm/solutions";
-  if (path === "/crm/solutions/departments") return pathname === "/crm/solutions/departments";
-  return pathname === path || pathname.startsWith(`${path}/`);
-}
-
 function RailLink({
   href,
   navKey,
@@ -700,7 +709,6 @@ export function CrmShell({
       ? null
       : sectionIdForNavKey(workspace);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
   const [sectionOpen, setSectionOpen] = useState<Partial<Record<NavSectionId, boolean>>>({});
   const [sectionsReady, setSectionsReady] = useState(false);
   const [railExpanded, setRailExpanded] = useState(true);
@@ -996,57 +1004,12 @@ export function CrmShell({
         </header>
 
         {workspace !== "home" && contextLinks.length ? (
-          <div className="crm-app-sub" aria-label={`${MODULE_LABEL[workspace]} submenu`}>
-            <p className="crm-app-sub-title">{NAV_LABEL[workspace]}</p>
-            <div className="crm-app-sub-links">
-              {contextLinks.map((item) => {
-                const children = item.children;
-                if (!children?.length) {
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      aria-current={isCurrent(pathname, search, item.href) ? "page" : undefined}
-                    >
-                      {item.label}
-                    </Link>
-                  );
-                }
-                const groupOpen = openGroups[item.href] ?? (pathname === item.href || pathname.startsWith(`${item.href}/`));
-                const childrenId = `${drawerId}-sub-${item.href.replace(/[^a-z0-9]+/gi, "-")}`;
-                return (
-                  <span key={item.href} className="crm-subnav-group" style={{ display: "contents" }}>
-                    <Link href={item.href} aria-current={isCurrent(pathname, search, item.href) ? "page" : undefined}>
-                      {item.label}
-                    </Link>
-                    <button
-                      type="button"
-                      className="crm-subnav-toggle"
-                      aria-expanded={groupOpen}
-                      aria-controls={childrenId}
-                      aria-label={`${groupOpen ? "ย่อ" : "ขยาย"} ${item.label}`}
-                      onClick={() => setOpenGroups({ ...openGroups, [item.href]: !groupOpen })}
-                    >
-                      <span aria-hidden="true">{groupOpen ? "▾" : "▸"}</span> {children.length}
-                    </button>
-                    {groupOpen ? (
-                      <span id={childrenId} className="crm-subnav-children">
-                        {children.map((child) => (
-                          <Link
-                            key={child.href}
-                            href={child.href}
-                            aria-current={isCurrent(pathname, search, child.href) ? "page" : undefined}
-                          >
-                            {child.label}
-                          </Link>
-                        ))}
-                      </span>
-                    ) : null}
-                  </span>
-                );
-              })}
-            </div>
-          </div>
+          <CrmSubNav
+            moduleLabel={SUBNAV_MODULE_LABEL[workspace]}
+            items={contextLinks}
+            pathname={pathname}
+            search={search}
+          />
         ) : null}
 
         <main className="crm-main" id="crm-main">

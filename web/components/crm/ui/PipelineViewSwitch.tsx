@@ -2,9 +2,9 @@ import Link from "next/link";
 import type { PipelineView } from "@/components/crm/pipeline-types";
 
 const VIEWS: { id: PipelineView; label: string }[] = [
-  { id: "table", label: "Table" },
-  { id: "kanban", label: "Kanban" },
-  { id: "calendar", label: "Calendar" },
+  { id: "table", label: "ตาราง" },
+  { id: "kanban", label: "คานบัน" },
+  { id: "calendar", label: "ปฏิทิน" },
 ];
 
 export function PipelineViewSwitch({
@@ -15,7 +15,7 @@ export function PipelineViewSwitch({
   month?: string;
 }) {
   return (
-    <div className="crm-pipe-switch" role="tablist" aria-label="มุมมอง Pipeline">
+    <nav className="crm-pipe-switch" aria-label="มุมมอง Pipeline">
       {VIEWS.map((item) => {
         const query = new URLSearchParams({ view: item.id });
         if (item.id === "calendar" && month) query.set("month", month);
@@ -23,14 +23,14 @@ export function PipelineViewSwitch({
           <Link
             key={item.id}
             href={`/crm/pipeline?${query.toString()}`}
-            role="tab"
-            aria-selected={view === item.id}
+            aria-current={view === item.id ? "page" : undefined}
             className={view === item.id ? "is-active" : undefined}
+            title={item.label}
           >
             {item.label}
           </Link>
         );
       })}
-    </div>
+    </nav>
   );
 }
