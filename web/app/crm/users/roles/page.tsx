@@ -1,48 +1,38 @@
 import Link from "next/link";
 import { PageHeader } from "@/components/crm/ui/PageHeader";
-import { StatusBadge } from "@/components/crm/ui/StatusBadge";
+import { RoleBadge } from "@/components/crm/ui/RoleBadge";
 import { currentUser } from "@/lib/crm/auth";
 import { prisma } from "@/lib/crm/db";
 import { ADMIN_MODULES, MODULE_LABEL, canManageUsers } from "@/lib/crm/modules";
 import {
   FULL_ACCESS_ROLES,
-  ROLE_LABEL,
   USER_ROLES,
   roleQueryValues,
   type UserRole,
 } from "@/lib/crm/roles";
 
-const ROLE_SUMMARY: Record<
-  UserRole,
-  { tone: "lime" | "info" | "success" | "warning" | "neutral"; blurb: string; access: string }
-> = {
+const ROLE_SUMMARY: Record<UserRole, { blurb: string; access: string }> = {
   superadmin: {
-    tone: "lime",
     blurb: "ผู้ดูแลสูงสุดของระบบแอดมิน",
     access: "เข้าได้ทุกโมดูลโดยอัตโนมัติ และกำหนดบทบาทภายในได้ครบ",
   },
   admin: {
-    tone: "info",
     blurb: "ผู้ดูแลระบบ",
     access: "เข้าได้ทุกโมดูลโดยอัตโนมัติ กำหนดบทบาทได้ยกเว้น Superadmin",
   },
   user: {
-    tone: "neutral",
     blurb: "ผู้ใช้ทั่วไปในทีม",
     access: "เข้าได้เฉพาะโมดูลที่เปิดให้บัญชีนี้",
   },
   staff: {
-    tone: "success",
     blurb: "พนักงานปฏิบัติการ",
     access: "เข้าได้เฉพาะโมดูลที่เปิดให้บัญชีนี้",
   },
   sales: {
-    tone: "info",
     blurb: "ทีมขาย",
     access: "เข้าได้เฉพาะโมดูลที่เปิดให้บัญชีนี้",
   },
   partner: {
-    tone: "warning",
     blurb: "บัญชีพาร์ตเนอร์",
     access: "ใช้พอร์ทัลพาร์ตเนอร์ ไม่ใช่สิทธิโมดูลแอดมินรายบัญชี",
   },
@@ -72,7 +62,7 @@ export default async function UserRolesPage() {
           canEdit ? (
             <div className="crm-users-actions">
               <Link href="/crm/users?new=1" className="kpi-button">
-                เพิ่มผู้ใช้
+                เพิ่มผู้ใช้งาน
               </Link>
             </div>
           ) : undefined
@@ -99,9 +89,9 @@ export default async function UserRolesPage() {
           const count = roleCounts[role] ?? 0;
           const fullAccess = FULL_ACCESS_ROLES.includes(role);
           return (
-            <article key={role} className={`crm-users-role-card${fullAccess ? " is-full" : ""}`}>
+            <article key={role} className={`crm-users-role-card is-role-${role}${fullAccess ? " is-full" : ""}`}>
               <div className="crm-users-role-card-top">
-                <StatusBadge label={ROLE_LABEL[role]} tone={meta.tone} />
+                <RoleBadge role={role} />
                 <p className="crm-users-role-count">
                   <strong>{count}</strong>
                   <span>บัญชี</span>

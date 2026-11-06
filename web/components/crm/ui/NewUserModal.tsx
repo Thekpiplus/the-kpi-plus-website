@@ -91,68 +91,71 @@ export function NewUserModalProvider({
             aria-modal="true"
             aria-labelledby={titleId}
           >
-            <div className="crm-modal-head">
+            <div className="crm-modal-head crm-modal-head-user">
               <div>
-                <p className="crm-modal-eyebrow">Users</p>
+                <p className="crm-modal-eyebrow">Users Management</p>
                 <h2 id={titleId} className="crm-modal-title">
-                  เพิ่มผู้ใช้ทีม
+                  เพิ่มผู้ใช้งาน
                 </h2>
-                <p className="crm-modal-lead">เลือกบทบาท และติ๊กฟังก์ชันที่ต้องการให้บัญชีนี้เข้าใช้</p>
+                <p className="crm-modal-lead">กรอกข้อมูลบัญชี เลือกบทบาท และเปิดฟังก์ชันที่ต้องการให้เข้าใช้</p>
               </div>
               <button type="button" className="crm-modal-close" aria-label="ปิด" onClick={closeModal}>
                 ✕
               </button>
             </div>
 
-            <form action={createStaffUser} className="crm-modal-form">
+            <form action={createStaffUser} className="crm-modal-form crm-modal-form-user">
               {formError ? (
                 <p className="crm-users-alert is-warn" role="alert">
                   {formError}
                 </p>
               ) : null}
 
-              <div className="crm-modal-grid">
-                <label className="crm-modal-field">
-                  ชื่อ
-                  <input className="crm-field" name="name" required autoFocus />
-                </label>
-                <label className="crm-modal-field">
-                  ชื่อผู้ใช้ (Username)
-                  <input
-                    className="crm-field"
-                    name="username"
-                    pattern="[a-zA-Z0-9._-]{3,32}"
-                    autoComplete="username"
-                    required
-                  />
-                </label>
-                <label className="crm-modal-field">
-                  อีเมล
-                  <input className="crm-field" type="email" name="email" required />
-                </label>
-                <label className="crm-modal-field">
-                  เบอร์โทร
-                  <input className="crm-field" name="phone" required />
-                </label>
-                <label className="crm-modal-field">
-                  รหัสผ่าน
-                  <input className="crm-field" type="password" name="password" minLength={4} required />
-                </label>
-                <label className="crm-modal-field">
-                  บทบาท (User Role)
-                  <select className="crm-select" name="role" defaultValue="user" required>
-                    {roles.map((role) => (
-                      <option key={role} value={role}>
-                        {ROLE_LABEL[role]}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-              </div>
+              <section className="crm-modal-section" aria-label="ข้อมูลบัญชี">
+                <h3 className="crm-modal-section-title">ข้อมูลบัญชี</h3>
+                <div className="crm-modal-grid">
+                  <label className="crm-modal-field">
+                    ชื่อ
+                    <input className="crm-field" name="name" required autoFocus />
+                  </label>
+                  <label className="crm-modal-field">
+                    ชื่อผู้ใช้ (Username)
+                    <input
+                      className="crm-field"
+                      name="username"
+                      pattern="[a-zA-Z0-9._-]{3,32}"
+                      autoComplete="username"
+                      required
+                    />
+                  </label>
+                  <label className="crm-modal-field">
+                    อีเมล
+                    <input className="crm-field" type="email" name="email" required />
+                  </label>
+                  <label className="crm-modal-field">
+                    เบอร์โทร
+                    <input className="crm-field" name="phone" required />
+                  </label>
+                  <label className="crm-modal-field">
+                    รหัสผ่าน
+                    <input className="crm-field" type="password" name="password" minLength={4} required />
+                  </label>
+                  <label className="crm-modal-field">
+                    บทบาท (User Role)
+                    <select className="crm-select" name="role" defaultValue="user" required>
+                      {roles.map((role) => (
+                        <option key={role} value={role}>
+                          {ROLE_LABEL[role]}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+              </section>
 
               <fieldset className="crm-modal-modules">
                 <legend>ฟังก์ชันที่เข้าได้</legend>
-                <p>Superadmin และ Admin เข้าได้ทุกฟังก์ชันอัตโนมัติ</p>
+                <p>Superadmin และ Admin เข้าได้ทุกฟังก์ชันอัตโนมัติ — บัญชีอื่นเลือกเฉพาะที่ต้องการ</p>
                 <div className="crm-modal-module-grid">
                   {ADMIN_MODULES.map((module) => (
                     <label key={module} className="crm-modal-check">
@@ -170,7 +173,7 @@ export function NewUserModalProvider({
                   ยกเลิก
                 </button>
                 <button className="kpi-button" type="submit">
-                  สร้างผู้ใช้
+                  สร้างผู้ใช้งาน
                 </button>
               </div>
             </form>

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { EmptyState } from "@/components/crm/ui/EmptyState";
 import { NewUserModalProvider, NewUserOpenButton } from "@/components/crm/ui/NewUserModal";
 import { PageHeader } from "@/components/crm/ui/PageHeader";
+import { RoleBadge } from "@/components/crm/ui/RoleBadge";
 import { StatusBadge } from "@/components/crm/ui/StatusBadge";
 import { UserRowActions } from "@/components/crm/ui/UserRowActions";
 import { currentUser } from "@/lib/crm/auth";
@@ -13,7 +14,6 @@ import {
   isPartnerRoleValue,
   isSuperadminRole,
   normalizeRole,
-  roleLabel,
   type InternalRole,
 } from "@/lib/crm/roles";
 import { canManageUsers, inferredModules } from "@/lib/crm/modules";
@@ -23,16 +23,6 @@ function initials(name: string) {
   if (!parts.length) return "KP";
   if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
   return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
-}
-
-function roleTone(role: string): "lime" | "info" | "success" | "warning" | "neutral" {
-  const key = normalizeRole(role);
-  if (key === "superadmin") return "lime";
-  if (key === "admin") return "info";
-  if (key === "staff") return "success";
-  if (key === "sales") return "info";
-  if (key === "partner") return "warning";
-  return "neutral";
 }
 
 export default async function UsersPage({
@@ -73,13 +63,6 @@ export default async function UsersPage({
         eyebrow="Users"
         title="Users Management"
         description="จัดการบัญชีทีม สิทธิ์โมดูล และสถานะการเข้าใช้งานในที่เดียว"
-        actions={
-          canEdit ? (
-            <div className="crm-users-actions">
-              <NewUserOpenButton className="kpi-button">เพิ่มผู้ใช้</NewUserOpenButton>
-            </div>
-          ) : undefined
-        }
       />
 
       {params.error === "forbidden" ? (
@@ -127,46 +110,6 @@ export default async function UsersPage({
         </article>
       </section>
 
-      <section className="crm-users-toolbar" aria-label="ค้นหาผู้ใช้">
-        <form className="crm-users-search" method="get">
-          {params.role ? <input type="hidden" name="role" value={params.role} /> : null}
-          <label className="crm-users-search-field">
-            <span className="crm-users-search-label">ค้นหา</span>
-            <span className="crm-users-search-icon" aria-hidden="true">
-              ⌕
-            </span>
-            <input
-              name="q"
-              defaultValue={params.q}
-              placeholder="ชื่อ, ชื่อผู้ใช้, อีเมล หรือเบอร์โทร"
-              aria-label="ค้นหาด้วยชื่อ ชื่อผู้ใช้ อีเมล หรือเบอร์โทร"
-            />
-          </label>
-          <button className="kpi-button" type="submit">
-            ค้นหา
-          </button>
-          {filtered ? (
-            <Link href="/crm/users" className="crm-users-clear">
-              ล้างตัวกรอง
-            </Link>
-          ) : null}
-        </form>
-
-        {filtered ? (
-          <div className="crm-filter-chips" aria-label="ตัวกรองที่ใช้งาน">
-            {params.q?.trim() ? <span className="crm-filter-chip">ค้นหา: {params.q.trim()}</span> : null}
-            {params.role ? (
-              <span className="crm-filter-chip">
-                บทบาท: {ROLE_LABEL[normalizeRole(params.role)] ?? params.role}
-              </span>
-            ) : null}
-            <Link href="/crm/users" className="crm-filter-chip-clear">
-              ล้างทั้งหมด
-            </Link>
-          </div>
-        ) : null}
-      </section>
-
       <section className="crm-users-panel">
         <div className="crm-users-panel-head">
           <div>
@@ -177,6 +120,14 @@ export default async function UsersPage({
               {params.q?.trim() ? ` · “${params.q.trim()}”` : ""}
             </p>
           </div>
+          <div className="crm-users-panel-actions">
+            {filtered ? (
+              <Link href="/crm/users" className="crm-users-secondary">
+                ล้างตัวกรอง
+              </Link>
+            ) : null}
+            {canEdit ? <NewUserOpenButton className="kpi-button">เพิ่มผู้ใช้งาน</NewUserOpenButton> : null}
+          </div>
         </div>
 
         {users.length === 0 ? (
@@ -185,8 +136,8 @@ export default async function UsersPage({
             title={filtered ? "ไม่พบผู้ใช้ตามเงื่อนไข" : "ยังไม่มีผู้ใช้"}
             body={
               filtered
-                ? "ลองเปลี่ยนคำค้น หรือล้างตัวกรองเพื่อดูรายการทั้งหมด"
-                : "เพิ่มผู้ใช้ใหม่เพื่อเปิดสิทธิ์เข้าใช้งานระบบ"
+                ? "ล้างตัวกรองเพื่อดูรายการทั้งหมด หรือเพิ่มผู้ใช้งานใหม่หากยังไม่มีบัญชี"
+                : "เพิ่มผู้ใช้งานใหม่เพื่อเปิดสิทธิ์เข้าใช้งานระบบ"
             }
             action={
               filtered ? (
@@ -194,7 +145,7 @@ export default async function UsersPage({
                   ล้างตัวกรอง
                 </Link>
               ) : canEdit ? (
-                <NewUserOpenButton className="kpi-button">เพิ่มผู้ใช้</NewUserOpenButton>
+                <NewUserOpenButton className="kpi-button">เพิ่มผู้ใช้งาน</NewUserOpenButton>
               ) : null
             }
           />
@@ -238,7 +189,7 @@ export default async function UsersPage({
                             </Link>
                             {user.username ? <p className="crm-users-meta">@{user.username}</p> : null}
                             <div className="crm-users-mobile-badges" aria-hidden="true">
-                              <StatusBadge label={roleLabel(user.role)} tone={roleTone(user.role)} />
+                              <RoleBadge role={user.role} />
                               {locked ? (
                                 <StatusBadge label="ถูกล็อก" tone="danger" />
                               ) : (
@@ -252,7 +203,7 @@ export default async function UsersPage({
                         <span className="crm-users-email">{user.email}</span>
                       </td>
                       <td data-label="บทบาท" className="crm-users-col-role">
-                        <StatusBadge label={roleLabel(user.role)} tone={roleTone(user.role)} />
+                        <RoleBadge role={user.role} />
                       </td>
                       <td data-label="สถานะ" className="crm-users-col-status">
                         {locked ? (
