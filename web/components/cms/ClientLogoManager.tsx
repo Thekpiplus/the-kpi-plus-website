@@ -32,8 +32,6 @@ import {
 import type { CmsClientLogoRow } from "@/lib/cms/types";
 
 type DialogMode = "create" | "edit" | null;
-type PermissionFilter = "" | "pending" | "approved" | "rejected";
-type ActiveFilter = "" | "active" | "inactive" | "public";
 
 function LogoThumb({
   src,
@@ -111,9 +109,6 @@ export function ClientLogoManager({
   const panelRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
-  const [query, setQuery] = useState("");
-  const [permissionFilter, setPermissionFilter] = useState<PermissionFilter>("");
-  const [activeFilter, setActiveFilter] = useState<ActiveFilter>("");
   const [dialog, setDialog] = useState<DialogMode>(autoOpenCreate ? "create" : null);
   const [form, setForm] = useState<ClientLogoSaveInput>(() =>
     emptyClientLogoInput(records.reduce((max, row) => Math.max(max, row.sortOrder), -1) + 1),
@@ -138,26 +133,6 @@ export function ClientLogoManager({
 
   const nextOrder = records.reduce((max, row) => Math.max(max, row.sortOrder), -1) + 1;
 
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    return records.filter((row) => {
-      if (permissionFilter && row.permission !== permissionFilter) return false;
-      if (activeFilter === "active" && !row.isActive) return false;
-      if (activeFilter === "inactive" && row.isActive) return false;
-      if (activeFilter === "public" && !canPublishClientLogo(row)) return false;
-      if (!q) return true;
-      const host = websiteDisplayHost(row.websiteUrl).toLowerCase();
-      return (
-        row.name.toLowerCase().includes(q) ||
-        row.clientName.toLowerCase().includes(q) ||
-        row.anonymisedLabel.toLowerCase().includes(q) ||
-        row.websiteUrl.toLowerCase().includes(q) ||
-        host.includes(q)
-      );
-    });
-  }, [records, query, permissionFilter, activeFilter]);
-
-  const hasFilters = Boolean(query.trim() || permissionFilter || activeFilter);
   const dirty =
     JSON.stringify(form) !== JSON.stringify(baseline) ||
     hasNewFile ||
@@ -279,12 +254,6 @@ export function ClientLogoManager({
     };
   }, [preview]);
 
-  function clearFilters() {
-    setQuery("");
-    setPermissionFilter("");
-    setActiveFilter("");
-  }
-
   const willPublish = canPublishClientLogo({
     ...form,
     filePath: form.filePath || (hasNewFile ? "/media/cms/_pending" : ""),
@@ -306,46 +275,26 @@ export function ClientLogoManager({
 
       <section className="crm-dash-summary" aria-label="สรุปสถานะโลโก้">
         <div className="crm-dash-stats" role="list">
-          <button
-            type="button"
-            className={`crm-dash-stat is-partners${permissionFilter === "pending" ? " is-selected" : ""}`}
-            role="listitem"
-            onClick={() => setPermissionFilter((value) => (value === "pending" ? "" : "pending"))}
-          >
+          <article className="crm-dash-stat is-partners" role="listitem">
             <span className="crm-dash-stat-label">Pending</span>
             <strong className="crm-dash-stat-value">{counts.pending}</strong>
             <span className="crm-dash-stat-hint">รออนุญาต</span>
-          </button>
-          <button
-            type="button"
-            className={`crm-dash-stat is-today${permissionFilter === "approved" ? " is-selected" : ""}`}
-            role="listitem"
-            onClick={() => setPermissionFilter((value) => (value === "approved" ? "" : "approved"))}
-          >
+          </article>
+          <article className="crm-dash-stat is-today" role="listitem">
             <span className="crm-dash-stat-label">Approved</span>
             <strong className="crm-dash-stat-value">{counts.approved}</strong>
             <span className="crm-dash-stat-hint">อนุมัติแล้ว</span>
-          </button>
-          <button
-            type="button"
-            className={`crm-dash-stat is-overdue${permissionFilter === "rejected" ? " is-selected" : ""}`}
-            role="listitem"
-            onClick={() => setPermissionFilter((value) => (value === "rejected" ? "" : "rejected"))}
-          >
+          </article>
+          <article className="crm-dash-stat is-overdue" role="listitem">
             <span className="crm-dash-stat-label">Rejected</span>
             <strong className="crm-dash-stat-value">{counts.rejected}</strong>
             <span className="crm-dash-stat-hint">ไม่อนุญาต</span>
-          </button>
-          <button
-            type="button"
-            className={`crm-dash-stat is-web${activeFilter === "public" ? " is-selected" : ""}`}
-            role="listitem"
-            onClick={() => setActiveFilter((value) => (value === "public" ? "" : "public"))}
-          >
+          </article>
+          <article className="crm-dash-stat is-web" role="listitem">
             <span className="crm-dash-stat-label">Public</span>
             <strong className="crm-dash-stat-value">{counts.public}</strong>
             <span className="crm-dash-stat-hint">Approved + Active</span>
-          </button>
+          </article>
         </div>
       </section>
 
@@ -355,7 +304,7 @@ export function ClientLogoManager({
             <p className="crm-cms-globals-kicker">Client logos</p>
             <h2 id="crm-logo-list-heading">
               รายการโลโก้
-              <span className="crm-leads-count">{filtered.length}</span>
+              <span className="crm-leads-count">{records.length}</span>
             </h2>
             <p>จัดการรูป ชื่อ และลิงก์เว็บไซต์ — Pending/Rejected จะไม่ขึ้นสาธารณะจนกว่าจะ Approved และ Active</p>
           </div>
@@ -369,81 +318,12 @@ export function ClientLogoManager({
           </button>
         </div>
 
-        <form
-          className="crm-logo-toolbar"
-          role="search"
-          onSubmit={(event) => event.preventDefault()}
-        >
-          <label className="crm-logo-filter-field is-search">
-            <span>ค้นหา</span>
-            <input
-              className="crm-field"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="ชื่อโลโก้ ชื่อลูกค้า หรือโดเมนเว็บไซต์"
-              autoComplete="off"
-            />
-          </label>
-          <label className="crm-logo-filter-field">
-            <span>สิทธิ์เผยแพร่</span>
-            <select
-              className="crm-select"
-              value={permissionFilter}
-              onChange={(event) => setPermissionFilter(event.target.value as PermissionFilter)}
-            >
-              <option value="">ทั้งหมด</option>
-              <option value="pending">Pending</option>
-              <option value="approved">Approved</option>
-              <option value="rejected">Rejected</option>
-            </select>
-          </label>
-          <label className="crm-logo-filter-field">
-            <span>สถานะ</span>
-            <select
-              className="crm-select"
-              value={activeFilter}
-              onChange={(event) => setActiveFilter(event.target.value as ActiveFilter)}
-            >
-              <option value="">ทั้งหมด</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-              <option value="public">Public</option>
-            </select>
-          </label>
-          {hasFilters ? (
-            <button type="button" className="crm-users-secondary" onClick={clearFilters}>
-              ล้างตัวกรอง
-            </button>
-          ) : null}
-        </form>
-
-        {hasFilters ? (
-          <div className="crm-filter-chips" aria-label="ตัวกรองที่ใช้งาน">
-            {query.trim() ? <span className="crm-filter-chip">ค้นหา: {query.trim()}</span> : null}
-            {permissionFilter ? (
-              <span className="crm-filter-chip">สิทธิ์: {permissionLabel(permissionFilter)}</span>
-            ) : null}
-            {activeFilter ? <span className="crm-filter-chip">สถานะ: {activeFilter}</span> : null}
-            <button type="button" className="crm-filter-chip-clear" onClick={clearFilters}>
-              ล้างทั้งหมด
-            </button>
-          </div>
-        ) : null}
-
         {records.length === 0 ? (
           <div className="crm-logo-empty">
             <p>ยังไม่มีโลโก้ในระบบ</p>
             <p>เพิ่มไฟล์ที่ได้รับอนุญาตจริงเท่านั้น</p>
             <button type="button" className="kpi-button crm-users-primary" onClick={(event) => openCreate(event)}>
               เพิ่มโลโก้
-            </button>
-          </div>
-        ) : filtered.length === 0 ? (
-          <div className="crm-logo-empty">
-            <p>ไม่พบโลโก้ตามเงื่อนไข</p>
-            <p>ลองเปลี่ยนคำค้นหรือล้างตัวกรอง</p>
-            <button type="button" className="crm-users-secondary" onClick={clearFilters}>
-              ล้างตัวกรอง
             </button>
           </div>
         ) : (
@@ -461,7 +341,7 @@ export function ClientLogoManager({
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((row) => {
+                {records.map((row) => {
                   const host = websiteDisplayHost(row.websiteUrl);
                   const href = normalizeWebsiteUrl(row.websiteUrl);
                   const label = publicClientLabel(row);
