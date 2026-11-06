@@ -358,7 +358,7 @@ export function HotelTrainingPageEditor({
 
   const saveButtons = (
     <>
-      <button className="kpi-button" type="submit" name="intent" value="save" disabled={pending} style={{ background: "#a2dc25", color: "#1a3a02" }}>
+      <button className="kpi-button" type="submit" name="intent" value="save" disabled={pending} style={{ background: "#a2dc25", color: "#ffffff" }}>
         {pending ? hotelTrainingCmsNotice("pending") : "บันทึก / Save"}
       </button>
       <button className="crm-users-secondary" type="submit" name="intent" value="draft" disabled={pending}>
@@ -367,7 +367,7 @@ export function HotelTrainingPageEditor({
       <button className="crm-users-secondary" type="submit" name="intent" value="preview" disabled={pending}>
         บันทึกแล้วดูตัวอย่าง / Save and Preview
       </button>
-      <button className="kpi-button" type="submit" name="intent" value="publish" disabled={pending} style={{ background: "#a2dc25", color: "#1a3a02" }}>
+      <button className="kpi-button" type="submit" name="intent" value="publish" disabled={pending} style={{ background: "#a2dc25", color: "#ffffff" }}>
         เผยแพร่ / Publish
       </button>
       <button className="crm-users-secondary" type="submit" name="intent" value="unpublish" disabled={pending}>
@@ -400,7 +400,7 @@ export function HotelTrainingPageEditor({
             aria-selected={tab === item.id}
             aria-controls="hotel-training-cms-panel"
             className={tab === item.id ? "crm-cs-tab is-active" : "crm-cs-tab"}
-            style={tab === item.id ? { background: "#a2dc25", color: "#1a3a02", borderColor: "#a2dc25" } : undefined}
+            style={tab === item.id ? { background: "#a2dc25", color: "#ffffff", borderColor: "#a2dc25" } : undefined}
             onClick={() => setTab(item.id)}
           >
             {item.label}
@@ -1578,7 +1578,7 @@ export function HotelTrainingPageEditor({
               <button
                 type="button"
                 className="kpi-button"
-                style={{ background: "#a2dc25", color: "#1a3a02" }}
+                style={{ background: "#a2dc25", color: "#ffffff" }}
                 onClick={() => {
                   const next = dialog;
                   setDialog(null);

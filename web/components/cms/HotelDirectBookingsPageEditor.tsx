@@ -423,7 +423,7 @@ export function HotelDirectBookingsPageEditor({
             aria-selected={tab === item.id}
             aria-controls="direct-bookings-cms-panel"
             className={tab === item.id ? "is-active" : ""}
-            style={tab === item.id ? { background: "#a2dc25", color: "#1a3a02" } : undefined}
+            style={tab === item.id ? { background: "#a2dc25", color: "#ffffff" } : undefined}
             onClick={() => setTab(item.id)}
           >
             {item.label}

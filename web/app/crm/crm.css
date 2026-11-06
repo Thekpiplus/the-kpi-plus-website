@@ -12,7 +12,8 @@
   --admin-lime: #a2dc25;
   --admin-lime-soft: #eef8d2;
   --admin-yellow: #ebe722;
-  --admin-on-lime: #1a3a02;
+  --admin-on-lime: #ffffff;
+  --admin-on-lime-soft: #1a3a02;
   --admin-success: #2f9e63;
   --admin-warning: #c78911;
   --admin-danger: #d64545;
@@ -59,6 +60,7 @@
   --crm-lime-soft: var(--admin-lime-soft);
   --crm-yellow: var(--admin-yellow);
   --crm-on-lime: var(--admin-on-lime);
+  --crm-on-lime-soft: var(--admin-on-lime-soft);
   --crm-border: var(--admin-border);
   --crm-border-strong: #d2d7d0;
   --crm-top-bg: rgba(255, 255, 255, 0.96);
@@ -191,7 +193,8 @@ html[data-crm-theme="dark"] .crm-shell,
   --admin-lime: #a2dc25;
   --admin-lime-soft: rgba(162, 220, 37, 0.16);
   --admin-yellow: #ebe722;
-  --admin-on-lime: #1a3a02;
+  --admin-on-lime: #ffffff;
+  --admin-on-lime-soft: #1a3a02;
   --admin-success: #4ade80;
   --admin-warning: #fbbf24;
   --admin-danger: #f87171;
@@ -220,6 +223,7 @@ html[data-crm-theme="dark"] .crm-shell,
   --crm-lime-soft: var(--admin-lime-soft);
   --crm-yellow: var(--admin-yellow);
   --crm-on-lime: var(--admin-on-lime);
+  --crm-on-lime-soft: var(--admin-on-lime-soft);
   --crm-border: var(--admin-border);
   --crm-border-strong: #45566e;
   --crm-top-bg: rgba(18, 26, 36, 0.94);
@@ -1654,7 +1658,7 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
 
 .crm-shell-b2b .crm-rail-link.is-active,
 .crm-shell-b2b .crm-rail-link[aria-current="page"] {
-  color: #1a3a02;
+  color: #ffffff;
   box-shadow: 0 10px 24px rgba(162, 220, 37, 0.35);
 }
 
@@ -1694,7 +1698,7 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
 .crm-shell-hotel-marketing .crm-rail-link[aria-current="page"],
 .crm-shell-solutions .crm-rail-link.is-active,
 .crm-shell-solutions .crm-rail-link[aria-current="page"] {
-  color: #1a3a02;
+  color: #ffffff;
   box-shadow: 0 10px 24px rgba(162, 220, 37, 0.35);
 }
 
@@ -2395,7 +2399,7 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
   background:
     radial-gradient(320px 180px at 96% 0%, rgba(235, 231, 34, 0.28), transparent 58%),
     linear-gradient(135deg, rgba(162, 220, 37, 0.22) 0%, #ffffff 42%, rgba(235, 231, 34, 0.14) 100%);
-  color: var(--crm-on-lime);
+  color: var(--crm-on-lime-soft);
   box-shadow: var(--crm-shadow);
 }
 
@@ -2616,7 +2620,7 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
 
 .crm-dash-kicker {
   margin: 0;
-  color: var(--crm-on-lime);
+  color: var(--crm-on-lime-soft);
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.1em;
@@ -2628,7 +2632,7 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
   border-radius: 999px;
   border: 1px solid rgba(162, 220, 37, 0.45);
   background: rgba(162, 220, 37, 0.16);
-  color: var(--crm-on-lime);
+  color: var(--crm-on-lime-soft);
   font-size: 0.72rem;
   font-weight: 700;
 }
@@ -2641,7 +2645,7 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
   margin-left: 0.4rem;
   padding: 0 0.35rem;
   border-radius: 999px;
-  background: var(--crm-on-lime);
+  background: var(--crm-on-lime-soft);
   color: var(--crm-lime);
   font-size: 0.72rem;
   font-weight: 800;
@@ -2754,7 +2758,7 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
   border-radius: var(--admin-radius-md);
   font-size: 1.05rem;
   background: var(--crm-lime-soft);
-  color: var(--crm-on-lime);
+  color: var(--crm-on-lime-soft);
 }
 
 .crm-dash-module h3 {
@@ -2812,7 +2816,7 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
 
 .crm-dash-module-leads .crm-dash-module-icon {
   background: rgba(162, 220, 37, 0.28);
-  color: var(--crm-on-lime);
+  color: var(--crm-on-lime-soft);
 }
 
 .crm-dash-module-partners .crm-dash-module-icon {
@@ -2842,7 +2846,7 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
 .crm-dash-module-training .crm-dash-module-icon,
 .crm-dash-module-solutions .crm-dash-module-icon {
   background: rgba(162, 220, 37, 0.22);
-  color: var(--crm-on-lime);
+  color: var(--crm-on-lime-soft);
 }
 
 .crm-dash-bottom {
@@ -2991,7 +2995,7 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
   padding: 0.35rem 0.75rem;
   border-radius: 0.65rem;
   background: var(--crm-lime-soft);
-  color: var(--crm-on-lime);
+  color: var(--crm-on-lime-soft);
   font-size: 0.8rem;
   font-weight: 800;
   text-decoration: none;
@@ -3140,7 +3144,7 @@ html[data-crm-theme="dark"] .crm-shell-app .crm-app-search,
   gap: 0.55rem;
 }
 
-/* Admin list primary CTAs — lime fill + dark green text (readable on brand) */
+/* Admin primary CTAs — solid lime + white text for clearer contrast */
 .crm-shell .kpi-button,
 .crm-shell .crm-users-primary,
 .crm-modal .kpi-button {
@@ -3155,9 +3159,15 @@ html[data-crm-theme="dark"] .crm-shell-app .crm-app-search,
 .crm-shell .kpi-button:hover,
 .crm-shell .crm-users-primary:hover,
 .crm-modal .kpi-button:hover {
-  background: color-mix(in srgb, var(--crm-lime) 88%, #1a3a02);
+  background: color-mix(in srgb, var(--crm-lime) 86%, #0f2a01);
   color: var(--crm-on-lime);
   filter: none;
+}
+
+.crm-shell .kpi-button svg,
+.crm-shell .crm-users-primary svg,
+.crm-modal .kpi-button svg {
+  color: var(--crm-on-lime);
 }
 
 .crm-shell .crm-users-secondary,
@@ -3199,7 +3209,7 @@ html[data-crm-theme="dark"] .crm-shell-app .crm-app-search,
   margin-bottom: 0.25rem;
   border-radius: 999px;
   background: var(--crm-lime-soft);
-  color: var(--crm-on-lime);
+  color: var(--crm-on-lime-soft);
   font-size: 1.1rem;
 }
 
@@ -3264,7 +3274,7 @@ html[data-crm-theme="dark"] .crm-shell-app .crm-app-search,
 }
 
 .crm-status.is-lime {
-  background: var(--crm-lime-soft);
+  background: var(--crm-lime);
   color: var(--crm-on-lime);
 }
 
@@ -3284,9 +3294,9 @@ html[data-crm-theme="dark"] .crm-shell-app .crm-app-search,
 }
 
 .crm-role-badge.is-superadmin {
-  border-color: color-mix(in srgb, #a2dc25 55%, #1a3a02);
+  border-color: color-mix(in srgb, #a2dc25 55%, #0f2a01);
   background: #a2dc25;
-  color: #1a3a02;
+  color: var(--crm-on-lime);
 }
 
 .crm-role-badge.is-admin {
@@ -3321,9 +3331,9 @@ html[data-crm-theme="dark"] .crm-shell-app .crm-app-search,
 
 html[data-crm-theme="dark"] .crm-role-badge.is-superadmin,
 .crm-shell[data-theme="dark"] .crm-role-badge.is-superadmin {
-  border-color: color-mix(in srgb, #a2dc25 50%, #1a3a02);
+  border-color: color-mix(in srgb, #a2dc25 50%, #0f2a01);
   background: #a2dc25;
-  color: #1a3a02;
+  color: var(--crm-on-lime);
 }
 
 html[data-crm-theme="dark"] .crm-role-badge.is-admin,
@@ -3379,7 +3389,7 @@ html[data-crm-theme="dark"] .crm-role-badge.is-partner,
   border: 1px solid rgba(162, 220, 37, 0.45);
   border-radius: 999px;
   background: var(--crm-lime-soft);
-  color: var(--crm-on-lime);
+  color: var(--crm-on-lime-soft);
   font-size: 0.75rem;
   font-weight: 700;
 }
@@ -3540,24 +3550,24 @@ html[data-crm-theme="dark"] .crm-role-badge.is-partner,
 .crm-partners-tabs a:hover,
 .crm-partners-tabs a.is-active {
   background: var(--crm-lime-soft);
-  color: var(--crm-on-lime);
+  color: var(--crm-on-lime-soft);
 }
 
 .crm-leads-bar .crm-leads-tabs a.is-active,
 .crm-leads-bar .crm-leads-tabs a[aria-current="page"],
 .crm-partners-bar .crm-partners-tabs a.is-active,
 .crm-partners-bar .crm-partners-tabs a[aria-current="page"] {
-  background: color-mix(in srgb, var(--crm-lime) 22%, transparent);
+  background: var(--crm-lime);
   color: var(--crm-on-lime);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--crm-lime) 55%, transparent);
+  box-shadow: none;
   font-weight: 800;
 }
 
 .crm-leads-bar .crm-leads-tabs a.is-active span,
 .crm-partners-bar .crm-partners-tabs a.is-active span,
 .crm-leads-tabs a.is-active span {
-  background: var(--crm-on-lime);
-  color: var(--crm-lime);
+  background: rgba(255, 255, 255, 0.28);
+  color: var(--crm-on-lime);
 }
 
 .crm-field:focus,
@@ -4586,14 +4596,14 @@ html[data-crm-theme="dark"] .crm-dash-panel,
 .crm-users-roles a[aria-current="page"] {
   border-color: color-mix(in srgb, var(--crm-lime) 55%, var(--crm-border));
   background: color-mix(in srgb, var(--crm-lime) 18%, transparent);
-  color: var(--crm-on-lime);
+  color: var(--crm-on-lime-soft);
   font-weight: 800;
   box-shadow: inset 0 -2px 0 var(--crm-lime);
 }
 
 .crm-users-roles a.is-active span,
 .crm-users-roles a[aria-current="page"] span {
-  background: var(--crm-on-lime);
+  background: var(--crm-on-lime-soft);
   color: var(--crm-lime);
 }
 
@@ -4883,7 +4893,7 @@ html[data-crm-theme="dark"] .crm-dash-panel,
 .crm-users-icon-btn:hover {
   border-color: color-mix(in srgb, var(--crm-lime) 45%, var(--crm-border));
   background: var(--crm-lime-soft);
-  color: var(--crm-on-lime);
+  color: var(--crm-on-lime-soft);
 }
 
 .crm-users-icon-btn.is-danger:hover {
@@ -5446,7 +5456,8 @@ html[data-crm-theme="dark"] .crm-users-avatar,
   --crm-field-bg: #ffffff;
   --crm-accent: #0a2472;
   --crm-lime: #a2dc25;
-  --crm-on-lime: #1a3a02;
+  --crm-on-lime: #ffffff;
+  --crm-on-lime-soft: #1a3a02;
   --crm-lime-soft: #eef8d2;
   --crm-yellow: #ebe722;
   --crm-font: "Sarabun", "Noto Sans Thai", Tahoma, sans-serif;
@@ -5473,7 +5484,8 @@ html[data-crm-theme="dark"] .crm-modal {
   --crm-field-bg: #121c2a;
   --crm-accent: #9ec1ff;
   --crm-lime: #a2dc25;
-  --crm-on-lime: #1a3a02;
+  --crm-on-lime: #ffffff;
+  --crm-on-lime-soft: #1a3a02;
   --crm-lime-soft: rgba(162, 220, 37, 0.14);
   --crm-yellow: #ebe722;
   --crm-font: "Sarabun", "Noto Sans Thai", Tahoma, sans-serif;
@@ -5501,8 +5513,10 @@ html[data-crm-theme="dark"] .crm-modal {
   box-shadow: 0 24px 60px rgba(6, 13, 43, 0.28);
 }
 
-/* New user popup — compact, no scrollbar */
+/* New user popup — compact, no scrollbar, balanced inset */
 .crm-modal-panel-user {
+  --crm-modal-inset: 1.35rem;
+  --crm-modal-accent: 0.28rem;
   display: flex;
   flex-direction: column;
   width: min(100%, 54rem);
@@ -5529,7 +5543,8 @@ html[data-crm-theme="dark"] .crm-modal {
   position: relative;
   align-items: flex-start;
   margin: 0;
-  padding: 1.05rem 1.25rem 0.95rem;
+  padding: var(--crm-modal-inset);
+  padding-left: calc(var(--crm-modal-inset) + var(--crm-modal-accent));
   border-bottom: 1px solid var(--crm-border);
   background:
     radial-gradient(220px 120px at 100% 0%, rgba(235, 231, 34, 0.28), transparent 60%),
@@ -5542,14 +5557,14 @@ html[data-crm-theme="dark"] .crm-modal {
   left: 0;
   top: 0;
   bottom: 0;
-  width: 0.28rem;
+  width: var(--crm-modal-accent);
   background: linear-gradient(180deg, var(--crm-lime) 0%, var(--crm-yellow) 100%);
   border-radius: 1.35rem 0 0 0;
   pointer-events: none;
 }
 
 .crm-modal-head-user .crm-modal-eyebrow {
-  color: var(--crm-on-lime);
+  color: var(--crm-on-lime-soft);
 }
 
 .crm-modal-head-user .crm-modal-title {
@@ -5567,8 +5582,9 @@ html[data-crm-theme="dark"] .crm-modal {
 
 .crm-modal-form-user {
   display: grid;
-  gap: 0.7rem;
-  padding: 0.9rem 1.25rem 1.05rem;
+  gap: 0.85rem;
+  padding: var(--crm-modal-inset);
+  padding-left: calc(var(--crm-modal-inset) + var(--crm-modal-accent));
   overflow: hidden;
   min-height: 0;
 }
@@ -5589,8 +5605,12 @@ html[data-crm-theme="dark"] .crm-modal {
 }
 
 .crm-modal-panel-user .crm-modal-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.45rem 0.65rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem 0.85rem;
+}
+
+.crm-modal-panel-user .crm-modal-span-2 {
+  grid-column: 1 / -1;
 }
 
 .crm-modal-panel-user .crm-modal-field {
@@ -5649,7 +5669,7 @@ html[data-crm-theme="dark"] .crm-modal {
 .crm-modal-panel-user .crm-modal-check:has(input:checked) {
   border-color: color-mix(in srgb, var(--crm-lime) 65%, var(--crm-border));
   background: color-mix(in srgb, var(--crm-lime) 18%, var(--crm-surface));
-  color: var(--crm-on-lime);
+  color: var(--crm-on-lime-soft);
 }
 
 .crm-modal-panel-user .crm-modal-check input {
@@ -5692,10 +5712,10 @@ html[data-crm-theme="dark"] .crm-modal {
 
 @media (max-width: 56rem) {
   .crm-modal-panel-user {
+    --crm-modal-inset: 1.2rem;
     width: min(100%, 46rem);
   }
 
-  .crm-modal-panel-user .crm-modal-grid,
   .crm-modal-panel-user .crm-modal-module-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -5703,23 +5723,23 @@ html[data-crm-theme="dark"] .crm-modal {
 
 @media (max-width: 40rem) {
   .crm-modal-panel-user {
+    --crm-modal-inset: 1.05rem;
     width: min(100%, 100%);
     max-height: min(96vh, 100%);
     border-radius: 1.1rem;
   }
 
-  .crm-modal-head-user {
-    padding: 0.95rem 1rem 0.85rem;
-  }
-
   .crm-modal-form-user {
-    padding: 0.8rem 1rem 0.95rem;
-    gap: 0.6rem;
+    gap: 0.75rem;
   }
 
   .crm-modal-panel-user .crm-modal-grid,
   .crm-modal-panel-user .crm-modal-module-grid {
     grid-template-columns: 1fr;
+  }
+
+  .crm-modal-panel-user .crm-modal-span-2 {
+    grid-column: auto;
   }
 
   .crm-modal-panel-user .crm-modal-actions {
@@ -5997,7 +6017,7 @@ html[data-crm-theme="dark"] .crm-modal-head-user .crm-modal-eyebrow,
 }
 
 .crm-password-toggle[aria-pressed="true"] {
-  color: var(--crm-on-lime);
+  color: var(--crm-on-lime-soft);
   background: color-mix(in srgb, var(--crm-lime) 18%, transparent);
 }
 
@@ -6190,7 +6210,7 @@ html[data-crm-theme="dark"] .crm-modal-panel,
 .crm-logs-tabs a.is-active,
 .crm-logs-tabs a:hover {
   background: var(--crm-lime-soft);
-  color: var(--crm-on-lime);
+  color: var(--crm-on-lime-soft);
 }
 
 .crm-logs-tabs a.is-active {
@@ -6199,8 +6219,8 @@ html[data-crm-theme="dark"] .crm-modal-panel,
 }
 
 .crm-logs-tabs a.is-active span {
-  background: var(--crm-on-lime);
-  color: var(--crm-lime);
+  background: rgba(255, 255, 255, 0.28);
+  color: var(--crm-on-lime);
 }
 
 .crm-logs-search {
@@ -6793,14 +6813,14 @@ a.crm-leads-stat:focus-visible {
 .crm-leads-tabs a:hover,
 .crm-leads-tabs a.is-active {
   background: var(--crm-lime-soft);
-  color: var(--crm-on-lime);
+  color: var(--crm-on-lime-soft);
 }
 
 .crm-leads-bar .crm-leads-tabs a.is-active,
 .crm-leads-bar .crm-leads-tabs a[aria-current="page"] {
-  background: color-mix(in srgb, var(--crm-lime) 22%, transparent);
+  background: var(--crm-lime);
   color: var(--crm-on-lime);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--crm-lime) 55%, transparent);
+  box-shadow: none;
   font-weight: 800;
 }
 
@@ -6817,13 +6837,13 @@ a.crm-leads-stat:focus-visible {
 }
 
 .crm-leads-tabs a.is-active span {
-  background: var(--crm-on-lime);
-  color: var(--crm-lime);
+  background: rgba(255, 255, 255, 0.28);
+  color: var(--crm-on-lime);
 }
 
 .crm-leads-bar .crm-leads-tabs a.is-active span {
-  background: var(--crm-on-lime);
-  color: var(--crm-lime);
+  background: rgba(255, 255, 255, 0.28);
+  color: var(--crm-on-lime);
 }
 
 .crm-leads-filters {
@@ -7284,9 +7304,9 @@ a.crm-leads-stat:focus-visible {
 
 .crm-pipe-switch a.is-active,
 .crm-pipe-switch a[aria-current="page"] {
-  background: color-mix(in srgb, var(--crm-lime) 22%, transparent);
+  background: var(--crm-lime);
   color: var(--crm-on-lime);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--crm-lime) 55%, transparent);
+  box-shadow: none;
 }
 
 .crm-pipe-switch a:focus-visible {
@@ -8450,15 +8470,15 @@ html[data-crm-theme="dark"] .crm-pipe-switch a.is-active,
 html[data-crm-theme="dark"] .crm-pipe-switch a[aria-current="page"],
 .crm-shell[data-theme="dark"] .crm-pipe-switch a.is-active,
 .crm-shell[data-theme="dark"] .crm-pipe-switch a[aria-current="page"] {
-  background: color-mix(in srgb, var(--crm-lime) 18%, transparent);
-  color: var(--crm-lime);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--crm-lime) 45%, transparent);
+  background: var(--crm-lime);
+  color: var(--crm-on-lime);
+  box-shadow: none;
 }
 
 html[data-crm-theme="dark"] .crm-pipe-cal-day b,
 .crm-shell[data-theme="dark"] .crm-pipe-cal-day b {
   background: color-mix(in srgb, var(--crm-lime) 22%, transparent);
-  color: var(--crm-on-lime);
+  color: var(--crm-on-lime-soft);
 }
 
 html[data-crm-theme="dark"] .crm-pipe-steps b,
@@ -8927,7 +8947,7 @@ html[data-crm-theme="dark"] .crm-sales-toolbar .crm-leads-quick,
 .crm-partners-tabs a:hover {
   background: var(--crm-lime-soft);
   border-color: color-mix(in srgb, var(--crm-lime) 40%, var(--crm-border));
-  color: var(--crm-on-lime);
+  color: var(--crm-on-lime-soft);
 }
 
 .crm-partners-tabs a.is-active {
@@ -8937,8 +8957,8 @@ html[data-crm-theme="dark"] .crm-sales-toolbar .crm-leads-quick,
 }
 
 .crm-partners-tabs a.is-active span {
-  background: var(--crm-on-lime);
-  color: var(--crm-lime);
+  background: rgba(255, 255, 255, 0.28);
+  color: var(--crm-on-lime);
 }
 
 .crm-partners-queues {

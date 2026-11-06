@@ -209,7 +209,10 @@
 }
 
 .service-map-layer--action .service-map-title,
-.service-map-layer--action .service-map-body,
+.service-map-layer--action .service-map-body {
+  color: #ffffff;
+}
+
 .service-map-layer--review .service-map-title,
 .service-map-layer--review .service-map-body {
   color: #1a3a02;
@@ -312,6 +315,12 @@
 .decision-flow-node--3 {
   background: #a2dc25;
   border-color: transparent;
+  color: #ffffff;
+}
+
+.decision-flow-node--3 .decision-flow-node__num,
+.decision-flow-node--3 .decision-flow-node__out {
+  color: #ffffff;
 }
 
 .decision-flow-node--4 {

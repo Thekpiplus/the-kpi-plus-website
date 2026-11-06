@@ -26,7 +26,7 @@
 .kpi-tech .kpi-button,
 .kpi-tech .kpi-sticky-cta .kpi-button {
   background: #a2dc25 !important;
-  color: #1a3a02 !important;
+  color: #ffffff !important;
 }
 
 .hai-visual {
@@ -441,7 +441,7 @@
 
 .hai-status.is-lime {
   background: #a2dc25;
-  color: #0b1f33;
+  color: #ffffff;
 }
 
 .kpi-tech-need-grid,
@@ -1234,7 +1234,7 @@
 }
 
 .hai-scorecard-mock thead th.is-pilot {
-  color: #0b1f33;
+  color: #ffffff;
   background: #a2dc25;
   border-radius: 0.3rem;
 }
@@ -2195,7 +2195,7 @@
 
 .kpi-tech-enquiry .kpi-button {
   background: #a2dc25 !important;
-  color: #1a3a02 !important;
+  color: #ffffff !important;
 }
 
 .hai-enquiry-visual {

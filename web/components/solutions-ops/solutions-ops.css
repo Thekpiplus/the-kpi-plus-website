@@ -12,12 +12,12 @@
   font-family: Montserrat, Sarabun, "Noto Sans Thai", Tahoma, Arial, sans-serif;
 }
 
-/* Save buttons: Lime gradient, Charcoal text (never white on Lime). */
+/* Save buttons: solid lime + white text for clearer contrast. */
 .sol-ops .kpi-button.b2b-save,
 .sol-ops .b2b-save,
 .sol-ops-page .kpi-button.b2b-save {
-  background: linear-gradient(135deg, #e6e81f, #a3ce39);
-  color: #3b3b3b;
+  background: #a2dc25;
+  color: #ffffff;
   font-family: Montserrat, Sarabun, "Noto Sans Thai", Tahoma, Arial, sans-serif;
   font-weight: 700;
 }

@@ -582,7 +582,7 @@ export async function IndependentHotelView({
             <a
               href={closerHref}
               className="kpi-button kpi-independent-closer-cta"
-              style={{ background: "#a2dc25", color: "#1a3a02" }}
+              style={{ background: "#a2dc25", color: "#ffffff" }}
             >
               {fromCms && cms.related.closerCta.trim() ? cms.related.closerCta : t.closerCta} <span aria-hidden="true">↗</span>
             </a>

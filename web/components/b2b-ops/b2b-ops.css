@@ -6,13 +6,13 @@
 
 .b2b-save {
   background: #a2dc25 !important;
-  color: #1a3a02 !important;
+  color: #ffffff !important;
 }
 
 .b2b-save:hover,
 .b2b-save:focus-visible {
   background: #8fc81a !important;
-  color: #1a3a02 !important;
+  color: #ffffff !important;
 }
 
 .b2b-savebar {
@@ -58,7 +58,7 @@
 .b2b-chip.is-active {
   background: #a2dc25;
   border-color: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
 }
 
 .b2b-status {
@@ -181,7 +181,7 @@
   padding: 0.1rem 0.4rem;
   border-radius: 999px;
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
   font-size: 0.75rem;
   font-weight: 800;
 }

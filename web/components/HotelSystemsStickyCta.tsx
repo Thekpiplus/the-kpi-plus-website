@@ -33,7 +33,7 @@ export function HotelSystemsStickyCta({ label }: { label: string }) {
 
   return (
     <div className="kpi-sticky-cta lg:hidden">
-      <a href="#hotel-systems-enquiry" className="kpi-button w-full bg-[#a2dc25] text-[#1a3a02]">
+      <a href="#hotel-systems-enquiry" className="kpi-button w-full bg-[#a2dc25] text-[#ffffff]">
         {label}
       </a>
     </div>

@@ -50,7 +50,7 @@ const TABS = [
 
 type Tab = (typeof TABS)[number]["id"];
 
-const LIME_BUTTON = { background: "#a2dc25", color: "#1a3a02" } as const;
+const LIME_BUTTON = { background: "#a2dc25", color: "#ffffff" } as const;
 const LINK_LIST_ID = "solutions-index-service-links";
 
 function isTab(value: string | undefined): value is Tab {

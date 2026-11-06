@@ -149,7 +149,7 @@
   padding: 0.2rem 0.55rem;
   border-radius: 999px;
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.02em;
@@ -267,7 +267,7 @@
   padding: 0.35rem 0.7rem;
   border-radius: 999px;
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
   font-size: 0.72rem;
   font-weight: 700;
 }
@@ -387,7 +387,7 @@
   padding: 0.12rem 0.45rem;
   border-radius: 999px;
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
   font-size: 0.58rem;
   font-weight: 700;
 }
@@ -543,7 +543,7 @@
   padding: 0.15rem 0.5rem;
   border-radius: 999px;
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
   font-size: 0.72rem;
   font-weight: 700;
 }
@@ -566,7 +566,7 @@
 
 .web-kpi-status.is-approved {
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
 }
 
 .web-measure {
@@ -904,7 +904,7 @@
   padding: 0.18rem 0.5rem;
   border-radius: 999px;
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
   font-size: 0.7rem;
   font-weight: 700;
 }
@@ -1148,7 +1148,7 @@
   padding: 0.18rem 0.5rem;
   border-radius: 999px;
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
   font-size: 0.7rem;
   font-weight: 700;
 }
@@ -1481,7 +1481,7 @@
   padding: 0.18rem 0.5rem;
   border-radius: 999px;
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
   font-size: 0.7rem;
   font-weight: 700;
 }
@@ -1743,7 +1743,7 @@
   padding: 0.18rem 0.5rem;
   border-radius: 999px;
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
   font-size: 0.7rem;
   font-weight: 700;
 }
@@ -1952,7 +1952,7 @@
   padding: 0.18rem 0.5rem;
   border-radius: 999px;
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
   font-size: 0.7rem;
   font-weight: 700;
 }
@@ -2349,7 +2349,7 @@
 .kpi-website .kpi-website-enquiry-submit,
 .kpi-website .kpi-sticky-cta .kpi-button {
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
 }
 
 .kpi-website .kpi-website-enquiry .kpi-button:hover,
@@ -2359,7 +2359,7 @@
 .kpi-website .kpi-sticky-cta .kpi-button:hover,
 .kpi-website .kpi-sticky-cta .kpi-button:active {
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
   filter: none;
 }
 

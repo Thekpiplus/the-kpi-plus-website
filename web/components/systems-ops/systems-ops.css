@@ -86,7 +86,7 @@
 .seo-ops .kpi-button.b2b-save,
 .web-ops .kpi-button.b2b-save {
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
 }
 
 .seo-ops .b2b-status.is-draft,
@@ -170,7 +170,7 @@
   font-weight: 800;
   letter-spacing: 0.01em;
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
 }
 
 .ads-progress-badge.is-blocked {
@@ -191,7 +191,7 @@
 .ads-progress-badge.is-ready_for_review,
 .ads-progress-badge.is-completed {
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
 }
 
 .sys-dept-subtasks {
@@ -240,7 +240,7 @@
 .web-ops .b2b-tab.is-active,
 .web-ops .ads-form-tabs button.is-active {
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
 }
 
 @media (min-width: 48rem) {

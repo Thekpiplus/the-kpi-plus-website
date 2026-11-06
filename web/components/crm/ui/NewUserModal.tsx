@@ -134,11 +134,6 @@ export function NewUserModalProvider({
                     <input className="crm-field" type="email" name="email" required />
                   </label>
                   <label className="crm-modal-field">
-                    เบอร์โทร
-                    <input className="crm-field" name="phone" required />
-                  </label>
-                  <PasswordField name="password" label="รหัสผ่าน" />
-                  <label className="crm-modal-field">
                     บทบาท (User Role)
                     <select className="crm-select" name="role" defaultValue="user" required>
                       {roles.map((role) => (
@@ -148,6 +143,7 @@ export function NewUserModalProvider({
                       ))}
                     </select>
                   </label>
+                  <PasswordField name="password" label="รหัสผ่าน" className="crm-modal-span-2" />
                 </div>
               </section>
 

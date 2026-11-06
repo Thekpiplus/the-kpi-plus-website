@@ -73,7 +73,7 @@
 .seo-ops .b2b-save,
 .seo-ops .kpi-button.b2b-save {
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
 }
 
 .seo-ops .b2b-status.is-draft,
@@ -148,7 +148,7 @@
 .ads-progress-badge.is-completed,
 .seo-ops .b2b-status.is-completed {
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
 }
 
 .ads-form-actions,
@@ -239,7 +239,7 @@
 .ads-form-tabs button.is-active {
   background: #a2dc25;
   border-color: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
 }
 
 @media (max-width: 48rem) {

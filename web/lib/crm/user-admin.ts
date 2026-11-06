@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { canManageUsers, modulesFromForm, parseModules } from "./modules";
 import { requireUser } from "./auth";
 import { prisma } from "./db";
+import { createHash, randomBytes } from "node:crypto";
 import { hashSecret, normalizePhone } from "./security";
 import {
   assignableInternalRoles,
@@ -60,13 +61,22 @@ function resolveAssignableRole(actorRole: string, requested: string, fallback: I
   return allowed.includes(fallback) ? fallback : allowed[0] ?? "user";
 }
 
+/** Unique numeric placeholder — User.phone is required+unique in DB but not collected on create. */
+function allocateStaffPhone() {
+  const digest = createHash("sha256").update(randomBytes(16)).digest("hex");
+  const nine = BigInt(`0x${digest.slice(0, 12)}`).toString().padStart(9, "0").slice(-9);
+  return `66${nine}`;
+}
+
 export async function createStaffUser(formData: FormData) {
   const actor = await requireUsersAdmin();
-  const { name, email, username, phone, roleRaw, modules, selected } = staffPayload(formData);
+  const { name, email, username, roleRaw, modules, selected } = staffPayload(formData);
   const password = String(formData.get("password") ?? "");
   const role = resolveAssignableRole(actor.role, roleRaw, "user");
+  let phone = normalizePhone(String(formData.get("phone") ?? "").trim());
+  if (!phone) phone = allocateStaffPhone();
 
-  if (!name || !email.includes("@") || !username || !isValidUsername(username) || !phone || password.length < 4) {
+  if (!name || !email.includes("@") || !username || !isValidUsername(username) || password.length < 4) {
     redirect("/crm/users?new=1&error=invalid");
   }
   if (!isFullAccessRole(role) && !selected.length) {

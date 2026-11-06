@@ -877,7 +877,7 @@ form .kpi-button {
 .kpi-revenue-sticky .kpi-button {
   border-radius: 0.5625rem;
   background: #A2DC25;
-  color: #1A3A02;
+  color: #ffffff;
   box-shadow: none;
 }
 
@@ -898,7 +898,7 @@ form .kpi-button {
 .kpi-revenue-sticky .kpi-button:hover,
 .kpi-revenue-sticky .kpi-button:active {
   background: #93c91f;
-  color: #1A3A02;
+  color: #ffffff;
   box-shadow: none;
 }
 
@@ -1082,13 +1082,13 @@ form .kpi-button {
   border-radius: 8px;
   box-shadow: none;
   background: #A2DC25;
-  color: #1A3A02;
+  color: #ffffff;
 }
 
 .kpi-reservations-hero .kpi-button:hover,
 .kpi-reservations-hero .kpi-button:active {
   background: #8fc41c;
-  color: #1A3A02;
+  color: #ffffff;
   box-shadow: none;
   filter: none;
 }
@@ -1350,14 +1350,14 @@ form .kpi-button {
 .kpi-b2b-hero .kpi-button {
   border-radius: 8px;
   background: #A2DC25;
-  color: #1A3A02;
+  color: #ffffff;
   box-shadow: none;
 }
 
 .kpi-b2b-hero .kpi-button:hover,
 .kpi-b2b-hero .kpi-button:active {
   background: #93c91f;
-  color: #1A3A02;
+  color: #ffffff;
   box-shadow: none;
   filter: none;
   transform: none;
@@ -1453,7 +1453,7 @@ form .kpi-button {
 .kpi-b2b-page .kpi-button,
 .kpi-b2b-page .kpi-sticky-cta .kpi-button {
   background: #A2DC25;
-  color: #1A3A02;
+  color: #ffffff;
 }
 
 .kpi-shell .kpi-b2b-page .kpi-faq-home {
@@ -2141,7 +2141,7 @@ form .kpi-button {
   height: 1.75rem;
   border-radius: 999px;
   background: #a2dc25;
-  color: #0b1f33;
+  color: #ffffff;
   font-size: 0.68rem;
   font-weight: 800;
 }
@@ -2386,7 +2386,7 @@ form .kpi-button {
   padding: 0.22rem 0.55rem;
   border-radius: 999px;
   background: #a2dc25;
-  color: #0b1f33;
+  color: #ffffff;
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.02em;
@@ -2640,7 +2640,7 @@ form .kpi-button {
   height: 1.75rem;
   border-radius: 999px;
   background: #a2dc25;
-  color: #0b1f33;
+  color: #ffffff;
   font-size: 0.68rem;
   font-weight: 800;
 }
@@ -3414,7 +3414,7 @@ form .kpi-button {
   padding: 0.18rem 0.5rem;
   border-radius: 999px;
   background: #a2dc25;
-  color: #0b1f33;
+  color: #ffffff;
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.04em;
@@ -4455,13 +4455,13 @@ form .kpi-button {
   border-radius: 9px;
   box-shadow: none;
   background: #A2DC25;
-  color: #1A3A02;
+  color: #ffffff;
 }
 
 .kpi-reservations-help .kpi-reservations-help-cta:hover,
 .kpi-reservations-help .kpi-reservations-help-cta:active {
   background: #8fc41c;
-  color: #1A3A02;
+  color: #ffffff;
   box-shadow: none;
   transform: none;
   filter: none;
@@ -4789,7 +4789,7 @@ form .kpi-button {
   height: 1.85rem;
   border-radius: 999px;
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
   font-size: 0.68rem;
   font-weight: 800;
 }
@@ -7604,13 +7604,13 @@ a.kpi-revenue-related-item {
   box-shadow: none;
   font-weight: 600;
   background: #A2DC25;
-  color: #1A3A02;
+  color: #ffffff;
 }
 
 .kpi-reservations-enquiry .kpi-button:hover,
 .kpi-reservations-enquiry .kpi-button:active {
   background: #8fc41c;
-  color: #1A3A02;
+  color: #ffffff;
   transform: none;
   box-shadow: none;
   filter: none;
@@ -7618,13 +7618,13 @@ a.kpi-revenue-related-item {
 
 .kpi-reservations-sticky .kpi-button {
   background: #A2DC25;
-  color: #1A3A02;
+  color: #ffffff;
 }
 
 .kpi-reservations-sticky .kpi-button:hover,
 .kpi-reservations-sticky .kpi-button:active {
   background: #8fc41c;
-  color: #1A3A02;
+  color: #ffffff;
 }
 
 .kpi-reservations-enquiry-reply {
@@ -7975,7 +7975,7 @@ a.kpi-revenue-related-item {
   box-shadow: none;
   font-weight: 600;
   background: #A2DC25;
-  color: #1A3A02;
+  color: #ffffff;
 }
 
 .kpi-b2b-sticky-cta .kpi-button {
@@ -7989,7 +7989,7 @@ a.kpi-revenue-related-item {
 .kpi-b2b-sticky-cta .kpi-button:hover,
 .kpi-b2b-sticky-cta .kpi-button:active {
   background: #93c91f;
-  color: #1A3A02;
+  color: #ffffff;
   box-shadow: none;
   filter: none;
   transform: none;
@@ -7998,7 +7998,7 @@ a.kpi-revenue-related-item {
 .kpi-b2b-enquiry .kpi-button:disabled,
 .kpi-b2b-enquiry-submit:disabled {
   background: #A2DC25;
-  color: #1A3A02;
+  color: #ffffff;
 }
 
 .kpi-b2b-enquiry-status {
@@ -8412,7 +8412,7 @@ a.kpi-revenue-related-item {
   margin-top: 0.95rem;
   border-radius: 9px;
   background: #A2DC25;
-  color: #1A3A02;
+  color: #ffffff;
   box-shadow: none;
   font-weight: 600;
 }
@@ -8428,7 +8428,7 @@ a.kpi-revenue-related-item {
 .kpi-google-ads-sticky .kpi-button:hover,
 .kpi-google-ads-sticky .kpi-button:active {
   background: #b6e63a;
-  color: #1A3A02;
+  color: #ffffff;
   box-shadow: none;
   filter: none;
   transform: none;
@@ -8438,7 +8438,7 @@ a.kpi-revenue-related-item {
 .kpi-google-ads-enquiry-submit:disabled,
 .kpi-google-ads-sticky .kpi-button:disabled {
   background: #A2DC25;
-  color: #1A3A02;
+  color: #ffffff;
 }
 
 .kpi-google-ads-enquiry-status {
@@ -8849,7 +8849,7 @@ a.kpi-revenue-related-item {
   margin-top: 0.95rem;
   border-radius: 9px;
   background: #A2DC25;
-  color: #1A3A02;
+  color: #ffffff;
   box-shadow: none;
   font-weight: 600;
 }
@@ -8865,7 +8865,7 @@ a.kpi-revenue-related-item {
 .kpi-search-enquiry-sticky .kpi-button:hover,
 .kpi-search-enquiry-sticky .kpi-button:active {
   background: #b6e63a;
-  color: #1A3A02;
+  color: #ffffff;
   box-shadow: none;
   filter: none;
   transform: none;
@@ -8875,7 +8875,7 @@ a.kpi-revenue-related-item {
 .kpi-search-enquiry-submit:disabled,
 .kpi-search-enquiry-sticky .kpi-button:disabled {
   background: #A2DC25;
-  color: #1A3A02;
+  color: #ffffff;
 }
 
 .kpi-search-enquiry-status {
@@ -9301,7 +9301,7 @@ a.kpi-revenue-related-item {
 .kpi-website .kpi-website-enquiry .kpi-button,
 .kpi-website .kpi-website-enquiry-submit {
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
 }
 
 .kpi-website .kpi-website-enquiry .kpi-button:hover,
@@ -9309,7 +9309,7 @@ a.kpi-revenue-related-item {
 .kpi-website .kpi-website-enquiry-submit:hover,
 .kpi-website .kpi-website-enquiry-submit:active {
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
 }
 
 .kpi-systems-enquiry.kpi-website-enquiry .kpi-button,
@@ -9317,7 +9317,7 @@ a.kpi-revenue-related-item {
 .kpi-systems .kpi-systems-closer-cta,
 .kpi-systems .kpi-sticky-cta .kpi-button {
   background: #a2dc25 !important;
-  color: #1a3a02 !important;
+  color: #ffffff !important;
 }
 
 .kpi-systems-enquiry.kpi-website-enquiry .kpi-button:hover,
@@ -9329,7 +9329,7 @@ a.kpi-revenue-related-item {
 .kpi-systems .kpi-sticky-cta .kpi-button:hover,
 .kpi-systems .kpi-sticky-cta .kpi-button:active {
   background: #a2dc25 !important;
-  color: #1a3a02 !important;
+  color: #ffffff !important;
   filter: none;
   transform: none;
 }
@@ -9724,7 +9724,7 @@ a.kpi-revenue-related-item {
   margin-top: 0.95rem;
   border-radius: 9px;
   background: #A2DC25;
-  color: #1A3A02;
+  color: #ffffff;
   box-shadow: none;
   font-weight: 600;
 }
@@ -9740,7 +9740,7 @@ a.kpi-revenue-related-item {
 .kpi-meta-ads-sticky .kpi-button:hover,
 .kpi-meta-ads-sticky .kpi-button:active {
   background: #b6e63a;
-  color: #1A3A02;
+  color: #ffffff;
   box-shadow: none;
   filter: none;
   transform: none;
@@ -9750,7 +9750,7 @@ a.kpi-revenue-related-item {
 .kpi-meta-ads-enquiry-submit:disabled,
 .kpi-meta-ads-sticky .kpi-button:disabled {
   background: #A2DC25;
-  color: #1A3A02;
+  color: #ffffff;
 }
 
 .kpi-meta-ads-enquiry-status {
@@ -10000,7 +10000,7 @@ a.kpi-revenue-related-item {
 .kpi-solutions-hero-primary,
 .kpi-solutions-hero .kpi-solutions-hero-primary.kpi-button {
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
   box-shadow: none;
 }
 
@@ -10009,7 +10009,7 @@ a.kpi-revenue-related-item {
 .kpi-solutions-hero .kpi-solutions-hero-primary.kpi-button:hover,
 .kpi-solutions-hero .kpi-solutions-hero-primary.kpi-button:active {
   background: #93c91f;
-  color: #1a3a02;
+  color: #ffffff;
   box-shadow: none;
   filter: none;
   transform: none;
@@ -11312,7 +11312,7 @@ a.kpi-revenue-related-item {
   height: 1.65rem;
   border-radius: 999px;
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
   font-family: var(--font-montserrat), Montserrat, sans-serif;
   font-size: 0.82rem;
   font-weight: 800;
@@ -11326,7 +11326,7 @@ a.kpi-revenue-related-item {
 .kpi-shell .kpi-solutions-unsure-primary.kpi-button,
 .kpi-solutions-unsure-actions > .kpi-solutions-unsure-primary.kpi-button {
   background: #a2dc25 !important;
-  color: #1a3a02 !important;
+  color: #ffffff !important;
   box-shadow: none;
 }
 
@@ -11335,7 +11335,7 @@ a.kpi-revenue-related-item {
 .kpi-solutions-unsure-actions > .kpi-solutions-unsure-primary.kpi-button:hover,
 .kpi-solutions-unsure-actions > .kpi-solutions-unsure-primary.kpi-button:active {
   background: #93c91f !important;
-  color: #1a3a02 !important;
+  color: #ffffff !important;
   box-shadow: none;
   filter: none;
   transform: none;
@@ -14076,7 +14076,7 @@ a.kpi-revenue-related-item {
 }
 
 .kpi-article-toc-list a.is-active .kpi-article-toc-num {
-  color: #1a3a02;
+  color: #ffffff;
   background: #a2dc25;
 }
 
@@ -17181,7 +17181,7 @@ a.kpi-revenue-related-item {
 .kpi-article-cta--enquiry .kpi-article-cta-btn,
 .kpi-article-cta--enquiry .kpi-button {
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
   box-shadow: none;
 }
 
@@ -17190,7 +17190,7 @@ a.kpi-revenue-related-item {
 .kpi-article-cta--enquiry .kpi-button:hover,
 .kpi-article-cta--enquiry .kpi-button:active {
   background: #93c91f;
-  color: #1a3a02;
+  color: #ffffff;
   box-shadow: none;
   filter: none;
   transform: none;
@@ -17199,7 +17199,7 @@ a.kpi-revenue-related-item {
 .kpi-article-cta--enquiry .kpi-article-cta-btn:disabled,
 .kpi-article-cta--enquiry .kpi-button:disabled {
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
   opacity: 0.7;
 }
 
@@ -17819,7 +17819,7 @@ a.kpi-revenue-related-item {
 .kpi-solutions-trigger.is-current,
 .kpi-solutions-link[aria-current="page"] {
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
 }
 
 .kpi-solutions-root {
@@ -17946,7 +17946,7 @@ a.kpi-revenue-related-item {
 
 .kpi-header-lang-option[aria-current="page"] {
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
   font-weight: 600;
 }
 
@@ -18320,7 +18320,7 @@ a.kpi-revenue-related-item {
 .kpi-mobile-lang.is-current,
 .kpi-mobile-lang[aria-current="page"] {
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
   font-weight: 700;
 }
 
@@ -19082,12 +19082,12 @@ a.kpi-revenue-related-item {
 .kpi-seo-local-hero .kpi-button {
   min-height: 2.75rem;
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
 }
 
 .kpi-seo-local-hero .kpi-button:hover {
   background: #b6e63a;
-  color: #1a3a02;
+  color: #ffffff;
 }
 
 .kpi-seo-local-hero .kpi-hero-visual {
@@ -20182,7 +20182,7 @@ a.kpi-revenue-related-item {
   height: 2.1rem;
   border-radius: 999px;
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
   font-family: Montserrat, Poppins, sans-serif !important;
   font-size: 0.72rem;
   font-weight: 800;
@@ -20648,7 +20648,7 @@ a.kpi-revenue-related-item {
   height: 2.1rem;
   border-radius: 999px;
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
   font-family: Montserrat, Poppins, sans-serif !important;
   font-size: 0.72rem;
   font-weight: 800;
@@ -21292,7 +21292,7 @@ a.kpi-revenue-related-item {
 .kpi-website-hero a.kpi-button,
 .kpi-website-hero a.kpi-website-hero-cta {
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
 }
 
 .kpi-website-hero a.kpi-button:hover,
@@ -21768,7 +21768,7 @@ a.kpi-revenue-related-item {
   padding: 0.7rem 1.1rem;
   border-radius: 999px;
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
   font-size: 0.9375rem;
   font-weight: 600;
   line-height: 1.4;
@@ -23312,7 +23312,7 @@ a.kpi-revenue-related-item {
 
 .kpi-conversion-hero a.kpi-button {
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
 }
 
 .kpi-conversion-hero a.kpi-button:hover {
@@ -27430,7 +27430,7 @@ a.kpi-revenue-related-item {
 
 .kpi-independent-hero a.kpi-button {
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
 }
 
 .kpi-independent-hero a.kpi-button:hover {
@@ -28661,7 +28661,7 @@ a.kpi-revenue-related-item {
 
 .kpi-systems-hero a.kpi-button {
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
 }
 
 .kpi-systems-hero a.kpi-button:hover {
@@ -33702,14 +33702,14 @@ a.kpi-revenue-related-item {
 .kpi-shell:has(.kpi-meta-ads-hero) .kpi-footer .kpi-button {
   min-height: var(--kpi-touch);
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
   white-space: normal;
 }
 
 .kpi-shell:has(.kpi-meta-ads-hero) .kpi-footer .kpi-button:hover,
 .kpi-shell:has(.kpi-meta-ads-hero) .kpi-footer .kpi-button:active {
   background: #93c91f;
-  color: #1a3a02;
+  color: #ffffff;
 }
 
 .kpi-shell:has(.kpi-meta-ads-hero) .kpi-footer a:focus,
@@ -33813,14 +33813,14 @@ a.kpi-revenue-related-item {
 .kpi-shell:has(.kpi-seo-local-hero) .kpi-footer .kpi-button {
   min-height: var(--kpi-touch);
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
   white-space: normal;
 }
 
 .kpi-shell:has(.kpi-seo-local-hero) .kpi-footer .kpi-button:hover,
 .kpi-shell:has(.kpi-seo-local-hero) .kpi-footer .kpi-button:active {
   background: #93c91f;
-  color: #1a3a02;
+  color: #ffffff;
 }
 
 .kpi-shell:has(.kpi-seo-local-hero) .kpi-footer a:focus,
@@ -33935,14 +33935,14 @@ a.kpi-revenue-related-item {
 .kpi-shell:has(.kpi-website-hero) .kpi-footer .kpi-button {
   min-height: var(--kpi-touch);
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
   white-space: normal;
 }
 
 .kpi-shell:has(.kpi-website-hero) .kpi-footer .kpi-button:hover,
 .kpi-shell:has(.kpi-website-hero) .kpi-footer .kpi-button:active {
   background: #93c91f;
-  color: #1a3a02;
+  color: #ffffff;
 }
 
 .kpi-shell:has(.kpi-website-hero) .kpi-footer a:focus,
@@ -34058,7 +34058,7 @@ a.kpi-revenue-related-item {
 .kpi-footer--conversion .kpi-button {
   min-height: var(--kpi-touch);
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
   white-space: normal;
 }
 
@@ -34067,7 +34067,7 @@ a.kpi-revenue-related-item {
 .kpi-footer--conversion .kpi-button:hover,
 .kpi-footer--conversion .kpi-button:active {
   background: #93c91f;
-  color: #1a3a02;
+  color: #ffffff;
 }
 
 .kpi-shell:has(.kpi-conversion) .kpi-footer a:focus,
@@ -35938,7 +35938,7 @@ html.kpi-consent-open {
 .kpi-shell .kpi-cs-cta .kpi-cs-cta-primary,
 .kpi-cs-cta .kpi-button.kpi-cs-cta-primary {
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
   box-shadow: none;
 }
 
@@ -35947,7 +35947,7 @@ html.kpi-consent-open {
 .kpi-shell .kpi-cs-cta .kpi-cs-cta-primary:active,
 .kpi-cs-cta .kpi-button.kpi-cs-cta-primary:active {
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
   filter: brightness(1.04);
 }
 
@@ -39655,7 +39655,7 @@ a.kpi-contact-card-value:focus-visible {
 .kpi-footer--systems .kpi-button {
   min-height: var(--kpi-touch);
   background: #a2dc25 !important;
-  color: #1a3a02 !important;
+  color: #ffffff !important;
   white-space: normal;
 }
 
@@ -39664,7 +39664,7 @@ a.kpi-contact-card-value:focus-visible {
 .kpi-footer--systems .kpi-button:hover,
 .kpi-footer--systems .kpi-button:active {
   background: #a2dc25 !important;
-  color: #1a3a02 !important;
+  color: #ffffff !important;
 }
 
 .kpi-shell:has(.kpi-systems) .kpi-footer a:focus,
@@ -39761,7 +39761,7 @@ a.kpi-contact-card-value:focus-visible {
 .kpi-footer--tech .kpi-button {
   min-height: var(--kpi-touch);
   background: #a2dc25 !important;
-  color: #1a3a02 !important;
+  color: #ffffff !important;
   white-space: normal;
 }
 
@@ -39770,7 +39770,7 @@ a.kpi-contact-card-value:focus-visible {
 .kpi-footer--tech .kpi-button:hover,
 .kpi-footer--tech .kpi-button:active {
   background: #a2dc25 !important;
-  color: #1a3a02 !important;
+  color: #ffffff !important;
 }
 
 .kpi-shell:has(.kpi-tech) .kpi-footer a:focus,
@@ -39855,7 +39855,7 @@ a.kpi-contact-card-value:focus-visible {
 .kpi-footer--solutions .kpi-button {
   min-height: var(--kpi-touch);
   background: #a2dc25 !important;
-  color: #1a3a02 !important;
+  color: #ffffff !important;
   white-space: normal;
   box-shadow: none;
 }
@@ -39865,7 +39865,7 @@ a.kpi-contact-card-value:focus-visible {
 .kpi-footer--solutions .kpi-button:hover,
 .kpi-footer--solutions .kpi-button:active {
   background: #93c91f !important;
-  color: #1a3a02 !important;
+  color: #ffffff !important;
   box-shadow: none;
   filter: none;
   transform: none;

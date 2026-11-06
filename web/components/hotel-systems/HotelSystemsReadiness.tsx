@@ -201,7 +201,7 @@ export function HotelSystemsReadiness({
         </table>
       </div>
       <div className="hsi-review-save">
-        <button type="button" className="kpi-button bg-[#a2dc25] text-[#1a3a02]" onClick={saveSample}>
+        <button type="button" className="kpi-button bg-[#a2dc25] text-[#ffffff]" onClick={saveSample}>
           {thai ? "บันทึกตัวอย่าง" : "Save sample"}
         </button>
         {saved ? (

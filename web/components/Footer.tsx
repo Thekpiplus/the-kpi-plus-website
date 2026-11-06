@@ -218,7 +218,7 @@ export function Footer({
                             : "footer_audit_cta"
                 }
                 href={footerCtaHref}
-                className={`kpi-button kpi-thai-nav${isSolutionsIndex || isHotelSystems || isHotelAi || isHotelTraining ? " bg-[#a2dc25] text-[#1a3a02]" : ""}`}
+                className={`kpi-button kpi-thai-nav${isSolutionsIndex || isHotelSystems || isHotelAi || isHotelTraining ? " bg-[#a2dc25] text-[#ffffff]" : ""}`}
               >
                 {footerCtaLabel} <ArrowUpRight className="h-4 w-4" />
               </Link>

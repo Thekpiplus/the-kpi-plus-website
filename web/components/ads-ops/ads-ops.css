@@ -96,7 +96,7 @@
 .b2b-status.is-completed,
 .ads-progress-badge.is-completed {
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
 }
 
 .ads-progress-badge {
@@ -199,7 +199,7 @@
 .ads-form-tabs button.is-active {
   background: #a2dc25;
   border-color: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
 }
 
 .ads-form-panel {
@@ -228,12 +228,12 @@
 
 .crm-shell-ads .crm-rail-link.is-current {
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
 }
 
 .crm-shell-ads .crm-app-sub a[aria-current="page"] {
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
 }
 
 @media (max-width: 52rem) {

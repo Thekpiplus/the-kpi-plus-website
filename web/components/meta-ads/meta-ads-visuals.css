@@ -845,7 +845,7 @@
 .kpi-meta-ads-enquiry-submit,
 .kpi-meta-ads-sticky .kpi-button {
   background: #A2DC25;
-  color: #1A3A02;
+  color: #ffffff;
 }
 
 .kpi-meta-ads-hero .kpi-button:hover,
@@ -854,7 +854,7 @@
 .kpi-meta-ads-enquiry-submit:hover,
 .kpi-meta-ads-sticky .kpi-button:hover {
   background: #b6e63a;
-  color: #1A3A02;
+  color: #ffffff;
 }
 
 .kpi-meta-ads-hero .kpi-button,
@@ -1216,7 +1216,7 @@
   height: 2.1rem;
   border-radius: 999px;
   background: #a2dc25;
-  color: #1a3a02;
+  color: #ffffff;
   font-size: 0.72rem;
   font-weight: 800;
 }
@@ -2539,7 +2539,7 @@
 
 .ads-creative-status.is-approved {
   background: #a2dc25;
-  color: #0b1f33;
+  color: #ffffff;
 }
 
 .ads-creative-status.is-archived {
