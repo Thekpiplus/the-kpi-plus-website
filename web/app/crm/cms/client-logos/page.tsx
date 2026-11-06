@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { ClientLogoManager } from "@/components/cms/ClientLogoManager";
 import { PageHeader } from "@/components/crm/ui/PageHeader";
 import { listClientLogos } from "@/lib/cms/queries";
@@ -13,27 +12,18 @@ export default async function CmsClientLogosPage({
   const params = await searchParams;
   const records = await listClientLogos();
   const notice =
-    params.saved === "1" ? "บันทึกโลโก้แล้ว" : params.deleted === "1" ? "ลบโลโก้แล้ว" : "";
+    params.saved === "1"
+      ? "บันทึกโลโก้แล้ว — แสดงบนหน้าเว็บแล้ว"
+      : params.deleted === "1"
+        ? "ลบโลโก้แล้ว"
+        : "";
 
   return (
     <div className="crm-cms crm-cms-globals crm-cms-logos-page">
       <PageHeader
         eyebrow="Content Management · โลโก้ลูกค้า"
         title="โลโก้ลูกค้า"
-        description="จัดการรูปโลโก้ ชื่อลูกค้า และลิงก์เว็บไซต์ — Pending หรือ Rejected จะไม่ขึ้นสาธารณะจนกว่าจะ Approved และ Active"
-        actions={
-          <div className="crm-cms-actions">
-            <Link href="/crm/cms/client-logos?new=1" className="kpi-button crm-users-primary">
-              เพิ่มโลโก้
-            </Link>
-            <Link href="/crm/cms/case-studies" className="crm-users-secondary">
-              ผลงานลูกค้า
-            </Link>
-            <Link href="/crm/cms/media" className="crm-users-secondary">
-              คลังสื่อ
-            </Link>
-          </div>
-        }
+        description="จัดการรูปโลโก้ ชื่อลูกค้า และลิงก์เว็บไซต์ — โลโก้ที่บันทึกจะแสดงบนหน้าเว็บทันที"
       />
 
       <ClientLogoManager

@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useId, useMemo, useRef, useState, useTransition } from "react";
+import { useEffect, useId, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import {
   deleteClientLogo,
-  moveClientLogo,
+  reorderClientLogos,
   saveClientLogo,
 } from "@/lib/cms/client-logo-actions";
 import {
@@ -19,7 +19,6 @@ import {
   emptyClientLogoInput,
   inputFromRow,
   normalizeWebsiteUrl,
-  permissionLabel,
   publicClientAlt,
   publicClientLabel,
   validateClientLogoInput,
@@ -54,6 +53,22 @@ function IconTrash() {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
+    </svg>
+  );
+}
+
+function IconChevronUp() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M6 14.5 12 8.5l6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function IconChevronDown() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M6 9.5 12 15.5l6-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -136,18 +151,55 @@ export function ClientLogoManager({
   const [pending, startTransition] = useTransition();
   const [confirmId, setConfirmId] = useState("");
   const [hasNewFile, setHasNewFile] = useState(false);
+  const [rows, setRows] = useState(records);
+  const [selectedId, setSelectedId] = useState("");
+  const [dragId, setDragId] = useState("");
+  const [dropId, setDropId] = useState("");
+  const dragMoved = useRef(false);
 
-  const counts = useMemo(
-    () => ({
-      pending: records.filter((row) => row.permission === "pending").length,
-      approved: records.filter((row) => row.permission === "approved").length,
-      rejected: records.filter((row) => row.permission === "rejected").length,
-      public: records.filter((row) => canPublishClientLogo(row)).length,
-    }),
-    [records],
-  );
+  useEffect(() => {
+    setRows(records);
+  }, [records]);
 
   const nextOrder = records.reduce((max, row) => Math.max(max, row.sortOrder), -1) + 1;
+
+  function persistOrder(next: CmsClientLogoRow[]) {
+    const previous = rows;
+    setRows(next);
+    startTransition(async () => {
+      const result = await reorderClientLogos(next.map((row) => row.id));
+      if (!result.ok) {
+        setRows(previous);
+        setStatus(clientLogoErrorMessage(result.error));
+        return;
+      }
+      setOk("อัปเดตลำดับแสดงแล้ว");
+      router.refresh();
+    });
+  }
+
+  function moveSelected(direction: "up" | "down") {
+    if (!selectedId || pending) return;
+    const index = rows.findIndex((row) => row.id === selectedId);
+    const target = direction === "up" ? index - 1 : index + 1;
+    if (index < 0 || target < 0 || target >= rows.length) return;
+    const next = [...rows];
+    const swap = next[index];
+    next[index] = next[target];
+    next[target] = swap;
+    persistOrder(next);
+  }
+
+  function applyDrop(targetId: string) {
+    if (!dragId || dragId === targetId || pending) return;
+    const from = rows.findIndex((row) => row.id === dragId);
+    const to = rows.findIndex((row) => row.id === targetId);
+    if (from < 0 || to < 0) return;
+    const next = [...rows];
+    const [item] = next.splice(from, 1);
+    next.splice(to, 0, item);
+    persistOrder(next);
+  }
 
   const dirty =
     JSON.stringify(form) !== JSON.stringify(baseline) ||
@@ -162,6 +214,24 @@ export function ClientLogoManager({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- open once from ?new=1
   }, [autoOpenCreate]);
+
+  useEffect(() => {
+    if (dialog || !selectedId) return;
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "ArrowUp") {
+        event.preventDefault();
+        moveSelected("up");
+      } else if (event.key === "ArrowDown") {
+        event.preventDefault();
+        moveSelected("down");
+      } else if (event.key === "Escape") {
+        setSelectedId("");
+      }
+    }
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dialog, selectedId, rows, pending]);
 
   useEffect(() => {
     if (!dialog) return;
@@ -270,12 +340,6 @@ export function ClientLogoManager({
     };
   }, [preview]);
 
-  const willPublish = canPublishClientLogo({
-    ...form,
-    filePath: form.filePath || (hasNewFile ? "/media/cms/_pending" : ""),
-  });
-  const permissionDirty = dialog === "edit" && form.permission !== baseline.permission;
-
   return (
     <div className="crm-logo-layout">
       {ok ? (
@@ -289,40 +353,15 @@ export function ClientLogoManager({
         </p>
       ) : null}
 
-      <section className="crm-dash-summary" aria-label="สรุปสถานะโลโก้">
-        <div className="crm-dash-stats" role="list">
-          <article className="crm-dash-stat is-partners" role="listitem">
-            <span className="crm-dash-stat-label">Pending</span>
-            <strong className="crm-dash-stat-value">{counts.pending}</strong>
-            <span className="crm-dash-stat-hint">รออนุญาต</span>
-          </article>
-          <article className="crm-dash-stat is-today" role="listitem">
-            <span className="crm-dash-stat-label">Approved</span>
-            <strong className="crm-dash-stat-value">{counts.approved}</strong>
-            <span className="crm-dash-stat-hint">อนุมัติแล้ว</span>
-          </article>
-          <article className="crm-dash-stat is-overdue" role="listitem">
-            <span className="crm-dash-stat-label">Rejected</span>
-            <strong className="crm-dash-stat-value">{counts.rejected}</strong>
-            <span className="crm-dash-stat-hint">ไม่อนุญาต</span>
-          </article>
-          <article className="crm-dash-stat is-web" role="listitem">
-            <span className="crm-dash-stat-label">Public</span>
-            <strong className="crm-dash-stat-value">{counts.public}</strong>
-            <span className="crm-dash-stat-hint">Approved + Active</span>
-          </article>
-        </div>
-      </section>
-
       <section className="crm-logo-table-card" aria-labelledby="crm-logo-list-heading">
         <div className="crm-contact-list-head">
           <div>
             <p className="crm-cms-globals-kicker">Client logos</p>
             <h2 id="crm-logo-list-heading">
               รายการโลโก้
-              <span className="crm-leads-count">{records.length}</span>
+              <span className="crm-leads-count">{rows.length}</span>
             </h2>
-            <p>จัดการรูป ชื่อ และลิงก์เว็บไซต์ — Pending/Rejected จะไม่ขึ้นสาธารณะจนกว่าจะ Approved และ Active</p>
+            <p>จัดการรูป ชื่อ และลิงก์เว็บไซต์ — คลิกหรือลากโลโก้เพื่อจัดลำดับ · โลโก้ที่บันทึกจะขึ้นหน้าเว็บทันที</p>
           </div>
           <button
             ref={openButtonRef}
@@ -334,10 +373,10 @@ export function ClientLogoManager({
           </button>
         </div>
 
-        {records.length === 0 ? (
+        {rows.length === 0 ? (
           <div className="crm-logo-empty">
             <p>ยังไม่มีโลโก้ในระบบ</p>
-            <p>เพิ่มไฟล์ที่ได้รับอนุญาตจริงเท่านั้น</p>
+            <p>เพิ่มโลโก้แล้วจะแสดงบนหน้าเว็บทันที</p>
             <button type="button" className="kpi-button crm-users-primary" onClick={(event) => openCreate(event)}>
               เพิ่มโลโก้
             </button>
@@ -350,26 +389,103 @@ export function ClientLogoManager({
                   <th scope="col">โลโก้</th>
                   <th scope="col">ชื่อ</th>
                   <th scope="col">เว็บไซต์</th>
-                  <th scope="col">ลำดับ</th>
                   <th scope="col">การดำเนินการ</th>
                 </tr>
               </thead>
               <tbody>
-                {records.map((row) => {
+                {rows.map((row, index) => {
                   const host = websiteDisplayHost(row.websiteUrl);
                   const href = normalizeWebsiteUrl(row.websiteUrl);
                   const label = publicClientLabel(row);
+                  const selected = selectedId === row.id;
                   return (
-                    <tr key={row.id}>
+                    <tr
+                      key={row.id}
+                      className={[
+                        selected ? "is-selected" : "",
+                        dragId === row.id ? "is-dragging" : "",
+                        dropId === row.id && dragId && dragId !== row.id ? "is-drop-target" : "",
+                      ]
+                        .filter(Boolean)
+                        .join(" ")}
+                      onDragOver={(event) => {
+                        if (!dragId || dragId === row.id) return;
+                        event.preventDefault();
+                        setDropId(row.id);
+                      }}
+                      onDrop={(event) => {
+                        event.preventDefault();
+                        applyDrop(row.id);
+                        setDragId("");
+                        setDropId("");
+                        dragMoved.current = false;
+                      }}
+                    >
                       <td data-label="โลโก้">
-                        <button
-                          type="button"
-                          className="crm-logo-thumb"
-                          onClick={(event) => openEdit(row, event)}
-                          aria-label={`แก้ไข ${row.name}`}
-                        >
-                          <LogoThumb src={row.filePath} alt={row.filePath ? publicClientAlt(row) : CLIENT_LOGO_PLACEHOLDER_TEXT} />
-                        </button>
+                        <div className="crm-logo-reorder-cell">
+                          <button
+                            type="button"
+                            className={`crm-logo-thumb${selected ? " is-selected" : ""}`}
+                            draggable={!pending}
+                            title="คลิกเพื่อเลือก แล้วกดขึ้น/ลง หรือลากเพื่อจัดลำดับ"
+                            aria-label={`เลือก ${row.name} เพื่อจัดลำดับ`}
+                            aria-pressed={selected}
+                            onClick={() => {
+                              if (dragMoved.current) {
+                                dragMoved.current = false;
+                                return;
+                              }
+                              setSelectedId((current) => (current === row.id ? "" : row.id));
+                              setConfirmId("");
+                            }}
+                            onDragStart={(event) => {
+                              dragMoved.current = false;
+                              setDragId(row.id);
+                              setSelectedId(row.id);
+                              setConfirmId("");
+                              event.dataTransfer.effectAllowed = "move";
+                              event.dataTransfer.setData("text/plain", row.id);
+                            }}
+                            onDrag={(event) => {
+                              if (Math.abs(event.movementX) + Math.abs(event.movementY) > 2) {
+                                dragMoved.current = true;
+                              }
+                            }}
+                            onDragEnd={() => {
+                              setDragId("");
+                              setDropId("");
+                            }}
+                          >
+                            <LogoThumb
+                              src={row.filePath}
+                              alt={row.filePath ? publicClientAlt(row) : CLIENT_LOGO_PLACEHOLDER_TEXT}
+                            />
+                          </button>
+                          {selected ? (
+                            <div className="crm-logo-reorder" role="group" aria-label={`จัดลำดับ ${row.name}`}>
+                              <button
+                                type="button"
+                                className="crm-users-icon-btn"
+                                title="เลื่อนขึ้น"
+                                aria-label={`เลื่อน ${row.name} ขึ้น`}
+                                disabled={pending || index === 0}
+                                onClick={() => moveSelected("up")}
+                              >
+                                <IconChevronUp />
+                              </button>
+                              <button
+                                type="button"
+                                className="crm-users-icon-btn"
+                                title="เลื่อนลง"
+                                aria-label={`เลื่อน ${row.name} ลง`}
+                                disabled={pending || index === rows.length - 1}
+                                onClick={() => moveSelected("down")}
+                              >
+                                <IconChevronDown />
+                              </button>
+                            </div>
+                          ) : null}
+                        </div>
                       </td>
                       <td data-label="ชื่อ">
                         <button type="button" className="crm-logo-name" onClick={(event) => openEdit(row, event)}>
@@ -392,35 +508,6 @@ export function ClientLogoManager({
                         ) : (
                           <span className="crm-logo-secondary">—</span>
                         )}
-                      </td>
-                      <td data-label="ลำดับ">
-                        <div className="crm-logo-order">
-                          <span>{row.sortOrder}</span>
-                          <form action={moveClientLogo}>
-                            <input type="hidden" name="id" value={row.id} />
-                            <input type="hidden" name="direction" value="up" />
-                            <button
-                              type="submit"
-                              className="crm-users-secondary"
-                              disabled={records[0]?.id === row.id}
-                              aria-label={`เลื่อน ${row.name} ขึ้น`}
-                            >
-                              ขึ้น
-                            </button>
-                          </form>
-                          <form action={moveClientLogo}>
-                            <input type="hidden" name="id" value={row.id} />
-                            <input type="hidden" name="direction" value="down" />
-                            <button
-                              type="submit"
-                              className="crm-users-secondary"
-                              disabled={records[records.length - 1]?.id === row.id}
-                              aria-label={`เลื่อน ${row.name} ลง`}
-                            >
-                              ลง
-                            </button>
-                          </form>
-                        </div>
                       </td>
                       <td data-label="การดำเนินการ">
                         <div className="crm-logo-row-actions crm-users-icon-actions">
@@ -519,8 +606,8 @@ export function ClientLogoManager({
                   websiteUrl: String(formData.get("websiteUrl") ?? form.websiteUrl).trim(),
                   altText: String(formData.get("altText") ?? form.altText).trim(),
                   sortOrder: Number.parseInt(String(formData.get("sortOrder") ?? form.sortOrder), 10) || 0,
-                  permission: form.permission,
-                  isActive: form.isActive,
+                  permission: "approved",
+                  isActive: true,
                   adminNotes: String(formData.get("adminNotes") ?? form.adminNotes).trim(),
                   filePath: form.filePath,
                   id: form.id,
@@ -533,15 +620,16 @@ export function ClientLogoManager({
                   return;
                 }
                 next.websiteUrl = website.ok ? website.url : "";
-                const invalid = validateClientLogoInput(next);
-                if (invalid === "cannot_approve_without_logo" && uploading) {
-                  // File will be stored server-side before approve check.
-                } else if (invalid) {
+                const invalid = validateClientLogoInput({
+                  ...next,
+                  filePath: next.filePath || (uploading ? "pending-upload" : ""),
+                });
+                if (invalid) {
                   setStatus(clientLogoErrorMessage(invalid));
                   return;
                 }
-                formData.set("permission", next.permission);
-                formData.set("isActive", next.isActive ? "1" : "0");
+                formData.set("permission", "approved");
+                formData.set("isActive", "1");
                 formData.set("filePath", next.filePath);
                 formData.set("websiteUrl", next.websiteUrl);
                 if (next.id) formData.set("id", next.id);
@@ -551,7 +639,7 @@ export function ClientLogoManager({
                     setStatus(clientLogoErrorMessage(result.error));
                     return;
                   }
-                  setOk("บันทึกโลโก้แล้ว");
+                  setOk("บันทึกโลโก้แล้ว — แสดงบนหน้าเว็บแล้ว");
                   setBaseline(next);
                   setHasNewFile(false);
                   closeDialog();
@@ -564,11 +652,6 @@ export function ClientLogoManager({
                 {status ? (
                   <p className="crm-users-alert is-warn" role="alert">
                     {status}
-                  </p>
-                ) : null}
-                {permissionDirty ? (
-                  <p className="crm-users-alert is-warn" role="status">
-                    สิทธิ์เผยแพร่เปลี่ยนเป็น {permissionLabel(form.permission)} — กดบันทึกเพื่อยืนยัน
                   </p>
                 ) : null}
 
@@ -623,46 +706,19 @@ export function ClientLogoManager({
                         onChange={(event) => patch("altText", event.target.value)}
                       />
                     </Field>
-                    <div className="crm-contact-pair">
-                      <Field label="ลำดับแสดง">
-                        <input
-                          className="crm-field"
-                          name="sortOrder"
-                          type="number"
-                          min={0}
-                          value={form.sortOrder}
-                          onChange={(event) =>
-                            patch("sortOrder", Number.parseInt(event.target.value || "0", 10) || 0)
-                          }
-                        />
-                      </Field>
-                      <Field label="สิทธิ์เผยแพร่" hint="ต้องกดบันทึกหลังเปลี่ยนค่านี้">
-                        <select
-                          className="crm-field"
-                          value={form.permission}
-                          onChange={(event) =>
-                            patch("permission", event.target.value as ClientLogoSaveInput["permission"])
-                          }
-                        >
-                          <option value="pending">Pending — รออนุญาต</option>
-                          <option value="approved">Approved — อนุมัติเผยแพร่</option>
-                          <option value="rejected">Rejected — ไม่อนุญาต</option>
-                        </select>
-                      </Field>
-                    </div>
-                    <label className="crm-contact-primary">
+                    <Field label="ลำดับแสดง" hint="หรือลากโลโก้ในตารางเพื่อจัดลำดับ">
                       <input
-                        type="checkbox"
-                        checked={form.isActive}
-                        onChange={(event) => patch("isActive", event.target.checked)}
+                        className="crm-field"
+                        name="sortOrder"
+                        type="number"
+                        min={0}
+                        value={form.sortOrder}
+                        onChange={(event) =>
+                          patch("sortOrder", Number.parseInt(event.target.value || "0", 10) || 0)
+                        }
                       />
-                      เปิดใช้งาน (Active)
-                    </label>
-                    <p className={`crm-logo-publish-note${willPublish ? " is-on" : ""}`}>
-                      {willPublish
-                        ? "ชุดนี้จะแสดงบนหน้าสาธารณะหลังบันทึก"
-                        : "ชุดนี้จะไม่แสดงบนหน้าสาธารณะ จนกว่าจะเป็น Approved + Active และมีไฟล์โลโก้"}
-                    </p>
+                    </Field>
+                    <p className="crm-logo-publish-note is-on">โลโก้ที่มีไฟล์จะแสดงบนหน้าเว็บทันทีหลังบันทึก</p>
                     <Field label="หมายเหตุภายใน (เห็นเฉพาะแอดมิน)">
                       <textarea
                         className="crm-area"
@@ -731,8 +787,8 @@ export function ClientLogoManager({
                       </figcaption>
                     </figure>
                     <input type="hidden" name="filePath" value={form.filePath} />
-                    <input type="hidden" name="permission" value={form.permission} />
-                    <input type="hidden" name="isActive" value={form.isActive ? "1" : "0"} />
+                    <input type="hidden" name="permission" value="approved" />
+                    <input type="hidden" name="isActive" value="1" />
                     {form.id ? <input type="hidden" name="id" value={form.id} /> : null}
                   </div>
                 </div>

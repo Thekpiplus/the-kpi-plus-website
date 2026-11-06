@@ -23,7 +23,9 @@ import {
   deleteClientLogoRow,
   findClientLogo,
   insertClientLogo,
+  listClientLogoRows,
   moveClientLogoRow,
+  reindexClientLogoOrder,
   rowFromInput,
   updateClientLogoRow,
 } from "./client-logo-store";
@@ -102,6 +104,10 @@ export async function saveClientLogo(formData: FormData): Promise<ClientLogoSave
   }
   if (formData.get("clearLogoFile") === "1" && !hasFile) input.filePath = "";
 
+  // Client logos go live immediately — no pending / approval step.
+  input.permission = "approved";
+  input.isActive = true;
+
   const website = normalizeWebsiteUrl(input.websiteUrl);
   if (!website.ok) return { ok: false, error: "invalid_website" };
   input.websiteUrl = website.url;
@@ -163,6 +169,20 @@ export async function moveClientLogo(formData: FormData) {
   await moveClientLogoRow(id, direction);
   revalidateClientLogos();
   redirect(`/crm/cms/client-logos?id=${id}`);
+}
+
+/** Persist a full display order without redirect (used by drag / in-table reorder). */
+export async function reorderClientLogos(ids: string[]): Promise<{ ok: true } | { ok: false; error: string }> {
+  await requireCms();
+  const unique = Array.from(new Set(ids.map((id) => id.trim()).filter(Boolean)));
+  if (!unique.length) return { ok: false, error: "missing" };
+  const existing = await listClientLogoRows();
+  if (unique.length !== existing.length || unique.some((id) => !existing.some((row) => row.id === id))) {
+    return { ok: false, error: "invalid_order" };
+  }
+  await reindexClientLogoOrder(unique);
+  revalidateClientLogos();
+  return { ok: true };
 }
 
 export async function deleteClientLogo(formData: FormData) {

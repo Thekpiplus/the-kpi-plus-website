@@ -75,8 +75,8 @@ export function emptyClientLogoInput(sortOrder = 0): ClientLogoSaveInput {
     websiteUrl: "",
     altText: "",
     sortOrder,
-    permission: "pending",
-    isActive: false,
+    permission: "approved",
+    isActive: true,
     adminNotes: "",
   };
 }
@@ -124,17 +124,17 @@ export function publicClientAlt(input: Pick<ClientLogoSaveInput, "name" | "clien
   return input.altText.trim() || (label ? `${label} logo` : "");
 }
 
-export function canPublishClientLogo(input: Pick<ClientLogoSaveInput, "filePath" | "isActive"> & { permission: string }) {
+/** Logos with a real file go live on the public site immediately (no approval queue). */
+export function canPublishClientLogo(input: Pick<ClientLogoSaveInput, "filePath"> | { filePath: string }) {
   const filePath = input.filePath.trim();
-  if (!filePath || filePath === CLIENT_LOGO_PLACEHOLDER) return false;
-  return parseClientLogoPermission(input.permission) === "approved" && input.isActive;
+  return Boolean(filePath && filePath !== CLIENT_LOGO_PLACEHOLDER);
 }
 
 export function validateClientLogoInput(input: ClientLogoSaveInput) {
   if (!input.name) return "missing_name";
   if (!input.clientName && !input.anonymisedLabel) return "missing_client";
   if (input.sortOrder < 0) return "invalid_order";
-  if (input.permission === "approved" && !input.filePath) return "cannot_approve_without_logo";
+  if (!input.filePath.trim() || input.filePath.trim() === CLIENT_LOGO_PLACEHOLDER) return "missing_logo";
   if (input.websiteUrl.trim() && !normalizeWebsiteUrl(input.websiteUrl).ok) return "invalid_website";
   return "";
 }
@@ -154,7 +154,7 @@ export function permissionLabelTh(permission: string) {
 export function clientLogoErrorMessage(error?: string) {
   if (error === "missing_name") return "กรุณาใส่ชื่อโลโก้";
   if (error === "missing_client") return "กรุณาใส่ชื่อลูกค้าหรือป้ายนิรนาม";
-  if (error === "cannot_approve_without_logo") return "อนุมัติเผยแพร่ได้เมื่อมีไฟล์โลโก้เท่านั้น";
+  if (error === "missing_logo" || error === "cannot_approve_without_logo") return "กรุณาอัปโหลดไฟล์โลโก้";
   if (error === "invalid_order") return "ลำดับแสดงต้องเป็นตัวเลขไม่ติดลบ";
   if (error === "invalid_image") return "ไฟล์โลโก้ต้องเป็น JPG / PNG / WEBP ไม่เกิน 5MB";
   if (error === "image_dimensions") return "ขนาดโลโก้ต้องอย่างน้อย 80×24 พิกเซล และไม่เกิน 8000×8000";

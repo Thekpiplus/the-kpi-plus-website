@@ -44,7 +44,7 @@ export const loadPublishedClientLogos = cache(async (): Promise<ClientLogo[]> =>
   }
 });
 
-/** Approved CMS logos first; otherwise official brand-pack files that exist on disk. */
+/** CMS logos with files first; otherwise official brand-pack files that exist on disk. */
 export const loadVisibleClientLogos = cache(async (): Promise<ClientLogo[]> => {
   const published = await loadPublishedClientLogos();
   if (published.length) return published;
