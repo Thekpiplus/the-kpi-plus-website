@@ -14,7 +14,7 @@ import {
   caseStudyResultsNote,
   localizeCaseStudy,
 } from "@/lib/case-studies";
-import { loadVisibleClientLogos } from "@/lib/cms/client-logo-public";
+import { loadPublishedClientLogos } from "@/lib/cms/client-logo-public";
 import { loadPublishedCaseStudies } from "@/lib/cms/case-study-public";
 import { caseStudyOverviewChart } from "@/lib/case-study-chart";
 import {
@@ -163,7 +163,7 @@ export async function CaseStudiesView({ locale }: { locale: Locale }) {
   const heroVisual = caseStudiesHeroVisual(locale);
   const disclaimer = caseStudyDisclaimerFor(locale);
   const stackTh = locale === "th";
-  const partnerLogos = await loadVisibleClientLogos();
+  const partnerLogos = await loadPublishedClientLogos();
   const partnersTitle = t.clientsLabelLines.join(" ");
   const overviewChart = featured
     ? caseStudyOverviewChart(featured, featured.comparison ?? caseStudyComparisonFor(featured.slug, locale), locale)

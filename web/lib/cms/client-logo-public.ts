@@ -17,6 +17,9 @@ const UNUSABLE_LOGO_SRC = new Set(["/brand/clients/casa-solana.webp"]);
 function publicFileExists(src: string) {
   const next = src.trim();
   if (!next || next === CLIENT_LOGO_PLACEHOLDER || UNUSABLE_LOGO_SRC.has(next)) return false;
+  // CMS uploads are authoritative in the database; trust /media/cms paths even when
+  // the deploy layout makes a local public/ existsSync check unreliable.
+  if (next.startsWith("/media/cms/")) return true;
   try {
     return existsSync(join(process.cwd(), "public", next.replace(/^\//, "")));
   } catch {
@@ -44,7 +47,7 @@ export const loadPublishedClientLogos = cache(async (): Promise<ClientLogo[]> =>
   }
 });
 
-/** CMS logos with files first; otherwise official brand-pack files that exist on disk. */
+/** Prefer CMS admin logos; fall back to brand-pack files only when CMS has none. */
 export const loadVisibleClientLogos = cache(async (): Promise<ClientLogo[]> => {
   const published = await loadPublishedClientLogos();
   if (published.length) return published;
