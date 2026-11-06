@@ -2115,6 +2115,10 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
   min-width: 0;
 }
 
+.crm-app-sub.is-links-only {
+  padding-top: 0.35rem;
+}
+
 .crm-app-sub-context {
   display: flex;
   flex-wrap: wrap;

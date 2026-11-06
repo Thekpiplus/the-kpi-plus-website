@@ -57,11 +57,6 @@ export default async function LoginLogPage({
         eyebrow="Users"
         title="Login Log"
         description="บันทึกการเข้าสู่ระบบล่าสุด ค้นด้วยอีเมลเพื่อดูประวัติบัญชีทีมหรือ demo"
-        actions={
-          <Link href="/crm/users" className="crm-users-secondary">
-            ← Users Management
-          </Link>
-        }
       />
 
       <section className="crm-logs-stats" aria-label="สรุป Login Log">

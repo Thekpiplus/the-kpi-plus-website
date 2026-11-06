@@ -35,14 +35,6 @@ function roleTone(role: string): "lime" | "info" | "success" | "warning" | "neut
   return "neutral";
 }
 
-function usersHref(params: { q?: string; role?: string }) {
-  const query = new URLSearchParams();
-  if (params.role) query.set("role", params.role);
-  if (params.q?.trim()) query.set("q", params.q.trim());
-  const value = query.toString();
-  return value ? `/crm/users?${value}` : "/crm/users";
-}
-
 export default async function UsersPage({
   searchParams,
 }: {
@@ -74,16 +66,6 @@ export default async function UsersPage({
   const autoOpen = canEdit && (params.new === "1" || Boolean(formError));
   const passwordError = params.error === "password";
   const passwordUserId = params.pwd === "1" ? params.user : undefined;
-  const activeRole = params.role ?? "";
-  const roleTabs = [
-    { id: "", label: "ทั้งหมด", count: counts.total },
-    { id: "superadmin", label: ROLE_LABEL.superadmin },
-    { id: "admin", label: ROLE_LABEL.admin },
-    { id: "user", label: ROLE_LABEL.user },
-    { id: "staff", label: ROLE_LABEL.staff },
-    { id: "sales", label: ROLE_LABEL.sales },
-    { id: "partner", label: ROLE_LABEL.partner, count: counts.partners },
-  ];
 
   const content = (
     <div className="crm-users">
@@ -92,15 +74,11 @@ export default async function UsersPage({
         title="Users Management"
         description="จัดการบัญชีทีม สิทธิ์โมดูล และสถานะการเข้าใช้งานในที่เดียว"
         actions={
-          <div className="crm-users-actions">
-            <Link href="/crm/users/roles" className="crm-users-secondary">
-              บทบาทและสิทธิ์
-            </Link>
-            <Link href="/crm/users/logs" className="crm-users-secondary">
-              Login Log
-            </Link>
-            {canEdit ? <NewUserOpenButton className="kpi-button">เพิ่มผู้ใช้</NewUserOpenButton> : null}
-          </div>
+          canEdit ? (
+            <div className="crm-users-actions">
+              <NewUserOpenButton className="kpi-button">เพิ่มผู้ใช้</NewUserOpenButton>
+            </div>
+          ) : undefined
         }
       />
 
@@ -149,30 +127,7 @@ export default async function UsersPage({
         </article>
       </section>
 
-      <section className="crm-users-toolbar" aria-label="ค้นหาและกรองผู้ใช้">
-        <div className="crm-users-toolbar-block">
-          <p className="crm-users-toolbar-label" id="crm-users-role-filters-label">
-            กรองตามบทบาท
-          </p>
-          <nav className="crm-users-roles" aria-labelledby="crm-users-role-filters-label">
-            {roleTabs.map((tab) => {
-              const active = activeRole === tab.id;
-              const href = usersHref({ q: params.q, role: tab.id || undefined });
-              return (
-                <Link
-                  key={tab.id || "all"}
-                  href={href}
-                  className={active ? "is-active" : undefined}
-                  aria-current={active ? "page" : undefined}
-                >
-                  {tab.label}
-                  {typeof tab.count === "number" ? <span>{tab.count}</span> : null}
-                </Link>
-              );
-            })}
-          </nav>
-        </div>
-
+      <section className="crm-users-toolbar" aria-label="ค้นหาผู้ใช้">
         <form className="crm-users-search" method="get">
           {params.role ? <input type="hidden" name="role" value={params.role} /> : null}
           <label className="crm-users-search-field">
@@ -230,7 +185,7 @@ export default async function UsersPage({
             title={filtered ? "ไม่พบผู้ใช้ตามเงื่อนไข" : "ยังไม่มีผู้ใช้"}
             body={
               filtered
-                ? "ลองเปลี่ยนคำค้นหรือตัวกรองบทบาท หรือล้างตัวกรองเพื่อดูรายการทั้งหมด"
+                ? "ลองเปลี่ยนคำค้น หรือล้างตัวกรองเพื่อดูรายการทั้งหมด"
                 : "เพิ่มผู้ใช้ใหม่เพื่อเปิดสิทธิ์เข้าใช้งานระบบ"
             }
             action={

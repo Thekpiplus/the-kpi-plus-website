@@ -69,16 +69,13 @@ export default async function UserRolesPage() {
         title="บทบาทและสิทธิ์"
         description="สรุปบทบาทในระบบและวิธีกำหนดสิทธิ์โมดูลตามโมเดลที่มีอยู่จริง ไม่มีการบันทึกสิทธิ์ตามแผนกหรือตำแหน่งงานในระบบนี้"
         actions={
-          <div className="crm-users-actions">
-            <Link href="/crm/users" className="crm-users-secondary">
-              รายชื่อผู้ใช้
-            </Link>
-            {canEdit ? (
+          canEdit ? (
+            <div className="crm-users-actions">
               <Link href="/crm/users?new=1" className="kpi-button">
                 เพิ่มผู้ใช้
               </Link>
-            ) : null}
-          </div>
+            </div>
+          ) : undefined
         }
       />
 

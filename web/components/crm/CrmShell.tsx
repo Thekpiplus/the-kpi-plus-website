@@ -1013,6 +1013,7 @@ export function CrmShell({
             items={contextLinks}
             pathname={pathname}
             search={search}
+            showModuleLabel={workspace !== "users"}
           />
         ) : null}
 

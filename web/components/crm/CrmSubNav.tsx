@@ -73,11 +73,14 @@ export function CrmSubNav({
   items,
   pathname,
   search,
+  showModuleLabel = true,
 }: {
   moduleLabel: string;
   items: CrmSubNavItem[];
   pathname: string;
   search: string;
+  /** When false, hides the “โมดูล / …” context line above the links. */
+  showModuleLabel?: boolean;
 }) {
   const baseId = useId();
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
@@ -94,11 +97,13 @@ export function CrmSubNav({
   }, [items, pathname, search]);
 
   return (
-    <div className="crm-app-sub">
-      <div className="crm-app-sub-context">
-        <p className="crm-app-sub-kicker">โมดูล</p>
-        <p className="crm-app-sub-title">{moduleLabel}</p>
-      </div>
+    <div className={`crm-app-sub${showModuleLabel ? "" : " is-links-only"}`.trim()}>
+      {showModuleLabel ? (
+        <div className="crm-app-sub-context">
+          <p className="crm-app-sub-kicker">โมดูล</p>
+          <p className="crm-app-sub-title">{moduleLabel}</p>
+        </div>
+      ) : null}
       <nav className="crm-app-sub-nav" aria-label={`เมนูย่อยของ ${moduleLabel}`}>
         <div className="crm-app-sub-links" role="list">
           {items.map((item) => {
