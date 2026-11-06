@@ -32,21 +32,21 @@ export default async function SalesHomePage() {
     <div className="crm-leads crm-leads-page crm-sales-today">
       <OverviewHero
         variant="welcome"
-        eyebrow="Lead Management / วันนี้"
+        eyebrow="Lead Management · งานวันนี้"
         badge={
           <span className={`crm-hero-badge${overdue > 0 ? " is-alert" : ""}`}>
-            {openWork > 0 ? `งานเปิด ${openWork} รายการ` : "ไม่มีงานค้าง"}
+            {openWork > 0 ? `งานเปิด ${openWork}` : "คิวว่าง"}
           </span>
         }
         title={`${greeting}, ${user.name || "ทีม KPI Plus"}`}
-        description={`คิวติดตามของวันนี้ · ${todayLabel}`}
+        description={`คิวติดตาม · ${todayLabel}`}
         label="งานวันนี้"
         actions={
           <>
+            <NewLeadOpenButton className="crm-hero-btn crm-hero-btn-primary">คีย์ลีด</NewLeadOpenButton>
             <Link href="/crm/pipeline" className="crm-hero-btn crm-hero-btn-secondary">
               Pipeline
             </Link>
-            <NewLeadOpenButton className="crm-hero-btn crm-hero-btn-primary">คีย์ลีด</NewLeadOpenButton>
           </>
         }
       />
@@ -56,56 +56,53 @@ export default async function SalesHomePage() {
           <Link href="/crm/activities" className="crm-leads-stat is-overdue is-priority" role="listitem">
             <span className="crm-leads-stat-label">เกินกำหนด</span>
             <strong className="crm-leads-stat-value">{overdue}</strong>
-            <span className="crm-leads-stat-hint">ต้องติดตามก่อน · เปิดคิวกิจกรรม</span>
+            <span className="crm-leads-stat-hint">ต้องติดตามก่อน</span>
           </Link>
           <div className="crm-leads-stat is-today is-static is-priority" role="listitem" aria-current="true">
             <span className="crm-leads-stat-label">ครบกำหนดวันนี้</span>
             <strong className="crm-leads-stat-value">{dueToday}</strong>
-            <span className="crm-leads-stat-hint">สรุปจากคิวด้านล่าง</span>
+            <span className="crm-leads-stat-hint">คิวด้านล่าง</span>
           </div>
           <Link href="/crm/leads?origin=web" className="crm-leads-stat is-web is-secondary-stat" role="listitem">
             <span className="crm-leads-stat-label">จากเว็บไซต์</span>
             <strong className="crm-leads-stat-value">{origins.web}</strong>
-            <span className="crm-leads-stat-hint">เปิดรายการจากเว็บ</span>
+            <span className="crm-leads-stat-hint">เปิดรายการ</span>
           </Link>
           <Link href="/crm/leads?origin=manual" className="crm-leads-stat is-manual is-secondary-stat" role="listitem">
             <span className="crm-leads-stat-label">คีย์เอง</span>
             <strong className="crm-leads-stat-value">{origins.manual}</strong>
-            <span className="crm-leads-stat-hint">เปิดรายการที่คีย์เอง</span>
+            <span className="crm-leads-stat-hint">เปิดรายการ</span>
           </Link>
         </div>
       </section>
 
-      <section className="crm-leads-toolbar crm-sales-toolbar" aria-label="ค้นหาลีด">
-        <form className="crm-leads-search" method="get" action="/crm/leads">
-          <label className="crm-leads-search-field">
-            <span className="sr-only">ค้นหาลีดจากชื่อ กิจการ เบอร์ หรืออีเมล</span>
-            <span aria-hidden="true">⌕</span>
-            <input name="q" placeholder="ค้นหาชื่อ กิจการ เบอร์ หรืออีเมล" autoComplete="off" />
-          </label>
-          <button className="kpi-button crm-users-primary" type="submit">
-            ค้นหา
-          </button>
-        </form>
-      </section>
-
       <div className="crm-sales-layout">
         <section className="crm-sales-followups" aria-labelledby="crm-sales-followups-heading">
-          <header className="crm-sales-section-head">
+          <header className="crm-sales-section-head crm-sales-section-head-row">
             <div>
               <h2 id="crm-sales-followups-heading">รายการที่ต้องติดตาม</h2>
               <p>เรียงตามความเร่งด่วน — เกินกำหนด · ครบกำหนดวันนี้ · ลีดใหม่ที่รอตอบ</p>
             </div>
+            <form className="crm-leads-search crm-sales-inline-search" method="get" action="/crm/leads">
+              <label className="crm-leads-search-field">
+                <span className="sr-only">ค้นหาลีดจากชื่อ กิจการ เบอร์ หรืออีเมล</span>
+                <span aria-hidden="true">⌕</span>
+                <input name="q" placeholder="ค้นหาชื่อ กิจการ เบอร์ หรืออีเมล" autoComplete="off" />
+              </label>
+              <button className="kpi-button crm-users-primary" type="submit">
+                ค้นหา
+              </button>
+            </form>
           </header>
 
           <div className="crm-sales-followups-grid">
             <TaskPanel
               title="เกินกำหนด"
-              hint="ต้องติดตามก่อน — งานที่เลยวันกำหนดแล้ว"
+              hint="งานที่เลยวันกำหนดแล้ว"
               tone="overdue"
               items={lists.overdue}
               empty="ไม่มีงานเกินกำหนด"
-              emptyBody="เมื่อมีกิจกรรมเลยวันกำหนด จะแสดงที่นี่"
+              emptyBody="เมื่อมีกิจกรรมเลยกำหนด จะแสดงที่นี่"
             />
             <TaskPanel
               title="ครบกำหนดวันนี้"
@@ -113,17 +110,17 @@ export default async function SalesHomePage() {
               tone="today"
               items={lists.dueToday}
               empty="ไม่มีงานครบกำหนดวันนี้"
-              emptyBody="ยังไม่มีกิจกรรมที่ครบกำหนดวันนี้"
+              emptyBody="ยังไม่มีกิจกรรมครบกำหนดวันนี้"
             />
             <ListPanel
               title="ลีดใหม่ที่รอตอบ"
               hint="ควรตอบกลับครั้งแรกให้เร็ว"
               empty="ไม่มีลีดรอตอบ"
-              emptyBody="ลีดที่ต้องตอบกลับครั้งแรกจะแสดงที่นี่"
+              emptyBody="ลีดที่ต้องตอบครั้งแรกจะแสดงที่นี่"
               actionHref="/crm/leads?origin=web"
               actionLabel="ดูลีดจากเว็บ"
               count={lists.firstResponse.length}
-              className="crm-sales-panel-span"
+              className="crm-sales-panel-span crm-sales-panel-secondary-queue"
             >
               {lists.firstResponse.map((item) => (
                 <li key={item.id} className="crm-leads-simple-row">
@@ -149,10 +146,11 @@ export default async function SalesHomePage() {
             title="ยังไม่มีกิจกรรมถัดไป"
             hint="ตั้งนัดติดตามต่อให้ลีดเหล่านี้"
             empty="ยังไม่มีกิจกรรมถัดไป"
-            emptyBody="ลีดทุกตัวมีนัดติดตามต่อแล้วในขณะนี้"
+            emptyBody="ลีดทุกตัวมีนัดติดตามต่อแล้ว"
             actionHref="/crm/leads"
             actionLabel="ดูลีดทั้งหมด"
             count={lists.noNext.length}
+            className="crm-sales-panel-side"
           >
             {lists.noNext.map((lead) => (
               <li key={lead.id} className="crm-leads-simple-row">
@@ -191,8 +189,9 @@ function ListPanel({
   children: ReactNode;
   className?: string;
 }) {
+  const emptyClass = count === 0 ? " is-empty" : "";
   return (
-    <section className={`crm-leads-panel${className ? ` ${className}` : ""}`}>
+    <section className={`crm-leads-panel${emptyClass}${className ? ` ${className}` : ""}`}>
       <div className="crm-leads-panel-head">
         <div>
           <h2>
@@ -234,8 +233,13 @@ function TaskPanel({
   empty: string;
   emptyBody: string;
 }) {
+  const emptyClass = items.length === 0 ? " is-empty" : "";
   return (
-    <section className={`crm-leads-panel${tone === "overdue" && items.length ? " is-overdue" : ""}`}>
+    <section
+      className={`crm-leads-panel crm-sales-panel-priority${emptyClass}${
+        tone === "overdue" && items.length ? " is-overdue" : ""
+      }`}
+    >
       <div className="crm-leads-panel-head">
         <div>
           <h2>
@@ -276,19 +280,21 @@ function TaskPanel({
               </div>
               <form action={completeActivity} className="crm-leads-task-form">
                 <input type="hidden" name="activityId" value={item.id} />
-                <label className="crm-leads-task-field">
-                  <span className="sr-only">ผลลัพธ์การติดตาม</span>
-                  <input className="crm-field" name="outcome" placeholder="ผลลัพธ์การติดตาม" />
-                </label>
-                <label className="crm-leads-task-field">
-                  <span className="sr-only">วันเวลานัดติดตามครั้งถัดไป</span>
-                  <input className="crm-field" type="datetime-local" name="nextDueAt" />
-                </label>
-                <label className="crm-leads-task-field">
-                  <span className="sr-only">ชื่อนัดติดตามครั้งถัดไป</span>
-                  <input className="crm-field" name="nextTitle" placeholder="นัดติดตามครั้งถัดไป" />
-                </label>
-                <button className="kpi-button crm-users-primary" type="submit">
+                <div className="crm-leads-task-fields">
+                  <label className="crm-leads-task-field">
+                    <span className="sr-only">ผลลัพธ์การติดตาม</span>
+                    <input className="crm-field" name="outcome" placeholder="ผลลัพธ์การติดตาม" />
+                  </label>
+                  <label className="crm-leads-task-field">
+                    <span className="sr-only">วันเวลานัดติดตามครั้งถัดไป</span>
+                    <input className="crm-field" type="datetime-local" name="nextDueAt" />
+                  </label>
+                  <label className="crm-leads-task-field">
+                    <span className="sr-only">ชื่อนัดติดตามครั้งถัดไป</span>
+                    <input className="crm-field" name="nextTitle" placeholder="นัดติดตามครั้งถัดไป" />
+                  </label>
+                </div>
+                <button className="kpi-button crm-users-primary crm-leads-task-submit" type="submit">
                   ปิดแล้วตั้งติดตามต่อ
                 </button>
               </form>

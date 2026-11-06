@@ -30,6 +30,8 @@ export function OverviewHero({
 }: OverviewHeroProps) {
   const classes = ["crm-hero", `crm-hero-${variant}`];
   if (aside) classes.push("has-aside");
+  /** Welcome without metrics card: park actions on the right to fill empty space. */
+  const actionsEnd = variant === "welcome" && !aside && Boolean(actions);
 
   return (
     <section className={classes.join(" ")} aria-label={label}>
@@ -42,8 +44,9 @@ export function OverviewHero({
         ) : null}
         <h1 className="crm-hero-title">{title}</h1>
         {description ? <p className="crm-hero-lead">{description}</p> : null}
-        {actions ? <div className="crm-hero-actions">{actions}</div> : null}
+        {actions && !actionsEnd ? <div className="crm-hero-actions">{actions}</div> : null}
       </div>
+      {actionsEnd ? <div className="crm-hero-actions crm-hero-actions-end">{actions}</div> : null}
       {aside}
     </section>
   );
