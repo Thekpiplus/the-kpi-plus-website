@@ -467,7 +467,7 @@ export async function SolutionsIndexView({
               ))}
             </ol>
             <div className="kpi-actions kpi-solutions-unsure-actions">
-              <Link href={unsurePrimaryHref} className="kpi-button kpi-solutions-unsure-primary bg-[#a2dc25] text-[#ffffff]">
+              <Link href={unsurePrimaryHref} className="kpi-button kpi-solutions-unsure-primary bg-[#a2dc25] text-[#0b1f33]">
                 {fromCms ? pick(cms.cta.primaryCta.label, t.unsurePrimary) : t.unsurePrimary}
               </Link>
               <Link href={unsureSecondaryHref} className="kpi-button-ghost">

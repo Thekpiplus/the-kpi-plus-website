@@ -132,7 +132,7 @@
 
 .ht-status.is-lime {
   background: #a2dc25;
-  color: #ffffff;
+  color: #0b1f33;
 }
 
 .ht-hero-mock {
@@ -620,7 +620,7 @@
   padding: 0.2rem 0.55rem;
   border-radius: 999px;
   background: #a2dc25;
-  color: #ffffff;
+  color: #0b1f33;
   font-size: 0.72rem;
   font-weight: 800;
 }
@@ -771,7 +771,7 @@
   border: 0;
   border-radius: 999px;
   background: #a2dc25;
-  color: #ffffff;
+  color: #0b1f33;
   font-weight: 800;
   cursor: pointer;
 }
@@ -980,7 +980,7 @@
 .kpi-train-closer .kpi-button,
 .kpi-sticky-cta .kpi-button {
   background: #a2dc25 !important;
-  color: #ffffff !important;
+  color: #0b1f33 !important;
 }
 
 .kpi-train-hero .kpi-actions .kpi-button:not(.kpi-button-ghost):hover,
@@ -994,7 +994,7 @@
 .kpi-sticky-cta .kpi-button:hover,
 .kpi-sticky-cta .kpi-button:active {
   background: #a2dc25 !important;
-  color: #ffffff !important;
+  color: #0b1f33 !important;
 }
 
 @media (max-width: 29.99rem) {
@@ -1437,7 +1437,7 @@
   margin: 0 0 0.45rem;
   border-radius: 999px;
   background: #a2dc25;
-  color: #ffffff;
+  color: #0b1f33;
   font-size: 0.78rem;
   font-weight: 800;
 }
@@ -1610,7 +1610,7 @@ a.kpi-train-related-secondary {
 .kpi-footer--train .kpi-button {
   min-height: var(--kpi-touch);
   background: #a2dc25 !important;
-  color: #ffffff !important;
+  color: #0b1f33 !important;
   white-space: normal;
 }
 
@@ -1619,7 +1619,7 @@ a.kpi-train-related-secondary {
 .kpi-footer--train .kpi-button:hover,
 .kpi-footer--train .kpi-button:active {
   background: #a2dc25 !important;
-  color: #ffffff !important;
+  color: #0b1f33 !important;
 }
 
 .kpi-shell:has(.kpi-train) .kpi-footer a:focus,

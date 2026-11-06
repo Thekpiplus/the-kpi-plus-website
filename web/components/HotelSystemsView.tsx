@@ -489,7 +489,7 @@ export async function HotelSystemsView({
               <p className="kpi-lead kpi-home-lead">{heroLead}</p>
               <p className="kpi-systems-lead-close">{heroClose}</p>
               <div className="kpi-actions">
-                <a href={primaryHref} className="kpi-button bg-[#a2dc25] text-[#ffffff]">
+                <a href={primaryHref} className="kpi-button bg-[#a2dc25] text-[#0b1f33]">
                   {heroCta} <span aria-hidden="true">↗</span>
                 </a>
                 <Link href={secondaryHref} className="kpi-button-ghost">
@@ -850,7 +850,7 @@ export async function HotelSystemsView({
             </p>
             <a
               href={closerHref}
-              className="kpi-button kpi-systems-closer-cta bg-[#a2dc25] text-[#ffffff]"
+              className="kpi-button kpi-systems-closer-cta bg-[#a2dc25] text-[#0b1f33]"
             >
               {systemsHeroText(fromCms ? cms.related.closerCta : "", t.closerCta, [
                 "ให้ทีมตรวจโครงสร้างระบบโรงแรม",

@@ -20,12 +20,12 @@
 .hai-ops .b2b-save,
 .hai-subtasks .kpi-button.b2b-save {
   background: #a2dc25;
-  color: #ffffff;
+  color: #0b1f33;
 }
 
 .hai-ops .seo-ops-status-row .seo-ops-stat:nth-child(1) {
-  background: #cfeea4;
-  border-color: #a2dc25;
+  background: #3f6212;
+  border-color: #ffffff;
   color: #1a3a02;
 }
 
@@ -48,8 +48,8 @@
 }
 
 .hai-ops .ads-progress-badge.is-completed {
-  background: #cfeea4;
-  color: #1a3a02;
+  background: #4d7c0f;
+  color: #ffffff;
 }
 
 .hai-ops .ads-progress-badge.is-in_progress {
@@ -71,8 +71,8 @@
 .hai-ops .b2b-status.is-not_started,
 .hai-ops .b2b-status.is-low,
 .hai-ops .b2b-status.is-none {
-  background: #f4f4f4;
-  color: #3b3b3b;
+  background: #475569;
+  color: #ffffff;
 }
 
 .hai-ops .b2b-status.is-discovery,
@@ -99,8 +99,8 @@
 .hai-ops .b2b-status.is-approved_to_scale,
 .hai-ops .b2b-status.is-handed_over,
 .hai-ops .b2b-status.is-completed {
-  background: #cfeea4;
-  color: #1a3a02;
+  background: #4d7c0f;
+  color: #ffffff;
 }
 
 .hai-ops .b2b-status.is-blocked,

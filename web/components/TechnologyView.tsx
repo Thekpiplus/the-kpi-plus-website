@@ -150,7 +150,7 @@ export async function TechnologyView({
                 <p className="kpi-lead kpi-home-lead">{pick(cms.hero.description, t.lead)}</p>
                 <p className="kpi-tech-lead-close">{pick(cms.hero.close, t.leadClose)}</p>
                 <div className="kpi-actions">
-                  <a href={primaryHref} className="kpi-button bg-[#a2dc25] text-[#ffffff]">
+                  <a href={primaryHref} className="kpi-button bg-[#a2dc25] text-[#0b1f33]">
                     {pick(cms.hero.primaryCta.label, t.cta)} <span aria-hidden="true">↗</span>
                   </a>
                   {systemsHref ? (
@@ -261,7 +261,7 @@ export async function TechnologyView({
                 </li>
               ))}
             </ol>
-            <a href={primaryHref} className="kpi-button kpi-tech-method-cta bg-[#a2dc25] text-[#ffffff]">
+            <a href={primaryHref} className="kpi-button kpi-tech-method-cta bg-[#a2dc25] text-[#0b1f33]">
               {pick(cms.process.cta, t.methodCta)} <span aria-hidden="true">↗</span>
             </a>
           </div>
@@ -639,7 +639,7 @@ export async function TechnologyView({
               <h3>{pick(cms.related.closerTitle, t.closerTitle)}</h3>
               <p>{pick(cms.related.closerBody, t.closerBody)}</p>
               <div className="kpi-tech-closer-actions">
-                <a href={closerHref} className="kpi-button bg-[#a2dc25] text-[#ffffff]">
+                <a href={closerHref} className="kpi-button bg-[#a2dc25] text-[#0b1f33]">
                   {pick(cms.related.closerCta, t.closerCta)} <span aria-hidden="true">↗</span>
                 </a>
                 {systemsHref ? (

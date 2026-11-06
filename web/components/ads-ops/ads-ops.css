@@ -33,15 +33,15 @@
 .b2b-status.is-draft,
 .b2b-status.is-not_set,
 .b2b-status.is-not_requested {
-  background: #f4f4f4;
-  color: #3b3b3b;
+  background: #475569;
+  color: #ffffff;
 }
 
 .b2b-status.is-planning,
 .b2b-status.is-pending,
 .b2b-status.is-sample {
-  background: #fff4b8;
-  color: #6a5200;
+  background: #a16207;
+  color: #ffffff;
 }
 
 .b2b-status.is-awaiting_approval,
@@ -57,8 +57,8 @@
 .b2b-status.is-approved,
 .b2b-status.is-verified,
 .b2b-status.is-installed {
-  background: #cfeea4;
-  color: #1a3a02;
+  background: #4d7c0f;
+  color: #ffffff;
 }
 
 .b2b-status.is-paused,
@@ -71,31 +71,31 @@
 
 .b2b-status.is-ended,
 .b2b-status.is-archived {
-  background: #eef6d6;
-  color: #3b3b3b;
+  background: #3f6212;
+  color: #ffffff;
 }
 
 .b2b-status.is-not_started,
 .ads-progress-badge.is-not_started {
-  background: #f4f4f4;
-  color: #3b3b3b;
+  background: #475569;
+  color: #ffffff;
 }
 
 .b2b-status.is-in_progress,
 .ads-progress-badge.is-in_progress {
-  background: #fff4b8;
-  color: #6a5200;
+  background: #a16207;
+  color: #ffffff;
 }
 
 .b2b-status.is-ready_for_review,
 .ads-progress-badge.is-ready_for_review {
-  background: #cfeea4;
-  color: #1a3a02;
+  background: #4d7c0f;
+  color: #ffffff;
 }
 
 .b2b-status.is-completed,
 .ads-progress-badge.is-completed {
-  background: #a2dc25;
+  background: #3f6212;
   color: #ffffff;
 }
 
@@ -199,7 +199,7 @@
 .ads-form-tabs button.is-active {
   background: #a2dc25;
   border-color: #a2dc25;
-  color: #ffffff;
+  color: #0b1f33;
 }
 
 .ads-form-panel {
@@ -228,12 +228,12 @@
 
 .crm-shell-ads .crm-rail-link.is-current {
   background: #a2dc25;
-  color: #ffffff;
+  color: #0b1f33;
 }
 
 .crm-shell-ads .crm-app-sub a[aria-current="page"] {
   background: #a2dc25;
-  color: #ffffff;
+  color: #0b1f33;
 }
 
 @media (max-width: 52rem) {

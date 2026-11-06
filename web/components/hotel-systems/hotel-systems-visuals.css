@@ -80,7 +80,7 @@
 .kpi-systems .kpi-systems-closer-cta,
 .kpi-systems .kpi-sticky-cta .kpi-button {
   background: #a2dc25 !important;
-  color: #ffffff !important;
+  color: #0b1f33 !important;
 }
 
 .kpi-systems-enquiry.kpi-website-enquiry .kpi-button:hover,
@@ -90,7 +90,7 @@
 .kpi-systems .kpi-sticky-cta .kpi-button:hover,
 .kpi-systems .kpi-sticky-cta .kpi-button:active {
   background: #a2dc25 !important;
-  color: #ffffff !important;
+  color: #0b1f33 !important;
 }
 
 .kpi-systems .kpi-home-accent {
@@ -462,7 +462,7 @@
 
 .hsi-review-status.is-testing select {
   background: #a2dc25;
-  color: #ffffff;
+  color: #0b1f33;
 }
 
 .hsi-review-save {
@@ -3131,7 +3131,7 @@
   padding: 0.2rem 0.7rem;
   border-radius: 999px;
   background: #a2dc25;
-  color: #ffffff;
+  color: #0b1f33;
   font-size: 0.72rem;
   font-weight: 700;
 }
@@ -3506,7 +3506,7 @@
 
 .hsi-status.is-testing {
   background: #a2dc25;
-  color: #ffffff;
+  color: #0b1f33;
 }
 
 .hsi-hero-legend {

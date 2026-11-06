@@ -781,7 +781,7 @@ export function HotelMarketingInsightEditor({
     });
   }
 
-  const primaryButtonStyle = { background: "#a2dc25", color: "#ffffff" } as const;
+  const primaryButtonStyle = { background: "#a2dc25", color: "#0b1f33" } as const;
   const saveButtons = (
     <>
       <button className="kpi-button" type="submit" name="intent" value="save" disabled={pending} style={primaryButtonStyle}>
@@ -1487,7 +1487,7 @@ export function HotelMarketingInsightEditor({
               <button
                 type="button"
                 className="kpi-button"
-                style={{ background: "#a2dc25", color: "#ffffff" }}
+                style={{ background: "#a2dc25", color: "#0b1f33" }}
                 onClick={() => {
                   setDialog(null);
                   submit("unpublish");

@@ -73,13 +73,13 @@
 .seo-ops .b2b-save,
 .seo-ops .kpi-button.b2b-save {
   background: #a2dc25;
-  color: #ffffff;
+  color: #0b1f33;
 }
 
 .seo-ops .b2b-status.is-draft,
 .seo-ops .b2b-status.is-archived {
-  background: #f4f4f4;
-  color: #3b3b3b;
+  background: #475569;
+  color: #ffffff;
 }
 
 .seo-ops .b2b-status.is-audit_scheduled,
@@ -99,8 +99,8 @@
 .seo-ops .b2b-status.is-published,
 .seo-ops .b2b-status.is-tracking,
 .seo-ops .b2b-status.is-completed {
-  background: #cfeea4;
-  color: #1a3a02;
+  background: #4d7c0f;
+  color: #ffffff;
 }
 
 .seo-ops .b2b-status.is-urgent,
@@ -123,14 +123,14 @@
 
 .ads-progress-badge.is-not_started,
 .seo-ops .b2b-status.is-not_started {
-  background: #f4f4f4;
-  color: #3b3b3b;
+  background: #475569;
+  color: #ffffff;
 }
 
 .ads-progress-badge.is-in_progress,
 .seo-ops .b2b-status.is-in_progress {
-  background: #fff4b8;
-  color: #6a5200;
+  background: #a16207;
+  color: #ffffff;
 }
 
 .ads-progress-badge.is-blocked,
@@ -141,13 +141,13 @@
 
 .ads-progress-badge.is-ready_for_review,
 .seo-ops .b2b-status.is-ready_for_review {
-  background: #cfeea4;
-  color: #1a3a02;
+  background: #4d7c0f;
+  color: #ffffff;
 }
 
 .ads-progress-badge.is-completed,
 .seo-ops .b2b-status.is-completed {
-  background: #a2dc25;
+  background: #3f6212;
   color: #ffffff;
 }
 
@@ -239,7 +239,7 @@
 .ads-form-tabs button.is-active {
   background: #a2dc25;
   border-color: #a2dc25;
-  color: #ffffff;
+  color: #0b1f33;
 }
 
 @media (max-width: 48rem) {

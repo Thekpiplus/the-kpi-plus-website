@@ -6,7 +6,7 @@
 
 .b2b-save {
   background: #a2dc25 !important;
-  color: #ffffff !important;
+  color: #0b1f33 !important;
 }
 
 .b2b-save:hover,
@@ -58,7 +58,7 @@
 .b2b-chip.is-active {
   background: #a2dc25;
   border-color: #a2dc25;
-  color: #ffffff;
+  color: #0b1f33;
 }
 
 .b2b-status {
@@ -74,8 +74,8 @@
 
 .b2b-status.is-new_lead,
 .b2b-status.is-qualification {
-  background: #fff4b8;
-  color: #6a5200;
+  background: #a16207;
+  color: #ffffff;
 }
 
 .b2b-status.is-contacted,
@@ -91,13 +91,13 @@
 }
 
 .b2b-status.is-active {
-  background: #cfeea4;
-  color: #1a3a02;
+  background: #4d7c0f;
+  color: #ffffff;
 }
 
 .b2b-status.is-dormant {
-  background: #eef6d6;
-  color: #3b3b3b;
+  background: #3f6212;
+  color: #ffffff;
 }
 
 .b2b-status.is-closed,
@@ -107,8 +107,8 @@
 }
 
 .b2b-status.is-planned {
-  background: #fff4b8;
-  color: #6a5200;
+  background: #a16207;
+  color: #ffffff;
 }
 
 .b2b-status.is-in_progress,
@@ -118,8 +118,8 @@
 }
 
 .b2b-status.is-completed {
-  background: #cfeea4;
-  color: #1a3a02;
+  background: #4d7c0f;
+  color: #ffffff;
 }
 
 .b2b-subtask-form {
@@ -181,7 +181,7 @@
   padding: 0.1rem 0.4rem;
   border-radius: 999px;
   background: #a2dc25;
-  color: #ffffff;
+  color: #0b1f33;
   font-size: 0.75rem;
   font-weight: 800;
 }

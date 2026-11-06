@@ -128,16 +128,16 @@
 .hmo-ops .b2b-status.is-none,
 .hmo-ops .b2b-status.is-low,
 .hmo-ops .b2b-status.is-normal {
-  background: #f4f4f4;
-  color: #3b3b3b;
+  background: #475569;
+  color: #ffffff;
 }
 
 .hmo-ops .b2b-status.is-in_progress,
 .hmo-ops .b2b-status.is-in_review,
 .hmo-ops .b2b-status.is-needs_review,
 .hmo-ops .b2b-status.is-awaiting {
-  background: #fff4b8;
-  color: #6a5200;
+  background: #a16207;
+  color: #ffffff;
 }
 
 .hmo-ops .b2b-status.is-needs_sources,
@@ -161,8 +161,8 @@
 .hmo-ops .b2b-status.is-published,
 .hmo-ops .b2b-status.is-completed,
 .hmo-ops .b2b-status.is-verified {
-  background: #cfeea4;
-  color: #1a3a02;
+  background: #4d7c0f;
+  color: #ffffff;
 }
 
 .hmo-ops .b2b-status.is-blocked,

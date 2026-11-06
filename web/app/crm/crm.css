@@ -12,7 +12,8 @@
   --admin-lime: #a2dc25;
   --admin-lime-soft: #eef8d2;
   --admin-yellow: #ebe722;
-  --admin-on-lime: #ffffff;
+  /* Deep Teal on solid lime — CI v3.0; white on #a2dc25 fails contrast */
+  --admin-on-lime: #0b1f33;
   --admin-on-lime-soft: #1a3a02;
   --admin-success: #2f9e63;
   --admin-warning: #c78911;
@@ -193,7 +194,7 @@ html[data-crm-theme="dark"] .crm-shell,
   --admin-lime: #a2dc25;
   --admin-lime-soft: rgba(162, 220, 37, 0.16);
   --admin-yellow: #ebe722;
-  --admin-on-lime: #ffffff;
+  --admin-on-lime: #0b1f33;
   --admin-on-lime-soft: #1a3a02;
   --admin-success: #4ade80;
   --admin-warning: #fbbf24;
@@ -1658,7 +1659,7 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
 
 .crm-shell-b2b .crm-rail-link.is-active,
 .crm-shell-b2b .crm-rail-link[aria-current="page"] {
-  color: #ffffff;
+  color: var(--crm-on-lime);
   box-shadow: 0 10px 24px rgba(162, 220, 37, 0.35);
 }
 
@@ -1698,7 +1699,7 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
 .crm-shell-hotel-marketing .crm-rail-link[aria-current="page"],
 .crm-shell-solutions .crm-rail-link.is-active,
 .crm-shell-solutions .crm-rail-link[aria-current="page"] {
-  color: #ffffff;
+  color: var(--crm-on-lime);
   box-shadow: 0 10px 24px rgba(162, 220, 37, 0.35);
 }
 
@@ -3144,7 +3145,7 @@ html[data-crm-theme="dark"] .crm-shell-app .crm-app-search,
   gap: 0.55rem;
 }
 
-/* Admin primary CTAs — solid lime + white text for clearer contrast */
+/* Admin primary CTAs — solid lime + Deep Teal text (CI contrast) */
 .crm-shell .kpi-button,
 .crm-shell .crm-users-primary,
 .crm-modal .kpi-button {
@@ -3249,36 +3250,36 @@ html[data-crm-theme="dark"] .crm-shell-app .crm-app-search,
 }
 
 .crm-status.is-neutral {
-  background: var(--crm-surface-2);
-  color: var(--crm-ink);
+  background: #475569;
+  color: #ffffff;
 }
 
 .crm-status.is-success {
-  background: rgba(59, 178, 115, 0.16);
-  color: #1f7a4d;
+  background: #15803d;
+  color: #ffffff;
 }
 
 .crm-status.is-warning {
-  background: rgba(240, 180, 41, 0.2);
-  color: #8a5a00;
+  background: #a16207;
+  color: #ffffff;
 }
 
 .crm-status.is-danger {
-  background: rgba(226, 85, 85, 0.16);
-  color: #b42318;
+  background: #b91c1c;
+  color: #ffffff;
 }
 
 .crm-status.is-info {
-  background: rgba(74, 144, 226, 0.16);
-  color: #175cd3;
+  background: #1d4ed8;
+  color: #ffffff;
 }
 
 .crm-status.is-lime {
-  background: var(--crm-lime);
-  color: var(--crm-on-lime);
+  background: #3f6212;
+  color: #ffffff;
 }
 
-/* User role badges — distinct fill + text per role */
+/* User role badges — dark solid fills + light text for contrast on every page */
 .crm-role-badge {
   display: inline-flex;
   align-items: center;
@@ -3294,81 +3295,81 @@ html[data-crm-theme="dark"] .crm-shell-app .crm-app-search,
 }
 
 .crm-role-badge.is-superadmin {
-  border-color: color-mix(in srgb, #a2dc25 55%, #0f2a01);
-  background: #a2dc25;
-  color: var(--crm-on-lime);
+  border-color: #365314;
+  background: #3f6212;
+  color: #ffffff;
 }
 
 .crm-role-badge.is-admin {
-  border-color: #1d4ed8;
-  background: #1d4ed8;
-  color: #eff6ff;
+  border-color: #1e3a8a;
+  background: #1e40af;
+  color: #ffffff;
 }
 
 .crm-role-badge.is-user {
-  border-color: #475569;
-  background: #e2e8f0;
-  color: #0f172a;
+  border-color: #1e293b;
+  background: #334155;
+  color: #ffffff;
 }
 
 .crm-role-badge.is-staff {
-  border-color: #15803d;
-  background: #dcfce7;
-  color: #14532d;
+  border-color: #14532d;
+  background: #166534;
+  color: #ffffff;
 }
 
 .crm-role-badge.is-sales {
-  border-color: #0369a1;
-  background: #e0f2fe;
-  color: #0c4a6e;
+  border-color: #0c4a6e;
+  background: #075985;
+  color: #ffffff;
 }
 
 .crm-role-badge.is-partner {
-  border-color: #ca8a04;
-  background: #ebe722;
-  color: #422006;
+  border-color: #713f12;
+  background: #854d0e;
+  color: #ffffff;
 }
 
 html[data-crm-theme="dark"] .crm-role-badge.is-superadmin,
 .crm-shell[data-theme="dark"] .crm-role-badge.is-superadmin {
-  border-color: color-mix(in srgb, #a2dc25 50%, #0f2a01);
-  background: #a2dc25;
-  color: var(--crm-on-lime);
+  border-color: #4d7c0f;
+  background: #3f6212;
+  color: #ffffff;
 }
 
 html[data-crm-theme="dark"] .crm-role-badge.is-admin,
 .crm-shell[data-theme="dark"] .crm-role-badge.is-admin {
-  border-color: #93c5fd;
-  background: #1e3a8a;
-  color: #dbeafe;
+  border-color: #60a5fa;
+  background: #1e40af;
+  color: #ffffff;
 }
 
 html[data-crm-theme="dark"] .crm-role-badge.is-user,
 .crm-shell[data-theme="dark"] .crm-role-badge.is-user {
   border-color: #94a3b8;
   background: #334155;
-  color: #f1f5f9;
+  color: #ffffff;
 }
 
 html[data-crm-theme="dark"] .crm-role-badge.is-staff,
 .crm-shell[data-theme="dark"] .crm-role-badge.is-staff {
   border-color: #4ade80;
-  background: #14532d;
-  color: #bbf7d0;
+  background: #166534;
+  color: #ffffff;
 }
 
 html[data-crm-theme="dark"] .crm-role-badge.is-sales,
 .crm-shell[data-theme="dark"] .crm-role-badge.is-sales {
   border-color: #7dd3fc;
-  background: #0c4a6e;
-  color: #e0f2fe;
+  background: #075985;
+  color: #ffffff;
 }
 
 html[data-crm-theme="dark"] .crm-role-badge.is-partner,
 .crm-shell[data-theme="dark"] .crm-role-badge.is-partner {
-  border-color: #fde047;
-  background: #ebe722;
-  color: #422006;
+  border-color: #facc15;
+  background: #854d0e;
+  color: #ffffff;
 }
 
 /* —— Shared list / data-table kit (applies across domain tables) —— */
@@ -3566,7 +3567,7 @@ html[data-crm-theme="dark"] .crm-role-badge.is-partner,
 .crm-leads-bar .crm-leads-tabs a.is-active span,
 .crm-partners-bar .crm-partners-tabs a.is-active span,
 .crm-leads-tabs a.is-active span {
-  background: rgba(255, 255, 255, 0.28);
+  background: rgba(11, 31, 51, 0.14);
   color: var(--crm-on-lime);
 }
 
@@ -4349,24 +4350,40 @@ html[data-crm-theme="dark"] .crm-role-badge.is-partner,
   }
 }
 
+html[data-crm-theme="dark"] .crm-status.is-neutral,
+.crm-shell[data-theme="dark"] .crm-status.is-neutral {
+  background: #64748b;
+  color: #ffffff;
+}
+
 html[data-crm-theme="dark"] .crm-status.is-success,
 .crm-shell[data-theme="dark"] .crm-status.is-success {
-  color: #7ddeab;
+  background: #15803d;
+  color: #ffffff;
 }
 
 html[data-crm-theme="dark"] .crm-status.is-warning,
 .crm-shell[data-theme="dark"] .crm-status.is-warning {
-  color: #f6d06a;
+  background: #a16207;
+  color: #ffffff;
 }
 
 html[data-crm-theme="dark"] .crm-status.is-danger,
 .crm-shell[data-theme="dark"] .crm-status.is-danger {
-  color: #ff9b9b;
+  background: #b91c1c;
+  color: #ffffff;
 }
 
 html[data-crm-theme="dark"] .crm-status.is-info,
 .crm-shell[data-theme="dark"] .crm-status.is-info {
-  color: #9ec5ff;
+  background: #1d4ed8;
+  color: #ffffff;
+}
+
+html[data-crm-theme="dark"] .crm-status.is-lime,
+.crm-shell[data-theme="dark"] .crm-status.is-lime {
+  background: #3f6212;
+  color: #ffffff;
 }
 
 html[data-crm-theme="dark"] .crm-dash-module,
@@ -5456,7 +5473,7 @@ html[data-crm-theme="dark"] .crm-users-avatar,
   --crm-field-bg: #ffffff;
   --crm-accent: #0a2472;
   --crm-lime: #a2dc25;
-  --crm-on-lime: #ffffff;
+  --crm-on-lime: #0b1f33;
   --crm-on-lime-soft: #1a3a02;
   --crm-lime-soft: #eef8d2;
   --crm-yellow: #ebe722;
@@ -5484,7 +5501,7 @@ html[data-crm-theme="dark"] .crm-modal {
   --crm-field-bg: #121c2a;
   --crm-accent: #9ec1ff;
   --crm-lime: #a2dc25;
-  --crm-on-lime: #ffffff;
+  --crm-on-lime: #0b1f33;
   --crm-on-lime-soft: #1a3a02;
   --crm-lime-soft: rgba(162, 220, 37, 0.14);
   --crm-yellow: #ebe722;
@@ -6219,7 +6236,7 @@ html[data-crm-theme="dark"] .crm-modal-panel,
 }
 
 .crm-logs-tabs a.is-active span {
-  background: rgba(255, 255, 255, 0.28);
+  background: rgba(11, 31, 51, 0.14);
   color: var(--crm-on-lime);
 }
 
@@ -6837,12 +6854,12 @@ a.crm-leads-stat:focus-visible {
 }
 
 .crm-leads-tabs a.is-active span {
-  background: rgba(255, 255, 255, 0.28);
+  background: rgba(11, 31, 51, 0.14);
   color: var(--crm-on-lime);
 }
 
 .crm-leads-bar .crm-leads-tabs a.is-active span {
-  background: rgba(255, 255, 255, 0.28);
+  background: rgba(11, 31, 51, 0.14);
   color: var(--crm-on-lime);
 }
 
@@ -8957,7 +8974,7 @@ html[data-crm-theme="dark"] .crm-sales-toolbar .crm-leads-quick,
 }
 
 .crm-partners-tabs a.is-active span {
-  background: rgba(255, 255, 255, 0.28);
+  background: rgba(11, 31, 51, 0.14);
   color: var(--crm-on-lime);
 }
 

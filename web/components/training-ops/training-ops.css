@@ -14,12 +14,12 @@
 .trn-subtasks .kpi-button.b2b-save,
 .trn-followup .kpi-button.b2b-save {
   background: #a2dc25;
-  color: #ffffff;
+  color: #0b1f33;
 }
 
 .trn-ops .ads-progress-badge.is-completed {
-  background: #cfeea4;
-  color: #1a3a02;
+  background: #4d7c0f;
+  color: #ffffff;
 }
 
 .trn-ops .ads-progress-badge.is-in_progress {
@@ -40,8 +40,8 @@
 .trn-ops .b2b-status.is-not_started,
 .trn-ops .b2b-status.is-none,
 .trn-ops .b2b-status.is-low {
-  background: #f4f4f4;
-  color: #3b3b3b;
+  background: #475569;
+  color: #ffffff;
 }
 
 .trn-ops .b2b-status.is-in_progress,
@@ -56,8 +56,8 @@
 .trn-ops .b2b-status.is-completed,
 .trn-ops .b2b-status.is-approved,
 .trn-ops .b2b-status.is-published {
-  background: #cfeea4;
-  color: #1a3a02;
+  background: #4d7c0f;
+  color: #ffffff;
 }
 
 .trn-ops .b2b-status.is-blocked,
@@ -84,8 +84,8 @@
 }
 
 .trn-ops .seo-ops-status-row .seo-ops-stat:nth-child(1) {
-  background: #cfeea4;
-  border-color: #a2dc25;
+  background: #3f6212;
+  border-color: #ffffff;
   color: #1a3a02;
 }
 

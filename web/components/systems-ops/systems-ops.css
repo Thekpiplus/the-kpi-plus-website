@@ -86,14 +86,14 @@
 .seo-ops .kpi-button.b2b-save,
 .web-ops .kpi-button.b2b-save {
   background: #a2dc25;
-  color: #ffffff;
+  color: #0b1f33;
 }
 
 .seo-ops .b2b-status.is-draft,
 .seo-ops .b2b-status.is-archived,
 .seo-ops .b2b-status.is-low {
-  background: #f4f4f4;
-  color: #3b3b3b;
+  background: #475569;
+  color: #ffffff;
 }
 
 .seo-ops .b2b-status.is-discovery,
@@ -118,8 +118,8 @@
 .seo-ops .b2b-status.is-handed_over,
 .seo-ops .b2b-status.is-monitoring,
 .seo-ops .b2b-status.is-completed {
-  background: #cfeea4;
-  color: #1a3a02;
+  background: #4d7c0f;
+  color: #ffffff;
 }
 
 .seo-ops .b2b-status.is-critical,
@@ -136,8 +136,8 @@
 }
 
 .seo-ops .b2b-status.is-not_started {
-  background: #f4f4f4;
-  color: #3b3b3b;
+  background: #475569;
+  color: #ffffff;
 }
 
 .seo-ops .b2b-status.is-in_progress {
@@ -156,8 +156,8 @@
 }
 
 .seo-ops .b2b-status.is-completed {
-  background: #cfeea4;
-  color: #1a3a02;
+  background: #4d7c0f;
+  color: #ffffff;
 }
 
 .ads-progress-badge {
@@ -169,7 +169,7 @@
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.01em;
-  background: #a2dc25;
+  background: #3f6212;
   color: #ffffff;
 }
 
@@ -190,7 +190,7 @@
 
 .ads-progress-badge.is-ready_for_review,
 .ads-progress-badge.is-completed {
-  background: #a2dc25;
+  background: #3f6212;
   color: #ffffff;
 }
 
@@ -240,7 +240,7 @@
 .web-ops .b2b-tab.is-active,
 .web-ops .ads-form-tabs button.is-active {
   background: #a2dc25;
-  color: #ffffff;
+  color: #0b1f33;
 }
 
 @media (min-width: 48rem) {

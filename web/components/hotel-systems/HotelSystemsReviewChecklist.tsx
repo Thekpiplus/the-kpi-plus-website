@@ -162,7 +162,7 @@ export function HotelSystemsReviewChecklist({
         </table>
       </div>
       <div className="hsi-review-save">
-        <button type="button" className="kpi-button bg-[#a2dc25] text-[#ffffff]" onClick={saveSample}>
+        <button type="button" className="kpi-button bg-[#a2dc25] text-[#0b1f33]" onClick={saveSample}>
           {thai ? "บันทึกตัวอย่าง" : "Save sample"}
         </button>
         {saved ? <p className="hsi-review-saved">{saved}</p> : <p className="hsi-review-save-note">{thai ? "การบันทึกอยู่บนอุปกรณ์นี้เท่านั้น ไม่ใช่ผลวินิจฉัยโรงแรม" : "Save stays on this device. It is not a hotel diagnosis."}</p>}

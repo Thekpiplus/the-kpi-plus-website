@@ -428,7 +428,7 @@
 .kpi-google-ads-enquiry-submit,
 .kpi-google-ads-sticky .kpi-button {
   background: #A2DC25;
-  color: #ffffff;
+  color: #0b1f33;
 }
 
 .kpi-google-ads-hero .kpi-button:hover,
@@ -437,7 +437,7 @@
 .kpi-google-ads-enquiry-submit:hover,
 .kpi-google-ads-sticky .kpi-button:hover {
   background: #b6e63a;
-  color: #ffffff;
+  color: #0b1f33;
 }
 
 .kpi-google-ads-hero .kpi-button,
@@ -667,7 +667,7 @@
   height: 2.1rem;
   border-radius: 999px;
   background: #a2dc25;
-  color: #ffffff;
+  color: #0b1f33;
   font-size: 0.72rem;
   font-weight: 800;
 }

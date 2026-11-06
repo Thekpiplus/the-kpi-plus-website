@@ -3208,7 +3208,7 @@ export function EnquiryForm({
                   </p>
                 ) : null}
                 <button
-                  className="kpi-button kpi-website-enquiry-submit bg-[#a2dc25] text-[#ffffff]"
+                  className="kpi-button kpi-website-enquiry-submit bg-[#a2dc25] text-[#0b1f33]"
                   type="submit"
                   disabled={sending}
                   aria-busy={sending}
@@ -3510,7 +3510,7 @@ export function EnquiryForm({
                     {copy.unavailable}
                   </p>
                 ) : null}
-                <button className="kpi-button bg-[#a2dc25] text-[#ffffff]" type="submit" disabled={sending}>
+                <button className="kpi-button bg-[#a2dc25] text-[#0b1f33]" type="submit" disabled={sending}>
                   {sending ? (
                     copy.loading
                   ) : (
@@ -3779,7 +3779,7 @@ export function EnquiryForm({
                   onChange={(event) => setState((current) => ({ ...current, companyWebsite: event.target.value }))}
                 />
                 <button
-                  className="kpi-button bg-[#a2dc25] text-[#ffffff]"
+                  className="kpi-button bg-[#a2dc25] text-[#0b1f33]"
                   type="submit"
                   disabled={sending}
                   aria-busy={sending}
@@ -4063,7 +4063,7 @@ export function EnquiryForm({
                   type="submit"
                   disabled={sending}
                   aria-busy={sending}
-                  style={{ background: "#a2dc25", color: "#ffffff" }}
+                  style={{ background: "#a2dc25", color: "#0b1f33" }}
                 >
                   {sending ? (
                     t.sending

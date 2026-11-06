@@ -97,7 +97,7 @@ export async function TrainingView({
               <p className="kpi-lead kpi-home-lead">{pick(cms.hero.description, t.lead)}</p>
               <p className="kpi-train-lead-close">{pick(cms.hero.close, t.leadClose)}</p>
               <div className="kpi-actions">
-                <a href={primaryHref} className="kpi-button bg-[#a2dc25] text-[#ffffff]">
+                <a href={primaryHref} className="kpi-button bg-[#a2dc25] text-[#0b1f33]">
                   {pick(cms.hero.primaryCta.label, t.cta)}
                 </a>
                 <a href={secondaryHref} target={secondaryHref.startsWith("http") ? "_blank" : undefined} rel={secondaryHref.startsWith("http") ? "noreferrer" : undefined} className="kpi-button-ghost">
@@ -275,7 +275,7 @@ export async function TrainingView({
           <h3>{t.closerTitle}</h3>
           <p>{t.closerBody}</p>
           <div className="kpi-train-closer-actions">
-            <a href={primaryHref} className="kpi-button bg-[#a2dc25] text-[#ffffff]">
+            <a href={primaryHref} className="kpi-button bg-[#a2dc25] text-[#0b1f33]">
               {t.cta} <span aria-hidden="true">↗</span>
             </a>
             <a href={HOTEL_TRAINING_ACADEMY_DISCOVER} target="_blank" rel="noreferrer" className="kpi-train-closer-link">

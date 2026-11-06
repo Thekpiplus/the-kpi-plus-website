@@ -17,7 +17,7 @@
 .sol-ops .b2b-save,
 .sol-ops-page .kpi-button.b2b-save {
   background: #a2dc25;
-  color: #ffffff;
+  color: #0b1f33;
   font-family: Montserrat, Sarabun, "Noto Sans Thai", Tahoma, Arial, sans-serif;
   font-weight: 700;
 }
@@ -38,8 +38,8 @@
 .sol-ops .b2b-status.is-new,
 .sol-ops .b2b-status.is-archived,
 .sol-ops .b2b-status.is-hidden {
-  background: #f4f4f4;
-  color: #3b3b3b;
+  background: #475569;
+  color: #ffffff;
 }
 
 .sol-ops .b2b-status.is-review,
@@ -326,8 +326,8 @@
   align-items: center;
   padding: 0.12rem 0.55rem;
   border-radius: 999px;
-  background: #f4f4f4;
-  color: #3b3b3b;
+  background: #475569;
+  color: #ffffff;
   font-family: Montserrat, Sarabun, "Noto Sans Thai", Tahoma, Arial, sans-serif;
   font-size: 0.74rem;
   font-weight: 700;
@@ -516,8 +516,8 @@
 }
 
 .sol-ops .b2b-status.is-priority_normal {
-  background: #f4f4f4;
-  color: #3b3b3b;
+  background: #475569;
+  color: #ffffff;
 }
 
 .sol-ops .b2b-status.is-gate_permission,
