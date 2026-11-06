@@ -6,8 +6,6 @@ import {
   deleteClientLogo,
   moveClientLogo,
   saveClientLogo,
-  setClientLogoActive,
-  setClientLogoPermission,
 } from "@/lib/cms/client-logo-actions";
 import {
   CLIENT_LOGO_CANVAS,
@@ -22,7 +20,6 @@ import {
   inputFromRow,
   normalizeWebsiteUrl,
   permissionLabel,
-  permissionLabelTh,
   publicClientAlt,
   publicClientLabel,
   validateClientLogoInput,
@@ -32,6 +29,34 @@ import {
 import type { CmsClientLogoRow } from "@/lib/cms/types";
 
 type DialogMode = "create" | "edit" | null;
+
+function IconEdit() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M4 20h4l10.5-10.5a1.5 1.5 0 0 0 0-2.12L16.62 5.5a1.5 1.5 0 0 0-2.12 0L4 16v4Z"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinejoin="round"
+      />
+      <path d="M13.5 6.5l4 4" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IconTrash() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M5 7h14M9.5 7V5.5A1.5 1.5 0 0 1 11 4h2a1.5 1.5 0 0 1 1.5 1.5V7m1.5 0v11a1.5 1.5 0 0 1-1.5 1.5h-7A1.5 1.5 0 0 1 8 18V7"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 function LogoThumb({
   src,
@@ -56,15 +81,6 @@ function LogoThumb({
         height={CLIENT_LOGO_CANVAS.height}
         onError={() => setBroken(true)}
       />
-    </span>
-  );
-}
-
-function StatusBadge({ permission }: { permission: string }) {
-  return (
-    <span className={`crm-logo-badge is-${permission}`}>
-      <span>{permissionLabel(permission)}</span>
-      <small>{permissionLabelTh(permission)}</small>
     </span>
   );
 }
@@ -334,8 +350,6 @@ export function ClientLogoManager({
                   <th scope="col">โลโก้</th>
                   <th scope="col">ชื่อ</th>
                   <th scope="col">เว็บไซต์</th>
-                  <th scope="col">สิทธิ์เผยแพร่</th>
-                  <th scope="col">สถานะ</th>
                   <th scope="col">ลำดับ</th>
                   <th scope="col">การดำเนินการ</th>
                 </tr>
@@ -379,17 +393,6 @@ export function ClientLogoManager({
                           <span className="crm-logo-secondary">—</span>
                         )}
                       </td>
-                      <td data-label="สิทธิ์เผยแพร่">
-                        <StatusBadge permission={row.permission} />
-                      </td>
-                      <td data-label="สถานะ">
-                        <span className={`crm-logo-state${row.isActive ? " is-on" : ""}`}>
-                          {row.isActive ? "Active" : "Inactive"}
-                        </span>
-                        {canPublishClientLogo(row) ? (
-                          <small className="crm-logo-public-flag">Public</small>
-                        ) : null}
-                      </td>
                       <td data-label="ลำดับ">
                         <div className="crm-logo-order">
                           <span>{row.sortOrder}</span>
@@ -420,53 +423,7 @@ export function ClientLogoManager({
                         </div>
                       </td>
                       <td data-label="การดำเนินการ">
-                        <div className="crm-logo-row-actions">
-                          <button
-                            type="button"
-                            className="crm-cms-inline-link"
-                            onClick={(event) => openEdit(row, event)}
-                          >
-                            แก้ไข
-                          </button>
-                          {row.permission !== "approved" ? (
-                            <form action={setClientLogoPermission}>
-                              <input type="hidden" name="id" value={row.id} />
-                              <input type="hidden" name="permission" value="approved" />
-                              <button
-                                type="submit"
-                                className="crm-cms-inline-link"
-                                disabled={!row.filePath.trim()}
-                                title={!row.filePath.trim() ? "ต้องมีไฟล์โลโก้ก่อนอนุมัติ" : undefined}
-                              >
-                                อนุมัติ
-                              </button>
-                            </form>
-                          ) : null}
-                          {row.permission !== "rejected" ? (
-                            <form action={setClientLogoPermission}>
-                              <input type="hidden" name="id" value={row.id} />
-                              <input type="hidden" name="permission" value="rejected" />
-                              <button type="submit" className="crm-cms-inline-link">
-                                ปฏิเสธ
-                              </button>
-                            </form>
-                          ) : null}
-                          {row.permission === "rejected" ? (
-                            <form action={setClientLogoPermission}>
-                              <input type="hidden" name="id" value={row.id} />
-                              <input type="hidden" name="permission" value="pending" />
-                              <button type="submit" className="crm-cms-inline-link">
-                                กลับ Pending
-                              </button>
-                            </form>
-                          ) : null}
-                          <form action={setClientLogoActive}>
-                            <input type="hidden" name="id" value={row.id} />
-                            <input type="hidden" name="isActive" value={row.isActive ? "0" : "1"} />
-                            <button type="submit" className="crm-cms-inline-link">
-                              {row.isActive ? "ปิดใช้งาน" : "เปิดใช้งาน"}
-                            </button>
-                          </form>
+                        <div className="crm-logo-row-actions crm-users-icon-actions">
                           {confirmId === row.id ? (
                             <div className="crm-contact-inline-confirm" role="status">
                               <p>
@@ -486,13 +443,26 @@ export function ClientLogoManager({
                               </div>
                             </div>
                           ) : (
-                            <button
-                              type="button"
-                              className="crm-cms-inline-link crm-cs-delete-link"
-                              onClick={() => setConfirmId(row.id)}
-                            >
-                              ลบ
-                            </button>
+                            <>
+                              <button
+                                type="button"
+                                className="crm-users-icon-btn"
+                                title="แก้ไข"
+                                aria-label={`แก้ไข ${row.name}`}
+                                onClick={(event) => openEdit(row, event)}
+                              >
+                                <IconEdit />
+                              </button>
+                              <button
+                                type="button"
+                                className="crm-users-icon-btn is-danger"
+                                title="ลบ"
+                                aria-label={`ลบ ${row.name}`}
+                                onClick={() => setConfirmId(row.id)}
+                              >
+                                <IconTrash />
+                              </button>
+                            </>
                           )}
                         </div>
                       </td>
