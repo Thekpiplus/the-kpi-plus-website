@@ -91,6 +91,8 @@ export default async function CmsHomePage({
       );
     })
     .sort((a, b) => a.slug.localeCompare(b.slug, "th"));
+  const onlineCount = rows.filter((row) => row.online).length;
+  const filtered = Boolean(q);
 
   return (
     <div className="crm-cms">
@@ -99,7 +101,7 @@ export default async function CmsHomePage({
         title="หน้าเว็บ"
         description="รายชื่อหน้าที่มีอยู่บนเว็บ พร้อม slug meta tag และคำอธิบาย"
         actions={
-          <Link href="/crm/cms/pages/new" className="kpi-button">
+          <Link href="/crm/cms/pages/new" className="kpi-button crm-users-primary">
             สร้างหน้าเพจใหม่
           </Link>
         }
@@ -113,6 +115,31 @@ export default async function CmsHomePage({
           </Link>
         </p>
       ) : null}
+
+      <section className="crm-dash-summary crm-cms-summary" aria-label="สรุปหน้าเว็บ">
+        <div className="crm-dash-stats" role="list">
+          <div className="crm-dash-stat is-cms is-static" role="listitem">
+            <span className="crm-dash-stat-label">หน้าทั้งหมด</span>
+            <strong className="crm-dash-stat-value">{siteRows.length + cmsRows.length}</strong>
+            <span className="crm-dash-stat-hint">ไซต์ + CMS</span>
+          </div>
+          <div className="crm-dash-stat is-today is-static" role="listitem">
+            <span className="crm-dash-stat-label">ออนไลน์</span>
+            <strong className="crm-dash-stat-value">{onlineCount}</strong>
+            <span className="crm-dash-stat-hint">{filtered ? "ในผลลัพธ์ที่ค้นหา" : "พร้อมเผยแพร่"}</span>
+          </div>
+          <div className="crm-dash-stat is-users is-static" role="listitem">
+            <span className="crm-dash-stat-label">ผลลัพธ์ที่แสดง</span>
+            <strong className="crm-dash-stat-value">{rows.length}</strong>
+            <span className="crm-dash-stat-hint">{filtered ? `ค้นหา “${params.q?.trim()}”` : "ทุกรายการ"}</span>
+          </div>
+          <Link href="/crm/cms/trash" className="crm-dash-stat is-overdue" role="listitem">
+            <span className="crm-dash-stat-label">ถังขยะ</span>
+            <strong className="crm-dash-stat-value">{trashedPages.length}</strong>
+            <span className="crm-dash-stat-hint">เปิดถังขยะ</span>
+          </Link>
+        </div>
+      </section>
 
       <section className="crm-cms-toolbar">
         <form className="crm-cms-search" method="get">

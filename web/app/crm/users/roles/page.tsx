@@ -94,6 +94,26 @@ export default async function UserRolesPage() {
         }
       />
 
+      <section className="crm-dash-summary" aria-label="สรุปบทบาท">
+        <div className="crm-dash-stats" role="list">
+          <div className="crm-dash-stat is-users is-static" role="listitem">
+            <span className="crm-dash-stat-label">บทบาทในระบบ</span>
+            <strong className="crm-dash-stat-value">{USER_ROLES.length}</strong>
+            <span className="crm-dash-stat-hint">อ้างอิงจากโมเดลจริง</span>
+          </div>
+          <div className="crm-dash-stat is-today is-static" role="listitem">
+            <span className="crm-dash-stat-label">เข้าทุกโมดูลอัตโนมัติ</span>
+            <strong className="crm-dash-stat-value">{FULL_ACCESS_ROLES.length}</strong>
+            <span className="crm-dash-stat-hint">Superadmin / Admin</span>
+          </div>
+          <div className="crm-dash-stat is-cms is-static" role="listitem">
+            <span className="crm-dash-stat-label">โมดูลที่อ้างอิง</span>
+            <strong className="crm-dash-stat-value">{ADMIN_MODULES.length}</strong>
+            <span className="crm-dash-stat-hint">ในเมทริกซ์ด้านล่าง</span>
+          </div>
+        </div>
+      </section>
+
       <section className="crm-users-roles-note" aria-label="วิธีคำนวณสิทธิ์">
         <h2>Effective permissions ในระบบนี้</h2>
         <ol className="crm-users-roles-steps">

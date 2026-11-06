@@ -61,23 +61,27 @@ export default async function PipelinePage({
         }
       />
 
-      <section className="crm-pipe-summary" aria-label="สรุป Pipeline">
-        <div className="crm-pipe-metrics" role="list">
-          <div className="crm-pipe-metric" role="listitem">
-            <span className="crm-pipe-metric-label">ลีดทั้งหมด</span>
-            <strong className="crm-pipe-metric-value">{total}</strong>
+      <section className="crm-pipe-summary crm-dash-summary" aria-label="สรุป Pipeline">
+        <div className="crm-dash-stats" role="list">
+          <div className="crm-dash-stat is-users is-static" role="listitem">
+            <span className="crm-dash-stat-label">ลีดทั้งหมด</span>
+            <strong className="crm-dash-stat-value">{total}</strong>
+            <span className="crm-dash-stat-hint">ใน Pipeline</span>
           </div>
-          <div className="crm-pipe-metric is-open" role="listitem">
-            <span className="crm-pipe-metric-label">กำลังติดตาม</span>
-            <strong className="crm-pipe-metric-value">{openCount}</strong>
+          <div className="crm-dash-stat is-today is-static" role="listitem">
+            <span className="crm-dash-stat-label">กำลังติดตาม</span>
+            <strong className="crm-dash-stat-value">{openCount}</strong>
+            <span className="crm-dash-stat-hint">ยังไม่ปิด</span>
           </div>
-          <div className="crm-pipe-metric is-won" role="listitem">
-            <span className="crm-pipe-metric-label">ปิดได้</span>
-            <strong className="crm-pipe-metric-value">{wonCount}</strong>
+          <div className="crm-dash-stat is-web is-static" role="listitem">
+            <span className="crm-dash-stat-label">ปิดได้</span>
+            <strong className="crm-dash-stat-value">{wonCount}</strong>
+            <span className="crm-dash-stat-hint">ขั้นชนะ</span>
           </div>
-          <div className="crm-pipe-metric is-value" role="listitem">
-            <span className="crm-pipe-metric-label">มูลค่ารวม</span>
-            <strong className="crm-pipe-metric-value">{formatMoney(pipelineValue)}</strong>
+          <div className="crm-dash-stat is-partners is-static" role="listitem">
+            <span className="crm-dash-stat-label">มูลค่ารวม</span>
+            <strong className="crm-dash-stat-value">{formatMoney(pipelineValue)}</strong>
+            <span className="crm-dash-stat-hint">ไม่รวมขั้นแพ้</span>
           </div>
         </div>
       </section>

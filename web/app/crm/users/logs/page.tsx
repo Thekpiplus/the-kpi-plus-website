@@ -59,19 +59,24 @@ export default async function LoginLogPage({
         description="ดูประวัติการเข้าสู่ระบบล่าสุด ค้นด้วยอีเมลเพื่อตรวจบัญชีทีม"
       />
 
-      <section className="crm-logs-stats" aria-label="สรุป Login Log">
-        <article className="crm-logs-stat">
-          <p>รายการที่แสดง</p>
-          <strong>{logs.length}</strong>
-        </article>
-        <article className="crm-logs-stat is-ok">
-          <p>เข้าสู่ระบบสำเร็จ</p>
-          <strong>{okCount}</strong>
-        </article>
-        <article className="crm-logs-stat is-fail">
-          <p>ไม่สำเร็จ</p>
-          <strong>{failCount}</strong>
-        </article>
+      <section className="crm-dash-summary crm-logs-summary" aria-label="สรุป Login Log">
+        <div className="crm-dash-stats" role="list">
+          <div className="crm-dash-stat is-users is-static" role="listitem">
+            <span className="crm-dash-stat-label">รายการที่แสดง</span>
+            <strong className="crm-dash-stat-value">{logs.length}</strong>
+            <span className="crm-dash-stat-hint">ตามตัวกรองปัจจุบัน</span>
+          </div>
+          <div className="crm-dash-stat is-today is-static" role="listitem">
+            <span className="crm-dash-stat-label">เข้าสู่ระบบสำเร็จ</span>
+            <strong className="crm-dash-stat-value">{okCount}</strong>
+            <span className="crm-dash-stat-hint">ในผลลัพธ์</span>
+          </div>
+          <div className="crm-dash-stat is-overdue is-static" role="listitem">
+            <span className="crm-dash-stat-label">ไม่สำเร็จ</span>
+            <strong className="crm-dash-stat-value">{failCount}</strong>
+            <span className="crm-dash-stat-hint">ในผลลัพธ์</span>
+          </div>
+        </div>
       </section>
 
       <section className="crm-logs-toolbar">

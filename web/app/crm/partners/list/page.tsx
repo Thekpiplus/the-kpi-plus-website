@@ -63,22 +63,26 @@ export default async function PartnerListPage({
       />
 
       <section className="crm-partners-bar" aria-label="สรุปพาร์ตเนอร์">
-        <div className="crm-partners-metrics">
-          <div>
-            <span>ทั้งหมด</span>
-            <strong>{overview.total}</strong>
+        <div className="crm-dash-stats" role="list">
+          <div className="crm-dash-stat is-users is-static" role="listitem">
+            <span className="crm-dash-stat-label">ทั้งหมด</span>
+            <strong className="crm-dash-stat-value">{overview.total}</strong>
+            <span className="crm-dash-stat-hint">พาร์ตเนอร์ในระบบ</span>
           </div>
-          <div>
-            <span>รออนุมัติ</span>
-            <strong>{overview.applications}</strong>
+          <div className="crm-dash-stat is-overdue is-static" role="listitem">
+            <span className="crm-dash-stat-label">รออนุมัติ</span>
+            <strong className="crm-dash-stat-value">{overview.applications}</strong>
+            <span className="crm-dash-stat-hint">ต้องตรวจก่อน</span>
           </div>
-          <div>
-            <span>ใช้งานอยู่</span>
-            <strong>{overview.active}</strong>
+          <div className="crm-dash-stat is-today is-static" role="listitem">
+            <span className="crm-dash-stat-label">ใช้งานอยู่</span>
+            <strong className="crm-dash-stat-value">{overview.active}</strong>
+            <span className="crm-dash-stat-hint">สถานะ active</span>
           </div>
-          <div className="is-value">
-            <span>ผลลัพธ์ที่แสดง</span>
-            <strong>{partners.length}</strong>
+          <div className="crm-dash-stat is-partners is-static" role="listitem">
+            <span className="crm-dash-stat-label">ผลลัพธ์ที่แสดง</span>
+            <strong className="crm-dash-stat-value">{partners.length}</strong>
+            <span className="crm-dash-stat-hint">ตามตัวกรองปัจจุบัน</span>
           </div>
         </div>
         <nav className="crm-partners-tabs" aria-label="กรองสถานะ">
