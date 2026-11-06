@@ -3,6 +3,7 @@ import { PipelineBoard } from "@/components/crm/PipelineBoard";
 import { PipelineCalendar } from "@/components/crm/PipelineCalendar";
 import { PipelineTable } from "@/components/crm/PipelineTable";
 import { parsePipelineView, stageToneKey } from "@/components/crm/pipeline-types";
+import { EmptyState } from "@/components/crm/ui/EmptyState";
 import { NewLeadOpenButton } from "@/components/crm/ui/NewLeadModal";
 import { PageHeader } from "@/components/crm/ui/PageHeader";
 import { PipelineViewSwitch } from "@/components/crm/ui/PipelineViewSwitch";
@@ -36,73 +37,95 @@ export default async function PipelinePage({
 
   const description =
     view === "table"
-      ? "ดูลีดทั้งท่อในตาราง เรียงตามลำดับขั้น และย้ายขั้นได้จากแถว"
+      ? "ติดตามลีดตามขั้นขายในตาราง และย้ายขั้นได้จากแต่ละแถว"
       : view === "calendar"
-        ? "ดูนัดติดตามรายเดือน เปิดลีดจากวันที่มีนัด"
-        : "ติดตามลีดตามขั้นขาย เปิดรายละเอียด หรือย้ายขั้นจากบัตรได้ทันที";
+        ? "ดูนัดติดตามรายเดือน แล้วเปิดลีดจากวันที่เกี่ยวข้อง"
+        : "ติดตามลีดตามขั้นแบบคานบัน เปิดรายละเอียดหรือย้ายขั้นจากบัตร";
 
   return (
     <div className="crm-leads crm-pipe-page">
       <PageHeader
-        eyebrow="Lead Management"
+        eyebrow="Lead Management · Pipeline"
         title="Pipeline"
         description={description}
         actions={
-          <div className="crm-leads-actions">
+          <div className="crm-leads-actions crm-pipe-actions">
+            <NewLeadOpenButton className="kpi-button crm-users-primary">คีย์ลีด</NewLeadOpenButton>
             <Link href="/crm/sales" className="crm-users-secondary">
               งานวันนี้
             </Link>
             <Link href="/crm/leads" className="crm-users-secondary">
               ลีดทั้งหมด
             </Link>
-            <NewLeadOpenButton className="kpi-button">คีย์ลีด</NewLeadOpenButton>
           </div>
         }
       />
 
-      <section className="crm-pipe-bar" aria-label="สรุป Pipeline">
-        <div className="crm-pipe-bar-top">
-          <div className="crm-pipe-metrics">
-            <div>
-              <span>ลีดทั้งหมด</span>
-              <strong>{total}</strong>
-            </div>
-            <div>
-              <span>กำลังติดตาม</span>
-              <strong>{openCount}</strong>
-            </div>
-            <div>
-              <span>ปิดได้</span>
-              <strong>{wonCount}</strong>
-            </div>
-            <div className="is-value">
-              <span>มูลค่ารวม</span>
-              <strong>{formatMoney(pipelineValue)}</strong>
-            </div>
+      <section className="crm-pipe-summary" aria-label="สรุป Pipeline">
+        <div className="crm-pipe-metrics" role="list">
+          <div className="crm-pipe-metric" role="listitem">
+            <span className="crm-pipe-metric-label">ลีดทั้งหมด</span>
+            <strong className="crm-pipe-metric-value">{total}</strong>
+          </div>
+          <div className="crm-pipe-metric is-open" role="listitem">
+            <span className="crm-pipe-metric-label">กำลังติดตาม</span>
+            <strong className="crm-pipe-metric-value">{openCount}</strong>
+          </div>
+          <div className="crm-pipe-metric is-won" role="listitem">
+            <span className="crm-pipe-metric-label">ปิดได้</span>
+            <strong className="crm-pipe-metric-value">{wonCount}</strong>
+          </div>
+          <div className="crm-pipe-metric is-value" role="listitem">
+            <span className="crm-pipe-metric-label">มูลค่ารวม</span>
+            <strong className="crm-pipe-metric-value">{formatMoney(pipelineValue)}</strong>
+          </div>
+        </div>
+      </section>
+
+      <section className="crm-pipe-toolbar" aria-label="มุมมองและขั้น Pipeline">
+        <div className="crm-pipe-toolbar-row">
+          <div className="crm-pipe-toolbar-copy">
+            <h2 className="crm-pipe-toolbar-title">รายการ Pipeline</h2>
+            <p className="crm-pipe-toolbar-desc">
+              {view === "table" ? "มุมมองตาราง" : view === "calendar" ? "มุมมองปฏิทิน" : "มุมมองคานบัน"}
+              {total > 0 ? ` · ${total} รายการ` : " · ยังไม่มีลีด"}
+            </p>
           </div>
           <PipelineViewSwitch view={view} month={month} />
         </div>
 
         {view !== "calendar" ? (
-          <ol className="crm-pipe-steps" aria-label="ลำดับขั้นใน Pipeline">
+          <ol className="crm-pipe-steps" aria-label="จำนวนลีดตามขั้น">
             {stages.map((stage, index) => (
               <li key={stage.id} data-stage-tone={stageToneKey(index + 1, stage)}>
                 <i className="crm-pipe-stage-bar" aria-hidden="true" />
                 <span>{stage.nameTh}</span>
-                <b>{stage.leads.length}</b>
+                <b>
+                  <span className="sr-only">จำนวน </span>
+                  {stage.leads.length}
+                </b>
               </li>
             ))}
           </ol>
         ) : null}
       </section>
 
-      {view === "table" ? (
-        <PipelineTable stages={stages} />
-      ) : view === "calendar" ? (
-        <PipelineCalendar stages={stages} month={month} />
-      ) : (
-        <PipelineBoard stages={stages} />
-      )}
+      <section className="crm-pipe-main" aria-label="ข้อมูล Pipeline">
+        {total === 0 && view !== "calendar" ? (
+          <EmptyState
+            title="ยังไม่มีลีดใน Pipeline"
+            body="คีย์ลีดใหม่ หรือเปิดรายการลีดทั้งหมดเพื่อเริ่มติดตาม"
+            compact
+            action={<NewLeadOpenButton className="kpi-button crm-users-primary">คีย์ลีด</NewLeadOpenButton>}
+          />
+        ) : view === "table" ? (
+          <PipelineTable stages={stages} />
+        ) : view === "calendar" ? (
+          <PipelineCalendar stages={stages} month={month} />
+        ) : (
+          <PipelineBoard stages={stages} />
+        )}
+      </section>
     </div>
   );
 }

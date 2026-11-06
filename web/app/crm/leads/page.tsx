@@ -6,7 +6,14 @@ import { PageHeader } from "@/components/crm/ui/PageHeader";
 import { stageToneKey } from "@/components/crm/pipeline-types";
 import { assignLeadOwner, changeLeadStage } from "@/lib/crm/actions";
 import { leadArchiveCounts, type LeadArchiveView } from "@/lib/crm/archive";
-import { formatMoney, formatThaiDateTime, pipelineData, searchLeads, staffDirectory } from "@/lib/crm/queries";
+import {
+  formatMoney,
+  formatThaiDateTime,
+  leadOriginCounts,
+  pipelineData,
+  searchLeads,
+  staffDirectory,
+} from "@/lib/crm/queries";
 import { originLabel, sourceLabel, type LeadOrigin } from "@/lib/crm/sources";
 
 function leadsListHref(
@@ -23,6 +30,11 @@ function leadsListHref(
   return value ? `/crm/leads?${value}` : "/crm/leads";
 }
 
+/** Short source chip / locked-field label (not the full page title). */
+function originFilterLabel(origin: LeadOrigin) {
+  return origin === "web" ? "จากเว็บไซต์" : "คีย์เอง / แหล่งอื่น";
+}
+
 export default async function LeadsPage({
   searchParams,
 }: {
@@ -33,98 +45,151 @@ export default async function LeadsPage({
     params.origin === "web" || params.origin === "manual" ? params.origin : undefined;
   const archive: LeadArchiveView =
     params.archive === "archived" || params.archive === "all" ? params.archive : "active";
-  const [leads, stages, owners, counts] = await Promise.all([
+  const [leads, stages, owners, counts, originCounts] = await Promise.all([
     searchLeads({ q: params.q, origin, stageId: params.stageId, ownerId: params.ownerId, archive }),
     pipelineData(),
     staffDirectory(),
     leadArchiveCounts(),
+    leadOriginCounts(),
   ]);
   const ownersById = Object.fromEntries(owners.map((item) => [item.id, item.name]));
   const stageIndexById = Object.fromEntries(stages.map((stage, index) => [stage.id, index + 1]));
-  const tabs: { id: LeadArchiveView; label: string; count: number }[] = [
-    { id: "active", label: "ใช้งานอยู่", count: counts.active },
-    { id: "archived", label: "เก็บแล้ว", count: counts.archived },
-    { id: "all", label: "ทั้งหมด", count: counts.all },
+  const tabs: { id: LeadArchiveView; label: string; count: number; tone: string }[] = [
+    { id: "active", label: "ใช้งานอยู่", count: counts.active, tone: "active" },
+    { id: "archived", label: "เก็บแล้ว", count: counts.archived, tone: "archived" },
+    { id: "all", label: "ทั้งหมด", count: counts.all, tone: "all" },
   ];
-  const filtered = Boolean(params.q?.trim() || origin || params.stageId || params.ownerId);
+
+  const extraFiltered = Boolean(params.q?.trim() || params.stageId || params.ownerId);
+  const hasActiveFilters = Boolean(origin || extraFiltered);
   const returnTo = leadsListHref(params, archive);
+  const originBaseHref = leadsListHref({ origin }, archive);
+  const clearExtraHref = originBaseHref;
+  const clearAllHref = leadsListHref({}, archive);
+
+  const pageTitle =
+    origin === "web" ? "ลีดจากเว็บไซต์" : origin === "manual" ? "ลีดที่คีย์เอง" : "ลีดทั้งหมด";
+  const pageEyebrow =
+    origin === "web"
+      ? "Lead Management · จากเว็บ"
+      : origin === "manual"
+        ? "Lead Management · คีย์เอง"
+        : "Lead Management · ลีดทั้งหมด";
+  const pageDescription =
+    archive === "archived"
+      ? origin
+        ? `${originLabel(origin)}ที่เก็บไว้แล้ว ไม่โชว์ใน Pipeline และงานวันนี้`
+        : "ลีดที่เก็บไว้แล้ว ไม่โชว์ใน Pipeline และงานวันนี้"
+      : origin === "web"
+        ? "รายการจากฟอร์มเว็บไซต์ — ค้นหา มอบหมาย และปรับขั้นได้จากตาราง"
+        : origin === "manual"
+          ? "รายการที่คีย์เองหรือจากแหล่งอื่น — ค้นหา มอบหมาย และปรับขั้นได้จากตาราง"
+          : "ค้นหา กรอง มอบหมาย และปรับขั้นของลีดในรายการเดียว";
+
+  const archiveLabel =
+    archive === "archived" ? "ลีดที่เก็บไว้" : archive === "all" ? "ลีดทุกสถานะ" : "ลีดที่ใช้งานอยู่";
+  const originScopeCount =
+    origin === "web" ? originCounts.web : origin === "manual" ? originCounts.manual : null;
+
+  const emptyTitle = extraFiltered
+    ? "ไม่พบลีดตามเงื่อนไข"
+    : origin === "web"
+      ? "ยังไม่มีลีดจากเว็บไซต์"
+      : origin === "manual"
+        ? "ยังไม่มีลีดที่คีย์เอง"
+        : "ยังไม่มีลีด";
+  const emptyBody = extraFiltered
+    ? "ลองเปลี่ยนคำค้นหรือตัวกรอง หรือล้างตัวกรองเพื่อดูรายการในบริบทนี้"
+    : origin === "web"
+      ? "เมื่อมีคนกรอกฟอร์มบนเว็บไซต์ ลีดจะปรากฏที่นี่"
+      : origin === "manual"
+        ? "คีย์ลีดใหม่เพื่อเริ่มติดตามในรายการนี้"
+        : "คีย์ลีดใหม่เพื่อเริ่มติดตามในรายการนี้";
 
   return (
-    <div className="crm-leads crm-leads-page">
+    <div className={`crm-leads crm-leads-page${origin ? ` is-origin-${origin}` : ""}`}>
       <PageHeader
-        eyebrow="Lead Management"
-        title="ลีดทั้งหมด"
-        description={
-          archive === "archived"
-            ? "ลีดที่เก็บไว้แล้ว ไม่โชว์ใน Pipeline และงานวันนี้"
-            : origin
-              ? originLabel(origin)
-              : "ค้นหา มอบหมาย ปรับขั้น และจัดการลีดในรายการเดียว"
-        }
+        eyebrow={pageEyebrow}
+        title={pageTitle}
+        description={pageDescription}
         actions={
           <div className="crm-leads-actions">
+            <NewLeadOpenButton className="kpi-button crm-users-primary">คีย์ลีด</NewLeadOpenButton>
             <Link href="/crm/pipeline" className="crm-users-secondary">
               Pipeline
             </Link>
             <Link href="/crm/sales" className="crm-users-secondary">
               งานวันนี้
             </Link>
-            <NewLeadOpenButton className="kpi-button">คีย์ลีด</NewLeadOpenButton>
           </div>
         }
       />
 
-      <section className="crm-leads-bar" aria-label="สรุปสถานะลีด">
-        <div className="crm-leads-metrics">
-          <div>
-            <span>ใช้งานอยู่</span>
-            <strong>{counts.active}</strong>
-          </div>
-          <div>
-            <span>เก็บแล้ว</span>
-            <strong>{counts.archived}</strong>
-          </div>
-          <div>
-            <span>ทั้งหมด</span>
-            <strong>{counts.all}</strong>
-          </div>
-          <div className="is-value">
-            <span>ผลลัพธ์ที่แสดง</span>
-            <strong>{leads.length}</strong>
-          </div>
-        </div>
-        <nav className="crm-leads-tabs" aria-label="เก็บลีด">
-          {tabs.map((tab) => (
-            <Link
-              key={tab.id}
-              href={leadsListHref(params, tab.id)}
-              className={archive === tab.id ? "is-active" : undefined}
-              aria-current={archive === tab.id ? "page" : undefined}
-            >
-              {tab.label}
-              <span>{tab.count}</span>
-            </Link>
-          ))}
+      <section className="crm-leads-archive" aria-label="สถานะการเก็บลีด">
+        <nav className="crm-leads-tabs" aria-label="ตัวกรองสถานะลีด">
+          {tabs.map((tab) => {
+            const active = archive === tab.id;
+            return (
+              <Link
+                key={tab.id}
+                href={leadsListHref(params, tab.id)}
+                className={`crm-leads-tab is-${tab.tone}${active ? " is-active" : ""}`}
+                aria-current={active ? "page" : undefined}
+              >
+                <span className="crm-leads-tab-label">{tab.label}</span>
+                {!origin ? <span className="crm-leads-tab-count">{tab.count}</span> : null}
+                {active ? <span className="sr-only"> (กำลังกรอง)</span> : null}
+              </Link>
+            );
+          })}
         </nav>
+        <p className="crm-leads-archive-hint">
+          {origin
+            ? `กำลังดู${pageTitle} — แท็บด้านบนกรองสถานะเก็บภายในรายการนี้ · จำนวนผลลัพธ์อยู่เหนือตาราง`
+            : "ตัวเลขบนแท็บคือจำนวนในระบบตามสถานะเก็บลีด — ไม่ใช่จำนวนผลลัพธ์หลังค้นหา"}
+        </p>
+        {origin && originScopeCount != null ? (
+          <p className="crm-leads-origin-scope" aria-live="polite">
+            <span className="crm-leads-origin-scope-label">
+              {origin === "web" ? "ลีดจากเว็บไซต์ที่ใช้งานอยู่" : "ลีดที่คีย์เองที่ใช้งานอยู่"}
+            </span>
+            <span className="crm-leads-origin-scope-count">{originScopeCount}</span>
+            <span className="crm-leads-origin-scope-sep">ในระบบ · ไม่ใช่ผลลัพธ์หลังค้นหา</span>
+          </p>
+        ) : null}
       </section>
 
-      <section className="crm-leads-toolbar">
+      <section className="crm-leads-toolbar" aria-label="ค้นหาและตัวกรอง">
         <form className="crm-leads-filters" method="get">
           {archive !== "active" ? <input type="hidden" name="archive" value={archive} /> : null}
-          <label>
-            ค้นหา
-            <input className="crm-field" name="q" defaultValue={params.q} placeholder="ชื่อ กิจการ เบอร์ อีเมล" />
+          {origin ? <input type="hidden" name="origin" value={origin} /> : null}
+          <label className="crm-leads-filter-field is-search">
+            <span>ค้นหา</span>
+            <input
+              className="crm-field"
+              name="q"
+              defaultValue={params.q}
+              placeholder="ชื่อ กิจการ เบอร์ หรืออีเมล"
+              autoComplete="off"
+            />
           </label>
-          <label>
-            แหล่ง
-            <select className="crm-select" name="origin" defaultValue={origin ?? ""}>
-              <option value="">ทั้งหมด</option>
-              <option value="web">จากเว็บไซต์</option>
-              <option value="manual">คีย์เอง / แหล่งอื่น</option>
-            </select>
-          </label>
-          <label>
-            ขั้น
+          {!origin ? (
+            <label className="crm-leads-filter-field">
+              <span>แหล่งที่มา</span>
+              <select className="crm-select" name="origin" defaultValue="">
+                <option value="">ทั้งหมด</option>
+                <option value="web">จากเว็บไซต์</option>
+                <option value="manual">คีย์เอง / แหล่งอื่น</option>
+              </select>
+            </label>
+          ) : (
+            <div className="crm-leads-filter-field is-locked" aria-label="แหล่งที่มา">
+              <span>แหล่งที่มา</span>
+              <p className="crm-leads-filter-locked">{originFilterLabel(origin)}</p>
+            </div>
+          )}
+          <label className="crm-leads-filter-field">
+            <span>ขั้น</span>
             <select className="crm-select" name="stageId" defaultValue={params.stageId ?? ""}>
               <option value="">ทุกขั้น</option>
               {stages.map((stage) => (
@@ -134,8 +199,8 @@ export default async function LeadsPage({
               ))}
             </select>
           </label>
-          <label>
-            ผู้ดูแล
+          <label className="crm-leads-filter-field">
+            <span>ผู้ดูแล</span>
             <select className="crm-select" name="ownerId" defaultValue={params.ownerId ?? ""}>
               <option value="">ทุกคน</option>
               {owners.map((owner) => (
@@ -146,20 +211,22 @@ export default async function LeadsPage({
             </select>
           </label>
           <div className="crm-leads-filters-actions">
-            <button className="kpi-button" type="submit">
+            <button className="kpi-button crm-users-primary" type="submit">
               กรอง
             </button>
-            {filtered ? (
-              <Link href={leadsListHref({}, archive)} className="crm-leads-clear">
+            {extraFiltered ? (
+              <Link href={clearExtraHref} className="crm-leads-clear">
                 ล้างตัวกรอง
               </Link>
             ) : null}
           </div>
         </form>
-        {filtered ? (
+        {hasActiveFilters ? (
           <div className="crm-filter-chips" aria-label="ตัวกรองที่ใช้งาน">
+            {origin ? (
+              <span className="crm-filter-chip is-context">แหล่ง: {originFilterLabel(origin)}</span>
+            ) : null}
             {params.q?.trim() ? <span className="crm-filter-chip">ค้นหา: {params.q.trim()}</span> : null}
-            {origin ? <span className="crm-filter-chip">แหล่ง: {originLabel(origin)}</span> : null}
             {params.stageId ? (
               <span className="crm-filter-chip">
                 ขั้น: {stages.find((stage) => stage.id === params.stageId)?.nameTh ?? "เลือกแล้ว"}
@@ -170,38 +237,60 @@ export default async function LeadsPage({
                 ผู้ดูแล: {ownersById[params.ownerId] ?? "เลือกแล้ว"}
               </span>
             ) : null}
-            <Link href={leadsListHref({}, archive)} className="crm-filter-chip-clear">
-              ล้างทั้งหมด
-            </Link>
+            {extraFiltered ? (
+              <Link href={clearExtraHref} className="crm-filter-chip-clear">
+                ล้างตัวกรองเพิ่มเติม
+              </Link>
+            ) : null}
+            {origin ? (
+              <Link href={clearAllHref} className="crm-filter-chip-clear">
+                ดูลีดทั้งหมด
+              </Link>
+            ) : null}
           </div>
         ) : null}
       </section>
 
-      <section className="crm-leads-panel">
+      <section
+        className={`crm-leads-panel${leads.length === 0 ? " is-empty" : ""}`}
+        aria-labelledby="crm-leads-list-heading"
+      >
         <div className="crm-leads-panel-head">
           <div>
-            <h2>
-              รายชื่อลีด
-              <span className="crm-leads-count">{leads.length}</span>
+            <h2 id="crm-leads-list-heading">
+              {origin ? `รายชื่อ${pageTitle}` : "รายชื่อลีด"}
+              <span className="crm-leads-count" title="จำนวนผลลัพธ์ที่แสดงตามตัวกรองปัจจุบัน">
+                {leads.length}
+              </span>
             </h2>
             <p>
-              {archive === "archived" ? "ลีดที่เก็บไว้" : archive === "all" ? "ลีดทั้งหมด" : "ลีดที่ใช้งานอยู่"}
-              {origin ? ` · ${originLabel(origin)}` : ""}
+              ผลลัพธ์ที่พบ {leads.length} รายการ · {archiveLabel}
+              {origin ? ` · ${pageTitle}` : ""}
               {params.q?.trim() ? ` · “${params.q.trim()}”` : ""}
+              {extraFiltered ? " · ตามเงื่อนไขที่เลือก" : ""}
             </p>
           </div>
         </div>
 
         {leads.length === 0 ? (
           <EmptyState
-            filtered={filtered}
-            title={filtered ? "ไม่พบลีดตามเงื่อนไข" : "ยังไม่มีลีด"}
-            body={
-              filtered
-                ? "ลองเปลี่ยนคำค้นหรือตัวกรอง หรือล้างตัวกรองเพื่อดูรายการทั้งหมด"
-                : "คีย์ลีดใหม่เพื่อเริ่มติดตามในรายการนี้"
+            compact
+            filtered={extraFiltered}
+            title={emptyTitle}
+            body={emptyBody}
+            action={
+              extraFiltered ? (
+                <Link href={clearExtraHref} className="crm-users-secondary">
+                  ล้างตัวกรอง
+                </Link>
+              ) : origin === "web" ? (
+                <Link href="/crm/leads" className="crm-users-secondary">
+                  ดูลีดทั้งหมด
+                </Link>
+              ) : (
+                <NewLeadOpenButton className="kpi-button crm-users-primary">คีย์ลีด</NewLeadOpenButton>
+              )
             }
-            action={<NewLeadOpenButton className="kpi-button">คีย์ลีด</NewLeadOpenButton>}
           />
         ) : (
           <div className="crm-leads-table-wrap">
@@ -235,19 +324,25 @@ export default async function LeadsPage({
                           {lead.contactName}
                         </Link>
                       </td>
-                      <td data-label="กิจการ">{lead.businessName || "—"}</td>
+                      <td data-label="กิจการ">
+                        <span className="crm-leads-table-secondary">{lead.businessName || "—"}</span>
+                      </td>
                       <td data-label="ลำดับขั้น">
                         <span className="crm-pipe-stage-badge" data-stage-tone={tone}>
                           {stage?.nameTh ?? "—"}
                         </span>
                         {archived ? <span className="crm-leads-archived-tag">เก็บแล้ว</span> : null}
                       </td>
-                      <td data-label="แหล่งที่มา">{sourceLabel(lead.source)}</td>
+                      <td data-label="แหล่งที่มา">
+                        <span className="crm-leads-table-secondary">{sourceLabel(lead.source)}</span>
+                      </td>
                       <td data-label="ผู้ดูแล">{ownersById[lead.ownerId ?? ""] || "—"}</td>
                       <td data-label="มูลค่า" className="crm-leads-table-money">
                         {formatMoney(lead.estimatedValue)}
                       </td>
-                      <td data-label="อัปเดต">{formatThaiDateTime(lead.updatedAt)}</td>
+                      <td data-label="อัปเดต">
+                        <span className="crm-leads-table-secondary">{formatThaiDateTime(lead.updatedAt)}</span>
+                      </td>
                       <td data-label="ย้ายขั้น">
                         <form action={changeLeadStage} className="crm-leads-table-move">
                           <input type="hidden" name="leadId" value={lead.id} />

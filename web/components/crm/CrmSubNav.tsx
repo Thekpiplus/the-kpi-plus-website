@@ -9,12 +9,25 @@ export type CrmSubNavItem = {
   children?: CrmSubNavItem[];
 };
 
+function searchParam(search: string, key: string) {
+  const currentQuery = search.startsWith("?") ? search.slice(1) : search;
+  return new URLSearchParams(currentQuery).get(key);
+}
+
 export function isCrmSubNavCurrent(pathname: string, search: string, href: string) {
   const [path, query] = href.split("?");
   const currentQuery = search.startsWith("?") ? search.slice(1) : search;
+  if (path === "/crm/leads") {
+    if (pathname !== "/crm/leads") return false;
+    const hrefOrigin = query ? new URLSearchParams(query).get("origin") : null;
+    const currentOrigin = searchParam(search, "origin");
+    if (hrefOrigin === "web" || hrefOrigin === "manual") {
+      return currentOrigin === hrefOrigin;
+    }
+    return !currentOrigin;
+  }
   if (query) return pathname === path && currentQuery === query;
   if (path === "/crm/sales") return pathname === "/crm/sales";
-  if (path === "/crm/leads") return pathname === "/crm/leads" && !currentQuery;
   if (path === "/crm/users/new") return pathname === "/crm/users/new";
   if (path === "/crm/users/logs") return pathname === "/crm/users/logs" || pathname.startsWith("/crm/users/logs/");
   if (path === "/crm/users/roles") return pathname === "/crm/users/roles" || pathname.startsWith("/crm/users/roles/");

@@ -19,15 +19,17 @@ export function PipelineViewSwitch({
       {VIEWS.map((item) => {
         const query = new URLSearchParams({ view: item.id });
         if (item.id === "calendar" && month) query.set("month", month);
+        const active = view === item.id;
         return (
           <Link
             key={item.id}
             href={`/crm/pipeline?${query.toString()}`}
-            aria-current={view === item.id ? "page" : undefined}
-            className={view === item.id ? "is-active" : undefined}
+            aria-current={active ? "page" : undefined}
+            className={active ? "is-active" : undefined}
             title={item.label}
           >
-            {item.label}
+            <span className="crm-pipe-switch-label">{item.label}</span>
+            {active ? <span className="sr-only"> (กำลังแสดง)</span> : null}
           </Link>
         );
       })}

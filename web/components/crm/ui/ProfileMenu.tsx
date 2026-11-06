@@ -64,8 +64,11 @@ export function ProfileMenu({
             <strong>{userName || "ทีม KPI Plus"}</strong>
             <em>{userRole}</em>
           </div>
+          <Link href="/crm/profile" role="menuitem" onClick={() => setOpen(false)}>
+            โปรไฟล์ของฉัน
+          </Link>
           <Link href="/crm/settings" role="menuitem" onClick={() => setOpen(false)}>
-            ตั้งค่า
+            ตั้งค่าระบบ
           </Link>
           {showLogout ? (
             <form action={logoutAction}>
