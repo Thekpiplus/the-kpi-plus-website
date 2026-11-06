@@ -5,8 +5,8 @@ export type ClientLogoPermission = (typeof CLIENT_LOGO_PERMISSIONS)[number];
 
 export const CLIENT_LOGO_PLACEHOLDER = "/images/client-logo-placeholder.svg";
 export const CLIENT_LOGO_PLACEHOLDER_TEXT = "CLIENT LOGO PLACEHOLDER — Replace with approved logo";
-export const CLIENT_LOGO_HINT = "แนะนำ 240×80 พิกเซล JPG / PNG / WEBP ไม่เกิน 5MB";
-export const CLIENT_LOGO_CANVAS = { width: 240, height: 80 } as const;
+export const CLIENT_LOGO_HINT = "แนะนำ 240×120 พิกเซล JPG / PNG / WEBP ไม่เกิน 5MB";
+export const CLIENT_LOGO_CANVAS = { width: 240, height: 120 } as const;
 export const MAX_CLIENT_LOGO_BYTES = 5 * 1024 * 1024;
 export const CLIENT_LOGO_IMAGE_TYPES = new Set([".jpg", ".jpeg", ".png", ".webp"]);
 export const CLIENT_LOGO_MIN_SIZE = { width: 80, height: 24 };

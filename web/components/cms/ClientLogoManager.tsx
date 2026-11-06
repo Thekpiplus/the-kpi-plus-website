@@ -149,8 +149,9 @@ export function ClientLogoManager({
   const [status, setStatus] = useState(clientLogoErrorMessage(error));
   const [ok, setOk] = useState(notice ?? "");
   const [pending, startTransition] = useTransition();
-  const [confirmId, setConfirmId] = useState("");
+  const [deleteTarget, setDeleteTarget] = useState<CmsClientLogoRow | null>(null);
   const [hasNewFile, setHasNewFile] = useState(false);
+  const deleteTitleId = useId();
   const [rows, setRows] = useState(records);
   const [selectedId, setSelectedId] = useState("");
   const [dragId, setDragId] = useState("");
@@ -216,7 +217,7 @@ export function ClientLogoManager({
   }, [autoOpenCreate]);
 
   useEffect(() => {
-    if (dialog || !selectedId) return;
+    if (dialog || deleteTarget || !selectedId) return;
     function onKey(event: KeyboardEvent) {
       if (event.key === "ArrowUp") {
         event.preventDefault();
@@ -231,7 +232,21 @@ export function ClientLogoManager({
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dialog, selectedId, rows, pending]);
+  }, [dialog, deleteTarget, selectedId, rows, pending]);
+
+  useEffect(() => {
+    if (!deleteTarget) return;
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") setDeleteTarget(null);
+    }
+    document.addEventListener("keydown", onKey);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prev;
+    };
+  }, [deleteTarget]);
 
   useEffect(() => {
     if (!dialog) return;
@@ -281,7 +296,7 @@ export function ClientLogoManager({
     setHasNewFile(false);
     setStatus("");
     setOk("");
-    setConfirmId("");
+    setDeleteTarget(null);
     setDialog("create");
   }
 
@@ -294,8 +309,14 @@ export function ClientLogoManager({
     setHasNewFile(false);
     setStatus("");
     setOk("");
-    setConfirmId("");
+    setDeleteTarget(null);
     setDialog("edit");
+  }
+
+  function openDelete(row: CmsClientLogoRow) {
+    setDialog(null);
+    setSelectedId("");
+    setDeleteTarget(row);
   }
 
   function closeDialog() {
@@ -436,13 +457,13 @@ export function ClientLogoManager({
                                 return;
                               }
                               setSelectedId((current) => (current === row.id ? "" : row.id));
-                              setConfirmId("");
+                              setDeleteTarget(null);
                             }}
                             onDragStart={(event) => {
                               dragMoved.current = false;
                               setDragId(row.id);
                               setSelectedId(row.id);
-                              setConfirmId("");
+                              setDeleteTarget(null);
                               event.dataTransfer.effectAllowed = "move";
                               event.dataTransfer.setData("text/plain", row.id);
                             }}
@@ -508,46 +529,24 @@ export function ClientLogoManager({
                       </td>
                       <td data-label="การดำเนินการ">
                         <div className="crm-logo-row-actions crm-users-icon-actions">
-                          {confirmId === row.id ? (
-                            <div className="crm-contact-inline-confirm" role="status">
-                              <p>
-                                ยืนยันลบ “{row.name}”?
-                                {canPublishClientLogo(row) ? " โลโก้นี้กำลังเผยแพร่สาธารณะอยู่" : ""}
-                              </p>
-                              <div>
-                                <button type="button" className="crm-users-secondary" onClick={() => setConfirmId("")}>
-                                  ยกเลิก
-                                </button>
-                                <form action={deleteClientLogo}>
-                                  <input type="hidden" name="id" value={row.id} />
-                                  <button className="kpi-button crm-users-delete-btn" type="submit">
-                                    ลบโลโก้
-                                  </button>
-                                </form>
-                              </div>
-                            </div>
-                          ) : (
-                            <>
-                              <button
-                                type="button"
-                                className="crm-users-icon-btn"
-                                title="แก้ไข"
-                                aria-label={`แก้ไข ${row.name}`}
-                                onClick={(event) => openEdit(row, event)}
-                              >
-                                <IconEdit />
-                              </button>
-                              <button
-                                type="button"
-                                className="crm-users-icon-btn is-danger"
-                                title="ลบ"
-                                aria-label={`ลบ ${row.name}`}
-                                onClick={() => setConfirmId(row.id)}
-                              >
-                                <IconTrash />
-                              </button>
-                            </>
-                          )}
+                          <button
+                            type="button"
+                            className="crm-users-icon-btn"
+                            title="แก้ไข"
+                            aria-label={`แก้ไข ${row.name}`}
+                            onClick={(event) => openEdit(row, event)}
+                          >
+                            <IconEdit />
+                          </button>
+                          <button
+                            type="button"
+                            className="crm-users-icon-btn is-danger"
+                            title="ลบ"
+                            aria-label={`ลบ ${row.name}`}
+                            onClick={() => openDelete(row)}
+                          >
+                            <IconTrash />
+                          </button>
                         </div>
                       </td>
                     </tr>
@@ -558,6 +557,67 @@ export function ClientLogoManager({
           </div>
         )}
       </section>
+
+      {deleteTarget ? (
+        <div className="crm-modal" role="presentation">
+          <button
+            type="button"
+            className="crm-modal-backdrop"
+            aria-label="ปิดหน้าต่าง"
+            onClick={() => setDeleteTarget(null)}
+          />
+          <div
+            className="crm-modal-panel crm-modal-panel-user is-compact is-danger"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={deleteTitleId}
+          >
+            <div className="crm-modal-head crm-modal-head-user">
+              <div>
+                <p className="crm-modal-eyebrow">Content Management · โลโก้ลูกค้า</p>
+                <h2 id={deleteTitleId} className="crm-modal-title">
+                  ยืนยันการลบ
+                </h2>
+                <p className="crm-modal-lead">
+                  ลบ “{deleteTarget.clientName || deleteTarget.name}” ออกจากระบบ?
+                </p>
+              </div>
+              <button
+                type="button"
+                className="crm-modal-close"
+                aria-label="ปิด"
+                onClick={() => setDeleteTarget(null)}
+              >
+                ✕
+              </button>
+            </div>
+            <form action={deleteClientLogo} className="crm-modal-form crm-modal-form-user">
+              <div className="crm-modal-body">
+                <input type="hidden" name="id" value={deleteTarget.id} />
+                <div className="crm-modal-danger-card" role="status">
+                  <p className="crm-modal-danger-title">
+                    ยืนยันลบ “{deleteTarget.clientName || deleteTarget.name}”?
+                  </p>
+                  <p className="crm-modal-danger-copy">
+                    การดำเนินการนี้ย้อนกลับไม่ได้
+                    {canPublishClientLogo(deleteTarget)
+                      ? " โลโก้นี้กำลังแสดงบนหน้าเว็บสาธารณะอยู่ และจะหายไปทันทีหลังลบ"
+                      : ""}
+                  </p>
+                </div>
+              </div>
+              <div className="crm-modal-actions crm-modal-actions-bar">
+                <button type="button" className="crm-users-secondary" onClick={() => setDeleteTarget(null)}>
+                  ยกเลิก
+                </button>
+                <button className="kpi-button crm-users-delete-btn" type="submit">
+                  ลบโลโก้
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      ) : null}
 
       {dialog ? (
         <div className="crm-modal" role="presentation">

@@ -13903,8 +13903,18 @@ html[data-crm-theme="dark"] .crm-cms-globals-card,
   margin-bottom: 0.85rem;
 }
 
+.crm-logo-table-card #crm-logo-list-heading {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+}
+
 .crm-logo-table-card #crm-logo-list-heading .crm-leads-count {
   margin-left: 0.65rem;
+  min-width: 2.9rem;
+  height: 2.9rem;
+  padding: 0 0.7rem;
+  font-size: 1.5rem;
 }
 
 .crm-logo-layout {
@@ -14038,7 +14048,7 @@ html[data-crm-theme="dark"] .crm-cms-globals-card,
   display: grid;
   place-items: center;
   width: 7.5rem;
-  height: 2.5rem;
+  height: 3.75rem;
   padding: 0.2rem 0.35rem;
   border: 1px solid var(--crm-border, #e3e8eb);
   border-radius: 0.45rem;
@@ -14049,7 +14059,7 @@ html[data-crm-theme="dark"] .crm-cms-globals-card,
 .crm-logo-preview-frame {
   width: 100%;
   max-width: 15rem;
-  height: 5rem;
+  height: 7.5rem;
 }
 
 .crm-logo-thumb-frame img,
