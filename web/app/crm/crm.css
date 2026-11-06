@@ -6,8 +6,8 @@
   --admin-surface-elevated: #ffffff;
   --admin-border: #e4e9e3;
   --admin-text: #17202a;
-  --admin-text-muted: #5c6b7a;
-  --admin-placeholder: #7a8794;
+  --admin-text-muted: #4f5d6b;
+  --admin-placeholder: #6b7785;
   --admin-navy: #08233d;
   --admin-lime: #a2dc25;
   --admin-lime-soft: #eef8d2;
@@ -34,6 +34,10 @@
   --admin-space-5: 1.25rem;
   --admin-space-6: 1.5rem;
   --admin-space-8: 2rem;
+  --admin-font: "Sarabun", "Noto Sans Thai", Tahoma, sans-serif;
+  --admin-font-size: 0.95rem;
+  --admin-line-height: 1.65;
+  --admin-letter-spacing: 0.01em;
 
   --crm-wrap: 76rem;
   --crm-gutter: 1.25rem;
@@ -72,10 +76,21 @@
   --crm-hero-text: #ffffff;
   --crm-hero-muted: rgba(255, 255, 255, 0.86);
   --crm-pulse-bg: rgba(255, 255, 255, 0.96);
+  --crm-font: var(--admin-font);
+  --crm-font-size: var(--admin-font-size);
+  --crm-line-height: var(--admin-line-height);
+  --crm-letter-spacing: var(--admin-letter-spacing);
   color-scheme: light;
   min-height: 100vh;
   background: var(--crm-bg);
-  color: var(--crm-text);
+  color: var(--crm-ink);
+  font-family: var(--crm-font);
+  font-size: var(--crm-font-size);
+  font-weight: 400;
+  line-height: var(--crm-line-height);
+  letter-spacing: var(--crm-letter-spacing);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
   transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
@@ -83,6 +98,63 @@
   .crm-shell {
     transition: none;
   }
+}
+
+/* Admin typography — Sarabun everywhere (incl. controls) */
+.crm-shell,
+.crm-shell button,
+.crm-shell input,
+.crm-shell select,
+.crm-shell textarea,
+.crm-shell optgroup,
+.crm-shell option,
+.crm-modal,
+.crm-modal button,
+.crm-modal input,
+.crm-modal select,
+.crm-modal textarea,
+.crm-modal optgroup,
+.crm-modal option {
+  font-family: var(--crm-font, "Sarabun", "Noto Sans Thai", Tahoma, sans-serif);
+}
+
+.crm-shell h1,
+.crm-shell h2,
+.crm-shell h3,
+.crm-shell h4,
+.crm-shell .crm-page-title,
+.crm-shell .crm-dash-hero-title,
+.crm-shell .crm-modal-title,
+.crm-modal .crm-modal-title {
+  font-family: var(--crm-font, "Sarabun", "Noto Sans Thai", Tahoma, sans-serif);
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.crm-shell p,
+.crm-shell li,
+.crm-shell td,
+.crm-shell th,
+.crm-shell label,
+.crm-shell .crm-page-desc,
+.crm-modal p,
+.crm-modal label {
+  line-height: var(--crm-line-height, 1.65);
+}
+
+.crm-shell .kpi-button,
+.crm-shell .crm-users-primary,
+.crm-shell .crm-users-secondary,
+.crm-shell.kpi-locale-th .kpi-button,
+.crm-shell.kpi-locale-th .kpi-label,
+.crm-shell.kpi-locale-th h1,
+.crm-shell.kpi-locale-th h2,
+.crm-shell.kpi-locale-th h3,
+.crm-modal .kpi-button,
+.crm-modal .crm-users-secondary {
+  font-family: var(--crm-font, "Sarabun", "Noto Sans Thai", Tahoma, sans-serif) !important;
+  letter-spacing: 0.01em;
+  line-height: 1.35;
 }
 
 .crm-shell-app {
@@ -113,8 +185,8 @@ html[data-crm-theme="dark"] .crm-shell,
   --admin-surface-elevated: #243246;
   --admin-border: #334155;
   --admin-text: #e8eef5;
-  --admin-text-muted: #a8b4c4;
-  --admin-placeholder: #8b98a8;
+  --admin-text-muted: #b4c0cf;
+  --admin-placeholder: #93a1b3;
   --admin-navy: #f1f5f9;
   --admin-lime: #a2dc25;
   --admin-lime-soft: rgba(162, 220, 37, 0.16);
@@ -477,11 +549,12 @@ html[data-crm-theme="dark"] .crm-shell,
   margin-inline: auto;
   padding: 1.5rem var(--crm-gutter) 2.5rem;
   box-sizing: border-box;
+  color: var(--crm-ink);
 }
 
 .crm-shell-app .crm-main {
   max-width: none;
-  padding: 1.25rem 1.5rem 2rem;
+  padding: clamp(1rem, 1.5vw, 1.35rem) clamp(0.85rem, 2vw, 1.5rem) clamp(1.75rem, 3vw, 2.25rem);
 }
 
 .crm-grid {
@@ -1597,18 +1670,6 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
 .crm-shell-hotel-marketing,
 .crm-shell-solutions {
   --crm-rail-active: #A2DC25;
-}
-
-.crm-shell-hotel-ai,
-.crm-shell-hotel-ai .crm-app,
-.crm-shell-hotel-ai .crm-main,
-.crm-shell-training,
-.crm-shell-training .crm-app,
-.crm-shell-training .crm-main,
-.crm-shell-hotel-marketing,
-.crm-shell-hotel-marketing .crm-app,
-.crm-shell-hotel-marketing .crm-main {
-  font-family: Prompt, "Noto Sans Thai", Tahoma, Arial, sans-serif;
 }
 
 .crm-shell-meta .crm-rail-link.is-active,
@@ -3047,28 +3108,28 @@ html[data-crm-theme="dark"] .crm-shell-app .crm-app-search,
 
 .crm-page-eyebrow {
   margin: 0;
-  color: var(--crm-on-lime);
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  color: var(--crm-heading);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
 .crm-page-title {
   margin: 0;
   color: var(--crm-heading);
-  font-size: clamp(1.45rem, 1.25rem + 0.55vw, 1.85rem);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+  font-size: clamp(1.4rem, 1.2rem + 0.55vw, 1.8rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
 }
 
 .crm-page-desc {
   margin: 0;
   max-width: 42rem;
   color: var(--crm-text-muted);
-  font-size: 0.92rem;
-  line-height: 1.55;
+  font-size: 0.95rem;
+  line-height: 1.65;
 }
 
 .crm-page-actions {
@@ -3079,27 +3140,45 @@ html[data-crm-theme="dark"] .crm-shell-app .crm-app-search,
   gap: 0.55rem;
 }
 
-/* Admin list primary CTAs — align with dashboard brand tokens */
+/* Admin list primary CTAs — lime fill + dark green text (readable on brand) */
 .crm-shell .kpi-button,
-.crm-shell .crm-users-primary {
+.crm-shell .crm-users-primary,
+.crm-modal .kpi-button {
   background: var(--crm-lime);
   color: var(--crm-on-lime);
   border: 0;
   border-radius: 999px;
   box-shadow: none;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .crm-shell .kpi-button:hover,
-.crm-shell .crm-users-primary:hover {
-  background: var(--crm-lime);
+.crm-shell .crm-users-primary:hover,
+.crm-modal .kpi-button:hover {
+  background: color-mix(in srgb, var(--crm-lime) 88%, #1a3a02);
   color: var(--crm-on-lime);
-  filter: brightness(0.97);
+  filter: none;
+}
+
+.crm-shell .crm-users-secondary,
+.crm-modal .crm-users-secondary {
+  background: var(--crm-surface);
+  color: var(--crm-heading);
+  border: 1px solid var(--crm-border-strong);
+}
+
+.crm-shell .crm-users-secondary:hover,
+.crm-modal .crm-users-secondary:hover {
+  background: var(--crm-surface-2);
+  color: var(--crm-heading);
+  border-color: color-mix(in srgb, var(--crm-lime) 40%, var(--crm-border-strong));
 }
 
 .crm-shell .kpi-button:focus-visible,
 .crm-shell .crm-users-primary:focus-visible,
-.crm-shell .crm-users-secondary:focus-visible {
+.crm-shell .crm-users-secondary:focus-visible,
+.crm-modal .kpi-button:focus-visible,
+.crm-modal .crm-users-secondary:focus-visible {
   outline: 2px solid var(--crm-lime);
   outline-offset: 2px;
 }
@@ -5363,19 +5442,25 @@ html[data-crm-theme="dark"] .crm-users-avatar,
   --crm-border: #e4e9e3;
   --crm-heading: #08233d;
   --crm-ink: #17202a;
-  --crm-text-muted: #667085;
+  --crm-text-muted: #4f5d6b;
   --crm-field-bg: #ffffff;
   --crm-accent: #0a2472;
   --crm-lime: #a2dc25;
   --crm-on-lime: #1a3a02;
   --crm-lime-soft: #eef8d2;
   --crm-yellow: #ebe722;
+  --crm-font: "Sarabun", "Noto Sans Thai", Tahoma, sans-serif;
   position: fixed;
   inset: 0;
   z-index: 80;
   display: grid;
   place-items: center;
   padding: 1rem;
+  font-family: var(--crm-font);
+  font-size: 0.95rem;
+  line-height: 1.65;
+  letter-spacing: 0.01em;
+  color: var(--crm-ink);
 }
 
 html[data-crm-theme="dark"] .crm-modal {
@@ -5384,13 +5469,14 @@ html[data-crm-theme="dark"] .crm-modal {
   --crm-border: #2a3a4f;
   --crm-heading: #e8eef5;
   --crm-ink: #e2e8f0;
-  --crm-text-muted: #8b97a8;
+  --crm-text-muted: #b4c0cf;
   --crm-field-bg: #121c2a;
-  --crm-accent: #8ab4ff;
+  --crm-accent: #9ec1ff;
   --crm-lime: #a2dc25;
   --crm-on-lime: #1a3a02;
   --crm-lime-soft: rgba(162, 220, 37, 0.14);
   --crm-yellow: #ebe722;
+  --crm-font: "Sarabun", "Noto Sans Thai", Tahoma, sans-serif;
 }
 
 .crm-modal-backdrop {
@@ -5831,6 +5917,92 @@ html[data-crm-theme="dark"] .crm-modal-head-user .crm-modal-eyebrow,
   color: var(--crm-heading);
   font-size: 0.84rem;
   font-weight: 700;
+}
+
+.crm-password-field-wrap {
+  min-width: 0;
+}
+
+.crm-password-field-label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem 0.75rem;
+}
+
+.crm-password-field-label label {
+  color: inherit;
+  font: inherit;
+}
+
+.crm-password-generate {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--crm-accent);
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 800;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
+.crm-password-generate:hover {
+  color: var(--crm-heading);
+}
+
+.crm-password-generate:focus-visible {
+  outline: 2px solid var(--crm-focus-ring, var(--crm-lime));
+  outline-offset: 2px;
+  border-radius: 0.25rem;
+}
+
+.crm-password-field {
+  position: relative;
+  display: grid;
+  min-width: 0;
+}
+
+.crm-password-field .crm-field {
+  width: 100%;
+  padding-right: 2.75rem;
+}
+
+.crm-password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0.35rem;
+  display: grid;
+  place-items: center;
+  width: 2.15rem;
+  height: 2.15rem;
+  border: 0;
+  border-radius: 0.55rem;
+  background: transparent;
+  color: var(--crm-text-muted);
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.crm-password-toggle:hover {
+  background: var(--crm-surface-2);
+  color: var(--crm-heading);
+}
+
+.crm-password-toggle:focus-visible {
+  outline: 2px solid var(--crm-focus-ring, var(--crm-lime));
+  outline-offset: 1px;
+}
+
+.crm-password-toggle[aria-pressed="true"] {
+  color: var(--crm-on-lime);
+  background: color-mix(in srgb, var(--crm-lime) 18%, transparent);
+}
+
+.crm-modal-panel-user .crm-password-generate {
+  font-size: 0.7rem;
 }
 
 .crm-modal-modules {
@@ -8600,6 +8772,16 @@ html[data-crm-theme="dark"] .crm-leads-stat.is-overdue,
 html[data-crm-theme="dark"] .crm-page-eyebrow,
 .crm-shell[data-theme="dark"] .crm-page-eyebrow {
   color: var(--crm-lime);
+}
+
+/* Keep secondary/muted copy readable against admin surfaces */
+.crm-shell .crm-text-muted,
+.crm-shell .crm-users-meta,
+.crm-shell .crm-users-login,
+.crm-shell .crm-users-panel-head p,
+.crm-shell .crm-modal-lead,
+.crm-shell .crm-modal-note {
+  color: var(--crm-text-muted);
 }
 
 html[data-crm-theme="dark"] .crm-leads-panel.is-overdue .crm-leads-count,

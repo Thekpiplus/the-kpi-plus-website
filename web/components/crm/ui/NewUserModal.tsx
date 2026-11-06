@@ -12,6 +12,7 @@ import {
 import { createStaffUser } from "@/lib/crm/user-admin";
 import { ADMIN_MODULES, MODULE_LABEL } from "@/lib/crm/modules";
 import { ROLE_LABEL, type InternalRole } from "@/lib/crm/roles";
+import { PasswordField } from "@/components/crm/ui/PasswordField";
 
 type ModalApi = { open: () => void; close: () => void };
 
@@ -136,10 +137,7 @@ export function NewUserModalProvider({
                     เบอร์โทร
                     <input className="crm-field" name="phone" required />
                   </label>
-                  <label className="crm-modal-field">
-                    รหัสผ่าน
-                    <input className="crm-field" type="password" name="password" minLength={4} required />
-                  </label>
+                  <PasswordField name="password" label="รหัสผ่าน" />
                   <label className="crm-modal-field">
                     บทบาท (User Role)
                     <select className="crm-select" name="role" defaultValue="user" required>

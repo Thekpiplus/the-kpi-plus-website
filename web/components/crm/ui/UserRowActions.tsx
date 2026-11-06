@@ -4,6 +4,7 @@ import { useEffect, useId, useState } from "react";
 import { changeStaffPassword, deleteStaffUser, updateStaffUser } from "@/lib/crm/user-admin";
 import { ADMIN_MODULES, MODULE_LABEL, type AdminModule } from "@/lib/crm/modules";
 import { ROLE_LABEL, type InternalRole } from "@/lib/crm/roles";
+import { PasswordChangeFields } from "@/components/crm/ui/PasswordField";
 
 type Mode = "edit" | "password" | "delete" | null;
 
@@ -220,14 +221,7 @@ export function UserRowActions({
                     รหัสผ่านต้องมีอย่างน้อย 4 ตัวอักษร และต้องตรงกันทั้งสองช่อง
                   </p>
                 ) : null}
-                <label className="crm-modal-field">
-                  รหัสผ่านใหม่
-                  <input className="crm-field" type="password" name="password" minLength={4} required autoFocus />
-                </label>
-                <label className="crm-modal-field">
-                  ยืนยันรหัสผ่านใหม่
-                  <input className="crm-field" type="password" name="passwordConfirm" minLength={4} required />
-                </label>
+                <PasswordChangeFields />
                 <p className="crm-modal-note">เมื่อเปลี่ยนแล้ว เซสชันเดิมของบัญชีนี้จะถูกออกจากระบบ</p>
                 <div className="crm-modal-actions">
                   <button type="button" className="crm-users-secondary" onClick={() => setMode(null)}>
