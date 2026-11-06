@@ -42,7 +42,7 @@ const reservationLinks: ContextLink[] = [
 
 const userLinks: ContextLink[] = [
   { href: "/crm/users", label: "รายชื่อผู้ใช้" },
-  { href: "/crm/users/logs", label: "Login Log" },
+  { href: "/crm/users/logs", label: "บันทึกการเข้าใช้" },
   { href: "/crm/users/roles", label: "บทบาทและสิทธิ์" },
 ];
 

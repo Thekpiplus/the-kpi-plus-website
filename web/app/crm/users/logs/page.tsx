@@ -54,9 +54,9 @@ export default async function LoginLogPage({
   return (
     <div className="crm-logs">
       <PageHeader
-        eyebrow="Users"
-        title="Login Log"
-        description="บันทึกการเข้าสู่ระบบล่าสุด ค้นด้วยอีเมลเพื่อดูประวัติบัญชีทีมหรือ demo"
+        eyebrow="จัดการระบบ / ผู้ใช้งาน"
+        title="บันทึกการเข้าใช้"
+        description="ดูประวัติการเข้าสู่ระบบล่าสุด ค้นด้วยอีเมลเพื่อตรวจบัญชีทีม"
       />
 
       <section className="crm-logs-stats" aria-label="สรุป Login Log">

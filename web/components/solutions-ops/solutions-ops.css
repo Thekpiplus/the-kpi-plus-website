@@ -38,8 +38,9 @@
 .sol-ops .b2b-status.is-new,
 .sol-ops .b2b-status.is-archived,
 .sol-ops .b2b-status.is-hidden {
-  background: #475569;
-  color: #ffffff;
+  border: 1px solid #cbd5e1;
+  background: #f1f5f9;
+  color: #334155;
 }
 
 .sol-ops .b2b-status.is-review,
@@ -58,8 +59,9 @@
 .sol-ops .b2b-status.is-active,
 .sol-ops .b2b-status.is-given,
 .sol-ops .b2b-status.is-closed {
-  background: #f2f8e2;
-  color: #0b6660;
+  border: 1px solid #6ee7b7;
+  background: #d1fae5;
+  color: #065f46;
 }
 
 .sol-ops .b2b-status.is-restricted,
@@ -335,23 +337,27 @@
 }
 
 .sol-progress-badge.is-in_progress {
-  background: #fff7e0;
-  color: #5a3a00;
+  border: 1px solid #fcd34d;
+  background: #fef3c7;
+  color: #92400e;
 }
 
 .sol-progress-badge.is-ready_for_review {
-  background: #e3f1f0;
-  color: #0b6660;
+  border: 1px solid #93c5fd;
+  background: #dbeafe;
+  color: #1e3a8a;
 }
 
 .sol-progress-badge.is-completed {
-  background: linear-gradient(135deg, #e6e81f, #a3ce39);
-  color: #3b3b3b;
+  border: 1px solid color-mix(in srgb, #a2dc25 50%, #0b1f33);
+  background: #eef8d2;
+  color: #0b1f33;
 }
 
 .sol-progress-badge.is-blocked {
-  background: #f8d4d4;
-  color: #7a1212;
+  border: 1px solid #fdba74;
+  background: #ffedd5;
+  color: #9a3412;
 }
 
 .sol-subtasks {
@@ -494,20 +500,23 @@
 
 .sol-ops .b2b-status.is-in_progress,
 .sol-ops .b2b-status.is-needs_review {
-  background: #ffe0a3;
-  color: #5a3a00;
+  border: 1px solid #fcd34d;
+  background: #fef3c7;
+  color: #92400e;
 }
 
 .sol-ops .b2b-status.is-blocked,
 .sol-ops .b2b-status.is-priority_urgent {
-  background: #f8d4d4;
-  color: #7a1212;
+  border: 1px solid #fdba74;
+  background: #ffedd5;
+  color: #9a3412;
 }
 
 .sol-ops .b2b-status.is-completed,
 .sol-ops .b2b-status.is-priority_low {
-  background: #f2f8e2;
-  color: #0b6660;
+  border: 1px solid color-mix(in srgb, #a2dc25 50%, #0b1f33);
+  background: #eef8d2;
+  color: #0b1f33;
 }
 
 .sol-ops .b2b-status.is-priority_high {

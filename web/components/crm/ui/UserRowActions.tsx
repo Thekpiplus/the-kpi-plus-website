@@ -93,14 +93,14 @@ export function UserRowActions({
   return (
     <>
       <div className="crm-users-icon-actions">
-        <button type="button" className="crm-users-icon-btn" title="แก้ไข" aria-label={`แก้ไข ${user.name}`} onClick={() => setMode("edit")}>
+        <button type="button" className="crm-users-icon-btn" title="แก้ไขและจัดการสิทธิ์" aria-label={`แก้ไขและจัดการสิทธิ์ของ ${user.name}`} onClick={() => setMode("edit")}>
           <IconEdit />
         </button>
         <button
           type="button"
           className="crm-users-icon-btn"
           title="เปลี่ยนรหัสผ่าน"
-          aria-label={`เปลี่ยนรหัสผ่าน ${user.name}`}
+          aria-label={`เปลี่ยนรหัสผ่านของ ${user.name}`}
           onClick={() => setMode("password")}
         >
           <IconKey />
@@ -109,8 +109,8 @@ export function UserRowActions({
           <button
             type="button"
             className="crm-users-icon-btn is-danger"
-            title="ลบข้อมูล"
-            aria-label={`ลบ ${user.name}`}
+            title="ลบบัญชี"
+            aria-label={`ลบบัญชีของ ${user.name}`}
             onClick={() => setMode("delete")}
           >
             <IconTrash />

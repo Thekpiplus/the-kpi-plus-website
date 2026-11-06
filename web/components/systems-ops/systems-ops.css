@@ -92,8 +92,9 @@
 .seo-ops .b2b-status.is-draft,
 .seo-ops .b2b-status.is-archived,
 .seo-ops .b2b-status.is-low {
-  background: #475569;
-  color: #ffffff;
+  border: 1px solid #94a3b8;
+  background: #e2e8f0;
+  color: #475569;
 }
 
 .seo-ops .b2b-status.is-discovery,
@@ -118,8 +119,9 @@
 .seo-ops .b2b-status.is-handed_over,
 .seo-ops .b2b-status.is-monitoring,
 .seo-ops .b2b-status.is-completed {
-  background: #4d7c0f;
-  color: #ffffff;
+  border: 1px solid color-mix(in srgb, #a2dc25 50%, #0b1f33);
+  background: #eef8d2;
+  color: #0b1f33;
 }
 
 .seo-ops .b2b-status.is-critical,
@@ -136,28 +138,33 @@
 }
 
 .seo-ops .b2b-status.is-not_started {
-  background: #475569;
-  color: #ffffff;
+  border: 1px solid #cbd5e1;
+  background: #f1f5f9;
+  color: #334155;
 }
 
 .seo-ops .b2b-status.is-in_progress {
-  background: #fff4b8;
-  color: #5a4a00;
+  border: 1px solid #fcd34d;
+  background: #fef3c7;
+  color: #92400e;
 }
 
 .seo-ops .b2b-status.is-blocked {
-  background: #f8ecd2;
-  color: #5c3b00;
+  border: 1px solid #fdba74;
+  background: #ffedd5;
+  color: #9a3412;
 }
 
 .seo-ops .b2b-status.is-ready_for_review {
-  background: #ffe0a3;
-  color: #5a3a00;
+  border: 1px solid #93c5fd;
+  background: #dbeafe;
+  color: #1e3a8a;
 }
 
 .seo-ops .b2b-status.is-completed {
-  background: #4d7c0f;
-  color: #ffffff;
+  border: 1px solid color-mix(in srgb, #a2dc25 50%, #0b1f33);
+  background: #eef8d2;
+  color: #0b1f33;
 }
 
 .ads-progress-badge {
@@ -169,29 +176,34 @@
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.01em;
-  background: #3f6212;
-  color: #ffffff;
+  border: 1px solid color-mix(in srgb, #a2dc25 50%, #0b1f33);
+  background: #eef8d2;
+  color: #0b1f33;
 }
 
 .ads-progress-badge.is-blocked {
-  background: #f8ecd2;
-  color: #5c3b00;
+  border: 1px solid #fdba74;
+  background: #ffedd5;
+  color: #9a3412;
 }
 
 .ads-progress-badge.is-not_started {
-  background: #e3e8eb;
-  color: #3b3b3b;
+  border: 1px solid #cbd5e1;
+  background: #f1f5f9;
+  color: #334155;
 }
 
 .ads-progress-badge.is-in_progress {
-  background: #ffe0a3;
-  color: #5a3a00;
+  border: 1px solid #fcd34d;
+  background: #fef3c7;
+  color: #92400e;
 }
 
 .ads-progress-badge.is-ready_for_review,
 .ads-progress-badge.is-completed {
-  background: #3f6212;
-  color: #ffffff;
+  border: 1px solid color-mix(in srgb, #a2dc25 50%, #0b1f33);
+  background: #dbeafe;
+  color: #1e3a8a;
 }
 
 .sys-dept-subtasks {

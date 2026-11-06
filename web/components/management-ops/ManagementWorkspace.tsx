@@ -1,4 +1,5 @@
 ﻿import { redirect } from "next/navigation";
+import { OverviewHero } from "@/components/crm/ui/OverviewHero";
 import { PageHeader } from "@/components/crm/ui/PageHeader";
 import { ManagementOpsBoard } from "@/components/management-ops/ManagementOpsBoard";
 import { ManagementSettingsPanel } from "@/components/management-ops/ManagementSettingsPanel";
@@ -27,6 +28,16 @@ const DESCRIPTIONS: Record<MgmtSection, string> = {
   settings: "แผนกที่ขยายได้: Marketing, Revenue, Distribution, Sales และ Management แต่ละสายงานมีงานย่อย 1–10 รายการ พร้อมมอบหมาย เปลี่ยนแผนก สถานะ ความเห็น และหลักฐาน",
 };
 
+function ManagementSectionChrome({ section }: { section: MgmtSection }) {
+  const eyebrow = "Hotel Management Operations";
+  const title = MGMT_SECTION_LABEL[section];
+  const description = DESCRIPTIONS[section];
+  if (section === "overview") {
+    return <OverviewHero variant="compact" eyebrow={eyebrow} title={title} description={description} label={title} />;
+  }
+  return <PageHeader eyebrow={eyebrow} title={title} description={description} />;
+}
+
 export async function ManagementWorkspace({
   section,
   searchParams,
@@ -52,7 +63,7 @@ export async function ManagementWorkspace({
 
   return (
     <div className="b2b-page seo-ops-page mgmt-ops-page">
-      <PageHeader eyebrow="Hotel Management Operations" title={MGMT_SECTION_LABEL[section]} description={DESCRIPTIONS[section]} />
+      <ManagementSectionChrome section={section} />
       <ManagementOpsBoard
         section={section}
         items={items}

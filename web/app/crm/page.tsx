@@ -15,20 +15,23 @@ import { reservationOpsOverview } from "@/lib/reservations-ops/queries";
 import { EmptyState } from "@/components/crm/ui/EmptyState";
 import { ModuleCard } from "@/components/crm/ui/ModuleCard";
 import { NewLeadOpenButton } from "@/components/crm/ui/NewLeadModal";
+import {
+  greetingForHour,
+  OverviewHero,
+  OverviewHeroMetricsCard,
+} from "@/components/crm/ui/OverviewHero";
 import { roleLabel } from "@/lib/crm/roles";
 
 function DashboardPending({ name }: { name: string }) {
   return (
     <div className="crm-dash" aria-busy="true">
-      <section className="crm-dash-hero">
-        <div className="crm-dash-hero-copy">
-          <div className="crm-dash-hero-meta">
-            <p className="crm-dash-kicker">Admin Workspace</p>
-          </div>
-          <h1 className="crm-dash-hero-title">กำลังเปิดแดชบอร์ด…</h1>
-          <p className="crm-dash-hero-lead">{name ? `สวัสดี ${name}` : "กำลังโหลดงานวันนี้"}</p>
-        </div>
-      </section>
+      <OverviewHero
+        variant="dashboard"
+        eyebrow="Dashboard"
+        title="กำลังเปิดแดชบอร์ด…"
+        description={name ? `สวัสดี ${name}` : "กำลังโหลดงานวันนี้"}
+        label="กำลังโหลดแดชบอร์ด"
+      />
     </div>
   );
 }
@@ -72,8 +75,7 @@ async function DashboardHome({
 
   const dueToday = lists.dueToday.length + lists.overdue.length;
   const overdueCount = lists.overdue.length;
-  const hour = new Date().getHours();
-  const greeting = hour < 12 ? "สวัสดีตอนเช้า" : hour < 18 ? "สวัสดีตอนบ่าย" : "สวัสดีตอนเย็น";
+  const greeting = greetingForHour();
 
   const modules = [
     hasModule(user, "leads")
@@ -360,81 +362,162 @@ async function DashboardHome({
     low: "ทั่วไป",
   };
 
+  type OverviewStat = {
+    key: string;
+    label: string;
+    value: number;
+    hint: string;
+    tone: "overdue" | "today" | "web" | "partners" | "users" | "cms";
+    href?: string;
+  };
+
+  const overviewStats: OverviewStat[] = [
+    {
+      key: "overdue",
+      label: "เกินกำหนด",
+      value: overdueCount,
+      hint: "ต้องติดตามก่อน",
+      tone: "overdue",
+      href: hasModule(user, "leads") ? "/crm/sales" : undefined,
+    },
+    {
+      key: "due-today",
+      label: "ครบกำหนดวันนี้",
+      value: lists.dueToday.length,
+      hint: "คิวงานวันนี้",
+      tone: "today",
+      href: hasModule(user, "leads") ? "/crm/sales" : undefined,
+    },
+    hasModule(user, "leads")
+      ? {
+          key: "web",
+          label: "ลีดจากเว็บไซต์",
+          value: origins.web,
+          hint: "เปิดรายการจากเว็บ",
+          tone: "web" as const,
+          href: "/crm/leads?origin=web",
+        }
+      : null,
+    hasModule(user, "partners")
+      ? {
+          key: "partners",
+          label: "พาร์ตเนอร์รออนุมัติ",
+          value: partners.applications,
+          hint: "เปิดคิวอนุมัติ",
+          tone: "partners" as const,
+          href: "/crm/partners/list",
+        }
+      : hasModule(user, "users")
+        ? {
+            key: "users",
+            label: "ผู้ใช้ทั้งหมด",
+            value: users.total,
+            hint: "เปิด Users Management",
+            tone: "users" as const,
+            href: "/crm/users",
+          }
+        : hasModule(user, "cms")
+          ? {
+              key: "cms",
+              label: "ฉบับร่าง",
+              value: cms.drafts,
+              hint: "เปิด Content Management",
+              tone: "cms" as const,
+              href: "/crm/cms/insights",
+            }
+          : null,
+  ].filter(Boolean) as OverviewStat[];
+
   return (
     <div className="crm-dash">
-      <section className="crm-dash-hero">
-        <div className="crm-dash-hero-copy">
-          <div className="crm-dash-hero-meta">
-            <p className="crm-dash-kicker">Admin Workspace</p>
-            <span className="crm-dash-role">{roleLabel(user.role)}</span>
-          </div>
-          <h1 className="crm-dash-hero-title">
-            {greeting}, {user.name || "ทีม KPI Plus"}
-          </h1>
-          <p className="crm-dash-hero-lead">ดูสิ่งที่ต้องทำต่อ แล้วเปิดโมดูลที่ใช้บ่อยจากหน้าเดียว</p>
-          <div className="crm-dash-hero-actions">
+      <OverviewHero
+        variant="dashboard"
+        eyebrow="Dashboard"
+        badge={<span className="crm-hero-badge">{roleLabel(user.role)}</span>}
+        title={`${greeting}, ${user.name || "ทีม KPI Plus"}`}
+        description="ภาพรวมงานวันนี้และทางลัดเข้าโมดูลที่คุณมีสิทธิ์ใช้"
+        label="แดชบอร์ดหลัก"
+        actions={
+          <>
             {hasModule(user, "leads") ? (
-              <Link href="/crm/sales" className="crm-dash-btn crm-dash-btn-lime">
+              <Link href="/crm/sales" className="crm-hero-btn crm-hero-btn-primary">
                 งานที่ต้องทำวันนี้
-                {dueToday > 0 ? <span className="crm-dash-btn-count">{dueToday}</span> : null}
+                {dueToday > 0 ? <span className="crm-hero-btn-count">{dueToday}</span> : null}
               </Link>
             ) : null}
             {hasModule(user, "cms") ? (
-              <Link href="/crm/cms/insights/new" className="crm-dash-btn crm-dash-btn-navy">
+              <Link href="/crm/cms/insights/new" className="crm-hero-btn crm-hero-btn-secondary">
                 สร้างเนื้อหาใหม่
               </Link>
             ) : hasModule(user, "leads") ? (
-              <NewLeadOpenButton className="crm-dash-btn crm-dash-btn-navy">คีย์ลีดใหม่</NewLeadOpenButton>
+              <NewLeadOpenButton className="crm-hero-btn crm-hero-btn-secondary">คีย์ลีดใหม่</NewLeadOpenButton>
             ) : null}
+          </>
+        }
+        aside={
+          <OverviewHeroMetricsCard
+            label="งานที่ต้องจัดการ"
+            hint="รวมงานครบกำหนดวันนี้และเกินกำหนด"
+            pulse={dueToday > 0 ? "ต้องดำเนินการ" : "ว่าง"}
+            pulseHot={dueToday > 0}
+            value={dueToday}
+            metrics={[
+              { value: overdueCount, label: "เกินกำหนด", tone: "overdue" },
+              { value: lists.dueToday.length, label: "ครบกำหนดวันนี้", tone: "today" },
+            ]}
+            footer={
+              hasModule(user, "leads") ? (
+                <Link href="/crm/sales" className="crm-hero-card-link">
+                  เปิดงานวันนี้
+                  <span aria-hidden="true">→</span>
+                </Link>
+              ) : null
+            }
+          />
+        }
+      />
+
+      {overviewStats.length ? (
+        <section className="crm-dash-summary" aria-label="สถิติภาพรวม">
+          <div className="crm-dash-stats" role="list">
+            {overviewStats.map((stat) => {
+              const className = `crm-dash-stat is-${stat.tone}${stat.href ? "" : " is-static"}`;
+              const body = (
+                <>
+                  <span className="crm-dash-stat-label">{stat.label}</span>
+                  <strong className="crm-dash-stat-value">{stat.value}</strong>
+                  <span className="crm-dash-stat-hint">{stat.hint}</span>
+                </>
+              );
+              return stat.href ? (
+                <Link key={stat.key} href={stat.href} className={className} role="listitem">
+                  {body}
+                </Link>
+              ) : (
+                <div key={stat.key} className={className} role="listitem">
+                  {body}
+                </div>
+              );
+            })}
           </div>
-        </div>
+        </section>
+      ) : null}
 
-        <aside className="crm-dash-hero-card" aria-label="สรุปงานวันนี้">
-          <div className="crm-dash-hero-card-head">
-            <div>
-              <p className="crm-dash-hero-card-label">งานที่ต้องจัดการ</p>
-              <p className="crm-dash-hero-card-hint">สรุปจากคิวติดตามจริงในระบบ</p>
-            </div>
-            <span className={`crm-dash-hero-card-pulse${dueToday > 0 ? " is-hot" : ""}`}>
-              {dueToday > 0 ? "ต้องดำเนินการ" : "ว่าง"}
-            </span>
-          </div>
-
-          <div className="crm-dash-hero-card-main">
-            <p className="crm-dash-hero-card-value">{dueToday}</p>
-            <p className="crm-dash-hero-card-unit">รายการทั้งหมด</p>
-          </div>
-
-          <div className="crm-dash-hero-card-split">
-            <div className="crm-dash-hero-stat is-today">
-              <strong>{lists.dueToday.length}</strong>
-              <span>ครบกำหนดวันนี้</span>
-            </div>
-            <div className="crm-dash-hero-stat is-overdue">
-              <strong>{overdueCount}</strong>
-              <span>เกินกำหนด</span>
-            </div>
-          </div>
-
-          {hasModule(user, "leads") ? (
-            <Link href="/crm/sales" className="crm-dash-hero-card-link">
-              เปิดงานวันนี้
-              <span aria-hidden="true">→</span>
-            </Link>
-          ) : null}
-        </aside>
-      </section>
-
-      <section className="crm-dash-bottom" aria-label="งานและกิจกรรม">
-        <article className="crm-dash-panel">
+      <section className="crm-dash-work" aria-label="งานที่ต้องดำเนินการ">
+        <article className="crm-dash-panel crm-dash-panel-primary">
           <div className="crm-dash-section-head crm-dash-section-head-row">
             <div>
               <h2>
                 งานที่ต้องดำเนินการ
-                {dueToday > 0 ? <span className="crm-dash-count">{dueToday}</span> : null}
+                {tasks.length > 0 ? <span className="crm-dash-count">{tasks.length}</span> : null}
               </h2>
-              <p>รายการที่ควรจัดการต่อจากคิวงานจริง</p>
+              <p>เรียงตามความเร่งด่วนจากคิวงานจริงในระบบ</p>
             </div>
+            {hasModule(user, "leads") ? (
+              <Link href="/crm/sales" className="crm-dash-panel-link">
+                ดูงานวันนี้
+              </Link>
+            ) : null}
           </div>
           {tasks.length ? (
             <ul className="crm-dash-tasks">
@@ -461,34 +544,13 @@ async function DashboardHome({
             <EmptyState
               title="ไม่มีงานค้างตอนนี้"
               body="เมื่อมีกิจกรรมครบกำหนดหรือเกินกำหนด จะแสดงที่นี่"
+              compact
               action={
                 hasModule(user, "leads") ? (
-                  <NewLeadOpenButton className="kpi-button">คีย์ลีดใหม่</NewLeadOpenButton>
+                  <NewLeadOpenButton className="kpi-button crm-users-primary">คีย์ลีดใหม่</NewLeadOpenButton>
                 ) : null
               }
             />
-          )}
-        </article>
-
-        <article className="crm-dash-panel">
-          <div className="crm-dash-section-head">
-            <h2>กิจกรรมล่าสุดในระบบ</h2>
-            <p>สรุปสถานะจากข้อมูลที่มีตอนนี้</p>
-          </div>
-          {activity.length ? (
-            <ul className="crm-dash-activity">
-              {activity.map((item) => (
-                <li key={item.title} className={`is-${item.tone}`}>
-                  <span className="crm-dash-activity-dot" aria-hidden="true" />
-                  <div>
-                    <p className="crm-dash-activity-title">{item.title}</p>
-                    <p className="crm-dash-activity-meta">{item.meta}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <EmptyState title="ยังไม่มีกิจกรรมล่าสุด" body="เมื่อมีลีด พาร์ตเนอร์ หรือเนื้อหาใหม่ จะแสดงที่นี่" />
           )}
         </article>
       </section>
@@ -508,8 +570,33 @@ async function DashboardHome({
           <EmptyState
             title="ยังไม่มีโมดูลที่เข้าได้"
             body="ติดต่อ Superadmin เพื่อเปิดสิทธิ์ Lead / Partner / Reservations / B2B / Users / CMS"
+            compact
           />
         )}
+      </section>
+
+      <section className="crm-dash-activity-section" aria-label="กิจกรรมล่าสุด">
+        <article className="crm-dash-panel">
+          <div className="crm-dash-section-head">
+            <h2>กิจกรรมล่าสุดในระบบ</h2>
+            <p>สรุปสถานะจากข้อมูลที่มีตอนนี้ — ไม่ใช่รายการที่ต้องทำทันที</p>
+          </div>
+          {activity.length ? (
+            <ul className="crm-dash-activity">
+              {activity.map((item) => (
+                <li key={item.title} className={`is-${item.tone}`}>
+                  <span className="crm-dash-activity-dot" aria-hidden="true" />
+                  <div>
+                    <p className="crm-dash-activity-title">{item.title}</p>
+                    <p className="crm-dash-activity-meta">{item.meta}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <EmptyState title="ยังไม่มีกิจกรรมล่าสุด" body="เมื่อมีลีด พาร์ตเนอร์ หรือเนื้อหาใหม่ จะแสดงที่นี่" compact />
+          )}
+        </article>
       </section>
     </div>
   );

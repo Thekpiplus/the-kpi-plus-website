@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
+import { OverviewHero } from "@/components/crm/ui/OverviewHero";
 import { PageHeader } from "@/components/crm/ui/PageHeader";
 import { canOpenSolutionsOps, solutionsOpsAccessFor } from "@/lib/solutions-ops/access";
 import { requireUser } from "@/lib/crm/auth";
@@ -61,7 +62,13 @@ export async function SolutionsOpsWorkspace({
 
   const title = currentDepartment ? currentDepartment.label : SOL_SECTION_LABEL[section];
   const description = currentDepartment ? `${departmentDuty(currentDepartment.id)} — บริการที่แผนกนี้เป็นเจ้าของ` : SOL_SECTION_DESCRIPTION[section];
-  const header = <PageHeader eyebrow="Hotel Solutions Service Directory" title={title} description={description} />;
+  const eyebrow = "Hotel Solutions Service Directory";
+  const header =
+    section === "overview" && !currentDepartment ? (
+      <OverviewHero variant="compact" eyebrow={eyebrow} title={title} description={description} label={title} />
+    ) : (
+      <PageHeader eyebrow={eyebrow} title={title} description={description} />
+    );
   const wrap = (body: React.ReactNode) => (
     <div className="b2b-page sol-ops-page">
       {header}

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { EmptyState } from "@/components/crm/ui/EmptyState";
 import { NewPartnerOpenButton } from "@/components/crm/ui/NewPartnerModal";
-import { PageHeader } from "@/components/crm/ui/PageHeader";
+import { OverviewHero } from "@/components/crm/ui/OverviewHero";
 import { formatThaiDateTime } from "@/lib/crm/queries";
 import { partnerOverview } from "@/lib/partners/queries";
 
@@ -49,17 +49,19 @@ export default async function PartnerAccountingPage() {
 
   return (
     <div className="crm-partners">
-      <PageHeader
+      <OverviewHero
+        variant="compact"
         eyebrow="Partner Management"
         title="คิวงานพาร์ตเนอร์"
         description="ตรวจอนุมัติพาร์ตเนอร์ ตรวจค่าคอมมิชชัน และติดตามรอบจ่ายในมุมเดียว"
+        label="ภาพรวมพาร์ตเนอร์"
         actions={
-          <div className="crm-partners-actions">
-            <Link href="/crm/partners/list" className="crm-users-secondary">
+          <>
+            <Link href="/crm/partners/list" className="crm-hero-btn crm-hero-btn-secondary">
               รายชื่อพาร์ตเนอร์
             </Link>
-            <NewPartnerOpenButton className="kpi-button">เพิ่มพาร์ตเนอร์</NewPartnerOpenButton>
-          </div>
+            <NewPartnerOpenButton className="crm-hero-btn crm-hero-btn-primary">เพิ่มพาร์ตเนอร์</NewPartnerOpenButton>
+          </>
         }
       />
 

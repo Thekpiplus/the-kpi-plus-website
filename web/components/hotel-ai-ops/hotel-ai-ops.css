@@ -48,31 +48,36 @@
 }
 
 .hai-ops .ads-progress-badge.is-completed {
-  background: #4d7c0f;
-  color: #ffffff;
+  border: 1px solid color-mix(in srgb, #a2dc25 50%, #0b1f33);
+  background: #eef8d2;
+  color: #0b1f33;
 }
 
 .hai-ops .ads-progress-badge.is-in_progress {
-  background: #fff4b8;
-  color: #5a4a00;
+  border: 1px solid #fcd34d;
+  background: #fef3c7;
+  color: #92400e;
 }
 
 .hai-ops .ads-progress-badge.is-ready_for_review {
-  background: #ffe0a3;
-  color: #5a3a00;
+  border: 1px solid #93c5fd;
+  background: #dbeafe;
+  color: #1e3a8a;
 }
 
 .hai-ops .ads-progress-badge.is-blocked {
-  background: #f8d4d4;
-  color: #7a1212;
+  border: 1px solid #fdba74;
+  background: #ffedd5;
+  color: #9a3412;
 }
 
 .hai-ops .b2b-status.is-backlog,
 .hai-ops .b2b-status.is-not_started,
 .hai-ops .b2b-status.is-low,
 .hai-ops .b2b-status.is-none {
-  background: #475569;
-  color: #ffffff;
+  border: 1px solid #cbd5e1;
+  background: #f1f5f9;
+  color: #334155;
 }
 
 .hai-ops .b2b-status.is-discovery,
@@ -81,8 +86,9 @@
 .hai-ops .b2b-status.is-pilot_running,
 .hai-ops .b2b-status.is-in_progress,
 .hai-ops .b2b-status.is-medium {
-  background: #fff4b8;
-  color: #5a4a00;
+  border: 1px solid #fcd34d;
+  background: #fef3c7;
+  color: #92400e;
 }
 
 .hai-ops .b2b-status.is-needs_review,
@@ -92,23 +98,26 @@
 .hai-ops .b2b-status.is-urgent,
 .hai-ops .b2b-status.is-access,
 .hai-ops .b2b-status.is-privacy {
-  background: #ffe0a3;
-  color: #5a3a00;
+  border: 1px solid #93c5fd;
+  background: #dbeafe;
+  color: #1e3a8a;
 }
 
 .hai-ops .b2b-status.is-approved_to_scale,
 .hai-ops .b2b-status.is-handed_over,
 .hai-ops .b2b-status.is-completed {
-  background: #4d7c0f;
-  color: #ffffff;
+  border: 1px solid color-mix(in srgb, #a2dc25 50%, #0b1f33);
+  background: #eef8d2;
+  color: #0b1f33;
 }
 
 .hai-ops .b2b-status.is-blocked,
 .hai-ops .b2b-status.is-stopped,
 .hai-ops .b2b-status.is-critical,
 .hai-ops .b2b-status.is-safety {
-  background: #f8d4d4;
-  color: #7a1212;
+  border: 1px solid #fdba74;
+  background: #ffedd5;
+  color: #9a3412;
 }
 
 .hai-gate-alert {

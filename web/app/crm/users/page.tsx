@@ -9,6 +9,7 @@ import { currentUser } from "@/lib/crm/auth";
 import { formatThaiDateTime, listUsers, userCounts } from "@/lib/crm/queries";
 import {
   ROLE_LABEL,
+  USER_ROLES,
   assignableInternalRoles,
   isFullAccessRole,
   isPartnerRoleValue,
@@ -31,6 +32,7 @@ export default async function UsersPage({
   searchParams: Promise<{
     q?: string;
     role?: string;
+    status?: string;
     error?: string;
     deleted?: string;
     new?: string;
@@ -42,16 +44,27 @@ export default async function UsersPage({
   }>;
 }) {
   const params = await searchParams;
-  const [users, me, counts] = await Promise.all([
+  const q = params.q?.trim() ?? "";
+  const role = params.role?.trim() ?? "";
+  const status = params.status === "locked" || params.status === "active" ? params.status : "";
+
+  const [listed, me, counts] = await Promise.all([
     listUsers({ q: params.q, role: params.role }),
     currentUser(),
     userCounts(),
   ]);
+  const now = Date.now();
+  const users =
+    status === "locked"
+      ? listed.filter((user) => user.lockedUntil && user.lockedUntil.getTime() > now)
+      : status === "active"
+        ? listed.filter((user) => !(user.lockedUntil && user.lockedUntil.getTime() > now))
+        : listed;
+
   const canEdit = canManageUsers(me);
   const roles = me ? assignableInternalRoles(me.role) : [];
-  const now = Date.now();
   const lockedCount = users.filter((user) => user.lockedUntil && user.lockedUntil.getTime() > now).length;
-  const filtered = Boolean(params.q?.trim() || params.role);
+  const filtered = Boolean(q || role || status);
   const formError = params.error === "invalid" || params.error === "exists" ? params.error : undefined;
   const autoOpen = canEdit && (params.new === "1" || Boolean(formError));
   const passwordError = params.error === "password";
@@ -60,9 +73,14 @@ export default async function UsersPage({
   const content = (
     <div className="crm-users">
       <PageHeader
-        eyebrow="Users"
-        title="Users Management"
-        description="จัดการบัญชีทีม สิทธิ์โมดูล และสถานะการเข้าใช้งานในที่เดียว"
+        eyebrow="จัดการระบบ / ผู้ใช้งาน"
+        title="จัดการผู้ใช้งาน"
+        description="ดูรายชื่อ เพิ่มบัญชี และจัดการบทบาทกับสถานะการเข้าใช้งาน"
+        actions={
+          canEdit ? (
+            <NewUserOpenButton className="kpi-button crm-users-primary">เพิ่มผู้ใช้</NewUserOpenButton>
+          ) : undefined
+        }
       />
 
       {params.error === "forbidden" ? (
@@ -110,25 +128,77 @@ export default async function UsersPage({
         </article>
       </section>
 
-      <section className="crm-users-panel">
+      <section className="crm-users-panel" aria-labelledby="crm-users-list-heading">
         <div className="crm-users-panel-head">
           <div>
-            <h2>รายชื่อผู้ใช้</h2>
+            <h2 id="crm-users-list-heading">รายชื่อผู้ใช้</h2>
             <p>
               แสดง {users.length} รายการ
-              {params.role ? ` · ${ROLE_LABEL[normalizeRole(params.role)] ?? params.role}` : ""}
-              {params.q?.trim() ? ` · “${params.q.trim()}”` : ""}
+              {role ? ` · ${ROLE_LABEL[normalizeRole(role)] ?? role}` : ""}
+              {status === "locked" ? " · ถูกล็อก" : ""}
+              {status === "active" ? " · ใช้งานได้" : ""}
+              {q ? ` · “${q}”` : ""}
             </p>
           </div>
-          <div className="crm-users-panel-actions">
-            {filtered ? (
-              <Link href="/crm/users" className="crm-users-secondary">
-                ล้างตัวกรอง
-              </Link>
-            ) : null}
-            {canEdit ? <NewUserOpenButton className="kpi-button">เพิ่มผู้ใช้งาน</NewUserOpenButton> : null}
-          </div>
         </div>
+
+        <form className="crm-users-toolbar" method="get" action="/crm/users" role="search">
+          <div className="crm-users-toolbar-main">
+            <label className="crm-users-search-field">
+              <span className="crm-users-search-label">ค้นหา</span>
+              <span className="crm-users-search-icon" aria-hidden="true">
+                ⌕
+              </span>
+              <input
+                type="search"
+                name="q"
+                defaultValue={q}
+                placeholder="ชื่อ อีเมล หรือ username"
+                autoComplete="off"
+              />
+            </label>
+
+            <label className="crm-users-filter">
+              <span className="crm-users-filter-label">บทบาท</span>
+              <select className="crm-select crm-users-filter-select" name="role" defaultValue={role}>
+                <option value="">ทั้งหมด</option>
+                {USER_ROLES.map((key) => (
+                  <option key={key} value={key}>
+                    {ROLE_LABEL[key]}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="crm-users-filter">
+              <span className="crm-users-filter-label">สถานะ</span>
+              <select className="crm-select crm-users-filter-select" name="status" defaultValue={status}>
+                <option value="">ทั้งหมด</option>
+                <option value="active">ใช้งานได้</option>
+                <option value="locked">ถูกล็อก</option>
+              </select>
+            </label>
+
+            <button className="crm-users-secondary" type="submit">
+              กรอง
+            </button>
+          </div>
+
+          {filtered ? (
+            <div className="crm-users-active-filters">
+              <p className="crm-users-toolbar-label">ตัวกรองที่ใช้อยู่</p>
+              <div className="crm-users-filter-chips">
+                {q ? <span className="crm-filter-chip">ค้นหา: {q}</span> : null}
+                {role ? <span className="crm-filter-chip">บทบาท: {ROLE_LABEL[normalizeRole(role)]}</span> : null}
+                {status === "locked" ? <span className="crm-filter-chip">สถานะ: ถูกล็อก</span> : null}
+                {status === "active" ? <span className="crm-filter-chip">สถานะ: ใช้งานได้</span> : null}
+                <Link href="/crm/users" className="crm-users-clear">
+                  ล้างตัวกรอง
+                </Link>
+              </div>
+            </div>
+          ) : null}
+        </form>
 
         {users.length === 0 ? (
           <EmptyState
@@ -136,8 +206,8 @@ export default async function UsersPage({
             title={filtered ? "ไม่พบผู้ใช้ตามเงื่อนไข" : "ยังไม่มีผู้ใช้"}
             body={
               filtered
-                ? "ล้างตัวกรองเพื่อดูรายการทั้งหมด หรือเพิ่มผู้ใช้งานใหม่หากยังไม่มีบัญชี"
-                : "เพิ่มผู้ใช้งานใหม่เพื่อเปิดสิทธิ์เข้าใช้งานระบบ"
+                ? "ล้างตัวกรองเพื่อดูรายการทั้งหมด หรือเพิ่มผู้ใช้ใหม่หากยังไม่มีบัญชี"
+                : "เพิ่มผู้ใช้ใหม่เพื่อเปิดสิทธิ์เข้าใช้งานระบบ"
             }
             action={
               filtered ? (
@@ -145,7 +215,7 @@ export default async function UsersPage({
                   ล้างตัวกรอง
                 </Link>
               ) : canEdit ? (
-                <NewUserOpenButton className="kpi-button">เพิ่มผู้ใช้งาน</NewUserOpenButton>
+                <NewUserOpenButton className="kpi-button crm-users-primary">เพิ่มผู้ใช้</NewUserOpenButton>
               ) : null
             }
           />
@@ -154,12 +224,12 @@ export default async function UsersPage({
             <table className="crm-users-table">
               <thead>
                 <tr>
-                  <th scope="col">ชื่อ</th>
+                  <th scope="col">ชื่อผู้ใช้</th>
                   <th scope="col">อีเมล</th>
                   <th scope="col">บทบาท</th>
-                  <th scope="col">สถานะ</th>
-                  <th scope="col">เวลาเข้าใช้งาน</th>
-                  <th scope="col">การดำเนินการ</th>
+                  <th scope="col">สถานะบัญชี</th>
+                  <th scope="col">ใช้งานล่าสุด</th>
+                  <th scope="col">จัดการ</th>
                 </tr>
               </thead>
               <tbody>
@@ -169,7 +239,7 @@ export default async function UsersPage({
                   const roleOptions: InternalRole[] = roles.includes(normalized as InternalRole)
                     ? roles
                     : normalized !== "partner"
-                      ? [normalized as InternalRole, ...roles.filter((role) => role !== normalized)]
+                      ? [normalized as InternalRole, ...roles.filter((item) => item !== normalized)]
                       : roles;
                   const canDelete =
                     Boolean(me) &&
@@ -178,7 +248,7 @@ export default async function UsersPage({
                     !(isSuperadminRole(user.role) && me && !isSuperadminRole(me.role));
                   return (
                     <tr key={user.id} className={locked ? "is-locked" : undefined}>
-                      <td data-label="ชื่อ">
+                      <td data-label="ชื่อผู้ใช้">
                         <div className="crm-users-identity">
                           <span className="crm-users-avatar" aria-hidden="true">
                             {initials(user.name)}
@@ -205,19 +275,19 @@ export default async function UsersPage({
                       <td data-label="บทบาท" className="crm-users-col-role">
                         <RoleBadge role={user.role} />
                       </td>
-                      <td data-label="สถานะ" className="crm-users-col-status">
+                      <td data-label="สถานะบัญชี" className="crm-users-col-status">
                         {locked ? (
                           <StatusBadge label="ถูกล็อก" tone="danger" />
                         ) : (
                           <StatusBadge label="ใช้งานได้" tone="success" />
                         )}
                       </td>
-                      <td data-label="เวลาเข้าใช้งาน">
+                      <td data-label="ใช้งานล่าสุด">
                         <span className="crm-users-login">
                           {user.lastLoginAt ? formatThaiDateTime(user.lastLoginAt) : "ยังไม่เคยเข้าใช้"}
                         </span>
                       </td>
-                      <td data-label="การดำเนินการ">
+                      <td data-label="จัดการ">
                         <UserRowActions
                           canEdit={canEdit}
                           roles={roleOptions}

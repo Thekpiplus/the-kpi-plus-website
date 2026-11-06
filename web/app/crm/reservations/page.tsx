@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { ReservationQueue } from "@/components/reservations-ops/ReservationQueue";
-import { PageHeader } from "@/components/crm/ui/PageHeader";
+import { OverviewHero } from "@/components/crm/ui/OverviewHero";
 import { requireUser } from "@/lib/crm/auth";
 import { hasModule } from "@/lib/crm/modules";
 import { staffDirectory } from "@/lib/crm/queries";
@@ -23,10 +23,12 @@ export default async function ReservationOperationsPage({
 
   return (
     <div className="crm-ops-page">
-      <PageHeader
+      <OverviewHero
+        variant="compact"
         eyebrow="Reservation Operations"
         title="คิวงานจอง"
         description="Inquiry, Booking, Modification, Cancellation และ Confirmation — ข้อมูลแขกถูกปกปิดจนกว่าผู้มีสิทธิ์จะเปิดดู"
+        label="ภาพรวมงานจอง"
       />
       <ReservationQueue
         items={items}

@@ -55,14 +55,14 @@ export default async function UserRolesPage() {
   return (
     <div className="crm-users crm-users-roles-page">
       <PageHeader
-        eyebrow="Users"
+        eyebrow="จัดการระบบ / ผู้ใช้งาน"
         title="บทบาทและสิทธิ์"
         description="สรุปบทบาทในระบบและวิธีกำหนดสิทธิ์โมดูลตามโมเดลที่มีอยู่จริง ไม่มีการบันทึกสิทธิ์ตามแผนกหรือตำแหน่งงานในระบบนี้"
         actions={
           canEdit ? (
             <div className="crm-users-actions">
-              <Link href="/crm/users?new=1" className="kpi-button">
-                เพิ่มผู้ใช้งาน
+              <Link href="/crm/users?new=1" className="kpi-button crm-users-primary">
+                เพิ่มผู้ใช้
               </Link>
             </div>
           ) : undefined

@@ -18,30 +18,35 @@
 }
 
 .trn-ops .ads-progress-badge.is-completed {
-  background: #4d7c0f;
-  color: #ffffff;
+  border: 1px solid color-mix(in srgb, #a2dc25 50%, #0b1f33);
+  background: #eef8d2;
+  color: #0b1f33;
 }
 
 .trn-ops .ads-progress-badge.is-in_progress {
-  background: #fff4b8;
-  color: #5a4a00;
+  border: 1px solid #fcd34d;
+  background: #fef3c7;
+  color: #92400e;
 }
 
 .trn-ops .ads-progress-badge.is-ready_for_review {
-  background: #ffe0a3;
-  color: #5a3a00;
+  border: 1px solid #93c5fd;
+  background: #dbeafe;
+  color: #1e3a8a;
 }
 
 .trn-ops .ads-progress-badge.is-blocked {
-  background: #f8d4d4;
-  color: #7a1212;
+  border: 1px solid #fdba74;
+  background: #ffedd5;
+  color: #9a3412;
 }
 
 .trn-ops .b2b-status.is-not_started,
 .trn-ops .b2b-status.is-none,
 .trn-ops .b2b-status.is-low {
-  background: #475569;
-  color: #ffffff;
+  border: 1px solid #cbd5e1;
+  background: #f1f5f9;
+  color: #334155;
 }
 
 .trn-ops .b2b-status.is-in_progress,
@@ -49,22 +54,25 @@
 .trn-ops .b2b-status.is-privacy,
 .trn-ops .b2b-status.is-participant_permission,
 .trn-ops .b2b-status.is-trainer_approval {
-  background: #ffe0a3;
-  color: #5a3a00;
+  border: 1px solid #fcd34d;
+  background: #fef3c7;
+  color: #92400e;
 }
 
 .trn-ops .b2b-status.is-completed,
 .trn-ops .b2b-status.is-approved,
 .trn-ops .b2b-status.is-published {
-  background: #4d7c0f;
-  color: #ffffff;
+  border: 1px solid color-mix(in srgb, #a2dc25 50%, #0b1f33);
+  background: #eef8d2;
+  color: #0b1f33;
 }
 
 .trn-ops .b2b-status.is-blocked,
 .trn-ops .b2b-status.is-safety,
 .trn-ops .b2b-status.is-on_hold {
-  background: #f8d4d4;
-  color: #7a1212;
+  border: 1px solid #fdba74;
+  background: #ffedd5;
+  color: #9a3412;
 }
 
 .trn-gate-alert {

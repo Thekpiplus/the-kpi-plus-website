@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { OverviewHero } from "@/components/crm/ui/OverviewHero";
 import { PageHeader } from "@/components/crm/ui/PageHeader";
 import { HotelMarketingOpsBoard } from "@/components/hotel-marketing-ops/HotelMarketingOpsBoard";
 import { HotelMarketingOpsSettingsPanel } from "@/components/hotel-marketing-ops/HotelMarketingOpsSettingsPanel";
@@ -150,9 +151,16 @@ export async function HotelMarketingOpsWorkspace({
   const { access, settings, items, staff, facets, groupBy, sort, kindCounts } = await listHmoRecords(user, filters, section);
   const basePath = department ? HMO_DEPARTMENT_PATH[department] : HMO_SECTION_PATH[section] || HMO_BASE_PATH;
 
+  const sectionChrome =
+    section === "overview" && !department ? (
+      <OverviewHero variant="compact" eyebrow={eyebrow} title={title} description={description} label={title} />
+    ) : (
+      <PageHeader eyebrow={eyebrow} title={title} description={description} />
+    );
+
   return (
     <div className="b2b-page hmo-ops-page">
-      <PageHeader eyebrow={eyebrow} title={title} description={description} />
+      {sectionChrome}
       <HotelMarketingOpsBoard
         section={section}
         items={items}

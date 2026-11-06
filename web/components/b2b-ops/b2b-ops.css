@@ -74,8 +74,9 @@
 
 .b2b-status.is-new_lead,
 .b2b-status.is-qualification {
-  background: #a16207;
-  color: #ffffff;
+  border: 1px solid #fcd34d;
+  background: #fef3c7;
+  color: #92400e;
 }
 
 .b2b-status.is-contacted,
@@ -91,13 +92,15 @@
 }
 
 .b2b-status.is-active {
-  background: #4d7c0f;
-  color: #ffffff;
+  border: 1px solid #6ee7b7;
+  background: #eef8d2;
+  color: #0b1f33;
 }
 
 .b2b-status.is-dormant {
-  background: #3f6212;
-  color: #ffffff;
+  border: 1px solid #94a3b8;
+  background: #e2e8f0;
+  color: #475569;
 }
 
 .b2b-status.is-closed,
@@ -107,19 +110,22 @@
 }
 
 .b2b-status.is-planned {
-  background: #a16207;
-  color: #ffffff;
+  border: 1px solid #c4b5fd;
+  background: #ede9fe;
+  color: #5b21b6;
 }
 
 .b2b-status.is-in_progress,
 .b2b-status.is-escalated {
-  background: #ffe0a3;
-  color: #7a4b00;
+  border: 1px solid #fcd34d;
+  background: #fef3c7;
+  color: #92400e;
 }
 
 .b2b-status.is-completed {
-  background: #4d7c0f;
-  color: #ffffff;
+  border: 1px solid color-mix(in srgb, #a2dc25 50%, #0b1f33);
+  background: #eef8d2;
+  color: #0b1f33;
 }
 
 .b2b-subtask-form {

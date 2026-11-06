@@ -5,15 +5,21 @@ export function EmptyState({
   body,
   action,
   filtered = false,
+  compact = false,
 }: {
   title: string;
   body?: string;
   action?: ReactNode;
   /** True when the empty view is caused by search/filter, not an empty dataset. */
   filtered?: boolean;
+  /** Smaller padding for nested panels (e.g. Today work queues). */
+  compact?: boolean;
 }) {
   return (
-    <div className={`crm-empty${filtered ? " is-filtered" : ""}`} role="status">
+    <div
+      className={`crm-empty${filtered ? " is-filtered" : ""}${compact ? " is-compact" : ""}`}
+      role="status"
+    >
       <div className="crm-empty-mark" aria-hidden="true">
         {filtered ? "⌕" : "◇"}
       </div>

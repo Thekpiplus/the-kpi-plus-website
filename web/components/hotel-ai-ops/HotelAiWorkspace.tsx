@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { OverviewHero } from "@/components/crm/ui/OverviewHero";
 import { PageHeader } from "@/components/crm/ui/PageHeader";
 import { HotelAiOpsBoard } from "@/components/hotel-ai-ops/HotelAiOpsBoard";
 import { HotelAiSettingsPanel } from "@/components/hotel-ai-ops/HotelAiSettingsPanel";
@@ -26,6 +27,16 @@ const DESCRIPTIONS: Record<HaiSection, string> = {
   history: "ประวัติการสร้าง แก้ไข สถานะ และการอนุมัติ",
   settings: "แผนกที่ขยายได้ สิทธิ์ผู้ใช้ และลิงก์คลังรหัสที่อนุมัติแล้ว ไม่มีการนำเข้าข้อมูล",
 };
+
+function HotelAiSectionChrome({ section }: { section: HaiSection }) {
+  const eyebrow = "Hotel AI & Automation Workflow";
+  const title = HAI_SECTION_LABEL[section];
+  const description = DESCRIPTIONS[section];
+  if (section === "overview") {
+    return <OverviewHero variant="compact" eyebrow={eyebrow} title={title} description={description} label={title} />;
+  }
+  return <PageHeader eyebrow={eyebrow} title={title} description={description} />;
+}
 
 export async function HotelAiWorkspace({
   section,
@@ -55,7 +66,7 @@ export async function HotelAiWorkspace({
 
   return (
     <div className="b2b-page seo-ops-page sys-ops-page hai-ops-page">
-      <PageHeader eyebrow="Hotel AI & Automation Workflow" title={HAI_SECTION_LABEL[section]} description={DESCRIPTIONS[section]} />
+      <HotelAiSectionChrome section={section} />
       <HotelAiOpsBoard
         section={section}
         items={items}

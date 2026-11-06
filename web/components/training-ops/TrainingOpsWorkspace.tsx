@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { OverviewHero } from "@/components/crm/ui/OverviewHero";
 import { PageHeader } from "@/components/crm/ui/PageHeader";
 import { TrainingOpsBoard } from "@/components/training-ops/TrainingOpsBoard";
 import { TrainingOpsSettingsPanel } from "@/components/training-ops/TrainingOpsSettingsPanel";
@@ -29,6 +30,16 @@ const DESCRIPTIONS: Record<TrnSection, string> = {
   settings: "แผนกที่ขยายได้และสิทธิ์ผู้ใช้ ไม่มีการนำเข้าข้อมูล",
 };
 
+function TrainingSectionChrome({ section }: { section: TrnSection }) {
+  const eyebrow = "Hotel Training Operations";
+  const title = TRN_SECTION_LABEL[section];
+  const description = DESCRIPTIONS[section];
+  if (section === "overview") {
+    return <OverviewHero variant="compact" eyebrow={eyebrow} title={title} description={description} label={title} />;
+  }
+  return <PageHeader eyebrow={eyebrow} title={title} description={description} />;
+}
+
 export async function TrainingOpsWorkspace({
   section,
   searchParams,
@@ -55,7 +66,7 @@ export async function TrainingOpsWorkspace({
 
   return (
     <div className="b2b-page seo-ops-page trn-ops-page">
-      <PageHeader eyebrow="Hotel Training Operations" title={TRN_SECTION_LABEL[section]} description={DESCRIPTIONS[section]} />
+      <TrainingSectionChrome section={section} />
       <TrainingOpsBoard
         section={section}
         items={items}

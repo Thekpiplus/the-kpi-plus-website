@@ -1,4 +1,5 @@
 ﻿import { redirect } from "next/navigation";
+import { OverviewHero } from "@/components/crm/ui/OverviewHero";
 import { PageHeader } from "@/components/crm/ui/PageHeader";
 import { SystemsOpsBoard } from "@/components/systems-ops/SystemsOpsBoard";
 import { SystemsSettingsPanel } from "@/components/systems-ops/SystemsSettingsPanel";
@@ -26,6 +27,16 @@ const DESCRIPTIONS: Record<SysSection, string> = {
   settings: "แผนกที่ขยายได้: Marketing, Revenue, Distribution, Sales และ Management แต่ละแผนกมีงานย่อย 1–10 รายการ พร้อมมอบหมาย เปลี่ยนแผนก สถานะ ความเห็น และหลักฐาน",
 };
 
+function SystemsSectionChrome({ section }: { section: SysSection }) {
+  const eyebrow = "Hotel Systems Operations";
+  const title = SYS_SECTION_LABEL[section];
+  const description = DESCRIPTIONS[section];
+  if (section === "overview") {
+    return <OverviewHero variant="compact" eyebrow={eyebrow} title={title} description={description} label={title} />;
+  }
+  return <PageHeader eyebrow={eyebrow} title={title} description={description} />;
+}
+
 export async function SystemsWorkspace({
   section,
   searchParams,
@@ -51,7 +62,7 @@ export async function SystemsWorkspace({
 
   return (
     <div className="b2b-page seo-ops-page sys-ops-page">
-      <PageHeader eyebrow="Hotel Systems Operations" title={SYS_SECTION_LABEL[section]} description={DESCRIPTIONS[section]} />
+      <SystemsSectionChrome section={section} />
       <SystemsOpsBoard
         section={section}
         items={items}
