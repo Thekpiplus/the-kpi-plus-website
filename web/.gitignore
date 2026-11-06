@@ -7,3 +7,5 @@ prisma/*.db
 prisma/*.db-journal
 ../.tools
 private
+public/media/avatars/*
+!public/media/avatars/.gitkeep

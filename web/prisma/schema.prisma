@@ -13,6 +13,7 @@ model User {
   email          String    @unique
   username       String?   @unique
   name           String
+  avatarUrl      String    @default("") @db.VarChar(500)
   role           String    @default("superadmin")
   modules        String    @default("")
   pinHash        String

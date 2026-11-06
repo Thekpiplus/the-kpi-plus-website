@@ -106,6 +106,7 @@ export default async function CrmLayout({ children }: { children: React.ReactNod
         <CrmShell
           userName={user.name}
           userRole={roleLabel(user.role)}
+          userAvatarUrl={user.avatarUrl}
           modules={modules}
           showLogout
           leadForm={leadForm}

@@ -14,12 +14,15 @@ function initials(name: string) {
 export function ProfileMenu({
   userName,
   userRole,
+  userAvatarUrl,
   showLogout,
 }: {
   userName: string;
   userRole: string;
+  userAvatarUrl?: string | null;
   showLogout: boolean;
 }) {
+  const avatar = userAvatarUrl?.trim() || "";
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const menuId = useId();
@@ -50,8 +53,13 @@ export function ProfileMenu({
         aria-controls={menuId}
         onClick={() => setOpen((value) => !value)}
       >
-        <span className="crm-app-avatar" aria-hidden="true">
-          {initials(userName)}
+        <span className={`crm-app-avatar${avatar ? " has-photo" : ""}`} aria-hidden="true">
+          {avatar ? (
+            // eslint-disable-next-line @next/next/no-img-element -- user-uploaded /media path
+            <img src={avatar} alt="" />
+          ) : (
+            initials(userName)
+          )}
         </span>
         <span className="crm-app-user-meta">
           <strong>{userName || "ทีม KPI Plus"}</strong>

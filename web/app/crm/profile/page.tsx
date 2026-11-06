@@ -1,19 +1,13 @@
 import Link from "next/link";
 import { PageHeader } from "@/components/crm/ui/PageHeader";
 import { PendingSubmitButton } from "@/components/crm/ui/PendingSubmitButton";
+import { ProfileAvatarForm } from "@/components/crm/ui/ProfileAvatarForm";
 import { ProfileEditForm } from "@/components/crm/ui/ProfileEditForm";
 import { RoleBadge } from "@/components/crm/ui/RoleBadge";
 import { requireUser } from "@/lib/crm/auth";
 import { MODULE_LABEL, inferredModules } from "@/lib/crm/modules";
 import { changeOwnPassword, updateOwnProfile } from "@/lib/crm/profile";
 import { roleLabel } from "@/lib/crm/roles";
-
-function initials(name: string) {
-  const parts = name.trim().split(/\s+/).filter(Boolean);
-  if (!parts.length) return "KP";
-  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
-  return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
-}
 
 export default async function ProfilePage({
   searchParams,
@@ -23,6 +17,9 @@ export default async function ProfilePage({
     error?: string;
     pwdChanged?: string;
     pwdError?: string;
+    avatarSaved?: string;
+    avatarRemoved?: string;
+    avatarError?: string;
   }>;
 }) {
   const user = await requireUser();
@@ -72,26 +69,41 @@ export default async function ProfilePage({
           ไม่พบบัญชีผู้ใช้
         </p>
       ) : null}
+      {params.avatarSaved === "1" ? (
+        <p className="crm-profile-banner is-success" role="status">
+          อัปโหลดรูปโปรไฟล์แล้ว
+        </p>
+      ) : null}
+      {params.avatarRemoved === "1" ? (
+        <p className="crm-profile-banner is-success" role="status">
+          ลบรูปโปรไฟล์แล้ว
+        </p>
+      ) : null}
+      {params.avatarError === "missing" ? (
+        <p className="crm-profile-banner is-error" role="alert">
+          เลือกไฟล์รูปก่อนอัปโหลด
+        </p>
+      ) : null}
+      {params.avatarError === "size" ? (
+        <p className="crm-profile-banner is-error" role="alert">
+          ไฟล์ใหญ่เกิน 2 MB — ลองย่อรูปแล้วอัปโหลดใหม่
+        </p>
+      ) : null}
+      {params.avatarError === "type" ? (
+        <p className="crm-profile-banner is-error" role="alert">
+          รองรับเฉพาะ JPEG, PNG, WebP หรือ GIF
+        </p>
+      ) : null}
 
       <div className="crm-profile-layout">
         <section className="crm-profile-panel crm-profile-identity" aria-labelledby="crm-profile-avatar-heading">
           <div className="crm-profile-panel-head">
             <div>
               <h2 id="crm-profile-avatar-heading">รูปโปรไฟล์</h2>
-              <p>ระบบยังไม่มีฟิลด์และ API สำหรับอัปโหลด avatar ของผู้ใช้แอดมิน</p>
+              <p>อัปโหลดรูปสำหรับแสดงในเมนูและหน้าโปรไฟล์ของบัญชีนี้</p>
             </div>
           </div>
-          <div className="crm-profile-avatar-block">
-            <span className="crm-profile-avatar" aria-hidden="true">
-              {initials(user.name)}
-            </span>
-            <div>
-              <p className="crm-profile-avatar-name">{user.name || "ทีม KPI Plus"}</p>
-              <p className="crm-profile-avatar-note">
-                แสดงตัวอักษรย่อจากชื่อจริงแทนรูปภาพ จนกว่าจะมีระบบจัดเก็บรูปโปรไฟล์ในภายหลัง
-              </p>
-            </div>
-          </div>
+          <ProfileAvatarForm name={user.name} avatarUrl={user.avatarUrl} />
         </section>
 
         <section className="crm-profile-panel" aria-labelledby="crm-profile-account-heading">

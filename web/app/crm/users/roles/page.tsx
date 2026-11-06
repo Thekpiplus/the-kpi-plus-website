@@ -87,7 +87,7 @@ export default async function UserRolesPage() {
                 รายชื่อผู้ใช้
               </Link>
               <Link href="/crm/users?new=1" className="kpi-button crm-users-primary">
-                เพิ่มผู้ใช้
+                เพิ่มผู้ใช้งาน
               </Link>
             </div>
           ) : undefined
@@ -198,7 +198,7 @@ export default async function UserRolesPage() {
               เปิดรายชื่อผู้ใช้เพื่อแก้ไขบทบาท/โมดูล
             </Link>
             <Link href="/crm/users?new=1" className="crm-hero-btn crm-hero-btn-secondary">
-              เพิ่มผู้ใช้ใหม่
+              เพิ่มผู้ใช้งาน
             </Link>
             <p className="crm-users-roles-hint">
               เลือกบัญชี → แก้ไข → ตั้ง Role และโมดูล → บันทึก (server action{" "}

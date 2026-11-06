@@ -78,7 +78,7 @@ export default async function UsersPage({
         description="ดูรายชื่อ เพิ่มบัญชี และจัดการบทบาทกับสถานะการเข้าใช้งาน"
         actions={
           canEdit ? (
-            <NewUserOpenButton className="kpi-button crm-users-primary">เพิ่มผู้ใช้</NewUserOpenButton>
+            <NewUserOpenButton className="kpi-button crm-users-primary">เพิ่มผู้ใช้งาน</NewUserOpenButton>
           ) : undefined
         }
       />
@@ -109,23 +109,45 @@ export default async function UsersPage({
         </p>
       ) : null}
 
-      <section className="crm-users-stats" aria-label="สรุปผู้ใช้">
-        <article className="crm-users-stat">
-          <p>ผู้ใช้ทั้งหมด</p>
-          <strong>{counts.total}</strong>
-        </article>
-        <article className="crm-users-stat is-team">
-          <p>ทีมภายใน</p>
-          <strong>{counts.staff}</strong>
-        </article>
-        <article className="crm-users-stat is-partner">
-          <p>Partners</p>
-          <strong>{counts.partners}</strong>
-        </article>
-        <article className="crm-users-stat is-lock" aria-label={`บัญชีที่ถูกล็อกในผลลัพธ์ ${lockedCount} รายการ`}>
-          <p>ถูกล็อก (ในผลลัพธ์)</p>
-          <strong>{lockedCount}</strong>
-        </article>
+      <section className="crm-dash-summary crm-users-summary" aria-label="สรุปผู้ใช้">
+        <div className="crm-dash-stats" role="list">
+          <Link
+            href="/crm/users"
+            className={`crm-dash-stat is-users${!role && !status && !q ? " is-selected" : ""}`}
+            role="listitem"
+            aria-current={!role && !status && !q ? "page" : undefined}
+          >
+            <span className="crm-dash-stat-label">ผู้ใช้ทั้งหมด</span>
+            <strong className="crm-dash-stat-value">{counts.total}</strong>
+            <span className="crm-dash-stat-hint">บัญชีในระบบ</span>
+          </Link>
+          <div className="crm-dash-stat is-today is-static" role="listitem">
+            <span className="crm-dash-stat-label">ทีมภายใน</span>
+            <strong className="crm-dash-stat-value">{counts.staff}</strong>
+            <span className="crm-dash-stat-hint">ไม่รวม Partners</span>
+          </div>
+          <Link
+            href="/crm/users?role=partner"
+            className={`crm-dash-stat is-partners${role === "partner" ? " is-selected" : ""}`}
+            role="listitem"
+            aria-current={role === "partner" ? "page" : undefined}
+          >
+            <span className="crm-dash-stat-label">Partners</span>
+            <strong className="crm-dash-stat-value">{counts.partners}</strong>
+            <span className="crm-dash-stat-hint">เปิดรายการ Partners</span>
+          </Link>
+          <Link
+            href="/crm/users?status=locked"
+            className={`crm-dash-stat is-overdue${status === "locked" ? " is-selected" : ""}`}
+            role="listitem"
+            aria-current={status === "locked" ? "page" : undefined}
+            aria-label={`บัญชีที่ถูกล็อกในผลลัพธ์ ${lockedCount} รายการ`}
+          >
+            <span className="crm-dash-stat-label">ถูกล็อก</span>
+            <strong className="crm-dash-stat-value">{lockedCount}</strong>
+            <span className="crm-dash-stat-hint">ในผลลัพธ์ปัจจุบัน</span>
+          </Link>
+        </div>
       </section>
 
       <section className="crm-users-panel" aria-labelledby="crm-users-list-heading">
@@ -215,7 +237,7 @@ export default async function UsersPage({
                   ล้างตัวกรอง
                 </Link>
               ) : canEdit ? (
-                <NewUserOpenButton className="kpi-button crm-users-primary">เพิ่มผู้ใช้</NewUserOpenButton>
+                <NewUserOpenButton className="kpi-button crm-users-primary">เพิ่มผู้ใช้งาน</NewUserOpenButton>
               ) : null
             }
           />

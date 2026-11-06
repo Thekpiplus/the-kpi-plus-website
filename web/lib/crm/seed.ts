@@ -23,6 +23,17 @@ export async function ensureUsernameColumn() {
   // username is part of the Prisma schema; keep this as a no-op for older DBs.
 }
 
+/** Add User.avatarUrl on older MySQL DBs that have not run the avatar migration yet. */
+export async function ensureAvatarColumn() {
+  try {
+    await prisma().$executeRawUnsafe(
+      "ALTER TABLE `User` ADD COLUMN `avatarUrl` VARCHAR(500) NOT NULL DEFAULT ''",
+    );
+  } catch {
+    // Column already exists.
+  }
+}
+
 let seedJob: Promise<void> | null = null;
 
 export async function ensureCrmSeed() {
@@ -38,6 +49,7 @@ export async function ensureCrmSeed() {
 async function seedCrmOnce() {
   const db = prisma();
   await ensureUsernameColumn().catch(() => undefined);
+  await ensureAvatarColumn().catch(() => undefined);
   const count = await db.stage.count();
   if (count === 0) {
     await db.stage.createMany({ data: STAGES.map((stage) => ({ ...stage })) });

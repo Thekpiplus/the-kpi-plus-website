@@ -13,6 +13,7 @@ import { createStaffUser } from "@/lib/crm/user-admin";
 import { ADMIN_MODULES, MODULE_LABEL } from "@/lib/crm/modules";
 import { ROLE_LABEL, type InternalRole } from "@/lib/crm/roles";
 import { PasswordField } from "@/components/crm/ui/PasswordField";
+import { PendingSubmitButton } from "@/components/crm/ui/PendingSubmitButton";
 
 type ModalApi = { open: () => void; close: () => void };
 
@@ -106,69 +107,71 @@ export function NewUserModalProvider({
             </div>
 
             <form action={createStaffUser} className="crm-modal-form crm-modal-form-user">
-              {formError ? (
-                <p className="crm-users-alert is-warn" role="alert">
-                  {formError}
-                </p>
-              ) : null}
+              <div className="crm-modal-body">
+                {formError ? (
+                  <p className="crm-users-alert is-warn" role="alert">
+                    {formError}
+                  </p>
+                ) : null}
 
-              <section className="crm-modal-section" aria-label="ข้อมูลบัญชี">
-                <h3 className="crm-modal-section-title">ข้อมูลบัญชี</h3>
-                <div className="crm-modal-grid">
-                  <label className="crm-modal-field">
-                    ชื่อ
-                    <input className="crm-field" name="name" required autoFocus />
-                  </label>
-                  <label className="crm-modal-field">
-                    ชื่อผู้ใช้ (Username)
-                    <input
-                      className="crm-field"
-                      name="username"
-                      pattern="[a-zA-Z0-9._-]{3,32}"
-                      autoComplete="username"
-                      required
-                    />
-                  </label>
-                  <label className="crm-modal-field">
-                    อีเมล
-                    <input className="crm-field" type="email" name="email" required />
-                  </label>
-                  <label className="crm-modal-field">
-                    บทบาท (User Role)
-                    <select className="crm-select" name="role" defaultValue="user" required>
-                      {roles.map((role) => (
-                        <option key={role} value={role}>
-                          {ROLE_LABEL[role]}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <PasswordField name="password" label="รหัสผ่าน" className="crm-modal-span-2" />
-                </div>
-              </section>
-
-              <fieldset className="crm-modal-modules">
-                <legend>ฟังก์ชันที่เข้าได้</legend>
-                <p>Superadmin และ Admin เข้าได้ทุกฟังก์ชันอัตโนมัติ — บัญชีอื่นเลือกเฉพาะที่ต้องการ</p>
-                <div className="crm-modal-module-grid">
-                  {ADMIN_MODULES.map((module) => (
-                    <label key={module} className="crm-modal-check">
-                      <input type="checkbox" name="modules" value={module} />
-                      <span>{MODULE_LABEL[module]}</span>
+                <section className="crm-modal-section" aria-label="ข้อมูลบัญชี">
+                  <h3 className="crm-modal-section-title">ข้อมูลบัญชี</h3>
+                  <div className="crm-modal-grid">
+                    <label className="crm-modal-field">
+                      ชื่อ
+                      <input className="crm-field" name="name" required autoFocus />
                     </label>
-                  ))}
-                </div>
-              </fieldset>
+                    <label className="crm-modal-field">
+                      ชื่อผู้ใช้ (Username)
+                      <input
+                        className="crm-field"
+                        name="username"
+                        pattern="[a-zA-Z0-9._-]{3,32}"
+                        autoComplete="username"
+                        required
+                      />
+                    </label>
+                    <label className="crm-modal-field">
+                      อีเมล
+                      <input className="crm-field" type="email" name="email" required />
+                    </label>
+                    <label className="crm-modal-field">
+                      บทบาท (User Role)
+                      <select className="crm-select" name="role" defaultValue="user" required>
+                        {roles.map((role) => (
+                          <option key={role} value={role}>
+                            {ROLE_LABEL[role]}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <PasswordField name="password" label="รหัสผ่าน" className="crm-modal-span-2" />
+                  </div>
+                </section>
 
-              <p className="crm-modal-note">บัญชี Partners สร้างตอนสมัครพาร์ตเนอร์ ไม่สร้างจากหน้านี้</p>
+                <fieldset className="crm-modal-modules">
+                  <legend>ฟังก์ชันที่เข้าได้</legend>
+                  <p>Superadmin และ Admin เข้าได้ทุกฟังก์ชันอัตโนมัติ — บัญชีอื่นเลือกเฉพาะที่ต้องการ</p>
+                  <div className="crm-modal-module-grid">
+                    {ADMIN_MODULES.map((module) => (
+                      <label key={module} className="crm-modal-check">
+                        <input type="checkbox" name="modules" value={module} />
+                        <span>{MODULE_LABEL[module]}</span>
+                      </label>
+                    ))}
+                  </div>
+                </fieldset>
 
-              <div className="crm-modal-actions">
+                <p className="crm-modal-note">บัญชี Partners สร้างตอนสมัครพาร์ตเนอร์ ไม่สร้างจากหน้านี้</p>
+              </div>
+
+              <div className="crm-modal-actions crm-modal-actions-bar">
                 <button type="button" className="crm-users-secondary" onClick={closeModal}>
                   ยกเลิก
                 </button>
-                <button className="kpi-button" type="submit">
-                  สร้างผู้ใช้งาน
-                </button>
+                <PendingSubmitButton className="kpi-button crm-users-primary" pendingLabel="กำลังสร้าง…">
+                  บันทึก
+                </PendingSubmitButton>
               </div>
             </form>
           </div>

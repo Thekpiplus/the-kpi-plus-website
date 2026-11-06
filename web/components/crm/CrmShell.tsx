@@ -679,6 +679,7 @@ function isNavKeyCurrent(key: NavKey, workspace: Workspace, pathname: string) {
 export function CrmShell({
   userName,
   userRole = "Administrator",
+  userAvatarUrl,
   userTeam,
   modules,
   showLogout = false,
@@ -688,6 +689,7 @@ export function CrmShell({
 }: {
   userName: string;
   userRole?: string;
+  userAvatarUrl?: string | null;
   /** Optional team / org label from profile. Empty → show muted placeholder. */
   userTeam?: string | null;
   modules: AdminModule[];
@@ -720,6 +722,7 @@ export function CrmShell({
   const drawerId = useId();
   const teamLabel = userTeam?.trim() || "ยังไม่ระบุทีม";
   const initials = userInitials(userName);
+  const avatar = userAvatarUrl?.trim() || "";
   const newLeadOpen = searchParams.get("newLead") === "1";
   const newLeadDuplicate = searchParams.get("duplicate") || undefined;
   const newLeadError = searchParams.get("error") || undefined;
@@ -868,8 +871,13 @@ export function CrmShell({
         className="crm-rail-user"
         title={`${userName} · ${userRole}${teamLabel ? ` · ${teamLabel}` : ""}`}
       >
-        <span className="crm-rail-user-avatar" aria-hidden="true">
-          {initials}
+        <span className={`crm-rail-user-avatar${avatar ? " has-photo" : ""}`} aria-hidden="true">
+          {avatar ? (
+            // eslint-disable-next-line @next/next/no-img-element -- user-uploaded /media path
+            <img src={avatar} alt="" />
+          ) : (
+            initials
+          )}
         </span>
         <span className="crm-rail-user-copy">
           <strong>{userName}</strong>
@@ -1003,7 +1011,12 @@ export function CrmShell({
           </label>
           <div className="crm-app-top-right">
             <CrmThemeToggle className="crm-top-theme" />
-            <ProfileMenu userName={userName} userRole={userRole} showLogout={showLogout} />
+            <ProfileMenu
+              userName={userName}
+              userRole={userRole}
+              userAvatarUrl={userAvatarUrl}
+              showLogout={showLogout}
+            />
           </div>
         </header>
 
