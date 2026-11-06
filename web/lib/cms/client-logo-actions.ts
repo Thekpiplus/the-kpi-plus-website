@@ -107,6 +107,8 @@ export async function saveClientLogo(formData: FormData): Promise<ClientLogoSave
   // Client logos go live immediately — no pending / approval step.
   input.permission = "approved";
   input.isActive = true;
+  // Form only collects client name; keep internal name in sync for lists/public alt.
+  if (input.clientName.trim()) input.name = input.clientName.trim();
 
   const website = normalizeWebsiteUrl(input.websiteUrl);
   if (!website.ok) return { ok: false, error: "invalid_website" };

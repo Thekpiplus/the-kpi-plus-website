@@ -131,8 +131,8 @@ export function canPublishClientLogo(input: Pick<ClientLogoSaveInput, "filePath"
 }
 
 export function validateClientLogoInput(input: ClientLogoSaveInput) {
-  if (!input.name) return "missing_name";
-  if (!input.clientName && !input.anonymisedLabel) return "missing_client";
+  if (!input.clientName.trim()) return "missing_client";
+  if (!input.name.trim()) return "missing_name";
   if (input.sortOrder < 0) return "invalid_order";
   if (!input.filePath.trim() || input.filePath.trim() === CLIENT_LOGO_PLACEHOLDER) return "missing_logo";
   if (input.websiteUrl.trim() && !normalizeWebsiteUrl(input.websiteUrl).ok) return "invalid_website";
@@ -152,8 +152,7 @@ export function permissionLabelTh(permission: string) {
 }
 
 export function clientLogoErrorMessage(error?: string) {
-  if (error === "missing_name") return "กรุณาใส่ชื่อโลโก้";
-  if (error === "missing_client") return "กรุณาใส่ชื่อลูกค้าหรือป้ายนิรนาม";
+  if (error === "missing_name" || error === "missing_client") return "กรุณาใส่ชื่อลูกค้า";
   if (error === "missing_logo" || error === "cannot_approve_without_logo") return "กรุณาอัปโหลดไฟล์โลโก้";
   if (error === "invalid_order") return "ลำดับแสดงต้องเป็นตัวเลขไม่ติดลบ";
   if (error === "invalid_image") return "ไฟล์โลโก้ต้องเป็น JPG / PNG / WEBP ไม่เกิน 5MB";

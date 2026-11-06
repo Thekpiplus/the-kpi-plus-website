@@ -133,7 +133,7 @@ export function ClientLogoManager({
 }) {
   const router = useRouter();
   const titleId = useId();
-  const nameId = useId();
+  const clientNameId = useId();
   const websiteId = useId();
   const openButtonRef = useRef<HTMLButtonElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
@@ -489,11 +489,8 @@ export function ClientLogoManager({
                       </td>
                       <td data-label="ชื่อ">
                         <button type="button" className="crm-logo-name" onClick={(event) => openEdit(row, event)}>
-                          {row.name}
+                          {label || row.clientName || row.name}
                         </button>
-                        {label && label !== row.name ? (
-                          <p className="crm-logo-secondary">{label}</p>
-                        ) : null}
                       </td>
                       <td data-label="เว็บไซต์">
                         {href.ok && href.url ? (
@@ -580,8 +577,8 @@ export function ClientLogoManager({
                 </h2>
                 <p className="crm-modal-lead">
                   {dialog === "create"
-                    ? "อัปโหลดรูป ใส่ชื่อ และลิงก์เว็บไซต์ (ไม่บังคับ)"
-                    : `แก้ไขข้อมูลของ ${form.name || "โลโก้"}`}
+                    ? "อัปโหลดรูป ใส่ชื่อลูกค้า และลิงก์เว็บไซต์ (ไม่บังคับ)"
+                    : `แก้ไขข้อมูลของ ${form.clientName || form.name || "โลโก้"}`}
                 </p>
               </div>
               <button
@@ -598,17 +595,14 @@ export function ClientLogoManager({
             <form
               className="crm-modal-form crm-modal-form-user"
               action={(formData) => {
+                const clientName = String(formData.get("clientName") ?? form.clientName).trim();
                 const next: ClientLogoSaveInput = {
                   ...form,
-                  name: String(formData.get("name") ?? form.name).trim(),
-                  clientName: String(formData.get("clientName") ?? form.clientName).trim(),
-                  anonymisedLabel: String(formData.get("anonymisedLabel") ?? form.anonymisedLabel).trim(),
+                  name: clientName,
+                  clientName,
                   websiteUrl: String(formData.get("websiteUrl") ?? form.websiteUrl).trim(),
-                  altText: String(formData.get("altText") ?? form.altText).trim(),
-                  sortOrder: Number.parseInt(String(formData.get("sortOrder") ?? form.sortOrder), 10) || 0,
                   permission: "approved",
                   isActive: true,
-                  adminNotes: String(formData.get("adminNotes") ?? form.adminNotes).trim(),
                   filePath: form.filePath,
                   id: form.id,
                 };
@@ -628,6 +622,12 @@ export function ClientLogoManager({
                   setStatus(clientLogoErrorMessage(invalid));
                   return;
                 }
+                formData.set("name", next.name);
+                formData.set("clientName", next.clientName);
+                formData.set("anonymisedLabel", next.anonymisedLabel);
+                formData.set("altText", next.altText);
+                formData.set("sortOrder", String(next.sortOrder));
+                formData.set("adminNotes", next.adminNotes);
                 formData.set("permission", "approved");
                 formData.set("isActive", "1");
                 formData.set("filePath", next.filePath);
@@ -657,35 +657,22 @@ export function ClientLogoManager({
 
                 <div className="crm-logo-editor-grid">
                   <div className="crm-logo-editor-fields">
-                    <Field label="ชื่อโลโก้" htmlFor={nameId}>
+                    <Field label="ชื่อลูกค้า" htmlFor={clientNameId}>
                       <input
-                        id={nameId}
+                        id={clientNameId}
                         className="crm-field"
-                        name="name"
-                        value={form.name}
-                        onChange={(event) => patch("name", event.target.value)}
+                        name="clientName"
+                        value={form.clientName}
+                        onChange={(event) => {
+                          const value = event.target.value;
+                          setForm((current) => ({ ...current, clientName: value, name: value }));
+                          setOk("");
+                          setStatus("");
+                        }}
                         required
                         autoFocus
                       />
                     </Field>
-                    <div className="crm-contact-pair">
-                      <Field label="ชื่อลูกค้า" hint="ใส่ชื่อจริงเมื่อได้รับอนุญาตให้ระบุ">
-                        <input
-                          className="crm-field"
-                          name="clientName"
-                          value={form.clientName}
-                          onChange={(event) => patch("clientName", event.target.value)}
-                        />
-                      </Field>
-                      <Field label="ป้ายนิรนาม" hint="ใช้แทนชื่อลูกค้าบนหน้าสาธารณะได้">
-                        <input
-                          className="crm-field"
-                          name="anonymisedLabel"
-                          value={form.anonymisedLabel}
-                          onChange={(event) => patch("anonymisedLabel", event.target.value)}
-                        />
-                      </Field>
-                    </div>
                     <Field label="ลิงก์เว็บไซต์" hint="ไม่บังคับ — ใช้ http หรือ https เท่านั้น" htmlFor={websiteId}>
                       <input
                         id={websiteId}
@@ -698,36 +685,7 @@ export function ClientLogoManager({
                         onChange={(event) => patch("websiteUrl", event.target.value)}
                       />
                     </Field>
-                    <Field label="Alt text" hint="ถ้าเว้นว่าง ระบบจะใช้ชื่อลูกค้า/โลโก้ประกอบคำว่า logo">
-                      <input
-                        className="crm-field"
-                        name="altText"
-                        value={form.altText}
-                        onChange={(event) => patch("altText", event.target.value)}
-                      />
-                    </Field>
-                    <Field label="ลำดับแสดง" hint="หรือลากโลโก้ในตารางเพื่อจัดลำดับ">
-                      <input
-                        className="crm-field"
-                        name="sortOrder"
-                        type="number"
-                        min={0}
-                        value={form.sortOrder}
-                        onChange={(event) =>
-                          patch("sortOrder", Number.parseInt(event.target.value || "0", 10) || 0)
-                        }
-                      />
-                    </Field>
                     <p className="crm-logo-publish-note is-on">โลโก้ที่มีไฟล์จะแสดงบนหน้าเว็บทันทีหลังบันทึก</p>
-                    <Field label="หมายเหตุภายใน (เห็นเฉพาะแอดมิน)">
-                      <textarea
-                        className="crm-area"
-                        name="adminNotes"
-                        rows={3}
-                        value={form.adminNotes}
-                        onChange={(event) => patch("adminNotes", event.target.value)}
-                      />
-                    </Field>
                   </div>
 
                   <div className="crm-logo-editor-media">

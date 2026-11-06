@@ -13903,6 +13903,10 @@ html[data-crm-theme="dark"] .crm-cms-globals-card,
   margin-bottom: 0.85rem;
 }
 
+.crm-logo-table-card #crm-logo-list-heading .crm-leads-count {
+  margin-left: 0.65rem;
+}
+
 .crm-logo-layout {
   display: grid;
   gap: 0.95rem;
