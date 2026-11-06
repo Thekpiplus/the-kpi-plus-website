@@ -14,6 +14,7 @@ function mapRow(row: Record<string, unknown>): CmsClientLogoRow {
     filePath: String(row.filePath ?? ""),
     clientName: String(row.clientName ?? ""),
     anonymisedLabel: String(row.anonymisedLabel ?? ""),
+    websiteUrl: String(row.websiteUrl ?? ""),
     altText: String(row.altText ?? ""),
     sortOrder: Number(row.sortOrder ?? 0),
     permission: parseClientLogoPermission(row.permission),
@@ -37,6 +38,7 @@ export function rowFromInput(input: ClientLogoSaveInput, existing?: CmsClientLog
     filePath: input.filePath,
     clientName: input.clientName,
     anonymisedLabel: input.anonymisedLabel,
+    websiteUrl: input.websiteUrl,
     altText: input.altText,
     sortOrder: input.sortOrder,
     permission: input.permission,
@@ -61,7 +63,8 @@ export async function listClientLogoRows() {
   return rows.map(mapRow);
 }
 
-const PUBLIC_LOGO_COLUMNS = "id, name, filePath, clientName, anonymisedLabel, altText, sortOrder, permission, isActive";
+const PUBLIC_LOGO_COLUMNS =
+  "id, name, filePath, clientName, anonymisedLabel, websiteUrl, altText, sortOrder, permission, isActive";
 
 export async function listPublishedClientLogoRows() {
   await ensureClientLogoSeed();
@@ -89,13 +92,14 @@ export async function insertClientLogo(data: Omit<ClientLogoData, "id"> & { id?:
     await db()
   ).$executeRawUnsafe(
     `INSERT INTO \`CmsClientLogo\` (
-      id, name, filePath, clientName, anonymisedLabel, altText, sortOrder, permission, isActive, adminNotes, updatedBy, createdAt, updatedAt
-    ) VALUES (?,?,?,?,?,?,?,?,?,?,?,NOW(),NOW())`,
+      id, name, filePath, clientName, anonymisedLabel, websiteUrl, altText, sortOrder, permission, isActive, adminNotes, updatedBy, createdAt, updatedAt
+    ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,NOW(),NOW())`,
     id,
     data.name,
     data.filePath,
     data.clientName,
     data.anonymisedLabel,
+    data.websiteUrl,
     data.altText,
     data.sortOrder,
     data.permission,
@@ -114,12 +118,13 @@ export async function updateClientLogoRow(id: string, data: Partial<ClientLogoDa
     await db()
   ).$executeRawUnsafe(
     `UPDATE \`CmsClientLogo\` SET
-      name=?, filePath=?, clientName=?, anonymisedLabel=?, altText=?, sortOrder=?, permission=?, isActive=?, adminNotes=?, updatedBy=?, updatedAt=NOW()
+      name=?, filePath=?, clientName=?, anonymisedLabel=?, websiteUrl=?, altText=?, sortOrder=?, permission=?, isActive=?, adminNotes=?, updatedBy=?, updatedAt=NOW()
       WHERE id=?`,
     next.name,
     next.filePath,
     next.clientName,
     next.anonymisedLabel,
+    next.websiteUrl,
     next.altText,
     next.sortOrder,
     next.permission,
@@ -166,6 +171,7 @@ async function ensureClientLogoSeed() {
         filePath: logo.src,
         clientName: logo.name,
         anonymisedLabel: "",
+        websiteUrl: "",
         altText: `${logo.name} logo`,
         sortOrder: index,
         permission: "pending",

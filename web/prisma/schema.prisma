@@ -540,6 +540,7 @@ model CmsClientLogo {
   filePath        String   @default("") @db.VarChar(500)
   clientName      String   @default("") @db.VarChar(255)
   anonymisedLabel String   @default("") @db.VarChar(255)
+  websiteUrl      String   @default("") @db.VarChar(500)
   altText         String   @default("") @db.VarChar(500)
   sortOrder       Int      @default(0)
   permission      String   @default("pending")

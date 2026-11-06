@@ -2,7 +2,13 @@ import { existsSync } from "fs";
 import { join } from "path";
 import { cache } from "react";
 import { clientLogos, type ClientLogo } from "@/lib/clients";
-import { canPublishClientLogo, CLIENT_LOGO_PLACEHOLDER, publicClientAlt, publicClientLabel } from "./client-logos";
+import {
+  canPublishClientLogo,
+  CLIENT_LOGO_PLACEHOLDER,
+  normalizeWebsiteUrl,
+  publicClientAlt,
+  publicClientLabel,
+} from "./client-logos";
 import { listPublishedClientLogoRows } from "./client-logo-store";
 
 /** Assets on disk that are not usable as logos (for example a solid black file). */
@@ -23,12 +29,16 @@ export const loadPublishedClientLogos = cache(async (): Promise<ClientLogo[]> =>
     const rows = await listPublishedClientLogoRows();
     return rows
       .filter((row) => canPublishClientLogo(row) && publicFileExists(row.filePath))
-      .map((row) => ({
-        name: publicClientLabel(row),
-        src: row.filePath,
-        alt: publicClientAlt(row),
-        canPublish: true,
-      }));
+      .map((row) => {
+        const website = normalizeWebsiteUrl(row.websiteUrl ?? "");
+        return {
+          name: publicClientLabel(row),
+          src: row.filePath,
+          alt: publicClientAlt(row),
+          href: website.ok && website.url ? website.url : undefined,
+          canPublish: true,
+        };
+      });
   } catch {
     return [];
   }

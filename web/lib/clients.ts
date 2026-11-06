@@ -2,6 +2,8 @@ export type ClientLogo = {
   name: string;
   src: string;
   alt?: string;
+  /** Optional public website link when set and approved for display. */
+  href?: string;
   /** Set true only after an admin saves Approved publication permission. */
   canPublish?: boolean;
 };

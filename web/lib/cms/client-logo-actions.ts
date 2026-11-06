@@ -13,6 +13,8 @@ import {
   CLIENT_LOGO_MIN_SIZE,
   MAX_CLIENT_LOGO_BYTES,
   inputFromForm,
+  normalizeWebsiteUrl,
+  parseClientLogoPermission,
   validateClientLogoInput,
   type ClientLogoSaveResult,
 } from "./client-logos";
@@ -100,6 +102,10 @@ export async function saveClientLogo(formData: FormData): Promise<ClientLogoSave
   }
   if (formData.get("clearLogoFile") === "1" && !hasFile) input.filePath = "";
 
+  const website = normalizeWebsiteUrl(input.websiteUrl);
+  if (!website.ok) return { ok: false, error: "invalid_website" };
+  input.websiteUrl = website.url;
+
   const invalid = validateClientLogoInput(input);
   if (invalid) return { ok: false, error: invalid };
 
@@ -130,6 +136,21 @@ export async function setClientLogoActive(formData: FormData) {
   const existing = await findClientLogo(id);
   if (!existing) redirect("/crm/cms/client-logos?error=missing");
   await updateClientLogoRow(id, { isActive });
+  revalidateClientLogos();
+  redirect(`/crm/cms/client-logos?id=${id}&saved=1`);
+}
+
+export async function setClientLogoPermission(formData: FormData) {
+  await requireCms();
+  const id = String(formData.get("id") ?? "").trim();
+  const permission = parseClientLogoPermission(formData.get("permission"));
+  if (!id) redirect("/crm/cms/client-logos?error=missing");
+  const existing = await findClientLogo(id);
+  if (!existing) redirect("/crm/cms/client-logos?error=missing");
+  if (permission === "approved" && !existing.filePath.trim()) {
+    redirect("/crm/cms/client-logos?error=cannot_approve_without_logo");
+  }
+  await updateClientLogoRow(id, { permission });
   revalidateClientLogos();
   redirect(`/crm/cms/client-logos?id=${id}&saved=1`);
 }

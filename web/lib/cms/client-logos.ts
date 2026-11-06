@@ -18,6 +18,7 @@ export type ClientLogoSaveInput = {
   filePath: string;
   clientName: string;
   anonymisedLabel: string;
+  websiteUrl: string;
   altText: string;
   sortOrder: number;
   permission: ClientLogoPermission;
@@ -40,12 +41,38 @@ export function parseClientLogoPermission(value: unknown): ClientLogoPermission 
   return isClientLogoPermission(next) ? next : "pending";
 }
 
+/** Normalize optional website URL to http(s) only. Empty string is allowed. */
+export function normalizeWebsiteUrl(raw: string): { ok: true; url: string } | { ok: false } {
+  const value = raw.trim();
+  if (!value) return { ok: true, url: "" };
+  try {
+    const withScheme = /^https?:\/\//i.test(value) ? value : `https://${value}`;
+    const parsed = new URL(withScheme);
+    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") return { ok: false };
+    if (!parsed.hostname) return { ok: false };
+    return { ok: true, url: parsed.toString() };
+  } catch {
+    return { ok: false };
+  }
+}
+
+export function websiteDisplayHost(url: string) {
+  const normalized = normalizeWebsiteUrl(url);
+  if (!normalized.ok || !normalized.url) return "";
+  try {
+    return new URL(normalized.url).hostname.replace(/^www\./i, "");
+  } catch {
+    return "";
+  }
+}
+
 export function emptyClientLogoInput(sortOrder = 0): ClientLogoSaveInput {
   return {
     name: "",
     filePath: "",
     clientName: "",
     anonymisedLabel: "",
+    websiteUrl: "",
     altText: "",
     sortOrder,
     permission: "pending",
@@ -61,6 +88,7 @@ export function inputFromRow(row: CmsClientLogoRow): ClientLogoSaveInput {
     filePath: row.filePath,
     clientName: row.clientName,
     anonymisedLabel: row.anonymisedLabel,
+    websiteUrl: row.websiteUrl ?? "",
     altText: row.altText,
     sortOrder: row.sortOrder,
     permission: parseClientLogoPermission(row.permission),
@@ -71,12 +99,14 @@ export function inputFromRow(row: CmsClientLogoRow): ClientLogoSaveInput {
 
 export function inputFromForm(formData: FormData): ClientLogoSaveInput {
   const id = trim(formData.get("id"));
+  const website = normalizeWebsiteUrl(trim(formData.get("websiteUrl")));
   return {
     id: id || undefined,
     name: trim(formData.get("name")),
     filePath: trim(formData.get("filePath")),
     clientName: trim(formData.get("clientName")),
     anonymisedLabel: trim(formData.get("anonymisedLabel")),
+    websiteUrl: website.ok ? website.url : trim(formData.get("websiteUrl")),
     altText: trim(formData.get("altText")),
     sortOrder: Number.parseInt(trim(formData.get("sortOrder")) || "0", 10) || 0,
     permission: parseClientLogoPermission(formData.get("permission")),
@@ -105,6 +135,7 @@ export function validateClientLogoInput(input: ClientLogoSaveInput) {
   if (!input.clientName && !input.anonymisedLabel) return "missing_client";
   if (input.sortOrder < 0) return "invalid_order";
   if (input.permission === "approved" && !input.filePath) return "cannot_approve_without_logo";
+  if (input.websiteUrl.trim() && !normalizeWebsiteUrl(input.websiteUrl).ok) return "invalid_website";
   return "";
 }
 
@@ -128,5 +159,6 @@ export function clientLogoErrorMessage(error?: string) {
   if (error === "invalid_image") return "ไฟล์โลโก้ต้องเป็น JPG / PNG / WEBP ไม่เกิน 5MB";
   if (error === "image_dimensions") return "ขนาดโลโก้ต้องอย่างน้อย 80×24 พิกเซล และไม่เกิน 8000×8000";
   if (error === "missing") return "ไม่พบรายการโลโก้";
+  if (error === "invalid_website") return "ลิงก์เว็บไซต์ต้องเป็น URL ที่ขึ้นต้นด้วย http หรือ https";
   return error ? "บันทึกไม่สำเร็จ" : "";
 }

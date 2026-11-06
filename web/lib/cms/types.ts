@@ -140,6 +140,7 @@ export type CmsClientLogoRow = {
   filePath: string;
   clientName: string;
   anonymisedLabel: string;
+  websiteUrl: string;
   altText: string;
   sortOrder: number;
   permission: string;

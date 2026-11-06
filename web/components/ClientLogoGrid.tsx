@@ -11,19 +11,30 @@ export function ClientLogoGrid({
 
   return (
     <ul className="kpi-cs-logo-grid" aria-label={label}>
-      {logos.map((client) => (
-        <li key={client.src} className="kpi-cs-logo-tile" title={client.name}>
+      {logos.map((client) => {
+        const image = (
           <img
             src={client.src}
-            alt={client.name}
+            alt={client.alt || client.name}
             title={client.name}
             width={250}
             height={120}
             loading="lazy"
             decoding="async"
           />
-        </li>
-      ))}
+        );
+        return (
+          <li key={client.src} className="kpi-cs-logo-tile" title={client.name}>
+            {client.href ? (
+              <a href={client.href} target="_blank" rel="noopener noreferrer">
+                {image}
+              </a>
+            ) : (
+              image
+            )}
+          </li>
+        );
+      })}
     </ul>
   );
 }

@@ -95,6 +95,7 @@ CREATE TABLE IF NOT EXISTS \`CmsClientLogo\` (
   \`filePath\` VARCHAR(500) NOT NULL DEFAULT '',
   \`clientName\` VARCHAR(255) NOT NULL DEFAULT '',
   \`anonymisedLabel\` VARCHAR(255) NOT NULL DEFAULT '',
+  \`websiteUrl\` VARCHAR(500) NOT NULL DEFAULT '',
   \`altText\` VARCHAR(500) NOT NULL DEFAULT '',
   \`sortOrder\` INTEGER NOT NULL DEFAULT 0,
   \`permission\` VARCHAR(191) NOT NULL DEFAULT 'pending',
@@ -109,6 +110,16 @@ CREATE TABLE IF NOT EXISTS \`CmsClientLogo\` (
   INDEX \`CmsClientLogo_sortOrder_idx\` (\`sortOrder\`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 `;
+
+async function ensureClientLogoWebsiteColumn() {
+  try {
+    await prisma().$executeRawUnsafe(
+      "ALTER TABLE `CmsClientLogo` ADD COLUMN `websiteUrl` VARCHAR(500) NOT NULL DEFAULT ''",
+    );
+  } catch {
+    // Column already exists.
+  }
+}
 
 /** CMS tables are defined in Prisma schema. Contact, Case Study, and Client Logo records also self-heal if migrate has not run yet. */
 export async function ensureCmsSchema() {
@@ -127,4 +138,5 @@ export async function ensureCmsSchema() {
   } catch {
     // Database may be unavailable during build.
   }
+  await ensureClientLogoWebsiteColumn().catch(() => undefined);
 }
