@@ -1,9 +1,7 @@
+import { MediaThumbnailGrid } from "@/components/cms/MediaThumbnailGrid";
 import { UploadMediaButton } from "@/components/cms/UploadMediaModal";
-import { ConfirmDeleteButton } from "@/components/crm/ui/ConfirmDeleteButton";
-import { CopyPathButton } from "@/components/crm/ui/CopyPathButton";
 import { EmptyState } from "@/components/crm/ui/EmptyState";
 import { PageHeader } from "@/components/crm/ui/PageHeader";
-import { deleteMedia, updateMedia } from "@/lib/cms/actions";
 import { listMedia } from "@/lib/cms/queries";
 
 function formatBytes(size: number) {
@@ -34,13 +32,26 @@ export default async function CmsMediaPage({
   const params = await searchParams;
   const media = await listMedia();
   const imageCount = media.filter((item) => item.mime.startsWith("image/")).length;
+  const items = media.map((item) => ({
+    id: item.id,
+    filename: item.filename,
+    path: item.path,
+    alt: item.alt,
+    caption: item.caption,
+    mime: item.mime,
+    size: item.size,
+    createdAt: (item.createdAt instanceof Date ? item.createdAt : new Date(item.createdAt)).toISOString(),
+    sizeLabel: formatBytes(item.size),
+    dateLabel: formatDate(item.createdAt),
+    typeLabel: mimeLabel(item.mime),
+  }));
 
   return (
     <div className="crm-cms crm-cms-media">
       <PageHeader
         eyebrow="Content Management"
         title="สื่อ/ไฟล์รูปภาพ"
-        description="อัปโหลดรูปและไฟล์ไปที่ /media/cms แล้วคัดลอกพาธไปใส่ในหน้าหรือบทความ"
+        description="คลิกที่รูปเพื่อคัดลอกพาธหรือแก้ไขรายละเอียด — อัปโหลดไฟล์ไปที่ /media/cms"
         actions={<UploadMediaButton autoOpen={params.new === "1"} />}
       />
 
@@ -82,76 +93,13 @@ export default async function CmsMediaPage({
           </div>
         </div>
 
-        {media.length === 0 ? (
+        {items.length === 0 ? (
           <EmptyState
             title="ยังไม่มีไฟล์"
-            body="กดอัปโหลดไฟล์เพื่อเพิ่มรูปหรือ PDF แล้วคัดลอกพาธไปใช้ในหน้าเพจหรือบทความ"
+            body="กดอัปโหลดไฟล์เพื่อเพิ่มรูปหรือ PDF แล้วคลิกที่รูปเพื่อคัดลอกพาธ"
           />
         ) : (
-          <ul className="crm-cms-media-grid">
-            {media.map((item) => {
-              const isImage = item.mime.startsWith("image/");
-              return (
-                <li key={item.id} className="crm-cms-media-card">
-                  <div className={`crm-cms-media-thumb${isImage ? "" : " is-file"}`}>
-                    {isImage ? (
-                      <img src={item.path} alt={item.alt || item.filename} loading="lazy" />
-                    ) : (
-                      <span className="crm-cms-media-file-badge">{mimeLabel(item.mime)}</span>
-                    )}
-                    <span className="crm-cms-media-type">{mimeLabel(item.mime)}</span>
-                  </div>
-
-                  <div className="crm-cms-media-body">
-                    <div className="crm-cms-media-meta">
-                      <h3 title={item.filename}>{item.filename}</h3>
-                      <p>
-                        {formatBytes(item.size)} · {formatDate(item.createdAt)}
-                      </p>
-                    </div>
-
-                    <CopyPathButton path={item.path} />
-
-                    <details className="crm-cms-media-details">
-                      <summary>แก้ไขรายละเอียด</summary>
-                      <form action={updateMedia} className="crm-cms-media-edit">
-                        <input type="hidden" name="id" value={item.id} />
-                        <label className="crm-cms-field">
-                          <span>Alt</span>
-                          <input className="crm-field" name="alt" defaultValue={item.alt} placeholder="alt text" />
-                        </label>
-                        <label className="crm-cms-field">
-                          <span>คำบรรยาย</span>
-                          <input
-                            className="crm-field"
-                            name="caption"
-                            defaultValue={item.caption}
-                            placeholder="caption"
-                          />
-                        </label>
-                        <div className="crm-cms-media-card-actions">
-                          <button className="kpi-button" type="submit">
-                            บันทึก
-                          </button>
-                          <ConfirmDeleteButton
-                            action={deleteMedia}
-                            fields={{ id: item.id, path: item.path }}
-                            itemName={item.filename}
-                            eyebrow="Media"
-                            title="ลบไฟล์"
-                            message={`ยืนยันลบไฟล์ “${item.filename}”? การดำเนินการนี้ย้อนกลับไม่ได้`}
-                            buttonLabel="ลบ"
-                            confirmLabel="ลบไฟล์"
-                            className="crm-users-secondary crm-cms-media-delete"
-                          />
-                        </div>
-                      </form>
-                    </details>
-                  </div>
-                </li>
-              );
-            })}
-          </ul>
+          <MediaThumbnailGrid items={items} />
         )}
       </section>
     </div>
