@@ -38336,6 +38336,12 @@ h1 {
   overflow-wrap: anywhere;
 }
 
+.kpi-contact-card--section .kpi-contact-card-title {
+  overflow-wrap: normal;
+  white-space: nowrap;
+  text-wrap: nowrap;
+}
+
 .kpi-contact-card-list {
   display: grid;
   gap: 0.7rem;
@@ -38764,9 +38770,12 @@ a.kpi-contact-card-value:focus-visible {
   margin-bottom: -0.55rem;
 }
 
-.kpi-contact-location > .kpi-contact-h2 {
+.kpi-shell .kpi-contact-location > .kpi-contact-h2,
+.kpi-shell :lang(th) .kpi-contact-location > .kpi-contact-h2 {
   margin-top: 0;
   max-width: none;
+  white-space: nowrap;
+  text-wrap: nowrap;
 }
 
 .kpi-contact-eyebrow {
