@@ -37964,8 +37964,13 @@ h1 {
   align-items: start;
 }
 
-.kpi-about-join-copy .kpi-about-h2 {
+.kpi-about-join-copy .kpi-about-h2,
+.kpi-shell .kpi-about-join-copy .kpi-about-h2,
+.kpi-shell :lang(th) .kpi-about-join-copy .kpi-about-h2 {
   margin-top: 0;
+  max-width: none;
+  white-space: nowrap;
+  text-wrap: nowrap;
 }
 
 .kpi-about-join-cta {
