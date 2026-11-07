@@ -14,21 +14,18 @@ function AboutSlotPhoto({
   width,
   height,
   alt,
-  caption,
 }: {
   className: string;
   src: string;
   width: number;
   height: number;
   alt: string;
-  caption: string;
 }) {
   return (
     <figure className={`kpi-about-slot ${className}`}>
       <div className="kpi-about-slot-frame">
         <img src={src} alt={alt} width={width} height={height} loading="lazy" decoding="async" />
       </div>
-      <figcaption className="kpi-about-dummy-caption">{caption}</figcaption>
     </figure>
   );
 }
@@ -96,7 +93,6 @@ export async function AboutView({ locale }: { locale: Locale }) {
                   decoding="async"
                 />
               </div>
-              <figcaption className="kpi-about-hero-caption">{t.workAlt}</figcaption>
             </figure>
           </div>
         </div>
@@ -156,7 +152,6 @@ export async function AboutView({ locale }: { locale: Locale }) {
             width={1600}
             height={1067}
             alt={t.workshopAlt}
-            caption={t.dummyCaption}
           />
           <ol className="kpi-about-steps" aria-label={t.methodStepsLabel}>
             {t.methods.map(([num, title, output], index) => (
@@ -262,7 +257,6 @@ export async function AboutView({ locale }: { locale: Locale }) {
             width={1600}
             height={1067}
             alt={t.caseHotelAlt}
-            caption={t.dummyCaption}
           />
           {aboutFeaturedClients.length ? (
             <>
@@ -403,7 +397,6 @@ export async function AboutView({ locale }: { locale: Locale }) {
               width={1600}
               height={1067}
               alt={t.teamRealAlt}
-              caption={t.dummyCaption}
             />
             <aside className="kpi-about-join-card" aria-labelledby="about-join-process-title">
               <p id="about-join-process-title" className={`kpi-about-join-card-label${isTh ? "" : " kpi-latin"}`}>

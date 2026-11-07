@@ -1250,30 +1250,6 @@ export function AboutPageEditor({
                 }
               />
             </Field>
-            <LocalizedFields
-              label="Caption Dummy"
-              value={content.media.dummyCaption}
-              lang={lang}
-              onChange={(dummyCaption) => patch({ ...content, media: { ...content.media, dummyCaption } })}
-            />
-            <LocalizedFields
-              label="Alt เวิร์กช็อป"
-              value={content.media.workshopAlt}
-              lang={lang}
-              onChange={(workshopAlt) => patch({ ...content, media: { ...content.media, workshopAlt } })}
-            />
-            <LocalizedFields
-              label="Alt ทีม"
-              value={content.media.teamRealAlt}
-              lang={lang}
-              onChange={(teamRealAlt) => patch({ ...content, media: { ...content.media, teamRealAlt } })}
-            />
-            <LocalizedFields
-              label="Alt เคสโรงแรม"
-              value={content.media.caseHotelAlt}
-              lang={lang}
-              onChange={(caseHotelAlt) => patch({ ...content, media: { ...content.media, caseHotelAlt } })}
-            />
           </div>
         ) : null}
 

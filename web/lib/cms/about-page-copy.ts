@@ -8,7 +8,7 @@ export const aboutPageCopy = {
     heroBody:
       "ผลประกอบการของโรงแรมไม่ได้เกิดจาก Revenue Management, OTA, Website, Direct Booking หรือ Marketing เพียงเรื่องใดเรื่องหนึ่ง ทุกส่วนเชื่อมโยงกัน เราจึงนำข้อมูลด้าน Revenue, Demand, Pricing, Distribution และ Direct Booking มามองเป็นภาพเดียวกัน เพื่อเปลี่ยนข้อมูลให้เป็น Action และเปลี่ยน Action ให้เป็นผลลัพธ์ที่วัดได้",
     workAlt: "ทีม The KPI Plus ประชุมรีวิวข้อมูลโรงแรมด้วยกัน",
-    dummyCaption: "รูป Dummy · แทนที่ด้วยไฟล์จริงภายหลัง",
+    dummyCaption: "",
     workshopAlt: "ช่องรูปเวิร์กช็อปกระบวนการทำงาน (Dummy)",
     teamRealAlt: "ช่องรูปทีม The KPI Plus (Dummy)",
     caseHotelAlt: "ช่องรูปโรงแรมเคสศึกษา (Dummy)",
@@ -142,7 +142,7 @@ export const aboutPageCopy = {
     heroBody:
       "Hotel performance doesn't come from revenue management, OTAs, the website, direct booking, or marketing alone. Every part is connected. That's why we bring revenue, demand, pricing, distribution, and direct booking data into one view, so data becomes action, and action becomes measurable results.",
     workAlt: "The KPI Plus team reviewing hotel data together",
-    dummyCaption: "Dummy photo · replace with the real file later",
+    dummyCaption: "",
     workshopAlt: "Placeholder for a process workshop photo",
     teamRealAlt: "Placeholder for a The KPI Plus team photo",
     caseHotelAlt: "Placeholder for a client hotel photo",
@@ -280,7 +280,7 @@ export const aboutPageCopy = {
     heroBody:
       "Результат отеля не складывается из Revenue Management, OTA, сайта, прямого бронирования или маркетинга по отдельности. Всё связано. Поэтому мы собираем данные по доходу, спросу, ценам, дистрибуции и прямому бронированию в одну картину: данные становятся действием, а действие — измеримым результатом.",
     workAlt: "Команда The KPI Plus вместе разбирает данные отеля",
-    dummyCaption: "Черновое фото · позже заменить файлом",
+    dummyCaption: "",
     workshopAlt: "Заглушка для фото воркшопа",
     teamRealAlt: "Заглушка для фото команды The KPI Plus",
     caseHotelAlt: "Заглушка для фото отеля из кейса",
@@ -418,7 +418,7 @@ export const aboutPageCopy = {
     heroBody:
       "飯店績效不是只靠 Revenue Management、OTA、網站、直銷預訂或行銷任何單一環節。每一部分都連在一起。因此我們把收益、需求、定價、通路與直銷預訂資料看成同一張圖，讓資料變成行動，行動變成可衡量的結果。",
     workAlt: "The KPI Plus 團隊一起檢視飯店資料",
-    dummyCaption: "示意圖片 · 之後替換成真實檔案",
+    dummyCaption: "",
     workshopAlt: "流程工作坊照片占位",
     teamRealAlt: "The KPI Plus 團隊照片占位",
     caseHotelAlt: "案例飯店照片占位",

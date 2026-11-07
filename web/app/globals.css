@@ -37641,9 +37641,9 @@ h1 {
   min-width: 0;
   min-height: 4rem;
   padding: 0.55rem 0.7rem;
-  border: 1px solid #e3e8eb;
-  border-radius: 0.5rem;
-  background: #f7f7f5;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
 }
 
 .kpi-about-client img {
