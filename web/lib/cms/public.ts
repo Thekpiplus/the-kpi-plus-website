@@ -69,7 +69,14 @@ export async function storedPageByPath(pathname: string) {
   const doc = await pageDocumentBySlug(slug, locale).catch(() => null);
   // Include trashed docs so public routes can 404 instead of falling back to code pages.
   if (doc) return doc;
-  if (slug === "about-us") return pageDocumentBySlug("about", locale).catch(() => null);
+  if (slug === "about-us") {
+    // About page copy is edited once (TH document) and localized in the body for all languages.
+    return (
+      (await pageDocumentBySlug("about-us", "th").catch(() => null)) ||
+      (await pageDocumentBySlug("about", locale).catch(() => null)) ||
+      (await pageDocumentBySlug("about", "th").catch(() => null))
+    );
+  }
   if (slug === "contact-us") {
     // Contact page copy is edited once (TH document) and localized in the body for all languages.
     return (

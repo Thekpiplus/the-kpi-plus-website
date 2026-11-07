@@ -46,6 +46,9 @@ import { isHotelTrainingPageDocument } from "@/lib/cms/hotel-training-page";
 import { SolutionsIndexPageEditor } from "@/components/cms/SolutionsIndexPageEditor";
 import { duplicateSolutionsIndexPageToLocale, editorStateForSolutionsIndexDocument, saveSolutionsIndexPage } from "@/lib/cms/solutions-index-page-actions";
 import { isSolutionsIndexPageDocument } from "@/lib/cms/solutions-index-page";
+import { AboutPageEditor } from "@/components/cms/AboutPageEditor";
+import { editorStateForAboutDocument } from "@/lib/cms/about-page-actions";
+import { isAboutPageDocument } from "@/lib/cms/about-page";
 import { ContactPageEditor } from "@/components/cms/ContactPageEditor";
 import { editorStateForContactDocument } from "@/lib/cms/contact-page-actions";
 import { isContactPageDocument } from "@/lib/cms/contact-page";
@@ -80,6 +83,34 @@ export default async function EditCmsPage({
   const hotelTraining = isHotelTrainingPageDocument(document);
   const solutionsIndex = isSolutionsIndexPageDocument(document);
   const contactPage = isContactPageDocument(document);
+  const aboutPage = isAboutPageDocument(document);
+
+  if (aboutPage) {
+    const hydrated = await editorStateForAboutDocument(id);
+    if (!hydrated) notFound();
+    return (
+      <div className="crm-cms">
+        <PageHeader
+          eyebrow="Content Management"
+          title={hydrated.title}
+          description={`${path} · แก้ข้อความหน้าเกี่ยวกับเราจากแอดมิน`}
+          actions={
+            <div className="crm-cms-actions">
+              <Link href="/crm/cms" className="crm-users-secondary">
+                ← หน้าเพจทั้งหมด
+              </Link>
+              <Link href="/about-us" className="crm-users-secondary" target="_blank" rel="noreferrer">
+                เปิดหน้าเว็บ
+              </Link>
+            </div>
+          }
+        />
+        {saved ? <p className="crm-users-alert is-ok">บันทึกแล้ว</p> : null}
+        {error ? <p className="crm-users-alert is-warn">บันทึกไม่สำเร็จ</p> : null}
+        <AboutPageEditor initial={hydrated} initialTab={tab} />
+      </div>
+    );
+  }
 
   if (contactPage) {
     const hydrated = await editorStateForContactDocument(id);

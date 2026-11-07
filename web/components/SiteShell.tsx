@@ -32,6 +32,12 @@ import { hotelTrainingFaqsFromCms } from "@/lib/cms/hotel-training-page-public";
 import { SOLUTIONS_INDEX_CMS_TEMPLATE, parseSolutionsIndexPageBody } from "@/lib/cms/solutions-index-page";
 import { solutionsIndexFaqsFromCms } from "@/lib/cms/solutions-index-page-public";
 import {
+  ABOUT_CMS_TEMPLATE,
+  aboutFaqsForLocale,
+  isAboutCmsBody,
+  parseAboutPageBody,
+} from "@/lib/cms/about-page";
+import {
   CONTACT_CMS_TEMPLATE,
   contactFaqsForLocale,
   isContactCmsBody,
@@ -83,7 +89,8 @@ export async function SiteShell({
     stored?.template === HOTEL_AI_CMS_TEMPLATE ||
     stored?.template === HOTEL_TRAINING_CMS_TEMPLATE ||
     stored?.template === SOLUTIONS_INDEX_CMS_TEMPLATE ||
-    stored?.template === CONTACT_CMS_TEMPLATE;
+    stored?.template === CONTACT_CMS_TEMPLATE ||
+    stored?.template === ABOUT_CMS_TEMPLATE;
   if (stored?.trashedAt) notFound();
   if (stored && !isCmsPageLive(stored) && !specialTemplate) notFound();
 
@@ -137,6 +144,11 @@ export async function SiteShell({
                   ? (() => {
                       const parsed = parseContactPageBody(cmsLive.body);
                       return parsed ? contactFaqsForLocale(parsed, locale) : null;
+                    })()
+                : cmsLive?.template === ABOUT_CMS_TEMPLATE && isAboutCmsBody(cmsLive.body)
+                  ? (() => {
+                      const parsed = parseAboutPageBody(cmsLive.body);
+                      return parsed ? aboutFaqsForLocale(parsed, locale) : null;
                     })()
               : null;
   const storedFaqs = kind === "article" ? null : await loadCmsFaqsForRoute(route);

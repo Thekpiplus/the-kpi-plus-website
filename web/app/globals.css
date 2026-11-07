@@ -39500,10 +39500,12 @@ a.kpi-contact-card-value:focus-visible {
 .kpi-contact-next-trust {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.65rem 0;
   margin: 1.35rem 0 0;
   padding: 0;
   list-style: none;
+  text-align: center;
 }
 
 .kpi-contact-next-trust li {
@@ -39530,6 +39532,7 @@ a.kpi-contact-card-value:focus-visible {
 @media (max-width: 47.99rem) {
   .kpi-contact-next-trust {
     display: grid;
+    justify-items: center;
     gap: 0.45rem;
   }
 
