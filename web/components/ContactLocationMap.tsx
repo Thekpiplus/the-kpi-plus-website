@@ -31,6 +31,7 @@ export function ContactLocationMap({
   locale,
   title,
   address,
+  addressAlt,
   mapsUrl,
   embedSrc,
   openMapLabel,
@@ -38,6 +39,7 @@ export function ContactLocationMap({
   locale: Locale;
   title: string;
   address?: string;
+  addressAlt?: string;
   mapsUrl?: string;
   embedSrc?: string;
   openMapLabel: string;
@@ -47,6 +49,7 @@ export function ContactLocationMap({
   const embed = hasVerifiedMapsEmbed(embedSrc) ? embedSrc!.trim() : "";
   const share = hasVerifiedMapsUrl(mapsUrl) ? mapsUrl!.trim() : "";
   const visibleAddress = address?.trim() ?? "";
+  const visibleAlt = addressAlt?.trim() ?? "";
   const hasLocation = Boolean(embed || share || visibleAddress);
   const [status, setStatus] = useState<MapStatus>(embed ? "loading" : "idle");
   const showEmbed = Boolean(embed);
@@ -81,8 +84,8 @@ export function ContactLocationMap({
           <iframe
             title={title}
             src={embed}
-            width={640}
-            height={420}
+            width={960}
+            height={560}
             loading="lazy"
             referrerPolicy="strict-origin-when-cross-origin"
             allowFullScreen
@@ -124,9 +127,10 @@ export function ContactLocationMap({
       {hasLocation ? (
         <div className="kpi-contact-map-meta">
           {visibleAddress ? <p className="kpi-contact-map-address">{visibleAddress}</p> : null}
+          {visibleAlt ? <p className="kpi-contact-map-address-alt">{visibleAlt}</p> : null}
           {share ? (
             <p className="kpi-contact-map-cta">
-              <a href={share} rel="noreferrer">
+              <a className="kpi-button kpi-contact-map-button" href={share} rel="noreferrer">
                 {openMapLabel} <span aria-hidden="true">↗</span>
               </a>
             </p>

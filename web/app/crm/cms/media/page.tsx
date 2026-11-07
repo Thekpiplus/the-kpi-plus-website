@@ -80,16 +80,13 @@ export default async function CmsMediaPage({
               <span className="crm-leads-count">{media.length}</span>
             </h2>
           </div>
-          <div className="crm-cms-media-head-actions">
-            <div className="crm-cms-media-stats" aria-label="สรุปคลังไฟล์">
-              <span>
-                <strong>{media.length}</strong> ไฟล์
-              </span>
-              <span>
-                <strong>{imageCount}</strong> รูป
-              </span>
-            </div>
-            <UploadMediaButton className="kpi-button crm-users-primary" />
+          <div className="crm-cms-media-stats" aria-label="สรุปคลังไฟล์">
+            <span>
+              <strong>{media.length}</strong> ไฟล์
+            </span>
+            <span>
+              <strong>{imageCount}</strong> รูป
+            </span>
           </div>
         </div>
 

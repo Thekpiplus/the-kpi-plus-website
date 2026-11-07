@@ -71,6 +71,10 @@ export async function ContactView({ locale }: { locale: Locale }) {
   const isTh = locale === "th";
   const officePhoto = company.officePhoto?.trim() || COMPANY.officePhoto;
   const officePhotoAlt = company.officePhotoAlt?.trim() || COMPANY.officePhotoAlt || t.officePhotoAlt;
+  const addressAlt = isTh ? company.addressEn : company.addressTh;
+  const showAddressAlt =
+    Boolean(addressAlt?.trim()) &&
+    addressAlt.trim().toLowerCase() !== (contact.address ?? "").trim().toLowerCase();
 
   return (
     <SiteShell locale={locale} route={localizePath("/contact-us", locale)}>
@@ -109,35 +113,17 @@ export async function ContactView({ locale }: { locale: Locale }) {
           <div className="kpi-contact-main-grid">
             <div className="kpi-contact-location">
               <p className={`kpi-contact-eyebrow${isTh ? "" : " kpi-latin"}`}>{t.locationEyebrow}</p>
-              <figure className="kpi-contact-photo">
-                <img
-                  src={officePhoto}
-                  alt={officePhotoAlt}
-                  width={1600}
-                  height={1067}
-                  loading="lazy"
-                />
-              </figure>
-              {company.consultantPhoto ? (
-                <figure className="kpi-contact-photo kpi-contact-consultant">
-                  <img
-                    src={company.consultantPhoto}
-                    alt={company.consultantPhotoAlt || t.officePhotoAlt}
-                    width={800}
-                    height={1000}
-                    loading="lazy"
-                  />
-                </figure>
-              ) : null}
+              <h2 className="kpi-h2 kpi-contact-h2">{t.office}</h2>
               <ContactLocationMap
                 locale={locale}
                 title={t.mapTitle}
                 address={contact.address}
+                addressAlt={showAddressAlt ? addressAlt : undefined}
                 mapsUrl={contact.googleMapsUrl}
                 embedSrc={company.mapsEmbed}
                 openMapLabel={t.openMap}
               />
-              <ContactCard locale={locale} contact={contact} variant="section" />
+              <ContactCard locale={locale} contact={contact} variant="section" showAddress={false} />
             </div>
 
             <ContactEnquiryForm

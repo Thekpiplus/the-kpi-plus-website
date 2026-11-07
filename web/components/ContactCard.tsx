@@ -120,6 +120,7 @@ export function ContactCard({
   eyebrow,
   headingId,
   showName = true,
+  showAddress = true,
   showSocials = true,
 }: {
   contact: ContactInfo;
@@ -128,6 +129,7 @@ export function ContactCard({
   eyebrow?: string;
   headingId?: string;
   showName?: boolean;
+  showAddress?: boolean;
   showSocials?: boolean;
 }) {
   const t = copy[locale] ?? copy.en;
@@ -195,7 +197,7 @@ export function ContactCard({
           </>
         ) : (
           <>
-            {address ? (
+            {showAddress && address ? (
               <Row icon={<MapPin />} label={t.address}>
                 {maps ? (
                   <a href={maps} className="kpi-contact-card-value">
@@ -205,7 +207,7 @@ export function ContactCard({
                   <p className="kpi-contact-card-value">{address}</p>
                 )}
               </Row>
-            ) : maps ? (
+            ) : showAddress && maps ? (
               <Row icon={<MapPin />} label={t.maps}>
                 <a href={maps} className="kpi-contact-card-value">
                   {t.maps}

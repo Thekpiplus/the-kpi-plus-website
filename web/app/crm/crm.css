@@ -6444,6 +6444,11 @@ html[data-crm-theme="dark"] .crm-users-avatar,
   color: var(--crm-ink);
 }
 
+/* Confirm / nested dialogs must sit above an already-open modal */
+.crm-modal.crm-modal-layer-confirm {
+  z-index: 100;
+}
+
 html[data-crm-theme="dark"] .crm-modal {
   --crm-surface: #172233;
   --crm-surface-2: #1d2b40;
