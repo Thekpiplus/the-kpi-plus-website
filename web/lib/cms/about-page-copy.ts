@@ -112,7 +112,7 @@ export const aboutPageCopy = {
     founderBBody:
       "ประสบการณ์กว่า 15 ปีด้าน Hospitality Technology, Sales, Digital Marketing และ Hotel Solutions กับ ReverseAds, eZee Technosys, Compass Edge และ OYO Hotels ในฐานะ CEO ดูแลทิศทางธุรกิจ และวิธีที่ทีมโรงแรมใช้ข้อมูลกับเครื่องมือเพื่อตัดสินใจได้เร็วขึ้น",
     closerEyebrow: "Better Decisions. Better Hotel Performance.",
-    closerTitle: "ตัวเลขไม่ใช่แค่ข้อมูลในรายงาน แต่ต้องช่วยให้ทีมเห็นว่าควรทำอะไรต่อ",
+    closerTitle: "ตัวเลขไม่ใช่แค่ข้อมูลในรายงาน\nแต่ต้องช่วยให้ทีมเห็นว่าควรทำอะไรต่อ",
     closerBody:
       "พฤติกรรมนักเดินทาง ช่องทางการค้นหา OTA และ Digital Marketing เปลี่ยนเร็ว สิ่งสำคัญคือการรู้ว่าตัวเลขกำลังบอกอะไร ปัญหาจริงคืออะไร และสิ่งที่ทำไปสร้างผลลัพธ์ให้โรงแรมหรือไม่",
     closerLine: "หาโอกาสให้เจอ · ลงมือให้ถูกจุด · วัดผลให้ชัด",
@@ -250,7 +250,7 @@ export const aboutPageCopy = {
     founderBBody:
       "More than 15 years in hospitality technology, sales, digital marketing, and hotel solutions, with ReverseAds, eZee Technosys, Compass Edge, and OYO Hotels. As CEO, he shapes how hotel teams get data, choose tools, and decide faster.",
     closerEyebrow: "Better Decisions. Better Hotel Performance.",
-    closerTitle: "Numbers shouldn't just sit in a report. They should show your team what to do next.",
+    closerTitle: "Numbers shouldn't just sit in a report.\nThey should show your team what to do next.",
     closerBody:
       "Traveler behavior, search, OTAs, and digital marketing change quickly. What matters is knowing what the numbers are telling you, what the real problem is, and whether what you're doing is actually delivering results for your hotel.",
     closerLine: "Find the opportunity · Act where it matters · Measure what changes",
@@ -388,7 +388,7 @@ export const aboutPageCopy = {
     founderBBody:
       "Более 15 лет в hospitality-технологиях, продажах, digital-маркетинге и hotel solutions: ReverseAds, eZee Technosys, Compass Edge и OYO Hotels. Как CEO он выстраивает, как команды отелей получают данные, выбирают инструменты и быстрее принимают решения.",
     closerEyebrow: "Better Decisions. Better Hotel Performance.",
-    closerTitle: "Цифры не должны оставаться в отчёте. Они должны показывать команде, что делать дальше.",
+    closerTitle: "Цифры не должны оставаться в отчёте.\nОни должны показывать команде, что делать дальше.",
     closerBody:
       "Поведение путешественников, поиск, OTA и digital-маркетинг меняются быстро. Важно понимать, что говорят цифры, в чём реальная проблема и даёт ли то, что вы делаете, результат отелю.",
     closerLine: "Найти возможность · Действовать в нужной точке · Измерить изменение",
@@ -525,7 +525,7 @@ export const aboutPageCopy = {
     founderBBody:
       "超過 15 年旅宿科技、銷售、數位行銷與飯店解決方案經驗，曾任職 ReverseAds、eZee Technosys、Compass Edge 與 OYO Hotels。作為執行長，他讓飯店團隊更快拿到資料、選對工具，並更快做決定。",
     closerEyebrow: "Better Decisions. Better Hotel Performance.",
-    closerTitle: "數字不該只停在報告裡，而要讓團隊看見下一步該做什麼。",
+    closerTitle: "數字不該只停在報告裡，\n而要讓團隊看見下一步該做什麼。",
     closerBody:
       "旅客行為、搜尋、OTA 與數位行銷變化很快。重要的是知道數字在說什麼、真正的問題是什麼，以及現在做的事是否真的為飯店帶來結果。",
     closerLine: "找到機會 · 做在對的點 · 把變化量清楚",

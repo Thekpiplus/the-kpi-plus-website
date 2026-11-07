@@ -342,6 +342,21 @@ export function defaultAboutCms(): CmsAboutPage {
   };
 }
 
+const CLOSER_TITLE_LINE_BREAKS: Record<string, string> = {
+  "ตัวเลขไม่ใช่แค่ข้อมูลในรายงาน แต่ต้องช่วยให้ทีมเห็นว่าควรทำอะไรต่อ":
+    "ตัวเลขไม่ใช่แค่ข้อมูลในรายงาน\nแต่ต้องช่วยให้ทีมเห็นว่าควรทำอะไรต่อ",
+  "Numbers shouldn't just sit in a report. They should show your team what to do next.":
+    "Numbers shouldn't just sit in a report.\nThey should show your team what to do next.",
+  "Цифры не должны оставаться в отчёте. Они должны показывать команде, что делать дальше.":
+    "Цифры не должны оставаться в отчёте.\nОни должны показывать команде, что делать дальше.",
+  "數字不該只停在報告裡，而要讓團隊看見下一步該做什麼。":
+    "數字不該只停在報告裡，\n而要讓團隊看見下一步該做什麼。",
+};
+
+function withCloserTitleBreak(value: string): string {
+  return CLOSER_TITLE_LINE_BREAKS[value] ?? value;
+}
+
 export function localizeAboutPage(content: CmsAboutPage, locale: Locale): AboutPageCopy {
   const base = aboutPageCopy[locale];
   return {
@@ -414,7 +429,7 @@ export function localizeAboutPage(content: CmsAboutPage, locale: Locale): AboutP
     founderBRole: pickAboutLocalized(content.founders.bRole, locale),
     founderBBody: pickAboutLocalized(content.founders.bBody, locale),
     closerEyebrow: pickAboutLocalized(content.closer.eyebrow, locale),
-    closerTitle: pickAboutLocalized(content.closer.title, locale),
+    closerTitle: withCloserTitleBreak(pickAboutLocalized(content.closer.title, locale)),
     closerBody: pickAboutLocalized(content.closer.body, locale),
     closerLine: pickAboutLocalized(content.closer.line, locale),
     closerNextLabel: pickAboutLocalized(content.closer.nextLabel, locale),
