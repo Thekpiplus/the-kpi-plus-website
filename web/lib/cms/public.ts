@@ -70,7 +70,14 @@ export async function storedPageByPath(pathname: string) {
   // Include trashed docs so public routes can 404 instead of falling back to code pages.
   if (doc) return doc;
   if (slug === "about-us") return pageDocumentBySlug("about", locale).catch(() => null);
-  if (slug === "contact-us") return pageDocumentBySlug("contact", locale).catch(() => null);
+  if (slug === "contact-us") {
+    // Contact page copy is edited once (TH document) and localized in the body for all languages.
+    return (
+      (await pageDocumentBySlug("contact-us", "th").catch(() => null)) ||
+      (await pageDocumentBySlug("contact", locale).catch(() => null)) ||
+      (await pageDocumentBySlug("contact", "th").catch(() => null))
+    );
+  }
   return null;
 }
 

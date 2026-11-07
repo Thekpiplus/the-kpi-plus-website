@@ -46,6 +46,10 @@ import { isHotelTrainingPageDocument } from "@/lib/cms/hotel-training-page";
 import { SolutionsIndexPageEditor } from "@/components/cms/SolutionsIndexPageEditor";
 import { duplicateSolutionsIndexPageToLocale, editorStateForSolutionsIndexDocument, saveSolutionsIndexPage } from "@/lib/cms/solutions-index-page-actions";
 import { isSolutionsIndexPageDocument } from "@/lib/cms/solutions-index-page";
+import { ContactPageEditor } from "@/components/cms/ContactPageEditor";
+import { editorStateForContactDocument } from "@/lib/cms/contact-page-actions";
+import { isContactPageDocument } from "@/lib/cms/contact-page";
+import { loadFaqEditorItems } from "@/lib/cms/faq-store";
 import { documentById } from "@/lib/cms/queries";
 import { documentPath } from "@/lib/cms/body";
 
@@ -75,6 +79,37 @@ export default async function EditCmsPage({
   const hotelAi = isHotelAiPageDocument(document);
   const hotelTraining = isHotelTrainingPageDocument(document);
   const solutionsIndex = isSolutionsIndexPageDocument(document);
+  const contactPage = isContactPageDocument(document);
+
+  if (contactPage) {
+    const hydrated = await editorStateForContactDocument(id);
+    if (!hydrated) notFound();
+    return (
+      <div className="crm-cms">
+        <PageHeader
+          eyebrow="Content Management"
+          title={hydrated.title}
+          description={`${path} · แก้ข้อความหน้า Contact จากแอดมิน`}
+          actions={
+            <div className="crm-cms-actions">
+              <Link href="/crm/cms" className="crm-users-secondary">
+                ← หน้าเพจทั้งหมด
+              </Link>
+              <Link href="/contact-us" className="crm-users-secondary" target="_blank" rel="noreferrer">
+                เปิดหน้าเว็บ
+              </Link>
+              <Link href="/crm/cms/contacts" className="crm-users-secondary">
+                ข้อมูลติดต่อ
+              </Link>
+            </div>
+          }
+        />
+        {saved ? <p className="crm-users-alert is-ok">บันทึกแล้ว</p> : null}
+        {error ? <p className="crm-users-alert is-warn">บันทึกไม่สำเร็จ</p> : null}
+        <ContactPageEditor initial={hydrated} initialTab={tab} />
+      </div>
+    );
+  }
 
   if (solutionsIndex) {
     const hydrated = await editorStateForSolutionsIndexDocument(id);
@@ -753,6 +788,8 @@ export default async function EditCmsPage({
     );
   }
 
+  const faqState = await loadFaqEditorItems(path);
+
   return (
     <div className="crm-cms">
       <PageHeader
@@ -772,7 +809,13 @@ export default async function EditCmsPage({
           </div>
         }
       />
-      <CmsDocumentForm kind="page" document={document} error={error} saved={saved === "1"} />
+      <CmsDocumentForm
+        kind="page"
+        document={document}
+        error={error}
+        saved={saved === "1"}
+        faq={{ route: path, items: faqState.items, source: faqState.source }}
+      />
       <div className="crm-cms-editor-danger">
         <div>
           <p>ลบหน้าเพจ</p>

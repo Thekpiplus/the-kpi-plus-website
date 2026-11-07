@@ -111,6 +111,20 @@ CREATE TABLE IF NOT EXISTS \`CmsClientLogo\` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 `;
 
+const FAQ_SET_TABLE = `
+CREATE TABLE IF NOT EXISTS \`CmsFaqSet\` (
+  \`id\` VARCHAR(191) NOT NULL,
+  \`route\` VARCHAR(255) NOT NULL,
+  \`itemsJson\` LONGTEXT NOT NULL,
+  \`updatedBy\` VARCHAR(191) NOT NULL DEFAULT '',
+  \`createdAt\` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  \`updatedAt\` DATETIME(3) NOT NULL,
+  PRIMARY KEY (\`id\`),
+  UNIQUE KEY \`CmsFaqSet_route_key\` (\`route\`),
+  INDEX \`CmsFaqSet_route_idx\` (\`route\`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+`;
+
 async function ensureClientLogoWebsiteColumn() {
   try {
     await prisma().$executeRawUnsafe(
@@ -121,7 +135,7 @@ async function ensureClientLogoWebsiteColumn() {
   }
 }
 
-/** CMS tables are defined in Prisma schema. Contact, Case Study, and Client Logo records also self-heal if migrate has not run yet. */
+/** CMS tables are defined in Prisma schema. Contact, Case Study, Client Logo, and FAQ records also self-heal if migrate has not run yet. */
 export async function ensureCmsSchema() {
   try {
     await prisma().$executeRawUnsafe(CONTACT_TABLE);
@@ -135,6 +149,11 @@ export async function ensureCmsSchema() {
   }
   try {
     await prisma().$executeRawUnsafe(CLIENT_LOGO_TABLE);
+  } catch {
+    // Database may be unavailable during build.
+  }
+  try {
+    await prisma().$executeRawUnsafe(FAQ_SET_TABLE);
   } catch {
     // Database may be unavailable during build.
   }

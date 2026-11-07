@@ -450,6 +450,18 @@ model CmsSetting {
   updatedAt DateTime @updatedAt
 }
 
+model CmsFaqSet {
+  id        String   @id @default(cuid())
+  route     String   @db.VarChar(255)
+  itemsJson String   @db.LongText
+  updatedBy String   @default("")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([route])
+  @@index([route])
+}
+
 model CmsContact {
   id                 String   @id @default(cuid())
   label              String   @default("")

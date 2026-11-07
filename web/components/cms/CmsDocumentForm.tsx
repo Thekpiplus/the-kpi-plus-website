@@ -1,7 +1,10 @@
-import { blocksToMarkdown, parseCmsBody } from "@/lib/cms/body";
+import { MarkdownBodyEditor } from "@/components/cms/MarkdownBodyEditor";
+import { PageFaqPanel } from "@/components/cms/PageFaqPanel";
+import { blocksToMarkdown, documentPath, parseCmsBody } from "@/lib/cms/body";
 import { createDocument, updateDocument } from "@/lib/cms/actions";
 import type { CmsDocumentRow } from "@/lib/cms/types";
 import { CMS_LOCALES, CMS_MENUS, CMS_STATUSES } from "@/lib/cms/types";
+import type { FaqItem } from "@/lib/faqs";
 import { insightSlotForSlug, parseInsightImageMeta } from "@/lib/insights-media";
 
 const LOCALE_LABEL: Record<(typeof CMS_LOCALES)[number], string> = {
@@ -16,11 +19,13 @@ export function CmsDocumentForm({
   document,
   error,
   saved,
+  faq,
 }: {
   kind: "page" | "insight";
   document?: CmsDocumentRow | null;
   error?: string;
   saved?: boolean;
+  faq?: { route: string; items: FaqItem[]; source: "cms" | "code" | "empty" } | null;
 }) {
   const action = document ? updateDocument : createDocument;
   const isInsight = kind === "insight";
@@ -33,6 +38,11 @@ export function CmsDocumentForm({
         : "";
   const imageMeta = parseInsightImageMeta(document?.tags);
   const imageSlot = isInsight ? insightSlotForSlug(document?.slug ?? "") : null;
+  const pageRoute =
+    faq?.route ||
+    (document && !isInsight
+      ? documentPath({ kind: document.kind, slug: document.slug, locale: document.locale })
+      : "");
 
   return (
     <form action={action} className="crm-cms-editor">
@@ -105,14 +115,19 @@ export function CmsDocumentForm({
           </label>
           <label className="crm-cms-field">
             <span>เนื้อหา</span>
-            <textarea
-              className="crm-area crm-cms-editor-body"
+            <MarkdownBodyEditor
               name="body"
               defaultValue={body}
               placeholder={"## หัวข้อ\nย่อหน้าแรก\n\n- รายการ\n\n![คำอธิบายรูป](/media/cms/example.jpg)"}
             />
-            <small># หัวข้อใหญ่ · ## หัวข้อ · - รายการ · ![alt](/media/...)</small>
           </label>
+          {!isInsight && document && pageRoute ? (
+            <PageFaqPanel
+              route={pageRoute}
+              initialItems={faq?.items ?? []}
+              source={faq?.source ?? "empty"}
+            />
+          ) : null}
         </section>
       </div>
 

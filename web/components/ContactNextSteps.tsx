@@ -6,57 +6,6 @@ import {
 } from "@/lib/company";
 import type { Locale } from "@/lib/seo";
 
-const copy = {
-  th: {
-    title: "หลังจากส่งข้อมูลแล้ว",
-    steps: [
-      {
-        num: "1",
-        title: "ส่งข้อมูลเบื้องต้น",
-        body: "กรอกเฉพาะข้อมูลที่จำเป็น เพื่อให้ทีมรู้ว่าควรติดต่อกลับอย่างไร",
-      },
-      {
-        num: "2",
-        title: "ทีมงานตรวจสอบความต้องการ",
-        body: "ทีมอ่านข้อมูลที่ส่งมา และดูว่าโรงแรมต้องการความช่วยเหลือด้านใด",
-      },
-      {
-        num: "3",
-        title: "นัดพูดคุยหรือแนะนำขั้นตอนถัดไป",
-        body: "ทีมจะติดต่อกลับเพื่อนัดคุย หรือแนะนำสิ่งที่ควรทำต่อ",
-      },
-    ],
-    realTeam: "ตอบกลับโดยทีมงานจริง",
-    confidential: "ข้อมูลของคุณเป็นความลับ",
-  },
-  en: {
-    title: "What happens next",
-    steps: [
-      {
-        num: "1",
-        title: "Send the basics",
-        body: "Share the details needed so the team knows how to reach you.",
-      },
-      {
-        num: "2",
-        title: "The team reviews the request",
-        body: "They read what you sent and what the hotel needs help with.",
-      },
-      {
-        num: "3",
-        title: "Talk or agree the next step",
-        body: "The team will get in touch to talk, or suggest what to do next.",
-      },
-    ],
-    realTeam: "A real team member replies",
-    confidential: "Your information is kept confidential",
-  },
-} as const;
-
-function copyFor(locale: Locale) {
-  return locale === "th" ? copy.th : copy.en;
-}
-
 function channelTrust(contact: ContactInfo, locale: Locale) {
   const channels: string[] = [];
   if (mailtoHref(contact.email)) channels.push(locale === "th" ? "Email" : "email");
@@ -76,22 +25,29 @@ function channelTrust(contact: ContactInfo, locale: Locale) {
 export function ContactNextSteps({
   locale,
   contact,
+  title,
+  steps,
+  realTeam,
+  confidential,
 }: {
   locale: Locale;
   contact: ContactInfo;
+  title: string;
+  steps: Array<{ num: string; title: string; body: string }>;
+  realTeam: string;
+  confidential: string;
 }) {
-  const t = copyFor(locale);
   const channels = channelTrust(contact, locale);
-  const trust = [t.realTeam, t.confidential, channels].filter(Boolean);
+  const trust = [realTeam, confidential, channels].filter(Boolean);
 
   return (
     <section className="kpi-contact-next" aria-labelledby="contact-next-heading">
       <div className="kpi-section">
         <h2 id="contact-next-heading" className="kpi-h2 kpi-contact-next-title">
-          {t.title}
+          {title}
         </h2>
         <ol className="kpi-contact-next-steps">
-          {t.steps.map((step) => (
+          {steps.map((step) => (
             <li key={step.num} className="kpi-contact-next-step">
               <span className="kpi-contact-next-num" aria-hidden="true">
                 {step.num}

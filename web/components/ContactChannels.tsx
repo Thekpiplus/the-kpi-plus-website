@@ -9,23 +9,6 @@ import {
 } from "@/lib/company";
 import type { Locale } from "@/lib/seo";
 
-const copy = {
-  th: {
-    heading: "ช่องทางติดต่อ",
-    help: "เลือกช่องทางที่สะดวกได้เลย",
-    email: "อีเมล",
-    phone: "โทร",
-    whatsapp: "WhatsApp",
-  },
-  en: {
-    heading: "Contact channels",
-    help: "Choose the channel that works for you",
-    email: "Email",
-    phone: "Phone",
-    whatsapp: "WhatsApp",
-  },
-} as const;
-
 type ChannelItem = {
   key: "email" | "phone" | "whatsapp";
   label: string;
@@ -34,11 +17,10 @@ type ChannelItem = {
   icon: ReactNode;
 };
 
-function copyFor(locale: Locale) {
-  return locale === "th" ? copy.th : copy.en;
-}
-
-function channelsFor(contact: ContactInfo, t: (typeof copy)["th"] | (typeof copy)["en"]): ChannelItem[] {
+function channelsFor(
+  contact: ContactInfo,
+  labels: { email: string; phone: string; whatsapp: string },
+): ChannelItem[] {
   const items: ChannelItem[] = [];
   const email = contact.email?.trim() ?? "";
   const emailLink = mailtoHref(email);
@@ -50,7 +32,7 @@ function channelsFor(contact: ContactInfo, t: (typeof copy)["th"] | (typeof copy
   if (email && emailLink) {
     items.push({
       key: "email",
-      label: t.email,
+      label: labels.email,
       value: email,
       href: emailLink,
       icon: <Mail />,
@@ -60,7 +42,7 @@ function channelsFor(contact: ContactInfo, t: (typeof copy)["th"] | (typeof copy
   if (phone && phoneLink) {
     items.push({
       key: "phone",
-      label: t.phone,
+      label: labels.phone,
       value: phone,
       href: phoneLink,
       icon: <Phone />,
@@ -70,7 +52,7 @@ function channelsFor(contact: ContactInfo, t: (typeof copy)["th"] | (typeof copy
   if (whatsappHref && whatsappLabel) {
     items.push({
       key: "whatsapp",
-      label: t.whatsapp,
+      label: labels.whatsapp,
       value: whatsappLabel,
       href: whatsappHref,
       icon: <MessageCircle />,
@@ -81,22 +63,34 @@ function channelsFor(contact: ContactInfo, t: (typeof copy)["th"] | (typeof copy
 }
 
 export function ContactChannels({
-  locale,
   contact,
+  heading,
+  help,
+  emailLabel,
+  phoneLabel,
+  whatsappLabel,
 }: {
-  locale: Locale;
+  locale?: Locale;
   contact: ContactInfo;
+  heading: string;
+  help: string;
+  emailLabel: string;
+  phoneLabel: string;
+  whatsappLabel: string;
 }) {
-  const t = copyFor(locale);
-  const items = channelsFor(contact, t);
+  const items = channelsFor(contact, {
+    email: emailLabel,
+    phone: phoneLabel,
+    whatsapp: whatsappLabel,
+  });
   if (!items.length) return null;
 
   return (
     <section className="kpi-contact-channels" aria-labelledby="contact-channels-heading">
       <h2 id="contact-channels-heading" className="sr-only">
-        {t.heading}
+        {heading}
       </h2>
-      <p className="kpi-contact-channels-help">{t.help}</p>
+      <p className="kpi-contact-channels-help">{help}</p>
       <ul className="kpi-contact-channels-list">
         {items.map((item) => (
           <li key={item.key}>

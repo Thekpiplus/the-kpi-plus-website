@@ -23,9 +23,12 @@ export default async function CmsContactsPage({
       <PageHeader
         eyebrow="Content Management"
         title="ข้อมูลติดต่อ"
-        description="เพิ่ม แก้ไข และลบข้อมูลติดต่อโดยไม่ต้องแก้โค้ด รายการหลักจะไปแสดงบนหน้า Contact สาธารณะ"
+        description="ที่อยู่ เบอร์ อีเมล แผนที่ และรูปสำนักงาน — ข้อความหน้า Contact (hero/ฟอร์ม/ขั้นตอน) แก้ที่ «หน้า Contact»"
         actions={
           <div className="crm-cms-actions">
+            <Link href="/crm/cms/contact-us" className="kpi-button crm-users-primary">
+              แก้ข้อความหน้า Contact
+            </Link>
             <Link href="/crm/cms/globals" className="crm-users-secondary">
               ตั้งค่าเว็บ
             </Link>

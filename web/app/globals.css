@@ -38337,9 +38337,11 @@ h1 {
 }
 
 .kpi-contact-card--section .kpi-contact-card-title {
+  max-width: 100%;
   overflow-wrap: normal;
-  white-space: nowrap;
-  text-wrap: nowrap;
+  word-break: normal;
+  text-wrap: pretty;
+  white-space: normal;
 }
 
 .kpi-contact-card-list {
@@ -38630,7 +38632,13 @@ a.kpi-contact-card-value:focus-visible {
 }
 
 .kpi-contact-card--section {
+  width: 100%;
+  max-width: none;
   margin-top: 1.35rem;
+}
+
+.kpi-contact-location > .kpi-contact-card--section {
+  margin-top: 0;
 }
 
 .kpi-contact-card--preview {

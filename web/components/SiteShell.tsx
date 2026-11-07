@@ -31,6 +31,13 @@ import { HOTEL_TRAINING_CMS_TEMPLATE, parseHotelTrainingPageBody } from "@/lib/c
 import { hotelTrainingFaqsFromCms } from "@/lib/cms/hotel-training-page-public";
 import { SOLUTIONS_INDEX_CMS_TEMPLATE, parseSolutionsIndexPageBody } from "@/lib/cms/solutions-index-page";
 import { solutionsIndexFaqsFromCms } from "@/lib/cms/solutions-index-page-public";
+import {
+  CONTACT_CMS_TEMPLATE,
+  contactFaqsForLocale,
+  isContactCmsBody,
+  parseContactPageBody,
+} from "@/lib/cms/contact-page";
+import { loadCmsFaqsForRoute } from "@/lib/cms/faq-store";
 import { faqsForRoute, howToStepsForRoute } from "@/lib/faqs";
 import { pageKind } from "@/lib/page-types";
 import {
@@ -75,7 +82,8 @@ export async function SiteShell({
     stored?.template === HOTEL_SYSTEMS_CMS_TEMPLATE ||
     stored?.template === HOTEL_AI_CMS_TEMPLATE ||
     stored?.template === HOTEL_TRAINING_CMS_TEMPLATE ||
-    stored?.template === SOLUTIONS_INDEX_CMS_TEMPLATE;
+    stored?.template === SOLUTIONS_INDEX_CMS_TEMPLATE ||
+    stored?.template === CONTACT_CMS_TEMPLATE;
   if (stored?.trashedAt) notFound();
   if (stored && !isCmsPageLive(stored) && !specialTemplate) notFound();
 
@@ -125,8 +133,22 @@ export async function SiteShell({
                   ? hotelTrainingFaqsFromCms(parseHotelTrainingPageBody(cmsLive.body, locale), locale)
                 : cmsLive?.template === SOLUTIONS_INDEX_CMS_TEMPLATE
                   ? solutionsIndexFaqsFromCms(parseSolutionsIndexPageBody(cmsLive.body, locale), locale)
+                : cmsLive?.template === CONTACT_CMS_TEMPLATE && isContactCmsBody(cmsLive.body)
+                  ? (() => {
+                      const parsed = parseContactPageBody(cmsLive.body);
+                      return parsed ? contactFaqsForLocale(parsed, locale) : null;
+                    })()
               : null;
-  const faqs = kind === "article" ? [] : cmsFaqs?.length ? cmsFaqs : faqsForRoute(route);
+  const storedFaqs = kind === "article" ? null : await loadCmsFaqsForRoute(route);
+  // Prefer FAQs saved on the page editor; fall back to central FAQ CMS, then code defaults.
+  const faqs =
+    kind === "article"
+      ? []
+      : cmsFaqs?.length
+        ? cmsFaqs
+        : storedFaqs !== null
+          ? storedFaqs
+          : faqsForRoute(route);
   const faqJson = faqSchema(faqs);
   const crumbs = crumbsFor(route, locale, title);
   const howToSteps = howToStepsForRoute(route);

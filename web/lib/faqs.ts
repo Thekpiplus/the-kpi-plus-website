@@ -1142,17 +1142,38 @@ const toolHowTo: Record<string, string[]> = {
   ],
 };
 
+export function normalizeFaqRoute(route: string): string {
+  const trimmed = route.trim() || "/";
+  if (trimmed === "/") return "/";
+  return trimmed.replace(/\/+$/, "") || "/";
+}
+
+export function resolveFaqRouteKey(route: string): string {
+  const key = normalizeFaqRoute(route);
+  if (table[key]) return key;
+  if (key.endsWith("/privacy")) return table["/en/privacy"] ? (key.includes("/en/") ? "/en/privacy" : "/privacy") : key;
+  if (key.endsWith("/cookies")) return table["/en/cookies"] ? (key.includes("/en/") ? "/en/cookies" : "/cookies") : key;
+  if (key === "/about" || key.endsWith("/about")) {
+    return key.replace(/\/about$/, "/about-us");
+  }
+  if (key === "/contact" || key.endsWith("/contact")) {
+    return key.replace(/\/contact$/, "/contact-us");
+  }
+  return key;
+}
+
 export function faqsForRoute(route: string): FaqItem[] {
-  if (table[route]) return table[route];
-  if (route.endsWith("/privacy")) return table["/en/privacy"] ?? table["/privacy"] ?? [];
-  if (route.endsWith("/cookies")) return table["/en/cookies"] ?? table["/cookies"] ?? [];
-  if (route === "/about" || route.endsWith("/about")) {
-    return table[route.replace(/\/about$/, "/about-us")] ?? [];
-  }
-  if (route === "/contact" || route.endsWith("/contact")) {
-    return table[route.replace(/\/contact$/, "/contact-us")] ?? [];
-  }
-  return [];
+  const key = resolveFaqRouteKey(route);
+  return table[key] ?? [];
+}
+
+/** All FAQ route keys that currently ship in code (used to seed / list CMS FAQ admin). */
+export function codeFaqRouteKeys(): string[] {
+  return Object.keys(table).sort((a, b) => a.localeCompare(b));
+}
+
+export function codeFaqsForRoute(route: string): FaqItem[] {
+  return faqsForRoute(route);
 }
 
 export function howToStepsForRoute(route: string) {
