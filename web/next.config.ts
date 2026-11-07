@@ -4,6 +4,10 @@ import { LOCALE_PREFIXES, SOLUTION_SLUG_REDIRECTS } from "./lib/solution-slugs";
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   serverExternalPackages: ["@prisma/client", "prisma"],
+  // CMS editors post large FormData (localized JSON + media). Default 1 MB is too small.
+  serverActions: {
+    bodySizeLimit: "20mb",
+  },
   async redirects() {
     return [
       {
