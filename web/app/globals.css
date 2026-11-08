@@ -12239,13 +12239,13 @@ a.kpi-revenue-related-item {
 
 .kpi-shell .kpi-insight-index-title,
 .kpi-shell :lang(th) .kpi-insight-index-title {
-  margin-top: 0.55rem;
-  max-width: 16rem;
+  margin-top: 0;
+  max-width: none;
   color: #0b1f33;
   font-weight: 700 !important;
   letter-spacing: 0 !important;
   line-height: 1.25 !important;
-  text-wrap: balance;
+  white-space: nowrap;
   font-size: clamp(1.75rem, 1.2rem + 1.8vw, 2.65rem) !important;
 }
 

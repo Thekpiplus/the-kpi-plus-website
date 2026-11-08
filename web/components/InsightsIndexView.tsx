@@ -108,7 +108,6 @@ export async function InsightsIndexView({
 
       <header className="kpi-insight-index-header">
         <div className="kpi-wrap">
-          <p className={`kpi-insight-index-eyebrow${isTh ? "" : " kpi-latin"}`}>{t.eyebrow}</p>
           <h1 className="kpi-h1 kpi-insight-index-title">{t.title}</h1>
           <p className="kpi-insight-index-lead">{t.lead}</p>
           <InsightsTopicNav

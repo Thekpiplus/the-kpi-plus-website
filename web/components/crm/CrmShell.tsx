@@ -314,7 +314,6 @@ const cmsLinks: ContextLink[] = [
   { href: "/crm/cms/hotel-ai", label: "Hotel AI" },
   { href: "/crm/cms/hotel-training", label: "Hotel Training" },
   { href: "/crm/cms/solutions", label: "Hotel Solutions" },
-  { href: "/crm/cms/contacts", label: "ข้อมูลติดต่อ" },
 ];
 
 /** Shorter module titles for the context subnav (sidebar keeps full NAV_LABEL). */

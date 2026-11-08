@@ -37,58 +37,6 @@ function truncate(value: string, max = 120) {
   return `${text.slice(0, max - 1)}…`;
 }
 
-function OrderControls({
-  slug,
-  position,
-  canUp,
-  canDown,
-  disabled,
-  pending,
-  onMove,
-}: {
-  slug: string;
-  position: number;
-  canUp: boolean;
-  canDown: boolean;
-  disabled?: boolean;
-  pending?: boolean;
-  onMove: (direction: "up" | "down") => void;
-}) {
-  return (
-    <div className={`crm-cms-order ${pending ? "is-pending" : ""}`}>
-      <span className="crm-cms-order-num" title="ลำดับบนหน้าเว็บ">
-        {position}
-      </span>
-      <div className="crm-cms-order-btns">
-        <button
-          type="button"
-          className="crm-cms-order-btn"
-          title="เลื่อนขึ้น"
-          aria-label={`เลื่อน “${slug}” ขึ้น`}
-          disabled={disabled || pending || !canUp}
-          onClick={() => onMove("up")}
-        >
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M6 14l6-6 6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
-        <button
-          type="button"
-          className="crm-cms-order-btn"
-          title="เลื่อนลง"
-          aria-label={`เลื่อน “${slug}” ลง`}
-          disabled={disabled || pending || !canDown}
-          onClick={() => onMove("down")}
-        >
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M6 10l6 6 6-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </button>
-      </div>
-    </div>
-  );
-}
-
 function OnlineToggle({
   pageId,
   route,
@@ -149,34 +97,41 @@ export function InsightsTable({ rows: initialRows, orderDisabled = false }: { ro
   const [rows, setRows] = useState(initialRows);
   const rowsRef = useRef(initialRows);
   const saveQueue = useRef(Promise.resolve());
+  const [dragSlug, setDragSlug] = useState("");
+  const [dropSlug, setDropSlug] = useState("");
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     setRows(initialRows);
     rowsRef.current = initialRows;
   }, [initialRows]);
 
-  function move(slug: string, direction: "up" | "down") {
-    const current = rowsRef.current;
-    const index = current.findIndex((row) => row.slug === slug);
-    if (index < 0) return;
-    const target = direction === "up" ? index - 1 : index + 1;
-    if (target < 0 || target >= current.length) return;
-
-    const next = [...current];
-    [next[index], next[target]] = [next[target], next[index]];
+  function persistOrder(next: InsightTableRow[]) {
+    const previous = rowsRef.current;
     rowsRef.current = next;
     setRows(next);
-
+    setSaving(true);
     const formData = new FormData();
-    formData.set("slug", slug);
-    formData.set("direction", direction);
     formData.set("order", JSON.stringify(next.map((row) => row.slug)));
     saveQueue.current = saveQueue.current
       .then(() => moveInsightOrder(formData))
       .catch(() => {
-        rowsRef.current = current;
-        setRows(current);
-      });
+        rowsRef.current = previous;
+        setRows(previous);
+      })
+      .finally(() => setSaving(false));
+  }
+
+  function applyDrop(targetSlug: string) {
+    if (orderDisabled || !dragSlug || dragSlug === targetSlug) return;
+    const current = rowsRef.current;
+    const from = current.findIndex((row) => row.slug === dragSlug);
+    const to = current.findIndex((row) => row.slug === targetSlug);
+    if (from < 0 || to < 0) return;
+    const next = [...current];
+    const [item] = next.splice(from, 1);
+    next.splice(to, 0, item);
+    persistOrder(next);
   }
 
   return (
@@ -197,17 +152,51 @@ export function InsightsTable({ rows: initialRows, orderDisabled = false }: { ro
           {rows.map((row, index) => {
             const position = index + 1;
             const editHref = row.kind === "cms" ? `/crm/cms/insights/${row.id}` : `/crm/cms/insights/from/${row.slug}`;
+            const isDragging = dragSlug === row.slug;
+            const isDropTarget = dropSlug === row.slug && dragSlug && dragSlug !== row.slug;
             return (
-              <tr key={row.key}>
+              <tr
+                key={row.key}
+                className={[
+                  !orderDisabled ? "crm-cms-insights-row--draggable" : "",
+                  isDragging ? "is-dragging" : "",
+                  isDropTarget ? "is-drop-target" : "",
+                  saving ? "is-order-pending" : "",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
+                draggable={!orderDisabled}
+                onDragStart={(event) => {
+                  if (orderDisabled) return;
+                  const target = event.target as HTMLElement | null;
+                  if (target?.closest("a, button, input, label")) {
+                    event.preventDefault();
+                    return;
+                  }
+                  setDragSlug(row.slug);
+                  event.dataTransfer.effectAllowed = "move";
+                  event.dataTransfer.setData("text/plain", row.slug);
+                }}
+                onDragOver={(event) => {
+                  if (orderDisabled || !dragSlug || dragSlug === row.slug) return;
+                  event.preventDefault();
+                  setDropSlug(row.slug);
+                }}
+                onDrop={(event) => {
+                  event.preventDefault();
+                  applyDrop(row.slug);
+                  setDragSlug("");
+                  setDropSlug("");
+                }}
+                onDragEnd={() => {
+                  setDragSlug("");
+                  setDropSlug("");
+                }}
+              >
                 <td data-label="ลำดับ">
-                  <OrderControls
-                    slug={row.slug}
-                    position={position}
-                    canUp={index > 0}
-                    canDown={index < rows.length - 1}
-                    disabled={orderDisabled}
-                    onMove={(direction) => move(row.slug, direction)}
-                  />
+                  <span className="crm-cms-order-num" title={orderDisabled ? "ลำดับบนหน้าเว็บ" : "ลากแถวเพื่อจัดลำดับ"}>
+                    {position}
+                  </span>
                 </td>
                 <td data-label="ชื่อบทความ">
                   <Link href={editHref} className="crm-cms-name">

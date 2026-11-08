@@ -44,7 +44,6 @@ export function InsightFeaturedVisual({ post, locale }: { post: InsightPost; loc
   const isRevenue = post.slug === REVENUE_FEATURED_SLUG;
   const alt = insightCoverAlt(post, locale);
   const sampleBadge = `${t.sampleVisual} · ${t.sampleNotClient}`;
-  const caption = isRevenue ? t.featuredCaption : null;
 
   return (
     <figure className="kpi-insight-featured-figure">
@@ -88,7 +87,6 @@ export function InsightFeaturedVisual({ post, locale }: { post: InsightPost; loc
           sampleLabel={sampleBadge}
         />
       )}
-      {caption ? <figcaption className="kpi-insight-featured-caption">{caption}</figcaption> : null}
     </figure>
   );
 }

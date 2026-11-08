@@ -11667,18 +11667,10 @@ html[data-crm-theme="dark"] .crm-partners-mini-list li,
   text-align: center;
 }
 
-.crm-cms-order {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.crm-cms-order.is-pending {
-  opacity: 0.55;
-}
-
 .crm-cms-order-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-width: 1.5rem;
   color: var(--crm-heading);
   font-size: 0.82rem;
@@ -11687,46 +11679,24 @@ html[data-crm-theme="dark"] .crm-partners-mini-list li,
   line-height: 1;
 }
 
-.crm-cms-order-btns {
-  display: inline-flex;
-  flex-direction: column;
-  gap: 0.1rem;
+.crm-cms-insights-row--draggable {
+  cursor: grab;
 }
 
-.crm-cms-order-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.65rem;
-  height: 1.35rem;
-  margin: 0;
-  padding: 0;
-  border: 1px solid var(--crm-border);
-  border-radius: 0.4rem;
-  background: var(--crm-surface);
-  color: var(--crm-heading);
-  cursor: pointer;
+.crm-cms-insights-row--draggable:active {
+  cursor: grabbing;
 }
 
-.crm-cms-order-btn svg {
-  width: 0.95rem;
-  height: 0.95rem;
+.crm-cms-table--insights tr.is-dragging {
+  opacity: 0.45;
 }
 
-.crm-cms-order-btn:hover:not(:disabled) {
-  border-color: #0b6660;
-  color: #0b6660;
-  background: color-mix(in srgb, #0b6660 8%, var(--crm-surface));
+.crm-cms-table--insights tr.is-drop-target td {
+  box-shadow: inset 0 2px 0 #0b6660;
 }
 
-.crm-cms-order-btn:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
-}
-
-.crm-cms-order-btn:focus-visible {
-  outline: 2px solid #0b6660;
-  outline-offset: 2px;
+.crm-cms-table--insights tr.is-order-pending {
+  opacity: 0.7;
 }
 
 .crm-cms-inline-link {
@@ -12053,15 +12023,6 @@ html[data-crm-theme="dark"] .crm-partners-mini-list li,
 
   .crm-cms-table td[data-label="ลำดับ"] {
     justify-items: start;
-  }
-
-  .crm-cms-order {
-    flex-direction: row;
-    gap: 0.55rem;
-  }
-
-  .crm-cms-order-btns {
-    flex-direction: row;
   }
 
   .crm-cms-table td[data-label="สถานะ"] {
