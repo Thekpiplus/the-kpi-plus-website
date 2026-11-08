@@ -298,7 +298,6 @@ const cmsLinks: ContextLink[] = [
   { href: "/crm/cms/case-studies", label: "ผลงานลูกค้า" },
   { href: "/crm/cms/client-logos", label: "โลโก้ลูกค้า" },
   { href: "/crm/cms/about-us", label: "หน้าเกี่ยวกับเรา" },
-  { href: "/crm/cms/contact-us", label: "หน้า Contact" },
   { href: "/crm/cms/trash", label: "ถังขยะ" },
   { href: "/crm/cms/media", label: "สื่อและรูปภาพ" },
   { href: "/crm/cms/redirects", label: "Redirect" },

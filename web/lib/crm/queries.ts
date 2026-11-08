@@ -128,74 +128,73 @@ export type LoginLogRow = {
 
 export async function searchLoginLogs(filters: { email?: string; success?: "yes" | "no" } = {}) {
   const email = filters.email?.trim().toLowerCase() ?? "";
-  const like = `%${email}%`;
-  try {
-    const rows = await prisma().$queryRaw<
-      {
-        id: string;
-        phone: string;
-        email: string;
-        userId: string;
-        userName: string;
-        role: string;
-        shop: string;
-        ip: string;
-        userAgent: string;
-        success: number | boolean;
-        reason: string;
-        createdAt: string | Date;
-      }[]
-    >`
-      SELECT "id", "phone", "email", "userId", "userName", "role", "shop", "ip", "userAgent", "success", "reason", "createdAt"
-      FROM "LoginAttempt"
-      WHERE (${email} = '' OR "email" LIKE ${like} OR "phone" LIKE ${like})
-      ORDER BY "createdAt" DESC
-      LIMIT 200
-    `;
-    return rows
-      .filter((row) => {
-        if (filters.success === "yes") return Boolean(row.success);
-        if (filters.success === "no") return !row.success;
-        return true;
-      })
-      .map((row) => ({
-        id: row.id,
-        phone: row.phone,
-        email: row.email || row.phone,
-        userId: row.userId ?? "",
-        userName: row.userName ?? "",
-        role: row.role ?? "",
-        shop: row.shop || "—",
-        ip: row.ip,
-        userAgent: row.userAgent ?? "",
-        success: Boolean(row.success),
-        reason: row.reason,
-        createdAt: row.createdAt instanceof Date ? row.createdAt : new Date(row.createdAt),
-      }));
-  } catch {
-    const fallback = await prisma().loginAttempt.findMany({
-      where: {
-        phone: email ? { contains: email } : undefined,
-        success: filters.success === "yes" ? true : filters.success === "no" ? false : undefined,
-      },
-      orderBy: { createdAt: "desc" },
-      take: 200,
-    });
-    return fallback.map((row) => ({
+  const rows = await prisma().loginAttempt.findMany({
+    where: {
+      AND: [
+        email
+          ? {
+              OR: [{ email: { contains: email } }, { phone: { contains: email } }],
+            }
+          : {},
+        filters.success === "yes"
+          ? { success: true }
+          : filters.success === "no"
+            ? { success: false }
+            : {},
+      ],
+    },
+    orderBy: { createdAt: "desc" },
+    take: 200,
+  });
+
+  const missingNameKeys = [
+    ...new Set(
+      rows
+        .filter((row) => !row.userName?.trim())
+        .flatMap((row) => [row.userId, row.email, row.phone].map((value) => value.trim()).filter(Boolean)),
+    ),
+  ];
+  const users =
+    missingNameKeys.length === 0
+      ? []
+      : await prisma().user.findMany({
+          where: {
+            OR: [
+              { id: { in: missingNameKeys } },
+              { email: { in: missingNameKeys } },
+              { username: { in: missingNameKeys } },
+            ],
+          },
+          select: { id: true, email: true, username: true, name: true, role: true },
+        });
+  const byId = new Map(users.map((user) => [user.id, user]));
+  const byEmail = new Map(users.map((user) => [user.email.toLowerCase(), user]));
+  const byUsername = new Map(
+    users.filter((user) => user.username).map((user) => [user.username!.toLowerCase(), user]),
+  );
+
+  return rows.map((row) => {
+    const emailValue = (row.email || row.phone || "").trim();
+    const matched =
+      (row.userId && byId.get(row.userId)) ||
+      (emailValue && byEmail.get(emailValue.toLowerCase())) ||
+      (emailValue && byUsername.get(emailValue.toLowerCase())) ||
+      null;
+    return {
       id: row.id,
       phone: row.phone,
-      email: row.phone,
-      userId: "",
-      userName: "",
-      role: "",
-      shop: "—",
+      email: emailValue,
+      userId: row.userId || matched?.id || "",
+      userName: row.userName?.trim() || matched?.name?.trim() || "",
+      role: row.role || matched?.role || "",
+      shop: row.shop || "—",
       ip: row.ip,
-      userAgent: "",
+      userAgent: row.userAgent ?? "",
       success: row.success,
       reason: row.reason,
       createdAt: row.createdAt,
-    }));
-  }
+    };
+  });
 }
 
 export async function userCounts() {

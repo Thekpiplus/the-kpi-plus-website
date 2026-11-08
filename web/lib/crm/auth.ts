@@ -82,30 +82,20 @@ async function recordLogin(input: {
 }) {
   const email = input.email.trim().toLowerCase();
   const shop = await shopForUser(input.user);
-  const id = randomToken(12);
-  try {
-    await prisma().$executeRaw`
-      INSERT INTO "LoginAttempt" ("id", "phone", "email", "userId", "userName", "role", "shop", "ip", "userAgent", "success", "reason", "createdAt")
-      VALUES (
-        ${id},
-        ${input.user?.phone || email},
-        ${email},
-        ${input.user?.id ?? ""},
-        ${input.user?.name ?? ""},
-        ${input.user?.role ?? ""},
-        ${shop},
-        ${input.ip},
-        ${input.userAgent},
-        ${input.success ? 1 : 0},
-        ${input.reason},
-        ${new Date().toISOString()}
-      )
-    `;
-  } catch {
-    await prisma().loginAttempt.create({
-      data: { phone: email, ip: input.ip, success: input.success, reason: input.reason },
-    });
-  }
+  await prisma().loginAttempt.create({
+    data: {
+      phone: input.user?.phone || email,
+      email,
+      userId: input.user?.id ?? "",
+      userName: input.user?.name?.trim() || "",
+      role: input.user?.role ?? "",
+      shop,
+      ip: input.ip,
+      userAgent: input.userAgent,
+      success: input.success,
+      reason: input.reason,
+    },
+  });
 }
 
 export async function currentUser() {
