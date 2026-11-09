@@ -18,6 +18,9 @@ export function documentToInsight(doc: CmsDocumentRow): InsightPost {
   const category = localeCopy(doc.category || "บทความ");
   const coverImage = doc.featuredImage?.trim() ?? "";
   const media = parseInsightImageMeta(doc.tags);
+  // Explicit CMS cover should render as a real asset even if status was left on Placeholder.
+  const coverImageStatus =
+    coverImage && media.imageStatus === "placeholder" ? "real" : media.imageStatus;
   return {
     id: doc.id || doc.slug,
     slug: doc.slug,
@@ -28,7 +31,7 @@ export function documentToInsight(doc: CmsDocumentRow): InsightPost {
     coverImage,
     coverImageAlt: doc.imageAlt || doc.title,
     coverImageFit: media.imageFit,
-    coverImageStatus: media.imageStatus,
+    coverImageStatus,
     authorName: doc.author?.trim() || undefined,
     authorRole: media.authorRole,
     reviewerName: media.reviewerName,
@@ -36,7 +39,7 @@ export function documentToInsight(doc: CmsDocumentRow): InsightPost {
     relatedArticleIds: media.relatedArticleIds,
     isFeatured: media.isFeatured,
     isPublished: isCmsPageLive(doc),
-    sampleVisual: media.imageStatus === "sample" || media.imageStatus === "placeholder" || !coverImage,
+    sampleVisual: !coverImage && (media.imageStatus === "sample" || media.imageStatus === "placeholder"),
     content: doc.body,
     category,
     title,
@@ -106,7 +109,9 @@ export function cmsMetadata(doc: CmsDocumentRow) {
   const canonical = (doc.canonical || `${SITE}${route}`)
     .replace(/\/about$/, "/about-us")
     .replace(/\/contact$/, "/contact-us");
-  const image = existingPublicSrc(doc.ogImage) || existingPublicSrc(doc.featuredImage);
+  const image =
+    existingPublicSrc(doc.ogImage, { allowReused: true }) ||
+    existingPublicSrc(doc.featuredImage, { allowReused: true });
   return {
     title,
     description,

@@ -315,11 +315,19 @@ export function serializeInsightImageMeta(meta: InsightImageMeta) {
   });
 }
 
-export function existingPublicSrc(src: string | undefined | null) {
-  const next = src?.trim() ?? "";
-  if (!next) return "";
-  if (/^https?:\/\//i.test(next)) return next;
-  if (REUSED_SITE_MEDIA.has(next)) return "";
+export function existingPublicSrc(
+  src: string | undefined | null,
+  options?: { allowReused?: boolean },
+) {
+  const raw = src?.trim() ?? "";
+  if (!raw) return "";
+  if (/^https?:\/\//i.test(raw)) return raw;
+  const next = raw.startsWith("/") ? raw : `/${raw}`;
+  // Blocklist only applies to automatic fallbacks — CMS-chosen covers must show.
+  if (!options?.allowReused && REUSED_SITE_MEDIA.has(next)) return "";
+  // Uploaded / brand media is served from the web root; Hostinger's Node cwd may
+  // not see the same `public/` tree that nginx/static serving uses.
+  if (next.startsWith("/media/")) return next;
   const relative = next.replace(/^\//, "");
   try {
     const disk = join(process.cwd(), "public", relative);
@@ -327,7 +335,7 @@ export function existingPublicSrc(src: string | undefined | null) {
   } catch {
     return "";
   }
-  return next.startsWith("/") ? next : `/${next}`;
+  return next;
 }
 
 export function insightShowsSampleLabel(status: InsightImageStatus, hasAsset: boolean) {
@@ -360,11 +368,12 @@ export function resolveInsightMedia(
   const display = displaySizeForVariant(slot, variant);
   const status: InsightImageStatus = post.coverImageStatus ?? (post.sampleVisual ? "placeholder" : "placeholder");
   const preferredCover = insightCoverFilePath(post.slug);
-  const src =
-    existingPublicSrc(post.coverImage) ||
-    existingPublicSrc(preferredCover) ||
-    existingPublicSrc(slot.reservedSrc);
+  const explicitCover = post.coverImage?.trim() ?? "";
+  const explicitSrc = explicitCover ? existingPublicSrc(explicitCover, { allowReused: true }) : "";
+  const src = explicitSrc || existingPublicSrc(preferredCover) || existingPublicSrc(slot.reservedSrc);
   const useRelatedCoverMetrics = variant === "related";
+  const hasAsset = Boolean(src);
+  const hasExplicitCover = Boolean(explicitSrc);
   return {
     slot,
     src,
@@ -375,7 +384,10 @@ export function resolveInsightMedia(
     displayHeight: display.height,
     sourceWidth: useRelatedCoverMetrics ? 1200 : slot.sourceWidth,
     sourceHeight: useRelatedCoverMetrics ? 800 : slot.sourceHeight,
-    hasAsset: Boolean(src),
-    showSampleLabel: insightShowsSampleLabel(status, Boolean(src)),
+    hasAsset,
+    hasExplicitCover,
+    showSampleLabel: hasExplicitCover
+      ? status === "sample"
+      : insightShowsSampleLabel(status, hasAsset),
   };
 }

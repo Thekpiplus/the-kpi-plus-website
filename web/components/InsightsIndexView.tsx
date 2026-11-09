@@ -76,7 +76,24 @@ export async function InsightsIndexView({
   const activePage = parseInsightPage(page);
   const hidden = new Set(await hiddenInsightSlugs());
   const bySlug = new Map(insightPosts.map((post) => [post.slug, post]));
-  for (const post of extraPosts) bySlug.set(post.slug, post);
+  for (const post of extraPosts) {
+    const previous = bySlug.get(post.slug);
+    bySlug.set(post.slug, {
+      ...previous,
+      ...post,
+      // Keep the static cover when CMS has no featured image yet.
+      coverImage: post.coverImage?.trim() || previous?.coverImage || "",
+      coverImageAlt: post.coverImageAlt?.trim() || previous?.coverImageAlt || "",
+      coverImageFit: post.coverImageFit ?? previous?.coverImageFit,
+      coverImageStatus: post.coverImage?.trim()
+        ? post.coverImageStatus
+        : previous?.coverImageStatus ?? post.coverImageStatus,
+      coverImagePosition: post.coverImagePosition ?? previous?.coverImagePosition,
+      sampleVisual: post.coverImage?.trim()
+        ? post.sampleVisual
+        : previous?.sampleVisual ?? post.sampleVisual,
+    });
+  }
   const visible = [...bySlug.values()].filter((post) => isPublishedInsight(post) && !hidden.has(post.slug));
   const storedOrder = await getStoredInsightOrder();
   const editorial =

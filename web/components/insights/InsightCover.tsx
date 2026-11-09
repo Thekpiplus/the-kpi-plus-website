@@ -28,15 +28,12 @@ export function InsightCover({
   const isRelated = variant === "related";
   const useCompactCover = isCard || isRelated;
 
-  const useHotelMarketingDiagram =
-    post.slug === HOTEL_MARKETING_SLUG &&
-    !(media.hasAsset && (post.coverImageStatus === "approved" || post.coverImageStatus === "real"));
-
-  if (useHotelMarketingDiagram) {
+  // CMS featured image wins over the built-in sample diagrams.
+  if (post.slug === HOTEL_MARKETING_SLUG && !media.hasExplicitCover) {
     return <InsightHotelMarketingVisual post={post} locale={locale} variant={variant} />;
   }
 
-  if (useCompactCover && !media.hasAsset) {
+  if (useCompactCover && !media.hasExplicitCover) {
     if (post.slug === DIRECT_BOOKING_SLUG) {
       return <InsightDirectBookingVisual post={post} locale={locale} />;
     }
@@ -46,7 +43,9 @@ export function InsightCover({
     if (post.slug === SEO_SEM_SLUG) {
       return <InsightSeoSemVisual post={post} locale={locale} />;
     }
-    return <InsightCardPlaceholder post={post} locale={locale} />;
+    if (!media.hasAsset) {
+      return <InsightCardPlaceholder post={post} locale={locale} />;
+    }
   }
 
   return (

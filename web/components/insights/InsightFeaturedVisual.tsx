@@ -47,7 +47,7 @@ export function InsightFeaturedVisual({ post, locale }: { post: InsightPost; loc
 
   return (
     <figure className="kpi-insight-featured-figure">
-      {media.hasAsset ? (
+      {media.hasExplicitCover || media.hasAsset ? (
         <InsightMediaFrame
           src={media.src}
           alt={alt}
