@@ -11577,70 +11577,16 @@ html[data-crm-theme="dark"] .crm-partners-mini-list li,
 }
 
 .crm-cms-overview-stats {
-  display: grid;
-  gap: 0.75rem;
   grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
 }
 
-.crm-cms-stat-card {
-  display: grid;
-  gap: 0.2rem;
-  min-width: 0;
-  padding: 0.9rem 1rem;
-  border: 1px solid var(--crm-border);
-  border-radius: var(--admin-radius-xl);
-  background: var(--crm-surface);
-  text-decoration: none;
-  box-shadow: 0 1px 2px rgba(11, 31, 51, 0.04);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+.crm-cms-overview-stats .crm-dash-stat {
+  padding: 0.85rem 0.95rem 0.9rem 1.05rem;
 }
 
-.crm-cms-stat-card:hover,
-.crm-cms-stat-card:focus-visible {
-  border-color: color-mix(in srgb, #a2dc25 55%, var(--crm-border));
-  box-shadow: 0 6px 18px rgba(11, 31, 51, 0.06);
-  outline: none;
-}
-
-.crm-cms-stat-card::before {
-  content: "";
-  width: 1.65rem;
-  height: 0.28rem;
-  border-radius: 999px;
-  background: #a2dc25;
-}
-
-.crm-cms-stat-card.is-draft::before {
-  background: #ebe722;
-}
-
-.crm-cms-stat-card.is-insights::before {
-  background: color-mix(in srgb, #0b6660 70%, #a2dc25);
-}
-
-.crm-cms-stat-card.is-review::before {
-  background: #d4a017;
-}
-
-.crm-cms-stat-label {
-  margin-top: 0.35rem;
-  color: var(--crm-muted);
-  font-size: 0.8rem;
-  font-weight: 650;
-}
-
-.crm-cms-stat-value {
-  color: var(--crm-heading);
-  font-size: clamp(1.55rem, 1.2rem + 0.8vw, 1.9rem);
-  font-weight: 800;
-  line-height: 1.15;
-  font-variant-numeric: tabular-nums;
-}
-
-.crm-cms-stat-hint {
-  color: var(--crm-muted);
-  font-size: 0.78rem;
-  line-height: 1.4;
+.crm-cms-overview-stats .crm-dash-stat-value {
+  font-size: clamp(1.35rem, 1.15rem + 0.55vw, 1.65rem);
 }
 
 .crm-cms-overview-body {
@@ -12203,6 +12149,7 @@ html[data-crm-theme="dark"] .crm-partners-mini-list li,
   white-space: nowrap;
 }
 
+/* Default widths suit insights/trash; pages override via --pages */
 .crm-cms-table th:nth-child(1),
 .crm-cms-table td:nth-child(1) {
   width: 11%;
@@ -12243,6 +12190,183 @@ html[data-crm-theme="dark"] .crm-partners-mini-list li,
 .crm-cms-table td:nth-child(7) {
   width: 7.5rem;
   text-align: center;
+}
+
+/* Website pages list: name column must dominate horizontal space */
+.crm-cms-table--pages {
+  min-width: 0;
+  width: 100%;
+}
+
+.crm-cms-table--pages .crm-cms-col-name {
+  width: 36%;
+}
+
+.crm-cms-table--pages .crm-cms-col-status {
+  width: 12%;
+}
+
+.crm-cms-table--pages .crm-cms-col-updated {
+  width: 16%;
+}
+
+.crm-cms-table--pages .crm-cms-col-editor {
+  width: 18%;
+}
+
+.crm-cms-table--pages .crm-cms-col-online {
+  width: 9%;
+}
+
+.crm-cms-table--pages .crm-cms-col-actions {
+  width: 9%;
+}
+
+.crm-cms-table--pages th:nth-child(1),
+.crm-cms-table--pages td:nth-child(1) {
+  width: 36%;
+  min-width: 0;
+}
+
+.crm-cms-table--pages th:nth-child(2),
+.crm-cms-table--pages td:nth-child(2) {
+  width: 12%;
+}
+
+.crm-cms-table--pages th:nth-child(3),
+.crm-cms-table--pages td:nth-child(3) {
+  width: 16%;
+  white-space: nowrap;
+}
+
+.crm-cms-table--pages th:nth-child(4),
+.crm-cms-table--pages td:nth-child(4) {
+  width: 18%;
+  min-width: 0;
+}
+
+.crm-cms-table--pages th:nth-child(5),
+.crm-cms-table--pages td:nth-child(5) {
+  width: 9%;
+  text-align: center;
+}
+
+.crm-cms-table--pages th:nth-child(6),
+.crm-cms-table--pages td:nth-child(6) {
+  width: 9%;
+  min-width: 7.25rem;
+  text-align: center;
+}
+
+.crm-cms-table--pages td {
+  padding: 0.7rem 0.85rem;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+.crm-cms-table--pages .crm-cms-page-cell {
+  display: grid;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.crm-cms-table--pages .crm-cms-name {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow-wrap: normal;
+  word-break: normal;
+  line-height: 1.35;
+}
+
+.crm-cms-table--pages .crm-cms-slug {
+  display: block;
+  max-width: 100%;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow-wrap: normal;
+  word-break: normal;
+  line-height: 1.3;
+}
+
+.crm-cms-table--pages .crm-cms-date,
+.crm-cms-table--pages .crm-cms-editor {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.35;
+}
+
+.crm-cms-pages-stats {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.crm-cms-pages-trash-note {
+  margin: 0.55rem 0 0;
+}
+
+.crm-cms-pages-filters {
+  grid-template-columns: minmax(0, 1.6fr) minmax(9rem, 11rem) minmax(6.5rem, 8rem) auto;
+}
+
+.crm-cms-pages-panel {
+  padding: 0.85rem;
+}
+
+@media (max-width: 1100px) {
+  .crm-cms-pages-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .crm-cms-pages-filters {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .crm-cms-pages-filters > label:first-child,
+  .crm-cms-pages-filters .crm-cms-filters-actions {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 520px) {
+  .crm-cms-pages-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .crm-cms-pages-filters {
+    grid-template-columns: 1fr;
+  }
+}
+
+.crm-cms-pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.15rem 0.25rem 0.1rem;
+}
+
+.crm-cms-pager-status {
+  margin: 0;
+  color: var(--crm-text-muted);
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+.crm-cms-pager .crm-users-secondary.is-disabled {
+  pointer-events: none;
+  opacity: 0.45;
 }
 
 /* บทความ: ลำดับ + ชื่อ / slug / meta / desc + สถานะ + ดำเนินการ */
@@ -12634,6 +12758,7 @@ html[data-crm-theme="dark"] .crm-partners-mini-list li,
   .crm-cms-table td[data-label="ลำดับ"],
   .crm-cms-table td[data-label="ชื่อเมนู"],
   .crm-cms-table td[data-label="ชื่อหน้า"],
+  .crm-cms-table td[data-label="ชื่อหน้า / URL"],
   .crm-cms-table td[data-label="ชื่อบทความ"],
   .crm-cms-table td[data-label="ประเภท"],
   .crm-cms-table td[data-label="ชื่อ"],
@@ -12642,6 +12767,7 @@ html[data-crm-theme="dark"] .crm-partners-mini-list li,
   .crm-cms-table td[data-label="Description"],
   .crm-cms-table td[data-label="ลบเมื่อ"],
   .crm-cms-table td[data-label="สถานะ"],
+  .crm-cms-table td[data-label="สถานะเนื้อหา"],
   .crm-cms-table td[data-label="การดำเนินการ"] {
     grid-column: 1 / -1;
   }
@@ -12650,7 +12776,8 @@ html[data-crm-theme="dark"] .crm-partners-mini-list li,
     justify-items: start;
   }
 
-  .crm-cms-table td[data-label="สถานะ"] {
+  .crm-cms-table td[data-label="สถานะ"],
+  .crm-cms-table td[data-label="สถานะเนื้อหา"] {
     justify-items: start;
   }
 
@@ -12662,6 +12789,7 @@ html[data-crm-theme="dark"] .crm-partners-mini-list li,
   }
 
   .crm-cms-table td[data-label="ชื่อหน้า"],
+  .crm-cms-table td[data-label="ชื่อหน้า / URL"],
   .crm-cms-table td[data-label="ชื่อบทความ"] {
     grid-template-columns: 1fr;
     padding-bottom: 0.35rem;
@@ -12671,8 +12799,26 @@ html[data-crm-theme="dark"] .crm-partners-mini-list li,
 
   .crm-cms-table td[data-label="ชื่อเมนู"]::before,
   .crm-cms-table td[data-label="ชื่อหน้า"]::before,
+  .crm-cms-table td[data-label="ชื่อหน้า / URL"]::before,
   .crm-cms-table td[data-label="ชื่อบทความ"]::before {
     content: none;
+  }
+
+  .crm-cms-table--pages .crm-cms-name,
+  .crm-cms-table--pages .crm-cms-slug {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+  }
+
+  .crm-cms-pages-filters {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .crm-cms-pages-filters > label:first-child,
+  .crm-cms-pages-filters-actions,
+  .crm-cms-pages-filters .crm-cms-filters-actions {
+    grid-column: 1 / -1;
   }
 
   .crm-cms-table td[data-label="การดำเนินการ"] {

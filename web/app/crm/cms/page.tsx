@@ -60,31 +60,33 @@ export default async function CmsOverviewPage() {
         </div>
       </header>
 
-      <section className="crm-cms-overview-stats" aria-label="สรุป CMS">
-        <Link href="/crm/cms/pages" className="crm-cms-stat-card">
-          <span className="crm-cms-stat-label">หน้าเว็บไซต์</span>
-          <strong className="crm-cms-stat-value">{totalPages}</strong>
-          <span className="crm-cms-stat-hint">
-            CMS {overview.pages} · โค้ด {sitePages}
-          </span>
-        </Link>
-        <Link href="/crm/cms/pages?status=draft" className="crm-cms-stat-card is-draft">
-          <span className="crm-cms-stat-label">ฉบับร่าง</span>
-          <strong className="crm-cms-stat-value">{overview.drafts}</strong>
-          <span className="crm-cms-stat-hint">รอเผยแพร่</span>
-        </Link>
-        <Link href="/crm/cms/insights" className="crm-cms-stat-card is-insights">
-          <span className="crm-cms-stat-label">บทความ / ข่าว</span>
-          <strong className="crm-cms-stat-value">{overview.insights}</strong>
-          <span className="crm-cms-stat-hint">เผยแพร่แล้ว {overview.publishedInsights}</span>
-        </Link>
-        <Link href="/crm/cms/seo" className="crm-cms-stat-card is-review">
-          <span className="crm-cms-stat-label">ต้องตรวจสอบ</span>
-          <strong className="crm-cms-stat-value">{needsReview}</strong>
-          <span className="crm-cms-stat-hint">
-            SEO ไม่ครบ {missingSeo} · ถังขยะ {trashed}
-          </span>
-        </Link>
+      <section className="crm-dash-summary crm-cms-summary" aria-label="สรุป CMS">
+        <div className="crm-dash-stats crm-cms-overview-stats" role="list">
+          <Link href="/crm/cms/pages" className="crm-dash-stat is-cms" role="listitem">
+            <span className="crm-dash-stat-label">หน้าเว็บไซต์</span>
+            <strong className="crm-dash-stat-value">{totalPages}</strong>
+            <span className="crm-dash-stat-hint">
+              CMS {overview.pages} · โค้ด {sitePages}
+            </span>
+          </Link>
+          <Link href="/crm/cms/pages?status=draft" className="crm-dash-stat is-partners" role="listitem">
+            <span className="crm-dash-stat-label">ฉบับร่าง</span>
+            <strong className="crm-dash-stat-value">{overview.drafts}</strong>
+            <span className="crm-dash-stat-hint">รอเผยแพร่</span>
+          </Link>
+          <Link href="/crm/cms/insights" className="crm-dash-stat is-today" role="listitem">
+            <span className="crm-dash-stat-label">บทความ / ข่าว</span>
+            <strong className="crm-dash-stat-value">{overview.insights}</strong>
+            <span className="crm-dash-stat-hint">เผยแพร่แล้ว {overview.publishedInsights}</span>
+          </Link>
+          <Link href="/crm/cms/seo" className="crm-dash-stat is-overdue" role="listitem">
+            <span className="crm-dash-stat-label">ต้องตรวจสอบ</span>
+            <strong className="crm-dash-stat-value">{needsReview}</strong>
+            <span className="crm-dash-stat-hint">
+              SEO ไม่ครบ {missingSeo} · ถังขยะ {trashed}
+            </span>
+          </Link>
+        </div>
       </section>
 
       <div className="crm-cms-overview-body">

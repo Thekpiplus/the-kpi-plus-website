@@ -55,8 +55,8 @@ export function CmsPageOnlineToggle({
       <button
         type="button"
         className={`crm-cms-switch ${isOnline ? "is-on" : "is-off"} ${pending ? "is-pending" : ""}`}
-        title={isOnline ? "ปิด (ออฟไลน์)" : "เปิด (ออนไลน์)"}
-        aria-label={`${pageName}: ${isOnline ? "ออนไลน์" : "ออฟไลน์"} — กดเพื่อสลับ`}
+        title={isOnline ? "ปิดการแสดงบนเว็บไซต์" : "เปิดการแสดงบนเว็บไซต์"}
+        aria-label={`${pageName}: ${isOnline ? "แสดงบนเว็บ" : "ไม่แสดงบนเว็บ"} — กดเพื่อสลับ`}
         aria-pressed={isOnline}
         disabled={pending}
         onClick={onToggle}
@@ -64,7 +64,7 @@ export function CmsPageOnlineToggle({
         <span className="crm-cms-switch-track" aria-hidden="true">
           <span className="crm-cms-switch-thumb" />
         </span>
-        <span className="crm-cms-switch-label">{pending ? "…" : isOnline ? "ออนไลน์" : "ออฟไลน์"}</span>
+        <span className="crm-cms-switch-label">{pending ? "…" : isOnline ? "แสดง" : "ซ่อน"}</span>
       </button>
     </div>
   );

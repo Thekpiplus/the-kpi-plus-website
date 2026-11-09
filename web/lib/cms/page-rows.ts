@@ -86,7 +86,14 @@ export async function loadWebsitePageRows(filters: { q?: string; status?: string
     };
   });
 
-  const rows = [...siteRows, ...cmsRows]
+  const allRows = [...siteRows, ...cmsRows].sort((a, b) => {
+    const aTime = a.updatedAt?.getTime() ?? 0;
+    const bTime = b.updatedAt?.getTime() ?? 0;
+    if (aTime !== bTime) return bTime - aTime;
+    return a.slug.localeCompare(b.slug, "th");
+  });
+
+  const rows = allRows
     .filter((row) => {
       if (status === "published") return row.status === "published" || (row.status === "site" && row.online);
       if (status === "draft") return row.status === "draft";
@@ -104,12 +111,6 @@ export async function loadWebsitePageRows(filters: { q?: string; status?: string
         row.description.toLowerCase().includes(q) ||
         (row.updatedBy ?? "").toLowerCase().includes(q)
       );
-    })
-    .sort((a, b) => {
-      const aTime = a.updatedAt?.getTime() ?? 0;
-      const bTime = b.updatedAt?.getTime() ?? 0;
-      if (aTime !== bTime) return bTime - aTime;
-      return a.slug.localeCompare(b.slug, "th");
     });
 
   return {
@@ -117,14 +118,28 @@ export async function loadWebsitePageRows(filters: { q?: string; status?: string
     siteCount: siteRows.length,
     cmsCount: cmsRows.length,
     trashedCount: trashedPages.length,
+    totalCount: allRows.length,
+    publishedCount: allRows.filter((row) => row.online).length,
+    draftCount: allRows.filter((row) => row.status === "draft").length,
+    offlineCount: allRows.filter((row) => !row.online).length,
     onlineCount: rows.filter((row) => row.online).length,
-    draftCount: cmsRows.filter((row) => row.status === "draft").length,
   };
 }
 
 export function formatCmsDate(value?: Date) {
   if (!value) return "—";
   return new Intl.DateTimeFormat("th-TH", { dateStyle: "medium", timeStyle: "short" }).format(value);
+}
+
+export function formatCmsDateCompact(value?: Date) {
+  if (!value) return "—";
+  return new Intl.DateTimeFormat("th-TH", {
+    day: "numeric",
+    month: "short",
+    year: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(value);
 }
 
 export function statusLabel(status: WebsitePageRow["status"]) {
