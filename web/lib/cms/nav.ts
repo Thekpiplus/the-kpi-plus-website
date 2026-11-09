@@ -17,7 +17,12 @@ export const CMS_CONTENT_LINKS: CmsNavLink[] = [
   { href: "/crm/cms/seo", label: "SEO" },
 ];
 
+/** Site settings that belong with CMS content (users stay under ตั้งค่าระบบ). */
 export const CMS_SYSTEM_LINKS: CmsNavLink[] = [
+  { href: "/crm/cms/globals", label: "ตั้งค่าเว็บไซต์" },
+];
+
+export const CMS_ACCOUNT_LINKS: CmsNavLink[] = [
   { href: "/crm/users", label: "ผู้ใช้งานและสิทธิ์" },
   { href: "/crm/cms/globals", label: "ตั้งค่าเว็บไซต์" },
 ];
@@ -64,6 +69,11 @@ export function cmsSubNavItems(): CmsNavLink[] {
       children: CMS_EXTRA_LINKS,
     },
   ];
+}
+
+/** Compact rail labels under the single Content Management section. */
+export function cmsRailLinks(): CmsNavLink[] {
+  return [...CMS_CONTENT_LINKS, ...CMS_SYSTEM_LINKS];
 }
 
 export function isCmsPath(pathname: string) {

@@ -5,7 +5,7 @@ import { useEffect, useId, useState, type ReactNode } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { logoutAction } from "@/lib/crm/actions";
 import { ADMIN_MODULES, MODULE_PATH, type AdminModule } from "@/lib/crm/modules";
-import { CMS_CONTENT_LINKS, CMS_SYSTEM_LINKS, cmsSubNavItems, isCmsPath } from "@/lib/cms/nav";
+import { cmsRailLinks, cmsSubNavItems, isCmsPath } from "@/lib/cms/nav";
 import { CrmThemeToggle } from "@/components/crm/CrmThemeToggle";
 import { CrmSubNav, type CrmSubNavItem } from "@/components/crm/CrmSubNav";
 import { NewLeadModalProvider } from "@/components/crm/ui/NewLeadModal";
@@ -351,9 +351,9 @@ const NAV_LABEL: Record<NavKey, string> = {
   hotel_ai: "Hotel AI & Automation Workflow",
   training: "Hotel Training Operations",
   hotel_marketing: "Hotel Marketing Editorial Operations",
-  solutions: "Hotel Solutions Service Directory",
+  solutions: "Hotel Solutions",
   users: "Users Management",
-  cms: "Content Management",
+  cms: "ภาพรวม CMS",
   settings: "ตั้งค่า",
 };
 
@@ -684,7 +684,8 @@ export function CrmShell({
   const searchParams = useSearchParams();
   const search = searchParams.toString();
   const workspace = workspaceOf(pathname);
-  const contextLinks = workspace === "home" ? [] : contextByWorkspace[workspace];
+  // CMS links live in the left rail — avoid a second identical Content Management strip.
+  const contextLinks = workspace === "home" || workspace === "cms" ? [] : contextByWorkspace[workspace];
   const allowed = ADMIN_MODULES.filter((module) => modules.includes(module));
   const allowedSet = new Set<NavKey>(["home", "settings", ...allowed]);
   const currentSectionId: NavSectionId | null = pathname.startsWith("/crm/settings")
@@ -827,41 +828,27 @@ export function CrmShell({
               >
                 {visibleItems.map((item) => {
                   if (item === "cms") {
-                    const cmsOpen = isCmsPath(pathname) || sectionIsOpen(section.id, containsCurrent);
                     return (
                       <div key="cms" className={`crm-rail-cms-block${isCmsPath(pathname) ? " is-current" : ""}`}>
-                        <RailLink
-                          href="/crm/cms"
-                          navKey="cms"
-                          current={pathname === "/crm/cms"}
-                          nested
-                          onNavigate={onNavigate}
-                        />
-                        {cmsOpen && expandedChrome ? (
-                          <div className="crm-rail-cms-children" role="group" aria-label="เมนู Content Management">
-                            {[...CMS_CONTENT_LINKS.filter((link) => link.href !== "/crm/cms"), ...CMS_SYSTEM_LINKS].map(
-                              (link) => {
-                                const current =
-                                  pathname === link.href ||
-                                  (link.href !== "/crm/users" && pathname.startsWith(`${link.href}/`)) ||
-                                  (link.href === "/crm/users" &&
-                                    (pathname === "/crm/users" || pathname.startsWith("/crm/users/")));
-                                return (
-                                  <Link
-                                    key={link.href}
-                                    href={link.href}
-                                    className={`crm-rail-link is-nested is-cms-child${current ? " is-active" : ""}`}
-                                    aria-current={current ? "page" : undefined}
-                                    title={link.label}
-                                    onClick={onNavigate}
-                                  >
-                                    <span className="crm-rail-link-text">{link.label}</span>
-                                  </Link>
-                                );
-                              },
-                            )}
-                          </div>
-                        ) : null}
+                        {cmsRailLinks().map((link) => {
+                          const current =
+                            link.href === "/crm/cms"
+                              ? pathname === "/crm/cms"
+                              : pathname === link.href || pathname.startsWith(`${link.href}/`);
+                          return (
+                            <Link
+                              key={link.href}
+                              href={link.href}
+                              className={`crm-rail-link is-nested is-cms-child${current ? " is-active" : ""}`}
+                              aria-current={current ? "page" : undefined}
+                              aria-label={link.label}
+                              title={link.label}
+                              onClick={onNavigate}
+                            >
+                              <em>{link.label}</em>
+                            </Link>
+                          );
+                        })}
                       </div>
                     );
                   }
