@@ -33,6 +33,11 @@ export function isCrmSubNavCurrent(pathname: string, search: string, href: strin
   if (path === "/crm/users/roles") return pathname === "/crm/users/roles" || pathname.startsWith("/crm/users/roles/");
   if (path === "/crm/users") return pathname === "/crm/users";
   if (path === "/crm/cms") return pathname === "/crm/cms";
+  if (path === "/crm/cms/pages") {
+    return pathname === "/crm/cms/pages" || pathname.startsWith("/crm/cms/pages/");
+  }
+  if (path === "/crm/cms/menus") return pathname === "/crm/cms/menus" || pathname.startsWith("/crm/cms/menus/");
+  if (path === "/crm/cms/seo") return pathname === "/crm/cms/seo" || pathname.startsWith("/crm/cms/seo/");
   if (path === "/crm/partners") return pathname === "/crm/partners";
   if (path === "/crm/b2b") return pathname === "/crm/b2b";
   if (path === "/crm/ads") return pathname === "/crm/ads";

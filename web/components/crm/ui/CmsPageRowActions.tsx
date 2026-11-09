@@ -32,10 +32,20 @@ function IconTrash() {
   );
 }
 
+function IconPreview() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z" stroke="currentColor" strokeWidth="1.7" />
+      <circle cx="12" cy="12" r="2.5" stroke="currentColor" strokeWidth="1.7" />
+    </svg>
+  );
+}
+
 export function CmsPageRowActions({
   pageId,
   pageName,
   editHref,
+  previewHref,
   canDelete = true,
   returnTo = "/crm/cms",
   dialogTitle = "ลบหน้า",
@@ -44,6 +54,7 @@ export function CmsPageRowActions({
   pageId?: string;
   pageName: string;
   editHref?: string;
+  previewHref?: string;
   canDelete?: boolean;
   returnTo?: string;
   dialogTitle?: string;
@@ -80,6 +91,18 @@ export function CmsPageRowActions({
             <IconEdit />
           </span>
         )}
+        {previewHref ? (
+          <Link
+            href={previewHref}
+            className="crm-users-icon-btn"
+            title="ดูตัวอย่าง"
+            aria-label={`ดูตัวอย่าง ${pageName}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <IconPreview />
+          </Link>
+        ) : null}
         {allowDelete ? (
           <button
             type="button"

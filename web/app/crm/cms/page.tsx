@@ -1,265 +1,161 @@
 import Link from "next/link";
-import { CmsPageOnlineToggle } from "@/components/crm/ui/CmsPageOnlineToggle";
-import { CmsPageRowActions } from "@/components/crm/ui/CmsPageRowActions";
-import { EmptyState } from "@/components/crm/ui/EmptyState";
 import { PageHeader } from "@/components/crm/ui/PageHeader";
-import { SitePageDeleteButton } from "@/components/crm/ui/SitePageDeleteButton";
 import { documentPath } from "@/lib/cms/body";
+import { cmsOverview, countTrashedDocuments, listRecentDocuments } from "@/lib/cms/queries";
+import { formatCmsDate } from "@/lib/cms/page-rows";
 import { lockedPageList } from "@/lib/cms/locked";
-import { isCmsPageLive } from "@/lib/cms/public";
-import { listDocuments, listTrashedDocuments } from "@/lib/cms/queries";
-import { siteMenuLabel } from "@/lib/nav";
 
-type PageRow = {
-  key: string;
-  id?: string;
-  menuName: string;
-  name: string;
-  slug: string;
-  metaTag: string;
-  description: string;
-  editHref?: string;
-  canDelete: boolean;
-  online: boolean;
-  source: "site" | "cms";
-};
-
-function truncate(value: string, max = 120) {
-  const text = value.trim();
-  if (text.length <= max) return text;
-  return `${text.slice(0, max - 1)}…`;
+function kindLabel(kind: string) {
+  return kind === "insight" ? "บทความ" : "หน้าเว็บ";
 }
 
-function siteEditHref(route: string) {
-  if (route === "/" || route === "") return "/crm/cms/pages/from";
-  return `/crm/cms/pages/from${route.startsWith("/") ? route : `/${route}`}`;
-}
-
-export default async function CmsHomePage({
-  searchParams,
-}: {
-  searchParams: Promise<{ q?: string; deleted?: string }>;
-}) {
-  const params = await searchParams;
-  const q = params.q?.trim().toLowerCase() ?? "";
-  const [cmsPages, trashedPages] = await Promise.all([listDocuments("page"), listTrashedDocuments({ kind: "page" })]);
-  const cmsByPath = new Map(cmsPages.map((page) => [documentPath(page), page]));
-  const knownPaths = new Set([...cmsByPath.keys(), ...trashedPages.map((page) => documentPath(page))]);
-
-  const siteRows: PageRow[] = lockedPageList()
-    .filter((page) => page.language === "th")
-    .filter((page) => !knownPaths.has(page.route || "/"))
-    .map((page) => {
-      const route = page.route || "/";
-      return {
-        key: `site:${route}`,
-        menuName: siteMenuLabel(route, "th"),
-        name: page.title,
-        slug: route,
-        metaTag: page.title,
-        description: page.description || "—",
-        editHref: siteEditHref(route),
-        canDelete: true,
-        online: true,
-        source: "site" as const,
-      };
-    });
-
-  const cmsRows: PageRow[] = cmsPages.map((page) => ({
-    key: `cms:${page.id}`,
-    id: page.id,
-    menuName: page.menuLabel?.trim() || "—",
-    name: page.title,
-    slug: documentPath(page),
-    metaTag: page.seoTitle?.trim() || page.title,
-    description: page.metaDescription?.trim() || page.excerpt?.trim() || "—",
-    editHref: `/crm/cms/pages/${page.id}`,
-    canDelete: true,
-    online: isCmsPageLive(page),
-    source: "cms" as const,
-  }));
-
-  const rows = [...siteRows, ...cmsRows]
-    .filter((row) => {
-      if (!q) return true;
-      return (
-        row.menuName.toLowerCase().includes(q) ||
-        row.name.toLowerCase().includes(q) ||
-        row.slug.toLowerCase().includes(q) ||
-        row.metaTag.toLowerCase().includes(q) ||
-        row.description.toLowerCase().includes(q)
-      );
-    })
-    .sort((a, b) => a.slug.localeCompare(b.slug, "th"));
-  const onlineCount = rows.filter((row) => row.online).length;
-  const filtered = Boolean(q);
+export default async function CmsOverviewPage() {
+  const [overview, recent, trashed] = await Promise.all([
+    cmsOverview(),
+    listRecentDocuments(8),
+    countTrashedDocuments(),
+  ]);
+  const sitePages = lockedPageList().filter((page) => page.language === "th").length;
 
   return (
-    <div className="crm-cms">
-      <PageHeader
-        eyebrow="Content Management"
-        title="หน้าเว็บ"
-        description="รายชื่อหน้าที่มีอยู่บนเว็บ พร้อม slug meta tag และคำอธิบาย"
-        actions={
-          <Link href="/crm/cms/pages/new" className="kpi-button crm-users-primary">
-            สร้างหน้าเพจใหม่
+    <div className="crm-cms crm-cms-overview">
+      <header className="crm-cms-hero">
+        <div className="crm-cms-hero-copy">
+          <p className="crm-cms-hero-kicker">Content Management</p>
+          <h1 className="crm-cms-hero-title">ภาพรวมเนื้อหาเว็บไซต์</h1>
+          <p className="crm-cms-hero-desc">
+            ดูสรุปหน้าและบทความจากข้อมูลจริง แล้วไปแก้ไขหรือสร้างเนื้อหาได้จากปุ่มลัดด้านล่าง
+          </p>
+        </div>
+        <div className="crm-cms-hero-actions">
+          <Link href="/crm/cms/pages/new" className="kpi-button crm-cms-hero-btn">
+            เพิ่มหน้า
           </Link>
-        }
-      />
-
-      {params.deleted === "1" ? (
-        <p className="crm-users-alert is-ok" role="status">
-          ย้ายเข้าถังขยะแล้ว —{" "}
-          <Link href="/crm/cms/trash" className="crm-cms-inline-link">
-            เปิดถังขยะ
+          <Link href="/crm/cms/insights/new" className="crm-users-secondary crm-cms-hero-btn-ghost">
+            เพิ่มบทความ
           </Link>
-        </p>
-      ) : null}
+        </div>
+      </header>
 
-      <section className="crm-dash-summary crm-cms-summary" aria-label="สรุปหน้าเว็บ">
+      <section className="crm-dash-summary crm-cms-summary" aria-label="สรุป CMS">
         <div className="crm-dash-stats" role="list">
-          <div className="crm-dash-stat is-cms is-static" role="listitem">
-            <span className="crm-dash-stat-label">หน้าทั้งหมด</span>
-            <strong className="crm-dash-stat-value">{siteRows.length + cmsRows.length}</strong>
-            <span className="crm-dash-stat-hint">ไซต์ + CMS</span>
-          </div>
-          <div className="crm-dash-stat is-today is-static" role="listitem">
-            <span className="crm-dash-stat-label">ออนไลน์</span>
-            <strong className="crm-dash-stat-value">{onlineCount}</strong>
-            <span className="crm-dash-stat-hint">{filtered ? "ในผลลัพธ์ที่ค้นหา" : "พร้อมเผยแพร่"}</span>
-          </div>
-          <div className="crm-dash-stat is-users is-static" role="listitem">
-            <span className="crm-dash-stat-label">ผลลัพธ์ที่แสดง</span>
-            <strong className="crm-dash-stat-value">{rows.length}</strong>
-            <span className="crm-dash-stat-hint">{filtered ? `ค้นหา “${params.q?.trim()}”` : "ทุกรายการ"}</span>
-          </div>
-          <Link href="/crm/cms/trash" className="crm-dash-stat is-overdue" role="listitem">
-            <span className="crm-dash-stat-label">ถังขยะ</span>
-            <strong className="crm-dash-stat-value">{trashedPages.length}</strong>
-            <span className="crm-dash-stat-hint">เปิดถังขยะ</span>
+          <Link href="/crm/cms/pages" className="crm-dash-stat is-cms" role="listitem">
+            <span className="crm-dash-stat-label">หน้าเว็บไซต์</span>
+            <strong className="crm-dash-stat-value">{overview.pages + sitePages}</strong>
+            <span className="crm-dash-stat-hint">
+              CMS {overview.pages} · จากโค้ด {sitePages}
+            </span>
+          </Link>
+          <Link href="/crm/cms/pages?status=draft" className="crm-dash-stat is-partners" role="listitem">
+            <span className="crm-dash-stat-label">ฉบับร่าง</span>
+            <strong className="crm-dash-stat-value">{overview.drafts}</strong>
+            <span className="crm-dash-stat-hint">หน้าและบทความ</span>
+          </Link>
+          <Link href="/crm/cms/insights" className="crm-dash-stat is-today" role="listitem">
+            <span className="crm-dash-stat-label">บทความ / ข่าว</span>
+            <strong className="crm-dash-stat-value">{overview.insights}</strong>
+            <span className="crm-dash-stat-hint">เผยแพร่แล้ว {overview.publishedInsights}</span>
+          </Link>
+          <Link href="/crm/cms/media" className="crm-dash-stat is-web" role="listitem">
+            <span className="crm-dash-stat-label">ไฟล์ในคลัง</span>
+            <strong className="crm-dash-stat-value">{overview.media}</strong>
+            <span className="crm-dash-stat-hint">สื่อและรูปภาพ</span>
           </Link>
         </div>
       </section>
 
-      <section className="crm-cms-toolbar">
-        <form className="crm-cms-search" method="get">
-          <label className="crm-cms-search-field">
-            <span className="sr-only">ค้นหาหน้า</span>
-            <input name="q" defaultValue={params.q} placeholder="ค้นหาชื่อหน้า slug หรือ meta" />
-          </label>
-          <button className="kpi-button" type="submit">
-            ค้นหา
-          </button>
-          {q ? (
-            <Link href="/crm/cms" className="crm-users-secondary">
-              ล้าง
-            </Link>
-          ) : null}
-        </form>
-        <p className="crm-cms-count">แสดง {rows.length} หน้า</p>
-      </section>
-
-      <section className="crm-cms-panel">
-        {rows.length === 0 ? (
-          <EmptyState
-            title="ไม่พบหน้า"
-            body="ลองเปลี่ยนคำค้น หรือสร้างหน้าใหม่จาก CMS"
-            action={
-              <Link href="/crm/cms/pages/new" className="kpi-button">
-                สร้างหน้าเพจใหม่
+      <div className="crm-cms-overview-grid">
+        <section className="crm-cms-panel">
+          <PageHeader
+            eyebrow="ล่าสุด"
+            title="รายการที่แก้ไขล่าสุด"
+            description="เรียงจากเวลาอัปเดตในฐานข้อมูล CMS"
+            actions={
+              <Link href="/crm/cms/trash" className="crm-users-secondary">
+                ถังขยะ ({trashed})
               </Link>
             }
           />
-        ) : (
-          <div className="crm-cms-table-wrap">
-            <table className="crm-cms-table">
-              <thead>
-                <tr>
-                  <th scope="col">ชื่อเมนู</th>
-                  <th scope="col">ชื่อหน้า</th>
-                  <th scope="col">Slug</th>
-                  <th scope="col">Meta Tag</th>
-                  <th scope="col">Description</th>
-                  <th scope="col">สถานะ</th>
-                  <th scope="col">การดำเนินการ</th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((row) => (
-                  <tr key={row.key}>
-                    <td data-label="ชื่อเมนู">
-                      <span className="crm-cms-menu-name">{row.menuName}</span>
-                    </td>
-                    <td data-label="ชื่อหน้า">
-                      {row.editHref ? (
-                        <Link href={row.editHref} className="crm-cms-name">
-                          {row.name}
-                        </Link>
-                      ) : (
-                        <span className="crm-cms-name is-static">{row.name}</span>
-                      )}
-                    </td>
-                    <td data-label="Slug">
-                      <code className="crm-cms-slug">{row.slug}</code>
-                    </td>
-                    <td data-label="Meta Tag">
-                      <span className="crm-cms-meta" title={row.metaTag}>
-                        {truncate(row.metaTag, 80)}
-                      </span>
-                    </td>
-                    <td data-label="Description">
-                      <span className="crm-cms-desc" title={row.description}>
-                        {truncate(row.description, 100)}
-                      </span>
-                    </td>
-                    <td data-label="สถานะ">
-                      <CmsPageOnlineToggle
-                        pageId={row.id}
-                        route={row.slug}
-                        online={row.online}
-                        pageName={row.name}
-                      />
-                    </td>
-                    <td data-label="การดำเนินการ">
-                      {row.source === "cms" ? (
-                        <CmsPageRowActions
-                          pageId={row.id}
-                          pageName={row.name}
-                          editHref={row.editHref}
-                          canDelete={row.canDelete}
-                          returnTo="/crm/cms"
-                        />
-                      ) : (
-                        <div className="crm-users-icon-actions crm-cms-row-actions">
-                          {row.editHref ? (
-                            <Link
-                              href={row.editHref}
-                              className="crm-users-icon-btn"
-                              title="แก้ไข"
-                              aria-label={`แก้ไข ${row.name}`}
-                            >
-                              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path
-                                  d="M4 20h4l10.5-10.5a1.5 1.5 0 0 0 0-2.12L16.62 5.5a1.5 1.5 0 0 0-2.12 0L4 16v4Z"
-                                  stroke="currentColor"
-                                  strokeWidth="1.7"
-                                  strokeLinejoin="round"
-                                />
-                                <path d="M13.5 6.5l4 4" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-                              </svg>
-                            </Link>
-                          ) : null}
-                          <SitePageDeleteButton route={row.slug} title={row.name} />
-                        </div>
-                      )}
-                    </td>
+          {recent.length === 0 ? (
+            <p className="crm-cms-empty-note">ยังไม่มีเอกสารใน CMS — เริ่มจากเพิ่มหน้าหรือบทความ</p>
+          ) : (
+            <div className="crm-cms-table-wrap">
+              <table className="crm-cms-table crm-cms-table--compact">
+                <thead>
+                  <tr>
+                    <th scope="col">ชื่อ</th>
+                    <th scope="col">ประเภท</th>
+                    <th scope="col">สถานะ</th>
+                    <th scope="col">อัปเดต</th>
+                    <th scope="col">โดย</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </section>
+                </thead>
+                <tbody>
+                  {recent.map((doc) => {
+                    const href =
+                      doc.kind === "insight" ? `/crm/cms/insights/${doc.id}` : `/crm/cms/pages/${doc.id}`;
+                    const updatedAt = doc.updatedAt instanceof Date ? doc.updatedAt : new Date(doc.updatedAt);
+                    return (
+                      <tr key={doc.id}>
+                        <td data-label="ชื่อ">
+                          <Link href={href} className="crm-cms-name">
+                            {doc.title}
+                          </Link>
+                          <code className="crm-cms-slug">{documentPath(doc)}</code>
+                        </td>
+                        <td data-label="ประเภท">{kindLabel(doc.kind)}</td>
+                        <td data-label="สถานะ">
+                          <span className={`crm-cms-status-pill is-${doc.status}`}>{doc.status}</span>
+                        </td>
+                        <td data-label="อัปเดต">{formatCmsDate(updatedAt)}</td>
+                        <td data-label="โดย">{doc.updatedBy?.trim() || "—"}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </section>
+
+        <section className="crm-cms-panel crm-cms-overview-shortcuts">
+          <PageHeader eyebrow="ทางลัด" title="ไปแก้เนื้อหา" description="ลิงก์ไปยังหน้าจัดการที่ใช้งานได้จริง" />
+          <ul className="crm-cms-shortcut-list">
+            <li>
+              <Link href="/crm/cms/pages">หน้าเว็บไซต์</Link>
+              <span>ค้นหา กรองสถานะ และเปิดแก้หน้า</span>
+            </li>
+            <li>
+              <Link href="/crm/cms/insights">บทความ / ข่าว</Link>
+              <span>จัดลำดับ เผยแพร่ และอัปโหลดภาพปก</span>
+            </li>
+            <li>
+              <Link href="/crm/cms/solutions">บริการ / ผลิตภัณฑ์</Link>
+              <span>แก้ไขหน้าโซลูชันและไดเรกทอรีบริการ</span>
+            </li>
+            <li>
+              <Link href="/crm/cms/menus">เมนูเว็บไซต์</Link>
+              <span>กำหนด header/footer และลำดับเมนู</span>
+            </li>
+            <li>
+              <Link href="/crm/cms/media">คลังรูปภาพและไฟล์</Link>
+              <span>อัปโหลดและคัดลอกพาธไปใช้ในเนื้อหา</span>
+            </li>
+            <li>
+              <Link href="/crm/cms/seo">SEO</Link>
+              <span>ค่าทั้งไซต์ Redirect และช่องทางแก้ SEO รายหน้า</span>
+            </li>
+            <li>
+              <Link href="/crm/users">ผู้ใช้งานและสิทธิ์</Link>
+              <span>บทบาทและสิทธิ์เข้าถึงโมดูล</span>
+            </li>
+            <li>
+              <Link href="/crm/cms/globals">ตั้งค่าเว็บไซต์</Link>
+              <span>โดเมน รูป OG และข้อความแบรนด์</span>
+            </li>
+          </ul>
+        </section>
+      </div>
     </div>
   );
 }

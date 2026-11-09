@@ -649,6 +649,43 @@ export async function togglePageOnline(formData: FormData) {
   return { id, online, path };
 }
 
+export async function updateCmsMenuItem(formData: FormData) {
+  const user = await requireCms();
+  const id = String(formData.get("id") ?? "").trim();
+  if (!id) redirect("/crm/cms/menus?error=missing");
+  const existing = await documentById(id);
+  if (!existing || existing.kind !== "page") redirect("/crm/cms/menus?error=missing");
+
+  const menu = String(formData.get("menu") ?? "none").trim() || "none";
+  const allowedMenus = new Set(["none", "header", "footer"]);
+  if (!allowedMenus.has(menu)) redirect(`/crm/cms/menus?error=menu&id=${encodeURIComponent(id)}`);
+
+  const menuLabel = String(formData.get("menuLabel") ?? "").trim();
+  const menuParent = String(formData.get("menuParent") ?? "").trim();
+  const menuPosition = Number(formData.get("menuPosition") ?? existing.menuPosition) || 0;
+  const showInMenu = formData.get("showInMenu") === "1";
+  if (showInMenu && menu === "none") {
+    redirect(`/crm/cms/menus?error=menu&id=${encodeURIComponent(id)}`);
+  }
+
+  const db = await cmsDb();
+  await db.cmsDocument.update({
+    where: { id },
+    data: {
+      showInMenu,
+      menu: showInMenu ? menu : "none",
+      menuLabel,
+      menuParent,
+      menuPosition,
+      updatedBy: user.email,
+    },
+  });
+  await refreshCmsFiles();
+  revalidatePath("/crm/cms/menus");
+  revalidatePath("/");
+  redirect(`/crm/cms/menus?saved=1&id=${encodeURIComponent(id)}`);
+}
+
 export async function moveInsightOrder(formData: FormData) {
   await requireCms();
   const slug = String(formData.get("slug") ?? "").trim();

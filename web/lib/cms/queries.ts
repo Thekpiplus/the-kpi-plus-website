@@ -61,15 +61,43 @@ function liveNowFilter() {
 export async function cmsOverview() {
   try {
     const db = await cmsDb();
-    const [pages, insights, drafts, media] = await Promise.all([
+    const [pages, insights, drafts, media, publishedPages, publishedInsights] = await Promise.all([
       db.cmsDocument.count({ where: { kind: "page", trashedAt: null } }),
       db.cmsDocument.count({ where: { kind: "insight", trashedAt: null } }),
       db.cmsDocument.count({ where: { status: "draft", trashedAt: null } }),
       db.cmsMedia.count(),
+      db.cmsDocument.count({ where: { kind: "page", trashedAt: null, status: "published" } }),
+      db.cmsDocument.count({ where: { kind: "insight", trashedAt: null, status: "published" } }),
     ]);
-    return { pages, insights, drafts, media };
+    return { pages, insights, drafts, media, publishedPages, publishedInsights };
   } catch {
-    return { pages: 0, insights: 0, drafts: 0, media: 0 };
+    return { pages: 0, insights: 0, drafts: 0, media: 0, publishedPages: 0, publishedInsights: 0 };
+  }
+}
+
+export async function listRecentDocuments(limit = 8) {
+  try {
+    const db = await cmsDb();
+    return db.cmsDocument.findMany({
+      where: { trashedAt: null },
+      orderBy: { updatedAt: "desc" },
+      take: Math.max(1, Math.min(limit, 40)),
+    });
+  } catch {
+    return [];
+  }
+}
+
+export async function listMenuDocuments() {
+  try {
+    const db = await cmsDb();
+    const docs = await db.cmsDocument.findMany({
+      where: { kind: "page", trashedAt: null },
+      orderBy: [{ menuPosition: "asc" }, { updatedAt: "desc" }],
+    });
+    return docs;
+  } catch {
+    return [];
   }
 }
 

@@ -5,6 +5,7 @@ import { useEffect, useId, useState, type ReactNode } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { logoutAction } from "@/lib/crm/actions";
 import { ADMIN_MODULES, MODULE_PATH, type AdminModule } from "@/lib/crm/modules";
+import { CMS_CONTENT_LINKS, CMS_SYSTEM_LINKS, cmsSubNavItems, isCmsPath } from "@/lib/cms/nav";
 import { CrmThemeToggle } from "@/components/crm/CrmThemeToggle";
 import { CrmSubNav, type CrmSubNavItem } from "@/components/crm/CrmSubNav";
 import { NewLeadModalProvider } from "@/components/crm/ui/NewLeadModal";
@@ -291,30 +292,7 @@ const seoLinks: ContextLink[] = [
   { href: "/crm/seo/settings", label: "Settings" },
 ];
 
-const cmsLinks: ContextLink[] = [
-  { href: "/crm/cms", label: "ทุกหน้า" },
-  { href: "/crm/cms/insights", label: "บทความ" },
-  { href: "/crm/cms/hotel-marketing", label: "Hotel Marketing" },
-  { href: "/crm/cms/case-studies", label: "ผลงานลูกค้า" },
-  { href: "/crm/cms/client-logos", label: "โลโก้ลูกค้า" },
-  { href: "/crm/cms/about-us", label: "หน้าเกี่ยวกับเรา" },
-  { href: "/crm/cms/trash", label: "ถังขยะ" },
-  { href: "/crm/cms/media", label: "สื่อและรูปภาพ" },
-  { href: "/crm/cms/redirects", label: "Redirect" },
-  { href: "/crm/cms/globals", label: "ตั้งค่าเว็บ" },
-  { href: "/crm/cms/reservations", label: "Reservations" },
-  { href: "/crm/cms/b2b", label: "B2B Agent Sales" },
-  { href: "/crm/cms/google-ads", label: "Google Ads" },
-  { href: "/crm/cms/meta-ads", label: "Meta Ads" },
-  { href: "/crm/cms/hotel-seo", label: "Hotel SEO" },
-  { href: "/crm/cms/hotel-website", label: "Hotel Website" },
-  { href: "/crm/cms/hotel-direct-bookings", label: "Direct Bookings" },
-  { href: "/crm/cms/independent-hotel", label: "Independent Hotel" },
-  { href: "/crm/cms/hotel-systems", label: "Hotel Systems" },
-  { href: "/crm/cms/hotel-ai", label: "Hotel AI" },
-  { href: "/crm/cms/hotel-training", label: "Hotel Training" },
-  { href: "/crm/cms/solutions", label: "Hotel Solutions" },
-];
+const cmsLinks: ContextLink[] = cmsSubNavItems();
 
 /** Shorter module titles for the context subnav (sidebar keeps full NAV_LABEL). */
 const SUBNAV_MODULE_LABEL: Record<Exclude<Workspace, "home">, string> = {
@@ -394,8 +372,8 @@ const NAV_SECTIONS: { id: NavSectionId; label: string; items: NavKey[] }[] = [
     label: "การตลาดและช่องทางออนไลน์",
     items: ["ads", "meta", "seo", "website", "hotel_marketing"],
   },
-  { id: "content", label: "ข้อมูลและเนื้อหา", items: ["solutions", "cms"] },
-  { id: "system", label: "จัดการระบบ", items: ["users", "settings"] },
+  { id: "content", label: "Content Management", items: ["cms", "solutions"] },
+  { id: "system", label: "ตั้งค่าระบบ", items: ["users", "settings"] },
 ];
 
 const SECTION_STORAGE_KEY = "crm-rail-sections";
@@ -847,16 +825,57 @@ export function CrmShell({
                 role="group"
                 aria-label={section.label}
               >
-                {visibleItems.map((item) => (
-                  <RailLink
-                    key={item}
-                    href={navHref(item)}
-                    navKey={item}
-                    current={isNavKeyCurrent(item, workspace, pathname)}
-                    nested
-                    onNavigate={onNavigate}
-                  />
-                ))}
+                {visibleItems.map((item) => {
+                  if (item === "cms") {
+                    const cmsOpen = isCmsPath(pathname) || sectionIsOpen(section.id, containsCurrent);
+                    return (
+                      <div key="cms" className={`crm-rail-cms-block${isCmsPath(pathname) ? " is-current" : ""}`}>
+                        <RailLink
+                          href="/crm/cms"
+                          navKey="cms"
+                          current={pathname === "/crm/cms"}
+                          nested
+                          onNavigate={onNavigate}
+                        />
+                        {cmsOpen && expandedChrome ? (
+                          <div className="crm-rail-cms-children" role="group" aria-label="เมนู Content Management">
+                            {[...CMS_CONTENT_LINKS.filter((link) => link.href !== "/crm/cms"), ...CMS_SYSTEM_LINKS].map(
+                              (link) => {
+                                const current =
+                                  pathname === link.href ||
+                                  (link.href !== "/crm/users" && pathname.startsWith(`${link.href}/`)) ||
+                                  (link.href === "/crm/users" &&
+                                    (pathname === "/crm/users" || pathname.startsWith("/crm/users/")));
+                                return (
+                                  <Link
+                                    key={link.href}
+                                    href={link.href}
+                                    className={`crm-rail-link is-nested is-cms-child${current ? " is-active" : ""}`}
+                                    aria-current={current ? "page" : undefined}
+                                    title={link.label}
+                                    onClick={onNavigate}
+                                  >
+                                    <span className="crm-rail-link-text">{link.label}</span>
+                                  </Link>
+                                );
+                              },
+                            )}
+                          </div>
+                        ) : null}
+                      </div>
+                    );
+                  }
+                  return (
+                    <RailLink
+                      key={item}
+                      href={navHref(item)}
+                      navKey={item}
+                      current={isNavKeyCurrent(item, workspace, pathname)}
+                      nested
+                      onNavigate={onNavigate}
+                    />
+                  );
+                })}
               </div>
             </div>
           );
