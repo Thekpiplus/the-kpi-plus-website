@@ -122,16 +122,27 @@ export function MediaThumbnailGrid({ items }: { items: MediaThumbItem[] }) {
                 type="button"
                 className={`crm-cms-media-thumb${isImage ? "" : " is-file"}`}
                 title={item.filename}
-                aria-label={`เปิด ${item.filename}`}
+                aria-label={`เปิดรายละเอียด ${item.filename}`}
                 onClick={(event) => open(item, event)}
               >
                 {isImage ? (
+                  // eslint-disable-next-line @next/next/no-img-element -- CMS /media path
                   <img src={item.path} alt={item.alt || item.filename} loading="lazy" />
                 ) : (
                   <span className="crm-cms-media-file-badge">{item.typeLabel || mimeLabel(item.mime)}</span>
                 )}
                 <span className="crm-cms-media-type">{item.typeLabel || mimeLabel(item.mime)}</span>
               </button>
+              <div className="crm-cms-media-card-meta">
+                <p className="crm-cms-media-card-name" title={item.filename}>
+                  {item.filename}
+                </p>
+                <p className="crm-cms-media-card-info">
+                  <span>{item.sizeLabel}</span>
+                  <span aria-hidden="true">·</span>
+                  <span>{item.dateLabel}</span>
+                </p>
+              </div>
             </li>
           );
         })}
