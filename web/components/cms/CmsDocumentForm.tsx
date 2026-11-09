@@ -1,4 +1,6 @@
+import type { ReactNode } from "react";
 import { MarkdownBodyEditor } from "@/components/cms/MarkdownBodyEditor";
+import { CmsEditorSaveBar, CmsFormDirtyTracker } from "@/components/cms/CmsEditorSaveBar";
 import { PageFaqPanel } from "@/components/cms/PageFaqPanel";
 import { blocksToMarkdown, documentPath, parseCmsBody } from "@/lib/cms/body";
 import { createDocument, updateDocument } from "@/lib/cms/actions";
@@ -14,18 +16,26 @@ const LOCALE_LABEL: Record<(typeof CMS_LOCALES)[number], string> = {
   zh: "繁體中文",
 };
 
+const FORM_ID = "crm-cms-document-form";
+
 export function CmsDocumentForm({
   kind,
   document,
   error,
   saved,
   faq,
+  previewHref,
+  publicHref,
+  dangerZone,
 }: {
   kind: "page" | "insight";
   document?: CmsDocumentRow | null;
   error?: string;
   saved?: boolean;
   faq?: { route: string; items: FaqItem[]; source: "cms" | "code" | "empty" } | null;
+  previewHref?: string;
+  publicHref?: string;
+  dangerZone?: ReactNode;
 }) {
   const action = document ? updateDocument : createDocument;
   const isInsight = kind === "insight";
@@ -43,21 +53,31 @@ export function CmsDocumentForm({
     (document && !isInsight
       ? documentPath({ kind: document.kind, slug: document.slug, locale: document.locale })
       : "");
+  const barStatus = saved ? "บันทึกแล้ว" : error ? "บันทึกไม่สำเร็จ — ตรวจข้อความด้านล่าง" : undefined;
 
   return (
-    <form action={action} className="crm-cms-editor">
+    <form id={FORM_ID} action={action} className="crm-cms-editor crm-cms-editor--split">
+      <CmsFormDirtyTracker formId={FORM_ID} />
       {document ? <input type="hidden" name="id" value={document.id} /> : null}
       <input type="hidden" name="kind" value={kind} />
       {isInsight ? null : <input type="hidden" name="template" value={document?.template ?? "general"} />}
+
+      <CmsEditorSaveBar
+        saveLabel={isInsight ? "บันทึกบทความ" : "บันทึกหน้าเพจ"}
+        previewHref={previewHref}
+        publicHref={publicHref}
+        statusLabel={barStatus}
+      />
 
       <div className="crm-cms-editor-main">
         <section className="crm-cms-editor-panel">
           <header className="crm-cms-editor-panel-head">
             <div>
-              <p className="crm-cms-editor-kicker">Content</p>
-              <h2>เนื้อหา</h2>
+              <p className="crm-cms-editor-kicker">{isInsight ? "บทความ" : "หน้าเว็บ"}</p>
+              <h2>เนื้อหา{isInsight ? "บทความ" : ""}</h2>
             </div>
           </header>
+
           {isInsight ? null : (
             <p className="crm-cms-editor-note">
               หน้าที่มีเลย์เอาต์ออกแบบในโค้ด (เช่น about / approach / case-studies) คงดีไซน์เดิม — จาก CMS
@@ -65,16 +85,27 @@ export function CmsDocumentForm({
               และบทความเท่านั้น
             </p>
           )}
-          {saved ? <p className="crm-users-alert is-ok">บันทึกแล้ว</p> : null}
+
+          {saved ? (
+            <p className="crm-users-alert is-ok" role="status">
+              บันทึกแล้ว
+            </p>
+          ) : null}
           {error === "invalid" ? (
-            <p className="crm-users-alert is-warn">กรอกชื่อและ slug เป็นตัวอักษรอังกฤษ ตัวเลข และ - ให้ครบ</p>
+            <p className="crm-users-alert is-warn" role="alert">
+              กรอกชื่อและ slug เป็นตัวอักษรอังกฤษ ตัวเลข และ - ให้ครบ
+            </p>
           ) : null}
           {error === "locked" ? (
-            <p className="crm-users-alert is-warn">
+            <p className="crm-users-alert is-warn" role="alert">
               {isInsight ? "เส้นทางนี้ใช้ไม่ได้ เลือก slug อื่น" : "เส้นทางนี้เป็นหน้าจากโค้ด เลือก slug อื่น"}
             </p>
           ) : null}
-          {error === "exists" ? <p className="crm-users-alert is-warn">slug ภาษานี้มีอยู่แล้ว</p> : null}
+          {error === "exists" ? (
+            <p className="crm-users-alert is-warn" role="alert">
+              slug ภาษานี้มีอยู่แล้ว
+            </p>
+          ) : null}
 
           <label className="crm-cms-field">
             <span>ชื่อเรื่อง</span>
@@ -162,7 +193,12 @@ export function CmsDocumentForm({
             <>
               <label className="crm-cms-field">
                 <span>หมวด</span>
-                <input className="crm-field" name="category" defaultValue={document?.category} placeholder="เช่น การตลาดโรงแรม" />
+                <input
+                  className="crm-field"
+                  name="category"
+                  defaultValue={document?.category}
+                  placeholder="เช่น การตลาดโรงแรม"
+                />
               </label>
               <label className="crm-cms-field">
                 <span>ผู้เขียน</span>
@@ -170,17 +206,16 @@ export function CmsDocumentForm({
               </label>
             </>
           ) : null}
-          <button className="kpi-button crm-cms-editor-save" type="submit">
-            {isInsight ? "บันทึกบทความ" : "บันทึกหน้าเพจ"}
-          </button>
         </section>
 
         <section className="crm-cms-editor-panel">
-          <h3>รูปหลัก</h3>
+          <h3>รูปภาพหลัก</h3>
           {isInsight ? (
             <p className="crm-cms-editor-note">
-              เว้นที่อยู่รูปว่างไว้ถ้าไฟล์ยังไม่มีในเครื่อง ระบบจะไม่สร้างภาพให้อัตโนมัติ และจะแสดงกรอบตัวอย่างแทน
-              {imageSlot ? ` ช่องที่จองไว้: ${imageSlot.reservedSrc} (${imageSlot.sourceWidth}×${imageSlot.sourceHeight}, แสดง ${imageSlot.displayWidth}×${imageSlot.displayHeight}, ${imageSlot.ratio}).` : ""}
+              เว้นที่อยู่รูปว่างไว้ถ้าไฟล์ยังไม่มีในเครื่อง ระบบจะแสดงกรอบตัวอย่างแทน
+              {imageSlot
+                ? ` · ช่องที่จองไว้ ${imageSlot.sourceWidth}×${imageSlot.sourceHeight}`
+                : ""}
             </p>
           ) : null}
           <label className="crm-cms-field">
@@ -195,10 +230,10 @@ export function CmsDocumentForm({
           <label className="crm-cms-field">
             <span>คำอธิบายรูป (alt)</span>
             <input className="crm-field" name="imageAlt" defaultValue={document?.imageAlt} />
-            {isInsight ? <small>แก้ข้อความ alt ได้จากหน้านี้ ใช้กับภาพที่มีความหมาย ไม่ใส่ข้อความถ้าภาพเป็นแค่กรอบตัวอย่าง</small> : null}
           </label>
           {isInsight ? (
-            <>
+            <details className="crm-cms-editor-inline-details">
+              <summary>ตัวเลือกภาพเพิ่มเติม</summary>
               <label className="crm-cms-field">
                 <span>สถานะภาพ</span>
                 <select className="crm-select" name="imageStatus" defaultValue={imageMeta.imageStatus}>
@@ -215,7 +250,7 @@ export function CmsDocumentForm({
                   <option value="contain">Contain — ภาพรายงานหรือสกรีนช็อต</option>
                 </select>
               </label>
-            </>
+            </details>
           ) : null}
         </section>
 
@@ -243,37 +278,48 @@ export function CmsDocumentForm({
           </label>
         </details>
 
-        <details className="crm-cms-editor-panel crm-cms-editor-details">
-          <summary>เมนู</summary>
-          <label className="crm-cms-field">
-            <span>ชื่อเมนู</span>
-            <input
-              className="crm-field"
-              name="menuLabel"
-              defaultValue={document?.menuLabel}
-              placeholder="ชื่อสั้นที่แสดงในเมนูเว็บ"
-            />
-            <small>เว้นว่างแล้วระบบจะใช้ชื่อเรื่องแทน</small>
-          </label>
-          <label className="crm-cms-check">
-            <input type="checkbox" name="showInMenu" value="1" defaultChecked={Boolean(document?.showInMenu)} />
-            แสดงในเมนู
-          </label>
-          <label className="crm-cms-field">
-            <span>ตำแหน่งเมนู</span>
-            <select className="crm-select" name="menu" defaultValue={document?.menu ?? "none"}>
-              {CMS_MENUS.map((menu) => (
-                <option key={menu} value={menu}>
-                  {menu === "none" ? "ไม่ใส่เมนู" : menu === "header" ? "ส่วนหัว" : "ส่วนท้าย"}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="crm-cms-field">
-            <span>ลำดับ</span>
-            <input className="crm-field" type="number" name="menuPosition" defaultValue={document?.menuPosition ?? 0} />
-          </label>
-        </details>
+        {!isInsight ? (
+          <details className="crm-cms-editor-panel crm-cms-editor-details">
+            <summary>เมนู</summary>
+            <label className="crm-cms-field">
+              <span>ชื่อเมนู</span>
+              <input
+                className="crm-field"
+                name="menuLabel"
+                defaultValue={document?.menuLabel}
+                placeholder="ชื่อสั้นที่แสดงในเมนูเว็บ"
+              />
+              <small>เว้นว่างแล้วระบบจะใช้ชื่อเรื่องแทน</small>
+            </label>
+            <label className="crm-cms-check">
+              <input type="checkbox" name="showInMenu" value="1" defaultChecked={Boolean(document?.showInMenu)} />
+              แสดงในเมนู
+            </label>
+            <label className="crm-cms-field">
+              <span>ตำแหน่งเมนู</span>
+              <select className="crm-select" name="menu" defaultValue={document?.menu ?? "none"}>
+                {CMS_MENUS.map((menu) => (
+                  <option key={menu} value={menu}>
+                    {menu === "none" ? "ไม่ใส่เมนู" : menu === "header" ? "ส่วนหัว" : "ส่วนท้าย"}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="crm-cms-field">
+              <span>ลำดับ</span>
+              <input className="crm-field" type="number" name="menuPosition" defaultValue={document?.menuPosition ?? 0} />
+            </label>
+          </details>
+        ) : (
+          <>
+            <input type="hidden" name="menuLabel" value={document?.menuLabel ?? ""} />
+            <input type="hidden" name="menu" value={document?.menu ?? "none"} />
+            <input type="hidden" name="menuPosition" value={String(document?.menuPosition ?? 0)} />
+            {document?.showInMenu ? <input type="hidden" name="showInMenu" value="1" /> : null}
+          </>
+        )}
+
+        {dangerZone ? <div className="crm-cms-editor-danger crm-cms-editor-danger--side">{dangerZone}</div> : null}
       </aside>
     </form>
   );

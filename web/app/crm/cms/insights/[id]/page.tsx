@@ -3,7 +3,6 @@ import { notFound } from "next/navigation";
 import { CmsDocumentForm } from "@/components/cms/CmsDocumentForm";
 import { HotelMarketingInsightEditor } from "@/components/cms/HotelMarketingInsightEditor";
 import { ConfirmDeleteButton } from "@/components/crm/ui/ConfirmDeleteButton";
-import { PageHeader } from "@/components/crm/ui/PageHeader";
 import { trashDocument } from "@/lib/cms/actions";
 import { documentById } from "@/lib/cms/queries";
 import { documentPath } from "@/lib/cms/body";
@@ -13,6 +12,13 @@ import {
   editorStateForHotelMarketingDocument,
   saveHotelMarketingInsight,
 } from "@/lib/cms/hotel-marketing-insight-actions";
+
+function statusText(status: string) {
+  if (status === "draft") return "ฉบับร่าง";
+  if (status === "scheduled") return "ตั้งเวลา";
+  if (status === "published") return "เผยแพร่แล้ว";
+  return status;
+}
 
 export default async function EditCmsInsightPage({
   params,
@@ -32,63 +38,86 @@ export default async function EditCmsInsightPage({
 
   const current = hydrated?.document ?? document;
   const path = documentPath(current);
+  const previewHref = `/crm/cms/insights/${current.id}/preview`;
+  const publicHref = current.status === "published" ? path : undefined;
+
+  const danger = (
+    <>
+      <div>
+        <p>ลบบทความ</p>
+        <span>ย้ายเข้าถังขยะ บทความจะไม่แสดงบนเว็บ</span>
+      </div>
+      <ConfirmDeleteButton
+        action={trashDocument}
+        fields={{ id: current.id, returnTo: "/crm/cms/insights" }}
+        itemName={current.title}
+        eyebrow="Content"
+        title="ย้ายเข้าถังขยะ"
+        message={`ยืนยันย้าย “${current.title}” เข้าถังขยะ?`}
+        buttonLabel="ลบบทความ"
+        confirmLabel="ลบบทความ"
+        className="kpi-button crm-users-delete-btn"
+      />
+    </>
+  );
 
   return (
-    <div className="crm-cms">
-      <PageHeader
-        eyebrow="Content Management"
-        title={current.title}
-        description={path}
-        actions={
-          <div className="crm-cms-actions">
-            <Link href="/crm/cms/insights" className="crm-users-secondary">
-              ← บทความทั้งหมด
-            </Link>
+    <div className="crm-cms crm-cms-insight-edit">
+      <header className="crm-cms-edit-head">
+        <nav className="crm-cms-edit-crumb" aria-label="เส้นทาง">
+          <Link href="/crm/cms/insights">บทความ</Link>
+          <span aria-hidden="true">/</span>
+          <span>แก้ไขบทความ</span>
+        </nav>
+        <div className="crm-cms-edit-head-row">
+          <div className="crm-cms-edit-head-copy">
+            <h1 className="crm-cms-edit-title">{current.title}</h1>
+            <p className="crm-cms-edit-path" title={path}>
+              {path}
+            </p>
+          </div>
+          <div className="crm-cms-edit-head-meta">
+            <span className={`crm-cms-status-pill is-${current.status}`}>{statusText(current.status)}</span>
             {hotelMarketing ? (
-              <Link href={`/crm/cms/insights/${current.id}/preview`} className="crm-users-secondary">
+              <Link href={previewHref} className="crm-users-secondary">
                 ดูตัวอย่าง
               </Link>
             ) : null}
-            {current.status === "published" ? (
-              <a href={path} className="crm-users-secondary" target="_blank" rel="noreferrer">
-                เปิดดู
+            {publicHref ? (
+              <a href={publicHref} className="crm-users-secondary" target="_blank" rel="noreferrer">
+                เปิดบนเว็บ
               </a>
             ) : null}
           </div>
-        }
-      />
-      {hydrated ? (
-        <HotelMarketingInsightEditor
-          initial={hydrated.state}
-          notice={saved === "1" ? "บันทึกแล้ว" : undefined}
-          error={error}
-          saveAction={saveHotelMarketingInsight}
-          duplicateAction={duplicateHotelMarketingInsightFromForm}
-          updatedAt={hydrated.document.updatedAt.toISOString()}
-          initialTab={tab}
-          previewHref={`/crm/cms/insights/${hydrated.document.id}/preview`}
-          publicHref={path}
-        />
-      ) : (
-        <CmsDocumentForm kind="insight" document={document} error={error} saved={saved === "1"} />
-      )}
-      <div className="crm-cms-editor-danger">
-        <div>
-          <p>ลบบทความ</p>
-          <span>ย้ายเข้าถังขยะ บทความจะไม่แสดงบนเว็บ</span>
         </div>
-        <ConfirmDeleteButton
-          action={trashDocument}
-          fields={{ id: current.id, returnTo: "/crm/cms/insights" }}
-          itemName={current.title}
-          eyebrow="Content"
-          title="ย้ายเข้าถังขยะ"
-          message={`ยืนยันย้าย “${current.title}” เข้าถังขยะ?`}
-          buttonLabel="ลบบทความ"
-          confirmLabel="ลบบทความ"
-          className="kpi-button crm-users-delete-btn"
+      </header>
+
+      {hydrated ? (
+        <>
+          <HotelMarketingInsightEditor
+            initial={hydrated.state}
+            notice={saved === "1" ? "บันทึกแล้ว" : undefined}
+            error={error}
+            saveAction={saveHotelMarketingInsight}
+            duplicateAction={duplicateHotelMarketingInsightFromForm}
+            updatedAt={hydrated.document.updatedAt.toISOString()}
+            initialTab={tab}
+            previewHref={previewHref}
+            publicHref={path}
+          />
+          <div className="crm-cms-editor-danger">{danger}</div>
+        </>
+      ) : (
+        <CmsDocumentForm
+          kind="insight"
+          document={document}
+          error={error}
+          saved={saved === "1"}
+          previewHref={previewHref}
+          publicHref={publicHref}
+          dangerZone={danger}
         />
-      </div>
+      )}
     </div>
   );
 }
