@@ -8,5 +8,5 @@ export default async function ReservationsCmsRedirect({
 }) {
   const { tab } = await searchParams;
   const id = await ensureReservationsPageFromSite();
-  redirect(`/crm/cms/pages/${id}${tab ? `?tab=${encodeURIComponent(tab)}` : "?tab=boundaries"}`);
+  redirect(`/crm/cms/pages/${id}${tab ? `?tab=${encodeURIComponent(tab)}` : "?tab=hero"}`);
 }

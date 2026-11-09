@@ -76,6 +76,12 @@ import {
   serializeCaseStudiesPageBody,
   defaultCaseStudiesCms,
 } from "./case-studies-page";
+import {
+  APPROACH_CMS_TEMPLATE,
+  APPROACH_PAGE_ROUTE,
+  serializeApproachPageBody,
+  defaultApproachCms,
+} from "./approach-page";
 
 async function requireCms() {
   const user = await requireUser();
@@ -329,6 +335,11 @@ export async function ensurePageFromSite(route: string) {
       const hydrated = await hydrateCaseStudiesPageDocument(existing);
       return hydrated.id;
     }
+    if (normalized === APPROACH_PAGE_ROUTE) {
+      const { hydrateApproachPageDocument } = await import("./approach-page-actions");
+      const hydrated = await hydrateApproachPageDocument(existing);
+      return hydrated.id;
+    }
     return existing.id;
   }
 
@@ -355,6 +366,7 @@ export async function ensurePageFromSite(route: string) {
   const isHotelTraining = normalized === HOTEL_TRAINING_PAGE_ROUTE;
   const isSolutionsIndex = normalized === SOLUTIONS_INDEX_PAGE_ROUTE;
   const isCaseStudies = normalized === CASE_STUDIES_PAGE_ROUTE;
+  const isApproach = normalized === APPROACH_PAGE_ROUTE;
   const created = await db.cmsDocument.create({
     data: {
       kind: "page",
@@ -386,6 +398,8 @@ export async function ensurePageFromSite(route: string) {
                     ? SOLUTIONS_INDEX_CMS_TEMPLATE
                   : isCaseStudies
                     ? CASE_STUDIES_CMS_TEMPLATE
+                  : isApproach
+                    ? APPROACH_CMS_TEMPLATE
                 : "general",
       excerpt: sitePage.description || "",
       body: isRevenue
@@ -412,6 +426,8 @@ export async function ensurePageFromSite(route: string) {
                     ? serializeSolutionsIndexPageBody(defaultSolutionsIndexCms("th"))
                   : isCaseStudies
                     ? serializeCaseStudiesPageBody(defaultCaseStudiesCms())
+                  : isApproach
+                    ? serializeApproachPageBody(defaultApproachCms())
                 : bodyFromMarkdown(markdown),
       tags: "",
       seoTitle: sitePage.title,

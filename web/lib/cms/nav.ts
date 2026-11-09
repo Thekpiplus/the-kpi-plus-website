@@ -30,11 +30,13 @@ export const CMS_ACCOUNT_LINKS: CmsNavLink[] = [
 /** Solution / specialty page editors kept reachable without cluttering the primary IA. */
 export const CMS_SOLUTION_LINKS: CmsNavLink[] = [
   { href: "/crm/cms/about-us", label: "เกี่ยวกับเรา" },
+  { href: "/crm/cms/approach", label: "แนวทางของเรา" },
   { href: "/crm/cms/contact-us", label: "ติดต่อเรา" },
   { href: "/crm/cms/case-studies", label: "ผลงานลูกค้า" },
   { href: "/crm/cms/case-studies-page", label: "หน้าผลงาน" },
   { href: "/crm/cms/client-logos", label: "โลโก้ลูกค้า" },
   { href: "/crm/cms/hotel-marketing", label: "Hotel Marketing" },
+  { href: "/crm/cms/revenue", label: "Revenue & Commercial" },
   { href: "/crm/cms/reservations", label: "Reservations" },
   { href: "/crm/cms/b2b", label: "B2B Agent Sales" },
   { href: "/crm/cms/google-ads", label: "Google Ads" },
