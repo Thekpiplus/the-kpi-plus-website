@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, useTransition, type ReactNode } from "react";
+import { useEffect, useMemo, useState, useTransition, type ReactNode } from "react";
 import { saveAboutPage } from "@/lib/cms/about-page-actions";
 import {
   emptyAboutLocalized,
@@ -27,6 +27,13 @@ const TABS = [
   { id: "faq", label: "FAQ" },
   { id: "seo", label: "SEO / เผยแพร่" },
 ] as const;
+
+const TAB_GROUPS: Array<{ label: string; ids: Array<(typeof TABS)[number]["id"]> }> = [
+  { label: "เนื้อหาหลัก", ids: ["hero", "partner", "method"] },
+  { label: "รายละเอียด", ids: ["pillars", "experience", "values", "founders", "closer", "join"] },
+  { label: "สื่อและ FAQ", ids: ["media", "faq"] },
+  { label: "SEO / เผยแพร่", ids: ["seo"] },
+];
 
 type Tab = (typeof TABS)[number]["id"];
 type Lang = keyof AboutLocalized;
@@ -57,27 +64,30 @@ function LocalizedFields({
   value,
   lang,
   multiline,
+  rows = 3,
   onChange,
 }: {
   label: string;
   value: AboutLocalized;
   lang: Lang;
   multiline?: boolean;
+  rows?: number;
   onChange: (next: AboutLocalized) => void;
 }) {
+  const text = value[lang] ?? "";
   return (
-    <Field label={`${label} (${lang.toUpperCase()})`}>
+    <Field label={label} hint={!text.trim() ? `ยังไม่มีข้อความภาษา${lang.toUpperCase()}` : undefined}>
       {multiline ? (
         <textarea
-          className="crm-area"
-          rows={3}
-          value={value[lang]}
+          className="crm-area crm-cms-page-editor-area"
+          rows={rows}
+          value={text}
           onChange={(event) => onChange({ ...value, [lang]: event.target.value })}
         />
       ) : (
         <input
           className="crm-field"
-          value={value[lang]}
+          value={text}
           onChange={(event) => onChange({ ...value, [lang]: event.target.value })}
         />
       )}
@@ -88,9 +98,11 @@ function LocalizedFields({
 export function AboutPageEditor({
   initial,
   initialTab,
+  pagePath = "/about-us",
 }: {
   initial: AboutEditorState;
   initialTab?: string;
+  pagePath?: string;
 }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -101,11 +113,32 @@ export function AboutPageEditor({
   const [metaDescription, setMetaDescription] = useState(initial.metaDescription);
   const [status, setStatus] = useState(initial.status);
   const [content, setContent] = useState<CmsAboutPage>(initial.content);
+  const [dirty, setDirty] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
+  const activeTab = useMemo(() => TABS.find((item) => item.id === tab) ?? TABS[0], [tab]);
+  const activeLang = LANGS.find((item) => item.id === lang)?.label ?? lang.toUpperCase();
+
+  useEffect(() => {
+    if (!dirty) return;
+    const onUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = "";
+    };
+    window.addEventListener("beforeunload", onUnload);
+    return () => window.removeEventListener("beforeunload", onUnload);
+  }, [dirty]);
+
+  function markDirty() {
+    setDirty(true);
+    setMessage("");
+    setError("");
+  }
+
   function patch(next: CmsAboutPage) {
     setContent(next);
+    markDirty();
   }
 
   function submit(intent: AboutCmsIntent) {
@@ -131,43 +164,51 @@ export function AboutPageEditor({
         );
         return;
       }
+      setDirty(false);
       setStatus(intent === "publish" ? "published" : intent === "draft" || intent === "unpublish" ? "draft" : status);
       setMessage(intent === "publish" ? "เผยแพร่แล้ว" : intent === "unpublish" ? "ยกเลิกการเผยแพร่แล้ว" : "บันทึกแล้ว");
       router.refresh();
     });
   }
 
+  const saveState = pending
+    ? "กำลังบันทึก…"
+    : error
+      ? error
+      : dirty
+        ? "มีการแก้ไขที่ยังไม่ได้บันทึก"
+        : message || "พร้อมบันทึก";
+
   return (
-    <div className="crm-cms-contact-editor">
-      <div className="crm-cms-contact-editor-bar">
-        <div className="crm-cms-contact-editor-langs" role="tablist" aria-label="ภาษาที่แก้ไข">
-          {LANGS.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              className={`crm-users-secondary${lang === item.id ? " is-active" : ""}`}
-              onClick={() => setLang(item.id)}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
-        <div className="crm-cms-contact-editor-actions">
-          <Link href="/about-us" className="crm-users-secondary" target="_blank" rel="noreferrer">
-            เปิดหน้าเว็บ
+    <div className="crm-cms-page-editor">
+      <div className="crm-cms-page-editor-savebar">
+        <div className="crm-cms-page-editor-savebar-actions">
+          <Link href={pagePath} className="crm-users-secondary" target="_blank" rel="noreferrer">
+            ดูตัวอย่าง
           </Link>
           <button type="button" className="crm-users-secondary" disabled={pending} onClick={() => submit("draft")}>
             บันทึกฉบับร่าง
           </button>
-          <button type="button" className="kpi-button crm-users-primary" disabled={pending} onClick={() => submit("publish")}>
+          <button
+            type="button"
+            className="kpi-button crm-users-primary"
+            disabled={pending}
+            onClick={() => submit("publish")}
+          >
             {pending ? "กำลังบันทึก…" : "บันทึกและเผยแพร่"}
           </button>
         </div>
+        <p
+          className={`crm-cms-page-editor-save-state${pending ? " is-pending" : error ? " is-error" : dirty ? " is-dirty" : message ? " is-ok" : ""}`}
+          role="status"
+        >
+          {saveState}
+        </p>
       </div>
 
       {message ? (
         <p className="crm-users-alert is-ok" role="status">
-          {message} · สถานะ: {status === "published" ? "เผยแพร่" : "ฉบับร่าง"}
+          {message}
         </p>
       ) : null}
       {error ? (
@@ -176,22 +217,82 @@ export function AboutPageEditor({
         </p>
       ) : null}
 
-      <div className="crm-cms-contact-editor-tabs" role="tablist" aria-label="ส่วนของหน้าเกี่ยวกับเรา">
-        {TABS.map((item) => (
-          <button
-            key={item.id}
-            type="button"
-            className={`crm-users-secondary${tab === item.id ? " is-active" : ""}`}
-            onClick={() => setTab(item.id)}
-          >
-            {item.label}
-          </button>
-        ))}
-      </div>
+      <div className="crm-cms-page-editor-layout">
+        <aside className="crm-cms-page-editor-nav" aria-label="ส่วนของหน้า">
+          <label className="crm-cms-page-editor-nav-mobile">
+            <span>ส่วนที่แก้ไข</span>
+            <select
+              className="crm-select"
+              value={tab}
+              onChange={(event) => setTab(event.target.value as Tab)}
+            >
+              {TAB_GROUPS.map((group) => (
+                <optgroup key={group.label} label={group.label}>
+                  {group.ids.map((id) => {
+                    const item = TABS.find((tabItem) => tabItem.id === id);
+                    return item ? (
+                      <option key={item.id} value={item.id}>
+                        {item.label}
+                      </option>
+                    ) : null;
+                  })}
+                </optgroup>
+              ))}
+            </select>
+          </label>
+          <nav className="crm-cms-page-editor-nav-desktop" aria-label="กลุ่มส่วนเนื้อหา">
+            {TAB_GROUPS.map((group) => (
+              <div key={group.label} className="crm-cms-page-editor-nav-group">
+                <p className="crm-cms-page-editor-nav-label">{group.label}</p>
+                <div className="crm-cms-page-editor-nav-list" role="tablist" aria-label={group.label}>
+                  {group.ids.map((id) => {
+                    const item = TABS.find((tabItem) => tabItem.id === id);
+                    if (!item) return null;
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        role="tab"
+                        aria-selected={tab === item.id}
+                        className={`crm-cms-page-editor-nav-item${tab === item.id ? " is-active" : ""}`}
+                        onClick={() => setTab(item.id)}
+                      >
+                        {item.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </nav>
+        </aside>
 
-      <div className="crm-cms-contact-editor-panel">
+        <div className="crm-cms-page-editor-main">
+          <div className="crm-cms-page-editor-toolbar">
+            <div>
+              <p className="crm-cms-page-editor-section-kicker">กำลังแก้ไข</p>
+              <h2 className="crm-cms-page-editor-section-title">{activeTab.label}</h2>
+            </div>
+            <div className="crm-cms-page-editor-langs" role="tablist" aria-label="ภาษาที่แก้ไข">
+              {LANGS.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={lang === item.id}
+                  className={`crm-cms-page-editor-lang${lang === item.id ? " is-active" : ""}`}
+                  onClick={() => setLang(item.id)}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          <p className="crm-cms-page-editor-lang-note">ภาษาที่เลือก: {activeLang} — การเปลี่ยนภาษาไม่ลบข้อความภาษาอื่น</p>
+
+          <div className="crm-cms-page-editor-panel" role="tabpanel">
         {tab === "hero" ? (
-          <div className="crm-cms-contact-editor-grid">
+          <div className="crm-cms-page-editor-grid">
             <LocalizedFields
               label="Eyebrow"
               value={content.hero.kicker}
@@ -203,6 +304,7 @@ export function AboutPageEditor({
               value={content.hero.h1}
               lang={lang}
               multiline
+              rows={2}
               onChange={(h1) => patch({ ...content, hero: { ...content.hero, h1 } })}
             />
             <LocalizedFields
@@ -210,6 +312,7 @@ export function AboutPageEditor({
               value={content.hero.highlight}
               lang={lang}
               multiline
+              rows={2}
               onChange={(highlight) => patch({ ...content, hero: { ...content.hero, highlight } })}
             />
             <LocalizedFields
@@ -217,6 +320,7 @@ export function AboutPageEditor({
               value={content.hero.heroBody}
               lang={lang}
               multiline
+              rows={4}
               onChange={(heroBody) => patch({ ...content, hero: { ...content.hero, heroBody } })}
             />
             <LocalizedFields
@@ -225,18 +329,20 @@ export function AboutPageEditor({
               lang={lang}
               onChange={(workAlt) => patch({ ...content, hero: { ...content.hero, workAlt } })}
             />
-            <LocalizedFields
-              label="ปุ่ม Audit"
-              value={content.hero.auditCta}
-              lang={lang}
-              onChange={(auditCta) => patch({ ...content, hero: { ...content.hero, auditCta } })}
-            />
-            <LocalizedFields
-              label="ปุ่มรอง"
-              value={content.hero.secondaryCta}
-              lang={lang}
-              onChange={(secondaryCta) => patch({ ...content, hero: { ...content.hero, secondaryCta } })}
-            />
+            <div className="crm-cms-page-editor-grid is-two">
+              <LocalizedFields
+                label="ปุ่ม Audit"
+                value={content.hero.auditCta}
+                lang={lang}
+                onChange={(auditCta) => patch({ ...content, hero: { ...content.hero, auditCta } })}
+              />
+              <LocalizedFields
+                label="ปุ่มรอง"
+                value={content.hero.secondaryCta}
+                lang={lang}
+                onChange={(secondaryCta) => patch({ ...content, hero: { ...content.hero, secondaryCta } })}
+              />
+            </div>
           </div>
         ) : null}
 
@@ -1316,19 +1422,36 @@ export function AboutPageEditor({
         ) : null}
 
         {tab === "seo" ? (
-          <div className="crm-cms-contact-editor-grid">
+          <div className="crm-cms-page-editor-grid">
             <Field label="ชื่อเอกสารใน CMS">
-              <input className="crm-field" value={title} onChange={(event) => setTitle(event.target.value)} />
+              <input
+                className="crm-field"
+                value={title}
+                onChange={(event) => {
+                  setTitle(event.target.value);
+                  markDirty();
+                }}
+              />
             </Field>
             <Field label="SEO title">
-              <input className="crm-field" value={seoTitle} onChange={(event) => setSeoTitle(event.target.value)} />
+              <input
+                className="crm-field"
+                value={seoTitle}
+                onChange={(event) => {
+                  setSeoTitle(event.target.value);
+                  markDirty();
+                }}
+              />
             </Field>
             <Field label="Meta description">
               <textarea
-                className="crm-area"
+                className="crm-area crm-cms-page-editor-area"
                 rows={3}
                 value={metaDescription}
-                onChange={(event) => setMetaDescription(event.target.value)}
+                onChange={(event) => {
+                  setMetaDescription(event.target.value);
+                  markDirty();
+                }}
               />
             </Field>
             <p className="crm-cms-editor-note">สถานะปัจจุบัน: {status === "published" ? "เผยแพร่บนเว็บ" : "ฉบับร่าง"}</p>
@@ -1339,6 +1462,8 @@ export function AboutPageEditor({
             ) : null}
           </div>
         ) : null}
+          </div>
+        </div>
       </div>
     </div>
   );

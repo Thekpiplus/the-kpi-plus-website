@@ -88,26 +88,39 @@ export default async function EditCmsPage({
   if (aboutPage) {
     const hydrated = await editorStateForAboutDocument(id);
     if (!hydrated) notFound();
+    const statusLabel =
+      hydrated.status === "published" ? "เผยแพร่แล้ว" : hydrated.status === "scheduled" ? "ตั้งเวลา" : "ฉบับร่าง";
     return (
-      <div className="crm-cms">
-        <PageHeader
-          eyebrow="Content Management"
-          title={hydrated.title}
-          description={`${path} · แก้ข้อความหน้าเกี่ยวกับเราจากแอดมิน`}
-          actions={
-            <div className="crm-cms-actions">
-              <Link href="/crm/cms" className="crm-users-secondary">
-                ← หน้าเพจทั้งหมด
-              </Link>
-              <Link href="/about-us" className="crm-users-secondary" target="_blank" rel="noreferrer">
-                เปิดหน้าเว็บ
-              </Link>
+      <div className="crm-cms crm-cms-page-edit">
+        <header className="crm-cms-edit-head">
+          <nav className="crm-cms-edit-crumb" aria-label="เส้นทาง">
+            <Link href="/crm/cms/pages">หน้าเว็บไซต์</Link>
+            <span aria-hidden="true">/</span>
+            <span>แก้ไขเนื้อหา</span>
+          </nav>
+          <div className="crm-cms-edit-head-row">
+            <div className="crm-cms-edit-head-copy">
+              <h1 className="crm-cms-edit-title">{hydrated.title}</h1>
+              <p className="crm-cms-edit-path" title={path}>
+                {path}
+              </p>
             </div>
-          }
-        />
-        {saved ? <p className="crm-users-alert is-ok">บันทึกแล้ว</p> : null}
-        {error ? <p className="crm-users-alert is-warn">บันทึกไม่สำเร็จ</p> : null}
-        <AboutPageEditor initial={hydrated} initialTab={tab} />
+            <div className="crm-cms-edit-head-meta">
+              <span className={`crm-cms-status-pill is-${hydrated.status}`}>{statusLabel}</span>
+            </div>
+          </div>
+        </header>
+        {saved ? (
+          <p className="crm-users-alert is-ok" role="status">
+            บันทึกแล้ว
+          </p>
+        ) : null}
+        {error ? (
+          <p className="crm-users-alert is-warn" role="alert">
+            บันทึกไม่สำเร็จ
+          </p>
+        ) : null}
+        <AboutPageEditor initial={hydrated} initialTab={tab} pagePath={path} />
       </div>
     );
   }
