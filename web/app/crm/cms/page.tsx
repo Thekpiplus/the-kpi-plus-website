@@ -1,7 +1,6 @@
 import Link from "next/link";
-import { PageHeader } from "@/components/crm/ui/PageHeader";
 import { documentPath } from "@/lib/cms/body";
-import { cmsOverview, countTrashedDocuments, listRecentDocuments } from "@/lib/cms/queries";
+import { cmsOverview, countTrashedDocuments, listDocuments, listRecentDocuments } from "@/lib/cms/queries";
 import { formatCmsDate } from "@/lib/cms/page-rows";
 import { lockedPageList } from "@/lib/cms/locked";
 
@@ -9,152 +8,172 @@ function kindLabel(kind: string) {
   return kind === "insight" ? "บทความ" : "หน้าเว็บ";
 }
 
+function statusLabel(status: string) {
+  if (status === "draft") return "ฉบับร่าง";
+  if (status === "scheduled") return "ตั้งเวลา";
+  if (status === "published") return "เผยแพร่แล้ว";
+  return status;
+}
+
+const SHORTCUTS = [
+  { href: "/crm/cms/pages", label: "หน้าเว็บไซต์", hint: "ค้นหาและแก้ไขหน้า" },
+  { href: "/crm/cms/insights", label: "บทความ", hint: "จัดลำดับและเผยแพร่" },
+  { href: "/crm/cms/solutions", label: "บริการ", hint: "หน้าโซลูชัน" },
+  { href: "/crm/cms/menus", label: "เมนูเว็บ", hint: "Header / Footer" },
+  { href: "/crm/cms/media", label: "คลังไฟล์", hint: "รูปและสื่อ" },
+  { href: "/crm/cms/seo", label: "SEO", hint: "Title และ Redirect" },
+  { href: "/crm/cms/globals", label: "ตั้งค่าเว็บ", hint: "โดเมนและ OG" },
+] as const;
+
 export default async function CmsOverviewPage() {
-  const [overview, recent, trashed] = await Promise.all([
+  const [overview, recent, trashed, pages, insights] = await Promise.all([
     cmsOverview(),
-    listRecentDocuments(8),
+    listRecentDocuments(6),
     countTrashedDocuments(),
+    listDocuments("page"),
+    listDocuments("insight"),
   ]);
   const sitePages = lockedPageList().filter((page) => page.language === "th").length;
+  const totalPages = overview.pages + sitePages;
+  const missingSeo =
+    pages.filter((doc) => !doc.seoTitle?.trim() || !doc.metaDescription?.trim()).length +
+    insights.filter((doc) => !doc.seoTitle?.trim() || !doc.metaDescription?.trim()).length;
+  const needsReview = overview.drafts + missingSeo;
 
   return (
     <div className="crm-cms crm-cms-overview">
-      <header className="crm-cms-hero">
-        <div className="crm-cms-hero-copy">
-          <p className="crm-cms-hero-kicker">Content Management</p>
-          <h1 className="crm-cms-hero-title">ภาพรวมเนื้อหาเว็บไซต์</h1>
-          <p className="crm-cms-hero-desc">
-            ดูสรุปหน้าและบทความจากข้อมูลจริง แล้วไปแก้ไขหรือสร้างเนื้อหาได้จากปุ่มลัดด้านล่าง
+      <header className="crm-cms-overview-head">
+        <div>
+          <p className="crm-cms-overview-kicker">Content Management</p>
+          <h1 className="crm-cms-overview-title">ภาพรวมเนื้อหาเว็บไซต์</h1>
+          <p className="crm-cms-overview-desc">
+            สรุปสถานะเนื้อหาจากข้อมูลจริง และทางลัดไปแก้ไขหรือสร้างรายการใหม่
           </p>
         </div>
-        <div className="crm-cms-hero-actions">
-          <Link href="/crm/cms/pages/new" className="kpi-button crm-cms-hero-btn">
-            เพิ่มหน้า
+        <div className="crm-cms-overview-head-actions">
+          <Link href="/crm/cms/pages/new" className="kpi-button">
+            เพิ่มหน้าใหม่
           </Link>
-          <Link href="/crm/cms/insights/new" className="crm-users-secondary crm-cms-hero-btn-ghost">
+          <Link href="/crm/cms/insights/new" className="crm-users-secondary">
             เพิ่มบทความ
           </Link>
         </div>
       </header>
 
-      <section className="crm-dash-summary crm-cms-summary" aria-label="สรุป CMS">
-        <div className="crm-dash-stats" role="list">
-          <Link href="/crm/cms/pages" className="crm-dash-stat is-cms" role="listitem">
-            <span className="crm-dash-stat-label">หน้าเว็บไซต์</span>
-            <strong className="crm-dash-stat-value">{overview.pages + sitePages}</strong>
-            <span className="crm-dash-stat-hint">
-              CMS {overview.pages} · จากโค้ด {sitePages}
-            </span>
-          </Link>
-          <Link href="/crm/cms/pages?status=draft" className="crm-dash-stat is-partners" role="listitem">
-            <span className="crm-dash-stat-label">ฉบับร่าง</span>
-            <strong className="crm-dash-stat-value">{overview.drafts}</strong>
-            <span className="crm-dash-stat-hint">หน้าและบทความ</span>
-          </Link>
-          <Link href="/crm/cms/insights" className="crm-dash-stat is-today" role="listitem">
-            <span className="crm-dash-stat-label">บทความ / ข่าว</span>
-            <strong className="crm-dash-stat-value">{overview.insights}</strong>
-            <span className="crm-dash-stat-hint">เผยแพร่แล้ว {overview.publishedInsights}</span>
-          </Link>
-          <Link href="/crm/cms/media" className="crm-dash-stat is-web" role="listitem">
-            <span className="crm-dash-stat-label">ไฟล์ในคลัง</span>
-            <strong className="crm-dash-stat-value">{overview.media}</strong>
-            <span className="crm-dash-stat-hint">สื่อและรูปภาพ</span>
-          </Link>
-        </div>
+      <section className="crm-cms-overview-stats" aria-label="สรุป CMS">
+        <Link href="/crm/cms/pages" className="crm-cms-stat-card">
+          <span className="crm-cms-stat-label">หน้าเว็บไซต์</span>
+          <strong className="crm-cms-stat-value">{totalPages}</strong>
+          <span className="crm-cms-stat-hint">
+            CMS {overview.pages} · โค้ด {sitePages}
+          </span>
+        </Link>
+        <Link href="/crm/cms/pages?status=draft" className="crm-cms-stat-card is-draft">
+          <span className="crm-cms-stat-label">ฉบับร่าง</span>
+          <strong className="crm-cms-stat-value">{overview.drafts}</strong>
+          <span className="crm-cms-stat-hint">รอเผยแพร่</span>
+        </Link>
+        <Link href="/crm/cms/insights" className="crm-cms-stat-card is-insights">
+          <span className="crm-cms-stat-label">บทความ / ข่าว</span>
+          <strong className="crm-cms-stat-value">{overview.insights}</strong>
+          <span className="crm-cms-stat-hint">เผยแพร่แล้ว {overview.publishedInsights}</span>
+        </Link>
+        <Link href="/crm/cms/seo" className="crm-cms-stat-card is-review">
+          <span className="crm-cms-stat-label">ต้องตรวจสอบ</span>
+          <strong className="crm-cms-stat-value">{needsReview}</strong>
+          <span className="crm-cms-stat-hint">
+            SEO ไม่ครบ {missingSeo} · ถังขยะ {trashed}
+          </span>
+        </Link>
       </section>
 
-      <div className="crm-cms-overview-grid">
-        <section className="crm-cms-panel">
-          <PageHeader
-            eyebrow="ล่าสุด"
-            title="รายการที่แก้ไขล่าสุด"
-            description="เรียงจากเวลาอัปเดตในฐานข้อมูล CMS"
-            actions={
-              <Link href="/crm/cms/trash" className="crm-users-secondary">
-                ถังขยะ ({trashed})
-              </Link>
-            }
-          />
-          {recent.length === 0 ? (
-            <p className="crm-cms-empty-note">ยังไม่มีเอกสารใน CMS — เริ่มจากเพิ่มหน้าหรือบทความ</p>
-          ) : (
-            <div className="crm-cms-table-wrap">
-              <table className="crm-cms-table crm-cms-table--compact">
-                <thead>
-                  <tr>
-                    <th scope="col">ชื่อ</th>
-                    <th scope="col">ประเภท</th>
-                    <th scope="col">สถานะ</th>
-                    <th scope="col">อัปเดต</th>
-                    <th scope="col">โดย</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {recent.map((doc) => {
-                    const href =
-                      doc.kind === "insight" ? `/crm/cms/insights/${doc.id}` : `/crm/cms/pages/${doc.id}`;
-                    const updatedAt = doc.updatedAt instanceof Date ? doc.updatedAt : new Date(doc.updatedAt);
-                    return (
-                      <tr key={doc.id}>
-                        <td data-label="ชื่อ">
-                          <Link href={href} className="crm-cms-name">
-                            {doc.title}
-                          </Link>
-                          <code className="crm-cms-slug">{documentPath(doc)}</code>
-                        </td>
-                        <td data-label="ประเภท">{kindLabel(doc.kind)}</td>
-                        <td data-label="สถานะ">
-                          <span className={`crm-cms-status-pill is-${doc.status}`}>{doc.status}</span>
-                        </td>
-                        <td data-label="อัปเดต">{formatCmsDate(updatedAt)}</td>
-                        <td data-label="โดย">{doc.updatedBy?.trim() || "—"}</td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+      <div className="crm-cms-overview-body">
+        <section className="crm-cms-overview-main" aria-labelledby="cms-recent-heading">
+          <div className="crm-cms-overview-section-head">
+            <div>
+              <h2 id="cms-recent-heading" className="crm-cms-overview-section-title">
+                แก้ไขล่าสุด
+              </h2>
+              <p className="crm-cms-overview-section-desc">6 รายการล่าสุดจากฐานข้อมูล CMS</p>
             </div>
+            <Link href="/crm/cms/pages" className="crm-cms-overview-all-link">
+              ดูทั้งหมด
+            </Link>
+          </div>
+
+          {recent.length === 0 ? (
+            <div className="crm-cms-overview-empty">
+              <p>ยังไม่มีเอกสารใน CMS</p>
+              <div className="crm-cms-overview-empty-actions">
+                <Link href="/crm/cms/pages/new" className="kpi-button">
+                  เพิ่มหน้าใหม่
+                </Link>
+                <Link href="/crm/cms/insights/new" className="crm-users-secondary">
+                  เพิ่มบทความ
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <ul className="crm-cms-recent-list">
+              {recent.map((doc) => {
+                const href =
+                  doc.kind === "insight" ? `/crm/cms/insights/${doc.id}` : `/crm/cms/pages/${doc.id}`;
+                const updatedAt = doc.updatedAt instanceof Date ? doc.updatedAt : new Date(doc.updatedAt);
+                const path = documentPath(doc);
+                return (
+                  <li key={doc.id} className="crm-cms-recent-item">
+                    <div className="crm-cms-recent-main">
+                      <Link href={href} className="crm-cms-recent-title" title={doc.title}>
+                        {doc.title}
+                      </Link>
+                      <p className="crm-cms-recent-path" title={path}>
+                        {path}
+                      </p>
+                    </div>
+                    <div className="crm-cms-recent-meta">
+                      <span className="crm-cms-recent-kind">{kindLabel(doc.kind)}</span>
+                      <span className={`crm-cms-status-pill is-${doc.status}`}>{statusLabel(doc.status)}</span>
+                      <time className="crm-cms-recent-time" dateTime={updatedAt.toISOString()}>
+                        {formatCmsDate(updatedAt)}
+                      </time>
+                      <span className="crm-cms-recent-user" title={doc.updatedBy?.trim() || undefined}>
+                        {doc.updatedBy?.trim() || "—"}
+                      </span>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
           )}
         </section>
 
-        <section className="crm-cms-panel crm-cms-overview-shortcuts">
-          <PageHeader eyebrow="ทางลัด" title="ไปแก้เนื้อหา" description="ลิงก์ไปยังหน้าจัดการที่ใช้งานได้จริง" />
-          <ul className="crm-cms-shortcut-list">
-            <li>
-              <Link href="/crm/cms/pages">หน้าเว็บไซต์</Link>
-              <span>ค้นหา กรองสถานะ และเปิดแก้หน้า</span>
-            </li>
-            <li>
-              <Link href="/crm/cms/insights">บทความ / ข่าว</Link>
-              <span>จัดลำดับ เผยแพร่ และอัปโหลดภาพปก</span>
-            </li>
-            <li>
-              <Link href="/crm/cms/solutions">บริการ / ผลิตภัณฑ์</Link>
-              <span>แก้ไขหน้าโซลูชันและไดเรกทอรีบริการ</span>
-            </li>
-            <li>
-              <Link href="/crm/cms/menus">เมนูเว็บไซต์</Link>
-              <span>กำหนด header/footer และลำดับเมนู</span>
-            </li>
-            <li>
-              <Link href="/crm/cms/media">คลังรูปภาพและไฟล์</Link>
-              <span>อัปโหลดและคัดลอกพาธไปใช้ในเนื้อหา</span>
-            </li>
-            <li>
-              <Link href="/crm/cms/seo">SEO</Link>
-              <span>ค่าทั้งไซต์ Redirect และช่องทางแก้ SEO รายหน้า</span>
-            </li>
-            <li>
-              <Link href="/crm/users">ผู้ใช้งานและสิทธิ์</Link>
-              <span>บทบาทและสิทธิ์เข้าถึงโมดูล</span>
-            </li>
-            <li>
-              <Link href="/crm/cms/globals">ตั้งค่าเว็บไซต์</Link>
-              <span>โดเมน รูป OG และข้อความแบรนด์</span>
-            </li>
+        <aside className="crm-cms-overview-side" aria-labelledby="cms-shortcuts-heading">
+          <div className="crm-cms-overview-section-head">
+            <div>
+              <h2 id="cms-shortcuts-heading" className="crm-cms-overview-section-title">
+                ทางลัด
+              </h2>
+              <p className="crm-cms-overview-section-desc">ไปยังส่วนที่ใช้บ่อย</p>
+            </div>
+          </div>
+          <ul className="crm-cms-shortcut-grid">
+            {SHORTCUTS.map((item) => (
+              <li key={item.href}>
+                <Link href={item.href} className="crm-cms-shortcut-card">
+                  <strong>{item.label}</strong>
+                  <span>{item.hint}</span>
+                </Link>
+              </li>
+            ))}
           </ul>
-        </section>
+          {trashed > 0 ? (
+            <p className="crm-cms-empty-note">
+              <Link href="/crm/cms/trash" className="crm-cms-overview-all-link">
+                เปิดถังขยะ ({trashed})
+              </Link>
+            </p>
+          ) : null}
+        </aside>
       </div>
     </div>
   );
