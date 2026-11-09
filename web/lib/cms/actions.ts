@@ -70,6 +70,12 @@ import {
   serializeSolutionsIndexPageBody,
   defaultSolutionsIndexCms,
 } from "./solutions-index-page";
+import {
+  CASE_STUDIES_CMS_TEMPLATE,
+  CASE_STUDIES_PAGE_ROUTE,
+  serializeCaseStudiesPageBody,
+  defaultCaseStudiesCms,
+} from "./case-studies-page";
 
 async function requireCms() {
   const user = await requireUser();
@@ -318,6 +324,11 @@ export async function ensurePageFromSite(route: string) {
       const hydrated = await hydrateSolutionsIndexDocument(existing);
       return hydrated.id;
     }
+    if (normalized === CASE_STUDIES_PAGE_ROUTE) {
+      const { hydrateCaseStudiesPageDocument } = await import("./case-studies-page-actions");
+      const hydrated = await hydrateCaseStudiesPageDocument(existing);
+      return hydrated.id;
+    }
     return existing.id;
   }
 
@@ -342,6 +353,8 @@ export async function ensurePageFromSite(route: string) {
   const isHotelDirectBookings = normalized === HOTEL_DIRECT_BOOKINGS_PAGE_ROUTE;
   const isIndependentHotel = normalized === INDEPENDENT_HOTEL_PAGE_ROUTE;
   const isHotelTraining = normalized === HOTEL_TRAINING_PAGE_ROUTE;
+  const isSolutionsIndex = normalized === SOLUTIONS_INDEX_PAGE_ROUTE;
+  const isCaseStudies = normalized === CASE_STUDIES_PAGE_ROUTE;
   const created = await db.cmsDocument.create({
     data: {
       kind: "page",
@@ -369,6 +382,10 @@ export async function ensurePageFromSite(route: string) {
                     ? INDEPENDENT_HOTEL_CMS_TEMPLATE
                   : isHotelTraining
                     ? HOTEL_TRAINING_CMS_TEMPLATE
+                  : isSolutionsIndex
+                    ? SOLUTIONS_INDEX_CMS_TEMPLATE
+                  : isCaseStudies
+                    ? CASE_STUDIES_CMS_TEMPLATE
                 : "general",
       excerpt: sitePage.description || "",
       body: isRevenue
@@ -391,6 +408,10 @@ export async function ensurePageFromSite(route: string) {
                     ? serializeIndependentHotelPageBody(defaultIndependentHotelCms("th"))
                   : isHotelTraining
                     ? serializeHotelTrainingPageBody(defaultHotelTrainingCms("th"))
+                  : isSolutionsIndex
+                    ? serializeSolutionsIndexPageBody(defaultSolutionsIndexCms("th"))
+                  : isCaseStudies
+                    ? serializeCaseStudiesPageBody(defaultCaseStudiesCms())
                 : bodyFromMarkdown(markdown),
       tags: "",
       seoTitle: sitePage.title,

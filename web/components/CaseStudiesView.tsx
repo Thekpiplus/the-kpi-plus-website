@@ -16,6 +16,7 @@ import {
 } from "@/lib/case-studies";
 import { loadPublishedClientLogos } from "@/lib/cms/client-logo-public";
 import { loadPublishedCaseStudies } from "@/lib/cms/case-study-public";
+import { loadCaseStudiesPageCopy } from "@/lib/cms/case-studies-page-public";
 import { caseStudyOverviewChart } from "@/lib/case-study-chart";
 import {
   CASE_STUDIES_HERO_VISUAL,
@@ -25,112 +26,26 @@ import {
 } from "@/lib/case-studies-media";
 import { auditHref, localizePath, type Locale } from "@/lib/seo";
 
-/** Soft break between Thai phrases for body copy. */
-const br = "\u200B";
-
-const chrome = {
-  th: {
-    pageTitle: "ผลงานลูกค้า",
-    heroEyebrow: "ผลลัพธ์โรงแรมจริง",
-    heroHeadlineLead: "วัดผลจากรายได้",
-    heroHeadlineRest: "ไม่ใช่ตัวเลขที่ดูดี",
-    heroHeadlineAccent: "แต่ไม่สร้างผล",
-    heroDescription: `ตั้งแต่การบริหารราคาและช่องทางการขาย ไปจนถึงแคมเปญจองตรง เราโฟกัสผลลัพธ์เชิงพาณิชย์ที่วัดได้ — Room Revenue, ADR, Occupancy, RevPAR และ ROAS`,
-    viewGrid: "ดูผลงาน",
-    viewStudy: "ดูรายละเอียดผลงาน",
-    clientsLabelLines: ["โรงแรมและที่พักที่เคยร่วมงานกับเรา"] as const,
-    clientsEyebrow: "โรงแรมและที่พักที่คัดสรร",
-    overviewTitle: "Results Overview",
-    gridEyebrow: "ผลงาน",
-    gridTitleLines: ["ผลลัพธ์เชิงพาณิชย์ที่วัดได้"] as const,
-    closerEyebrow: "ทบทวน Performance",
-    closerTitleLines: [`โรงแรมของคุณ${br}อาจพลาดรายได้ตรงไหนอยู่?`] as const,
-    closerBody: `เราทบทวนราคา Distribution Booking Pace${br} และผลการดำเนินงานเชิงพาณิชย์${br} เพื่อหาจุดที่มีโอกาสสร้างรายได้เพิ่ม`,
-    primaryCta: "ประเมิน Performance โรงแรม",
-    secondaryCta: "คุยกับทีม เดอะ เคพีไอ พลัส",
-  },
-  en: {
-    pageTitle: "Case Studies",
-    heroEyebrow: "Real Hotel Performance",
-    heroHeadlineLead: "Results measured in revenue,",
-    heroHeadlineRest: "not vanity metrics.",
-    heroHeadlineAccent: "",
-    heroDescription:
-      "From pricing and distribution to direct-booking campaigns, we focus on measurable commercial results — Room Revenue, ADR, Occupancy, RevPAR and ROAS.",
-    viewGrid: "View Case Studies",
-    viewStudy: "View Case Study",
-    clientsLabelLines: ["Selected hotels and properties we've worked with"] as const,
-    clientsEyebrow: "Selected Hotels & Properties",
-    overviewTitle: "Results Overview",
-    gridEyebrow: "Case Studies",
-    gridTitleLines: ["Measurable commercial results"] as const,
-    closerEyebrow: "Hotel Performance Review",
-    closerTitleLines: ["Where Could Your Hotel Be Leaving Revenue on the Table?"] as const,
-    closerBody:
-      "We review your pricing, distribution, booking pace and commercial performance to identify where additional revenue opportunities may exist.",
-    primaryCta: "Request a Hotel Performance Review",
-    secondaryCta: "Talk to Our Team",
-  },
-  ru: {
-    pageTitle: "Кейсы",
-    heroEyebrow: "Real Hotel Performance",
-    heroHeadlineLead: "Results measured in revenue,",
-    heroHeadlineRest: "not vanity metrics.",
-    heroHeadlineAccent: "",
-    heroDescription:
-      "From pricing and distribution to direct-booking campaigns, we focus on measurable commercial results — Room Revenue, ADR, Occupancy, RevPAR and ROAS.",
-    viewGrid: "View Case Studies",
-    viewStudy: "View Case Study",
-    clientsLabelLines: ["Selected hotels and properties we've worked with"] as const,
-    clientsEyebrow: "Selected Hotels & Properties",
-    overviewTitle: "Results Overview",
-    gridEyebrow: "Case Studies",
-    gridTitleLines: ["Measurable commercial results"] as const,
-    closerEyebrow: "Hotel Performance Review",
-    closerTitleLines: ["Where Could Your Hotel Be Leaving Revenue on the Table?"] as const,
-    closerBody:
-      "We review your pricing, distribution, booking pace and commercial performance to identify where additional revenue opportunities may exist.",
-    primaryCta: "Запросить аудит Performance отеля",
-    secondaryCta: "Поговорить с командой The KPI Plus",
-  },
-  zh: {
-    pageTitle: "客戶案例",
-    heroEyebrow: "Real Hotel Performance",
-    heroHeadlineLead: "Results measured in revenue,",
-    heroHeadlineRest: "not vanity metrics.",
-    heroHeadlineAccent: "",
-    heroDescription:
-      "From pricing and distribution to direct-booking campaigns, we focus on measurable commercial results — Room Revenue, ADR, Occupancy, RevPAR and ROAS.",
-    viewGrid: "View Case Studies",
-    viewStudy: "View Case Study",
-    clientsLabelLines: ["Selected hotels and properties we've worked with"] as const,
-    clientsEyebrow: "Selected Hotels & Properties",
-    overviewTitle: "Results Overview",
-    gridEyebrow: "Case Studies",
-    gridTitleLines: ["Measurable commercial results"] as const,
-    closerEyebrow: "Hotel Performance Review",
-    closerTitleLines: ["Where Could Your Hotel Be Leaving Revenue on the Table?"] as const,
-    closerBody:
-      "We review your pricing, distribution, booking pace and commercial performance to identify where additional revenue opportunities may exist.",
-    primaryCta: "申請飯店 Performance 分析",
-    secondaryCta: "與 The KPI Plus 團隊談談",
-  },
-} as const;
-
 export const caseStudiesHeading = {
-  th: chrome.th.pageTitle,
-  en: chrome.en.pageTitle,
-  ru: chrome.ru.pageTitle,
-  zh: chrome.zh.pageTitle,
+  th: "ผลงานลูกค้า",
+  en: "Case Studies",
+  ru: "Кейсы",
+  zh: "客戶案例",
 } as const;
 
 function PrimaryCtaLabel({ locale, fallback }: { locale: Locale; fallback: string }) {
   if (locale !== "th") return <>{fallback}</>;
-  return (
-    <>
-      ประเมิน <span className="kpi-latin">Performance</span> โรงแรม
-    </>
-  );
+  if (fallback.includes("Performance")) {
+    const [before, after] = fallback.split("Performance");
+    return (
+      <>
+        {before}
+        <span className="kpi-latin">Performance</span>
+        {after}
+      </>
+    );
+  }
+  return <>{fallback}</>;
 }
 
 function StackedLines({
@@ -140,7 +55,7 @@ function StackedLines({
   lines: readonly string[];
   stacked: boolean;
 }) {
-  if (!stacked || lines.length === 1) return <>{lines.join(" ")}</>;
+  if (!stacked || lines.length <= 1) return <>{lines.join(" ")}</>;
   return (
     <>
       {lines.map((line) => (
@@ -153,7 +68,7 @@ function StackedLines({
 }
 
 export async function CaseStudiesView({ locale }: { locale: Locale }) {
-  const t = chrome[locale];
+  const t = await loadCaseStudiesPageCopy(locale);
   const audit = auditHref(locale);
   const contact = localizePath("/contact-us", locale);
   const indexHref = localizePath("/case-studies", locale);
@@ -169,8 +84,9 @@ export async function CaseStudiesView({ locale }: { locale: Locale }) {
     ? caseStudyOverviewChart(featured, featured.comparison ?? caseStudyComparisonFor(featured.slug, locale), locale)
     : null;
   const overviewFallback = caseStudiesResultsChartFallback();
-  const heroSrc = heroVisual.src || CASE_STUDIES_HERO_VISUAL.approvedSrc || "";
+  const heroSrc = t.heroImage || heroVisual.src || CASE_STUDIES_HERO_VISUAL.approvedSrc || "";
   const heroApproved = Boolean(heroSrc);
+  const heroAlt = t.heroAlt || heroVisual.alt;
 
   return (
     <SiteShell locale={locale} route={indexHref}>
@@ -201,7 +117,7 @@ export async function CaseStudiesView({ locale }: { locale: Locale }) {
               <figure className="kpi-cs-hero-visual-frame">
                 <img
                   src={heroSrc}
-                  alt={heroVisual.alt}
+                  alt={heroAlt}
                   width={CASE_STUDIES_HERO_VISUAL.sourceWidth}
                   height={CASE_STUDIES_HERO_VISUAL.sourceHeight}
                   decoding="async"
@@ -211,7 +127,7 @@ export async function CaseStudiesView({ locale }: { locale: Locale }) {
             ) : (
               <DummyImage
                 src={heroVisual.src}
-                alt={heroVisual.alt}
+                alt={heroAlt || heroVisual.alt}
                 label={heroVisual.label}
                 recommendedSize="1600 × 900 px"
                 ratio={CASE_STUDIES_HERO_VISUAL.ratio}
@@ -324,7 +240,7 @@ export async function CaseStudiesView({ locale }: { locale: Locale }) {
         primaryHref={audit}
         primaryLabel={
           <>
-            <PrimaryCtaLabel locale={locale} fallback={t.primaryCta} />
+            <PrimaryCtaLabel locale={locale} fallback={t.closerPrimaryCta || t.primaryCta} />
             <span aria-hidden="true">↗</span>
           </>
         }

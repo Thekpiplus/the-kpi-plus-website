@@ -32,6 +32,7 @@ export const CMS_SOLUTION_LINKS: CmsNavLink[] = [
   { href: "/crm/cms/about-us", label: "เกี่ยวกับเรา" },
   { href: "/crm/cms/contact-us", label: "ติดต่อเรา" },
   { href: "/crm/cms/case-studies", label: "ผลงานลูกค้า" },
+  { href: "/crm/cms/case-studies-page", label: "หน้าผลงาน" },
   { href: "/crm/cms/client-logos", label: "โลโก้ลูกค้า" },
   { href: "/crm/cms/hotel-marketing", label: "Hotel Marketing" },
   { href: "/crm/cms/reservations", label: "Reservations" },

@@ -19,6 +19,7 @@ const SHORTCUTS = [
   { href: "/crm/cms/pages", label: "หน้าเว็บไซต์", hint: "ค้นหาและแก้ไขหน้า" },
   { href: "/crm/cms/insights", label: "บทความ", hint: "จัดลำดับและเผยแพร่" },
   { href: "/crm/cms/solutions", label: "บริการ", hint: "หน้าโซลูชัน" },
+  { href: "/crm/cms/case-studies-page", label: "หน้าผลงาน", hint: "Chrome หน้า /case-studies" },
   { href: "/crm/cms/menus", label: "เมนูเว็บ", hint: "Header / Footer" },
   { href: "/crm/cms/media", label: "คลังไฟล์", hint: "รูปและสื่อ" },
   { href: "/crm/cms/seo", label: "SEO", hint: "Title และ Redirect" },

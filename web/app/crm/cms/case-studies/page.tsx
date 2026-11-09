@@ -147,9 +147,14 @@ export default async function CmsCaseStudiesPage({
         title="ผลงานลูกค้า"
         description="เพิ่ม แก้ไข บันทึก ดูตัวอย่าง และเผยแพร่เคสสตัดดีโดยไม่ต้องแก้โค้ด จัดกลุ่มตามแผนกเพื่อขยายงานในอนาคต"
         actions={
-          <Link href="/crm/cms/case-studies/new" className="kpi-button">
-            เพิ่มเคสสตัดดี
-          </Link>
+          <div className="crm-cms-actions">
+            <Link href="/crm/cms/case-studies-page" className="crm-users-secondary">
+              แก้ไขหน้าเว็บ
+            </Link>
+            <Link href="/crm/cms/case-studies/new" className="kpi-button">
+              เพิ่มเคสสตัดดี
+            </Link>
+          </div>
         }
       />
 

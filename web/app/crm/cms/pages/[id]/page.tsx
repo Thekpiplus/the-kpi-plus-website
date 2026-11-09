@@ -49,6 +49,9 @@ import { isSolutionsIndexPageDocument } from "@/lib/cms/solutions-index-page";
 import { AboutPageEditor } from "@/components/cms/AboutPageEditor";
 import { editorStateForAboutDocument } from "@/lib/cms/about-page-actions";
 import { isAboutPageDocument } from "@/lib/cms/about-page";
+import { CaseStudiesPageEditor } from "@/components/cms/CaseStudiesPageEditor";
+import { editorStateForCaseStudiesPageDocument } from "@/lib/cms/case-studies-page-actions";
+import { isCaseStudiesPageDocument } from "@/lib/cms/case-studies-page";
 import { ContactPageEditor } from "@/components/cms/ContactPageEditor";
 import { editorStateForContactDocument } from "@/lib/cms/contact-page-actions";
 import { isContactPageDocument } from "@/lib/cms/contact-page";
@@ -84,6 +87,47 @@ export default async function EditCmsPage({
   const solutionsIndex = isSolutionsIndexPageDocument(document);
   const contactPage = isContactPageDocument(document);
   const aboutPage = isAboutPageDocument(document);
+  const caseStudiesPage = isCaseStudiesPageDocument(document);
+
+  if (caseStudiesPage) {
+    const hydrated = await editorStateForCaseStudiesPageDocument(id);
+    if (!hydrated) notFound();
+    const statusLabel =
+      hydrated.status === "published" ? "เผยแพร่แล้ว" : hydrated.status === "scheduled" ? "ตั้งเวลา" : "ฉบับร่าง";
+    return (
+      <div className="crm-cms crm-cms-page-edit">
+        <header className="crm-cms-edit-head">
+          <nav className="crm-cms-edit-crumb" aria-label="เส้นทาง">
+            <Link href="/crm/cms/case-studies">ผลงานลูกค้า</Link>
+            <span aria-hidden="true">/</span>
+            <span>แก้ไขหน้าเว็บ</span>
+          </nav>
+          <div className="crm-cms-edit-head-row">
+            <div className="crm-cms-edit-head-copy">
+              <h1 className="crm-cms-edit-title">{hydrated.title}</h1>
+              <p className="crm-cms-edit-path" title={path}>
+                {path}
+              </p>
+            </div>
+            <div className="crm-cms-edit-head-meta">
+              <span className={`crm-cms-status-pill is-${hydrated.status}`}>{statusLabel}</span>
+            </div>
+          </div>
+        </header>
+        {saved ? (
+          <p className="crm-users-alert is-ok" role="status">
+            บันทึกแล้ว
+          </p>
+        ) : null}
+        {error ? (
+          <p className="crm-users-alert is-warn" role="alert">
+            บันทึกไม่สำเร็จ
+          </p>
+        ) : null}
+        <CaseStudiesPageEditor initial={hydrated} initialTab={tab} pagePath={path} />
+      </div>
+    );
+  }
 
   if (aboutPage) {
     const hydrated = await editorStateForAboutDocument(id);
