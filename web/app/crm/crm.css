@@ -11672,24 +11672,42 @@ html[data-crm-theme="dark"] .crm-partners-mini-list li,
 
 .crm-rail-cms-block {
   display: grid;
-  gap: 0.12rem;
+  gap: 0.08rem;
   min-width: 0;
+  padding: 0.1rem 0 0.2rem;
 }
 
-.crm-rail-link.is-cms-child {
-  min-height: 2.15rem;
-  padding-inline: 0.85rem 0.7rem;
+.crm-rail.is-expanded .crm-rail-link.is-cms-child,
+.crm-drawer-nav .crm-rail-link.is-cms-child {
+  display: flex;
+  align-items: center;
+  grid-template-columns: none;
+  width: 100%;
+  min-height: 2.05rem;
+  margin-inline: 0;
+  padding: 0.35rem 0.75rem 0.35rem 0.95rem;
   gap: 0;
+  border-radius: 0.7rem;
 }
 
 .crm-rail-link.is-cms-child .crm-rail-ico {
   display: none;
 }
 
-.crm-rail-link.is-cms-child em {
-  font-size: 0.84rem;
+.crm-rail.is-expanded .crm-rail-link.is-cms-child em,
+.crm-drawer-nav .crm-rail-link.is-cms-child em {
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 0.875rem;
   font-weight: 600;
   letter-spacing: 0;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow-wrap: normal;
+  word-break: keep-all;
 }
 
 .crm-cms .kpi-button {
@@ -11706,12 +11724,11 @@ html[data-crm-theme="dark"] .crm-partners-mini-list li,
 .crm-rail-link.is-cms-child.is-active,
 .crm-rail-link.is-cms-child[aria-current="page"] {
   background: color-mix(in srgb, #a2dc25 28%, transparent);
-  font-weight: 700;
 }
 
-.crm-shell-app.is-rail-expanded .crm-rail-group[data-section="content"] .crm-rail-section-panel,
-.crm-rail-group.is-open .crm-rail-cms-block {
-  padding-bottom: 0.15rem;
+.crm-rail-link.is-cms-child.is-active em,
+.crm-rail-link.is-cms-child[aria-current="page"] em {
+  font-weight: 700;
 }
 
 .crm-cms-actions {

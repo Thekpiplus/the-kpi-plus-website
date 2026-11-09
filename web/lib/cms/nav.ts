@@ -9,17 +9,17 @@ export type CmsNavLink = {
 /** Primary Content Management links shown in the CMS subnav / rail. */
 export const CMS_CONTENT_LINKS: CmsNavLink[] = [
   { href: "/crm/cms", label: "ภาพรวม" },
-  { href: "/crm/cms/pages", label: "หน้าเว็บไซต์" },
-  { href: "/crm/cms/insights", label: "บทความ / ข่าว" },
-  { href: "/crm/cms/solutions", label: "บริการ / ผลิตภัณฑ์" },
-  { href: "/crm/cms/menus", label: "เมนูเว็บไซต์" },
-  { href: "/crm/cms/media", label: "คลังรูปภาพและไฟล์" },
+  { href: "/crm/cms/pages", label: "หน้าเว็บ" },
+  { href: "/crm/cms/insights", label: "บทความ" },
+  { href: "/crm/cms/solutions", label: "บริการ" },
+  { href: "/crm/cms/menus", label: "เมนูเว็บ" },
+  { href: "/crm/cms/media", label: "คลังไฟล์" },
   { href: "/crm/cms/seo", label: "SEO" },
 ];
 
 /** Site settings that belong with CMS content (users stay under ตั้งค่าระบบ). */
 export const CMS_SYSTEM_LINKS: CmsNavLink[] = [
-  { href: "/crm/cms/globals", label: "ตั้งค่าเว็บไซต์" },
+  { href: "/crm/cms/globals", label: "ตั้งค่าเว็บ" },
 ];
 
 export const CMS_ACCOUNT_LINKS: CmsNavLink[] = [
