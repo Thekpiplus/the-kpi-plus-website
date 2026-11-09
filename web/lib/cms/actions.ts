@@ -465,16 +465,23 @@ export async function updateDocument(formData: FormData) {
   if (blocksCmsRoute(kind, path, "update")) {
     redirect(`${editorBase}/${id}?error=locked`);
   }
+  // Hotel Marketing keeps its structured JSON body + template; the shared form only edits metadata.
+  const preserveStructuredInsight =
+    kind === "insight" &&
+    (existing.template === "hotel-marketing" || existing.slug === HOTEL_MARKETING_SLUG);
+  const nextData = preserveStructuredInsight
+    ? { ...data, body: existing.body, template: existing.template || "hotel-marketing" }
+    : data;
   const db = await cmsDb();
   const publishedAt =
-    data.status === "published"
+    nextData.status === "published"
       ? existing.publishedAt ?? new Date()
-      : data.status === "scheduled"
+      : nextData.status === "scheduled"
         ? existing.publishedAt
         : null;
   await db.cmsDocument.update({
     where: { id },
-    data: { ...data, publishedAt, updatedBy: user.email },
+    data: { ...nextData, publishedAt, updatedBy: user.email },
   });
   await refreshCmsFiles();
   revalidatePublic(path);

@@ -8,5 +8,6 @@ export default async function HotelMarketingCmsRedirect({
 }) {
   const { tab } = await searchParams;
   const id = await ensureHotelMarketingInsightFromSite();
-  redirect(`/crm/cms/insights/${id}?tab=${encodeURIComponent(tab || "basics")}`);
+  const params = new URLSearchParams({ editor: "structured", tab: tab || "basics" });
+  redirect(`/crm/cms/insights/${id}?${params.toString()}`);
 }

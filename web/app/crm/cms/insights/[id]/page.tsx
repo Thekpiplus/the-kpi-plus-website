@@ -25,21 +25,23 @@ export default async function EditCmsInsightPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ error?: string; saved?: string; tab?: string }>;
+  searchParams: Promise<{ error?: string; saved?: string; tab?: string; editor?: string }>;
 }) {
   const { id } = await params;
-  const { error, saved, tab } = await searchParams;
+  const { error, saved, tab, editor } = await searchParams;
   const document = await documentById(id);
   if (!document || document.kind !== "insight") notFound();
 
   const hotelMarketing = isHotelMarketingInsightDocument(document);
-  const hydrated = hotelMarketing ? await editorStateForHotelMarketingDocument(id) : null;
-  if (hotelMarketing && !hydrated) notFound();
+  const useStructuredEditor = hotelMarketing && editor === "structured";
+  const hydrated = useStructuredEditor ? await editorStateForHotelMarketingDocument(id) : null;
+  if (useStructuredEditor && !hydrated) notFound();
 
   const current = hydrated?.document ?? document;
   const path = documentPath(current);
   const previewHref = `/crm/cms/insights/${current.id}/preview`;
   const publicHref = current.status === "published" ? path : undefined;
+  const standardHref = `/crm/cms/insights/${current.id}`;
 
   const danger = (
     <>
@@ -67,7 +69,15 @@ export default async function EditCmsInsightPage({
         <nav className="crm-cms-edit-crumb" aria-label="เส้นทาง">
           <Link href="/crm/cms/insights">บทความ</Link>
           <span aria-hidden="true">/</span>
-          <span>แก้ไขบทความ</span>
+          {useStructuredEditor ? (
+            <>
+              <Link href={standardHref}>แก้ไขบทความ</Link>
+              <span aria-hidden="true">/</span>
+              <span>ตัวแก้ไขโครงสร้าง</span>
+            </>
+          ) : (
+            <span>แก้ไขบทความ</span>
+          )}
         </nav>
         <div className="crm-cms-edit-head-row">
           <div className="crm-cms-edit-head-copy">
@@ -78,9 +88,9 @@ export default async function EditCmsInsightPage({
           </div>
           <div className="crm-cms-edit-head-meta">
             <span className={`crm-cms-status-pill is-${current.status}`}>{statusText(current.status)}</span>
-            {hotelMarketing ? (
-              <Link href={previewHref} className="crm-users-secondary">
-                ดูตัวอย่าง
+            {useStructuredEditor ? (
+              <Link href={standardHref} className="crm-users-secondary">
+                ฟอร์มมาตรฐาน
               </Link>
             ) : null}
             {publicHref ? (

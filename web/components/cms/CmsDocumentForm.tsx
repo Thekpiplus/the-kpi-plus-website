@@ -1,9 +1,11 @@
 import type { ReactNode } from "react";
+import Link from "next/link";
 import { MarkdownBodyEditor } from "@/components/cms/MarkdownBodyEditor";
 import { CmsEditorSaveBar, CmsFormDirtyTracker } from "@/components/cms/CmsEditorSaveBar";
 import { PageFaqPanel } from "@/components/cms/PageFaqPanel";
 import { blocksToMarkdown, documentPath, parseCmsBody } from "@/lib/cms/body";
 import { createDocument, updateDocument } from "@/lib/cms/actions";
+import { isHotelMarketingInsightDocument } from "@/lib/cms/hotel-marketing-insight";
 import type { CmsDocumentRow } from "@/lib/cms/types";
 import { CMS_LOCALES, CMS_MENUS, CMS_STATUSES } from "@/lib/cms/types";
 import type { FaqItem } from "@/lib/faqs";
@@ -39,7 +41,8 @@ export function CmsDocumentForm({
 }) {
   const action = document ? updateDocument : createDocument;
   const isInsight = kind === "insight";
-  const body = document ? blocksToMarkdown(parseCmsBody(document.body)) : "";
+  const structuredInsight = Boolean(document && isHotelMarketingInsightDocument(document));
+  const body = document && !structuredInsight ? blocksToMarkdown(parseCmsBody(document.body)) : "";
   const scheduled =
     document?.scheduledAt instanceof Date
       ? document.scheduledAt.toISOString().slice(0, 16)
@@ -144,14 +147,29 @@ export function CmsDocumentForm({
               placeholder={isInsight ? "สรุปสั้น ๆ ที่แสดงในการ์ดและคำอธิบาย" : "ข้อความสั้น ๆ ที่ใช้เป็นคำอธิบายหน้า"}
             />
           </label>
-          <label className="crm-cms-field">
-            <span>เนื้อหา</span>
-            <MarkdownBodyEditor
-              name="body"
-              defaultValue={body}
-              placeholder={"## หัวข้อ\nย่อหน้าแรก\n\n- รายการ\n\n![คำอธิบายรูป](/media/cms/example.jpg)"}
-            />
-          </label>
+          {structuredInsight ? (
+            <div className="crm-cms-structured-note" role="note">
+              <p>
+                บทความนี้ใช้เนื้อหาแบบโครงสร้าง (Hotel Marketing) — ฟอร์มนี้แก้ชื่อ คำโปรย สถานะ รูป และ SEO ได้เหมือนบทความอื่น
+                ส่วนเนื้อหารายละเอียดยังแก้ในตัวแก้ไขโครงสร้าง
+              </p>
+              <Link
+                href={`/crm/cms/insights/${document!.id}?editor=structured`}
+                className="kpi-button"
+              >
+                เปิดตัวแก้ไขโครงสร้าง
+              </Link>
+            </div>
+          ) : (
+            <label className="crm-cms-field">
+              <span>เนื้อหา</span>
+              <MarkdownBodyEditor
+                name="body"
+                defaultValue={body}
+                placeholder={"## หัวข้อ\nย่อหน้าแรก\n\n- รายการ\n\n![คำอธิบายรูป](/media/cms/example.jpg)"}
+              />
+            </label>
+          )}
           {!isInsight && document && pageRoute ? (
             <PageFaqPanel
               route={pageRoute}
