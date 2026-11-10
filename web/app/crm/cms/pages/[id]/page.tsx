@@ -216,29 +216,39 @@ export default async function EditCmsPage({
   if (contactPage) {
     const hydrated = await editorStateForContactDocument(id);
     if (!hydrated) notFound();
+    const statusLabel =
+      hydrated.status === "published" ? "เผยแพร่แล้ว" : hydrated.status === "scheduled" ? "ตั้งเวลา" : "ฉบับร่าง";
     return (
-      <div className="crm-cms">
-        <PageHeader
-          eyebrow="Content Management"
-          title={hydrated.title}
-          description={`${path} · แก้ข้อความหน้า Contact จากแอดมิน`}
-          actions={
-            <div className="crm-cms-actions">
-              <Link href="/crm/cms" className="crm-users-secondary">
-                ← หน้าเพจทั้งหมด
-              </Link>
-              <Link href="/contact-us" className="crm-users-secondary" target="_blank" rel="noreferrer">
-                เปิดหน้าเว็บ
-              </Link>
-              <Link href="/crm/cms/contacts" className="crm-users-secondary">
-                ข้อมูลติดต่อ
-              </Link>
+      <div className="crm-cms crm-cms-page-edit">
+        <header className="crm-cms-edit-head">
+          <nav className="crm-cms-edit-crumb" aria-label="เส้นทาง">
+            <Link href="/crm/cms/pages">หน้าเว็บไซต์</Link>
+            <span aria-hidden="true">/</span>
+            <span>ติดต่อเรา</span>
+          </nav>
+          <div className="crm-cms-edit-head-row">
+            <div className="crm-cms-edit-head-copy">
+              <h1 className="crm-cms-edit-title">{hydrated.title || "ติดต่อเรา"}</h1>
+              <p className="crm-cms-edit-path" title={path}>
+                {path}
+              </p>
             </div>
-          }
-        />
-        {saved ? <p className="crm-users-alert is-ok">บันทึกแล้ว</p> : null}
-        {error ? <p className="crm-users-alert is-warn">บันทึกไม่สำเร็จ</p> : null}
-        <ContactPageEditor initial={hydrated} initialTab={tab} />
+            <div className="crm-cms-edit-head-meta">
+              <span className={`crm-cms-status-pill is-${hydrated.status}`}>{statusLabel}</span>
+            </div>
+          </div>
+        </header>
+        {saved ? (
+          <p className="crm-users-alert is-ok" role="status">
+            บันทึกแล้ว
+          </p>
+        ) : null}
+        {error ? (
+          <p className="crm-users-alert is-warn" role="alert">
+            บันทึกไม่สำเร็จ
+          </p>
+        ) : null}
+        <ContactPageEditor initial={hydrated} initialTab={tab} pagePath={path} />
       </div>
     );
   }
@@ -246,23 +256,42 @@ export default async function EditCmsPage({
   if (solutionsIndex) {
     const hydrated = await editorStateForSolutionsIndexDocument(id);
     if (!hydrated) notFound();
+    const statusLabel =
+      hydrated.document.status === "published"
+        ? "เผยแพร่แล้ว"
+        : hydrated.document.status === "scheduled"
+          ? "ตั้งเวลา"
+          : "ฉบับร่าง";
     return (
-      <div className="crm-cms">
-        <PageHeader
-          eyebrow="Content Management"
-          title={hydrated.document.title}
-          description={path}
-          actions={
-            <div className="crm-cms-actions">
-              <Link href="/crm/cms" className="crm-users-secondary">
-                ← หน้าเพจทั้งหมด
-              </Link>
-              <Link href={`/crm/cms/pages/${hydrated.document.id}/preview`} className="crm-users-secondary">
-                ดูตัวอย่าง
-              </Link>
+      <div className="crm-cms crm-cms-page-edit">
+        <header className="crm-cms-edit-head">
+          <nav className="crm-cms-edit-crumb" aria-label="เส้นทาง">
+            <Link href="/crm/cms/pages">หน้าเว็บไซต์</Link>
+            <span aria-hidden="true">/</span>
+            <span>บริการ</span>
+          </nav>
+          <div className="crm-cms-edit-head-row">
+            <div className="crm-cms-edit-head-copy">
+              <h1 className="crm-cms-edit-title">{hydrated.document.title}</h1>
+              <p className="crm-cms-edit-path" title={path}>
+                {path}
+              </p>
             </div>
-          }
-        />
+            <div className="crm-cms-edit-head-meta">
+              <span className={`crm-cms-status-pill is-${hydrated.document.status}`}>{statusLabel}</span>
+            </div>
+          </div>
+        </header>
+        {saved ? (
+          <p className="crm-users-alert is-ok" role="status">
+            บันทึกแล้ว
+          </p>
+        ) : null}
+        {error ? (
+          <p className="crm-users-alert is-warn" role="alert">
+            บันทึกไม่สำเร็จ
+          </p>
+        ) : null}
         <SolutionsIndexPageEditor
           initial={hydrated.state}
           notice={saved === "1" ? "บันทึกแล้ว" : undefined}

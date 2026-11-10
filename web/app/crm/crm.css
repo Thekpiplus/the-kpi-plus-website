@@ -16468,6 +16468,55 @@ html[data-crm-theme="dark"] .crm-profile-panel,
   }
 }
 
+.crm-cms-page-editor-more {
+  position: relative;
+}
+
+.crm-cms-page-editor-more-menu {
+  position: absolute;
+  top: calc(100% + 0.35rem);
+  right: 0;
+  z-index: 8;
+  display: grid;
+  gap: 0.35rem;
+  min-width: 12rem;
+  padding: 0.55rem;
+  border: 1px solid var(--crm-border);
+  border-radius: 0.85rem;
+  background: var(--crm-surface);
+  box-shadow: 0 8px 24px rgba(11, 31, 51, 0.12);
+}
+
+.crm-cms-page-editor-more-menu > * {
+  width: 100%;
+  justify-content: flex-start;
+  text-align: left;
+}
+
+.crm-cms-page-editor-panel .crm-cms-block {
+  display: grid;
+  gap: 0.85rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.crm-cms-page-editor-panel .crm-cms-block > h2 {
+  margin: 0;
+  color: var(--crm-heading);
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.crm-cms-page-editor-panel .crm-cms-block > h3 {
+  margin: 0.35rem 0 0;
+  color: var(--crm-heading);
+  font-size: 0.92rem;
+  font-weight: 800;
+}
+
 @media (max-width: 390px) {
   .crm-cms-page-editor-savebar-actions,
   .crm-cms-page-editor-langs {
@@ -16479,6 +16528,11 @@ html[data-crm-theme="dark"] .crm-profile-panel,
     flex: 1 1 auto;
     text-align: center;
     justify-content: center;
+  }
+
+  .crm-cms-page-editor-more-menu {
+    left: 0;
+    right: 0;
   }
 }
 

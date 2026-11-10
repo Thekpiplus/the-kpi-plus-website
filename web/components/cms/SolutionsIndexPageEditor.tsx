@@ -1,7 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState, useTransition, type FormEvent, type KeyboardEvent, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition, type FormEvent, type ReactNode } from "react";
 import {
   SOLUTIONS_INDEX_REVIEW_STATUSES,
   SOLUTIONS_INDEX_VISUAL_STATUSES,
@@ -48,9 +49,14 @@ const TABS = [
   { id: "publish", label: "Approvals" },
 ] as const;
 
+const TAB_GROUPS: Array<{ label: string; ids: Array<(typeof TABS)[number]["id"]> }> = [
+  { label: "เนื้อหาหลัก", ids: ["hero", "finder", "categories", "cards"] },
+  { label: "ความสัมพันธ์และหลักฐาน", ids: ["relationships", "proof", "cta", "process"] },
+  { label: "FAQ และเผยแพร่", ids: ["faq", "seo", "publish"] },
+];
+
 type Tab = (typeof TABS)[number]["id"];
 
-const LIME_BUTTON = { background: "#a2dc25", color: "#0b1f33" } as const;
 const LINK_LIST_ID = "solutions-index-service-links";
 
 function isTab(value: string | undefined): value is Tab {
@@ -112,7 +118,7 @@ function TextInput({ label, value, onChange, hint, list }: { label: string; valu
 function TextArea({ label, value, onChange, rows = 3, hint }: { label: string; value: string; onChange: (next: string) => void; rows?: number; hint?: string }) {
   return (
     <Field label={label} hint={hint}>
-      <textarea className="crm-field" rows={rows} value={value} onChange={(event) => onChange(event.target.value)} />
+      <textarea className="crm-area crm-cms-page-editor-area" rows={rows} value={value} onChange={(event) => onChange(event.target.value)} />
     </Field>
   );
 }
@@ -190,42 +196,55 @@ function ListEditor<T extends { id: string }>({
   itemLabel: (item: T, index: number) => string;
 }) {
   return (
-    <>
+    <div className="crm-cms-page-editor-grid">
       {items.map((item, index) => {
         const name = itemLabel(item, index);
         const patch = (next: Partial<T>) => onChange(items.map((row, i) => (i === index ? { ...row, ...next } : row)));
         return (
-          <div key={item.id} className="crm-cms-repeat" role="group" aria-label={name}>
-            <p>
+          <div key={item.id} className="crm-cms-contact-step-card" role="group" aria-label={name}>
+            <div className="crm-cms-faq-item-head">
               <strong>{name}</strong>
-            </p>
-            {renderItem(item, patch, index)}
-            <div className="crm-cs-metric-actions">
-              <button type="button" className="crm-users-secondary" disabled={index === 0} aria-label={`${name} — ขึ้น / Move up`} onClick={() => onChange(moveItem(items, index, -1))}>
-                ขึ้น / Up
-              </button>
-              <button type="button" className="crm-users-secondary" disabled={index === items.length - 1} aria-label={`${name} — ลง / Move down`} onClick={() => onChange(moveItem(items, index, 1))}>
-                ลง / Down
-              </button>
-              <button
-                type="button"
-                className="crm-users-secondary"
-                aria-label={`${name} — ลบ / Delete`}
-                onClick={() => {
-                  onChange(items.filter((_, i) => i !== index));
-                  onRemoved();
-                }}
-              >
-                ลบ / Delete
-              </button>
+              <div className="crm-cms-actions">
+                <button
+                  type="button"
+                  className="crm-users-secondary"
+                  disabled={index === 0}
+                  aria-label={`${name} — ขึ้น`}
+                  onClick={() => onChange(moveItem(items, index, -1))}
+                >
+                  ขึ้น
+                </button>
+                <button
+                  type="button"
+                  className="crm-users-secondary"
+                  disabled={index === items.length - 1}
+                  aria-label={`${name} — ลง`}
+                  onClick={() => onChange(moveItem(items, index, 1))}
+                >
+                  ลง
+                </button>
+                <button
+                  type="button"
+                  className="crm-users-secondary"
+                  aria-label={`${name} — ลบ`}
+                  onClick={() => {
+                    if (!window.confirm(`ลบ “${name}” ใช่หรือไม่? การกระทำนี้ยังไม่บันทึกจนกว่าจะกดบันทึก`)) return;
+                    onChange(items.filter((_, i) => i !== index));
+                    onRemoved();
+                  }}
+                >
+                  ลบ
+                </button>
+              </div>
             </div>
+            {renderItem(item, patch, index)}
           </div>
         );
       })}
       <button type="button" className="crm-users-secondary" onClick={() => onChange([...items, blank()])}>
         {addLabel}
       </button>
-    </>
+    </div>
   );
 }
 
@@ -302,7 +321,6 @@ export function SolutionsIndexPageEditor({
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
   const fileHolders = useRef<Record<string, HTMLInputElement | null>>({});
-  const tabRefs = useRef<Record<string, HTMLButtonElement | null>>({});
   const [tab, setTab] = useState<Tab>(isTab(initialTab) ? initialTab : "hero");
   const [meta, setMeta] = useState({
     title: initial.title,
@@ -317,11 +335,14 @@ export function SolutionsIndexPageEditor({
   const [note, setNote] = useState(notice ?? "");
   const [pending, startTransition] = useTransition();
   const [dialog, setDialog] = useState<"unpublish" | "duplicate" | null>(null);
+  const [moreOpen, setMoreOpen] = useState(false);
   const [targetLocale, setTargetLocale] = useState("en");
   const [dirty, setDirty] = useState(false);
   const [previews, setPreviews] = useState<Record<string, string>>(() => previewsFrom(initial.content));
   const [clears, setClears] = useState<Record<string, boolean>>({});
   const firstSync = useRef(true);
+  const activeTab = useMemo(() => TABS.find((item) => item.id === tab) ?? TABS[0], [tab]);
+  const localeLabel = LOCALE_OPTIONS.find((item) => item.id === meta.locale)?.label ?? meta.locale;
 
   // After a save, router.refresh() delivers a new updatedAt. Adopt the stored content
   // (new image paths) and drop pending file inputs, unless the user has already started editing again.
@@ -348,9 +369,20 @@ export function SolutionsIndexPageEditor({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updatedAt]);
 
+  useEffect(() => {
+    if (!dirty) return;
+    const onUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      event.returnValue = "";
+    };
+    window.addEventListener("beforeunload", onUnload);
+    return () => window.removeEventListener("beforeunload", onUnload);
+  }, [dirty]);
+
   function markDirty() {
     setDirty(true);
     setNote("");
+    setStatus("");
   }
 
   function patchContent(next: Page) {
@@ -505,113 +537,170 @@ export function SolutionsIndexPageEditor({
     submit(intent);
   }
 
-  function onTabKeyDown(event: KeyboardEvent<HTMLButtonElement>, index: number) {
-    let next = index;
-    if (event.key === "ArrowRight") next = (index + 1) % TABS.length;
-    else if (event.key === "ArrowLeft") next = (index - 1 + TABS.length) % TABS.length;
-    else if (event.key === "Home") next = 0;
-    else if (event.key === "End") next = TABS.length - 1;
-    else return;
-    event.preventDefault();
-    const target = TABS[next];
-    setTab(target.id);
-    tabRefs.current[target.id]?.focus();
-  }
-
-  const saveBar = (
-    <div className="crm-cs-savebar">
-      <button className="kpi-button" type="submit" name="intent" value="save" disabled={pending} style={LIME_BUTTON}>
-        {pending ? solutionsIndexCmsNotice("pending") : "บันทึก / Save"}
-      </button>
-      <button className="crm-users-secondary" type="submit" name="intent" value="draft" disabled={pending}>
-        บันทึกฉบับร่าง / Save Draft
-      </button>
-      <button className="crm-users-secondary" type="submit" name="intent" value="preview" disabled={pending}>
-        บันทึกแล้วดูตัวอย่าง / Save and Preview
-      </button>
-      <button className="kpi-button" type="submit" name="intent" value="publish" disabled={pending} style={LIME_BUTTON}>
-        เผยแพร่ / Publish
-      </button>
-      <button className="crm-users-secondary" type="submit" name="intent" value="unpublish" disabled={pending}>
-        ยกเลิกเผยแพร่ / Unpublish
-      </button>
-      <button type="button" className="crm-users-secondary" disabled={pending} onClick={() => setDialog("duplicate")}>
-        คัดลอกไปภาษาอื่น / Duplicate to another language
-      </button>
-      <p
-        className={`crm-cs-save-state${status ? " is-error" : dirty ? " is-dirty" : note ? " is-ok" : ""}`}
-        role={status ? "alert" : "status"}
-        aria-live={status ? "assertive" : "polite"}
-      >
-        {pending ? solutionsIndexCmsNotice("pending") : status || note || (dirty ? solutionsIndexCmsNotice("dirty") : solutionsIndexCmsNotice("ready"))}
-      </p>
-    </div>
-  );
+  const saveState = pending
+    ? solutionsIndexCmsNotice("pending")
+    : status
+      ? status
+      : dirty
+        ? solutionsIndexCmsNotice("dirty")
+        : note || solutionsIndexCmsNotice("ready");
 
   const groupOptions = content.categories.items.map((item) => ({ id: item.id, label: item.titleEn || item.titleTh || item.id }));
 
   return (
-    <div className="crm-cs-editor-shell">
-      <nav className="crm-cs-tabs" role="tablist" aria-label="ส่วนของหน้า Hotel Solutions / Hotel Solutions page sections">
-        {TABS.map((item, index) => (
-          <button
-            key={item.id}
-            ref={(node) => {
-              tabRefs.current[item.id] = node;
-            }}
-            type="button"
-            id={`solutions-index-cms-tab-${item.id}`}
-            role="tab"
-            aria-selected={tab === item.id}
-            aria-controls="solutions-index-cms-panel"
-            tabIndex={tab === item.id ? 0 : -1}
-            className={tab === item.id ? "crm-cs-tab is-active" : "crm-cs-tab"}
-            style={tab === item.id ? { ...LIME_BUTTON, borderColor: "#a2dc25" } : undefined}
-            onClick={() => setTab(item.id)}
-            onKeyDown={(event) => onTabKeyDown(event, index)}
-          >
-            {item.label}
-          </button>
-        ))}
-      </nav>
-      <form ref={formRef} className="crm-cms-form" onSubmit={onSubmit}>
-        <input type="hidden" name="id" value={initial.id} />
-        <input type="hidden" name="locale" value={meta.locale} />
-        {(["hero", "cta", "social"] as const).map((slot) => (
-          <input
-            key={slot}
-            ref={(node) => {
-              fileHolders.current[slot] = node;
-            }}
-            type="file"
-            name={fileFieldName(slot)}
-            accept=".jpg,.jpeg,.png,.webp"
-            hidden
-            aria-hidden="true"
-            tabIndex={-1}
-          />
-        ))}
+    <form ref={formRef} className="crm-cms-form crm-cms-page-editor" onSubmit={onSubmit}>
+      <input type="hidden" name="id" value={initial.id} />
+      <input type="hidden" name="locale" value={meta.locale} />
+      {(["hero", "cta", "social"] as const).map((slot) => (
+        <input
+          key={slot}
+          ref={(node) => {
+            fileHolders.current[slot] = node;
+          }}
+          type="file"
+          name={fileFieldName(slot)}
+          accept=".jpg,.jpeg,.png,.webp"
+          hidden
+          aria-hidden="true"
+          tabIndex={-1}
+        />
+      ))}
+      {content.cards.items.map((card) => (
+        <input
+          key={card.id}
+          ref={(node) => {
+            fileHolders.current[`card-${card.id}`] = node;
+          }}
+          type="file"
+          name={fileFieldName(`card-${card.id}`)}
+          accept=".jpg,.jpeg,.png,.webp"
+          hidden
+          aria-hidden="true"
+          tabIndex={-1}
+        />
+      ))}
+      <datalist id={LINK_LIST_ID}>
         {content.cards.items.map((card) => (
-          <input
-            key={card.id}
-            ref={(node) => {
-              fileHolders.current[`card-${card.id}`] = node;
-            }}
-            type="file"
-            name={fileFieldName(`card-${card.id}`)}
-            accept=".jpg,.jpeg,.png,.webp"
-            hidden
-            aria-hidden="true"
-            tabIndex={-1}
-          />
+          <option key={card.id} value={card.href} />
         ))}
-        <datalist id={LINK_LIST_ID}>
-          {content.cards.items.map((card) => (
-            <option key={card.id} value={card.href} />
-          ))}
-        </datalist>
-        {saveBar}
-        <div id="solutions-index-cms-panel" role="tabpanel" aria-labelledby={`solutions-index-cms-tab-${tab}`}>
+      </datalist>
+
+      <div className="crm-cms-page-editor-savebar">
+        <div className="crm-cms-page-editor-savebar-actions">
+          <Link href={previewHref} className="crm-users-secondary">
+            ดูตัวอย่าง
+          </Link>
+          <button className="crm-users-secondary" type="submit" name="intent" value="save" disabled={pending}>
+            บันทึก
+          </button>
+          <button className="crm-users-secondary" type="submit" name="intent" value="draft" disabled={pending}>
+            บันทึกฉบับร่าง
+          </button>
+          <button className="kpi-button crm-users-primary" type="submit" name="intent" value="publish" disabled={pending}>
+            {pending ? "กำลังบันทึก…" : "เผยแพร่"}
+          </button>
+          <div className="crm-cms-page-editor-more">
+            <button type="button" className="crm-users-secondary" disabled={pending} aria-expanded={moreOpen} onClick={() => setMoreOpen((open) => !open)}>
+              เพิ่มเติม
+            </button>
+            {moreOpen ? (
+              <div className="crm-cms-page-editor-more-menu" role="menu">
+                <button type="submit" name="intent" value="preview" className="crm-users-secondary" disabled={pending} role="menuitem">
+                  บันทึกแล้วดูตัวอย่าง
+                </button>
+                {meta.status === "published" ? (
+                  <button type="button" className="crm-users-secondary" disabled={pending} role="menuitem" onClick={() => setDialog("unpublish")}>
+                    ยกเลิกเผยแพร่
+                  </button>
+                ) : null}
+                <button type="button" className="crm-users-secondary" disabled={pending} role="menuitem" onClick={() => setDialog("duplicate")}>
+                  คัดลอกไปภาษาอื่น
+                </button>
+                <Link href={publicHref} className="crm-users-secondary" target="_blank" rel="noreferrer" role="menuitem">
+                  เปิดหน้าเว็บ
+                </Link>
+              </div>
+            ) : null}
+          </div>
+        </div>
+        <p
+          className={`crm-cms-page-editor-save-state${pending ? " is-pending" : status ? " is-error" : dirty ? " is-dirty" : note ? " is-ok" : ""}`}
+          role={status ? "alert" : "status"}
+          aria-live={status ? "assertive" : "polite"}
+        >
+          {saveState}
+        </p>
+      </div>
+
+      {note && !status ? (
+        <p className="crm-users-alert is-ok" role="status">
+          {note}
+        </p>
+      ) : null}
+      {status ? (
+        <p className="crm-users-alert is-warn" role="alert">
+          {status}
+        </p>
+      ) : null}
+
+      <div className="crm-cms-page-editor-layout">
+        <aside className="crm-cms-page-editor-nav" aria-label="ส่วนของหน้า">
+          <label className="crm-cms-page-editor-nav-mobile">
+            <span>ส่วนที่แก้ไข</span>
+            <select className="crm-select" value={tab} onChange={(event) => setTab(event.target.value as Tab)}>
+              {TAB_GROUPS.map((group) => (
+                <optgroup key={group.label} label={group.label}>
+                  {group.ids.map((id) => {
+                    const item = TABS.find((tabItem) => tabItem.id === id);
+                    return item ? (
+                      <option key={item.id} value={item.id}>
+                        {item.label}
+                      </option>
+                    ) : null;
+                  })}
+                </optgroup>
+              ))}
+            </select>
+          </label>
+          <nav className="crm-cms-page-editor-nav-desktop" aria-label="กลุ่มส่วนเนื้อหา">
+            {TAB_GROUPS.map((group) => (
+              <div key={group.label} className="crm-cms-page-editor-nav-group">
+                <p className="crm-cms-page-editor-nav-label">{group.label}</p>
+                <div className="crm-cms-page-editor-nav-list" role="tablist" aria-label={group.label}>
+                  {group.ids.map((id) => {
+                    const item = TABS.find((tabItem) => tabItem.id === id);
+                    if (!item) return null;
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        id={`solutions-index-cms-tab-${item.id}`}
+                        role="tab"
+                        aria-selected={tab === item.id}
+                        aria-controls="solutions-index-cms-panel"
+                        className={`crm-cms-page-editor-nav-item${tab === item.id ? " is-active" : ""}`}
+                        onClick={() => setTab(item.id)}
+                      >
+                        {item.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </nav>
+        </aside>
+
+        <div className="crm-cms-page-editor-main">
+          <div className="crm-cms-page-editor-toolbar">
+            <div>
+              <p className="crm-cms-page-editor-section-kicker">กำลังแก้ไข</p>
+              <h2 className="crm-cms-page-editor-section-title">{activeTab.label}</h2>
+            </div>
+            <p className="crm-cms-page-editor-lang-note">ภาษาเอกสาร: {localeLabel} · สถานะ {meta.status === "published" ? "เผยแพร่" : "ฉบับร่าง"}</p>
+          </div>
+
+          <div id="solutions-index-cms-panel" className="crm-cms-page-editor-panel" role="tabpanel" aria-labelledby={`solutions-index-cms-tab-${tab}`}>
           {tab === "hero" ? (
             <section className="crm-cms-block">
               <h2>Hero</h2>
@@ -968,18 +1057,19 @@ export function SolutionsIndexPageEditor({
               ) : null}
             </section>
           ) : null}
+          </div>
         </div>
-        {saveBar}
-      </form>
+      </div>
+
       {dialog ? (
         <Dialog titleId="solutions-index-dialog-title" descriptionId="solutions-index-dialog-desc" onClose={() => setDialog(null)}>
-          <h2 id="solutions-index-dialog-title">{dialog === "unpublish" ? "ยกเลิกเผยแพร่ / Unpublish" : "คัดลอกไปภาษาอื่น / Duplicate to another language"}</h2>
+          <h2 id="solutions-index-dialog-title">{dialog === "unpublish" ? "ยกเลิกเผยแพร่" : "คัดลอกไปภาษาอื่น"}</h2>
           {dialog === "unpublish" ? (
-            <p id="solutions-index-dialog-desc">หน้าสาธารณะจะกลับไปใช้เนื้อหาในโค้ดจนกว่าจะเผยแพร่อีกครั้ง / The public page will fall back to the built-in content until it is published again.</p>
+            <p id="solutions-index-dialog-desc">หน้าสาธารณะจะกลับไปใช้เนื้อหาในโค้ดจนกว่าจะเผยแพร่อีกครั้ง</p>
           ) : (
             <>
-              <p id="solutions-index-dialog-desc">สร้างฉบับร่างในภาษาปลายทาง ตรวจคำแปลก่อนเผยแพร่ / Creates a draft in the destination language. Check the translation before publishing.</p>
-              <Field label="ภาษาปลายทาง / Destination language">
+              <p id="solutions-index-dialog-desc">สร้างฉบับร่างในภาษาปลายทาง ตรวจคำแปลก่อนเผยแพร่</p>
+              <Field label="ภาษาปลายทาง">
                 <select className="crm-field" value={targetLocale} onChange={(event) => setTargetLocale(event.target.value)}>
                   {LOCALE_OPTIONS.filter((item) => item.id !== meta.locale).map((item) => (
                     <option key={item.id} value={item.id}>
@@ -990,27 +1080,27 @@ export function SolutionsIndexPageEditor({
               </Field>
             </>
           )}
-          <div className="crm-cs-metric-actions">
+          <div className="crm-cms-actions">
             <button type="button" className="crm-users-secondary" onClick={() => setDialog(null)}>
-              ยกเลิก / Cancel
+              ยกเลิก
             </button>
             <button
               type="button"
-              className="kpi-button"
-              style={LIME_BUTTON}
+              className="kpi-button crm-users-primary"
               onClick={() => {
                 const next = dialog;
                 setDialog(null);
+                setMoreOpen(false);
                 if (next === "unpublish") submit("unpublish");
                 else duplicateToLocale();
               }}
             >
-              ยืนยัน / Confirm
+              ยืนยัน
             </button>
           </div>
         </Dialog>
       ) : null}
-    </div>
+    </form>
   );
 }
 
@@ -1022,10 +1112,10 @@ function ListEditorVariants({ content, onChange }: { content: Page; onChange: (n
       {variants.map((variant, index) => {
         const patch = (next: Partial<typeof variant>) => onChange(variants.map((row, i) => (i === index ? { ...row, ...next } : row)));
         return (
-          <div key={variant.locale || index} className="crm-cms-repeat" role="group" aria-label={`SEO ${variant.locale}`}>
-            <p>
+          <div key={variant.locale || index} className="crm-cms-contact-step-card" role="group" aria-label={`SEO ${variant.locale}`}>
+            <div className="crm-cms-faq-item-head">
               <strong>SEO — {variant.locale}</strong>
-            </p>
+            </div>
             <TextInput label="Title" value={variant.title} onChange={(title) => patch({ title })} />
             <TextArea label="Description" rows={2} value={variant.description} onChange={(description) => patch({ description })} />
             <TextInput label="Canonical" value={variant.canonical} onChange={(canonical) => patch({ canonical })} />
