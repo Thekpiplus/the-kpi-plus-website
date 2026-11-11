@@ -1,11 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useMemo, useState } from "react";
+import { CrmSubNavIcon, resolveSubNavIcon, type CrmSubNavIconName } from "@/components/crm/CrmSubNavIcons";
 
 export type CrmSubNavItem = {
   href: string;
   label: string;
+  icon?: CrmSubNavIconName;
   children?: CrmSubNavItem[];
 };
 
@@ -63,24 +65,33 @@ function groupHasCurrent(pathname: string, search: string, item: CrmSubNavItem) 
   return Boolean(item.children?.some((child) => isCrmSubNavCurrent(pathname, search, child.href)));
 }
 
+function iconNameFor(item: CrmSubNavItem): CrmSubNavIconName {
+  return item.icon ?? resolveSubNavIcon(item.href, item.label);
+}
+
 function SubNavLink({
   href,
   label,
+  icon,
   current,
   nested = false,
 }: {
   href: string;
   label: string;
+  icon: CrmSubNavIconName;
   current: boolean;
   nested?: boolean;
 }) {
   return (
     <Link
       href={href}
-      className={nested ? "crm-subnav-link is-nested" : "crm-subnav-link"}
+      className={`crm-subnav-link${nested ? " is-nested" : ""}${current ? " is-current" : ""}`}
       aria-current={current ? "page" : undefined}
       title={label}
     >
+      <span className="crm-subnav-link-icon" aria-hidden="true">
+        <CrmSubNavIcon name={icon} />
+      </span>
       <span className="crm-subnav-link-text">{label}</span>
     </Link>
   );
@@ -101,24 +112,29 @@ export function CrmSubNav({
   showModuleLabel?: boolean;
 }) {
   const baseId = useId();
-  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
+  const [openHref, setOpenHref] = useState<string | null>(null);
 
-  useEffect(() => {
-    const next: Record<string, boolean> = {};
+  const activeGroupHref = useMemo(() => {
     for (const item of items) {
       if (!item.children?.length) continue;
-      if (groupHasCurrent(pathname, search, item)) next[item.href] = true;
+      if (groupHasCurrent(pathname, search, item)) return item.href;
     }
-    if (Object.keys(next).length) {
-      setOpenGroups((prev) => ({ ...prev, ...next }));
-    }
+    return null;
   }, [items, pathname, search]);
+
+  useEffect(() => {
+    if (activeGroupHref) setOpenHref(activeGroupHref);
+  }, [activeGroupHref]);
+
+  const openGroup = items.find((item) => item.href === openHref && item.children?.length) ?? null;
+  const openChildren = openGroup?.children ?? [];
+  const childrenId = openGroup ? `${baseId}-${openGroup.href.replace(/[^a-z0-9]+/gi, "-")}` : undefined;
 
   return (
     <div className={`crm-app-sub${showModuleLabel ? "" : " is-links-only"}`.trim()}>
       {showModuleLabel ? (
         <div className="crm-app-sub-context">
-          <p className="crm-app-sub-kicker">โมดูล</p>
+          <p className="crm-app-sub-kicker">เมนูย่อย</p>
           <p className="crm-app-sub-title">{moduleLabel}</p>
         </div>
       ) : null}
@@ -126,22 +142,21 @@ export function CrmSubNav({
         <div className="crm-app-sub-links" role="list">
           {items.map((item) => {
             const children = item.children;
+            const icon = iconNameFor(item);
             if (!children?.length) {
               return (
                 <span key={item.href} className="crm-subnav-item" role="listitem">
                   <SubNavLink
                     href={item.href}
                     label={item.label}
+                    icon={icon}
                     current={isCrmSubNavCurrent(pathname, search, item.href)}
                   />
                 </span>
               );
             }
 
-            const groupOpen =
-              openGroups[item.href] ??
-              (pathname === item.href || pathname.startsWith(`${item.href}/`));
-            const childrenId = `${baseId}-${item.href.replace(/[^a-z0-9]+/gi, "-")}`;
+            const groupOpen = openHref === item.href;
             const parentCurrent = isCrmSubNavCurrent(pathname, search, item.href);
             const childCurrent = children.some((child) => isCrmSubNavCurrent(pathname, search, child.href));
 
@@ -151,36 +166,43 @@ export function CrmSubNav({
                 className={`crm-subnav-group${groupOpen ? " is-open" : ""}${childCurrent ? " has-current" : ""}`}
                 role="listitem"
               >
-                <SubNavLink href={item.href} label={item.label} current={parentCurrent && !childCurrent} />
+                <SubNavLink href={item.href} label={item.label} icon={icon} current={parentCurrent && !childCurrent} />
                 <button
                   type="button"
-                  className="crm-subnav-toggle"
+                  className={`crm-subnav-toggle${groupOpen ? " is-open" : ""}`}
                   aria-expanded={groupOpen}
                   aria-controls={childrenId}
                   aria-label={`${groupOpen ? "ย่อ" : "ขยาย"} ${item.label}`}
-                  onClick={() => setOpenGroups((prev) => ({ ...prev, [item.href]: !groupOpen }))}
+                  onClick={() => setOpenHref((prev) => (prev === item.href ? null : item.href))}
                 >
-                  <span aria-hidden="true">{groupOpen ? "▾" : "▸"}</span>
                   <span className="crm-subnav-toggle-count">{children.length}</span>
-                </button>
-                {groupOpen ? (
-                  <span id={childrenId} className="crm-subnav-children" role="list">
-                    {children.map((child) => (
-                      <span key={child.href} className="crm-subnav-item" role="listitem">
-                        <SubNavLink
-                          href={child.href}
-                          label={child.label}
-                          current={isCrmSubNavCurrent(pathname, search, child.href)}
-                          nested
-                        />
-                      </span>
-                    ))}
+                  <span className={`crm-subnav-toggle-chevron${groupOpen ? " is-open" : ""}`} aria-hidden="true">
+                    <CrmSubNavIcon name="chevron" />
                   </span>
-                ) : null}
+                </button>
               </span>
             );
           })}
         </div>
+
+        {openGroup && openChildren.length ? (
+          <div className="crm-app-sub-children-panel" id={childrenId}>
+            <p className="crm-app-sub-children-label">{openGroup.label}</p>
+            <div className="crm-app-sub-children-links" role="list">
+              {openChildren.map((child) => (
+                <span key={child.href} className="crm-subnav-item" role="listitem">
+                  <SubNavLink
+                    href={child.href}
+                    label={child.label}
+                    icon={iconNameFor(child)}
+                    current={isCrmSubNavCurrent(pathname, search, child.href)}
+                    nested
+                  />
+                </span>
+              ))}
+            </div>
+          </div>
+        ) : null}
       </nav>
     </div>
   );

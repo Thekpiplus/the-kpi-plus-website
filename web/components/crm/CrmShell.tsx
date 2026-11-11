@@ -684,8 +684,7 @@ export function CrmShell({
   const searchParams = useSearchParams();
   const search = searchParams.toString();
   const workspace = workspaceOf(pathname);
-  // CMS links live in the left rail — avoid a second identical Content Management strip.
-  const contextLinks = workspace === "home" || workspace === "cms" ? [] : contextByWorkspace[workspace];
+  const contextLinks = workspace === "home" ? [] : contextByWorkspace[workspace];
   const allowed = ADMIN_MODULES.filter((module) => modules.includes(module));
   const allowedSet = new Set<NavKey>(["home", "settings", ...allowed]);
   const currentSectionId: NavSectionId | null = pathname.startsWith("/crm/settings")
