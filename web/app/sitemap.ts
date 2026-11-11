@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { publishedDocuments } from "@/lib/cms/queries";
 import { documentPath } from "@/lib/cms/body";
 import { insightByHref } from "@/lib/insights";
-import { SITE, pages } from "@/lib/seo";
+import { SITE, pages, type SeoEntry } from "@/lib/seo";
 
 const PRIVATE = [/^\/admin/, /^\/crm/, /^\/partners/, /^\/login/, /^\/dashboard/];
 
@@ -19,6 +19,22 @@ function isRedirectedLegacy(url: string) {
   }
 }
 
+function languageAlternates(page: SeoEntry): MetadataRoute.Sitemap[number]["alternates"] {
+  const languages: Record<string, string> = {};
+  for (const alt of page.alternates || []) {
+    if (!alt?.hreflang || !alt?.href) continue;
+    languages[alt.hreflang] = alt.href;
+  }
+  // Thai is the default locale — always expose x-default to the Thai canonical.
+  const thai =
+    languages.th ||
+    page.alternates?.find((alt) => alt.hreflang === "th")?.href ||
+    (page.language === "th" ? page.canonical : undefined);
+  if (thai) languages["x-default"] = thai;
+  if (!Object.keys(languages).length) return undefined;
+  return { languages };
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const codePages = pages
     .filter((page) => !PRIVATE.some((pattern) => pattern.test(page.route)))
@@ -32,8 +48,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       return {
         url: page.canonical,
         lastModified: insight?.updatedAt || insight?.publishedAt || "2026-09-26",
-        changeFrequency: (isHome ? "weekly" : isInsight || isSolution ? "monthly" : "monthly") as "weekly" | "monthly",
+        changeFrequency: (isHome ? "weekly" : isInsight || isSolution ? "monthly" : "monthly") as
+          | "weekly"
+          | "monthly",
         priority: isHome ? 1 : isSolution ? 0.8 : isInsight ? 0.7 : 0.6,
+        alternates: languageAlternates(page),
       };
     });
 

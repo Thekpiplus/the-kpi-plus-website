@@ -1,5 +1,7 @@
+import { CrmSelect } from "@/components/crm/CrmSelect";
+import { LeadServicesField } from "@/components/crm/LeadServicesField";
 import { createLeadAndOpen } from "@/lib/crm/actions";
-import { SERVICES, SOURCES } from "@/lib/crm/constants";
+import { SOURCES } from "@/lib/crm/constants";
 import { sourceLabel } from "@/lib/crm/sources";
 
 const KEY_SOURCES = SOURCES.filter((source) => source !== "website_form");
@@ -63,44 +65,43 @@ export function NewLeadForm({
       </label>
       <label className="mt-4 block text-sm font-bold text-[#3B3B3B]">
         มอบหมายให้
-        <select className="crm-select" name="ownerId" defaultValue={currentUserId ?? ""}>
-          {owners.map((owner) => (
-            <option key={owner.id} value={owner.id}>
-              {owner.name}
-            </option>
-          ))}
-        </select>
+        <CrmSelect
+          name="ownerId"
+          aria-label="มอบหมายให้"
+          defaultValue={currentUserId ?? owners[0]?.id ?? ""}
+          options={owners.map((owner) => ({ value: owner.id, label: owner.name }))}
+        />
       </label>
       <label className="mt-4 block text-sm font-bold text-[#3B3B3B]">
         แหล่งที่มา
-        <select className="crm-select" name="source" defaultValue="manual">
-          {KEY_SOURCES.map((source) => (
-            <option key={source} value={source}>
-              {sourceLabel(source)}
-            </option>
-          ))}
-        </select>
+        <CrmSelect
+          name="source"
+          aria-label="แหล่งที่มา"
+          defaultValue="manual"
+          options={KEY_SOURCES.map((source) => ({
+            value: source,
+            label: sourceLabel(source),
+          }))}
+        />
       </label>
       <label className="mt-4 block text-sm font-bold text-[#3B3B3B]">
         พาร์ตเนอร์ที่ได้รับเครดิต
-        <select className="crm-select" name="partnerId" defaultValue="">
-          <option value="">ไม่มี</option>
-          {partners.map((partner) => (
-            <option key={partner.id} value={partner.id}>
-              {partner.displayName}
-            </option>
-          ))}
-        </select>
+        <CrmSelect
+          name="partnerId"
+          aria-label="พาร์ตเนอร์ที่ได้รับเครดิต"
+          defaultValue=""
+          options={[
+            { value: "", label: "ไม่มี" },
+            ...partners.map((partner) => ({
+              value: partner.id,
+              label: partner.displayName,
+            })),
+          ]}
+        />
       </label>
-      <fieldset className="mt-4">
-        <legend className="text-sm font-bold text-[#3B3B3B]">บริการที่สนใจ</legend>
-        {SERVICES.map((service) => (
-          <label key={service} className="mt-2 block text-sm">
-            <input type="checkbox" name="services" value={service} className="mr-2" />
-            {service}
-          </label>
-        ))}
-      </fieldset>
+      <div className="mt-4">
+        <LeadServicesField />
+      </div>
       <label className="mt-4 block text-sm font-bold text-[#3B3B3B]">
         มูลค่าโดยประมาณ
         <input className="crm-field" name="estimatedValue" type="number" min="0" />

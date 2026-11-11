@@ -9,14 +9,135 @@ export const STAGES = [
   { name: "Lost", nameTh: "ไม่สำเร็จ", sortOrder: 8, isWon: false, isLost: true },
 ] as const;
 
-export const SERVICES = [
-  "Revenue Management",
-  "OTA / Distribution",
-  "Hotel systems",
-  "Marketing",
-  "Training",
-  "AI implementation",
+/** Preset CRM services — full KPI Plus commercial catalogue. */
+export const SERVICE_GROUPS = [
+  {
+    id: "revenue_reservations_sales",
+    labelTh: "รายได้ จอง และการขาย",
+    labelEn: "Revenue, Reservations & Sales",
+    items: [
+      "Revenue Management",
+      "Outsourced Reservations",
+      "B2B Sales & Agent Representation",
+      "Revenue & Distribution Audit",
+      "Revenue Strategy & Advisory",
+      "OTA Setup & Optimisation",
+      "Annual Revenue Budget & Forecast",
+    ],
+  },
+  {
+    id: "digital_marketing",
+    labelTh: "การตลาดดิจิทัล",
+    labelEn: "Digital Marketing",
+    items: [
+      "Social Media Management",
+      "Meta Ads Management",
+      "Google Ads Management",
+      "Metasearch Ads Management",
+      "SEO Management",
+      "Local SEO & Google Business Profile Management",
+      "AEO / GEO",
+      "Email Marketing",
+      "Influencer Campaign Management",
+      "Marketing Audit & Strategy",
+    ],
+  },
+  {
+    id: "content_creative",
+    labelTh: "คอนเทนต์และครีเอทีฟ",
+    labelEn: "Content & Creative",
+    items: [
+      "Graphic Design",
+      "Photography",
+      "Photo & Video Production",
+      "Reel Editing",
+      "Blog & SEO Article Writing",
+      "Translation & Localisation",
+    ],
+  },
+  {
+    id: "websites_technology",
+    labelTh: "เว็บไซต์และเทคโนโลยี",
+    labelEn: "Websites & Technology",
+    items: [
+      "Website Development",
+      "Landing Page Development",
+      "Website Maintenance",
+      "Hosting & Domain Management",
+      "Direct Booking Engine Integration",
+      "LINE Official Account Setup",
+      "Analytics & Conversion Tracking",
+      "Performance Dashboards",
+      "Property Management Systems",
+      "Channel Manager Integration",
+      "Hotel Systems Implementation",
+    ],
+  },
+  {
+    id: "hotel_consultancy",
+    labelTh: "ที่ปรึกษาโรงแรม",
+    labelEn: "Hotel Consultancy",
+    items: [
+      "Hotel Feasibility Studies",
+      "Pre-Opening Commercial Setup",
+      "Pre-Opening Consultancy",
+      "Rebranding Strategy",
+      "Owner Representation & Asset Management",
+      "GM & Owner Mentorship",
+      "Mystery Shopper Audits",
+      "Sustainability Certification Support",
+      "Investment Deck & Fundraising Preparation",
+    ],
+  },
+  {
+    id: "training_development",
+    labelTh: "การฝึกอบรมและพัฒนา",
+    labelEn: "Training & Development",
+    items: [
+      "Front Office & Reservations Training",
+      "Revenue Management Training",
+      "Housekeeping & Service Excellence",
+      "Guest Experience & Complaint Handling",
+      "Leadership Development",
+      "Digital Skills for Hoteliers",
+      "Sustainability & Eco Training",
+      "Mystery Guest Roleplay Training",
+      "Train-the-Trainer",
+      "Custom Workshops",
+    ],
+  },
+  {
+    id: "real_estate_tourism",
+    labelTh: "อสังหาฯ และการตลาดท่องเที่ยว",
+    labelEn: "Real Estate & Tourism Marketing",
+    items: [
+      "Property Lead Generation",
+      "Tour & Experience Advertising",
+      "Tourism Booking Funnels",
+    ],
+  },
+  {
+    id: "integrated_packages",
+    labelTh: "แพ็กเกจรวม",
+    labelEn: "Integrated Packages",
+    items: [
+      "Revenue & Reservations",
+      "Full Commercial Management",
+      "Social Media & Meta Ads",
+      "Social Content, Meta Ads & Google Ads",
+      "Revenue Management & Content",
+      "Revenue Management, Content & Meta Ads",
+      "Revenue Management, Content, Meta Ads & Google Ads",
+      "OTA Setup, Revenue Management & Content",
+      "OTA Setup & Social Content",
+      "Custom Service Packages",
+    ],
+  },
 ] as const;
+
+export const SERVICES = SERVICE_GROUPS.flatMap((group) => [...group.items]) as readonly string[];
+
+export type CrmService = (typeof SERVICES)[number];
 
 export const SOURCES = [
   "website_form",
@@ -59,20 +180,20 @@ export const LOST_REASONS = [
 ] as const;
 
 export const FORM_SERVICE: Record<string, string> = {
-  hotel_performance_audit: "Revenue Management",
+  hotel_performance_audit: "Revenue & Distribution Audit",
   contact_enquiry: "Revenue Management",
   revenue_enquiry: "Revenue Management",
-  reservations_enquiry: "OTA / Distribution",
-  b2b_enquiry: "OTA / Distribution",
-  google_ads_enquiry: "Marketing",
-  meta_ads_enquiry: "Marketing",
-  search_enquiry: "Marketing",
-  website_enquiry: "Marketing",
-  conversion_enquiry: "Marketing",
-  hotel_systems_enquiry: "Hotel systems",
-  technology_enquiry: "AI implementation",
-  training_enquiry: "Training",
-  independent_hotel_enquiry: "Revenue Management",
+  reservations_enquiry: "Outsourced Reservations",
+  b2b_enquiry: "B2B Sales & Agent Representation",
+  google_ads_enquiry: "Google Ads Management",
+  meta_ads_enquiry: "Meta Ads Management",
+  search_enquiry: "SEO Management",
+  website_enquiry: "Website Development",
+  conversion_enquiry: "Direct Booking Engine Integration",
+  hotel_systems_enquiry: "Hotel Systems Implementation",
+  technology_enquiry: "Analytics & Conversion Tracking",
+  training_enquiry: "Custom Workshops",
+  independent_hotel_enquiry: "Full Commercial Management",
   general_enquiry: "Revenue Management",
 };
 

@@ -1,10 +1,11 @@
 import Link from "next/link";
+import { CrmSelect } from "@/components/crm/CrmSelect";
 import { EmptyState } from "@/components/crm/ui/EmptyState";
 import { LeadRowActions } from "@/components/crm/ui/LeadRowActions";
 import { NewLeadOpenButton } from "@/components/crm/ui/NewLeadModal";
 import { PageHeader } from "@/components/crm/ui/PageHeader";
 import { stageToneKey } from "@/components/crm/pipeline-types";
-import { assignLeadOwner, changeLeadStage } from "@/lib/crm/actions";
+import { assignLeadOwner, changeLeadStageFormAction } from "@/lib/crm/actions";
 import { leadArchiveCounts, type LeadArchiveView } from "@/lib/crm/archive";
 import {
   formatMoney,
@@ -176,11 +177,16 @@ export default async function LeadsPage({
           {!origin ? (
             <label className="crm-leads-filter-field">
               <span>แหล่งที่มา</span>
-              <select className="crm-select" name="origin" defaultValue="">
-                <option value="">ทั้งหมด</option>
-                <option value="web">จากเว็บไซต์</option>
-                <option value="manual">คีย์เอง / แหล่งอื่น</option>
-              </select>
+              <CrmSelect
+                name="origin"
+                aria-label="แหล่งที่มา"
+                defaultValue=""
+                options={[
+                  { value: "", label: "ทั้งหมด" },
+                  { value: "web", label: "จากเว็บไซต์" },
+                  { value: "manual", label: "คีย์เอง / แหล่งอื่น" },
+                ]}
+              />
             </label>
           ) : (
             <div className="crm-leads-filter-field is-locked" aria-label="แหล่งที่มา">
@@ -190,25 +196,27 @@ export default async function LeadsPage({
           )}
           <label className="crm-leads-filter-field">
             <span>ขั้น</span>
-            <select className="crm-select" name="stageId" defaultValue={params.stageId ?? ""}>
-              <option value="">ทุกขั้น</option>
-              {stages.map((stage) => (
-                <option key={stage.id} value={stage.id}>
-                  {stage.nameTh}
-                </option>
-              ))}
-            </select>
+            <CrmSelect
+              name="stageId"
+              aria-label="ขั้น"
+              defaultValue={params.stageId ?? ""}
+              options={[
+                { value: "", label: "ทุกขั้น" },
+                ...stages.map((stage) => ({ value: stage.id, label: stage.nameTh })),
+              ]}
+            />
           </label>
           <label className="crm-leads-filter-field">
             <span>ผู้ดูแล</span>
-            <select className="crm-select" name="ownerId" defaultValue={params.ownerId ?? ""}>
-              <option value="">ทุกคน</option>
-              {owners.map((owner) => (
-                <option key={owner.id} value={owner.id}>
-                  {owner.name}
-                </option>
-              ))}
-            </select>
+            <CrmSelect
+              name="ownerId"
+              aria-label="ผู้ดูแล"
+              defaultValue={params.ownerId ?? ""}
+              options={[
+                { value: "", label: "ทุกคน" },
+                ...owners.map((owner) => ({ value: owner.id, label: owner.name })),
+              ]}
+            />
           </label>
           <div className="crm-leads-filters-actions">
             <button className="kpi-button crm-users-primary" type="submit">
@@ -344,20 +352,17 @@ export default async function LeadsPage({
                         <span className="crm-leads-table-secondary">{formatThaiDateTime(lead.updatedAt)}</span>
                       </td>
                       <td data-label="ย้ายขั้น">
-                        <form action={changeLeadStage} className="crm-leads-table-move">
+                        <form action={changeLeadStageFormAction} className="crm-leads-table-move">
                           <input type="hidden" name="leadId" value={lead.id} />
-                          <select
-                            className="crm-pipe-select"
+                          <CrmSelect
+                            size="pipe"
                             name="stageId"
                             defaultValue={lead.stageId}
                             aria-label={`ย้ายขั้นของ ${lead.contactName}`}
-                          >
-                            {stages.map((item) => (
-                              <option key={item.id} value={item.id}>
-                                {item.nameTh}
-                              </option>
-                            ))}
-                          </select>
+                            options={stages
+                              .filter((item) => !item.isLost || item.id === lead.stageId)
+                              .map((item) => ({ value: item.id, label: item.nameTh }))}
+                          />
                           <button className="crm-pipe-move-btn" type="submit">
                             ย้าย
                           </button>
@@ -366,19 +371,16 @@ export default async function LeadsPage({
                       <td data-label="มอบหมาย">
                         <form action={assignLeadOwner} className="crm-leads-table-move">
                           <input type="hidden" name="leadId" value={lead.id} />
-                          <select
-                            className="crm-pipe-select"
+                          <CrmSelect
+                            size="pipe"
                             name="ownerId"
                             defaultValue={lead.ownerId ?? ""}
                             aria-label={`มอบหมาย ${lead.contactName}`}
-                          >
-                            <option value="">ยังไม่กำหนด</option>
-                            {owners.map((owner) => (
-                              <option key={owner.id} value={owner.id}>
-                                {owner.name}
-                              </option>
-                            ))}
-                          </select>
+                            options={[
+                              { value: "", label: "ยังไม่กำหนด" },
+                              ...owners.map((owner) => ({ value: owner.id, label: owner.name })),
+                            ]}
+                          />
                           <button className="crm-pipe-move-btn" type="submit">
                             ตั้ง
                           </button>

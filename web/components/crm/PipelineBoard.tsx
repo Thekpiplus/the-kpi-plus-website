@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { stageToneKey, type PipelineStage } from "@/components/crm/pipeline-types";
-import { changeLeadStage } from "@/lib/crm/actions";
+import { changeLeadStageFormAction } from "@/lib/crm/actions";
 import { formatMoney, formatThaiDateTime } from "@/lib/crm/queries";
 import { sourceLabel } from "@/lib/crm/sources";
 
@@ -58,7 +58,7 @@ export function PipelineBoard({ stages }: { stages: PipelineStage[] }) {
                           <p className="crm-pipe-next">นัด {formatThaiDateTime(lead.nextActivityAt)}</p>
                         ) : null}
 
-                        <form action={changeLeadStage} className="crm-pipe-move">
+                        <form action={changeLeadStageFormAction} className="crm-pipe-move">
                           <input type="hidden" name="leadId" value={lead.id} />
                           <label className="sr-only" htmlFor={`stage-${lead.id}`}>
                             ย้ายขั้นของ {lead.contactName}

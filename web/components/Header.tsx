@@ -81,6 +81,11 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
   }, [pathname]);
 
   useEffect(() => {
+    document.body.classList.toggle("kpi-mobile-nav-open", openMenu);
+    return () => document.body.classList.remove("kpi-mobile-nav-open");
+  }, [openMenu]);
+
+  useEffect(() => {
     const onPointerDown = (event: PointerEvent) => {
       const el = eventElement(event);
       if (!el) return;
@@ -282,6 +287,13 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
             data-track="public_header_audit_cta"
             href={auditHref(locale)}
             className="kpi-cta kpi-header-cta kpi-thai-nav"
+            onClick={() => {
+              setOpenMenu(false);
+              setOpenMobileSolutions(false);
+              setOpenMobileGroup(null);
+              setOpenLang(false);
+              closeSolutionsMenu();
+            }}
           >
             <span className="kpi-header-cta-full">
               {locale === "th" ? (

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { CookieConsent } from "@/components/CookieConsent";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { InternalBacklinks } from "@/components/InternalBacklinks";
 import { PageScroll } from "@/components/PageScroll";
 import { JsonLd } from "@/components/JsonLd";
 import { LangSync } from "@/components/LangSync";
@@ -188,6 +189,7 @@ export async function SiteShell({
         <Header extraLinks={extraHeader} />
         <main>
           {children}
+          <InternalBacklinks route={route} locale={locale} />
           {hideFaqs ? null : (
             <PageFaqs
               items={faqs}

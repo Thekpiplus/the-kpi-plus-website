@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { changeLeadStage } from "@/lib/crm/actions";
+import { CrmSelect } from "@/components/crm/CrmSelect";
+import { changeLeadStageFormAction } from "@/lib/crm/actions";
 import { formatMoney, formatThaiDateTime } from "@/lib/crm/queries";
 import { sourceLabel } from "@/lib/crm/sources";
 import { flattenPipelineLeads, stageToneKey, type PipelineStage } from "@/components/crm/pipeline-types";
@@ -54,20 +55,15 @@ export function PipelineTable({ stages }: { stages: PipelineStage[] }) {
                   </td>
                   <td data-label="นัดถัดไป">{formatThaiDateTime(lead.nextActivityAt)}</td>
                   <td data-label="ย้ายขั้น">
-                    <form action={changeLeadStage} className="crm-pipe-table-move">
+                    <form action={changeLeadStageFormAction} className="crm-pipe-table-move">
                       <input type="hidden" name="leadId" value={lead.id} />
-                      <select
-                        className="crm-pipe-select"
+                      <CrmSelect
+                        size="pipe"
                         name="stageId"
                         defaultValue={lead.stageId}
                         aria-label={`ย้ายขั้นของ ${lead.contactName}`}
-                      >
-                        {stages.map((stage) => (
-                          <option key={stage.id} value={stage.id}>
-                            {stage.nameTh}
-                          </option>
-                        ))}
-                      </select>
+                        options={stages.map((stage) => ({ value: stage.id, label: stage.nameTh }))}
+                      />
                       <button className="crm-pipe-move-btn" type="submit">
                         ย้าย
                       </button>

@@ -1,8 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { CrmSelect } from "@/components/crm/CrmSelect";
 import { LeadArchiveButton } from "@/components/crm/LeadArchiveButton";
-import { addNoteFromForm, changeLeadStage, completeActivity, scheduleActivity, updateLead } from "@/lib/crm/actions";
-import { ACTIVITY_LABEL, ACTIVITY_TYPES, LOST_REASONS, SERVICES } from "@/lib/crm/constants";
+import { LeadServicesField } from "@/components/crm/LeadServicesField";
+import { LeadStageForm } from "@/components/crm/LeadStageForm";
+import { addNoteFromForm, completeActivity, scheduleActivity, updateLead } from "@/lib/crm/actions";
+import { ACTIVITY_LABEL, ACTIVITY_TYPES } from "@/lib/crm/constants";
 import { formInterestLine, formLabel, parseLeadFormDetails } from "@/lib/crm/form-details";
 import { formatMoney, formatThaiDateTime, leadById, pipelineData, staffDirectory } from "@/lib/crm/queries";
 import { sourceLabel } from "@/lib/crm/sources";
@@ -58,7 +61,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             </a>
           </p>
         ) : null}
-        <div className="mt-4 flex flex-wrap gap-2">
+        <div className="crm-lead-cta-row">
           {lead.phone ? (
             <a className="kpi-button" href={`tel:${lead.phone}`}>
               โทร
@@ -90,33 +93,12 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             บันทึกการคุย
           </button>
         </form>
-        <form action={changeLeadStage} className="mt-4 grid max-w-lg gap-2">
-          <input type="hidden" name="leadId" value={lead.id} />
-          <label className="text-sm font-bold text-[#3B3B3B]">
-            ขั้นใน Pipeline
-            <select className="crm-select" name="stageId" defaultValue={lead.stageId}>
-              {stages.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.nameTh}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label className="text-sm font-bold text-[#3B3B3B]">
-            เหตุผลถ้าไม่สำเร็จ
-            <select className="crm-select" name="outcomeReason" defaultValue={lead.outcomeReason}>
-              <option value="">—</option>
-              {LOST_REASONS.map((reason) => (
-                <option key={reason} value={reason}>
-                  {reason}
-                </option>
-              ))}
-            </select>
-          </label>
-          <button className="kpi-button" type="submit">
-            อัปเดตขั้น
-          </button>
-        </form>
+        <LeadStageForm
+          leadId={lead.id}
+          stageId={lead.stageId}
+          outcomeReason={lead.outcomeReason || ""}
+          stages={stages.map((item) => ({ id: item.id, nameTh: item.nameTh, isLost: item.isLost }))}
+        />
       </section>
 
       <div className="crm-split">
@@ -167,14 +149,15 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             </label>
             <label className="text-sm font-bold">
               ผู้ดูแล
-              <select className="crm-select" name="ownerId" defaultValue={lead.ownerId ?? ""}>
-                <option value="">ยังไม่กำหนด</option>
-                {owners.map((item) => (
-                  <option key={item.id} value={item.id}>
-                    {item.name}
-                  </option>
-                ))}
-              </select>
+              <CrmSelect
+                name="ownerId"
+                aria-label="ผู้ดูแล"
+                defaultValue={lead.ownerId ?? ""}
+                options={[
+                  { value: "", label: "ยังไม่กำหนด" },
+                  ...owners.map((item) => ({ value: item.id, label: item.name })),
+                ]}
+              />
             </label>
             <label className="text-sm font-bold">
               มูลค่าโดยประมาณ
@@ -189,15 +172,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
                 defaultValue={lead.decisionDate ? lead.decisionDate.toISOString().slice(0, 10) : ""}
               />
             </label>
-            <fieldset>
-              <legend className="text-sm font-bold">บริการที่สนใจ</legend>
-              {SERVICES.map((service) => (
-                <label key={service} className="mt-2 block text-sm">
-                  <input type="checkbox" name="services" value={service} defaultChecked={services.includes(service)} className="mr-2" />
-                  {service}
-                </label>
-              ))}
-            </fieldset>
+            <LeadServicesField selected={services} />
             <label className="text-sm font-bold">
               บันทึกจากลูกค้า / ทีม
               <textarea className="crm-field" name="message" rows={4} defaultValue={lead.message} />
@@ -214,13 +189,15 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
             <input type="hidden" name="leadId" value={lead.id} />
             <label className="text-sm font-bold">
               ประเภท
-              <select className="crm-select" name="type" defaultValue="call">
-                {ACTIVITY_TYPES.map((type) => (
-                  <option key={type} value={type}>
-                    {ACTIVITY_LABEL[type]}
-                  </option>
-                ))}
-              </select>
+              <CrmSelect
+                name="type"
+                aria-label="ประเภท"
+                defaultValue="call"
+                options={ACTIVITY_TYPES.map((type) => ({
+                  value: type,
+                  label: ACTIVITY_LABEL[type],
+                }))}
+              />
             </label>
             <label className="text-sm font-bold">
               หัวข้อ
@@ -307,14 +284,15 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
         )}
         <form action={creditLeadToPartner} className="mt-3 grid max-w-lg gap-2">
           <input type="hidden" name="leadId" value={lead.id} />
-          <select className="crm-select" name="partnerId" defaultValue={lead.partnerId ?? ""}>
-            <option value="">ไม่มี</option>
-            {partners.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.displayName}
-              </option>
-            ))}
-          </select>
+          <CrmSelect
+            name="partnerId"
+            aria-label="พาร์ตเนอร์ที่ได้รับเครดิต"
+            defaultValue={lead.partnerId ?? ""}
+            options={[
+              { value: "", label: "ไม่มี" },
+              ...partners.map((item) => ({ value: item.id, label: item.displayName })),
+            ]}
+          />
           <textarea className="crm-field" name="creditNote" defaultValue={lead.creditNote} placeholder="หมายเหตุเครดิต" />
           <button className="kpi-button" type="submit">
             บันทึกเครดิต

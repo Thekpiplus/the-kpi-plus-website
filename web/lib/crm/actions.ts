@@ -9,10 +9,18 @@ import { prisma } from "./db";
 import { retryNotification } from "./intake";
 import { normalizePhone } from "./security";
 
-function parseServices(value: FormDataEntryValue | FormDataEntryValue[] | null) {
-  if (Array.isArray(value)) return value.map(String);
-  if (typeof value === "string" && value) return [value];
-  return [];
+function parseServicesFromForm(formData: FormData) {
+  const seen = new Set<string>();
+  const next: string[] = [];
+  for (const entry of formData.getAll("services")) {
+    const value = String(entry ?? "").trim().replace(/\s+/g, " ");
+    if (!value) continue;
+    const key = value.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    next.push(value);
+  }
+  return next;
 }
 
 export async function moveLeadStage(leadId: string, stageId: string, reason = "") {
@@ -22,13 +30,17 @@ export async function moveLeadStage(leadId: string, stageId: string, reason = ""
     db.lead.findUnique({ where: { id: leadId }, include: { stage: true } }),
     db.stage.findUnique({ where: { id: stageId } }),
   ]);
-  if (!lead || !stage) return { ok: false as const };
+  if (!lead || !stage) return { ok: false as const, error: "not_found" as const };
+  const trimmedReason = reason.trim();
+  if (stage.isLost && !trimmedReason) {
+    return { ok: false as const, error: "lost_reason_required" as const };
+  }
   await db.lead.update({
     where: { id: leadId },
     data: {
       stageId,
       outcome: stage.isWon ? "won" : stage.isLost ? "lost" : "",
-      outcomeReason: stage.isLost ? reason : "",
+      outcomeReason: stage.isLost ? trimmedReason : "",
     },
   });
   await db.leadEvent.create({
@@ -36,7 +48,9 @@ export async function moveLeadStage(leadId: string, stageId: string, reason = ""
       leadId,
       userId: user.id,
       type: "stage_change",
-      detail: `${lead.stage.nameTh} → ${stage.nameTh}`,
+      detail: stage.isLost
+        ? `${lead.stage.nameTh} → ${stage.nameTh} · ${trimmedReason}`
+        : `${lead.stage.nameTh} → ${stage.nameTh}`,
     },
   });
   if (lead.referralId) {
@@ -90,7 +104,7 @@ export async function createManualLead(formData: FormData) {
   const stage = await db.stage.findFirst({ where: { sortOrder: 1 } });
   if (!stage) return { ok: false as const, error: "missing_stages" };
 
-  const services = formData.getAll("services").map(String);
+  const services = parseServicesFromForm(formData);
   const ownerId = String(formData.get("ownerId") ?? "") || user.id;
   const lead = await db.lead.create({
     data: {
@@ -184,7 +198,7 @@ export async function updateLead(formData: FormData) {
       email: String(formData.get("email") ?? "").trim().toLowerCase(),
       location: String(formData.get("location") ?? "").trim(),
       website: String(formData.get("website") ?? "").trim(),
-      services: JSON.stringify(formData.getAll("services").map(String)),
+      services: JSON.stringify(parseServicesFromForm(formData)),
       ownerId: String(formData.get("ownerId") ?? "") || null,
       estimatedValue: formData.get("estimatedValue") ? Number(formData.get("estimatedValue")) : null,
       decisionDate: formData.get("decisionDate") ? new Date(String(formData.get("decisionDate"))) : null,
@@ -204,7 +218,12 @@ export async function changeLeadStage(formData: FormData) {
   const leadId = String(formData.get("leadId") ?? "");
   const stageId = String(formData.get("stageId") ?? "");
   const reason = String(formData.get("outcomeReason") ?? "");
-  await moveLeadStage(leadId, stageId, reason);
+  return moveLeadStage(leadId, stageId, reason);
+}
+
+/** Native <form action> must return void — use this instead of changeLeadStage. */
+export async function changeLeadStageFormAction(formData: FormData): Promise<void> {
+  await changeLeadStage(formData);
 }
 
 export async function setLeadArchiveState(formData: FormData) {
@@ -404,5 +423,3 @@ export async function logoutPartnerAction() {
   await logout();
   redirect("/partners/login");
 }
-
-void parseServices;

@@ -1,4 +1,5 @@
 import type { FaqItem } from "@/lib/faqs";
+import { insightExcerpt, insightPosts } from "@/lib/insights";
 import { existingHref, type Locale } from "@/lib/seo";
 
 export type SystemsVisualStatus = "replace" | "sample" | "approved" | "placeholder" | "real";
@@ -3470,8 +3471,11 @@ export function hotelSystemsRelatedCards(locale: Locale) {
     bodyTh: string,
     bodyEn: string,
     kind: string,
+    ctaTh = thai ? "ดูรายละเอียด" : "Read more",
+    ctaEn = "Read more",
   ) => {
-    const resolved = existingHref(href, locale) || href;
+    const resolved = existingHref(href, locale);
+    if (!resolved) return null;
     return {
       id,
       href: resolved,
@@ -3480,19 +3484,49 @@ export function hotelSystemsRelatedCards(locale: Locale) {
       titleEn,
       bodyTh,
       bodyEn,
-      ctaTh: thai ? "ดูรายละเอียด" : "Read more",
-      ctaEn: "Read more",
+      ctaTh,
+      ctaEn,
       title: thai ? titleTh : titleEn,
       body: thai ? bodyTh : bodyEn,
-      cta: thai ? "ดูรายละเอียด" : "Read more",
+      cta: thai ? ctaTh : ctaEn,
     };
   };
+
+  const tech = insightPosts.find((post) => post.id === "hotel-technology-adoption-commercial-project" && post.isPublished !== false);
+  const meetings = insightPosts.find((post) => post.id === "hotel-revenue-meetings-that-lead-to-decisions" && post.isPublished !== false);
+
   return [
+    tech
+      ? card(
+          "tech",
+          tech.href,
+          tech.title.th,
+          tech.title.en,
+          insightExcerpt(tech, "th"),
+          insightExcerpt(tech, "en"),
+          "insight",
+          "อ่านบทความ",
+          "Read article",
+        )
+      : null,
+    meetings
+      ? card(
+          "meetings",
+          meetings.href,
+          meetings.title.th,
+          meetings.title.en,
+          insightExcerpt(meetings, "th"),
+          insightExcerpt(meetings, "en"),
+          "insight",
+          "อ่านบทความ",
+          "Read article",
+        )
+      : null,
     card("revenue", "/solutions/revenue-commercial-management", "บริหารรายได้และการขาย", "Revenue and commercial management", "ระบบที่ตั้งค่าแล้ว ยังต้องดูร่วมกับราคา ช่องทางขาย และการจองตรงในภาพรวมรายได้", "Once the systems are set, rates, channels, and direct booking still have to sit in one revenue picture.", "solution"),
     card("reservations", "/solutions/outsourced-hotel-reservations", "งานจองโรงแรม", "Outsourced hotel reservations", "เมื่อระบบพร้อมแล้ว ทีมยังต้องมีคนดูแลคำถามและการจองจากช่องทางที่ตกลงกัน", "When the systems are ready, someone still has to look after questions and bookings on the agreed channels.", "solution"),
     card("website", "/solutions/hotel-website-design", "ออกแบบเว็บไซต์โรงแรม", "Hotel website design", "หน้าเว็บและเส้นทางจองตรงช่วยให้แขกเห็นราคาและเงื่อนไขที่ระบบพร้อมขาย", "The website and booking path help guests see the rates and conditions the systems can sell.", "solution"),
     card("direct", "/solutions/hotel-direct-bookings", "การจองตรง", "Direct bookings", "หากจุดติดขัดอยู่ที่หน้าห้องพักหรือระบบจอง อาจตรวจเส้นทางจองตรงแยกต่างหาก", "If the gap is the room page or booking engine, the direct-booking path can be reviewed separately.", "solution"),
-  ];
+  ].filter((item): item is NonNullable<typeof item> => Boolean(item));
 }
 
 export const SYSTEMS_ENQUIRY_RECEIVE = [

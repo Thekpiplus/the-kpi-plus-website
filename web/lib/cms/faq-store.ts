@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/crm/db";
+import { crmEnabled, prisma, tryDb } from "@/lib/crm/db";
 import {
   codeFaqRouteKeys,
   codeFaqsForRoute,
@@ -68,22 +68,21 @@ export function serializeFaqItems(items: FaqItem[]): string {
 }
 
 export async function listFaqSets(): Promise<CmsFaqSetRow[]> {
-  try {
+  if (!crmEnabled()) return [];
+  const rows = await tryDb(async () => {
     const db = await faqDb();
     return db.cmsFaqSet.findMany({ orderBy: { route: "asc" } });
-  } catch {
-    return [];
-  }
+  });
+  return rows ?? [];
 }
 
 export async function getFaqSet(route: string): Promise<CmsFaqSetRow | null> {
+  if (!crmEnabled()) return null;
   const key = normalizeFaqRoute(resolveFaqRouteKey(route));
-  try {
+  return tryDb(async () => {
     const db = await faqDb();
     return db.cmsFaqSet.findUnique({ where: { route: key } });
-  } catch {
-    return null;
-  }
+  });
 }
 
 /** CMS override when a row exists; otherwise null (caller falls back to template/code). */

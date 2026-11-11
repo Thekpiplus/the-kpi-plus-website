@@ -44,11 +44,20 @@ export function scrollPageToHash(hash: string, options?: { immediate?: boolean }
 
   const immediate = options?.immediate ?? false;
   const offset = stickyHeaderOffset();
+  const scrollY = lenis?.scroll ?? window.scrollY;
+  const top = Math.max(0, el.getBoundingClientRect().top + scrollY - offset);
+
   if (lenis) {
     lenis.scrollTo(el, { immediate, force: true, offset: -offset });
-  } else {
-    const top = el.getBoundingClientRect().top + window.scrollY - offset;
-    window.scrollTo({ top: Math.max(0, top), left: 0, behavior: immediate ? "auto" : "smooth" });
+  }
+  // Keep window scroll in sync on immediate jumps — Lenis-only updates can leave
+  // native position stale on long mobile pages and make CTAs feel stuck.
+  if (!lenis || immediate) {
+    window.scrollTo({ top, left: 0, behavior: immediate || !lenis ? "auto" : "smooth" });
+    if (immediate) {
+      document.documentElement.scrollTop = top;
+      document.body.scrollTop = top;
+    }
   }
   return true;
 }

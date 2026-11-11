@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/crm/db";
+import { crmEnabled, prisma, tryDb } from "@/lib/crm/db";
 import { documentPath, parseCmsBody } from "./body";
 import { ensureCmsSchema } from "./ensure";
 import { loadCmsNav, saveCmsNav, saveCmsRedirects, type CmsNavLink } from "./files";
@@ -45,6 +45,9 @@ type CmsClient = {
 };
 
 export async function cmsDb() {
+  if (!crmEnabled()) {
+    throw new Error("Database unavailable");
+  }
   await ensureCmsSchema();
   return prisma() as unknown as CmsClient;
 }
@@ -172,12 +175,10 @@ export async function insightDocumentBySlug(slug: string, locale = "th") {
 }
 
 export async function pageDocumentBySlug(slug: string, locale = "th") {
-  try {
+  return tryDb(async () => {
     const db = await cmsDb();
     return db.cmsDocument.findFirst({ where: { kind: "page", slug, locale } });
-  } catch {
-    return null;
-  }
+  });
 }
 
 export async function pageDocumentsBySlug(slug: string) {
@@ -270,8 +271,10 @@ export async function listRedirects() {
 }
 
 export async function getSetting(id: string) {
-  const db = await cmsDb();
-  return db.cmsSetting.findUnique({ where: { id } });
+  return tryDb(async () => {
+    const db = await cmsDb();
+    return db.cmsSetting.findUnique({ where: { id } });
+  });
 }
 
 export async function listCaseStudies() {

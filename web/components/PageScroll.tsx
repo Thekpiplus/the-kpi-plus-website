@@ -15,10 +15,16 @@ function isModifiedClick(event: MouseEvent) {
   return event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0;
 }
 
-function isMenuNavigationLink(anchor: HTMLAnchorElement) {
+function isChromeNavigationLink(anchor: HTMLAnchorElement) {
   return Boolean(
     anchor.closest(".kpi-header, .kpi-mobile-drawer, .kpi-footer, .kpi-solutions-menu, .kpi-header-lang-menu"),
   );
+}
+
+function isInPageHashCta(anchor: HTMLAnchorElement, hash: string) {
+  if (!hash || hash === "#") return false;
+  if (anchor.classList.contains("kpi-button") || anchor.classList.contains("kpi-cta")) return true;
+  return Boolean(anchor.closest(".kpi-sticky-cta, .kpi-hero, .kpi-page-hero, .kpi-cs-cta, [data-kpi-cta]"));
 }
 
 export function PageScroll() {
@@ -79,7 +85,6 @@ export function PageScroll() {
       if (!(target instanceof Element)) return;
       const anchor = target.closest("a[href]");
       if (!(anchor instanceof HTMLAnchorElement)) return;
-      if (!isMenuNavigationLink(anchor)) return;
       if (anchor.target === "_blank" || anchor.hasAttribute("download")) return;
 
       let url: URL;
@@ -92,15 +97,27 @@ export function PageScroll() {
 
       const samePath = url.pathname === window.location.pathname && url.search === window.location.search;
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const chromeLink = isChromeNavigationLink(anchor);
+      const hashCta = samePath && Boolean(url.hash) && isInPageHashCta(anchor, url.hash);
 
-      // Same-route hash (e.g. footer category → /solutions#grow-revenue): pathname
-      // does not change, so the route effect will not run — scroll here.
-      if (samePath && url.hash) {
+      // Same-route hash from chrome or primary CTAs: scroll with Lenis + header offset.
+      if (samePath && url.hash && (chromeLink || hashCta)) {
+        event.preventDefault();
+        const stickyJump = Boolean(anchor.closest(".kpi-sticky-cta"));
         requestAnimationFrame(() => {
-          scrollPageToHashWhenReady(url.hash, { immediate: reduceMotion, attempts: 16 });
+          scrollPageToHashWhenReady(url.hash, {
+            // Sticky mobile CTAs must land immediately; smooth lerp feels broken on long pages.
+            immediate: reduceMotion || stickyJump || hashCta,
+            attempts: 16,
+          });
         });
+        if (window.history?.replaceState) {
+          window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+        }
         return;
       }
+
+      if (!chromeLink) return;
 
       // Same-route plain link (e.g. "ดูโซลูชันทั้งหมด" while already on /solutions):
       // jump back up under the sticky header.

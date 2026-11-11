@@ -12,6 +12,7 @@ import {
 import { createStaffUser } from "@/lib/crm/user-admin";
 import { ADMIN_MODULES, MODULE_LABEL } from "@/lib/crm/modules";
 import { ROLE_LABEL, type InternalRole } from "@/lib/crm/roles";
+import { CrmSelect } from "@/components/crm/CrmSelect";
 import { PasswordField } from "@/components/crm/ui/PasswordField";
 import { PendingSubmitButton } from "@/components/crm/ui/PendingSubmitButton";
 
@@ -137,13 +138,16 @@ export function NewUserModalProvider({
                     </label>
                     <label className="crm-modal-field">
                       บทบาท (User Role)
-                      <select className="crm-select" name="role" defaultValue="user" required>
-                        {roles.map((role) => (
-                          <option key={role} value={role}>
-                            {ROLE_LABEL[role]}
-                          </option>
-                        ))}
-                      </select>
+                      <CrmSelect
+                        name="role"
+                        aria-label="บทบาท"
+                        defaultValue="user"
+                        required
+                        options={roles.map((role) => ({
+                          value: role,
+                          label: ROLE_LABEL[role],
+                        }))}
+                      />
                     </label>
                     <PasswordField name="password" label="รหัสผ่าน" className="crm-modal-span-2" />
                   </div>

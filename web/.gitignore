@@ -9,3 +9,12 @@ prisma/*.db-journal
 private
 public/media/avatars/*
 !public/media/avatars/.gitkeep
+
+# Local check artifacts — never ship in deploy archives
+.tmp*
+about-check.html
+build-out.txt
+body.json
+cms-headers.txt
+headers.txt
+*.tsbuildinfo

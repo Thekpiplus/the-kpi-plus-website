@@ -29,8 +29,8 @@
   {
     "route": "/about-us",
     "language": "th",
-    "title": "เกี่ยวกับเรา | พาร์ตเนอร์ด้านการบริหารรายได้และการเติบโตของธุรกิจโรงแรม | เดอะ เคพีไอ พลัส",
-    "description": "เดอะ เคพีไอ พลัส ทำงานร่วมกับเจ้าของโรงแรม ผู้บริหาร และทีม Commercial ทั่วประเทศไทย เพื่อช่วยให้เห็นว่ารายได้กำลังหายไปตรงไหน โอกาสอยู่ตรงไหน และอะไรคือสิ่งที่ควรทำก่อน",
+    "title": "เกี่ยวกับเรา | พันธมิตรด้านรายได้โรงแรม | เดอะ เคพีไอ พลัส",
+    "description": "เดอะ เคพีไอ พลัส ทำงานร่วมกับเจ้าของโรงแรม ผู้บริหาร และทีม Commercial ทั่วไทย เพื่อช่วยให้เห็นว่ารายได้หลุดตรงไหน โอกาสอยู่ตรงไหน และควรเริ่มจากอะไรก่อน",
     "canonical": "https://thekpiplus.com/about-us",
     "alternates": [
       {
@@ -110,8 +110,8 @@
   {
     "route": "/case-studies",
     "language": "th",
-    "title": "ผลงานลูกค้า | Case Studies | เดอะ เคพีไอ พลัส",
-    "description": "Results measured in revenue, not vanity metrics. Room Revenue, ADR, Occupancy, RevPAR, Direct Booking Revenue and ROAS from hotels across Phuket.",
+    "title": "ผลงานลูกค้า | รายได้ที่วัดผลได้จริง | เดอะ เคพีไอ พลัส",
+    "description": "ผลงานจากโรงแรมในภูเก็ตที่วัดด้วยรายได้จริง ไม่ใช่แค่ตัวเลขโชว์ เช่น Room Revenue, ADR, Occupancy, RevPAR, การจองตรง และ ROAS",
     "canonical": "https://thekpiplus.com/case-studies",
     "alternates": [
       {
@@ -299,8 +299,8 @@
   {
     "route": "/en/case-studies",
     "language": "en",
-    "title": "Case Studies | Hotel Revenue & Digital Performance | The KPI Plus",
-    "description": "Results measured in revenue, not vanity metrics. Room Revenue, ADR, Occupancy, RevPAR, Direct Booking Revenue and ROAS from hotels across Phuket.",
+    "title": "Case Studies | Hotel Revenue Results | The KPI Plus",
+    "description": "Hotel results measured in revenue, not vanity metrics — Room Revenue, ADR, Occupancy, RevPAR, Direct Booking Revenue and ROAS from properties across Phuket.",
     "canonical": "https://thekpiplus.com/en/case-studies",
     "alternates": [
       {
@@ -843,7 +843,7 @@
   {
     "route": "/en/solutions/hotel-ai-automation",
     "language": "en",
-    "title": "Put AI and automation into real hotel and organisation work | The KPI Plus",
+    "title": "AI and automation for real hotel work | The KPI Plus",
     "description": "The KPI Plus helps review work steps, design and set up AI or automation, try it with the team, and improve it until it is part of daily work. Open to hotels and other hospitality organisations.",
     "canonical": "https://thekpiplus.com/en/solutions/hotel-ai-automation",
     "alternates": [
@@ -978,7 +978,7 @@
   {
     "route": "/insights/hotel-marketing",
     "language": "th",
-    "title": "การตลาดโรงแรมคืออะไร? 8 กลยุทธ์เชื่อมการค้นพบจนถึงการจอง | เดอะ เคพีไอ พลัส",
+    "title": "การตลาดโรงแรมคืออะไร? 8 แนวทางสู่การจอง | เดอะ เคพีไอ พลัส",
     "description": "การตลาดโรงแรมคือการเชื่อม Google, OTA, Website, Direct Booking, Distribution และ Revenue Management ให้ผู้เข้าพักค้นพบ เปรียบเทียบ และเลือกจองด้วยข้อมูลที่ชัดเจน โดยไม่รับประกันยอดจองหรือรายได้",
     "canonical": "https://thekpiplus.com/insights/hotel-marketing",
     "alternates": [
@@ -1354,8 +1354,8 @@
   {
     "route": "/ru/case-studies",
     "language": "ru",
-    "title": "Кейсы | Hotel Revenue & Digital Performance | The KPI Plus",
-    "description": "Results measured in revenue, not vanity metrics. Room Revenue, ADR, Occupancy, RevPAR, Direct Booking Revenue and ROAS from hotels across Phuket.",
+    "title": "Кейсы отелей | Результаты по доходу | The KPI Plus",
+    "description": "Результаты отелей, измеренные доходом, а не «красивыми» метриками: Room Revenue, ADR, Occupancy, RevPAR, прямые бронирования и ROAS по объектам на Пхукете.",
     "canonical": "https://thekpiplus.com/ru/case-studies",
     "alternates": [
       {
@@ -1435,7 +1435,7 @@
   {
     "route": "/ru/hotel-digital-marketing",
     "language": "ru",
-    "title": "Цифровой маркетинг отеля: какие каналы выбрать в первую очередь? | The KPI Plus",
+    "title": "Цифровой маркетинг отеля: какие каналы выбрать | The KPI Plus",
     "description": "Образовательное руководство по Google Ads, Meta Ads, SEO, локальному поиску, сайту, прямым бронированиям и конверсии отеля.",
     "canonical": "https://thekpiplus.com/ru/hotel-digital-marketing",
     "alternates": [
@@ -1898,7 +1898,7 @@
   {
     "route": "/ru/solutions/hotel-ai-automation",
     "language": "ru",
-    "title": "Внедрить ИИ и автоматизацию в реальную работу отеля и организации | The KPI Plus",
+    "title": "ИИ и автоматизация в работе отеля | The KPI Plus",
     "description": "The KPI Plus помогает разобрать шаги, спроектировать и установить ИИ или автоматизацию, попробовать с командой и довести до ежедневной работы. Для отелей и других организаций сферы услуг.",
     "canonical": "https://thekpiplus.com/ru/solutions/hotel-ai-automation",
     "alternates": [
@@ -2506,7 +2506,7 @@
     "route": "/zh",
     "language": "zh-Hant",
     "title": "The KPI Plus | 酒店收益與商業成長夥伴",
-    "description": "The KPI Plus 協助酒店提升收益、需求、直銷預訂、科技，以及團隊的工作方式。",
+    "description": "The KPI Plus 協助獨立酒店提升收益、需求、直銷預訂、科技與團隊工作方式，從可檢查的商業訊號決定下一步，而非空泛承諾。",
     "canonical": "https://thekpiplus.com/zh",
     "alternates": [
       {
@@ -2533,7 +2533,7 @@
     "route": "/zh/about-us",
     "language": "zh-Hant",
     "title": "關於 The KPI Plus | The KPI Plus",
-    "description": "認識 The KPI Plus：總部位於普吉、由創辦人帶領的酒店績效與成長夥伴。",
+    "description": "認識 The KPI Plus：總部位於普吉、由創辦人帶領的酒店績效與成長夥伴，協助業主與商業團隊看清收益缺口、機會與優先行動。",
     "canonical": "https://thekpiplus.com/zh/about-us",
     "alternates": [
       {
@@ -2560,7 +2560,7 @@
     "route": "/zh/approach",
     "language": "zh-Hant",
     "title": "The KPI Plus 服務方式 | The KPI Plus",
-    "description": "清楚的酒店商業做法：從訊號與決策，到負責人與可衡量的下一步。",
+    "description": "清楚的酒店商業做法：團隊共用數據、明確決策與負責人，並能量測 ADR、入住率與扣除佣金後的淨收益下一步。",
     "canonical": "https://thekpiplus.com/zh/approach",
     "alternates": [
       {
@@ -2587,7 +2587,7 @@
     "route": "/zh/associations",
     "language": "zh-Hant",
     "title": "The KPI Plus 合作夥伴 | The KPI Plus",
-    "description": "與 The KPI Plus 合作的酒店科技、教育與旅遊服務公司。",
+    "description": "與 The KPI Plus 合作的酒店科技、教育與旅遊服務公司，用於延伸產品、專業支援與產業網絡。",
     "canonical": "https://thekpiplus.com/zh/associations",
     "alternates": [
       {
@@ -2613,8 +2613,8 @@
   {
     "route": "/zh/case-studies",
     "language": "zh-Hant",
-    "title": "客戶案例 | Hotel Revenue & Digital Performance | The KPI Plus",
-    "description": "Results measured in revenue, not vanity metrics. Room Revenue, ADR, Occupancy, RevPAR, Direct Booking Revenue and ROAS from hotels across Phuket.",
+    "title": "客戶案例 | 飯店收益實績 | The KPI Plus",
+    "description": "以真實收益衡量的飯店案例，而非虛榮指標：客房營收、ADR、入住率、RevPAR、直銷預訂與 ROAS，涵蓋普吉多家物業。",
     "canonical": "https://thekpiplus.com/zh/case-studies",
     "alternates": [
       {
@@ -2641,7 +2641,7 @@
     "route": "/zh/contact-us",
     "language": "zh-Hant",
     "title": "联系 The KPI Plus | 普吉 | The KPI Plus",
-    "description": "联系位于普吉的 The KPI Plus，获取酒店收益、数字增长和商业绩效支持。",
+    "description": "聯繫位於普吉的 The KPI Plus，洽詢酒店收益、數位成長、本地搜尋、科技導入與商業績效支援。",
     "canonical": "https://thekpiplus.com/zh/contact-us",
     "alternates": [
       {
@@ -2668,7 +2668,7 @@
     "route": "/zh/cookies",
     "language": "zh-Hant",
     "title": "Cookie 政策 | The KPI Plus",
-    "description": "The KPI Plus 如何在本網站使用必要技術、分析、偏好設定與 Google 地圖。",
+    "description": "了解 The KPI Plus 如何在本網站使用必要技術、分析、偏好設定與 Google 地圖相關 Cookie，以及如何調整設定。",
     "canonical": "https://thekpiplus.com/zh/cookies",
     "alternates": [
       {
@@ -2695,7 +2695,7 @@
     "route": "/zh/hotel-digital-marketing",
     "language": "zh-Hant",
     "title": "酒店数字营销：应优先选择哪些渠道？ | The KPI Plus",
-    "description": "比较酒店 Google Ads、Meta Ads、SEO、本地搜索、网站、直订与转化的教育指南。",
+    "description": "比較酒店 Google Ads、Meta Ads、SEO、本地搜尋、網站內容、直訂與轉換路徑的教育指南，協助排定優先順序。",
     "canonical": "https://thekpiplus.com/zh/hotel-digital-marketing",
     "alternates": [
       {
@@ -2722,7 +2722,7 @@
     "route": "/zh/hotel-revenue-management",
     "language": "zh-Hant",
     "title": "泰国酒店收益管理与分销指南 | The KPI Plus",
-    "description": "了解泰国酒店的定价、需求、渠道组合、OTA、直订和商业决策。",
+    "description": "教育指南：了解泰國酒店定價、需求、通路組合、OTA、直訂與商業決策，作為 Revenue 工作起點。",
     "canonical": "https://thekpiplus.com/zh/hotel-revenue-management",
     "alternates": [
       {
@@ -2749,7 +2749,7 @@
     "route": "/zh/hotel-seo-local-search",
     "language": "zh-Hant",
     "title": "酒店 SEO 与 Google 商家资料指南 | The KPI Plus",
-    "description": "了解酒店 SEO、本地搜索信息、Google 商家资料准备度和网站可发现性。",
+    "description": "了解酒店 SEO、本地搜尋資訊、Google 商家資料準備度與網站可發現性，協助客人找到正確事實後再往下走。",
     "canonical": "https://thekpiplus.com/zh/hotel-seo-local-search",
     "alternates": [
       {
@@ -2776,7 +2776,7 @@
     "route": "/zh/hotel-technology-ai",
     "language": "zh-Hant",
     "title": "AI、自动化与酒店技术：酒店的实用应用 | The KPI Plus",
-    "description": "关于酒店技术、自动化、AI 工作流程、采用、责任与负责任使用的教育指南。",
+    "description": "教育指南：酒店技術、自動化、AI 工作流程、導入方式、責任歸屬與負責任使用，聚焦可落地應用。",
     "canonical": "https://thekpiplus.com/zh/hotel-technology-ai",
     "alternates": [
       {
@@ -2803,7 +2803,7 @@
     "route": "/zh/hotel-website-conversion",
     "language": "zh-Hant",
     "title": "酒店网站与直订转化指南 | The KPI Plus",
-    "description": "了解酒店网站 UX、移动端、预订引擎、内容、信任信息、CTA 与直订转化。",
+    "description": "教育指南：酒店網站 UX、行動裝置、預訂引擎、內容、信任資訊、CTA 與直訂轉換，協助減少中途流失。",
     "canonical": "https://thekpiplus.com/zh/hotel-website-conversion",
     "alternates": [
       {
@@ -2830,7 +2830,7 @@
     "route": "/zh/insights",
     "language": "zh-Hant",
     "title": "給酒店業主與團隊的洞察 | The KPI Plus",
-    "description": "給業主、總經理與酒店團隊的觀點：收益、需求、行銷、科技，以及下一步有用的商業行動。",
+    "description": "給業主、總經理與酒店團隊的觀點文章：涵蓋收益、需求、行銷、科技，以及可執行的下一步商業行動。",
     "canonical": "https://thekpiplus.com/zh/insights",
     "alternates": [
       {
@@ -2861,7 +2861,7 @@
     "route": "/zh/phuket-hotel-marketing",
     "language": "zh-Hant",
     "title": "普吉酒店收益管理与数字营销 | The KPI Plus",
-    "description": "面向普吉酒店的本地发现指南，涵盖收益管理、数字需求、本地搜索和直订问题。",
+    "description": "面向普吉酒店的在地指南：一起檢視收益管理、數位需求、本地搜尋與直訂等商業問題與優先順序。",
     "canonical": "https://thekpiplus.com/zh/phuket-hotel-marketing",
     "alternates": [
       {
@@ -2888,7 +2888,7 @@
     "route": "/zh/privacy",
     "language": "zh-Hant",
     "title": "隱私權政策 | The KPI Plus",
-    "description": "The KPI Plus 如何處理網站諮詢、CRM 存取、分析與個人資料。",
+    "description": "說明 The KPI Plus 如何處理網站諮詢、CRM 存取、分析與個人資料，以及您在 PDPA 下的權利。",
     "canonical": "https://thekpiplus.com/zh/privacy",
     "alternates": [
       {
@@ -2915,7 +2915,7 @@
     "route": "/zh/solutions",
     "language": "zh-Hant",
     "title": "酒店解決方案 | The KPI Plus",
-    "description": "The KPI Plus 的酒店收益、需求與團隊能力方案。",
+    "description": "The KPI Plus 的酒店收益、需求與團隊能力方案，依問題、資料與約定範圍選擇下一步，而非固定套餐。",
     "canonical": "https://thekpiplus.com/zh/solutions",
     "alternates": [
       {
@@ -2969,7 +2969,7 @@
     "route": "/zh/solutions/google-ads-management",
     "language": "zh-Hant",
     "title": "飯店 Google Ads | The KPI Plus",
-    "description": "為飯店規劃 Google Ads：從搜尋與廣告，到網站、價格與預訂路徑。不保證預訂量。",
+    "description": "為飯店規劃 Google Ads：從搜尋與廣告，到網站、價格與預訂路徑。這是可檢查的規劃工作，不保證預訂量。",
     "canonical": "https://thekpiplus.com/zh/solutions/google-ads-management",
     "alternates": [
       {
@@ -3280,8 +3280,8 @@
   {
     "route": "/case-studies/layan-revenue-management",
     "language": "th",
-    "title": "+34.7% Room Revenue | Layan Case Study | เดอะ เคพีไอ พลัส",
-    "description": "Premium pool villa property in Layan, Phuket: +34.7% room revenue and +฿5.57M additional revenue in the first six months under revenue and distribution management.",
+    "title": "+34.7% รายได้ห้องพัก | เคส Layan | เดอะ เคพีไอ พลัส",
+    "description": "พูลวิลล่าพรีเมียมที่ย่านลายัน ภูเก็ต: รายได้ห้องพักเพิ่มขึ้น 34.7% และมีรายได้เพิ่มกว่า 5.57 ล้านบาทใน 6 เดือนแรก จากการดูแลรายได้และช่องทางขาย",
     "canonical": "https://thekpiplus.com/case-studies/layan-revenue-management",
     "alternates": [
       {
@@ -3334,8 +3334,8 @@
   {
     "route": "/ru/case-studies/layan-revenue-management",
     "language": "ru",
-    "title": "+34.7% Room Revenue | Layan Case Study | The KPI Plus",
-    "description": "Premium pool villa property in Layan, Phuket: +34.7% room revenue and +฿5.57M additional revenue in the first six months under revenue and distribution management.",
+    "title": "+34.7% к доходу с номеров | Кейс Layan | The KPI Plus",
+    "description": "Премиальные pool villa в районе Layan, Пхукет: +34.7% к доходу с номеров и +฿5.57 млн доп. выручки за первые шесть месяцев при управлении доходом и дистрибуцией.",
     "canonical": "https://thekpiplus.com/ru/case-studies/layan-revenue-management",
     "alternates": [
       {
@@ -3360,9 +3360,9 @@
   },
   {
     "route": "/zh/case-studies/layan-revenue-management",
-    "language": "zh",
-    "title": "+34.7% Room Revenue | Layan Case Study | The KPI Plus",
-    "description": "Premium pool villa property in Layan, Phuket: +34.7% room revenue and +฿5.57M additional revenue in the first six months under revenue and distribution management.",
+    "language": "zh-Hant",
+    "title": "客房營收 +34.7% | Layan 案例 | The KPI Plus",
+    "description": "普吉 Layan 頂級泳池別墅物業：在收益與通路管理下，前六個月客房營收成長 34.7%，並增加約 557 萬泰銖營收。",
     "canonical": "https://thekpiplus.com/zh/case-studies/layan-revenue-management",
     "alternates": [
       {
@@ -3388,8 +3388,8 @@
   {
     "route": "/case-studies/patong-boutique-hotel-revenue",
     "language": "th",
-    "title": "+12.8% Room Revenue | Patong Boutique Hotel | เดอะ เคพีไอ พลัส",
-    "description": "Independent boutique hotel in Patong, Phuket: +12.8% room revenue and +฿1.85M additional annual revenue through pricing and commercial management.",
+    "title": "+12.8% รายได้ห้องพัก | โรงแรมบูทีคป่าตอง | เดอะ เคพีไอ พลัส",
+    "description": "โรงแรมบูทีคอิสระในป่าตอง ภูเก็ต: รายได้ห้องพักเพิ่มขึ้น 12.8% และมีรายได้เพิ่มปีละกว่า 1.85 ล้านบาท จากการบริหารราคาและการบริหารเชิงพาณิชย์",
     "canonical": "https://thekpiplus.com/case-studies/patong-boutique-hotel-revenue",
     "alternates": [
       {
@@ -3442,8 +3442,8 @@
   {
     "route": "/ru/case-studies/patong-boutique-hotel-revenue",
     "language": "ru",
-    "title": "+12.8% Room Revenue | Patong Boutique Hotel | The KPI Plus",
-    "description": "Independent boutique hotel in Patong, Phuket: +12.8% room revenue and +฿1.85M additional annual revenue through pricing and commercial management.",
+    "title": "+12.8% к доходу с номеров | Boutique в Патонге | The KPI Plus",
+    "description": "Независимый boutique-отель в Патонге, Пхукет: +12.8% к доходу с номеров и +฿1.85 млн доп. годовой выручки за счёт ценообразования и коммерческого управления.",
     "canonical": "https://thekpiplus.com/ru/case-studies/patong-boutique-hotel-revenue",
     "alternates": [
       {
@@ -3468,9 +3468,9 @@
   },
   {
     "route": "/zh/case-studies/patong-boutique-hotel-revenue",
-    "language": "zh",
-    "title": "+12.8% Room Revenue | Patong Boutique Hotel | The KPI Plus",
-    "description": "Independent boutique hotel in Patong, Phuket: +12.8% room revenue and +฿1.85M additional annual revenue through pricing and commercial management.",
+    "language": "zh-Hant",
+    "title": "客房營收 +12.8% | 巴東精品飯店 | The KPI Plus",
+    "description": "普吉巴東獨立精品飯店：透過定價與商務管理，客房營收成長 12.8%，年增約 185 萬泰銖營收。",
     "canonical": "https://thekpiplus.com/zh/case-studies/patong-boutique-hotel-revenue",
     "alternates": [
       {
@@ -3496,8 +3496,8 @@
   {
     "route": "/case-studies/coconut-island-digital-performance",
     "language": "th",
-    "title": "14.89× ROAS | Coconut Island Digital Performance | เดอะ เคพีไอ พลัส",
-    "description": "5-star resort on Coconut Island, Phuket: 14.89× ROAS with ฿60K ad spend generating ฿1.80M direct booking revenue.",
+    "title": "ROAS 14.89× | จองตรงเกาะมะพร้าว | เดอะ เคพีไอ พลัส",
+    "description": "รีสอร์ท 5 ดาวบนเกาะมะพร้าว ภูเก็ต: ROAS 14.89× จากงบโฆษณา 60,000 บาท สร้างรายได้จากการจองตรง 1.80 ล้านบาท",
     "canonical": "https://thekpiplus.com/case-studies/coconut-island-digital-performance",
     "alternates": [
       {
@@ -3523,7 +3523,7 @@
   {
     "route": "/en/case-studies/coconut-island-digital-performance",
     "language": "en",
-    "title": "14.89× ROAS | Coconut Island Digital Performance | The KPI Plus",
+    "title": "14.89× ROAS | Coconut Island Direct Booking | The KPI Plus",
     "description": "5-star resort on Coconut Island, Phuket: 14.89× ROAS with ฿60K ad spend generating ฿1.80M direct booking revenue.",
     "canonical": "https://thekpiplus.com/en/case-studies/coconut-island-digital-performance",
     "alternates": [
@@ -3550,8 +3550,8 @@
   {
     "route": "/ru/case-studies/coconut-island-digital-performance",
     "language": "ru",
-    "title": "14.89× ROAS | Coconut Island Digital Performance | The KPI Plus",
-    "description": "5-star resort on Coconut Island, Phuket: 14.89× ROAS with ฿60K ad spend generating ฿1.80M direct booking revenue.",
+    "title": "ROAS 14.89× | Прямые брони Coconut Island | The KPI Plus",
+    "description": "5-звёздочный курорт на Coconut Island, Пхукет: ROAS 14.89× при рекламном бюджете ฿60 тыс. и ฿1.80 млн выручки от прямых бронирований.",
     "canonical": "https://thekpiplus.com/ru/case-studies/coconut-island-digital-performance",
     "alternates": [
       {
@@ -3576,9 +3576,9 @@
   },
   {
     "route": "/zh/case-studies/coconut-island-digital-performance",
-    "language": "zh",
-    "title": "14.89× ROAS | Coconut Island Digital Performance | The KPI Plus",
-    "description": "5-star resort on Coconut Island, Phuket: 14.89× ROAS with ฿60K ad spend generating ฿1.80M direct booking revenue.",
+    "language": "zh-Hant",
+    "title": "ROAS 14.89× | 椰子島直銷預訂 | The KPI Plus",
+    "description": "普吉椰子島五星度假村：廣告支出 6 萬泰銖，創造直銷預訂營收 180 萬泰銖，ROAS 達 14.89×。",
     "canonical": "https://thekpiplus.com/zh/case-studies/coconut-island-digital-performance",
     "alternates": [
       {
@@ -3604,8 +3604,8 @@
   {
     "route": "/case-studies/patong-direct-booking-performance",
     "language": "th",
-    "title": "17.29× ROAS | Patong Direct Booking | เดอะ เคพีไอ พลัส",
-    "description": "Boutique hotel and residence in Patong, Phuket: 17.29× ROAS after rebuilding tracking and branded search strategy.",
+    "title": "ROAS 17.29× | จองตรงป่าตอง | เดอะ เคพีไอ พลัส",
+    "description": "โรงแรมบูทีคและเรสซิเดนซ์ในป่าตอง ภูเก็ต: ROAS 17.29× หลังปรับระบบ Tracking และกลยุทธ์การค้นหาชื่อแบรนด์",
     "canonical": "https://thekpiplus.com/case-studies/patong-direct-booking-performance",
     "alternates": [
       {
@@ -3658,8 +3658,8 @@
   {
     "route": "/ru/case-studies/patong-direct-booking-performance",
     "language": "ru",
-    "title": "17.29× ROAS | Patong Direct Booking | The KPI Plus",
-    "description": "Boutique hotel and residence in Patong, Phuket: 17.29× ROAS after rebuilding tracking and branded search strategy.",
+    "title": "ROAS 17.29× | Прямые брони в Патонге | The KPI Plus",
+    "description": "Boutique-отель и residence в Патонге, Пхукет: ROAS 17.29× после перестройки трекинга и стратегии брендового поиска.",
     "canonical": "https://thekpiplus.com/ru/case-studies/patong-direct-booking-performance",
     "alternates": [
       {
@@ -3684,9 +3684,9 @@
   },
   {
     "route": "/zh/case-studies/patong-direct-booking-performance",
-    "language": "zh",
-    "title": "17.29× ROAS | Patong Direct Booking | The KPI Plus",
-    "description": "Boutique hotel and residence in Patong, Phuket: 17.29× ROAS after rebuilding tracking and branded search strategy.",
+    "language": "zh-Hant",
+    "title": "ROAS 17.29× | 巴東直銷預訂 | The KPI Plus",
+    "description": "普吉巴東精品飯店與公寓：重建追蹤與品牌搜尋策略後，ROAS 達 17.29×。",
     "canonical": "https://thekpiplus.com/zh/case-studies/patong-direct-booking-performance",
     "alternates": [
       {
