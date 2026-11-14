@@ -26,7 +26,7 @@ import {
   validateContactInput,
   type ContactSaveResult,
 } from "./contact";
-import { normalizeGtmContainerId, parseSiteGlobals } from "@/lib/site-globals";
+import { normalizeGa4PropertyId, normalizeGtmContainerId, parseSiteGlobals } from "@/lib/site-globals";
 import { REVENUE_CMS_TEMPLATE, REVENUE_PAGE_ROUTE, serializeRevenuePageBody } from "./revenue-page";
 import { defaultRevenueCms } from "./revenue-page-seed";
 import {
@@ -872,6 +872,7 @@ export async function saveGlobals(formData: FormData) {
     siteLine: String(formData.get("siteLine") ?? "").trim(),
     canonicalHost: String(formData.get("canonicalHost") ?? SITE).trim() || SITE,
     gtmContainerId: normalizeGtmContainerId(String(formData.get("gtmContainerId") ?? "")),
+    ga4PropertyId: normalizeGa4PropertyId(String(formData.get("ga4PropertyId") ?? "")),
   });
   await db.cmsSetting.upsert({
     where: { id: "site" },
@@ -879,6 +880,7 @@ export async function saveGlobals(formData: FormData) {
     update: { value },
   });
   revalidatePath("/crm/cms/globals");
+  revalidatePath("/crm/cms/analytics");
   revalidatePath("/", "layout");
   redirect("/crm/cms/globals?saved=1");
 }

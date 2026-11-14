@@ -112,6 +112,24 @@ export default async function CmsGlobalsPage({
               </small>
             </label>
 
+            <label className="crm-cms-field">
+              <span>GA4 Property ID</span>
+              <input
+                className="crm-field"
+                name="ga4PropertyId"
+                defaultValue={value.ga4PropertyId || ""}
+                placeholder="123456789"
+                inputMode="numeric"
+                autoComplete="off"
+                spellCheck={false}
+              />
+              <small>
+                ตัวเลขจาก GA4 Admin → Property settings (ไม่ใช่รหัส <code>G-…</code>) — ใช้ที่หน้า{" "}
+                <Link href="/crm/cms/analytics">Website Analytics</Link>
+                {value.ga4PropertyId ? ` · ตั้งแล้ว: ${value.ga4PropertyId}` : ""}
+              </small>
+            </label>
+
             <div className="crm-cms-globals-panel-head">
               <div>
                 <p className="crm-cms-globals-kicker">ติดต่อ</p>
@@ -156,6 +174,13 @@ export default async function CmsGlobalsPage({
               <li>
                 <strong>Google Tag Manager</strong>
                 <span>ฉีด Container เดียวให้ทุกหน้า — จัดการแท็กใน GTM</span>
+              </li>
+              <li>
+                <strong>GA4 Property ID</strong>
+                <span>
+                  ดึงรายงานเข้า{" "}
+                  <Link href="/crm/cms/analytics">Website Analytics</Link>
+                </span>
               </li>
             </ul>
           </section>

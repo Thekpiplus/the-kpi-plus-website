@@ -10,6 +10,7 @@
     "crm:setup": "prisma generate && prisma migrate deploy"
   },
   "dependencies": {
+    "@google-analytics/data": "^7.3.0",
     "@prisma/client": "^6.19.3",
     "lenis": "^1.3.27",
     "next": "^15.5.4",

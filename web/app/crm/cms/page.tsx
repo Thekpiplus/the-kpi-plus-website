@@ -36,7 +36,8 @@ const SHORTCUTS = [
   { href: "/crm/cms/menus", label: "เมนูเว็บ", hint: "Header / Footer" },
   { href: "/crm/cms/media", label: "คลังไฟล์", hint: "รูปและสื่อ" },
   { href: "/crm/cms/seo", label: "SEO", hint: "Title และ Redirect" },
-  { href: "/crm/cms/globals", label: "ตั้งค่าเว็บ", hint: "โดเมน · OG · GTM" },
+  { href: "/crm/cms/analytics", label: "Analytics", hint: "GA4 หน้าเพจ · ประเทศ" },
+  { href: "/crm/cms/globals", label: "ตั้งค่าเว็บ", hint: "โดเมน · OG · GTM · GA4" },
 ] as const;
 
 export default async function CmsOverviewPage() {

@@ -18,6 +18,7 @@ export const CMS_CONTENT_LINKS: CmsNavLink[] = [
   { href: "/crm/cms/menus", label: "เมนูเว็บ", icon: "menu" },
   { href: "/crm/cms/media", label: "คลังไฟล์", icon: "media" },
   { href: "/crm/cms/seo", label: "SEO", icon: "search" },
+  { href: "/crm/cms/analytics", label: "Analytics", icon: "chart" },
 ];
 
 /** Site settings that belong with CMS content (users stay under ตั้งค่าระบบ). */
