@@ -26,7 +26,7 @@ import {
   validateContactInput,
   type ContactSaveResult,
 } from "./contact";
-import { parseSiteGlobals } from "@/lib/site-globals";
+import { normalizeGtmContainerId, parseSiteGlobals } from "@/lib/site-globals";
 import { REVENUE_CMS_TEMPLATE, REVENUE_PAGE_ROUTE, serializeRevenuePageBody } from "./revenue-page";
 import { defaultRevenueCms } from "./revenue-page-seed";
 import {
@@ -871,6 +871,7 @@ export async function saveGlobals(formData: FormData) {
     defaultOg: String(formData.get("defaultOg") ?? "").trim(),
     siteLine: String(formData.get("siteLine") ?? "").trim(),
     canonicalHost: String(formData.get("canonicalHost") ?? SITE).trim() || SITE,
+    gtmContainerId: normalizeGtmContainerId(String(formData.get("gtmContainerId") ?? "")),
   });
   await db.cmsSetting.upsert({
     where: { id: "site" },

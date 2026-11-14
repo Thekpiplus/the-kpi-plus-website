@@ -6,7 +6,11 @@ import { hasAnalyticsConsent } from "@/lib/consent-client";
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID?.trim();
 
-export function Analytics() {
+/**
+ * Direct GA4 loader used only when GTM is not configured.
+ * Prefer installing GA4 inside Google Tag Manager (CMS → ตั้งค่าเว็บ).
+ */
+export function Analytics({ gtmConfigured = false }: { gtmConfigured?: boolean }) {
   const [allowed, setAllowed] = useState(false);
 
   useEffect(() => {
@@ -16,7 +20,7 @@ export function Analytics() {
     return () => window.removeEventListener("kpi-consent-change", sync);
   }, []);
 
-  if (!GA_ID || !allowed) return null;
+  if (gtmConfigured || !GA_ID || !allowed) return null;
 
   return (
     <>

@@ -87,6 +87,33 @@ export default async function CmsGlobalsPage({
 
             <div className="crm-cms-globals-panel-head">
               <div>
+                <p className="crm-cms-globals-kicker">Tracking</p>
+                <h2>Google Tag Manager</h2>
+                <p>
+                  ใส่ Container ID ครั้งเดียวที่นี่ — ระบบจะฉีด GTM ให้ทุกหน้าเว็บอัตโนมัติ
+                  (Consent Mode ทำงานกับคุกกี้วิเคราะห์ตามที่ผู้เข้าชมอนุญาต)
+                </p>
+              </div>
+            </div>
+
+            <label className="crm-cms-field">
+              <span>GTM Container ID</span>
+              <input
+                className="crm-field"
+                name="gtmContainerId"
+                defaultValue={value.gtmContainerId || ""}
+                placeholder="GTM-XXXXXXX"
+                autoComplete="off"
+                spellCheck={false}
+              />
+              <small>
+                ตัวอย่าง <code>GTM-ABC1234</code> — ติดตั้ง GA4 / Ads / Pixel ภายใน GTM ไม่ต้องแปะโค้ดทีละหน้า
+                {value.gtmContainerId ? " · กำลังใช้บนทุกหน้าสาธารณะ" : ""}
+              </small>
+            </label>
+
+            <div className="crm-cms-globals-panel-head">
+              <div>
                 <p className="crm-cms-globals-kicker">ติดต่อ</p>
                 <h2>ย้ายไปหน้าข้อมูลติดต่อ</h2>
                 <p>เบอร์ อีเมล ที่อยู่ WhatsApp แผนที่ และรูปสถานที่ จัดการได้ที่หน้าข้อมูลติดต่อ โดยไม่ต้องแก้โค้ด</p>
@@ -125,6 +152,10 @@ export default async function CmsGlobalsPage({
               <li>
                 <strong>Site line</strong>
                 <span>ข้อความสั้นของบริษัทสำหรับใช้ร่วมกัน</span>
+              </li>
+              <li>
+                <strong>Google Tag Manager</strong>
+                <span>ฉีด Container เดียวให้ทุกหน้า — จัดการแท็กใน GTM</span>
               </li>
             </ul>
           </section>

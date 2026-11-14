@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Analytics } from "@/components/Analytics";
 import { ConsentDefaults } from "@/components/ConsentDefaults";
+import { GoogleTagManager } from "@/components/GoogleTagManager";
+import { getGtmContainerId } from "@/lib/tracking";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -30,7 +32,9 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const gtmId = await getGtmContainerId();
+
   return (
     <html lang="th" suppressHydrationWarning>
       <head>
@@ -50,8 +54,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
+        <GoogleTagManager id={gtmId} />
         {children}
-        <Analytics />
+        <Analytics gtmConfigured={Boolean(gtmId)} />
       </body>
     </html>
   );
