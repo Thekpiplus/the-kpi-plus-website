@@ -3,7 +3,14 @@ import { LOCALE_PREFIXES, SOLUTION_SLUG_REDIRECTS } from "./lib/solution-slugs";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  serverExternalPackages: ["@prisma/client", "prisma"],
+  serverExternalPackages: [
+    "@prisma/client",
+    "prisma",
+    "@google-analytics/data",
+    "google-gax",
+    "@grpc/grpc-js",
+    "protobufjs",
+  ],
   // Next 15.5 keeps these under experimental; top-level serverActions is rejected.
   // CMS editors post large FormData (localized JSON + media). Default 1 MB is too small.
   experimental: {

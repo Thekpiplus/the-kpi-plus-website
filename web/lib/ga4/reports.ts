@@ -86,7 +86,8 @@ export async function fetchGa4Overview(range: Ga4Range = "28"): Promise<
 
   const property = `properties/${config.propertyId}`;
   const analytics = client();
-  const dateRanges = [{ startDate: startDateFor(range), endDate: "yesterday" }];
+  // Include today so new properties show traffic immediately; GA4 may still finalize late-day rows.
+  const dateRanges = [{ startDate: startDateFor(range), endDate: "today" }];
 
   try {
     const [[totalsRes], [pagesRes], [countriesRes], [citiesRes], [devicesRes], [sourcesRes], [dailyRes]] =

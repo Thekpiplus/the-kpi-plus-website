@@ -110,7 +110,7 @@ export function SiteAnalyticsDashboard({
     <div className="crm-cms-analytics">
       <div className="crm-cms-analytics-toolbar">
         <p className="crm-cms-analytics-note">
-          ข้อมูลจาก GA4 property <code>{data.propertyId}</code> · ไม่รวมวันนี้ · ไม่แสดง IP รายบุคคล
+          ข้อมูลจาก GA4 property <code>{data.propertyId}</code> · รวมวันนี้ (อาจยังไม่ครบ) · ไม่แสดง IP รายบุคคล
         </p>
         <div className="crm-cms-analytics-ranges" role="group" aria-label="ช่วงเวลา">
           {RANGES.map((item) => (
@@ -137,6 +137,13 @@ export function SiteAnalyticsDashboard({
           />
         </div>
       </section>
+
+      {data.totals.activeUsers === 0 && data.totals.screenPageViews === 0 ? (
+        <p className="crm-users-alert is-warn" role="status">
+          เชื่อม GA4 สำเร็จแล้ว แต่ยังไม่พบข้อมูลในช่วงนี้ — เปิดหน้าเว็บสาธารณะแล้วกดยอมรับคุกกี้วิเคราะห์ รอสักครู่แล้วรีเฟรชหน้านี้
+          (รายงานมาตรฐานอาจช้ากว่า Realtime)
+        </p>
+      ) : null}
 
       <section className="crm-cms-panel crm-cms-analytics-panel">
         <h2 className="crm-cms-overview-section-title">แนวโน้มรายวัน</h2>
