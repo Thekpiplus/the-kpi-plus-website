@@ -351,6 +351,31 @@ export async function failedNotifications() {
   });
 }
 
+/** Recent lead timeline events for dashboard activity (real rows, not overview summaries). */
+export async function recentLeadEvents(take = 4) {
+  return prisma().leadEvent.findMany({
+    take,
+    orderBy: { createdAt: "desc" },
+    include: {
+      lead: { select: { id: true, businessName: true, contactName: true } },
+    },
+  });
+}
+
+export function formatRelativeThai(value: Date | string | null | undefined) {
+  if (!value) return "—";
+  const date = typeof value === "string" ? new Date(value) : value;
+  const diffMs = Date.now() - date.getTime();
+  const mins = Math.round(diffMs / 60000);
+  if (mins < 1) return "เมื่อสักครู่";
+  if (mins < 60) return `${mins} นาทีที่แล้ว`;
+  const hours = Math.round(mins / 60);
+  if (hours < 24) return `${hours} ชม.ที่แล้ว`;
+  const days = Math.round(hours / 24);
+  if (days < 7) return `${days} วันที่แล้ว`;
+  return formatThaiDateTime(date);
+}
+
 export async function pipelineData() {
   const active = archiveWhere(await leadIdsByArchive("active"));
   return prisma().stage.findMany({

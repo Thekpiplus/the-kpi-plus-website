@@ -1,0 +1,23 @@
+---
+description: KPI Plus CRM Dashboard UI — Design Spec A (คลีนสว่าง)
+globs:
+  - web/app/crm/page.tsx
+  - web/components/crm/dashboard/**
+  - web/components/crm/ui/ModuleCard.tsx
+  - web/components/crm/ui/OverviewHero.tsx
+alwaysApply: false
+---
+
+# KPI Plus UI — Design Spec A
+
+- Source of truth: `docs/design/DESIGN-SPEC-A.md`
+- Dashboard home (`/crm`) uses presentation tokens `--kpi-a-*` only — no raw hex in components
+- Text on brand lime (`#A2DC25`) must be `#1A3A02`, never white
+- Minimum readable text size: 13px; dashboard base 17px (16px on small screens)
+- KPI / summary numbers: `font-weight: 700` + `font-variant-numeric: tabular-nums`
+- Warning colors (rose/amber) only when the value is greater than 0
+- Do not invent modules or routes; filter by existing `hasModule` / permissions
+- Do not change backend, Prisma schema, or API contracts when restyling
+- Prefer Prompt for dashboard chrome; keep public-site CI typography (Montserrat / Sarabun) on marketing pages
+- Keep CrmShell as the only app sidebar — do not nest a second sidebar on the dashboard
+- Component files under `web/components/crm/dashboard/` stay under ~200 lines each

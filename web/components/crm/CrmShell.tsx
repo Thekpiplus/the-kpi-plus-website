@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useId, useState, type ReactNode } from "react";
+import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { logoutAction } from "@/lib/crm/actions";
-import { ADMIN_MODULES, MODULE_PATH, type AdminModule } from "@/lib/crm/modules";
+import { ADMIN_MODULES, MODULE_LABEL, MODULE_PATH, type AdminModule } from "@/lib/crm/modules";
 import { cmsRailLinks, cmsSubNavItems, isCmsPath } from "@/lib/cms/nav";
+import { CrmCommandPalette, type CommandPaletteItem } from "@/components/crm/CrmCommandPalette";
 import { CrmThemeToggle } from "@/components/crm/CrmThemeToggle";
 import { CrmSubNav, type CrmSubNavItem } from "@/components/crm/CrmSubNav";
 import { NewLeadModalProvider } from "@/components/crm/ui/NewLeadModal";
@@ -693,11 +694,14 @@ export function CrmShell({
       ? null
       : sectionIdForNavKey(workspace);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [commandOpen, setCommandOpen] = useState(false);
   const [sectionOpen, setSectionOpen] = useState<Partial<Record<NavSectionId, boolean>>>({});
   const [sectionsReady, setSectionsReady] = useState(false);
   const [railExpanded, setRailExpanded] = useState(true);
   const [railReady, setRailReady] = useState(false);
   const drawerId = useId();
+  const drawerCloseRef = useRef<HTMLButtonElement>(null);
+  const menuToggleRef = useRef<HTMLButtonElement>(null);
   const teamLabel = userTeam?.trim() || "ยังไม่ระบุทีม";
   const initials = userInitials(userName);
   const avatar = userAvatarUrl?.trim() || "";
@@ -706,6 +710,28 @@ export function CrmShell({
   const newLeadError = searchParams.get("error") || undefined;
   const newPartnerOpen = searchParams.get("newPartner") === "1";
   const newPartnerError = searchParams.get("error") || undefined;
+
+  const commandItems = useMemo<CommandPaletteItem[]>(() => {
+    const home: CommandPaletteItem = {
+      id: "home",
+      label: "หน้าหลัก",
+      blurb: "แดชบอร์ดภาพรวม",
+      href: "/crm",
+      code: "HOME",
+    };
+    const mods = allowed.map((module) => ({
+      id: module,
+      label: MODULE_LABEL[module],
+      blurb: NAV_LABEL[module] || MODULE_LABEL[module],
+      href: MODULE_PATH[module],
+      code: module.toUpperCase().replace("_", " "),
+    }));
+    const extras: CommandPaletteItem[] = [
+      { id: "settings", label: "ตั้งค่า", blurb: "การตั้งค่าระบบ", href: "/crm/settings", code: "SETTINGS" },
+      { id: "profile", label: "โปรไฟล์", blurb: "ข้อมูลบัญชีผู้ใช้", href: "/crm/profile", code: "PROFILE" },
+    ];
+    return [home, ...mods, ...extras];
+  }, [allowed]);
 
   useEffect(() => {
     try {
@@ -759,20 +785,58 @@ export function CrmShell({
 
   useEffect(() => {
     setDrawerOpen(false);
+    setCommandOpen(false);
   }, [pathname, search]);
+
+  useEffect(() => {
+    function onKey(event: KeyboardEvent) {
+      const meta = event.metaKey || event.ctrlKey;
+      if (meta && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        setCommandOpen((value) => !value);
+        setDrawerOpen(false);
+      }
+    }
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
 
   useEffect(() => {
     if (!drawerOpen) return;
     function onKey(event: KeyboardEvent) {
-      if (event.key === "Escape") setDrawerOpen(false);
+      if (event.key === "Escape") {
+        setDrawerOpen(false);
+        menuToggleRef.current?.focus();
+      }
+      if (event.key !== "Tab") return;
+      const root = document.getElementById(drawerId);
+      if (!root) return;
+      const focusables = Array.from(
+        root.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])',
+        ),
+      ).filter((el) => !el.hasAttribute("disabled") && el.getAttribute("aria-hidden") !== "true");
+      if (!focusables.length) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+      if (event.shiftKey && active === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && active === last) {
+        event.preventDefault();
+        first.focus();
+      }
     }
     document.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
+    const t = window.setTimeout(() => drawerCloseRef.current?.focus(), 20);
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
+      window.clearTimeout(t);
     };
-  }, [drawerOpen]);
+  }, [drawerOpen, drawerId]);
 
   function sectionIsOpen(id: NavSectionId, containsCurrent: boolean) {
     if (Object.prototype.hasOwnProperty.call(sectionOpen, id)) return Boolean(sectionOpen[id]);
@@ -964,7 +1028,9 @@ export function CrmShell({
       <aside
         id={drawerId}
         className={`crm-drawer${drawerOpen ? " is-open" : ""}`}
-        aria-label="เมนูมือถือ"
+        aria-label="เมนูระบบ"
+        aria-modal={drawerOpen ? true : undefined}
+        role="dialog"
         aria-hidden={!drawerOpen}
       >
         <div className="crm-drawer-head">
@@ -972,11 +1038,22 @@ export function CrmShell({
             <img src="/brand/KPIPlus_Symbol_FullColor.svg" alt="The KPI Plus" width={36} height={36} />
             <strong className="crm-rail-brand-text">THE KPI PLUS</strong>
           </a>
-          <button type="button" className="crm-drawer-close" aria-label="ปิดเมนู" onClick={() => setDrawerOpen(false)}>
+          <button
+            ref={drawerCloseRef}
+            type="button"
+            className="crm-drawer-close"
+            aria-label="ปิดเมนูระบบ"
+            onClick={() => {
+              setDrawerOpen(false);
+              menuToggleRef.current?.focus();
+            }}
+          >
             ✕
           </button>
         </div>
-        <nav className="crm-drawer-nav">{navBody(() => setDrawerOpen(false), { forceExpanded: true })}</nav>
+        <nav className="crm-drawer-nav" aria-label="เมนูนำทางมือถือ">
+          {navBody(() => setDrawerOpen(false), { forceExpanded: true })}
+        </nav>
         <div className="crm-drawer-foot">{railCards}</div>
       </aside>
 
@@ -993,27 +1070,29 @@ export function CrmShell({
             <span aria-hidden="true">{railExpanded ? "◧" : "☰"}</span>
           </button>
           <button
+            ref={menuToggleRef}
             type="button"
             className="crm-menu-toggle"
-            aria-label="เปิดเมนูนำทาง"
-            title="เปิดเมนูนำทาง"
+            aria-label="เปิดเมนูระบบ"
+            title="เปิดเมนูระบบ"
             aria-expanded={drawerOpen}
             aria-controls={drawerId}
             onClick={() => setDrawerOpen(true)}
           >
             <span aria-hidden="true">☰</span>
+            <span className="crm-menu-toggle-label">เมนูระบบ</span>
           </button>
-          <label
+          <button
+            type="button"
             className="crm-app-search"
-            title="การค้นหาทั้งระบบจะเปิดใช้เมื่อพร้อม"
-            tabIndex={0}
-            aria-label="ค้นหาทั้งระบบ (ยังไม่เปิดใช้)"
+            title="ค้นหาเมนูหรือคำสั่ง"
+            aria-label="ค้นหาข้อมูล เมนู หรือคำสั่ง"
+            onClick={() => setCommandOpen(true)}
           >
-            <span className="sr-only">ค้นหาทั้งระบบ (ยังไม่เปิดใช้)</span>
             <span aria-hidden="true">⌕</span>
-            <input type="search" placeholder="ค้นหาข้อมูล เมนู หรือคำสั่ง..." disabled aria-disabled="true" tabIndex={-1} />
+            <span className="crm-app-search-placeholder">ค้นหาข้อมูล เมนู หรือคำสั่ง…</span>
             <kbd aria-hidden="true">⌘ K</kbd>
-          </label>
+          </button>
           <div className="crm-app-top-right">
             <CrmThemeToggle className="crm-top-theme" />
             <ProfileMenu
@@ -1039,6 +1118,8 @@ export function CrmShell({
           {children}
         </main>
       </div>
+
+      <CrmCommandPalette open={commandOpen} onClose={() => setCommandOpen(false)} items={commandItems} />
     </div>
   );
 
