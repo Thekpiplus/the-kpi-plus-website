@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
+import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
 import { useRouter } from "next/navigation";
 
 export type CommandPaletteItem = {
@@ -46,7 +46,7 @@ export function CrmCommandPalette({
 
   useEffect(() => {
     if (!open) return;
-    function onKey(event: KeyboardEvent) {
+    function onKey(event: globalThis.KeyboardEvent) {
       if (event.key === "Escape") {
         event.preventDefault();
         onClose();
@@ -72,7 +72,7 @@ export function CrmCommandPalette({
     router.push(href);
   }
 
-  function onInputKey(event: KeyboardEvent<HTMLInputElement>) {
+  function onInputKey(event: ReactKeyboardEvent<HTMLInputElement>) {
     if (event.key === "ArrowDown") {
       event.preventDefault();
       setActive((i) => Math.min(i + 1, Math.max(filtered.length - 1, 0)));

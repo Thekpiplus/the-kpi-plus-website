@@ -789,7 +789,7 @@ export function CrmShell({
   }, [pathname, search]);
 
   useEffect(() => {
-    function onKey(event: KeyboardEvent) {
+    function onKey(event: globalThis.KeyboardEvent) {
       const meta = event.metaKey || event.ctrlKey;
       if (meta && event.key.toLowerCase() === "k") {
         event.preventDefault();
@@ -803,7 +803,7 @@ export function CrmShell({
 
   useEffect(() => {
     if (!drawerOpen) return;
-    function onKey(event: KeyboardEvent) {
+    function onKey(event: globalThis.KeyboardEvent) {
       if (event.key === "Escape") {
         setDrawerOpen(false);
         menuToggleRef.current?.focus();
