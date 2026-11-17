@@ -349,8 +349,8 @@ export function insightSampleLabel(locale: Locale) {
 
 export function displaySizeForVariant(slot: InsightMediaSlot, variant: InsightMediaVariant) {
   if (variant === "featured") {
-    if (slot.slug === "hotel-marketing") return { width: 780, height: 440 };
-    return { width: 620, height: 350 };
+    /* Match --kpi-article-measure (46rem / 736px) so hero aligns with H1 / takeaway / prose */
+    return { width: 736, height: 414 };
   }
   if (variant === "related") return { width: 360, height: 240 };
   if (variant === "guide") return { width: slot.displayWidth, height: slot.displayHeight };

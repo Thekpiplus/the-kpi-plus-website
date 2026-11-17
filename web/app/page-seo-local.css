@@ -1,0 +1,2299 @@
+/* Extracted from globals.css — import only from the matching page view */
+
+
+
+.kpi-seo-local-hero-crumb {
+  margin: 0 0 1.15rem;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.5;
+}
+
+
+
+.kpi-seo-local-hero-crumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+
+.kpi-seo-local-hero-crumb a {
+  color: inherit;
+  text-decoration: none;
+}
+
+
+
+.kpi-seo-local-hero-crumb a:hover {
+  color: #fff;
+}
+
+
+
+.kpi-shell .kpi-seo-local-hero .kpi-latin {
+  font-family: Montserrat, sans-serif !important;
+}
+
+
+
+.kpi-seo-local-hero .kpi-home-hero > * {
+  min-width: 0;
+}
+
+
+
+.kpi-seo-local-hero .kpi-home-hero-copy {
+  overflow: hidden;
+  max-width: none;
+}
+
+
+
+.kpi-seo-local-hero h1.kpi-home-h1,
+.kpi-shell :lang(th) .kpi-seo-local-hero h1.kpi-home-h1 {
+  max-width: 100%;
+}
+
+
+
+.kpi-seo-local-hero .kpi-home-h1-lead,
+.kpi-seo-local-hero .kpi-home-h1-rest,
+.kpi-shell :lang(th) .kpi-seo-local-hero .kpi-home-h1-lead,
+.kpi-shell :lang(th) .kpi-seo-local-hero .kpi-home-h1-rest {
+  display: block;
+  max-width: 100%;
+  white-space: normal;
+}
+
+
+
+.kpi-seo-local-hero.kpi-hero {
+  padding-block: 2.1rem 2rem;
+}
+
+
+
+.kpi-seo-local-hero .kpi-home-accent {
+  color: #a2dc25;
+}
+
+
+
+.kpi-seo-local-hero .kpi-button {
+  min-height: 2.75rem;
+  background: #a2dc25;
+  color: #0b1f33;
+}
+
+
+
+.kpi-seo-local-hero .kpi-button:hover {
+  background: #b6e63a;
+  color: #0b1f33;
+}
+
+
+
+.kpi-seo-local-hero .kpi-hero-visual {
+  min-width: 0;
+  background:
+    radial-gradient(circle at 78% 22%, rgba(162, 220, 37, 0.2), transparent 42%),
+    radial-gradient(circle at 18% 88%, rgba(235, 231, 34, 0.12), transparent 36%);
+}
+
+
+
+.kpi-seo-local-hero-points {
+  display: grid;
+  gap: 0.45rem;
+  max-width: 36rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+
+.kpi-seo-local-hero-points li {
+  position: relative;
+  padding-left: 1rem;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 0.94rem;
+  line-height: 1.5;
+}
+
+
+
+.kpi-seo-local-hero-points li::before {
+  content: "";
+  position: absolute;
+  top: 0.55rem;
+  left: 0;
+  width: 0.42rem;
+  height: 0.42rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #a2dc25, #ebe722);
+}
+
+
+
+.kpi-seo-local-hero .seo-visual-caption {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+
+
+.kpi-seo-local-hero .ads-hero-caption-label {
+  color: #fff;
+}
+
+
+
+.kpi-seo-local-hero .seo-visual-meta {
+  color: #a2dc25;
+}
+
+
+
+.kpi-seo-local-hero .kpi-home-lead {
+  margin-top: 1rem;
+}
+
+
+
+.kpi-seo-local-hero .kpi-actions {
+  margin-top: 1.2rem;
+  gap: 0.7rem;
+}
+
+
+
+.kpi-seo-local-hero .kpi-button,
+.kpi-seo-local-hero .kpi-button-ghost {
+  min-height: 2.75rem;
+  padding-inline: 1.1rem;
+}
+
+
+
+.kpi-seo-local-hero .kpi-seo-local-lead-line {
+  display: block;
+}
+
+
+
+.kpi-seo-local-hero .kpi-seo-local-lead-line + .kpi-seo-local-lead-line {
+  margin-top: 0.85rem;
+}
+
+
+
+.kpi-seo-local-lead-close {
+  max-width: 36rem;
+  margin: 0.85rem 0 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.7;
+}
+
+
+
+.kpi-seo-local-hero-note {
+  max-width: 28rem;
+  margin: 1rem 0 0;
+  color: rgba(255, 255, 255, 0.64);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.55;
+}
+
+
+
+.kpi-seo-local-hero .kpi-home-trust {
+  margin-top: 0.85rem;
+}
+
+
+
+.kpi-seo-local-hero .kpi-home-trust span:not(:last-child)::after {
+  content: "→";
+  width: auto;
+  height: auto;
+  margin-inline: 0.55rem;
+  background: none;
+  color: rgba(255, 255, 255, 0.45);
+  vertical-align: 0;
+}
+
+
+
+.kpi-seo-local-hero .kpi-home-photo img {
+  object-position: 52% 40%;
+}
+
+
+
+.kpi-shell .kpi-seo-local-change h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-seo-local-change h2.kpi-h2 {
+  max-width: none;
+  color: #3b3b3b;
+  font-size: clamp(1.5rem, 1.05rem + 1.35vw, 2.25rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+  text-align: left;
+  text-wrap: wrap;
+}
+
+
+
+.kpi-shell .kpi-seo-local-change .kpi-latin {
+  font-family: Montserrat, sans-serif !important;
+}
+
+
+
+.kpi-seo-local-change-eyebrow,
+.kpi-shell :lang(th) .kpi-seo-local-change-eyebrow {
+  margin: 0 0 0.55rem;
+  color: rgba(11, 102, 96, 0.68);
+  font-family: Montserrat, sans-serif !important;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em !important;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+
+
+.kpi-seo-local-change-intro {
+  max-width: 46rem;
+  margin: 0.85rem 0 0;
+  color: #555555;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+
+
+.kpi-seo-local-change-split {
+  display: grid;
+  gap: 1.5rem;
+  align-items: start;
+  margin-top: 1.5rem;
+}
+
+
+
+.kpi-seo-local-change-copy,
+.kpi-seo-local-change-visual {
+  min-width: 0;
+}
+
+
+
+.kpi-seo-local-change-visual {
+  max-width: 480px;
+}
+
+
+
+.kpi-seo-local-change-types {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+
+.kpi-seo-local-change-types li {
+  min-width: 0;
+  padding: 0.9rem 0.95rem;
+  border: 1px solid #e3e8eb;
+  border-radius: 12px;
+  background: #fff;
+}
+
+
+
+.kpi-seo-local-change-types span {
+  display: block;
+  color: #0b6660;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+
+
+.kpi-shell .kpi-seo-local-change-types h3,
+.kpi-shell :lang(th) .kpi-seo-local-change-types h3 {
+  margin: 0.28rem 0 0;
+  color: #0b1f33;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+
+
+.kpi-seo-local-change-types p {
+  margin: 0.4rem 0 0;
+  color: #555555;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+
+
+.kpi-seo-local-behavior-map-wrap {
+  margin-top: 1.25rem;
+}
+
+
+
+.kpi-seo-local-behavior-map {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0.55rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+
+.kpi-seo-local-behavior-map li {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+
+
+.kpi-seo-local-behavior-map li span {
+  display: block;
+  padding: 0.45rem 0.7rem;
+  border-radius: 999px;
+  background: #0b1f33;
+  color: #f2f8e2;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+
+
+.kpi-seo-local-behavior-map li:not(:last-child)::after {
+  content: "→";
+  color: #0b6660;
+  font-weight: 700;
+}
+
+
+
+.kpi-seo-local-change-evidence {
+  display: grid;
+  gap: 1.35rem;
+  margin-top: 1.75rem;
+  padding-top: 1.35rem;
+  border-top: 1px solid #e3e8eb;
+}
+
+
+
+.kpi-seo-local-source-url {
+  display: block;
+  margin-top: 0.2rem;
+  overflow-wrap: anywhere;
+  color: #0b6660;
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
+
+
+.kpi-seo-local-change-layout {
+  display: grid;
+  gap: 1.5rem;
+  align-items: start;
+  margin-top: 1.75rem;
+}
+
+
+
+.kpi-seo-local-change-layout > * {
+  min-width: 0;
+}
+
+
+
+.kpi-seo-local-change-stack {
+  display: grid;
+  gap: 0;
+  align-content: start;
+}
+
+
+
+.kpi-seo-local-change article {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+
+
+.kpi-seo-local-change-featured {
+  padding-bottom: 0;
+}
+
+
+
+.kpi-seo-local-change-stack article {
+  padding-top: 1.15rem;
+  border-top: 1px solid #e3e8eb;
+}
+
+
+
+.kpi-seo-local-change-stack article:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+
+
+.kpi-shell .kpi-seo-local-change-featured h3,
+.kpi-shell :lang(th) .kpi-seo-local-change-featured h3 {
+  margin: 0;
+  color: #1f2a33;
+  font-size: clamp(1.625rem, 1.4rem + 0.55vw, 2rem) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+
+
+.kpi-shell .kpi-seo-local-change-stack h3,
+.kpi-shell :lang(th) .kpi-seo-local-change-stack h3 {
+  margin: 0;
+  color: #1f2a33;
+  font-size: clamp(1.25rem, 1.15rem + 0.35vw, 1.5rem) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+
+
+.kpi-seo-local-change-number {
+  margin: 0;
+  color: #0b1f33;
+  font-size: clamp(2.25rem, 1.9rem + 1.1vw, 3rem);
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.1;
+}
+
+
+
+.kpi-seo-local-change-stat-label,
+.kpi-shell :lang(th) .kpi-seo-local-change-stat-label {
+  margin: 0.55rem 0 0;
+  color: #3b3b3b;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0 !important;
+  line-height: 1.45 !important;
+}
+
+
+
+.kpi-seo-local-change-body,
+.kpi-shell :lang(th) .kpi-seo-local-change-body,
+.kpi-shell .kpi-seo-local-change-body p,
+.kpi-shell :lang(th) .kpi-seo-local-change-body p {
+  margin: 0.85rem 0 0;
+  color: #555555;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+}
+
+
+
+.kpi-seo-local-change-body p + p {
+  margin-top: 0.7rem;
+}
+
+
+
+.kpi-seo-local-change-source {
+  margin: 0.95rem 0 0;
+}
+
+
+
+.kpi-seo-local-change-source a {
+  color: rgba(11, 102, 96, 0.78);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.5;
+  text-decoration: none;
+}
+
+
+
+.kpi-seo-local-source-meta {
+  display: block;
+  margin-top: 0.35rem;
+  color: #555;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+
+
+.kpi-seo-local-hero .kpi-meta-ads-hero-visual,
+.kpi-seo-local-hero .seo-hero-visual,
+.kpi-seo-local-hero .seo-hero-frame {
+  width: 100%;
+  max-width: min(560px, 100%);
+}
+
+
+
+.kpi-seo-local-hero .seo-hero-frame {
+  aspect-ratio: 8 / 5;
+  max-height: 350px;
+}
+
+
+
+.kpi-seo-local-hero .seo-hero-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+
+
+.kpi-seo-local-problems-photo .seo-audit-visual,
+.kpi-seo-local-gbp-photo .seo-gbp-visual {
+  max-width: 100%;
+}
+
+
+
+.kpi-seo-local-measure-visual {
+  margin: 1.35rem 0 0;
+  min-width: 0;
+}
+
+
+
+.kpi-seo-local-measure-visual .seo-kpi-visual,
+.kpi-seo-local-measure-visual .seo-kpi-frame {
+  max-width: min(720px, 100%);
+}
+
+
+
+.kpi-seo-local-change-source a:hover {
+  color: #0A2472;
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
+}
+
+
+
+.kpi-seo-local-change-takeaway {
+  max-width: none;
+  margin: 0;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e3e8eb;
+}
+
+
+
+.kpi-seo-local-change-takeaway p,
+.kpi-shell :lang(th) .kpi-seo-local-change-takeaway p {
+  margin: 0;
+  color: #555555;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+}
+
+
+
+.kpi-seo-local-change-takeaway-strong,
+.kpi-shell :lang(th) .kpi-seo-local-change-takeaway-strong {
+  margin-top: 0.55rem !important;
+  color: #1f2a33 !important;
+  font-weight: 600 !important;
+}
+
+
+
+.kpi-seo-local-change-note {
+  max-width: none;
+  margin: 0;
+  padding-top: 0.15rem;
+}
+
+
+
+.kpi-seo-local-change-note p,
+.kpi-shell :lang(th) .kpi-seo-local-change-note p {
+  margin: 0;
+  color: #6a6a6a;
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.65 !important;
+}
+
+
+
+.kpi-seo-local-change-note p + p {
+  margin-top: 0.35rem;
+}
+
+
+
+.kpi-seo-local-change-note .kpi-seo-local-change-source {
+  margin-top: 0.65rem;
+}
+
+
+
+.kpi-seo-local-change-br {
+  display: inline;
+}
+
+
+
+.kpi-shell .kpi-seo-local-compare h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-seo-local-compare h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-seo-local-compare-line {
+  max-width: none;
+  color: #3b3b3b;
+  font-size: clamp(1.5rem, 1.05rem + 1.35vw, 2.25rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+  text-align: left;
+  text-wrap: wrap;
+}
+
+
+
+.kpi-shell .kpi-seo-local-compare .kpi-latin {
+  font-family: Montserrat, sans-serif !important;
+}
+
+
+
+.kpi-seo-local-compare-lead,
+.kpi-shell :lang(th) .kpi-seo-local-compare-lead {
+  max-width: 46rem;
+  margin: 0.85rem 0 0;
+  color: #555555;
+  font-size: 1.0625rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+}
+
+
+
+.kpi-seo-local-compare .seo-compare-visual {
+  margin-top: 1.5rem;
+}
+
+
+
+.kpi-seo-local-compare .kpi-seo-local-compare-close-strong {
+  max-width: 46rem;
+  margin-top: 1.35rem;
+}
+
+
+
+.kpi-seo-local-compare-cols {
+  display: grid;
+  gap: 0;
+  margin: 1.85rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+
+.kpi-seo-local-compare-cols li {
+  position: relative;
+  padding: 1.15rem 0;
+  border: 0;
+  border-top: 1px solid #e3e8eb;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+
+
+.kpi-seo-local-compare-cols li:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+
+
+.kpi-seo-local-compare-num {
+  display: block;
+  color: #0A2472;
+  font-family: Montserrat, sans-serif !important;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.3;
+}
+
+
+
+.kpi-shell .kpi-seo-local-compare h3,
+.kpi-shell :lang(th) .kpi-seo-local-compare h3 {
+  margin: 0.4rem 0 0;
+  color: #1f2a33;
+  font-size: clamp(1.25rem, 1.15rem + 0.3vw, 1.5rem) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+
+
+.kpi-seo-local-compare-role,
+.kpi-shell :lang(th) .kpi-seo-local-compare-role {
+  margin: 0.55rem 0 0;
+  color: #1f2a33;
+  font-size: 0.975rem;
+  font-weight: 500;
+  letter-spacing: 0 !important;
+  line-height: 1.65 !important;
+}
+
+
+
+.kpi-seo-local-compare-example,
+.kpi-shell :lang(th) .kpi-seo-local-compare-example {
+  margin: 0.45rem 0 0;
+  color: #555555;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+}
+
+
+
+.kpi-seo-local-compare-close {
+  max-width: 40rem;
+  margin: 1.75rem 0 0;
+  padding-top: 1.35rem;
+  border-top: 1px solid #e3e8eb;
+}
+
+
+
+.kpi-seo-local-compare-close-strong,
+.kpi-shell :lang(th) .kpi-seo-local-compare-close-strong {
+  margin: 0;
+  color: #1f2a33;
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: 0 !important;
+  line-height: 1.55 !important;
+}
+
+
+
+.kpi-seo-local-compare-close-strong + .kpi-seo-local-compare-close-strong {
+  margin-top: 0.35rem;
+}
+
+
+
+.kpi-seo-local-compare-close-note,
+.kpi-shell :lang(th) .kpi-seo-local-compare-close-note {
+  margin: 0.75rem 0 0;
+  color: #555555;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+}
+
+
+
+.kpi-seo-local-compare-br {
+  display: inline;
+}
+
+
+
+.kpi-shell .kpi-seo-local-problems h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-seo-local-problems h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-seo-local-problem-line,
+.kpi-shell :lang(th) .kpi-seo-local-problems h2 .kpi-seo-local-problem-em {
+  max-width: none;
+  color: #3b3b3b;
+  font-size: clamp(1.5rem, 1.05rem + 1.35vw, 2.25rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+  text-align: left;
+  text-wrap: wrap;
+}
+
+
+
+.kpi-shell .kpi-seo-local-problems .kpi-latin {
+  font-family: Montserrat, sans-serif !important;
+}
+
+
+
+.kpi-seo-local-problem-em {
+  color: #7d9a16;
+  font-weight: 600;
+}
+
+
+
+.kpi-seo-local-problems-grid {
+  display: grid;
+  gap: 1.75rem;
+  align-items: start;
+  margin-top: 1.55rem;
+}
+
+
+
+.kpi-seo-local-problems-main {
+  min-width: 0;
+}
+
+
+
+.kpi-seo-local-problems-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+
+.kpi-seo-local-problems-list li {
+  display: grid;
+  grid-template-columns: 1.75rem minmax(0, 1fr);
+  column-gap: 0.85rem;
+  align-items: start;
+  padding: 1rem 0;
+  border-bottom: 1px solid #e3e8eb;
+  background: transparent;
+  box-shadow: none;
+}
+
+
+
+.kpi-seo-local-problems-list li:last-child {
+  border-bottom: 0;
+}
+
+
+
+.kpi-seo-local-problems-list li > .kpi-latin {
+  color: #0b6660;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.7;
+}
+
+
+
+.kpi-seo-local-problem-card {
+  min-width: 0;
+}
+
+
+
+.kpi-shell .kpi-seo-local-problem-title,
+.kpi-shell :lang(th) .kpi-seo-local-problem-title {
+  margin: 0;
+  color: #0b1f33;
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.5;
+}
+
+
+
+.kpi-seo-local-problem-card dl {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0;
+}
+
+
+
+.kpi-seo-local-problem-card dl div {
+  display: grid;
+  gap: 0.12rem;
+}
+
+
+
+.kpi-seo-local-problem-card dt {
+  color: #0b6660;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+
+
+.kpi-seo-local-problem-card dd {
+  margin: 0;
+  color: #555555;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+
+
+.kpi-seo-local-problems-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-height: 2.75rem;
+  margin-top: 1.25rem;
+  padding: 0.4rem 0;
+  color: #0A2472;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  line-height: 1.4;
+  text-decoration: none;
+}
+
+
+
+.kpi-seo-local-problems-cta:hover {
+  color: #7d9a16;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+
+
+.kpi-seo-local-problems-photo {
+  margin: 0;
+  min-width: 0;
+}
+
+
+
+.kpi-seo-local-problems-photo .seo-audit-visual,
+.kpi-seo-local-problems-photo .seo-audit-frame {
+  max-width: min(480px, 100%);
+}
+
+
+
+.kpi-seo-local-problems-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: contain;
+  object-position: center;
+}
+
+
+
+.kpi-seo-local-problem-br {
+  display: inline;
+}
+
+
+
+.kpi-shell .kpi-seo-local-help h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-seo-local-help h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-seo-local-help-line,
+.kpi-shell :lang(th) .kpi-seo-local-help h2 .kpi-seo-local-help-em {
+  max-width: none;
+  color: #3b3b3b;
+  font-size: clamp(1.5rem, 1.05rem + 1.35vw, 2.25rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+  text-align: left;
+  text-wrap: wrap;
+}
+
+
+
+.kpi-shell .kpi-seo-local-help .kpi-latin {
+  font-family: Montserrat, sans-serif !important;
+}
+
+
+
+.kpi-seo-local-help-em {
+  color: #7d9a16;
+  font-weight: 600;
+}
+
+
+
+.kpi-seo-local-help-visual {
+  margin: 1.5rem 0 0;
+  min-width: 0;
+}
+
+
+
+.kpi-seo-local-help-visual .seo-flow-visual,
+.kpi-seo-local-help-visual .seo-flow-frame {
+  max-width: min(720px, 100%);
+}
+
+
+
+.kpi-seo-local-help-steps {
+  display: grid;
+  gap: 0;
+  margin: 1.35rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+
+.kpi-seo-local-help-steps li {
+  display: grid;
+  grid-template-columns: 2.1rem minmax(0, 1fr);
+  column-gap: 0.85rem;
+  position: relative;
+  min-width: 0;
+  padding: 0 0 1.25rem;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+
+
+.kpi-seo-local-help-steps li:last-child {
+  padding-bottom: 0;
+}
+
+
+
+.kpi-seo-local-help-steps li:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  top: 2.2rem;
+  bottom: 0.1rem;
+  left: 0.95rem;
+  width: 2px;
+  background: #a2dc25;
+}
+
+
+
+.kpi-seo-local-help-num {
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 999px;
+  background: #a2dc25;
+  color: #0b1f33;
+  font-family: Montserrat, Montserrat, sans-serif !important;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+
+
+.kpi-seo-local-help-card {
+  min-width: 0;
+  padding: 0.9rem 1rem;
+  border: 1px solid #e3e8eb;
+  border-radius: 14px;
+  background: #fff;
+}
+
+
+
+.kpi-shell .kpi-seo-local-help h3,
+.kpi-shell :lang(th) .kpi-seo-local-help h3,
+.kpi-shell :lang(th) .kpi-seo-local-help h3 .kpi-seo-local-help-em {
+  margin: 0;
+  color: #0b1f33;
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+
+
+.kpi-seo-local-help-output {
+  display: inline-block;
+  max-width: 100%;
+  margin: 0.45rem 0 0;
+  padding: 0.22rem 0.55rem;
+  border-radius: 999px;
+  background: #f2f8e2;
+  color: #0b1f33;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+
+
+.kpi-seo-local-help-card dl {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0.7rem 0 0;
+}
+
+
+
+.kpi-seo-local-help-card dl div {
+  display: grid;
+  gap: 0.12rem;
+  min-width: 0;
+}
+
+
+
+.kpi-seo-local-help-card dt {
+  color: #0b6660;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+
+
+.kpi-seo-local-help-card dd {
+  margin: 0;
+  color: #555555;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+
+
+.kpi-seo-local-help-boundary {
+  margin: 1.5rem 0 0;
+  padding: 1.15rem 1.2rem 1.25rem;
+  border: 1px solid #e3e8eb;
+  border-radius: 16px;
+  background: #f4f4f4;
+}
+
+
+
+.kpi-seo-local-help-boundary-kicker {
+  margin: 0;
+  color: #0b6660;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+
+
+.kpi-seo-local-help-boundary-note {
+  margin: 0.55rem 0 0;
+  max-width: 48rem;
+  color: #555555;
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+
+
+.kpi-seo-local-help-boundary-grid {
+  display: grid;
+  gap: 1rem;
+  margin: 0.9rem 0 0;
+}
+
+
+
+.kpi-seo-local-help-boundary-grid article {
+  min-width: 0;
+  padding: 1rem 1.05rem 1.05rem;
+  border: 1px solid #e3e8eb;
+  border-radius: 14px;
+  background: #fff;
+}
+
+
+
+.kpi-shell .kpi-seo-local-help-boundary h3 {
+  margin: 0;
+  color: #0b1f33;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+}
+
+
+
+.kpi-seo-local-help-boundary-grid ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+
+.kpi-seo-local-help-chip {
+  padding: 0.28rem 0.6rem;
+  border-radius: 999px;
+  background: #f2f8e2;
+  color: #0b1f33;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+
+
+.kpi-seo-local-help-chip--hotel {
+  background: #0b1f33;
+  color: #f2f8e2;
+}
+
+
+
+.kpi-seo-local-help .kpi-button {
+  margin-top: 1.75rem;
+  min-height: 2.75rem;
+  border-radius: 9px;
+  box-shadow: none;
+}
+
+
+
+.kpi-seo-local-help .kpi-button:hover,
+.kpi-seo-local-help .kpi-button:active {
+  box-shadow: none;
+  transform: none;
+}
+
+
+
+.kpi-seo-local-help-br {
+  display: inline;
+}
+
+
+
+.kpi-shell .kpi-seo-local-gbp h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-seo-local-gbp h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-seo-local-gbp h2 .kpi-seo-local-gbp-em {
+  max-width: none;
+  color: #3b3b3b;
+  font-size: clamp(1.5rem, 1.05rem + 1.35vw, 2.25rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+  text-align: left;
+  text-wrap: wrap;
+}
+
+
+
+.kpi-shell .kpi-seo-local-gbp .kpi-latin {
+  font-family: Montserrat, sans-serif !important;
+}
+
+
+
+.kpi-seo-local-gbp-em {
+  color: #7d9a16;
+  font-weight: 700;
+}
+
+
+
+.kpi-seo-local-gbp-grid {
+  display: grid;
+  gap: 1.75rem;
+  align-items: start;
+}
+
+
+
+.kpi-seo-local-gbp-copy {
+  min-width: 0;
+}
+
+
+
+.kpi-seo-local-gbp-body,
+.kpi-shell :lang(th) .kpi-seo-local-gbp-body,
+.kpi-shell .kpi-seo-local-gbp-body p,
+.kpi-shell :lang(th) .kpi-seo-local-gbp-body p {
+  margin: 0.95rem 0 0;
+  color: #555555;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+}
+
+
+
+.kpi-seo-local-gbp-body p + p {
+  margin-top: 0.75rem;
+}
+
+
+
+.kpi-seo-local-gbp-factors,
+.kpi-shell :lang(th) .kpi-seo-local-gbp-factors {
+  color: #1f2a33 !important;
+  font-weight: 500 !important;
+}
+
+
+
+.kpi-seo-local-gbp-signals {
+  display: grid;
+  gap: 0;
+  margin: 1.45rem 0 0;
+}
+
+
+
+.kpi-seo-local-gbp-signals article {
+  padding: 0.85rem 0;
+  border-top: 1px solid #e3e8eb;
+  background: transparent;
+  box-shadow: none;
+}
+
+
+
+.kpi-seo-local-gbp-signals article:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+
+
+.kpi-seo-local-gbp-rank {
+  margin: 1rem 0 0;
+  color: #555555;
+  font-size: 0.95rem;
+  line-height: 1.65;
+}
+
+
+
+.kpi-shell .kpi-seo-local-gbp-signals h3,
+.kpi-shell :lang(th) .kpi-seo-local-gbp-signals h3 {
+  margin: 0;
+  color: #1f2a33;
+  font-size: 1.0625rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+
+
+.kpi-shell .kpi-seo-local-gbp-signals p,
+.kpi-shell :lang(th) .kpi-seo-local-gbp-signals p {
+  margin: 0.3rem 0 0;
+  color: #555555;
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.6 !important;
+}
+
+
+
+.kpi-seo-local-gbp-close {
+  margin: 1.35rem 0 0;
+  padding-top: 1.15rem;
+  border-top: 1px solid #e3e8eb;
+}
+
+
+
+.kpi-seo-local-gbp-close p,
+.kpi-shell :lang(th) .kpi-seo-local-gbp-close p {
+  margin: 0;
+  color: #555555;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+}
+
+
+
+.kpi-seo-local-gbp-close-strong,
+.kpi-shell :lang(th) .kpi-seo-local-gbp-close-strong {
+  margin-top: 0.45rem !important;
+  color: #1f2a33 !important;
+  font-weight: 600 !important;
+}
+
+
+
+.kpi-seo-local-gbp-source {
+  margin: 0.95rem 0 0;
+}
+
+
+
+.kpi-seo-local-gbp-source a {
+  color: rgba(11, 102, 96, 0.78);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.5;
+  text-decoration: none;
+}
+
+
+
+.kpi-seo-local-gbp-source a:hover {
+  color: #0A2472;
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
+}
+
+
+
+.kpi-seo-local-gbp-photo {
+  margin: 0;
+  min-width: 0;
+}
+
+
+
+.kpi-seo-local-gbp-photo .seo-gbp-visual,
+.kpi-seo-local-gbp-photo .seo-gbp-frame {
+  max-width: min(480px, 100%);
+}
+
+
+
+.kpi-seo-local-gbp-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: contain;
+  object-position: center;
+}
+
+
+
+.kpi-seo-local-gbp-br {
+  display: inline;
+}
+
+
+
+.kpi-seo-local-method .kpi-section {
+  padding-block: clamp(2.5rem, 2rem + 1.5vw, 3.75rem);
+}
+
+
+
+.kpi-shell .kpi-seo-local-method h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-seo-local-method h2.kpi-h2 {
+  max-width: none;
+  color: #3b3b3b;
+  font-size: clamp(1.5rem, 1.05rem + 1.35vw, 2.25rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+  text-align: left;
+  text-wrap: wrap;
+}
+
+
+
+.kpi-shell .kpi-seo-local-method .kpi-latin {
+  font-family: Montserrat, Montserrat, sans-serif !important;
+}
+
+
+
+.kpi-seo-local-method-layout {
+  display: grid;
+  gap: 1.35rem;
+  min-width: 0;
+  margin-top: 1.35rem;
+}
+
+
+
+.kpi-seo-local-method-visual {
+  margin: 0;
+  min-width: 0;
+}
+
+
+
+.kpi-seo-local-method-visual .seo-process-visual,
+.kpi-seo-local-method-visual .seo-process-frame {
+  max-width: min(640px, 100%);
+}
+
+
+
+.kpi-seo-local-process-steps {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+
+.kpi-seo-local-process-steps li {
+  display: grid;
+  grid-template-columns: 2.1rem minmax(0, 1fr);
+  column-gap: 0.85rem;
+  position: relative;
+  min-width: 0;
+  padding: 0 0 1.25rem;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+
+
+.kpi-seo-local-process-steps li:last-child {
+  padding-bottom: 0;
+}
+
+
+
+.kpi-seo-local-process-steps li:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  top: 2.2rem;
+  bottom: 0.1rem;
+  left: 0.95rem;
+  width: 2px;
+  background: #a2dc25;
+}
+
+
+
+.kpi-seo-local-process-num {
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 999px;
+  background: #a2dc25;
+  color: #0b1f33;
+  font-family: Montserrat, Montserrat, sans-serif !important;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+
+
+.kpi-seo-local-process-card {
+  min-width: 0;
+  padding: 0.9rem 1rem;
+  border: 1px solid #e3e8eb;
+  border-radius: 14px;
+  background: #fff;
+}
+
+
+
+.kpi-seo-local-process-phase,
+.kpi-shell :lang(th) .kpi-seo-local-process-phase {
+  margin: 0;
+  color: #0b6660;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em !important;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+
+
+.kpi-shell .kpi-seo-local-method h3,
+.kpi-shell :lang(th) .kpi-seo-local-method h3 {
+  margin: 0.22rem 0 0;
+  color: #0b1f33;
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+
+
+.kpi-seo-local-process-action,
+.kpi-shell :lang(th) .kpi-seo-local-process-action {
+  max-width: 42rem;
+  margin: 0.4rem 0 0;
+  color: #555555;
+  font-size: 0.92rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.6 !important;
+}
+
+
+
+.kpi-seo-local-process-output {
+  display: inline-block;
+  max-width: 100%;
+  margin: 0.45rem 0 0;
+  padding: 0.22rem 0.55rem;
+  border-radius: 999px;
+  background: #f2f8e2;
+  color: #0b1f33;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+
+
+.kpi-seo-local-process-card dl {
+  display: grid;
+  gap: 0.55rem;
+  margin: 0.7rem 0 0;
+}
+
+
+
+.kpi-seo-local-process-card dl div {
+  display: grid;
+  gap: 0.12rem;
+  min-width: 0;
+}
+
+
+
+.kpi-seo-local-process-card dt {
+  color: #0b6660;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+
+
+.kpi-seo-local-process-card dd {
+  margin: 0;
+  color: #555555;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+
+
+.kpi-shell .kpi-seo-local-related h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-seo-local-related h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-seo-local-related-line {
+  max-width: none;
+  color: #3b3b3b;
+  font-size: clamp(1.5rem, 1.05rem + 1.35vw, 2.25rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+  text-align: left;
+  text-wrap: wrap;
+}
+
+
+
+.kpi-shell .kpi-seo-local-related .kpi-latin {
+  font-family: Montserrat, Montserrat, sans-serif !important;
+}
+
+
+
+.kpi-seo-local-related-layout {
+  display: grid;
+  gap: 1.15rem;
+  align-items: start;
+  margin-top: 1.75rem;
+}
+
+
+
+.kpi-seo-local-related-visual {
+  min-width: 0;
+}
+
+
+
+.kpi-seo-local-related-visual .seo-related-visual,
+.kpi-seo-local-related-visual .seo-related-frame {
+  max-width: min(520px, 100%);
+}
+
+
+
+.kpi-seo-local-related-cards {
+  display: grid;
+  gap: 0.9rem;
+  min-width: 0;
+}
+
+
+
+.kpi-seo-local-related-stack {
+  display: grid;
+  gap: 0.9rem;
+  align-items: start;
+  align-content: start;
+}
+
+
+
+.kpi-seo-local-related-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  padding: 1.15rem 1.2rem 1.1rem;
+  border: 1px solid #e3e8eb;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: none;
+  text-decoration: none;
+  transition: border-color 220ms ease;
+}
+
+
+
+.kpi-seo-local-related-item.is-featured {
+  padding: 1.7rem 1.55rem 1.45rem;
+}
+
+
+
+.kpi-seo-local-related-accent {
+  display: block;
+  width: 2rem;
+  height: 2px;
+  margin-bottom: 0.9rem;
+  background: #a2dc25;
+}
+
+
+
+.kpi-shell .kpi-seo-local-related-kicker,
+.kpi-shell :lang(th) .kpi-seo-local-related-kicker {
+  margin: 0;
+  color: #0b6660;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+
+
+.kpi-shell .kpi-seo-local-related-item.is-featured h3,
+.kpi-shell :lang(th) .kpi-seo-local-related-item.is-featured h3 {
+  margin: 0.55rem 0 0;
+  color: #0b1f33;
+  font-size: clamp(1.35rem, 1.2rem + 0.4vw, 1.75rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+
+
+.kpi-shell .kpi-seo-local-related-stack h3,
+.kpi-shell :lang(th) .kpi-seo-local-related-stack h3 {
+  margin: 0.4rem 0 0;
+  color: #0b1f33;
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+
+
+.kpi-seo-local-related-desc,
+.kpi-shell :lang(th) .kpi-seo-local-related-desc {
+  margin: 0.45rem 0 0;
+  color: #555555;
+  font-size: 0.92rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.6 !important;
+}
+
+
+
+.kpi-seo-local-related-meta,
+.kpi-seo-local-related-source {
+  margin: 0.45rem 0 0;
+  color: #555555;
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+
+
+
+.kpi-seo-local-related-source {
+  color: #0b6660;
+}
+
+
+
+.kpi-seo-local-related-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 1.05rem;
+  color: #0a2472;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+
+
+.kpi-seo-local-related-item.is-featured .kpi-seo-local-related-cta {
+  margin-top: auto;
+  padding-top: 1.2rem;
+}
+
+
+
+.kpi-seo-local-related-cta svg {
+  width: 0.9rem;
+  height: 0.9rem;
+  transition: transform 220ms ease;
+}
+
+
+
+.kpi-shell .kpi-seo-local-measure h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-seo-local-measure h2.kpi-h2 {
+  max-width: none;
+  color: #3b3b3b;
+  font-size: clamp(1.5rem, 1.05rem + 1.35vw, 2.25rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+  text-align: left;
+  text-wrap: wrap;
+}
+
+
+
+.kpi-shell .kpi-seo-local-measure .kpi-latin {
+  font-family: Montserrat, Montserrat, sans-serif !important;
+}
+
+
+
+.kpi-seo-local-measure-lead,
+.kpi-shell :lang(th) .kpi-seo-local-measure-lead {
+  max-width: 46rem;
+  margin: 0.85rem 0 0;
+  color: #555555;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+}
+
+
+
+.kpi-seo-local-kpi-framework {
+  margin: 1.5rem 0 0;
+}
+
+
+
+.kpi-seo-local-kpi-kicker {
+  margin: 0;
+  color: #0b6660;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+
+
+.kpi-seo-local-kpi-sample-label {
+  width: max-content;
+  margin: 0.4rem 0 0;
+  padding: 0.2rem 0.55rem;
+  border-radius: 0.25rem;
+  background: #f2f8e2;
+  color: #0b1f33;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+
+
+.kpi-seo-local-kpi-groups {
+  display: grid;
+  gap: 1.6rem;
+  margin: 1.1rem 0 0;
+}
+
+
+
+.kpi-seo-local-kpi-num {
+  margin: 0;
+  color: #0b6660;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+
+
+.kpi-shell .kpi-seo-local-measure h3,
+.kpi-shell :lang(th) .kpi-seo-local-measure h3 {
+  margin: 0.28rem 0 0;
+  color: #0b1f33;
+  font-size: 1.12rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+
+
+.kpi-seo-local-kpi-note,
+.kpi-shell :lang(th) .kpi-seo-local-kpi-note {
+  max-width: 42rem;
+  margin: 0.4rem 0 0;
+  color: #555555;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+
+
+.kpi-seo-local-kpi-cards {
+  display: grid;
+  gap: 0.85rem;
+  margin: 0.9rem 0 0;
+}
+
+
+
+.kpi-seo-local-kpi-card {
+  min-width: 0;
+  padding: 0.9rem 1rem;
+  border: 1px solid #e3e8eb;
+  border-radius: 14px;
+  background: #fff;
+}
+
+
+
+.kpi-seo-local-kpi-card-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem 0.7rem;
+}
+
+
+
+.kpi-shell .kpi-seo-local-measure h4,
+.kpi-shell :lang(th) .kpi-seo-local-measure h4 {
+  margin: 0;
+  color: #0b1f33;
+  font-size: 0.98rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+
+
+.kpi-seo-local-kpi-value {
+  margin: 0.4rem 0 0;
+  color: #0b1f33;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+
+
+.kpi-seo-local-kpi-status {
+  display: inline-block;
+  padding: 0.16rem 0.5rem;
+  border-radius: 999px;
+  background: #f2f8e2;
+  color: #0b1f33;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+
+
+.kpi-seo-local-kpi-status.is-approved {
+  background: #0b6660;
+  color: #f2f8e2;
+}
+
+
+
+.kpi-seo-local-kpi-status.is-anonymised {
+  background: #e3e8eb;
+  color: #0b1f33;
+}
+
+
+
+.kpi-seo-local-kpi-card dl {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0.7rem 0 0;
+}
+
+
+
+.kpi-seo-local-kpi-card dt {
+  color: #0b6660;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+
+
+.kpi-seo-local-kpi-card dd {
+  margin: 0.12rem 0 0;
+  color: #555555;
+  font-size: 0.86rem;
+  line-height: 1.5;
+}
+
+
+
+.kpi-seo-local-kpi-card a {
+  color: #0b6660;
+  text-decoration: none;
+}
+
+
+
+.kpi-seo-local-kpi-card a:hover {
+  color: #0a2472;
+  text-decoration: underline;
+  text-underline-offset: 0.16em;
+}
+
+
+
+.kpi-seo-local-measure-note,
+.kpi-shell :lang(th) .kpi-seo-local-measure-note {
+  max-width: 46rem;
+  margin: 1.6rem 0 0;
+  color: #555555;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+}
+
+
+
+.kpi-shell:has(.kpi-seo-local-hero) .kpi-faq-home {
+  scroll-margin-top: 7.25rem;
+}
+
+
+
+.kpi-shell:has(.kpi-seo-local-hero) .kpi-faq-home .kpi-faq-list {
+  max-width: none;
+  padding-inline: 0;
+}
+
+
+
+.kpi-shell:has(.kpi-seo-local-hero) .kpi-faq-home .kpi-faq-item.is-open::before {
+  background: #a2dc25;
+}
+
+
+
+.kpi-shell:has(.kpi-seo-local-hero) .kpi-faq-home .kpi-faq-item,
+.kpi-shell:has(.kpi-seo-local-hero) #search-enquiry,
+.kpi-shell:has(.kpi-seo-local-hero) #hotel-seo-faq {
+  scroll-margin-bottom: 6.5rem;
+}
+
+
+
+.kpi-shell:has(.kpi-seo-local-hero) .kpi-faq-home .kpi-faq-trigger {
+  min-height: var(--kpi-touch);
+}
+
+
+
+.kpi-shell:has(.kpi-seo-local-hero) .kpi-faq-home .kpi-faq-trigger:focus,
+.kpi-shell:has(.kpi-seo-local-hero) .kpi-faq-home .kpi-faq-trigger:focus-visible {
+  outline: 2px solid #a2dc25 !important;
+  outline-color: #a2dc25 !important;
+  outline-style: solid !important;
+  outline-width: 2px !important;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px #ffffff, 0 0 0 5px #a2dc25 !important;
+}
+
+
+
+.kpi-shell:has(.kpi-seo-local-hero) .kpi-faq-home .kpi-faq-item.is-open .kpi-faq-mark {
+  color: #0b6660;
+}
+
+
+
+.kpi-shell:has(.kpi-seo-local-hero) .kpi-faq-home .kpi-faq-q,
+.kpi-shell:has(.kpi-seo-local-hero) .kpi-faq-home .kpi-faq-panel p {
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
+
+
+
+.kpi-shell:has(.kpi-seo-local-hero) .kpi-faq-home .kpi-faq-panel p {
+  max-width: 40rem;
+  text-wrap: pretty;
+}
+
+
+
+.kpi-shell:has(.kpi-seo-local-hero) .kpi-faq-home img,
+.kpi-shell:has(.kpi-seo-local-hero) .kpi-faq-home dialog {
+  display: none;
+}
+
+
+
+.kpi-shell:has(.kpi-seo-local-hero) .kpi-footer .kpi-button {
+  min-height: var(--kpi-touch);
+  background: #a2dc25;
+  color: #0b1f33;
+  white-space: normal;
+}
+
+
+
+.kpi-shell:has(.kpi-seo-local-hero) .kpi-footer .kpi-button:hover,
+.kpi-shell:has(.kpi-seo-local-hero) .kpi-footer .kpi-button:active {
+  background: #93c91f;
+  color: #0b1f33;
+}
+
+
+
+.kpi-shell:has(.kpi-seo-local-hero) .kpi-footer a:focus,
+.kpi-shell:has(.kpi-seo-local-hero) .kpi-footer a:focus-visible,
+.kpi-shell:has(.kpi-seo-local-hero) .kpi-footer button:focus,
+.kpi-shell:has(.kpi-seo-local-hero) .kpi-footer button:focus-visible {
+  outline: 2px solid #a2dc25 !important;
+  outline-offset: 3px;
+}
+
+
+
+.kpi-shell:has(.kpi-seo-local-hero) .kpi-footer-statement,
+.kpi-shell:has(.kpi-seo-local-hero) .kpi-footer-link,
+.kpi-shell:has(.kpi-seo-local-hero) .kpi-footer-address,
+.kpi-shell:has(.kpi-seo-local-hero) .kpi-footer-copy,
+.kpi-shell:has(.kpi-seo-local-hero) .kpi-footer-legal-links {
+  overflow-wrap: anywhere;
+}
+
+
+
+.kpi-shell:has(.kpi-seo-local-hero) .kpi-footer-legal a:hover,
+.kpi-shell:has(.kpi-seo-local-hero) .kpi-footer-legal button:hover,
+.kpi-shell:has(.kpi-seo-local-hero) .kpi-footer-lang a:hover {
+  color: #a2dc25;
+}

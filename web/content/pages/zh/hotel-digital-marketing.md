@@ -2,7 +2,7 @@
 **Source:** `zh/hotel-digital-marketing.html`
 **Language:** zh-Hant
 **Title:** 酒店数字营销：应优先选择哪些渠道？ | The KPI Plus
-**Description:** 比较酒店 Google Ads、Meta Ads、SEO、本地搜索、网站、直订与转化的教育指南。
+**Description:** 比較酒店 Google Ads、Meta Ads、SEO、本地搜尋、網站內容、直訂與轉換路徑的教育指南，協助排定優先順序。在选择营销优先级前，比较搜索、付费媒体、本地可见度、网站内容与转化的角色。
 **Canonical:** https://thekpiplus.com/zh/hotel-digital-marketing
 
 ## Page content and controls
@@ -79,13 +79,13 @@ Follow The KPI Plus
 [Associations](/zh/associations)
 [Contact](contact-us.html)
 ## Free Hotel Tools
-[Hotel Searchability Check](/zh/tools/hotel-searchability-check)
-[Profit & Revenue](/zh/tools/hotel-profit-calculator)
-[Hotel Budget](/zh/tools/hotel-budget-calculator)
-[OTA Commission](/zh/tools/ota-commission-calculator)
-[VAT & Service Charge](/zh/tools/hotel-vat-service-charge-calculator)
-[RevPAR, ADR & Occupancy](/zh/tools/revpar-calculator)
-[View all tools](/zh/tools)
+[Hotel Searchability Check](/tools/hotel-searchability-check)
+[Profit & Revenue](/tools/hotel-profit-calculator)
+[Hotel Budget](/tools/hotel-budget-calculator)
+[OTA Commission](/tools/ota-commission-calculator)
+[VAT & Service Charge](/tools/hotel-vat-service-charge-calculator)
+[RevPAR, ADR & Occupancy](/tools/revpar-calculator)
+[View all tools](/tools)
 ## The KPI Plus Academy
 Corporate AI Training Program
 - AI Mindset & Security
@@ -125,13 +125,13 @@ Language : 中文
 ### SECTION
 
 ## Free Hotel Tools
-[Hotel Searchability Check](/zh/tools/hotel-searchability-check)
-[Profit & Revenue](/zh/tools/hotel-profit-calculator)
-[Hotel Budget](/zh/tools/hotel-budget-calculator)
-[OTA Commission](/zh/tools/ota-commission-calculator)
-[VAT & Service Charge](/zh/tools/hotel-vat-service-charge-calculator)
-[RevPAR, ADR & Occupancy](/zh/tools/revpar-calculator)
-[View all tools](/zh/tools)
+[Hotel Searchability Check](/tools/hotel-searchability-check)
+[Profit & Revenue](/tools/hotel-profit-calculator)
+[Hotel Budget](/tools/hotel-budget-calculator)
+[OTA Commission](/tools/ota-commission-calculator)
+[VAT & Service Charge](/tools/hotel-vat-service-charge-calculator)
+[RevPAR, ADR & Occupancy](/tools/revpar-calculator)
+[View all tools](/tools)
 
 ### SECTION
 

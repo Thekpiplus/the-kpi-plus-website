@@ -1,3 +1,5 @@
+"use client";
+
 import {
   HOTEL_SEO_PROCESS_STEPS,
   HOTEL_SEO_PROCESS_VISUAL,

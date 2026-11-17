@@ -31,7 +31,7 @@ export function organizationSchema(locale: Locale = "en", company: CompanyContac
   const telephone = company.phones[0]?.display?.replace(/\s+/g, "-") ?? "";
   return {
     "@context": "https://schema.org",
-    "@type": ["Organization", "ProfessionalService"],
+    "@type": "Organization",
     "@id": ORG_ID,
     name,
     alternateName: locale === "th" ? "The KPI Plus" : "เดอะ เคพีไอ พลัส",
@@ -59,6 +59,7 @@ export function organizationSchema(locale: Locale = "en", company: CompanyContac
 
 export function localBusinessSchema(locale: Locale = "th", company: CompanyContact = COMPANY) {
   const telephone = company.phones[0]?.display?.replace(/\s+/g, "-") ?? "";
+  const hours = locale === "th" ? company.hoursTh : company.hoursEn || company.hoursTh;
   return {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
@@ -76,6 +77,8 @@ export function localBusinessSchema(locale: Locale = "th", company: CompanyConta
       longitude: company.geo.longitude,
     },
     areaServed: { "@type": "Country", name: "Thailand" },
+    sameAs: Object.values(company.social).filter(Boolean),
+    ...(hours ? { openingHours: hours } : {}),
   };
 }
 

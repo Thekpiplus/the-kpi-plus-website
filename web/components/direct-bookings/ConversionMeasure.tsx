@@ -1,3 +1,5 @@
+"use client";
+
 import {
   DIRECT_BOOKING_MEASURE_NOTE,
   DIRECT_BOOKING_MEASURE_STAGES,

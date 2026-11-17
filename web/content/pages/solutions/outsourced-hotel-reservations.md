@@ -92,7 +92,7 @@ Related Solutions
 [ระบบโรงแรมและการนำไปใช้](hotel-systems-implementation.html)
 Related Insights
 ## อ่านบทความที่เกี่ยวข้อง
-[INSIGHTS โรงแรมเพิ่ม Direct Booking อย่างเป็นระบบได้อย่างไร อ่านบทความที่เกี่ยวข้อง](/insights/how-to-increase-direct-bookings-for-independent-hotels)
+[INSIGHTS โรงแรมเพิ่ม Direct Booking อย่างเป็นระบบได้อย่างไร อ่านบทความที่เกี่ยวข้อง](/insights/direct-booking-journey-audit)
 [INSIGHTS ประชุม Revenue อย่างไรให้จบด้วยการตัดสินใจที่นำไปใช้ได้จริง อ่านบทความที่เกี่ยวข้อง](../insights/hotel-revenue-meetings-that-lead-to-decisions.html)
 Free Hotel Tools
 ## ลองใช้เครื่องมือฟรีที่เกี่ยวข้อง

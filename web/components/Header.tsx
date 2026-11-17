@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -122,11 +123,13 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
           aria-label={locale === "th" ? `${brandName(locale)} หน้าแรก` : `${brandName(locale)} home`}
           className="kpi-header-brand"
         >
-          <img
+          <Image
             src="/brand/KPIPlus_Horizontal_FullColor.png"
             alt={brandName(locale)}
             width={520}
             height={180}
+            sizes="(max-width: 48rem) 9rem, 11rem"
+            priority
             className="kpi-header-logo"
           />
         </Link>

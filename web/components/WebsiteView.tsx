@@ -1,4 +1,5 @@
 import Link from "next/link";
+import "@/app/page-website.css";
 import { SiteShell } from "@/components/SiteShell";
 import { WebsiteEnquiry } from "@/components/WebsiteEnquiry";
 import { WebsiteStickyCta } from "@/components/WebsiteStickyCta";
@@ -686,7 +687,12 @@ export async function WebsiteView({
           {locale === "th" ? (
             <>
               <p className="kpi-website-questions-close">
-                <span>เว็บไซต์ที่ดีไม่ควรแค่ดูสวย</span>
+                <span>
+                  เว็บไซต์ที่ดี
+                  <Link href="/insights/hotel-branding" className="kpi-article-inline-link">
+                    ไม่ควรแค่ดูสวย
+                  </Link>
+                </span>
                 <span className="kpi-website-questions-close-strong">
                   แต่ควรช่วยให้ลูกค้า
                   <span className="kpi-website-questions-br"> </span>

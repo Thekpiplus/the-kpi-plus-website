@@ -1,7 +1,7 @@
 # /zh/about-us
 **Language:** zh
 **Title:** 關於 The KPI Plus | The KPI Plus
-**Description:** 認識 The KPI Plus：總部位於普吉、由創辦人帶領的酒店績效與成長夥伴。
+**Description:** 認識 The KPI Plus：總部位於普吉、由創辦人帶領的酒店績效與成長夥伴，協助泰國酒店業主與商業團隊看清收益缺口、機會與優先行動。
 **Canonical:** https://thekpiplus.com/zh/about-us
 
 ## Page content and controls

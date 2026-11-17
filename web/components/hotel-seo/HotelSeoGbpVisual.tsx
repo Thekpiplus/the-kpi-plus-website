@@ -1,3 +1,5 @@
+"use client";
+
 import {
   HOTEL_SEO_GBP_ACTIONS,
   HOTEL_SEO_GBP_FIELDS,

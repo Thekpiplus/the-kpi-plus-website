@@ -93,7 +93,7 @@ Related Solutions
 Related Insights
 ## อ่านบทความที่เกี่ยวข้อง
 [INSIGHTS ประชุม Revenue อย่างไรให้จบด้วยการตัดสินใจที่นำไปใช้ได้จริง อ่านบทความที่เกี่ยวข้อง](../insights/hotel-revenue-meetings-that-lead-to-decisions.html)
-[INSIGHTS โรงแรมเพิ่ม Direct Booking อย่างเป็นระบบได้อย่างไร อ่านบทความที่เกี่ยวข้อง](/insights/how-to-increase-direct-bookings-for-independent-hotels)
+[INSIGHTS วิเคราะห์เส้นทาง Direct Booking ของโรงแรม อ่านบทความที่เกี่ยวข้อง](/insights/direct-booking-journey-audit)
 Free Hotel Tools
 ## ลองใช้เครื่องมือฟรีที่เกี่ยวข้อง
 [เครื่องคำนวณค่าคอมมิชชัน OTA ดูว่ารายได้ OTA เหลือเท่าไรหลังหัก Commission และต้นทุนนี้คิดเป็นเงินเท่าไร ลองใช้เครื่องมือฟรี](../tools/ota-commission-calculator.html)

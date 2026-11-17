@@ -1,7 +1,7 @@
 # /ru/about-us
 **Language:** ru
 **Title:** О The KPI Plus | The KPI Plus
-**Description:** The KPI Plus — партнёр по доходам и росту отелей с офисом на Пхукете.
+**Description:** The KPI Plus — партнёр по доходам и росту отелей с офисом на Пхукете。The KPI Plus работает с отелями и hospitality-бизнесом по Таиланду: доход, ценовая стратегия, OT
 **Canonical:** https://thekpiplus.com/ru/about-us
 
 ## Page content and controls

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import "@/app/page-systems.css";
 import { HotelSystemsEnquiry } from "@/components/HotelSystemsEnquiry";
 import { HotelSystemsStickyCta } from "@/components/HotelSystemsStickyCta";
 import {

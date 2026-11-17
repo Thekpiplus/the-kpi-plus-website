@@ -1,10 +1,10 @@
 .kpi-website {
-  font-family: "Prompt", var(--kpi-font-thai), Tahoma, Arial, sans-serif;
+  font-family: "Noto Sans Thai", var(--kpi-font-thai), Tahoma, Arial, sans-serif;
 }
 
 .kpi-website .kpi-latin,
 .kpi-website :lang(en) {
-  font-family: Montserrat, "Prompt", sans-serif;
+  font-family: Montserrat, "Noto Sans Thai", sans-serif;
 }
 
 .web-visual {
@@ -575,7 +575,7 @@
 }
 
 .web-measure .kpi-latin {
-  font-family: Montserrat, "Prompt", sans-serif;
+  font-family: Montserrat, "Noto Sans Thai", sans-serif;
 }
 
 .web-measure-mock {
@@ -1008,7 +1008,7 @@
 }
 
 .web-framework .kpi-latin {
-  font-family: Montserrat, "Prompt", sans-serif;
+  font-family: Montserrat, "Noto Sans Thai", sans-serif;
 }
 
 .web-framework-mock {
@@ -1335,7 +1335,7 @@
 }
 
 .web-cms-stack .kpi-latin {
-  font-family: Montserrat, "Prompt", sans-serif;
+  font-family: Montserrat, "Noto Sans Thai", sans-serif;
 }
 
 .web-cms-lead {
@@ -1593,7 +1593,7 @@
 }
 
 .web-decision .kpi-latin {
-  font-family: Montserrat, "Prompt", sans-serif;
+  font-family: Montserrat, "Noto Sans Thai", sans-serif;
 }
 
 .web-decision-lead,
@@ -1814,7 +1814,7 @@
 }
 
 .web-workflow .kpi-latin {
-  font-family: Montserrat, "Prompt", sans-serif;
+  font-family: Montserrat, "Noto Sans Thai", sans-serif;
 }
 
 .web-workflow-mock {
@@ -2383,7 +2383,7 @@
 
 .kpi-shell .kpi-website .kpi-website-enquiry .kpi-latin,
 .kpi-shell :lang(th) .kpi-website .kpi-website-enquiry .kpi-latin {
-  font-family: Montserrat, Poppins, sans-serif !important;
+  font-family: Montserrat, Montserrat, sans-serif !important;
 }
 
 @media (max-width: 47.99rem) {

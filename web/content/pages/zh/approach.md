@@ -1,7 +1,7 @@
 # /zh/approach
 **Language:** zh
 **Title:** The KPI Plus 服務方式 | The KPI Plus
-**Description:** 清楚的酒店商業做法：從訊號與決策，到負責人與可衡量的下一步。
+**Description:** 清楚的酒店商業做法：團隊共用數據、明確決策與負責人，並能量測 ADR、入住率與扣除佣金後的淨收益下一步。當酒店團隊看得到資料、指定負責人，並能量變結果時，收益、需求、科技與追蹤才會一起運作。
 **Canonical:** https://thekpiplus.com/zh/approach
 
 ## Page content and controls

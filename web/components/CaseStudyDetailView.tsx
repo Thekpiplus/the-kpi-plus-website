@@ -1,4 +1,5 @@
 import Link from "next/link";
+import "@/app/page-case-study.css";
 import { notFound } from "next/navigation";
 import { CaseStudyCta } from "@/components/case-studies/CaseStudyCta";
 import { DummyImage } from "@/components/case-studies/DummyImage";

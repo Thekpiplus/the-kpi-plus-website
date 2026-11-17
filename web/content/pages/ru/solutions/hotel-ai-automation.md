@@ -2,7 +2,7 @@
 **Source:** `ru/solutions/hotel-ai-automation.html`
 **Language:** ru
 **Title:** Внедрить ИИ и автоматизацию в реальную работу отеля и организации | The KPI Plus
-**Description:** The KPI Plus помогает разобрать шаги, спроектировать и установить ИИ или автоматизацию, попробовать с командой и довести до ежедневной работы. Для отелей и других организаций сферы услуг.
+**Description:** The KPI Plus помогает разобрать шаги, спроектировать ИИ или автоматизацию, попробовать с командой и довести до ежедневной работы. Для отелей и hospitality.
 **Canonical:** https://thekpiplus.com/ru/solutions/hotel-ai-automation
 
 ## Page content and controls
@@ -63,7 +63,7 @@ Related Insights
 [INSIGHTS Hotel Revenue Meetings That Lead to Decisions Read the related Insight](/en/insights/hotel-revenue-meetings-that-lead-to-decisions)
 Free Hotel Tools
 ## Try a relevant free tool.
-[Hotel Searchability Check Check whether a hotel homepage is ready for Google, AI Search, and mobile visitors in one quick review. Try a free tool](/en/tools/hotel-searchability-check)
+[Hotel Searchability Check Check whether a hotel homepage is ready for Google, AI Search, and mobile visitors in one quick review. Try a free tool](/tools/hotel-searchability-check)
 
 ### SECTION
 
@@ -140,13 +140,13 @@ Follow The KPI Plus
 [Associations](/ru/associations)
 [Contact](../contact-us.html)
 ## Free Hotel Tools
-[Hotel Searchability Check](/ru/tools/hotel-searchability-check)
-[Profit & Revenue](/ru/tools/hotel-profit-calculator)
-[Hotel Budget](/ru/tools/hotel-budget-calculator)
-[OTA Commission](/ru/tools/ota-commission-calculator)
-[VAT & Service Charge](/ru/tools/hotel-vat-service-charge-calculator)
-[RevPAR, ADR & Occupancy](/ru/tools/revpar-calculator)
-[View all tools](/ru/tools)
+[Hotel Searchability Check](/tools/hotel-searchability-check)
+[Profit & Revenue](/tools/hotel-profit-calculator)
+[Hotel Budget](/tools/hotel-budget-calculator)
+[OTA Commission](/tools/ota-commission-calculator)
+[VAT & Service Charge](/tools/hotel-vat-service-charge-calculator)
+[RevPAR, ADR & Occupancy](/tools/revpar-calculator)
+[View all tools](/tools)
 ## The KPI Plus Academy
 Corporate AI Training Program
 - AI Mindset & Security
@@ -186,13 +186,13 @@ Language : Русский
 ### SECTION
 
 ## Free Hotel Tools
-[Hotel Searchability Check](/ru/tools/hotel-searchability-check)
-[Profit & Revenue](/ru/tools/hotel-profit-calculator)
-[Hotel Budget](/ru/tools/hotel-budget-calculator)
-[OTA Commission](/ru/tools/ota-commission-calculator)
-[VAT & Service Charge](/ru/tools/hotel-vat-service-charge-calculator)
-[RevPAR, ADR & Occupancy](/ru/tools/revpar-calculator)
-[View all tools](/ru/tools)
+[Hotel Searchability Check](/tools/hotel-searchability-check)
+[Profit & Revenue](/tools/hotel-profit-calculator)
+[Hotel Budget](/tools/hotel-budget-calculator)
+[OTA Commission](/tools/ota-commission-calculator)
+[VAT & Service Charge](/tools/hotel-vat-service-charge-calculator)
+[RevPAR, ADR & Occupancy](/tools/revpar-calculator)
+[View all tools](/tools)
 
 ### SECTION
 

@@ -2,7 +2,7 @@
 **Source:** `zh/phuket-hotel-marketing.html`
 **Language:** zh-Hant
 **Title:** 普吉酒店收益管理与数字营销 | The KPI Plus
-**Description:** 面向普吉酒店的本地发现指南，涵盖收益管理、数字需求、本地搜索和直订问题。
+**Description:** 面向普吉酒店的在地指南：一起檢視收益管理、數位需求、本地搜尋與直訂等商業問題與優先順序。供普吉酒店审视收益、营销、本地搜索、直订、技术与团队能力问题的本地指南。
 **Canonical:** https://thekpiplus.com/zh/phuket-hotel-marketing
 
 ## Page content and controls
@@ -80,13 +80,13 @@ Follow The KPI Plus
 [Associations](/zh/associations)
 [Contact](contact-us.html)
 ## Free Hotel Tools
-[Hotel Searchability Check](/zh/tools/hotel-searchability-check)
-[Profit & Revenue](/zh/tools/hotel-profit-calculator)
-[Hotel Budget](/zh/tools/hotel-budget-calculator)
-[OTA Commission](/zh/tools/ota-commission-calculator)
-[VAT & Service Charge](/zh/tools/hotel-vat-service-charge-calculator)
-[RevPAR, ADR & Occupancy](/zh/tools/revpar-calculator)
-[View all tools](/zh/tools)
+[Hotel Searchability Check](/tools/hotel-searchability-check)
+[Profit & Revenue](/tools/hotel-profit-calculator)
+[Hotel Budget](/tools/hotel-budget-calculator)
+[OTA Commission](/tools/ota-commission-calculator)
+[VAT & Service Charge](/tools/hotel-vat-service-charge-calculator)
+[RevPAR, ADR & Occupancy](/tools/revpar-calculator)
+[View all tools](/tools)
 ## The KPI Plus Academy
 Corporate AI Training Program
 - AI Mindset & Security
@@ -126,13 +126,13 @@ Language : 中文
 ### SECTION
 
 ## Free Hotel Tools
-[Hotel Searchability Check](/zh/tools/hotel-searchability-check)
-[Profit & Revenue](/zh/tools/hotel-profit-calculator)
-[Hotel Budget](/zh/tools/hotel-budget-calculator)
-[OTA Commission](/zh/tools/ota-commission-calculator)
-[VAT & Service Charge](/zh/tools/hotel-vat-service-charge-calculator)
-[RevPAR, ADR & Occupancy](/zh/tools/revpar-calculator)
-[View all tools](/zh/tools)
+[Hotel Searchability Check](/tools/hotel-searchability-check)
+[Profit & Revenue](/tools/hotel-profit-calculator)
+[Hotel Budget](/tools/hotel-budget-calculator)
+[OTA Commission](/tools/ota-commission-calculator)
+[VAT & Service Charge](/tools/hotel-vat-service-charge-calculator)
+[RevPAR, ADR & Occupancy](/tools/revpar-calculator)
+[View all tools](/tools)
 
 ### SECTION
 

@@ -14,21 +14,13 @@ type DummyImageProps = {
   height?: number;
 };
 
-const SAMPLE_LABEL = {
-  th: "ตัวอย่างภาพประกอบ",
-  en: "SAMPLE VISUAL",
-} as const;
-
-const REPLACE_LABEL = {
-  th: "เปลี่ยนเป็นไฟล์ที่ได้รับอนุมัติแล้ว",
-  en: "Replace with approved asset",
-} as const;
-
+/**
+ * Public case-study media frame. Missing assets stay empty (no live "SAMPLE VISUAL" copy).
+ */
 export function DummyImage({
   src,
   alt,
   label,
-  recommendedSize = "1600 × 900 px",
   ratio = "16 / 9",
   className = "",
   fit = "cover",
@@ -39,13 +31,8 @@ export function DummyImage({
 }: DummyImageProps) {
   const hasAsset = Boolean(src?.trim());
   const isSample = !hasAsset || status === "sample" || status === "placeholder";
-  const sampleLabel = locale === "th" ? SAMPLE_LABEL.th : SAMPLE_LABEL.en;
-  const replaceLabel = locale === "th" ? REPLACE_LABEL.th : REPLACE_LABEL.en;
-  const recommendedLabel =
-    locale === "th" ? `ขนาดแนะนำ: ${recommendedSize}` : `Recommended: ${recommendedSize}`;
   const frameClass = `case-image-frame${!hasAsset ? " case-image-placeholder" : ""}${className ? ` ${className}` : ""}`;
 
-  // TODO: Pass src only after an approved file exists in /public. Empty src must not invent or generate an image.
   if (hasAsset) {
     return (
       <figure className={frameClass} style={{ aspectRatio: ratio }}>
@@ -59,28 +46,26 @@ export function DummyImage({
           style={{ objectFit: fit, width: "100%", height: "100%" }}
         />
         {isSample ? (
-          <span className={`case-image-placeholder__eyebrow case-image-placeholder__badge${locale === "th" ? "" : " kpi-latin"}`}>
-            {sampleLabel}
+          <span
+            className={`case-image-placeholder__eyebrow case-image-placeholder__badge${locale === "th" ? "" : " kpi-latin"}`}
+          >
+            {locale === "th" ? "ตัวอย่างภาพประกอบ" : "Illustrative"}
           </span>
         ) : null}
       </figure>
     );
   }
 
+  // Hide developer placeholders on the live site — keep aspect ratio to avoid CLS.
   return (
     <figure
       className={frameClass}
       style={{ aspectRatio: ratio }}
       role="img"
-      aria-label={`${alt}. ${recommendedLabel}`}
+      aria-label={alt || label}
+      data-missing-asset="true"
     >
       <div className="case-image-placeholder__glow" aria-hidden="true" />
-      <div className="case-image-placeholder__content">
-        <span className={`case-image-placeholder__eyebrow${locale === "th" ? "" : " kpi-latin"}`}>{sampleLabel}</span>
-        <strong>{label}</strong>
-        <small>{replaceLabel}</small>
-        <small>{recommendedLabel}</small>
-      </div>
     </figure>
   );
 }

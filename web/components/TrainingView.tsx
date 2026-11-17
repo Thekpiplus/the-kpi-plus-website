@@ -1,4 +1,5 @@
 import Link from "next/link";
+import "@/app/page-training.css";
 import { PageFaqs } from "@/components/PageFaqs";
 import { SiteShell } from "@/components/SiteShell";
 import { TrainingEnquiry } from "@/components/TrainingEnquiry";

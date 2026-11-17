@@ -1,4 +1,5 @@
 import Link from "next/link";
+import "@/app/page-article.css";
 import type { ReactNode } from "react";
 import { ArticleReadingProgress } from "@/components/ArticleReadingProgress";
 import { ArticleToc } from "@/components/ArticleToc";
@@ -50,7 +51,7 @@ import {
   type HmSectionEntry,
 } from "@/lib/cms/hotel-marketing-insight-public";
 import { articleSchema } from "@/lib/schema";
-import { auditHref, homeHref, htmlLang, localizePath, resolvePageHref, SITE, type Locale } from "@/lib/seo";
+import { auditHref, existingHref, homeHref, htmlLang, localizePath, resolvePageHref, SITE, type Locale } from "@/lib/seo";
 
 type HandoffTextBlock = { type: "h1" | "h2" | "h3" | "p"; text: string };
 
@@ -301,8 +302,62 @@ function renderCmsVisual(visual: CmsHmVisual | undefined, key: string, locale: L
   }
 }
 
-function Paragraph({ text, className }: { text: string; className?: string }) {
-  return <p className={className}>{emphasizeTerms(text)}</p>;
+function renderRichText(text: string, locale: Locale): ReactNode[] {
+  const pattern = /(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\))/g;
+  const parts = text.split(pattern).filter(Boolean);
+  return parts.map((part, index) => {
+    const bold = part.match(/^\*\*([^*]+)\*\*$/);
+    if (bold) {
+      return (
+        <strong key={`b-${index}`} className="kpi-article-term">
+          {bold[1]}
+        </strong>
+      );
+    }
+    const link = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+    if (link) {
+      const href = resolvePageHref(link[2], locale) ?? rewriteLooseHref(link[2]);
+      if (!href) return <span key={`l-${index}`}>{link[1]}</span>;
+      const external = href.startsWith("http") || href.startsWith("mailto:") || href.startsWith("tel:");
+      if (external) {
+        return (
+          <a
+            key={`l-${index}`}
+            href={href}
+            className="kpi-article-inline-link"
+            {...(href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+          >
+            {link[1]}
+          </a>
+        );
+      }
+      return (
+        <Link key={`l-${index}`} href={href} className="kpi-article-inline-link">
+          {link[1]}
+        </Link>
+      );
+    }
+    return <span key={`t-${index}`}>{emphasizeTerms(part)}</span>;
+  });
+}
+
+function rewriteLooseHref(href: string) {
+  if (!href) return null;
+  if (href.startsWith("http") || href.startsWith("mailto:") || href.startsWith("tel:") || href.startsWith("/")) {
+    return href;
+  }
+  return `/${href.replace(/^\.\//, "")}`;
+}
+
+function Paragraph({ text, className, locale = "th" }: { text: string; className?: string; locale?: Locale }) {
+  const isCallout = /^(?:\*\*)?(?:ประเด็นสำคัญ|Key points|ตัวอย่าง|Example|ตัวเลขที่ควรดู|Numbers to watch|ข้อควรระวัง|Watch out|คำถามสำหรับทีม|งานที่เริ่มได้ทันที|ตรวจผล|รอบทบทวนที่ทำได้จริง)/i.test(
+    text.trim(),
+  );
+  return (
+    <p className={`${className ?? ""}${isCallout ? " kpi-article-callout" : ""}`.trim()}>
+      {renderRichText(text, locale)}
+    </p>
+  );
 }
 
 function ArticleBlocks({
@@ -353,7 +408,7 @@ function ArticleBlocks({
             isJourneyLine(block.text) ? (
               <JourneyFlow key={`path-${index}`} text={block.text} />
             ) : (
-              <Paragraph key={`pre-p-${index}`} text={block.text} />
+              <Paragraph key={`pre-p-${index}`} text={block.text} locale={locale} />
             ),
           )}
         </aside>,
@@ -452,6 +507,7 @@ function ArticleBlocks({
                 <Paragraph
                   key={`compare-p-${paragraphIndex}`}
                   text={paragraph.text}
+                  locale={locale}
                   className={paragraphIndex === paragraphs.length - 1 ? "kpi-article-compare-join" : undefined}
                 />
               ))}
@@ -467,7 +523,13 @@ function ArticleBlocks({
       if (isRole(block.text, "start", isStartHeading)) {
         let cursor = index + 1;
         while (rest[cursor]?.type === "p" && (cms || cursor === index + 1)) {
-          nodes.push(<Paragraph key={`start-intro-${index}-${cursor}`} text={(rest[cursor] as HandoffTextBlock & { type: "p" }).text} />);
+          nodes.push(
+            <Paragraph
+              key={`start-intro-${index}-${cursor}`}
+              text={(rest[cursor] as HandoffTextBlock & { type: "p" }).text}
+              locale={locale}
+            />,
+          );
           cursor += 1;
         }
         const list = rest[cursor];
@@ -505,6 +567,7 @@ function ArticleBlocks({
             <Paragraph
               key={`summary-p-${index}-${paragraphIndex}`}
               text={paragraph.text}
+              locale={locale}
               className={paragraphIndex === 0 ? "kpi-article-summary-lead" : undefined}
             />,
           );
@@ -529,7 +592,7 @@ function ArticleBlocks({
           cursor += 1;
         }
         paragraphs.forEach((paragraph, paragraphIndex) => {
-          nodes.push(<Paragraph key={`define-p-${index}-${paragraphIndex}`} text={paragraph.text} />);
+          nodes.push(<Paragraph key={`define-p-${index}-${paragraphIndex}`} text={paragraph.text} locale={locale} />);
         });
         nodes.push(cms ? cmsVisual(entry, `cms-definition-${index}`) : <HotelMarketingChannelMap key={`channel-map-${index}`} locale={locale} />);
         index = cursor - 1;
@@ -544,7 +607,7 @@ function ArticleBlocks({
           cursor += 1;
         }
         paragraphs.forEach((paragraph, paragraphIndex) => {
-          nodes.push(<Paragraph key={`why-p-${index}-${paragraphIndex}`} text={paragraph.text} />);
+          nodes.push(<Paragraph key={`why-p-${index}-${paragraphIndex}`} text={paragraph.text} locale={locale} />);
         });
         nodes.push(cms ? cmsVisual(entry, `cms-why-${index}`) : <HotelGuestDecisionJourney key={`decision-journey-${index}`} locale={locale} />);
         index = cursor - 1;
@@ -561,7 +624,7 @@ function ArticleBlocks({
         paragraphs.forEach((paragraph, paragraphIndex) => {
           // CMS: the Template / Sample Data note is shown inside the KPI map, not as a loose paragraph.
           if (entry?.note && paragraph.text === entry.note) return;
-          nodes.push(<Paragraph key={`metrics-p-${index}-${paragraphIndex}`} text={paragraph.text} />);
+          nodes.push(<Paragraph key={`metrics-p-${index}-${paragraphIndex}`} text={paragraph.text} locale={locale} />);
         });
         // Enhanced KPI map + tables replace the markdown overview table.
         if (rest[cursor]?.type === "table") {
@@ -601,7 +664,7 @@ function ArticleBlocks({
             cursor += 1;
           }
           paragraphs.forEach((paragraph, paragraphIndex) => {
-            nodes.push(<Paragraph key={`strategy-p-${index}-${paragraphIndex}`} text={paragraph.text} />);
+            nodes.push(<Paragraph key={`strategy-p-${index}-${paragraphIndex}`} text={paragraph.text} locale={locale} />);
           });
           nodes.push(visual);
           index = cursor - 1;
@@ -624,7 +687,7 @@ function ArticleBlocks({
           </p>,
         );
       } else {
-        nodes.push(<Paragraph key={`p-${index}`} text={block.text} />);
+        nodes.push(<Paragraph key={`p-${index}`} text={block.text} locale={locale} />);
       }
       continue;
     }
@@ -635,13 +698,12 @@ function ArticleBlocks({
           <img
             src={block.src}
             alt={block.alt || ""}
-            width={1200}
-            height={750}
+            width={1600}
+            height={900}
             sizes="(max-width: 48rem) 100vw, min(45rem, 100vw)"
             loading="lazy"
             decoding="async"
           />
-          {block.alt ? <figcaption className="kpi-article-figure-caption">{block.alt}</figcaption> : null}
         </figure>,
       );
       continue;
@@ -737,7 +799,7 @@ export function InsightArticle({
 }) {
   const t = insightsIndexCopy[locale];
   const body = insightBody(blocks);
-  const related = relatedInsights(post, 4);
+  const related = relatedInsights(post, 6).filter((item) => Boolean(existingHref(item.href, locale))).slice(0, 4);
   const cmsLang = marketingCms ? hmLang(marketingCms, locale) : "th";
   const cmsRender: CmsRender | undefined = marketingCms
     ? { content: marketingCms, lang: cmsLang, entries: hotelMarketingSectionEntries(marketingCms, cmsLang) }
@@ -776,7 +838,8 @@ export function InsightArticle({
     id: headingIds[index] || insightHeadingId(heading.text) || `section-${index + 1}`,
     text: heading.text,
   }));
-  const showToc = readingTimeMinutes >= 8 || headings.length >= 7;
+  /* Same article chrome for every insight (TH + EN): sticky numbered TOC when there is at least one H2. */
+  const showToc = tocHeadings.length >= 1;
 
   return (
     <SiteShell locale={locale} route={post.href}>

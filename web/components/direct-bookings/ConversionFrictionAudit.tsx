@@ -1,3 +1,5 @@
+"use client";
+
 import {
   DIRECT_BOOKING_AUDIT_GROUPS,
   DIRECT_BOOKING_AUDIT_ROWS,

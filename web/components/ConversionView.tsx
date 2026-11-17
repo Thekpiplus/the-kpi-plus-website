@@ -1,16 +1,19 @@
 import Link from "next/link";
 import { ConversionEnquiry } from "@/components/ConversionEnquiry";
 import { ConversionStickyCta } from "@/components/ConversionStickyCta";
-import { ConversionConfidenceVisual } from "@/components/direct-bookings/ConversionConfidenceVisual";
-import { ConversionDecision } from "@/components/direct-bookings/ConversionDecision";
-import { ConversionFramework } from "@/components/direct-bookings/ConversionFramework";
-import { ConversionFrictionAudit } from "@/components/direct-bookings/ConversionFrictionAudit";
-import { ConversionFrictionMap } from "@/components/direct-bookings/ConversionFrictionTable";
+import {
+  DeferredConfidenceVisual,
+  DeferredDecision,
+  DeferredFramework,
+  DeferredFrictionAudit,
+  DeferredFrictionMap,
+  DeferredMeasure,
+  DeferredRelated,
+  DeferredWorkflow,
+} from "@/components/direct-bookings/ConversionDeferred";
 import { ConversionHeroVisual } from "@/components/direct-bookings/ConversionHeroVisual";
-import { ConversionMeasure } from "@/components/direct-bookings/ConversionMeasure";
-import { ConversionRelated } from "@/components/direct-bookings/ConversionRelated";
-import { ConversionWorkflow } from "@/components/direct-bookings/ConversionWorkflow";
 import "@/components/direct-bookings/conversion-visuals.css";
+import "@/app/page-conversion.css";
 import { PageFaqs } from "@/components/PageFaqs";
 import { SiteShell } from "@/components/SiteShell";
 import type { CmsDirectBookingPage } from "@/lib/cms/hotel-direct-bookings-page";
@@ -554,7 +557,10 @@ export async function ConversionView({
                   <p className="kpi-conversion-why-takeaway">
                     <span>เว็บไซต์จึงมีหน้าที่มากกว่าบอกว่ามีห้องพักอะไร</span>
                     <span className="kpi-conversion-why-takeaway-strong">
-                      แต่ต้องช่วยให้ลูกค้าเปรียบเทียบและมั่นใจในตัวเลือกนั้น
+                      แต่ต้องช่วยให้ลูกค้าเปรียบเทียบและ
+                      <Link href="/insights/hotel-branding" className="kpi-article-inline-link">
+                        มั่นใจในตัวเลือกนั้น
+                      </Link>
                     </span>
                   </p>
                 ) : null}
@@ -605,7 +611,7 @@ export async function ConversionView({
             </div>
           </div>
           <figure className="kpi-conversion-why-media">
-            <ConversionConfidenceVisual
+            <DeferredConfidenceVisual
               locale={locale}
               src={confidenceSrc}
               alt={confidenceAlt}
@@ -620,7 +626,7 @@ export async function ConversionView({
       <section className="kpi-conversion-stops border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section">
           <h2 className="kpi-h2">{fromCms && cms.friction.title.trim() ? cms.friction.title : t.stopTitle}</h2>
-          <ConversionFrictionMap
+          <DeferredFrictionMap
             locale={locale}
             src={frictionSrc}
             rows={fromCms && cms.friction.rows.length ? cms.friction.rows : undefined}
@@ -636,7 +642,7 @@ export async function ConversionView({
 
       <section className="kpi-section kpi-conversion-help">
         <h2 className="kpi-h2">{fromCms && cms.framework.title.trim() ? cms.framework.title : t.helpTitle}</h2>
-          <ConversionFramework
+          <DeferredFramework
             locale={locale}
             src={frameworkSrc}
             steps={fromCms && cms.framework.steps.length ? cms.framework.steps : undefined}
@@ -654,7 +660,7 @@ export async function ConversionView({
           />
           <h3 className="db-audit-heading">{fromCms && cms.audit.title.trim() ? cms.audit.title : t.checklistTitle}</h3>
           <p className="db-audit-lead">{fromCms && cms.audit.lead.trim() ? cms.audit.lead : t.checklistLead}</p>
-          <ConversionFrictionAudit
+          <DeferredFrictionAudit
             locale={locale}
             src={auditSrc}
             rows={fromCms && cms.audit.rows.length ? cms.audit.rows : undefined}
@@ -673,7 +679,7 @@ export async function ConversionView({
       <section className="kpi-conversion-vs border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section">
           <h2 className="kpi-h2">{fromCms && cms.rebuild.title.trim() ? cms.rebuild.title : t.vsTitle}</h2>
-          <ConversionDecision
+          <DeferredDecision
             locale={locale}
             lead={fromCms && cms.rebuild.body.trim() ? cms.rebuild.body : t.vsBody}
             src={decisionSrc}
@@ -691,7 +697,7 @@ export async function ConversionView({
 
       <section className="kpi-section kpi-conversion-measure">
         <h2 className="kpi-h2">{fromCms && cms.measure.title.trim() ? cms.measure.title : t.measureTitle}</h2>
-        <ConversionMeasure
+        <DeferredMeasure
           locale={locale}
           src={measureSrc}
           bookingEngineConfigured={cms.measure.bookingEngineConfigured}
@@ -712,7 +718,7 @@ export async function ConversionView({
       <section className="kpi-conversion-method border-y border-[#E3E8EB] bg-white">
         <div className="kpi-section">
           <h2 className="kpi-h2">{fromCms && cms.workflow.title.trim() ? cms.workflow.title : t.methodTitle}</h2>
-          <ConversionWorkflow
+          <DeferredWorkflow
             locale={locale}
             src={workflowSrc}
             steps={fromCms && cms.workflow.steps.length ? cms.workflow.steps : undefined}
@@ -730,7 +736,7 @@ export async function ConversionView({
         <section className="kpi-conversion-related">
           <div className="kpi-section">
             <h2 className="kpi-h2">{fromCms && cms.related.title.trim() ? cms.related.title : t.relatedTitle}</h2>
-            <ConversionRelated
+            <DeferredRelated
               locale={locale}
               src={relatedSrc}
               overrides={fromCms ? cms.related.cards : undefined}

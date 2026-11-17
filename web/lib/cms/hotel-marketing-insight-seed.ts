@@ -300,7 +300,7 @@ const STRATEGY_SEEDS: StrategySeed[] = [
     diagramId: "social",
     titleTh: "Social Media และ Content Marketing",
     bodyTh: [
-      "Content ของโรงแรมสามารถเล่า Guest Experience, ห้องพัก, Food and Beverage, จุดหมายปลายทาง, Local Experiences, Wellness, เบื้องหลังการทำงาน และเรื่องราวของโรงแรมได้ เลือกสิ่งที่สะท้อนประสบการณ์จริง เพื่อให้ผู้สนใจเห็นภาพที่ใกล้เคียงกับสิ่งที่โรงแรมมอบให้",
+      "Content ของโรงแรมสามารถเล่า Guest Experience, ห้องพัก, Food and Beverage, จุดหมายปลายทาง, Local Experiences, Wellness, เบื้องหลังการทำงาน และเรื่องราวของโรงแรมได้ เลือกสิ่งที่[สะท้อนประสบการณ์จริง](/insights/hotel-branding) เพื่อให้ผู้สนใจเห็นภาพที่ใกล้เคียงกับสิ่งที่โรงแรมมอบให้",
       "เมื่อเป็นไปได้ ควรใช้ภาพถ่ายของโรงแรม ทีมงาน และประสบการณ์จริง แทนภาพ Stock ที่ไม่เกี่ยวข้องกับโรงแรม",
     ],
     sourceIds: [],

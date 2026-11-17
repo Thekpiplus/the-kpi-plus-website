@@ -2,7 +2,7 @@
 **Source:** `solutions/training-commercial-enablement.html`
 **Language:** th
 **Title:** ฝึกอบรมและพัฒนาทีม | เดอะ เคพีไอ พลัส
-**Description:** เดอะ เคพีไอ พลัส ออกแบบการอบรม เวิร์กช็อป Team Building และกิจกรรมพัฒนาคนสำหรับโรงแรมและองค์กรบริการ ตั้งแต่ Revenue และ Digital Marketing ไปจนถึงคุณภาพบริการ ภาวะผู้นำ เทคโนโลยี และ AI
+**Description:** ออกแบบการอบรม เวิร์กช็อป Team Building และพัฒนาคนสำหรับโรงแรมและองค์กรบริการ ตั้งแต่ Revenue Digital Marketing บริการ ภาวะผู้นำ เทคโนโลยี และ AI
 **Canonical:** https://thekpiplus.com/solutions/hotel-training-team-development
 
 ## Page content and controls

@@ -1,3 +1,5 @@
+"use client";
+
 import { HOTEL_SEO_AUDIT_VISUAL, HOTEL_SEO_LISTING_ROWS, hotelSeoSampleLabel } from "@/lib/hotel-seo";
 import type { Locale } from "@/lib/seo";
 import { SeoVisualFrame } from "./SeoVisualFrame";

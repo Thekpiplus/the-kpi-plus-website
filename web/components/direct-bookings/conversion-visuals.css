@@ -1,12 +1,12 @@
 .kpi-conversion {
-  font-family: Prompt, "Noto Sans Thai", Tahoma, Arial, sans-serif;
+  font-family: "Noto Sans Thai", "Noto Sans Thai", Tahoma, Arial, sans-serif;
   min-width: 0;
   overflow-x: clip;
 }
 
 .kpi-conversion .kpi-latin,
 .kpi-conversion :lang(en) {
-  font-family: Montserrat, "Prompt", sans-serif;
+  font-family: Montserrat, "Noto Sans Thai", sans-serif;
 }
 
 .kpi-conversion .kpi-button,
@@ -670,7 +670,7 @@
 }
 
 .kpi-shell .kpi-conversion-stops .db-friction .kpi-latin {
-  font-family: Montserrat, "Prompt", sans-serif !important;
+  font-family: Montserrat, "Noto Sans Thai", sans-serif !important;
 }
 
 .db-friction-mock {
@@ -931,7 +931,7 @@
 }
 
 .kpi-shell .kpi-conversion-vs .db-decision .kpi-latin {
-  font-family: Montserrat, "Prompt", sans-serif !important;
+  font-family: Montserrat, "Noto Sans Thai", sans-serif !important;
 }
 
 .db-decision-mock {
@@ -1117,7 +1117,7 @@
 }
 
 .kpi-shell .kpi-conversion-method .db-workflow .kpi-latin {
-  font-family: Montserrat, "Prompt", sans-serif !important;
+  font-family: Montserrat, "Noto Sans Thai", sans-serif !important;
 }
 
 .db-workflow-mock {
@@ -1320,7 +1320,7 @@
 }
 
 .kpi-shell .kpi-conversion-measure .db-measure .kpi-latin {
-  font-family: Montserrat, "Prompt", sans-serif !important;
+  font-family: Montserrat, "Noto Sans Thai", sans-serif !important;
 }
 
 .db-measure-mock {
@@ -1688,7 +1688,7 @@
 }
 
 .kpi-shell .kpi-conversion-related .db-related .kpi-latin {
-  font-family: Montserrat, "Prompt", sans-serif !important;
+  font-family: Montserrat, "Noto Sans Thai", sans-serif !important;
 }
 
 .db-related-cards {
@@ -1807,7 +1807,7 @@
 }
 
 .kpi-shell .kpi-conversion-help .db-framework .kpi-latin {
-  font-family: Montserrat, "Prompt", sans-serif !important;
+  font-family: Montserrat, "Noto Sans Thai", sans-serif !important;
 }
 
 .db-framework-mock {
@@ -2432,7 +2432,7 @@
 .kpi-shell :lang(th) .kpi-conversion .kpi-faq-home .kpi-faq-trigger,
 .kpi-shell :lang(th) .kpi-conversion .kpi-faq-home .kpi-faq-lead,
 .kpi-shell :lang(th) .kpi-conversion .kpi-faq-home .kpi-faq-panel p {
-  font-family: Prompt, "Noto Sans Thai", Tahoma, sans-serif;
+  font-family: "Noto Sans Thai", "Noto Sans Thai", Tahoma, sans-serif;
 }
 
 .kpi-footer--conversion .kpi-button,

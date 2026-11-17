@@ -1,0 +1,1585 @@
+/* Extracted from globals.css — import only from the matching page view */
+
+
+
+
+
+
+
+
+
+
+
+
+/* Hotel Training & Team Development page */
+.kpi-train-hero-crumb {
+  margin: 0 0 1.15rem;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.5;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-hero-crumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-hero-crumb a {
+  color: inherit;
+  text-decoration: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-hero-crumb a:hover {
+  color: #fff;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-train-hero .kpi-latin {
+  font-family: Montserrat, "Noto Sans Thai", sans-serif !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-hero .kpi-home-hero > * {
+  min-width: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-hero .kpi-home-hero-copy {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  max-width: 36rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-hero .kpi-home-photo {
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  max-width: 35rem;
+  margin-top: 0.35rem;
+  justify-self: start;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-hero h1.kpi-home-h1,
+.kpi-shell :lang(th) .kpi-train-hero h1.kpi-home-h1 {
+  max-width: 18em;
+  font-size: clamp(1.55rem, 1.15rem + 1.25vw, 2.4rem) !important;
+  line-height: 1.3 !important;
+  letter-spacing: 0 !important;
+  text-wrap: wrap;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-hero .kpi-home-h1-lead,
+.kpi-train-hero .kpi-home-h1-rest,
+.kpi-shell :lang(th) .kpi-train-hero .kpi-home-h1-lead,
+.kpi-shell :lang(th) .kpi-train-hero .kpi-home-h1-rest {
+  display: block;
+  max-width: 100%;
+  white-space: normal;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-hero .kpi-home-accent {
+  white-space: nowrap;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-hero .kpi-home-photo img {
+  aspect-ratio: 8 / 5;
+  object-fit: cover;
+  object-position: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-hero .kpi-home-lead,
+.kpi-shell :lang(th) .kpi-train-hero .kpi-home-lead {
+  max-width: 30rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-lead-close,
+.kpi-shell :lang(th) .kpi-train-lead-close,
+.kpi-train-hero-note,
+.kpi-shell :lang(th) .kpi-train-hero-note {
+  max-width: 32rem;
+  margin: 0.85rem 0 0;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-hero-note,
+.kpi-shell :lang(th) .kpi-train-hero-note {
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.875rem;
+  line-height: 1.6 !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-problems,
+.kpi-train-partners,
+.kpi-train-topics,
+.kpi-train-nate,
+.kpi-train-measure {
+  background: #f8f8f8;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-enquiry {
+  background: #f8f8f8;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-train-problems h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-train-problems h2.kpi-h2,
+.kpi-shell .kpi-train-formats h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-train-formats h2.kpi-h2,
+.kpi-shell .kpi-train-partners h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-train-partners h2.kpi-h2,
+.kpi-shell .kpi-train-gallery h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-train-gallery h2.kpi-h2,
+.kpi-shell .kpi-train-topics h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-train-topics h2.kpi-h2,
+.kpi-shell .kpi-train-practice h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-train-practice h2.kpi-h2,
+.kpi-shell .kpi-train-nate h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-train-nate h2.kpi-h2,
+.kpi-shell .kpi-train-method h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-train-method h2.kpi-h2,
+.kpi-shell .kpi-train-measure h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-train-measure h2.kpi-h2,
+.kpi-shell .kpi-train-related h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-train-related h2.kpi-h2 {
+  max-width: none;
+  color: #3b3b3b;
+  font-size: clamp(1.5rem, 1.05rem + 1.35vw, 2.25rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+  text-align: left;
+  text-wrap: wrap;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-train-problems .kpi-latin,
+.kpi-shell .kpi-train-formats .kpi-latin,
+.kpi-shell .kpi-train-partners .kpi-latin,
+.kpi-shell .kpi-train-topics .kpi-latin,
+.kpi-shell .kpi-train-practice .kpi-latin,
+.kpi-shell .kpi-train-nate .kpi-latin,
+.kpi-shell .kpi-train-method .kpi-latin,
+.kpi-shell .kpi-train-measure .kpi-latin,
+.kpi-shell .kpi-train-related .kpi-latin {
+  font-family: Montserrat, "Noto Sans Thai", sans-serif !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-num,
+.kpi-train-method-num {
+  margin-top: 0.2rem;
+  color: #0A2472;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-problems-grid,
+.kpi-train-nate-grid {
+  display: grid;
+  gap: 1.75rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-problems-lead,
+.kpi-shell :lang(th) .kpi-train-problems-lead,
+.kpi-train-partners-body,
+.kpi-shell :lang(th) .kpi-train-partners-body,
+.kpi-train-topics-note,
+.kpi-shell :lang(th) .kpi-train-topics-note,
+.kpi-train-measure-lead,
+.kpi-shell :lang(th) .kpi-train-measure-lead {
+  max-width: 40rem;
+  margin: 1rem 0 0;
+  color: #555555;
+  font-size: 0.975rem;
+  letter-spacing: 0 !important;
+  line-height: 1.75 !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-fit-label,
+.kpi-shell :lang(th) .kpi-train-fit-label {
+  margin: 1.5rem 0 0;
+  color: #1f2a33;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: 0 !important;
+  line-height: 1.55 !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-problems-list,
+.kpi-train-formats-list,
+.kpi-train-topics-list,
+.kpi-train-practice-principles,
+.kpi-train-measure-list {
+  display: grid;
+  gap: 0;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid #e3e8eb;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-problems-item,
+.kpi-train-formats-item,
+.kpi-train-topics-item,
+.kpi-train-practice-principles li,
+.kpi-train-measure-item {
+  display: grid;
+  grid-template-columns: 1.75rem minmax(0, 1fr);
+  column-gap: 0.85rem;
+  align-items: start;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid #e3e8eb;
+  background: transparent;
+  box-shadow: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-train-problems-item p,
+.kpi-shell :lang(th) .kpi-train-problems-item p,
+.kpi-shell .kpi-train-practice-principles p,
+.kpi-shell :lang(th) .kpi-train-practice-principles p {
+  margin: 0;
+  color: #555555;
+  font-size: 0.975rem;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-problems-media,
+.kpi-train-nate-media {
+  margin: 0;
+  overflow: hidden;
+  border-radius: 10px;
+  background: transparent;
+  box-shadow: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-problems-media img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: 50% 40%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-train-formats-copy h3,
+.kpi-shell :lang(th) .kpi-train-formats-copy h3,
+.kpi-shell .kpi-train-topics-copy h3,
+.kpi-shell :lang(th) .kpi-train-topics-copy h3,
+.kpi-shell .kpi-train-method-copy h3,
+.kpi-shell :lang(th) .kpi-train-method-copy h3,
+.kpi-shell .kpi-train-measure-item h3,
+.kpi-shell :lang(th) .kpi-train-measure-item h3 {
+  margin: 0;
+  color: #1f2a33;
+  font-size: clamp(1.15rem, 1.05rem + 0.3vw, 1.35rem) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-train-formats-copy p,
+.kpi-shell :lang(th) .kpi-train-formats-copy p,
+.kpi-shell .kpi-train-topics-copy p,
+.kpi-shell :lang(th) .kpi-train-topics-copy p,
+.kpi-shell .kpi-train-method-copy p,
+.kpi-shell :lang(th) .kpi-train-method-copy p,
+.kpi-shell .kpi-train-measure-item p,
+.kpi-shell :lang(th) .kpi-train-measure-item p {
+  margin: 0.4rem 0 0;
+  color: #555555;
+  font-size: 0.9375rem;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+  text-wrap: pretty;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-formats-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem 1.25rem;
+  margin-top: 1.5rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-formats-actions .kpi-button {
+  border-radius: 9px;
+  box-shadow: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-formats-link {
+  color: #0A2472;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-formats-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-partners-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem 2rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-partner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.55rem;
+  text-decoration: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-partner img {
+  display: block;
+  height: 1.75rem;
+  width: auto;
+  max-width: 8.5rem;
+  object-fit: contain;
+  object-position: left center;
+  filter: grayscale(0.15);
+  opacity: 0.9;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-partner span {
+  color: #777777;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin: 1.5rem 0 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-gallery-grid figure {
+  margin: 0;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-gallery-grid img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-practice-takeaway,
+.kpi-shell :lang(th) .kpi-train-practice-takeaway {
+  max-width: 36rem;
+  margin: 1.75rem 0 0;
+  color: #1f2a33;
+  font-size: clamp(1.05rem, 0.95rem + 0.35vw, 1.25rem);
+  font-weight: 600;
+  letter-spacing: 0 !important;
+  line-height: 1.55 !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-practice-takeaway-close {
+  display: block;
+  margin-top: 0.35rem;
+  color: #0A2472;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-practice-body,
+.kpi-shell :lang(th) .kpi-train-practice-body,
+.kpi-train-practice-study,
+.kpi-shell :lang(th) .kpi-train-practice-study {
+  max-width: 42rem;
+  margin: 1.15rem 0 0;
+  color: #555555;
+  font-size: 0.9375rem;
+  letter-spacing: 0 !important;
+  line-height: 1.75 !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-practice-source,
+.kpi-shell :lang(th) .kpi-train-practice-source {
+  margin: 1rem 0 0;
+  color: #777777;
+  font-size: 0.8125rem;
+  letter-spacing: 0 !important;
+  line-height: 1.65 !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-practice-source a {
+  color: #0A2472;
+  text-decoration: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-practice-source a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-nate-media img {
+  display: block;
+  width: 100%;
+  max-width: 20rem;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: center 12%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-nate-eyebrow {
+  margin: 0 0 0.65rem;
+  color: #0A2472;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-nate-name,
+.kpi-shell :lang(th) .kpi-train-nate-name {
+  margin: 1rem 0 0;
+  color: #0b1f33;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0 !important;
+  line-height: 1.4 !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-nate-name-en {
+  margin: 0.25rem 0 0;
+  color: #0A2472;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-nate-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.85rem;
+  margin: 0.85rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-nate-labels li {
+  color: #777777;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-nate-body,
+.kpi-shell :lang(th) .kpi-train-nate-body,
+.kpi-train-nate-close,
+.kpi-shell :lang(th) .kpi-train-nate-close {
+  max-width: 36rem;
+  margin: 1rem 0 0;
+  color: #555555;
+  font-size: 0.975rem;
+  letter-spacing: 0 !important;
+  line-height: 1.75 !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-nate-close,
+.kpi-shell :lang(th) .kpi-train-nate-close {
+  color: #1f2a33;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-method-list {
+  display: grid;
+  gap: 0;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-method-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 0.4rem;
+  position: relative;
+  padding: 0 0 1.55rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-method-item:last-child {
+  padding-bottom: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-method-item:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  top: 1.55rem;
+  bottom: 0;
+  left: 0.55rem;
+  width: 1px;
+  background: #e3e8eb;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-method-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.45rem;
+  padding-left: 1.65rem;
+  position: relative;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-method-num {
+  position: absolute;
+  left: 0;
+  top: 0.05rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-method-label {
+  color: #0A2472;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-method-copy {
+  padding-left: 1.65rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-closer {
+  margin: 1.75rem 0 0;
+  padding: 1.35rem 1.25rem;
+  border: 1px solid #e3e8eb;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-train-closer h3,
+.kpi-shell :lang(th) .kpi-train-closer h3 {
+  margin: 0;
+  color: #1f2a33;
+  font-size: clamp(1.15rem, 1.05rem + 0.3vw, 1.35rem) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-train-closer p,
+.kpi-shell :lang(th) .kpi-train-closer p {
+  max-width: 40rem;
+  margin: 0.65rem 0 0;
+  color: #555555;
+  font-size: 0.9375rem;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-closer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem 1.25rem;
+  margin-top: 1.15rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-closer .kpi-button {
+  border-radius: 9px;
+  box-shadow: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-closer-link {
+  color: #0A2472;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-closer-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-related-layout {
+  display: grid;
+  gap: 1rem;
+  margin: 1.5rem 0 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-related-stack {
+  display: grid;
+  gap: 1rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-related-primary,
+.kpi-train-related-secondary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0;
+  border: 1px solid #e3e8eb;
+  border-radius: 9px;
+  background: #fff;
+  box-shadow: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-related-primary {
+  padding: 1.5rem 1.35rem 1.55rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-related-secondary {
+  padding: 1.25rem 1.2rem 1.35rem;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-related-accent {
+  display: block;
+  width: 1.75rem;
+  height: 2px;
+  margin: 0 0 1rem;
+  background: #c7f000;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-train-related-primary h3,
+.kpi-shell :lang(th) .kpi-train-related-primary h3 {
+  margin: 0;
+  color: #1f2a33;
+  font-size: clamp(1.35rem, 1.2rem + 0.4vw, 1.6rem) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.3 !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-train-related-secondary h3,
+.kpi-shell :lang(th) .kpi-train-related-secondary h3 {
+  margin: 0;
+  color: #1f2a33;
+  font-size: clamp(1.15rem, 1.05rem + 0.3vw, 1.35rem) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-related-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 1.25rem;
+  color: #0A2472;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-related-cta span[aria-hidden="true"] {
+  font-family: Montserrat, sans-serif;
+  transition: transform 0.18s ease;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-related-cta:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.kpi-train-related-cta:hover span[aria-hidden="true"] {
+  transform: translateX(2px);
+}

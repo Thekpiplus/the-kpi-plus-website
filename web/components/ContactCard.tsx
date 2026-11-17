@@ -101,7 +101,7 @@ function SocialRow({
           <li key={item.href}>
             <a href={item.href} aria-label={item.name}>
               {SOCIAL_ICONS[item.name] ? (
-                <img src={SOCIAL_ICONS[item.name]} alt="" width={20} height={20} />
+                <img src={SOCIAL_ICONS[item.name]} alt={item.name} width={20} height={20} />
               ) : (
                 item.name
               )}

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import "@/app/page-ai.css";
 import { PageFaqs } from "@/components/PageFaqs";
 import { SiteShell } from "@/components/SiteShell";
 import { TechnologyEnquiry } from "@/components/TechnologyEnquiry";

@@ -82,13 +82,13 @@ Follow The KPI Plus
 [Associations](/en/associations)
 [Contact](contact-us.html)
 ## Free Hotel Tools
-[Hotel Searchability Check](/en/tools/hotel-searchability-check)
-[Profit & Revenue](/en/tools/hotel-profit-calculator)
-[Hotel Budget](/en/tools/hotel-budget-calculator)
-[OTA Commission](/en/tools/ota-commission-calculator)
-[VAT & Service Charge](/en/tools/hotel-vat-service-charge-calculator)
-[RevPAR, ADR & Occupancy](/en/tools/revpar-calculator)
-[View all tools](/en/tools)
+[Hotel Searchability Check](/tools/hotel-searchability-check)
+[Profit & Revenue](/tools/hotel-profit-calculator)
+[Hotel Budget](/tools/hotel-budget-calculator)
+[OTA Commission](/tools/ota-commission-calculator)
+[VAT & Service Charge](/tools/hotel-vat-service-charge-calculator)
+[RevPAR, ADR & Occupancy](/tools/revpar-calculator)
+[View all tools](/tools)
 ## The KPI Plus Academy
 Corporate AI Training Program
 - AI Mindset & Security
@@ -128,13 +128,13 @@ Language : English
 ### SECTION
 
 ## Free Hotel Tools
-[Hotel Searchability Check](/en/tools/hotel-searchability-check)
-[Profit & Revenue](/en/tools/hotel-profit-calculator)
-[Hotel Budget](/en/tools/hotel-budget-calculator)
-[OTA Commission](/en/tools/ota-commission-calculator)
-[VAT & Service Charge](/en/tools/hotel-vat-service-charge-calculator)
-[RevPAR, ADR & Occupancy](/en/tools/revpar-calculator)
-[View all tools](/en/tools)
+[Hotel Searchability Check](/tools/hotel-searchability-check)
+[Profit & Revenue](/tools/hotel-profit-calculator)
+[Hotel Budget](/tools/hotel-budget-calculator)
+[OTA Commission](/tools/ota-commission-calculator)
+[VAT & Service Charge](/tools/hotel-vat-service-charge-calculator)
+[RevPAR, ADR & Occupancy](/tools/revpar-calculator)
+[View all tools](/tools)
 
 ### SECTION
 

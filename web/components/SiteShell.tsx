@@ -169,8 +169,22 @@ export async function SiteShell({
   const extraFooter = cmsFooterLinks(locale);
   const company = await getPublicCompany();
 
+  const lang = htmlLang(locale);
+
   return (
-    <div lang={htmlLang(locale)} className="contents kpi-public">
+    <div lang={lang} className="contents kpi-public">
+      {/* Set <html lang> before paint for crawlers / AI search agents. */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `document.documentElement.lang=${JSON.stringify(lang)};`,
+        }}
+      />
+      {locale === "zh" ? (
+        <link
+          href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+      ) : null}
       <LangSync locale={locale} />
       <JsonLd data={organizationSchema(locale, company)} />
       <JsonLd data={webSiteSchema(locale)} />

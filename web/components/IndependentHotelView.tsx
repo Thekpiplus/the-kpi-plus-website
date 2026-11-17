@@ -1,4 +1,5 @@
 import Link from "next/link";
+import "@/app/page-independent.css";
 import { IndependentHotelEnquiry } from "@/components/IndependentHotelEnquiry";
 import { IndependentHotelStickyCta } from "@/components/IndependentHotelStickyCta";
 import {

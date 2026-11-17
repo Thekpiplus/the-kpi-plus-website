@@ -2,14 +2,14 @@
 
 .sol-ops,
 .sol-ops-page {
-  font-family: Sarabun, "Noto Sans Thai", Tahoma, Arial, sans-serif;
+  font-family: "Noto Sans Thai", "Noto Sans Thai", Tahoma, Arial, sans-serif;
 }
 
 .sol-ops h2,
 .sol-ops-page h2,
 .sol-dept-card strong,
 .sol-stat span {
-  font-family: Montserrat, Sarabun, "Noto Sans Thai", Tahoma, Arial, sans-serif;
+  font-family: Montserrat, "Noto Sans Thai", "Noto Sans Thai", Tahoma, Arial, sans-serif;
 }
 
 /* Save buttons: solid lime + white text for clearer contrast. */
@@ -18,7 +18,7 @@
 .sol-ops-page .kpi-button.b2b-save {
   background: #a2dc25;
   color: #0b1f33;
-  font-family: Montserrat, Sarabun, "Noto Sans Thai", Tahoma, Arial, sans-serif;
+  font-family: Montserrat, "Noto Sans Thai", "Noto Sans Thai", Tahoma, Arial, sans-serif;
   font-weight: 700;
 }
 
@@ -169,7 +169,7 @@
 .sol-fieldset legend {
   padding: 0 0.4rem;
   color: #0b6660;
-  font-family: Montserrat, Sarabun, "Noto Sans Thai", Tahoma, Arial, sans-serif;
+  font-family: Montserrat, "Noto Sans Thai", "Noto Sans Thai", Tahoma, Arial, sans-serif;
   font-size: 0.82rem;
   font-weight: 700;
 }
@@ -330,7 +330,7 @@
   border-radius: 999px;
   background: #475569;
   color: #ffffff;
-  font-family: Montserrat, Sarabun, "Noto Sans Thai", Tahoma, Arial, sans-serif;
+  font-family: Montserrat, "Noto Sans Thai", "Noto Sans Thai", Tahoma, Arial, sans-serif;
   font-size: 0.74rem;
   font-weight: 700;
   white-space: nowrap;
@@ -379,7 +379,7 @@
 .sol-subtasks-head h3 {
   margin: 0;
   color: #0b6660;
-  font-family: Montserrat, Sarabun, "Noto Sans Thai", Tahoma, Arial, sans-serif;
+  font-family: Montserrat, "Noto Sans Thai", "Noto Sans Thai", Tahoma, Arial, sans-serif;
   font-size: 0.95rem;
 }
 

@@ -1,7 +1,7 @@
 # /en/approach
 **Language:** en
 **Title:** The KPI Plus Approach | Make pricing and distribution clear
-**Description:** Pricing, channels, and demand deliver their full revenue potential when your hotel team works from the same data, knows who owns each action, and can measure ADR, occupancy, and net revenue after commissions.
+**Description:** Pricing, channels, and demand work better when the hotel team shares the same data, owns each action, and can measure ADR, occupancy, and net revenue after commission.
 **Canonical:** https://thekpiplus.com/en/approach
 
 ## Page content and controls

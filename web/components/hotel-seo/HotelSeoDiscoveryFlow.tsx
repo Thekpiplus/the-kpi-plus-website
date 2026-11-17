@@ -1,3 +1,5 @@
+"use client";
+
 import {
   HOTEL_SEO_FLOW_STAGES,
   HOTEL_SEO_FLOW_VISUAL,

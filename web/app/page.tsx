@@ -3,7 +3,8 @@ import { HomeView } from "@/components/HomeView";
 import { isCmsPageLive, storedPageByPath } from "@/lib/cms/public";
 import { metadataFor } from "@/lib/seo";
 
-export const dynamic = "force-dynamic";
+/** ISR — keep Thai home cacheable like /en while still refreshing CMS live checks. */
+export const revalidate = 300;
 
 export const metadata = metadataFor("/");
 

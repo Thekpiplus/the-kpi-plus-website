@@ -26,11 +26,11 @@
 Избранное
 ## Как провести revenue-встречу, которая заканчивается рабочим решением
 Рамка встречи по доходу отеля, которая превращает сигналы дохода и роста в решение, владельца и точку проверки.
-[Читать статью](/insights/hotel-revenue-meetings-that-lead-to-decisions)
+[Читать статью](/en/insights/hotel-revenue-meetings-that-lead-to-decisions)
 [Что такое маркетинг отеля? 8 способов увеличить бронирования и доход](/insights/hotel-marketing)
-[Как технологии и ИИ реально помогают команде отеля работать лучше](/insights/hotel-technology-adoption-commercial-project)
-[Проверить путь прямого бронирования отеля](/insights/direct-booking-journey-audit)
-[SEO vs SEM для отелей: с чего начать](/insights/seo-vs-sem-for-hotels-which-one-should-you-focus-on)
+[Как технологии и ИИ реально помогают команде отеля работать лучше](/en/insights/hotel-technology-adoption-commercial-project)
+[Проверить путь прямого бронирования отеля](/en/insights/direct-booking-journey-audit)
+[SEO vs SEM для отелей: с чего начать](/en/insights/seo-vs-sem-for-hotels-which-one-should-you-focus-on)
 The KPI Plus Performance Path
 ## Увидеть задачу ясно, работать в одном направлении и измерять то, что происходит
 [Начать разговор](/ru#audit)

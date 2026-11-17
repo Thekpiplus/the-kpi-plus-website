@@ -4,14 +4,14 @@
 .hmo-ops-page,
 .hmo-drawer,
 .hmo-subtasks {
-  font-family: Sarabun, Prompt, "Noto Sans Thai", Tahoma, Arial, sans-serif;
+  font-family: "Noto Sans Thai", "Noto Sans Thai", "Noto Sans Thai", Tahoma, Arial, sans-serif;
 }
 
 .hmo-ops-page h1,
 .hmo-dept-card strong,
 .hmo-kind-card strong,
 .hmo-stat strong {
-  font-family: Montserrat, Sarabun, "Noto Sans Thai", Tahoma, Arial, sans-serif;
+  font-family: Montserrat, "Noto Sans Thai", "Noto Sans Thai", Tahoma, Arial, sans-serif;
 }
 
 .hmo-ops .b2b-filters {

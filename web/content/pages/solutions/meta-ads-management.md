@@ -92,7 +92,7 @@ Related Solutions
 [ออกแบบเว็บไซต์โรงแรม](hotel-website-design.html)
 Related Insights
 ## อ่านบทความที่เกี่ยวข้อง
-[INSIGHTS โรงแรมเพิ่ม Direct Booking อย่างเป็นระบบได้อย่างไร อ่านบทความที่เกี่ยวข้อง](/insights/how-to-increase-direct-bookings-for-independent-hotels)
+[INSIGHTS โรงแรมเพิ่ม Direct Booking อย่างเป็นระบบได้อย่างไร อ่านบทความที่เกี่ยวข้อง](/insights/direct-booking-journey-audit)
 [INSIGHTS SEO vs SEM สำหรับโรงแรม ควรโฟกัสอะไร อ่านบทความที่เกี่ยวข้อง](../insights/seo-vs-sem-for-hotels-which-one-should-you-focus-on.html)
 Free Hotel Tools
 ## ลองใช้เครื่องมือฟรีที่เกี่ยวข้อง

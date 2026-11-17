@@ -13,6 +13,7 @@ public/media/avatars/*
 
 # Local check artifacts — never ship in deploy archives
 .tmp*
+_incoming
 about-check.html
 build-out.txt
 body.json

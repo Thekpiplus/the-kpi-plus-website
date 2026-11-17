@@ -1,4 +1,5 @@
 import { Fragment } from "react";
+import "@/app/page-reservations.css";
 import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
 import { ReservationsEnquiry } from "@/components/ReservationsEnquiry";

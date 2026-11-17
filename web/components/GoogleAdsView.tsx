@@ -1,4 +1,5 @@
 import Link from "next/link";
+import "@/app/page-google-ads.css";
 import { ArrowUpRight } from "@/components/Icons";
 import { AdsChannelDecisions } from "@/components/google-ads/AdsChannelDecisions";
 import { AdsChannelMatrix } from "@/components/google-ads/AdsChannelMatrix";

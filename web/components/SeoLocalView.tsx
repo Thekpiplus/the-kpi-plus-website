@@ -1,18 +1,21 @@
 import Link from "next/link";
-import { HotelSeoAuditVisual } from "@/components/hotel-seo/HotelSeoAuditVisual";
-import { HotelSeoCompareMatrix } from "@/components/hotel-seo/HotelSeoCompareMatrix";
-import { HotelSeoDiscoveryFlow } from "@/components/hotel-seo/HotelSeoDiscoveryFlow";
-import { HotelSeoGbpVisual } from "@/components/hotel-seo/HotelSeoGbpVisual";
-import { HotelSeoHelpBoundary } from "@/components/hotel-seo/HotelSeoHelpBoundary";
-import { HotelSeoHelpSteps } from "@/components/hotel-seo/HotelSeoHelpSteps";
-import { HotelSeoKpiFramework } from "@/components/hotel-seo/HotelSeoKpiFramework";
-import { HotelSeoProcessSteps } from "@/components/hotel-seo/HotelSeoProcessSteps";
-import { HotelSeoProcessVisual } from "@/components/hotel-seo/HotelSeoProcessVisual";
+import "@/app/page-seo-local.css";
 import { HotelSeoHeroVisual } from "@/components/hotel-seo/HotelSeoHeroVisual";
-import { HotelSeoSearchBehaviorVisual } from "@/components/hotel-seo/HotelSeoSearchBehaviorVisual";
-import { HotelSeoKpiVisual } from "@/components/hotel-seo/HotelSeoKpiVisual";
-import { HotelSeoRelatedCards } from "@/components/hotel-seo/HotelSeoRelatedCards";
-import { HotelSeoRelatedVisual } from "@/components/hotel-seo/HotelSeoRelatedVisual";
+import {
+  DeferredAuditVisual,
+  DeferredCompareMatrix,
+  DeferredDiscoveryFlow,
+  DeferredGbpVisual,
+  DeferredHelpBoundary,
+  DeferredHelpSteps,
+  DeferredKpiFramework,
+  DeferredKpiVisual,
+  DeferredProcessSteps,
+  DeferredProcessVisual,
+  DeferredRelatedCards,
+  DeferredRelatedVisual,
+  DeferredSearchBehaviorVisual,
+} from "@/components/hotel-seo/SeoLocalDeferred";
 import { PageFaqs } from "@/components/PageFaqs";
 import { SeoLocalEnquiry } from "@/components/SeoLocalEnquiry";
 import { SeoLocalStickyCta } from "@/components/SeoLocalStickyCta";
@@ -989,7 +992,7 @@ export async function SeoLocalView({
             </div>
           </div>
           <div className="kpi-seo-local-change-visual">
-            <HotelSeoSearchBehaviorVisual
+            <DeferredSearchBehaviorVisual
               locale={locale}
               src={behaviorSrc}
               status={cms?.search.visual.status || "sample"}
@@ -1151,7 +1154,7 @@ export async function SeoLocalView({
               ? "ไม่ใช่เลือกอย่างใดอย่างหนึ่ง แต่จัดเว็บไซต์ ข้อมูลธุรกิจ และคำตอบที่ลูกค้าต้องการให้สอดคล้องกัน"
               : "These are not alternatives. The website, the business facts, and the answers customers need should work together."}
           </p>
-          <HotelSeoCompareMatrix
+          <DeferredCompareMatrix
             locale={locale === "th" ? "th" : "en"}
             rows={compareRows}
             src={compareSrc}
@@ -1242,7 +1245,7 @@ export async function SeoLocalView({
             </a>
           </div>
           <div className="kpi-seo-local-problems-photo">
-            <HotelSeoAuditVisual
+            <DeferredAuditVisual
               locale={locale}
               src={auditSrc}
               status={cms?.problems.visual.status || "sample"}
@@ -1273,7 +1276,7 @@ export async function SeoLocalView({
               ))}
           </h2>
           <div className="kpi-seo-local-help-visual">
-            <HotelSeoDiscoveryFlow
+            <DeferredDiscoveryFlow
               locale={locale}
               src={flowSrc}
               status={cms?.help.visual.status || "sample"}
@@ -1283,8 +1286,8 @@ export async function SeoLocalView({
               stages={flowStages}
             />
           </div>
-          <HotelSeoHelpSteps locale={locale === "th" ? "th" : "en"} steps={helpSteps} />
-          <HotelSeoHelpBoundary locale={locale === "th" ? "th" : "en"} boundary={useCmsCopy ? cms?.help.boundary : undefined} />
+          <DeferredHelpSteps locale={locale === "th" ? "th" : "en"} steps={helpSteps} />
+          <DeferredHelpBoundary locale={locale === "th" ? "th" : "en"} boundary={useCmsCopy ? cms?.help.boundary : undefined} />
           <a href={heroCtaHref} className="kpi-button">
             {heroCta} <span aria-hidden="true">↗</span>
           </a>
@@ -1339,7 +1342,7 @@ export async function SeoLocalView({
             />
           </div>
           <div className="kpi-seo-local-gbp-photo">
-            <HotelSeoGbpVisual
+            <DeferredGbpVisual
               locale={locale}
               src={gbpSrc}
               status={cms?.gbp.visual.status || "sample"}
@@ -1359,13 +1362,13 @@ export async function SeoLocalView({
           <h2 className="kpi-h2">{cmsText(useCmsCopy, locale, cms?.method.title, t.methodTitle)}</h2>
           <div className="kpi-seo-local-method-layout">
             <div className="kpi-seo-local-method-visual">
-              <HotelSeoProcessVisual
+              <DeferredProcessVisual
                 locale={locale}
                 src={processSrc}
                 status={cms?.method.visual.status || "sample"}
               />
             </div>
-            <HotelSeoProcessSteps locale={locale} steps={processSteps} />
+            <DeferredProcessSteps locale={locale} steps={processSteps} />
           </div>
         </div>
       </section>
@@ -1376,7 +1379,7 @@ export async function SeoLocalView({
           {cmsText(useCmsCopy, locale, cms?.measure.intro, locale === "th" ? HOTEL_SEO_KPI_COPY.intro.th : HOTEL_SEO_KPI_COPY.intro.en)}
         </p>
         <div className="kpi-seo-local-measure-visual">
-          <HotelSeoKpiVisual
+          <DeferredKpiVisual
             locale={locale}
             src={kpiSrc}
             status={kpiSrc ? cms?.measure.visual.status || "sample" : "sample"}
@@ -1386,7 +1389,7 @@ export async function SeoLocalView({
             chart={kpiChart ? { labels: kpiChart.labels, values: kpiChart.values } : undefined}
           />
         </div>
-        <HotelSeoKpiFramework locale={locale} overrides={useCmsCopy ? cms?.measure.kpis : undefined} />
+        <DeferredKpiFramework locale={locale} overrides={useCmsCopy ? cms?.measure.kpis : undefined} />
         <p className="kpi-seo-local-measure-note">
           {cmsText(useCmsCopy, locale, cms?.measure.close, locale === "th" ? HOTEL_SEO_KPI_COPY.close.th : HOTEL_SEO_KPI_COPY.close.en)}
         </p>
@@ -1408,9 +1411,9 @@ export async function SeoLocalView({
           </h2>
           <div className="kpi-seo-local-related-layout">
             <div className="kpi-seo-local-related-visual">
-              <HotelSeoRelatedVisual locale={locale} src={relatedSrc} status={relatedSrc ? cms?.related.visual.status || "sample" : "sample"} />
+              <DeferredRelatedVisual locale={locale} src={relatedSrc} status={relatedSrc ? cms?.related.visual.status || "sample" : "sample"} />
             </div>
-            {relatedCards.length ? <HotelSeoRelatedCards locale={locale} cards={relatedCards} /> : null}
+            {relatedCards.length ? <DeferredRelatedCards locale={locale} cards={relatedCards} /> : null}
           </div>
         </div>
       </section>

@@ -1,7 +1,7 @@
 # /en/about-us
 **Language:** en
 **Title:** About | Your partner in hotel revenue and growth | The KPI Plus
-**Description:** The KPI Plus works with hotel owners, executives, and commercial teams across Thailand to see where revenue is being lost, where the opportunities are, and what to do first.
+**Description:** The KPI Plus works with hotel owners and commercial teams across Thailand to find where revenue is lost, where opportunity sits, and what to do first.
 **Canonical:** https://thekpiplus.com/en/about-us
 
 ## Page content and controls

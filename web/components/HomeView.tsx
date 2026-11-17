@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "@/components/Icons";
 import { AuditSectionHost } from "@/components/AuditSection";
@@ -264,7 +265,7 @@ export async function HomeView({ locale }: { locale: Locale }) {
           </div>
           <figure className="kpi-home-hero-visual">
             <div className="kpi-home-photo kpi-home-frame">
-              <img
+              <Image
                 src="/media/kpi-plus-performance-metrics-meeting_88bfa3ed.jpg"
                 alt={
                   locale === "th"
@@ -273,7 +274,8 @@ export async function HomeView({ locale }: { locale: Locale }) {
                 }
                 width={1024}
                 height={682}
-                fetchPriority="high"
+                sizes="(max-width: 48rem) 100vw, 52vw"
+                priority
               />
             </div>
           </figure>
@@ -504,7 +506,7 @@ export async function HomeView({ locale }: { locale: Locale }) {
         <div className="kpi-section kpi-home-performance-inner">
           <figure className="kpi-home-performance-visual">
             <div className="kpi-home-photo kpi-home-frame">
-              <img
+              <Image
                 src="/media/kpi-plus-hero-hotel-performance_cd74fdd4.jpg"
                 alt={
                   locale === "th"
@@ -513,6 +515,7 @@ export async function HomeView({ locale }: { locale: Locale }) {
                 }
                 width={1024}
                 height={616}
+                sizes="(max-width: 48rem) 100vw, 48vw"
                 loading="lazy"
               />
             </div>

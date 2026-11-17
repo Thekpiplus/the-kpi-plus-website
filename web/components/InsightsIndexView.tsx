@@ -1,4 +1,5 @@
 import Link from "next/link";
+import "@/app/page-article.css";
 import { ArrowUpRight } from "@/components/Icons";
 import { JsonLd } from "@/components/JsonLd";
 import { SiteShell } from "@/components/SiteShell";
@@ -27,7 +28,7 @@ import {
 import { getStoredInsightOrder, resolveInsightOrder, sortByInsightOrder } from "@/lib/cms/insight-order";
 import { hiddenInsightSlugs } from "@/lib/cms/queries";
 import { blogSchema } from "@/lib/schema";
-import { auditHref, localizePath, SITE, type Locale } from "@/lib/seo";
+import { auditHref, existingHref, localizePath, SITE, type Locale } from "@/lib/seo";
 
 function FeaturedMeta({
   post,
@@ -147,7 +148,7 @@ export async function InsightsIndexView({
             </h2>
             <article className="kpi-insight-featured">
               <Link
-                href={featured.href}
+                href={existingHref(featured.href, locale) ?? featured.href}
                 className="kpi-insight-featured-link"
                 aria-labelledby="insight-featured-title"
               >

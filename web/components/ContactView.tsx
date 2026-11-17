@@ -1,4 +1,5 @@
 import { ContactCard } from "@/components/ContactCard";
+import "@/app/page-contact.css";
 import { ContactChannels } from "@/components/ContactChannels";
 import { ContactEnquiryForm } from "@/components/ContactEnquiryForm";
 import { ContactLocationMap } from "@/components/ContactLocationMap";

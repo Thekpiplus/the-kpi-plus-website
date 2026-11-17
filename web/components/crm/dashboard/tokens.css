@@ -25,7 +25,7 @@
   --kpi-a-radius-sm: 12px;
   --kpi-a-shadow: 0 8px 24px rgba(22, 32, 43, 0.06);
   --kpi-a-shadow-hover: 0 12px 28px rgba(22, 32, 43, 0.1);
-  --kpi-a-font: "Prompt", "Sarabun", system-ui, sans-serif;
+  --kpi-a-font: "Noto Sans Thai", "Noto Sans Thai", system-ui, sans-serif;
 
   display: grid;
   gap: 1.5rem;

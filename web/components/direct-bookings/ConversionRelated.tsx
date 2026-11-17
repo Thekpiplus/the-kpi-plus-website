@@ -1,3 +1,5 @@
+"use client";
+
 import { ArrowUpRight } from "@/components/Icons";
 import {
   DIRECT_BOOKING_RELATED_VISUAL,

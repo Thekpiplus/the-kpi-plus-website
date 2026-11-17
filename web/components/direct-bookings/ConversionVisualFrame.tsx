@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { ReactNode } from "react";
 import {
   directBookingSampleLabel,
@@ -41,15 +42,15 @@ export function ConversionVisualFrame({
       <div className="db-visual-frame">
         {fileSrc ? (
           <div className="db-visual-asset">
-            <img
+            <Image
               src={fileSrc}
               alt={alt}
               width={displayWidth}
               height={displayHeight}
-              style={{ aspectRatio: `${displayWidth} / ${displayHeight}` }}
+              sizes="(max-width: 48rem) calc(100vw - 2rem), min(36rem, 42vw)"
+              priority={Boolean(eager)}
               loading={eager ? "eager" : "lazy"}
-              decoding="async"
-              fetchPriority={eager ? "high" : undefined}
+              style={{ aspectRatio: `${displayWidth} / ${displayHeight}`, width: "100%", height: "auto" }}
             />
             {directBookingShowsSampleBadge(status) ? (
               <span className="db-visual-badge">{directBookingSampleLabel(locale)}</span>

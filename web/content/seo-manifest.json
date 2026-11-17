@@ -57,7 +57,7 @@
     "route": "/approach",
     "language": "th",
     "title": "แนวทางการทำงาน | บริหารราคาและช่องทางการขายให้ชัด | เดอะ เคพีไอ พลัส",
-    "description": "ราคา ช่องทางการขาย และ Demand จะสร้างรายได้ได้เต็มที่ เมื่อทีมโรงแรมเห็นข้อมูลชุดเดียวกัน รู้ว่าใครรับผิดชอบ และวัดผลได้ทั้ง ADR, Occupancy และรายได้สุทธิหลังหักค่าคอมมิชชัน",
+    "description": "ราคา ช่องทางขาย และ Demand สร้างรายได้ได้เต็มที่ เมื่อทีมใช้ข้อมูลชุดเดียวกัน รู้ผู้รับผิดชอบ และวัด ADR Occupancy และรายได้สุทธิได้",
     "canonical": "https://thekpiplus.com/approach",
     "alternates": [
       {
@@ -219,7 +219,7 @@
     "route": "/en/about-us",
     "language": "en",
     "title": "About | Your partner in hotel revenue and growth | The KPI Plus",
-    "description": "The KPI Plus works with hotel owners, executives, and commercial teams across Thailand to see where revenue is being lost, where the opportunities are, and what to do first.",
+    "description": "The KPI Plus works with hotel owners and commercial teams across Thailand to find where revenue is lost, where opportunity sits, and what to do first.",
     "canonical": "https://thekpiplus.com/en/about-us",
     "alternates": [
       {
@@ -246,7 +246,7 @@
     "route": "/en/approach",
     "language": "en",
     "title": "The KPI Plus Approach | Make pricing and distribution clear",
-    "description": "Pricing, channels, and demand deliver their full revenue potential when your hotel team works from the same data, knows who owns each action, and can measure ADR, occupancy, and net revenue after commissions.",
+    "description": "Pricing, channels, and demand work better when the hotel team shares the same data, owns each action, and can measure ADR, occupancy, and net revenue after commission.",
     "canonical": "https://thekpiplus.com/en/approach",
     "alternates": [
       {
@@ -628,7 +628,7 @@
     "route": "/en/solutions/b2b-agent-sales",
     "language": "en",
     "title": "B2B & Agent Sales for Hotels | The KPI Plus",
-    "description": "Review whether a hotel should add B2B yet. The KPI Plus helps choose partners from the current network, coordinate terms, and track results. The hotel signs its own contracts.",
+    "description": "Review whether a hotel should add B2B yet. The KPI Plus helps choose partners, coordinate terms, and track results. The hotel signs its own contracts.",
     "canonical": "https://thekpiplus.com/en/solutions/b2b-agent-sales",
     "alternates": [
       {
@@ -763,7 +763,7 @@
     "route": "/en/solutions/independent-hotel-management",
     "language": "en",
     "title": "Independent hotel management | The KPI Plus",
-    "description": "The KPI Plus helps independent hotel owners set a way of running the hotel that fits the property and their goal, from the management team and operations through revenue, channels, and results.",
+    "description": "Help independent hotel owners set a way of running the property that fits their goal — management, operations, revenue, channels, and results.",
     "canonical": "https://thekpiplus.com/en/solutions/independent-hotel-management",
     "alternates": [
       {
@@ -844,7 +844,7 @@
     "route": "/en/solutions/hotel-ai-automation",
     "language": "en",
     "title": "AI and automation for real hotel work | The KPI Plus",
-    "description": "The KPI Plus helps review work steps, design and set up AI or automation, try it with the team, and improve it until it is part of daily work. Open to hotels and other hospitality organisations.",
+    "description": "Review work steps, design and set up AI or automation, trial it with the team, and improve until it fits daily work. For hotels and hospitality organisations.",
     "canonical": "https://thekpiplus.com/en/solutions/hotel-ai-automation",
     "alternates": [
       {
@@ -871,7 +871,7 @@
     "route": "/en/solutions/hotel-training-team-development",
     "language": "en",
     "title": "Training & Team Development for Hotels | The KPI Plus",
-    "description": "Training, workshops, team building, and people development for hotels and hospitality organisations, from revenue and digital marketing through service, leadership, technology, and AI.",
+    "description": "Training, workshops, team building, and people development for hotels — from revenue and digital marketing to service, leadership, technology, and AI.",
     "canonical": "https://thekpiplus.com/en/solutions/hotel-training-team-development",
     "alternates": [
       {
@@ -925,7 +925,7 @@
     "route": "/en/solutions/hotel-website-design",
     "language": "en",
     "title": "Hotel Website Design | The KPI Plus",
-    "description": "Plan and build a hotel website for trust before booking and a team that can keep using it. WordPress or another CMS is chosen from the hotel’s needs, not from a single tool.",
+    "description": "Plan and build a hotel website for booking confidence and a team that can keep using it. CMS choice follows the hotel’s needs, not a single tool.",
     "canonical": "https://thekpiplus.com/en/solutions/hotel-website-design",
     "alternates": [
       {
@@ -979,16 +979,58 @@
     "route": "/insights/hotel-marketing",
     "language": "th",
     "title": "การตลาดโรงแรมคืออะไร? 8 แนวทางสู่การจอง | เดอะ เคพีไอ พลัส",
-    "description": "การตลาดโรงแรมคือการเชื่อม Google, OTA, Website, Direct Booking, Distribution และ Revenue Management ให้ผู้เข้าพักค้นพบ เปรียบเทียบ และเลือกจองด้วยข้อมูลที่ชัดเจน โดยไม่รับประกันยอดจองหรือรายได้",
+    "description": "การตลาดโรงแรมคือการเชื่อม Google OTA Website Direct Booking Distribution และ Revenue Management ให้ผู้เข้าพักค้นพบ เปรียบเทียบ และจองได้ชัดเจน โดยไม่รับประกันยอดจอง",
     "canonical": "https://thekpiplus.com/insights/hotel-marketing",
     "alternates": [
       {
         "hreflang": "th",
         "href": "https://thekpiplus.com/insights/hotel-marketing"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/hotel-marketing"
       }
     ],
-    "ogImage": "https://thekpiplus.com/media/the-kpi-plus-performance-hero_2f986b5f.jpg",
+    "ogImage": "https://thekpiplus.com/images/blog/hotel-marketing/th/og.webp",
     "ogUrl": "https://thekpiplus.com/insights/hotel-marketing"
+  },
+  {
+    "route": "/en/insights/hotel-branding",
+    "language": "en",
+    "title": "Hotel Branding 2026: Be Remembered and Booked | The KPI Plus",
+    "description": "Hotel branding for 2026: choose your guests, write a promise you can prove, keep every channel consistent, price to match, and use reviews to check the result.",
+    "canonical": "https://thekpiplus.com/en/insights/hotel-branding",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/hotel-branding"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/hotel-branding"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/hotel-branding/en/og.webp",
+    "ogUrl": "https://thekpiplus.com/en/insights/hotel-branding"
+  },
+  {
+    "route": "/insights/hotel-branding",
+    "language": "th",
+    "title": "การสร้างแบรนด์โรงแรม 2569: ให้แขกจำได้และจอง | The KPI Plus",
+    "description": "การสร้างแบรนด์โรงแรมปี 2569: เลือกกลุ่มแขก เขียนคำสัญญาที่ตรวจสอบได้ ทำข้อมูลให้ตรงทุกช่องทาง ตั้งราคาให้สอดคล้อง และใช้รีวิวตรวจผล",
+    "canonical": "https://thekpiplus.com/insights/hotel-branding",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/hotel-branding"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/hotel-branding"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/hotel-branding/th/og.webp",
+    "ogUrl": "https://thekpiplus.com/insights/hotel-branding"
   },
   {
     "route": "/hotel-revenue-management",
@@ -1139,9 +1181,13 @@
       {
         "hreflang": "th",
         "href": "https://thekpiplus.com/insights/direct-booking-journey-audit"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/direct-booking-journey-audit"
       }
     ],
-    "ogImage": "https://thekpiplus.com/media/kpi-grow-revenue_f786a5a5.jpg",
+    "ogImage": "https://thekpiplus.com/images/blog/direct-booking-journey-audit/th/og.webp",
     "ogUrl": "https://thekpiplus.com/insights/direct-booking-journey-audit"
   },
   {
@@ -1154,9 +1200,13 @@
       {
         "hreflang": "th",
         "href": "https://thekpiplus.com/insights/hotel-revenue-meetings-that-lead-to-decisions"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/hotel-revenue-meetings-that-lead-to-decisions"
       }
     ],
-    "ogImage": "https://thekpiplus.com/media/the-kpi-plus-revenue-scene_4932d3c7.jpg",
+    "ogImage": "https://thekpiplus.com/images/blog/hotel-revenue-meetings-that-lead-to-decisions/th/og.webp",
     "ogUrl": "https://thekpiplus.com/insights/hotel-revenue-meetings-that-lead-to-decisions"
   },
   {
@@ -1169,9 +1219,13 @@
       {
         "hreflang": "th",
         "href": "https://thekpiplus.com/insights/hotel-technology-adoption-commercial-project"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/hotel-technology-adoption-commercial-project"
       }
     ],
-    "ogImage": "https://thekpiplus.com/media/kpi-grow-capability_7bba9d6e.jpg",
+    "ogImage": "https://thekpiplus.com/images/blog/hotel-technology-adoption-commercial-project/th/og.webp",
     "ogUrl": "https://thekpiplus.com/insights/hotel-technology-adoption-commercial-project"
   },
   {
@@ -1184,9 +1238,13 @@
       {
         "hreflang": "th",
         "href": "https://thekpiplus.com/insights/seo-vs-sem-for-hotels-which-one-should-you-focus-on"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/seo-vs-sem-for-hotels-which-one-should-you-focus-on"
       }
     ],
-    "ogImage": "https://thekpiplus.com/media/the-kpi-plus-insights-scene_8a7e72cb.jpg",
+    "ogImage": "https://thekpiplus.com/images/blog/seo-vs-sem-for-hotels-which-one-should-you-focus-on/th/og.webp",
     "ogUrl": "https://thekpiplus.com/insights/seo-vs-sem-for-hotels-which-one-should-you-focus-on"
   },
   {
@@ -1274,7 +1332,7 @@
     "route": "/ru/about-us",
     "language": "ru",
     "title": "О The KPI Plus | The KPI Plus",
-    "description": "The KPI Plus — партнёр по доходам и росту отелей с офисом на Пхукете.",
+    "description": "The KPI Plus — партнёр по доходам и росту отелей с офисом на Пхукете。The KPI Plus работает с отелями и hospitality-бизнесом по Таиланду: доход, ценовая стратегия, OT",
     "canonical": "https://thekpiplus.com/ru/about-us",
     "alternates": [
       {
@@ -1656,7 +1714,7 @@
     "route": "/ru/solutions",
     "language": "ru",
     "title": "Решения для отелей | The KPI Plus",
-    "description": "Решения The KPI Plus для дохода, спроса и возможностей команды отеля.",
+    "description": "Решения The KPI Plus для дохода, спроса и возможностей команды отеля. Выбираем следующий шаг по проблеме, данным и согласованному объёму — без пустых обещаний.",
     "canonical": "https://thekpiplus.com/ru/solutions",
     "alternates": [
       {
@@ -1899,7 +1957,7 @@
     "route": "/ru/solutions/hotel-ai-automation",
     "language": "ru",
     "title": "ИИ и автоматизация в работе отеля | The KPI Plus",
-    "description": "The KPI Plus помогает разобрать шаги, спроектировать и установить ИИ или автоматизацию, попробовать с командой и довести до ежедневной работы. Для отелей и других организаций сферы услуг.",
+    "description": "The KPI Plus помогает разобрать шаги, спроектировать ИИ или автоматизацию, попробовать с командой и довести до ежедневной работы. Для отелей и hospitality.",
     "canonical": "https://thekpiplus.com/ru/solutions/hotel-ai-automation",
     "alternates": [
       {
@@ -1980,7 +2038,7 @@
     "route": "/ru/solutions/hotel-website-design",
     "language": "ru",
     "title": "Дизайн сайта отеля | The KPI Plus",
-    "description": "Спланировать и сделать сайт отеля, который помогает гостю уверенно забронировать и который команда может вести дальше. WordPress или другой CMS выбираем по потребности отеля.",
+    "description": "Спланировать и сделать сайт отеля для уверенного бронирования, который команда может вести дальше. WordPress или другой CMS — по потребности отеля.",
     "canonical": "https://thekpiplus.com/ru/solutions/hotel-website-design",
     "alternates": [
       {
@@ -2277,7 +2335,7 @@
     "route": "/solutions/hotel-training-team-development",
     "language": "th",
     "title": "พัฒนาทีมและทักษะสำหรับโรงแรมและธุรกิจบริการ | เดอะ เคพีไอ พลัส",
-    "description": "เดอะ เคพีไอ พลัส ออกแบบการอบรม เวิร์กช็อป Team Building และกิจกรรมพัฒนาคนสำหรับโรงแรมและองค์กรบริการ ตั้งแต่ Revenue และ Digital Marketing ไปจนถึงคุณภาพบริการ ภาวะผู้นำ เทคโนโลยี และ AI",
+    "description": "ออกแบบการอบรม เวิร์กช็อป Team Building และพัฒนาคนสำหรับโรงแรมและองค์กรบริการ ตั้งแต่ Revenue Digital Marketing บริการ ภาวะผู้นำ เทคโนโลยี และ AI",
     "canonical": "https://thekpiplus.com/solutions/hotel-training-team-development",
     "alternates": [
       {
@@ -2362,10 +2420,6 @@
     "canonical": "https://thekpiplus.com/tools",
     "alternates": [
       {
-        "hreflang": "en",
-        "href": "https://thekpiplus.com/en/tools"
-      },
-      {
         "hreflang": "th",
         "href": "https://thekpiplus.com/tools"
       }
@@ -2377,13 +2431,9 @@
     "route": "/tools/hotel-budget-calculator",
     "language": "th",
     "title": "เครื่องคำนวณ Budget โรงแรม | เดอะ เคพีไอ พลัส",
-    "description": "ช่วยวาง Budget รายได้ห้องพักจากจำนวนห้อง Occupancy, ADR และระยะเวลาการขาย",
+    "description": "ช่วยวาง Budget รายได้ห้องพักจากจำนวนห้อง Occupancy ADR และระยะเวลาการขายอย่างเป็นระบบ",
     "canonical": "https://thekpiplus.com/tools/hotel-budget-calculator",
     "alternates": [
-      {
-        "hreflang": "en",
-        "href": "https://thekpiplus.com/en/tools/hotel-budget-calculator"
-      },
       {
         "hreflang": "th",
         "href": "https://thekpiplus.com/tools/hotel-budget-calculator"
@@ -2400,10 +2450,6 @@
     "canonical": "https://thekpiplus.com/tools/hotel-profit-calculator",
     "alternates": [
       {
-        "hreflang": "en",
-        "href": "https://thekpiplus.com/en/tools/hotel-profit-calculator"
-      },
-      {
         "hreflang": "th",
         "href": "https://thekpiplus.com/tools/hotel-profit-calculator"
       }
@@ -2419,10 +2465,6 @@
     "canonical": "https://thekpiplus.com/tools/hotel-searchability-check",
     "alternates": [
       {
-        "hreflang": "en",
-        "href": "https://thekpiplus.com/en/tools/hotel-searchability-check"
-      },
-      {
         "hreflang": "th",
         "href": "https://thekpiplus.com/tools/hotel-searchability-check"
       }
@@ -2434,13 +2476,9 @@
     "route": "/tools/hotel-vat-service-charge-calculator",
     "language": "th",
     "title": "เครื่องคำนวณ VAT และ Service Charge โรงแรม | เดอะ เคพีไอ พลัส",
-    "description": "คำนวณราคาขาย VAT, Service Charge และยอดสุทธิสำหรับธุรกิจโรงแรม",
+    "description": "คำนวณราคาขาย รวม VAT และ Service Charge รวมถึงยอดสุทธิ สำหรับงานขายและจองของโรงแรม",
     "canonical": "https://thekpiplus.com/tools/hotel-vat-service-charge-calculator",
     "alternates": [
-      {
-        "hreflang": "en",
-        "href": "https://thekpiplus.com/en/tools/hotel-vat-service-charge-calculator"
-      },
       {
         "hreflang": "th",
         "href": "https://thekpiplus.com/tools/hotel-vat-service-charge-calculator"
@@ -2453,13 +2491,9 @@
     "route": "/tools/ota-commission-calculator",
     "language": "th",
     "title": "เครื่องคำนวณค่าคอมมิชชัน OTA | เดอะ เคพีไอ พลัส",
-    "description": "คำนวณต้นทุน Commission OTA และรายได้สุทธิหลังหักค่า Commission",
+    "description": "คำนวณต้นทุน Commission ของ OTA และรายได้สุทธิหลังหักค่าคอม เพื่อช่วยเปรียบเทียบช่องทางขาย",
     "canonical": "https://thekpiplus.com/tools/ota-commission-calculator",
     "alternates": [
-      {
-        "hreflang": "en",
-        "href": "https://thekpiplus.com/en/tools/ota-commission-calculator"
-      },
       {
         "hreflang": "th",
         "href": "https://thekpiplus.com/tools/ota-commission-calculator"
@@ -2472,13 +2506,9 @@
     "route": "/tools/revpar-calculator",
     "language": "th",
     "title": "เครื่องคำนวณ RevPAR, ADR และ Occupancy | เดอะ เคพีไอ พลัส",
-    "description": "คำนวณ RevPAR, ADR และ Occupancy เพื่อช่วยวิเคราะห์ผลประกอบการโรงแรม",
+    "description": "คำนวณ RevPAR, ADR และ Occupancy จากข้อมูลที่มี เพื่อช่วยวิเคราะห์ผลประกอบการโรงแรมอย่างรวดเร็ว",
     "canonical": "https://thekpiplus.com/tools/revpar-calculator",
     "alternates": [
-      {
-        "hreflang": "en",
-        "href": "https://thekpiplus.com/en/tools/revpar-calculator"
-      },
       {
         "hreflang": "th",
         "href": "https://thekpiplus.com/tools/revpar-calculator"
@@ -2506,7 +2536,7 @@
     "route": "/zh",
     "language": "zh-Hant",
     "title": "The KPI Plus | 酒店收益與商業成長夥伴",
-    "description": "The KPI Plus 協助獨立酒店提升收益、需求、直銷預訂、科技與團隊工作方式，從可檢查的商業訊號決定下一步，而非空泛承諾。",
+    "description": "The KPI Plus 協助獨立酒店提升收益、需求、直銷預訂、科技與團隊工作方式，從可檢查的商業訊號決定下一步，而非空泛承諾。 範圍涵蓋泰國獨立酒店的收益與成長決策。",
     "canonical": "https://thekpiplus.com/zh",
     "alternates": [
       {
@@ -2533,7 +2563,7 @@
     "route": "/zh/about-us",
     "language": "zh-Hant",
     "title": "關於 The KPI Plus | The KPI Plus",
-    "description": "認識 The KPI Plus：總部位於普吉、由創辦人帶領的酒店績效與成長夥伴，協助業主與商業團隊看清收益缺口、機會與優先行動。",
+    "description": "認識 The KPI Plus：總部位於普吉、由創辦人帶領的酒店績效與成長夥伴，協助泰國酒店業主與商業團隊看清收益缺口、機會與優先行動。",
     "canonical": "https://thekpiplus.com/zh/about-us",
     "alternates": [
       {
@@ -2560,7 +2590,7 @@
     "route": "/zh/approach",
     "language": "zh-Hant",
     "title": "The KPI Plus 服務方式 | The KPI Plus",
-    "description": "清楚的酒店商業做法：團隊共用數據、明確決策與負責人，並能量測 ADR、入住率與扣除佣金後的淨收益下一步。",
+    "description": "清楚的酒店商業做法：團隊共用數據、明確決策與負責人，並能量測 ADR、入住率與扣除佣金後的淨收益下一步。當酒店團隊看得到資料、指定負責人，並能量變結果時，收益、需求、科技與追蹤才會一起運作。",
     "canonical": "https://thekpiplus.com/zh/approach",
     "alternates": [
       {
@@ -2587,7 +2617,7 @@
     "route": "/zh/associations",
     "language": "zh-Hant",
     "title": "The KPI Plus 合作夥伴 | The KPI Plus",
-    "description": "與 The KPI Plus 合作的酒店科技、教育與旅遊服務公司，用於延伸產品、專業支援與產業網絡。",
+    "description": "與 The KPI Plus 合作的酒店科技、教育與旅遊服務公司名錄，用於延伸產品、專業支援與產業網絡，並協助酒店經營者取得實務觀點與成長支援。",
     "canonical": "https://thekpiplus.com/zh/associations",
     "alternates": [
       {
@@ -2614,7 +2644,7 @@
     "route": "/zh/case-studies",
     "language": "zh-Hant",
     "title": "客戶案例 | 飯店收益實績 | The KPI Plus",
-    "description": "以真實收益衡量的飯店案例，而非虛榮指標：客房營收、ADR、入住率、RevPAR、直銷預訂與 ROAS，涵蓋普吉多家物業。",
+    "description": "以真實收益衡量的飯店案例，而非虛榮指標：客房營收、ADR、入住率、RevPAR、直銷預訂與 ROAS，涵蓋普吉多家物業。我們公開已獲同意的客戶名稱，以及任何案例研究的標準：要有工作範圍、資料來源，以及客戶核准。",
     "canonical": "https://thekpiplus.com/zh/case-studies",
     "alternates": [
       {
@@ -2641,7 +2671,7 @@
     "route": "/zh/contact-us",
     "language": "zh-Hant",
     "title": "联系 The KPI Plus | 普吉 | The KPI Plus",
-    "description": "聯繫位於普吉的 The KPI Plus，洽詢酒店收益、數位成長、本地搜尋、科技導入與商業績效支援。",
+    "description": "聯繫位於普吉的 The KPI Plus，洽詢酒店收益、數位成長、本地搜尋、科技導入與商業績效支援。Clear context. Clear ownership. A commercial next move that can be measured.",
     "canonical": "https://thekpiplus.com/zh/contact-us",
     "alternates": [
       {
@@ -2668,7 +2698,7 @@
     "route": "/zh/cookies",
     "language": "zh-Hant",
     "title": "Cookie 政策 | The KPI Plus",
-    "description": "了解 The KPI Plus 如何在本網站使用必要技術、分析、偏好設定與 Google 地圖相關 Cookie，以及如何調整設定。",
+    "description": "了解 The KPI Plus 如何在本網站使用必要技術、分析、偏好設定與 Google 地圖相關 Cookie，以及如何調整設定。The KPI Plus 如何使用必要技術、偏好設定、分析與 Google 地圖。",
     "canonical": "https://thekpiplus.com/zh/cookies",
     "alternates": [
       {
@@ -2695,7 +2725,7 @@
     "route": "/zh/hotel-digital-marketing",
     "language": "zh-Hant",
     "title": "酒店数字营销：应优先选择哪些渠道？ | The KPI Plus",
-    "description": "比較酒店 Google Ads、Meta Ads、SEO、本地搜尋、網站內容、直訂與轉換路徑的教育指南，協助排定優先順序。",
+    "description": "比較酒店 Google Ads、Meta Ads、SEO、本地搜尋、網站內容、直訂與轉換路徑的教育指南，協助排定優先順序。在选择营销优先级前，比较搜索、付费媒体、本地可见度、网站内容与转化的角色。",
     "canonical": "https://thekpiplus.com/zh/hotel-digital-marketing",
     "alternates": [
       {
@@ -2722,7 +2752,7 @@
     "route": "/zh/hotel-revenue-management",
     "language": "zh-Hant",
     "title": "泰国酒店收益管理与分销指南 | The KPI Plus",
-    "description": "教育指南：了解泰國酒店定價、需求、通路組合、OTA、直訂與商業決策，作為 Revenue 工作起點。",
+    "description": "教育指南：了解泰國酒店定價、需求、通路組合、OTA、直訂與商業決策，作為 Revenue 工作起點。在选择收益管理支持前，了解定价、需求、渠道组合、OTA 与直订之间的关系。",
     "canonical": "https://thekpiplus.com/zh/hotel-revenue-management",
     "alternates": [
       {
@@ -2749,7 +2779,7 @@
     "route": "/zh/hotel-seo-local-search",
     "language": "zh-Hant",
     "title": "酒店 SEO 与 Google 商家资料指南 | The KPI Plus",
-    "description": "了解酒店 SEO、本地搜尋資訊、Google 商家資料準備度與網站可發現性，協助客人找到正確事實後再往下走。",
+    "description": "了解酒店 SEO、本地搜尋資訊、Google 商家資料準備度與網站可發現性，協助客人先找到正確事實，再往詢問、比較價格或訂房的下一步前進。",
     "canonical": "https://thekpiplus.com/zh/hotel-seo-local-search",
     "alternates": [
       {
@@ -2776,7 +2806,7 @@
     "route": "/zh/hotel-technology-ai",
     "language": "zh-Hant",
     "title": "AI、自动化与酒店技术：酒店的实用应用 | The KPI Plus",
-    "description": "教育指南：酒店技術、自動化、AI 工作流程、導入方式、責任歸屬與負責任使用，聚焦可落地應用。",
+    "description": "教育指南：酒店技術、自動化、AI 工作流程、導入方式、責任歸屬與負責任使用，聚焦可落地應用。在选择酒店技术方案前，了解实用工作流程、团队责任、信息流和负责任采用。",
     "canonical": "https://thekpiplus.com/zh/hotel-technology-ai",
     "alternates": [
       {
@@ -2803,7 +2833,7 @@
     "route": "/zh/hotel-website-conversion",
     "language": "zh-Hant",
     "title": "酒店网站与直订转化指南 | The KPI Plus",
-    "description": "教育指南：酒店網站 UX、行動裝置、預訂引擎、內容、信任資訊、CTA 與直訂轉換，協助減少中途流失。",
+    "description": "教育指南：酒店網站 UX、行動裝置、預訂引擎、內容、信任資訊、CTA 與直訂轉換，協助減少中途流失。了解网站 UX、移动端、预订路径、内容、信任与 CTA 如何影响直订旅程。",
     "canonical": "https://thekpiplus.com/zh/hotel-website-conversion",
     "alternates": [
       {
@@ -2830,7 +2860,7 @@
     "route": "/zh/insights",
     "language": "zh-Hant",
     "title": "給酒店業主與團隊的洞察 | The KPI Plus",
-    "description": "給業主、總經理與酒店團隊的觀點文章：涵蓋收益、需求、行銷、科技，以及可執行的下一步商業行動。",
+    "description": "給業主、總經理與酒店團隊的觀點文章：涵蓋收益、需求、行銷、科技，以及可執行的下一步商業行動。整理收益管理、行銷、科技與 AI 的觀點，幫助酒店團隊看見下一個有用的問題。",
     "canonical": "https://thekpiplus.com/zh/insights",
     "alternates": [
       {
@@ -2861,7 +2891,7 @@
     "route": "/zh/phuket-hotel-marketing",
     "language": "zh-Hant",
     "title": "普吉酒店收益管理与数字营销 | The KPI Plus",
-    "description": "面向普吉酒店的在地指南：一起檢視收益管理、數位需求、本地搜尋與直訂等商業問題與優先順序。",
+    "description": "面向普吉酒店的在地指南：一起檢視收益管理、數位需求、本地搜尋與直訂等商業問題與優先順序。供普吉酒店审视收益、营销、本地搜索、直订、技术与团队能力问题的本地指南。",
     "canonical": "https://thekpiplus.com/zh/phuket-hotel-marketing",
     "alternates": [
       {
@@ -2888,7 +2918,7 @@
     "route": "/zh/privacy",
     "language": "zh-Hant",
     "title": "隱私權政策 | The KPI Plus",
-    "description": "說明 The KPI Plus 如何處理網站諮詢、CRM 存取、分析與個人資料，以及您在 PDPA 下的權利。",
+    "description": "說明 The KPI Plus 如何處理網站諮詢、CRM 存取、分析與個人資料，以及您在 PDPA 下的權利。The KPI Plus 如何處理諮詢、CRM 存取、分析與公開網站資訊。",
     "canonical": "https://thekpiplus.com/zh/privacy",
     "alternates": [
       {
@@ -2915,7 +2945,7 @@
     "route": "/zh/solutions",
     "language": "zh-Hant",
     "title": "酒店解決方案 | The KPI Plus",
-    "description": "The KPI Plus 的酒店收益、需求與團隊能力方案，依問題、資料與約定範圍選擇下一步，而非固定套餐。",
+    "description": "The KPI Plus 的酒店收益、需求與團隊能力方案，依問題、資料與約定範圍選擇下一步，而非固定套餐。 依問題、資料與約定範圍選擇下一步。",
     "canonical": "https://thekpiplus.com/zh/solutions",
     "alternates": [
       {
@@ -2942,7 +2972,7 @@
     "route": "/zh/solutions/b2b-agent-sales",
     "language": "zh-Hant",
     "title": "飯店 B2B 與旅行社 | The KPI Plus",
-    "description": "先評估這間飯店該不該加 B2B。The KPI Plus 從現有網絡幫忙挑選夥伴、協調條件並追蹤成果。合約由飯店自行簽署。",
+    "description": "先評估這間飯店該不該加 B2B。The KPI Plus 從現有網絡幫忙挑選夥伴、協調條件並追蹤成果。合約由飯店自行簽署。 合約由飯店自行簽署。",
     "canonical": "https://thekpiplus.com/zh/solutions/b2b-agent-sales",
     "alternates": [
       {
@@ -2969,7 +2999,7 @@
     "route": "/zh/solutions/google-ads-management",
     "language": "zh-Hant",
     "title": "飯店 Google Ads | The KPI Plus",
-    "description": "為飯店規劃 Google Ads：從搜尋與廣告，到網站、價格與預訂路徑。這是可檢查的規劃工作，不保證預訂量。",
+    "description": "為飯店規劃 Google Ads：從搜尋與廣告，到網站、價格與預訂路徑。這是可檢查的規劃工作，不保證預訂量。 這是可檢查的規劃工作，不保證預訂量。",
     "canonical": "https://thekpiplus.com/zh/solutions/google-ads-management",
     "alternates": [
       {
@@ -3023,7 +3053,7 @@
     "route": "/zh/solutions/meta-ads-management",
     "language": "zh-Hant",
     "title": "飯店 Facebook 與 Instagram Ads | The KPI Plus",
-    "description": "為飯店規劃 Facebook 與 Instagram 廣告：從客群與方案，到點擊後的詢問或預訂路徑。不保證預訂量。",
+    "description": "為飯店規劃 Facebook 與 Instagram 廣告：從客群與方案，到點擊後的詢問或預訂路徑。不保證預訂量。 不保證預訂量，著重可檢查的需求品質。",
     "canonical": "https://thekpiplus.com/zh/solutions/meta-ads-management",
     "alternates": [
       {
@@ -3050,7 +3080,7 @@
     "route": "/zh/solutions/outsourced-hotel-reservations",
     "language": "zh-Hant",
     "title": "飯店外包訂房服務 | The KPI Plus",
-    "description": "The KPI Plus 可依談好的範圍接手訂房工作，讓現場團隊有時間照顧客人。這是實際作業，不只是流程建議。",
+    "description": "The KPI Plus 可依談好的範圍接手訂房工作，讓現場團隊有時間照顧客人。這是實際作業，不只是流程建議。 這是實際作業，不只是流程建議。",
     "canonical": "https://thekpiplus.com/zh/solutions/outsourced-hotel-reservations",
     "alternates": [
       {
@@ -3077,7 +3107,7 @@
     "route": "/zh/solutions/independent-hotel-management",
     "language": "zh-Hant",
     "title": "讓獨立飯店真正把工作跑起來 | The KPI Plus",
-    "description": "The KPI Plus 協助獨立飯店業主依資產與目標規劃管理方式：從管理團隊與營運系統，到收益、銷售通路與經營結果。",
+    "description": "The KPI Plus 協助獨立飯店業主依資產與目標規劃管理方式：從管理團隊與營運系統，到收益、銷售通路與經營結果。 從管理團隊與營運系統做到成果追蹤。",
     "canonical": "https://thekpiplus.com/zh/solutions/independent-hotel-management",
     "alternates": [
       {
@@ -3104,7 +3134,7 @@
     "route": "/zh/solutions/revenue-commercial-management",
     "language": "zh-Hant",
     "title": "飯店收益與商務管理 | The KPI Plus",
-    "description": "從 Revenue Management 開始，再依談好的範圍擴到通路、直銷預訂、行銷與系統。不是只看房價。",
+    "description": "從 Revenue Management 開始，再依談好的範圍擴到通路、直銷預訂、行銷與系統；協助把商業決策連成可追蹤節奏，而不只是看房價。",
     "canonical": "https://thekpiplus.com/zh/solutions/revenue-commercial-management",
     "alternates": [
       {
@@ -3212,7 +3242,7 @@
     "route": "/zh/solutions/hotel-direct-bookings",
     "language": "zh-Hant",
     "title": "從飯店網站提高預訂機會 | The KPI Plus",
-    "description": "調整現有網站，讓客人從進站頁走到 Booking Engine 更順。點擊預訂按鈕不算完成預訂，也不保證每間飯店有同樣增幅。",
+    "description": "調整現有網站，讓客人從進站頁走到 Booking Engine 更順。點擊預訂按鈕不算完成預訂，也不保證每間飯店有同樣增幅。 點擊預訂按鈕不算完成預訂。",
     "canonical": "https://thekpiplus.com/zh/solutions/hotel-direct-bookings",
     "alternates": [
       {
@@ -3239,7 +3269,7 @@
     "route": "/zh/solutions/hotel-website-design",
     "language": "zh-Hant",
     "title": "飯店網站設計 | The KPI Plus",
-    "description": "依飯店目標規劃與開發網站，讓客人預訂前更有把握，團隊也能繼續照顧。WordPress 或其他 CMS 依需求選擇，不綁單一工具。",
+    "description": "依飯店目標規劃與開發網站，讓客人預訂前更有把握，團隊也能繼續照顧。WordPress 或其他 CMS 依需求選擇，不綁單一工具。 CMS 依需求選擇，不綁單一工具。",
     "canonical": "https://thekpiplus.com/zh/solutions/hotel-website-design",
     "alternates": [
       {
@@ -3362,7 +3392,7 @@
     "route": "/zh/case-studies/layan-revenue-management",
     "language": "zh-Hant",
     "title": "客房營收 +34.7% | Layan 案例 | The KPI Plus",
-    "description": "普吉 Layan 頂級泳池別墅物業：在收益與通路管理下，前六個月客房營收成長 34.7%，並增加約 557 萬泰銖營收。",
+    "description": "普吉 Layan 頂級泳池別墅物業：在收益與通路管理下，前六個月客房營收成長 34.7%，並增加約 557 萬泰銖營收。 案例數字以客戶核准可公開資料為準。",
     "canonical": "https://thekpiplus.com/zh/case-studies/layan-revenue-management",
     "alternates": [
       {
@@ -3470,7 +3500,7 @@
     "route": "/zh/case-studies/patong-boutique-hotel-revenue",
     "language": "zh-Hant",
     "title": "客房營收 +12.8% | 巴東精品飯店 | The KPI Plus",
-    "description": "普吉巴東獨立精品飯店：透過定價與商務管理，客房營收成長 12.8%，年增約 185 萬泰銖營收。",
+    "description": "普吉巴東獨立精品飯店案例：透過定價與商務管理，客房營收成長 12.8%，年增約 185 萬泰銖營收；相關數字均以客戶核准可公開資料為準。",
     "canonical": "https://thekpiplus.com/zh/case-studies/patong-boutique-hotel-revenue",
     "alternates": [
       {
@@ -3578,7 +3608,7 @@
     "route": "/zh/case-studies/coconut-island-digital-performance",
     "language": "zh-Hant",
     "title": "ROAS 14.89× | 椰子島直銷預訂 | The KPI Plus",
-    "description": "普吉椰子島五星度假村：廣告支出 6 萬泰銖，創造直銷預訂營收 180 萬泰銖，ROAS 達 14.89×。",
+    "description": "普吉椰子島五星度假村：廣告支出 6 萬泰銖，創造直銷預訂營收 180 萬泰銖，ROAS 達 14.89×。 案例數字以客戶核准可公開資料為準。",
     "canonical": "https://thekpiplus.com/zh/case-studies/coconut-island-digital-performance",
     "alternates": [
       {
@@ -3686,7 +3716,7 @@
     "route": "/zh/case-studies/patong-direct-booking-performance",
     "language": "zh-Hant",
     "title": "ROAS 17.29× | 巴東直銷預訂 | The KPI Plus",
-    "description": "普吉巴東精品飯店與公寓：重建追蹤與品牌搜尋策略後，ROAS 達 17.29×。",
+    "description": "普吉巴東精品飯店與公寓案例：重建追蹤與品牌搜尋策略之後，ROAS 達 17.29×；相關成果數字均以客戶核准可公開資料為準。",
     "canonical": "https://thekpiplus.com/zh/case-studies/patong-direct-booking-performance",
     "alternates": [
       {
@@ -3708,5 +3738,632 @@
     ],
     "ogImage": "https://thekpiplus.com/media/the-kpi-plus-performance-hero_2f986b5f.jpg",
     "ogUrl": "https://thekpiplus.com/zh/case-studies/patong-direct-booking-performance"
+  },
+  {
+    "route": "/insights/10-hotel-marketing-strategies",
+    "language": "th",
+    "title": "10 กลยุทธ์การตลาดโรงแรม: วางแผนให้ยอดจองคุ้มค่า | The KPI Plus",
+    "description": "10 กลยุทธ์การตลาดโรงแรมสำหรับเจ้าของที่พัก: เป้าหมาย ลูกค้า แบรนด์ ช่องทางขาย เว็บไซต์ โปรโมชั่น และการวัดยอดจอง ราคา ต้นทุน อัปเดตปลายปี 2569",
+    "canonical": "https://thekpiplus.com/insights/10-hotel-marketing-strategies",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/10-hotel-marketing-strategies"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/10-hotel-marketing-strategies"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/10-hotel-marketing-strategies/th/og.webp",
+    "ogUrl": "https://thekpiplus.com/insights/10-hotel-marketing-strategies"
+  },
+  {
+    "route": "/en/insights/10-hotel-marketing-strategies",
+    "language": "en",
+    "title": "10 Hotel Marketing Strategies That Pay Off | The KPI Plus",
+    "description": "Ten hotel marketing strategies for owners in Thailand: goals, guests, brand, channels, website, social, promotions, experience, partners and guest messages.",
+    "canonical": "https://thekpiplus.com/en/insights/10-hotel-marketing-strategies",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/10-hotel-marketing-strategies"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/10-hotel-marketing-strategies"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/10-hotel-marketing-strategies/en/og.webp",
+    "ogUrl": "https://thekpiplus.com/en/insights/10-hotel-marketing-strategies"
+  },
+  {
+    "route": "/insights/7-hotel-marketing-methods",
+    "language": "th",
+    "title": "7 วิธีทำการตลาดโรงแรมให้ได้ผลต่อเนื่อง อัปเดต 2569 | The KPI Plus",
+    "description": "7 วิธีทำการตลาดโรงแรมที่ใช้ได้จริงปลายปี 2569: Google และ AI Search โฆษณา เนื้อหา โซเชียล โปรโมชั่น กิจกรรม และลูกค้าเดิม วัดผลถึงรายได้สุทธิ",
+    "canonical": "https://thekpiplus.com/insights/7-hotel-marketing-methods",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/7-hotel-marketing-methods"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/7-hotel-marketing-methods"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/7-hotel-marketing-methods/th/og.webp",
+    "ogUrl": "https://thekpiplus.com/insights/7-hotel-marketing-methods"
+  },
+  {
+    "route": "/en/insights/7-hotel-marketing-methods",
+    "language": "en",
+    "title": "7 Hotel Marketing Ideas That Keep Working | The KPI Plus",
+    "description": "Seven hotel marketing ideas for late 2026: Google and AI search, ads, content, social, promotions, events and past guests, measured to net revenue.",
+    "canonical": "https://thekpiplus.com/en/insights/7-hotel-marketing-methods",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/7-hotel-marketing-methods"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/7-hotel-marketing-methods"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/7-hotel-marketing-methods/en/og.webp",
+    "ogUrl": "https://thekpiplus.com/en/insights/7-hotel-marketing-methods"
+  },
+  {
+    "route": "/insights/hotel-local-seo",
+    "language": "th",
+    "title": "Local SEO โรงแรม: Google Maps ที่พาไปสู่การจอง | The KPI Plus",
+    "description": "Local SEO โรงแรมช่วยเพิ่มยอดจองอย่างไร: ปัจจัยจัดอันดับบน Google Maps ข้อมูล Business Profile สำหรับโรงแรม รีวิว หน้าทำเล ลิงก์จอง การวัดผล และแผน 30 วัน",
+    "canonical": "https://thekpiplus.com/insights/hotel-local-seo",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/hotel-local-seo"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/hotel-local-seo"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/hotel-local-seo/th/og.webp",
+    "ogUrl": "https://thekpiplus.com/insights/hotel-local-seo"
+  },
+  {
+    "route": "/en/insights/hotel-local-seo",
+    "language": "en",
+    "title": "Local SEO for Hotels: Google Maps to Bookings | The KPI Plus",
+    "description": "Local SEO for hotels in Thailand: how Google ranks local results, Business Profile basics, reviews, location pages, booking links and a 30-day plan.",
+    "canonical": "https://thekpiplus.com/en/insights/hotel-local-seo",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/hotel-local-seo"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/hotel-local-seo"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/hotel-local-seo/en/og.webp",
+    "ogUrl": "https://thekpiplus.com/en/insights/hotel-local-seo"
+  },
+  {
+    "route": "/en/insights/hotel-marketing",
+    "language": "en",
+    "title": "What Is Hotel Marketing? A 2026 Guide | The KPI Plus",
+    "description": "Hotel marketing in 2026 explained: guests, channels, pricing and measuring net revenue, with a starting plan for small, independent hotels in Thailand.",
+    "canonical": "https://thekpiplus.com/en/insights/hotel-marketing",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/hotel-marketing"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/hotel-marketing"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/hotel-marketing/en/og.webp",
+    "ogUrl": "https://thekpiplus.com/en/insights/hotel-marketing"
+  },
+  {
+    "route": "/insights/hotel-marketing-plan-2027",
+    "language": "th",
+    "title": "แผนการตลาดโรงแรมปี 2027: วางแผนให้ได้รายได้สุทธิ | The KPI Plus",
+    "description": "แผนการตลาดโรงแรมปี 2027 สำหรับเจ้าของและ GM: ตั้งเป้าจากวันที่ต้องขาย เลือกตลาด จัดช่องทาง OTA และจองตรง แบ่งงบ และแผนรายไตรมาส จากข้อมูลตลาดล่าสุด",
+    "canonical": "https://thekpiplus.com/insights/hotel-marketing-plan-2027",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/hotel-marketing-plan-2027"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/hotel-marketing-plan-2027"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/hotel-marketing-plan-2027/th/og.webp",
+    "ogUrl": "https://thekpiplus.com/insights/hotel-marketing-plan-2027"
+  },
+  {
+    "route": "/en/insights/hotel-marketing-plan-2027",
+    "language": "en",
+    "title": "Hotel Marketing Plan 2027 for Thailand | The KPI Plus",
+    "description": "A hotel marketing plan for 2027 in Thailand: targets by need dates, market mix, OTAs vs direct bookings, budget split and a quarterly plan.",
+    "canonical": "https://thekpiplus.com/en/insights/hotel-marketing-plan-2027",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/hotel-marketing-plan-2027"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/hotel-marketing-plan-2027"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/hotel-marketing-plan-2027/en/og.webp",
+    "ogUrl": "https://thekpiplus.com/en/insights/hotel-marketing-plan-2027"
+  },
+  {
+    "route": "/insights/hotel-organizational-structure",
+    "language": "th",
+    "title": "โครงสร้างองค์กรโรงแรม: แผนก หน้าที่ และระบบ | The KPI Plus",
+    "description": "โครงสร้างองค์กรโรงแรมสำหรับโรงแรมอิสระ: แผนกหลัก หน้าที่ของแต่ละฝ่าย จำนวนคนตามขนาดโรงแรม ระบบ PMS และ Channel Manager และวิธีส่งต่องานไม่ให้ตกหล่น",
+    "canonical": "https://thekpiplus.com/insights/hotel-organizational-structure",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/hotel-organizational-structure"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/hotel-organizational-structure"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/hotel-organizational-structure/th/og.webp",
+    "ogUrl": "https://thekpiplus.com/insights/hotel-organizational-structure"
+  },
+  {
+    "route": "/en/insights/hotel-organizational-structure",
+    "language": "en",
+    "title": "Hotel Organizational Structure Guide | The KPI Plus",
+    "description": "Hotel organizational structure for independent hotels: core departments, roles by size, PMS and channel manager basics, and handovers that protect revenue.",
+    "canonical": "https://thekpiplus.com/en/insights/hotel-organizational-structure",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/hotel-organizational-structure"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/hotel-organizational-structure"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/hotel-organizational-structure/en/og.webp",
+    "ogUrl": "https://thekpiplus.com/en/insights/hotel-organizational-structure"
+  },
+  {
+    "route": "/insights/hotel-rate-parity",
+    "language": "th",
+    "title": "Rate Parity คืออะไร? วิธีคุมราคาโรงแรมทุกช่องทาง | The KPI Plus",
+    "description": "Rate Parity คืออะไร ต่างจาก Rate Disparity อย่างไร ทำไมราคาหลุด และโรงแรมควรตรวจราคา OTA เว็บไซต์ และ Google อย่างไร พร้อมข้อเสนอจองตรงที่ไม่ต้องลดราคา",
+    "canonical": "https://thekpiplus.com/insights/hotel-rate-parity",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/hotel-rate-parity"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/hotel-rate-parity"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/hotel-rate-parity/th/og.webp",
+    "ogUrl": "https://thekpiplus.com/insights/hotel-rate-parity"
+  },
+  {
+    "route": "/en/insights/hotel-rate-parity",
+    "language": "en",
+    "title": "Hotel Rate Parity Explained for Thailand | The KPI Plus",
+    "description": "Hotel rate parity explained: wide vs narrow parity, Europe's ban, why rates leak, how to check OTA, website and Google prices, and direct-booking perks.",
+    "canonical": "https://thekpiplus.com/en/insights/hotel-rate-parity",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/hotel-rate-parity"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/hotel-rate-parity"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/hotel-rate-parity/en/og.webp",
+    "ogUrl": "https://thekpiplus.com/en/insights/hotel-rate-parity"
+  },
+  {
+    "route": "/insights/hotel-review-management",
+    "language": "th",
+    "title": "จัดการรีวิวโรงแรม: ขอ ตอบ และใช้รีวิวให้ได้ยอดจอง | The KPI Plus",
+    "description": "จัดการรีวิวโรงแรมให้ได้ผล: ขอรีวิวอย่างถูกกติกา ตอบรีวิวดีและรีวิวเชิงลบ ใช้รีวิวบนโซเชียล และตัวเลขที่ควรวัด สำหรับเจ้าของและ GM โรงแรม",
+    "canonical": "https://thekpiplus.com/insights/hotel-review-management",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/hotel-review-management"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/hotel-review-management"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/hotel-review-management/th/og.webp",
+    "ogUrl": "https://thekpiplus.com/insights/hotel-review-management"
+  },
+  {
+    "route": "/en/insights/hotel-review-management",
+    "language": "en",
+    "title": "Hotel Review Management: Ask, Reply, Improve | The KPI Plus",
+    "description": "Hotel review management for owners and GMs: how to ask for reviews within Google's rules, reply to good and negative reviews, and track the numbers that matter.",
+    "canonical": "https://thekpiplus.com/en/insights/hotel-review-management",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/hotel-review-management"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/hotel-review-management"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/hotel-review-management/en/og.webp",
+    "ogUrl": "https://thekpiplus.com/en/insights/hotel-review-management"
+  },
+  {
+    "route": "/insights/hotel-seo",
+    "language": "th",
+    "title": "SEO โรงแรม: ทำเว็บไซต์โรงแรมให้ติดหน้าแรก Google | The KPI Plus",
+    "description": "SEO โรงแรมสำหรับเจ้าของและ GM: คำค้นแบบไหนติดหน้าแรกได้จริง พื้นฐานเทคนิค หน้าที่ต้องมี Google Maps ลิงก์ และวิธีวัดผลเป็นยอดจอง พร้อมแผน 90 วัน",
+    "canonical": "https://thekpiplus.com/insights/hotel-seo",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/hotel-seo"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/hotel-seo"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/hotel-seo/th/og.webp",
+    "ogUrl": "https://thekpiplus.com/insights/hotel-seo"
+  },
+  {
+    "route": "/en/insights/hotel-seo",
+    "language": "en",
+    "title": "Hotel SEO: Get Your Website on Page One | The KPI Plus",
+    "description": "Hotel SEO for owners in Thailand: searches you can win, technical basics, pages to build, Google Maps, links and a 90-day plan measured in bookings.",
+    "canonical": "https://thekpiplus.com/en/insights/hotel-seo",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/hotel-seo"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/hotel-seo"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/hotel-seo/en/og.webp",
+    "ogUrl": "https://thekpiplus.com/en/insights/hotel-seo"
+  },
+  {
+    "route": "/insights/hotel-social-media",
+    "language": "th",
+    "title": "โซเชียลมีเดียโรงแรม เลือกช่องทางไหนดี? อัปเดต 2569 | The KPI Plus",
+    "description": "โซเชียลมีเดียโรงแรมปี 2569: เทียบ Facebook, Instagram, TikTok, YouTube, LINE OA และ X พร้อมวิธีเลือกช่องทาง เชื่อมไปการจอง และวัดผลอย่างคุ้มค่า",
+    "canonical": "https://thekpiplus.com/insights/hotel-social-media",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/hotel-social-media"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/hotel-social-media"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/hotel-social-media/th/og.webp",
+    "ogUrl": "https://thekpiplus.com/insights/hotel-social-media"
+  },
+  {
+    "route": "/en/insights/hotel-social-media",
+    "language": "en",
+    "title": "Hotel Social Media: Which Channels to Use | The KPI Plus",
+    "description": "Hotel social media in 2026: Facebook, Instagram, TikTok, YouTube, LINE and X compared, how to choose channels and turn posts into bookings.",
+    "canonical": "https://thekpiplus.com/en/insights/hotel-social-media",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/hotel-social-media"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/hotel-social-media"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/hotel-social-media/en/og.webp",
+    "ogUrl": "https://thekpiplus.com/en/insights/hotel-social-media"
+  },
+  {
+    "route": "/insights/hotel-social-media-mistakes",
+    "language": "th",
+    "title": "โพสต์โซเชียลโรงแรมต้องระวังอะไร? 7 จุดตรวจ | The KPI Plus",
+    "description": "โพสต์โซเชียลโรงแรมให้ปลอดภัย: ตรวจข้อมูลห้อง ราคา โปรโมชัน เครื่องดื่มแอลกอฮอล์ PDPA ลิขสิทธิ์ และคนตอบแชต ก่อนกดเผยแพร่ พร้อมเช็กลิสต์สำหรับทีมโรงแรม",
+    "canonical": "https://thekpiplus.com/insights/hotel-social-media-mistakes",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/hotel-social-media-mistakes"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/hotel-social-media-mistakes"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/hotel-social-media-mistakes/th/og.webp",
+    "ogUrl": "https://thekpiplus.com/insights/hotel-social-media-mistakes"
+  },
+  {
+    "route": "/en/insights/hotel-social-media-mistakes",
+    "language": "en",
+    "title": "Hotel Social Media Mistakes: 7 Checks | The KPI Plus",
+    "description": "Avoid hotel social media mistakes in Thailand: wrong prices, alcohol ads, guest privacy (PDPA), music rights and slow replies. A checklist for owners.",
+    "canonical": "https://thekpiplus.com/en/insights/hotel-social-media-mistakes",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/hotel-social-media-mistakes"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/hotel-social-media-mistakes"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/hotel-social-media-mistakes/en/og.webp",
+    "ogUrl": "https://thekpiplus.com/en/insights/hotel-social-media-mistakes"
+  },
+  {
+    "route": "/insights/hotel-website-content",
+    "language": "th",
+    "title": "คอนเทนต์เว็บไซต์โรงแรม: ปรับให้ค้นพบและจองง่าย | The KPI Plus",
+    "description": "ปรับคอนเทนต์เว็บไซต์โรงแรมให้ตอบคำถามก่อนจอง: หน้าห้องพัก หน้าทำเล ชื่อหน้า ภาพและ alt text คำถามที่พบบ่อย การอัปเดต และการวัดผลจาก Google ถึงยอดจอง",
+    "canonical": "https://thekpiplus.com/insights/hotel-website-content",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/hotel-website-content"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/hotel-website-content"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/hotel-website-content/th/og.webp",
+    "ogUrl": "https://thekpiplus.com/insights/hotel-website-content"
+  },
+  {
+    "route": "/en/insights/hotel-website-content",
+    "language": "en",
+    "title": "Hotel Website Content That Ranks and Books | The KPI Plus",
+    "description": "Improve your hotel website content: room pages, location pages, titles, photos and alt text, FAQs, updates, and how to measure from Google search to booking.",
+    "canonical": "https://thekpiplus.com/en/insights/hotel-website-content",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/hotel-website-content"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/hotel-website-content"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/hotel-website-content/en/og.webp",
+    "ogUrl": "https://thekpiplus.com/en/insights/hotel-website-content"
+  },
+  {
+    "route": "/insights/increase-hotel-bookings-from-google",
+    "language": "th",
+    "title": "เพิ่มยอดจองโรงแรมจาก Google: SEO, Maps และ Ads | The KPI Plus",
+    "description": "เพิ่มยอดจองโรงแรมจาก Google อย่างเป็นระบบ: ปิดจุดรั่วบนเว็บไซต์ ใช้ SEO, Google Maps, Free Booking Links และ Google Ads ร่วมกัน และวัดผลเป็นการจองจริง",
+    "canonical": "https://thekpiplus.com/insights/increase-hotel-bookings-from-google",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/increase-hotel-bookings-from-google"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/increase-hotel-bookings-from-google"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/increase-hotel-bookings-from-google/th/og.webp",
+    "ogUrl": "https://thekpiplus.com/insights/increase-hotel-bookings-from-google"
+  },
+  {
+    "route": "/en/insights/increase-hotel-bookings-from-google",
+    "language": "en",
+    "title": "Increase Hotel Bookings from Google | The KPI Plus",
+    "description": "Increase hotel bookings from Google: fix booking leaks first, then combine SEO, Google Maps, free booking links and Google Ads, and measure real bookings.",
+    "canonical": "https://thekpiplus.com/en/insights/increase-hotel-bookings-from-google",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/increase-hotel-bookings-from-google"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/increase-hotel-bookings-from-google"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/increase-hotel-bookings-from-google/en/og.webp",
+    "ogUrl": "https://thekpiplus.com/en/insights/increase-hotel-bookings-from-google"
+  },
+  {
+    "route": "/insights/small-hotel-marketing-and-operations",
+    "language": "th",
+    "title": "7 วิธีทำการตลาดโรงแรมขนาดเล็ก อัปเดต 2569 | The KPI Plus",
+    "description": "การตลาดโรงแรมขนาดเล็กเมื่อห้องน้อยและทีมจำกัด: 7 วิธีดูแลจุดขาย ช่องทางจอง ราคา การตอบลูกค้า ห้องว่าง และรีวิว อัปเดตปลายปี 2569",
+    "canonical": "https://thekpiplus.com/insights/small-hotel-marketing-and-operations",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/small-hotel-marketing-and-operations"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/small-hotel-marketing-and-operations"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/small-hotel-marketing-and-operations/th/og.webp",
+    "ogUrl": "https://thekpiplus.com/insights/small-hotel-marketing-and-operations"
+  },
+  {
+    "route": "/en/insights/small-hotel-marketing-and-operations",
+    "language": "en",
+    "title": "Small Hotel Marketing: 7 Ways for Small Teams | The KPI Plus",
+    "description": "Small hotel marketing for properties with few rooms and a small team: a clear selling point, consistent listings, night-by-night offers, replies and reviews.",
+    "canonical": "https://thekpiplus.com/en/insights/small-hotel-marketing-and-operations",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/small-hotel-marketing-and-operations"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/small-hotel-marketing-and-operations"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/small-hotel-marketing-and-operations/en/og.webp",
+    "ogUrl": "https://thekpiplus.com/en/insights/small-hotel-marketing-and-operations"
+  },
+  {
+    "route": "/insights/what-is-ota",
+    "language": "th",
+    "title": "OTA คืออะไร? ใช้เพิ่มยอดจองโรงแรมให้คุ้มค่า | The KPI Plus",
+    "description": "OTA คืออะไร: ช่องทางจองโรงแรมออนไลน์อย่าง Agoda และ Booking.com วิธีทำงาน ประโยชน์ ค่าคอมมิชชัน บทบาทในยุค AI และตัวเลขที่โรงแรมควรวัด",
+    "canonical": "https://thekpiplus.com/insights/what-is-ota",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/what-is-ota"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/what-is-ota"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/what-is-ota/th/og.webp",
+    "ogUrl": "https://thekpiplus.com/insights/what-is-ota"
+  },
+  {
+    "route": "/en/insights/what-is-ota",
+    "language": "en",
+    "title": "What Is an OTA? A Guide for Hotels | The KPI Plus",
+    "description": "What is an OTA? Agoda and Booking.com explained for hotels: how OTAs work, how they help growth, commission, AI booking and the numbers to track.",
+    "canonical": "https://thekpiplus.com/en/insights/what-is-ota",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/what-is-ota"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/what-is-ota"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/what-is-ota/en/og.webp",
+    "ogUrl": "https://thekpiplus.com/en/insights/what-is-ota"
+  },
+  {
+    "route": "/en/insights/hotel-revenue-meetings-that-lead-to-decisions",
+    "language": "en",
+    "title": "Hotel Revenue Meetings That Lead to Decisions | The KPI Plus",
+    "description": "A hotel revenue-meeting frame that turns revenue and growth signals into a decision, an owner, and a review point.",
+    "canonical": "https://thekpiplus.com/en/insights/hotel-revenue-meetings-that-lead-to-decisions",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/hotel-revenue-meetings-that-lead-to-decisions"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/hotel-revenue-meetings-that-lead-to-decisions"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/hotel-revenue-meetings-that-lead-to-decisions/en/og.webp",
+    "ogUrl": "https://thekpiplus.com/en/insights/hotel-revenue-meetings-that-lead-to-decisions"
+  },
+  {
+    "route": "/en/insights/hotel-technology-adoption-commercial-project",
+    "language": "en",
+    "title": "Hotel Technology Adoption as a Commercial Project | The KPI Plus",
+    "description": "Hotel systems, automation, and AI need a workflow owner, an adoption plan, and a revenue context — not only a technical switch-on.",
+    "canonical": "https://thekpiplus.com/en/insights/hotel-technology-adoption-commercial-project",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/hotel-technology-adoption-commercial-project"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/hotel-technology-adoption-commercial-project"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/hotel-technology-adoption-commercial-project/en/og.webp",
+    "ogUrl": "https://thekpiplus.com/en/insights/hotel-technology-adoption-commercial-project"
+  },
+  {
+    "route": "/en/insights/direct-booking-journey-audit",
+    "language": "en",
+    "title": "Hotel Direct Booking Journey Audit | The KPI Plus",
+    "description": "A way to review the guest path from interest to a confident direct booking, without assuming the only problem is traffic volume.",
+    "canonical": "https://thekpiplus.com/en/insights/direct-booking-journey-audit",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/direct-booking-journey-audit"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/direct-booking-journey-audit"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/direct-booking-journey-audit/en/og.webp",
+    "ogUrl": "https://thekpiplus.com/en/insights/direct-booking-journey-audit"
+  },
+  {
+    "route": "/en/insights/seo-vs-sem-for-hotels-which-one-should-you-focus-on",
+    "language": "en",
+    "title": "SEO vs SEM for Hotels: Where to Start | The KPI Plus",
+    "description": "SEO and SEM play different roles in hotel demand. Choose a start from the business question, search intent, and the real path to direct booking.",
+    "canonical": "https://thekpiplus.com/en/insights/seo-vs-sem-for-hotels-which-one-should-you-focus-on",
+    "alternates": [
+      {
+        "hreflang": "th",
+        "href": "https://thekpiplus.com/insights/seo-vs-sem-for-hotels-which-one-should-you-focus-on"
+      },
+      {
+        "hreflang": "en",
+        "href": "https://thekpiplus.com/en/insights/seo-vs-sem-for-hotels-which-one-should-you-focus-on"
+      }
+    ],
+    "ogImage": "https://thekpiplus.com/images/blog/seo-vs-sem-for-hotels-which-one-should-you-focus-on/en/og.webp",
+    "ogUrl": "https://thekpiplus.com/en/insights/seo-vs-sem-for-hotels-which-one-should-you-focus-on"
   }
 ]

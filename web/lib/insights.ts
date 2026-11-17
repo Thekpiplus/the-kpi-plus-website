@@ -54,21 +54,25 @@ export function insightSourceLabel(source: InsightSource, locale: Locale) {
 const EDITORIAL_AUTHOR_NAME = "The KPI Plus Editorial Team";
 
 export const insightPosts: InsightPost[] = [
-  {
+{
     id: "hotel-revenue-meetings-that-lead-to-decisions",
     slug: "hotel-revenue-meetings-that-lead-to-decisions",
     href: "/insights/hotel-revenue-meetings-that-lead-to-decisions",
     publishedAt: "2026-08-19",
     updatedAt: "2026-08-31",
     readingTimeMinutes: 4,
-    coverImage: "/images/insights-featured-revenue-meeting-placeholder.webp",
-    coverImageAlt: "ตัวอย่างภาพกรอบการประชุมรายได้โรงแรม ไม่ใช่ภาพผลงานลูกค้า",
+    coverImage: "/images/blog/hotel-revenue-meetings-that-lead-to-decisions/th/cover.webp",
+    coverImageAlt: "ภาพปกบทความประชุม Revenue โรงแรม ให้จบด้วยการตัดสินใจ จากสัญญาณรายได้สู่เจ้าของงานและจุดทบทวน โดย The KPI Plus",
     coverImageFit: "cover",
-    coverImageStatus: "placeholder",
-    sampleVisual: true,
+    coverImageStatus: "approved",
     authorName: EDITORIAL_AUTHOR_NAME,
     isFeatured: true,
     isPublished: true,
+    relatedArticleIds: [
+      "hotel-technology-adoption-commercial-project",
+      "direct-booking-journey-audit",
+      "hotel-marketing-plan-2027",
+    ],
     category: {
       th: "การบริหารรายได้",
       en: "Revenue Management",
@@ -88,111 +92,24 @@ export const insightPosts: InsightPost[] = [
       zh: "一套酒店收益會議框架，把收益與成長訊號變成決策、負責人與檢視點。",
     },
   },
-  {
-    id: "hotel-marketing",
-    slug: "hotel-marketing",
-    href: "/insights/hotel-marketing",
-    publishedAt: "2026-08-31",
-    updatedAt: "2026-11-04",
-    readingTimeMinutes: 10,
-    coverImage: "/images/insights/hotel-marketing-cover-placeholder.webp",
-    coverImageAlt:
-      "แผนภาพตัวอย่าง Guest Journey ของ Hotel Marketing: Visibility → Interest → Consideration → Booking → Revenue ไม่ใช่ภาพผลงานลูกค้า",
-    coverImageFit: "contain",
-    coverImageStatus: "placeholder",
-    sampleVisual: true,
-    authorName: EDITORIAL_AUTHOR_NAME,
-    // No reviewerName: CMS/content has no recorded review for this article.
-    isPublished: true,
-    sources: [
-      {
-        label: "Google Search Central — SEO Starter Guide",
-        labelByLocale: {
-          th: "Google Search Central — คู่มือเริ่มต้น SEO",
-          en: "Google Search Central — SEO Starter Guide",
-        },
-        url: "https://developers.google.com/search/docs/fundamentals/seo-starter-guide",
-      },
-      {
-        label: "Google Business Profile Help Center",
-        labelByLocale: {
-          th: "ศูนย์ช่วยเหลือ Google Business Profile",
-          en: "Google Business Profile Help Center",
-        },
-        url: "https://support.google.com/business/",
-      },
-      {
-        label: "Google Ads Help Center",
-        labelByLocale: {
-          th: "ศูนย์ช่วยเหลือ Google Ads",
-          en: "Google Ads Help Center",
-        },
-        url: "https://support.google.com/google-ads/",
-      },
-      {
-        label: "Meta Business Help Center",
-        labelByLocale: {
-          th: "ศูนย์ช่วยเหลือ Meta Business",
-          en: "Meta Business Help Center",
-        },
-        url: "https://www.facebook.com/business/help",
-      },
-      {
-        label: "Booking.com Partner Help",
-        labelByLocale: {
-          th: "ศูนย์ช่วยเหลือพาร์ทเนอร์ Booking.com",
-          en: "Booking.com Partner Help",
-        },
-        url: "https://partner.booking.com/en-us/help",
-      },
-      {
-        label: "Agoda Property Partner Help Center",
-        labelByLocale: {
-          th: "ศูนย์ช่วยเหลือพาร์ทเนอร์ที่พัก Agoda",
-          en: "Agoda Property Partner Help Center",
-        },
-        url: "https://agodapropertypartnerhelp.zendesk.com/hc/en-us",
-      },
-    ],
-    relatedArticleIds: [
-      "hotel-revenue-meetings-that-lead-to-decisions",
-      "hotel-technology-adoption-commercial-project",
-      "direct-booking-journey-audit",
-      "seo-vs-sem-for-hotels-which-one-should-you-focus-on",
-    ],
-    category: {
-      th: "การตลาดโรงแรม",
-      en: "Hotel Digital Marketing",
-      ru: "Digital-маркетинг отеля",
-      zh: "酒店數位行銷",
-    },
-    title: {
-      th: "การตลาดโรงแรม (Hotel Marketing) คืออะไร? 8 กลยุทธ์เชื่อมการค้นพบจนถึงการจอง",
-      en: "What is hotel marketing? 8 ways hotels connect discovery to booking",
-      ru: "Что такое маркетинг отеля? 8 способов связать обнаружение с бронированием",
-      zh: "什麼是酒店行銷？8 個把發現連到預訂的做法",
-    },
-    excerpt: {
-      th: "การตลาดโรงแรมคือการเชื่อม Google, OTA, Website, Direct Booking, Distribution และ Revenue Management ให้ผู้เข้าพักค้นพบ เปรียบเทียบ และเลือกจองด้วยข้อมูลที่ชัดเจน โดยไม่รับประกันยอดจองหรือรายได้",
-      en: "Hotel marketing connects Google, OTAs, the website, direct booking, distribution, and revenue management so guests can find, compare, and book with a clear picture — without guaranteeing booking or revenue outcomes.",
-      ru: "Маркетинг отеля связывает Google, OTA, сайт, прямое бронирование, дистрибуцию и revenue management, чтобы гости находили, сравнивали и бронировали по понятной картине — без гарантии роста бронирований или дохода.",
-      zh: "酒店行銷把 Google、OTA、網站、直銷預訂、通路與收益管理連在一起，讓旅客能找到、比較，並用清楚的資訊選擇預訂——不保證預訂量或收益結果。",
-    },
-  },
-  {
+{
     id: "hotel-technology-adoption-commercial-project",
     slug: "hotel-technology-adoption-commercial-project",
     href: "/insights/hotel-technology-adoption-commercial-project",
     publishedAt: "2026-08-19",
     updatedAt: "2026-08-31",
     readingTimeMinutes: 5,
-    coverImage: "/images/insights-hotel-ai-workflow-placeholder.webp",
-    coverImageAlt: "ตัวอย่างเวิร์กโฟลว์ AI ของโรงแรมจากข้อมูลสู่การทบทวนและการตัดสินใจของทีม ไม่ใช่ภาพผลงานลูกค้า",
-    coverImageFit: "contain",
-    coverImageStatus: "placeholder",
-    sampleVisual: true,
+    coverImage: "/images/blog/hotel-technology-adoption-commercial-project/th/cover.webp",
+    coverImageAlt: "ภาพปกบทความ Technology และ AI ช่วยทีมโรงแรม ด้วยเวิร์กโฟลว์ แผนปรับใช้ และบริบทรายได้ โดย The KPI Plus",
+    coverImageFit: "cover",
+    coverImageStatus: "approved",
     authorName: EDITORIAL_AUTHOR_NAME,
     isPublished: true,
+    relatedArticleIds: [
+      "hotel-revenue-meetings-that-lead-to-decisions",
+      "hotel-organizational-structure",
+      "small-hotel-marketing-and-operations",
+    ],
     category: {
       th: "เทคโนโลยีและ AI",
       en: "Hospitality Technology",
@@ -212,20 +129,25 @@ export const insightPosts: InsightPost[] = [
       zh: "酒店系統、自動化與 AI 需要流程負責人、導入計畫，以及收益與成長的脈絡，而不只是技術上的開啟。",
     },
   },
-  {
+{
     id: "direct-booking-journey-audit",
     slug: "direct-booking-journey-audit",
     href: "/insights/direct-booking-journey-audit",
     publishedAt: "2026-08-19",
     updatedAt: "2026-08-31",
     readingTimeMinutes: 4,
-    coverImage: "/images/insights-direct-booking-placeholder.webp",
-    coverImageAlt: "ตัวอย่างเส้นทาง Direct Booking จาก Search ถึง Website และ Booking ไม่ใช่ภาพผลงานลูกค้า",
-    coverImageFit: "contain",
-    coverImageStatus: "placeholder",
-    sampleVisual: true,
+    coverImage: "/images/blog/direct-booking-journey-audit/th/cover.webp",
+    coverImageAlt: "ภาพปกบทความวิเคราะห์เส้นทาง Direct Booking จาก Search ถึง Website และ Booking Engine โดย The KPI Plus",
+    coverImageFit: "cover",
+    coverImageStatus: "approved",
     authorName: EDITORIAL_AUTHOR_NAME,
     isPublished: true,
+    relatedArticleIds: [
+      "hotel-website-content",
+      "what-is-ota",
+      "hotel-rate-parity",
+      "increase-hotel-bookings-from-google",
+    ],
     category: {
       th: "การจองตรง",
       en: "Direct Booking",
@@ -245,20 +167,25 @@ export const insightPosts: InsightPost[] = [
       zh: "從旅客開始有興趣到能放心直銷預訂，檢查整段路徑，而不預設問題只出在流量多少。",
     },
   },
-  {
+{
     id: "seo-vs-sem-for-hotels-which-one-should-you-focus-on",
     slug: "seo-vs-sem-for-hotels-which-one-should-you-focus-on",
     href: "/insights/seo-vs-sem-for-hotels-which-one-should-you-focus-on",
     publishedAt: "2025-02-01",
     updatedAt: "2026-08-20",
     readingTimeMinutes: 3,
-    coverImage: "/images/insights-seo-sem-placeholder.webp",
-    coverImageAlt: "ตัวอย่างเปรียบเทียบ Organic Search และ Paid Search สำหรับ SEO และ SEM ไม่ใช่ภาพผลงานลูกค้า",
-    coverImageFit: "contain",
-    coverImageStatus: "placeholder",
-    sampleVisual: true,
+    coverImage: "/images/blog/seo-vs-sem-for-hotels-which-one-should-you-focus-on/th/cover.webp",
+    coverImageAlt: "ภาพปกบทความ SEO vs SEM สำหรับโรงแรม เปรียบเทียบ Organic SEO Paid SEM และเส้นทางจองตรง โดย The KPI Plus",
+    coverImageFit: "cover",
+    coverImageStatus: "approved",
     authorName: EDITORIAL_AUTHOR_NAME,
     isPublished: true,
+    relatedArticleIds: [
+      "hotel-seo",
+      "hotel-local-seo",
+      "increase-hotel-bookings-from-google",
+      "hotel-website-content",
+    ],
     category: {
       th: "SEO และ Local Search",
       en: "SEO & Local Search",
@@ -278,6 +205,1125 @@ export const insightPosts: InsightPost[] = [
       zh: "SEO 與 SEM 在酒店需求中角色不同。這篇協助團隊從事業問題、搜尋意圖，以及實際的直銷預訂路徑選擇起點。",
     },
   },
+  {
+    id: "10-hotel-marketing-strategies",
+    slug: "10-hotel-marketing-strategies",
+    href: "/insights/10-hotel-marketing-strategies",
+    publishedAt: "2023-03-23",
+    updatedAt: "2026-11-17",
+    readingTimeMinutes: 13,
+    coverImage: "/images/blog/10-hotel-marketing-strategies/th/cover.webp",
+    coverImageAlt: "ภาพปกบทความ 10 กลยุทธ์การตลาดโรงแรม วางแผนอย่างไรให้ยอดจองคุ้มค่า อัปเดตปลายปี 2569 บนพื้นสีเขียวมะนาวของ The KPI Plus",
+    coverImageFit: "cover",
+    coverImageStatus: "approved",
+    
+    authorName: EDITORIAL_AUTHOR_NAME,
+    isPublished: true,
+    relatedArticleIds: ["7-hotel-marketing-methods","hotel-marketing-plan-2027"],
+    sources: [
+      {
+        label: "กระทรวงการท่องเที่ยวและกีฬา ผ่าน Nation Thailand — สถิตินักท่องเที่ยวต่างชาติ 1 ม.ค.–19 ก.ย. 2569",
+        labelByLocale: {
+          th: "กระทรวงการท่องเที่ยวและกีฬา ผ่าน Nation Thailand — สถิตินักท่องเที่ยวต่างชาติ 1 ม.ค.–19 ก.ย. 2569",
+          en: "Ministry of Tourism and Sports via Nation Thailand — foreign arrivals 1 Jan–19 Sep 2026",
+        },
+        url: "https://www.nationthailand.com/news/tourism/40071305",
+      },
+      {
+        label: "TAT Newsroom — มาตรการยกเว้นการตรวจลงตรา 30 วันและ 15 วัน มีผล 15 ก.ย. 2569",
+        labelByLocale: {
+          th: "TAT Newsroom — มาตรการยกเว้นการตรวจลงตรา 30 วันและ 15 วัน มีผล 15 ก.ย. 2569",
+          en: "TAT Newsroom — new 30-day and 15-day visa exemption rules from 15 September 2026",
+        },
+        url: "https://www.tatnews.org/2026/09/thailand-introduces-new-30-day-and-15-day-visa-exemption-rules-from-15-september/",
+      },
+      {
+        label: "Skift — Google’s Agentic Hotel Booking Tool Comes to AI Mode (27 ส.ค. 2569)",
+        labelByLocale: {
+          th: "Skift — Google’s Agentic Hotel Booking Tool Comes to AI Mode (27 ส.ค. 2569)",
+          en: "Skift — Google’s Agentic Hotel Booking Tool Comes to AI Mode (27 Aug 2026)",
+        },
+        url: "https://skift.com/2026/08/27/googles-agentic-hotel-booking-tool-comes-to-ai-mode/",
+      },
+    ],
+    category: {
+      th: "การตลาดโรงแรม",
+      en: "Hotel Marketing",
+      ru: "Маркетинг отеля",
+      zh: "飯店行銷",
+    },
+    title: {
+      th: "10 กลยุทธ์การตลาดโรงแรม: วางแผนอย่างไรให้ยอดจองคุ้มค่า (อัปเดตปลายปี 2569)",
+      en: "10 Hotel Marketing Strategies: How to Plan for Bookings That Pay Off (Late 2026 Update)",
+      ru: "10 Hotel Marketing Strategies: How to Plan for Bookings That Pay Off (Late 2026 Update)",
+      zh: "10 Hotel Marketing Strategies: How to Plan for Bookings That Pay Off (Late 2026 Update)",
+    },
+    excerpt: {
+      th: "10 กลยุทธ์การตลาดโรงแรมสำหรับเจ้าของที่พัก: เป้าหมาย ลูกค้า แบรนด์ ช่องทางขาย เว็บไซต์ โปรโมชั่น และการวัดยอดจอง ราคา ต้นทุน อัปเดตปลายปี 2569",
+      en: "Ten hotel marketing strategies for owners in Thailand: goals, guests, brand, channels, website, social, promotions, experience, partners and guest messages.",
+      ru: "Ten hotel marketing strategies for owners in Thailand: goals, guests, brand, channels, website, social, promotions, experience, partners and guest messages.",
+      zh: "Ten hotel marketing strategies for owners in Thailand: goals, guests, brand, channels, website, social, promotions, experience, partners and guest messages.",
+    },
+  },
+  {
+    id: "7-hotel-marketing-methods",
+    slug: "7-hotel-marketing-methods",
+    href: "/insights/7-hotel-marketing-methods",
+    publishedAt: "2023-03-17",
+    updatedAt: "2026-11-17",
+    readingTimeMinutes: 11,
+    coverImage: "/images/blog/7-hotel-marketing-methods/th/cover.webp",
+    coverImageAlt: "ภาพปกบทความ 7 วิธีทำการตลาดโรงแรมให้ได้ผลต่อเนื่อง อัปเดตปลายปี 2569 บนพื้นสีเขียวมะนาวของ The KPI Plus",
+    coverImageFit: "cover",
+    coverImageStatus: "approved",
+    
+    authorName: EDITORIAL_AUTHOR_NAME,
+    isPublished: true,
+    relatedArticleIds: ["10-hotel-marketing-strategies","increase-hotel-bookings-from-google"],
+    sources: [
+      {
+        label: "กระทรวงการท่องเที่ยวและกีฬา ผ่าน Nation Thailand — สถิตินักท่องเที่ยวต่างชาติ 1 ม.ค.–19 ก.ย. 2569",
+        labelByLocale: {
+          th: "กระทรวงการท่องเที่ยวและกีฬา ผ่าน Nation Thailand — สถิตินักท่องเที่ยวต่างชาติ 1 ม.ค.–19 ก.ย. 2569",
+          en: "Ministry of Tourism and Sports via Nation Thailand — foreign arrivals 1 Jan–19 Sep 2026",
+        },
+        url: "https://www.nationthailand.com/news/tourism/40071305",
+      },
+      {
+        label: "TAT Newsroom — มาตรการยกเว้นการตรวจลงตรา 30 วันและ 15 วัน มีผล 15 ก.ย. 2569",
+        labelByLocale: {
+          th: "TAT Newsroom — มาตรการยกเว้นการตรวจลงตรา 30 วันและ 15 วัน มีผล 15 ก.ย. 2569",
+          en: "TAT Newsroom — new 30-day and 15-day visa exemption rules from 15 September 2026",
+        },
+        url: "https://www.tatnews.org/2026/09/thailand-introduces-new-30-day-and-15-day-visa-exemption-rules-from-15-september/",
+      },
+      {
+        label: "Skift — Google’s Agentic Hotel Booking Tool Comes to AI Mode (27 ส.ค. 2569)",
+        labelByLocale: {
+          th: "Skift — Google’s Agentic Hotel Booking Tool Comes to AI Mode (27 ส.ค. 2569)",
+          en: "Skift — Google’s Agentic Hotel Booking Tool Comes to AI Mode (27 Aug 2026)",
+        },
+        url: "https://skift.com/2026/08/27/googles-agentic-hotel-booking-tool-comes-to-ai-mode/",
+      },
+      {
+        label: "PhocusWire — Hotel booking goes live in Google’s AI Mode (27 ส.ค. 2569)",
+        labelByLocale: {
+          th: "PhocusWire — Hotel booking goes live in Google’s AI Mode (27 ส.ค. 2569)",
+          en: "PhocusWire — Hotel booking goes live in Google’s AI Mode (27 Aug 2026)",
+        },
+        url: "https://www.phocuswire.com/news/technology/google-ai-mode-hotel-booking-agentic-flights-loyalty",
+      },
+    ],
+    category: {
+      th: "การตลาดโรงแรม",
+      en: "Hotel Marketing",
+      ru: "Маркетинг отеля",
+      zh: "飯店行銷",
+    },
+    title: {
+      th: "7 วิธีทำการตลาดโรงแรมให้ได้ผลต่อเนื่อง (อัปเดตปลายปี 2569)",
+      en: "7 Hotel Marketing Ideas That Keep Working: A Practical Guide for Thai Hotels (2026 Update)",
+      ru: "7 Hotel Marketing Ideas That Keep Working: A Practical Guide for Thai Hotels (2026 Update)",
+      zh: "7 Hotel Marketing Ideas That Keep Working: A Practical Guide for Thai Hotels (2026 Update)",
+    },
+    excerpt: {
+      th: "7 วิธีทำการตลาดโรงแรมที่ใช้ได้จริงปลายปี 2569: Google และ AI Search โฆษณา เนื้อหา โซเชียล โปรโมชั่น กิจกรรม และลูกค้าเดิม วัดผลถึงรายได้สุทธิ",
+      en: "Seven hotel marketing ideas for late 2026: Google and AI search, ads, content, social, promotions, events and past guests, measured to net revenue.",
+      ru: "Seven hotel marketing ideas for late 2026: Google and AI search, ads, content, social, promotions, events and past guests, measured to net revenue.",
+      zh: "Seven hotel marketing ideas for late 2026: Google and AI search, ads, content, social, promotions, events and past guests, measured to net revenue.",
+    },
+  },
+  {
+    id: "hotel-branding",
+    slug: "hotel-branding",
+    href: "/insights/hotel-branding",
+    publishedAt: "2023-05-23",
+    updatedAt: "2026-11-17",
+    readingTimeMinutes: 12,
+    coverImage: "/images/blog/hotel-branding/th/cover.webp",
+    coverImageAlt: "ภาพปกบทความการสร้างแบรนด์โรงแรมในปี 2569 แสดงข้อมูลโรงแรมที่ตรงกันบนเว็บไซต์ Google และ OTA บนพื้นสีเขียวมะนาวของ The KPI Plus",
+    coverImageFit: "cover",
+    coverImageStatus: "approved",
+    
+    authorName: EDITORIAL_AUTHOR_NAME,
+    isPublished: true,
+    relatedArticleIds: ["hotel-review-management","hotel-website-content"],
+    sources: [
+      {
+        label: "SiteMinder — Changing Traveller Report 2026 (สำรวจผู้เดินทาง 12,000 คนใน 14 ประเทศ รวมประเทศไทย)",
+        labelByLocale: {
+          th: "SiteMinder — Changing Traveller Report 2026 (สำรวจผู้เดินทาง 12,000 คนใน 14 ประเทศ รวมประเทศไทย)",
+          en: "SiteMinder — Changing Traveller Report 2026 (12,000 travellers in 14 countries, including Thailand)",
+        },
+        url: "https://www.siteminder.com/news/changing-traveller-report-2026/",
+      },
+      {
+        label: "กระทรวงการท่องเที่ยวและกีฬา ผ่าน Nation Thailand — สถิตินักท่องเที่ยวต่างชาติ 1 ม.ค.–19 ก.ย. 2569",
+        labelByLocale: {
+          th: "กระทรวงการท่องเที่ยวและกีฬา ผ่าน Nation Thailand — สถิตินักท่องเที่ยวต่างชาติ 1 ม.ค.–19 ก.ย. 2569",
+          en: "Ministry of Tourism and Sports via Nation Thailand — foreign arrivals 1 Jan–19 Sep 2026",
+        },
+        url: "https://www.nationthailand.com/news/tourism/40071305",
+      },
+      {
+        label: "Skift — Google’s Agentic Hotel Booking Tool Comes to AI Mode (27 ส.ค. 2569)",
+        labelByLocale: {
+          th: "Skift — Google’s Agentic Hotel Booking Tool Comes to AI Mode (27 ส.ค. 2569)",
+          en: "Skift — Google’s Agentic Hotel Booking Tool Comes to AI Mode (27 Aug 2026)",
+        },
+        url: "https://skift.com/2026/08/27/googles-agentic-hotel-booking-tool-comes-to-ai-mode/",
+      },
+    ],
+    category: {
+      th: "การตลาดโรงแรม",
+      en: "Hotel Marketing",
+      ru: "Маркетинг отеля",
+      zh: "飯店行銷",
+    },
+    title: {
+      th: "การสร้างแบรนด์โรงแรมในปี 2569: ทำอย่างไรให้ลูกค้าจำได้และมั่นใจที่จะจอง",
+      en: "Hotel Branding in 2026: How to Make Guests Remember You and Book with Confidence",
+      ru: "Hotel Branding in 2026: How to Make Guests Remember You and Book with Confidence",
+      zh: "Hotel Branding in 2026: How to Make Guests Remember You and Book with Confidence",
+    },
+    excerpt: {
+      th: "การสร้างแบรนด์โรงแรมปี 2569: เลือกกลุ่มแขก เขียนคำสัญญาที่ตรวจสอบได้ ทำข้อมูลให้ตรงทุกช่องทาง ตั้งราคาให้สอดคล้อง และใช้รีวิวตรวจผล",
+      en: "Hotel branding for 2026: choose your guests, write a promise you can prove, keep every channel consistent, price to match, and use reviews to check the result.",
+      ru: "Hotel branding for 2026: choose your guests, write a promise you can prove, keep every channel consistent, price to match, and use reviews to check the result.",
+      zh: "Hotel branding for 2026: choose your guests, write a promise you can prove, keep every channel consistent, price to match, and use reviews to check the result.",
+    },
+  },
+  {
+    id: "hotel-local-seo",
+    slug: "hotel-local-seo",
+    href: "/insights/hotel-local-seo",
+    publishedAt: "2024-12-29",
+    updatedAt: "2026-11-17",
+    readingTimeMinutes: 10,
+    coverImage: "/images/blog/hotel-local-seo/th/cover.webp",
+    coverImageAlt: "ภาพปกบทความ Local SEO โรงแรม ทำ Google Maps และ Business Profile ให้ได้ยอดจอง โดย The KPI Plus",
+    coverImageFit: "cover",
+    coverImageStatus: "approved",
+    
+    authorName: EDITORIAL_AUTHOR_NAME,
+    isPublished: true,
+    relatedArticleIds: ["hotel-review-management","hotel-seo"],
+    sources: [
+      {
+        label: "Google — Hotels Business Profile Best Practices Playbook 2026",
+        labelByLocale: {
+          th: "Google — Hotels Business Profile Best Practices Playbook 2026",
+          en: "Google — Hotels Business Profile Best Practices Playbook 2026",
+        },
+        url: "https://services.google.com/fh/files/helpcenter/hotels_gbp_best_practices_playbook_2026.pdf",
+      },
+      {
+        label: "Google Business Profile Help — Tips to improve your local ranking on Google",
+        labelByLocale: {
+          th: "Google Business Profile Help — Tips to improve your local ranking on Google",
+          en: "Google Business Profile Help — Tips to improve your local ranking on Google",
+        },
+        url: "https://support.google.com/business/answer/7091",
+      },
+      {
+        label: "BrightLocal — Local Consumer Review Survey 2026 (11 Feb 2026)",
+        labelByLocale: {
+          th: "BrightLocal — Local Consumer Review Survey 2026 (11 Feb 2026)",
+          en: "BrightLocal — Local Consumer Review Survey 2026 (11 Feb 2026)",
+        },
+        url: "https://www.brightlocal.com/research/local-consumer-review-survey/",
+      },
+      {
+        label: "Google — How to book travel with AI Mode in Google Search (27 Aug 2026)",
+        labelByLocale: {
+          th: "Google — How to book travel with AI Mode in Google Search (27 Aug 2026)",
+          en: "Google — How to book travel with AI Mode in Google Search (27 Aug 2026)",
+        },
+        url: "https://blog.google/products-and-platforms/products/search/book-travel-ai-mode/",
+      },
+      {
+        label: "Google Hotel Center Help — Free booking links",
+        labelByLocale: {
+          th: "Google Hotel Center Help — Free booking links",
+          en: "Google Hotel Center Help — Free booking links",
+        },
+        url: "https://support.google.com/hotelprices/answer/10472393",
+      },
+    ],
+    category: {
+      th: "SEO และ Local Search",
+      en: "SEO / Local Search",
+      ru: "SEO / Local Search",
+      zh: "SEO / Local Search",
+    },
+    title: {
+      th: "Local SEO โรงแรม: ทำ Google Maps และ Business Profile ให้ได้ยอดจอง (อัปเดต 2569)",
+      en: "Local SEO for Hotels: Make Google Maps and Your Business Profile Drive Bookings (2026 Update)",
+      ru: "Local SEO for Hotels: Make Google Maps and Your Business Profile Drive Bookings (2026 Update)",
+      zh: "Local SEO for Hotels: Make Google Maps and Your Business Profile Drive Bookings (2026 Update)",
+    },
+    excerpt: {
+      th: "Local SEO โรงแรมช่วยเพิ่มยอดจองอย่างไร: ปัจจัยจัดอันดับบน Google Maps ข้อมูล Business Profile สำหรับโรงแรม รีวิว หน้าทำเล ลิงก์จอง การวัดผล และแผน 30 วัน",
+      en: "Local SEO for hotels in Thailand: how Google ranks local results, Business Profile basics, reviews, location pages, booking links and a 30-day plan.",
+      ru: "Local SEO for hotels in Thailand: how Google ranks local results, Business Profile basics, reviews, location pages, booking links and a 30-day plan.",
+      zh: "Local SEO for hotels in Thailand: how Google ranks local results, Business Profile basics, reviews, location pages, booking links and a 30-day plan.",
+    },
+  },
+  {
+    id: "hotel-marketing",
+    slug: "hotel-marketing",
+    href: "/insights/hotel-marketing",
+    publishedAt: "2023-02-22",
+    updatedAt: "2026-11-17",
+    readingTimeMinutes: 10,
+    coverImage: "/images/blog/hotel-marketing/th/cover.webp",
+    coverImageAlt: "ภาพปกบทความการตลาดโรงแรมคืออะไร เชื่อมการค้นพบจนถึงการจอง โดย The KPI Plus",
+    coverImageFit: "cover",
+    coverImageStatus: "approved",
+    authorName: EDITORIAL_AUTHOR_NAME,
+    isPublished: true,
+    relatedArticleIds: ["10-hotel-marketing-strategies","hotel-marketing-plan-2027","hotel-branding","direct-booking-journey-audit"],
+    sources: [
+      {
+        label: "SiteMinder — Changing Traveller Report 2026 (สำรวจผู้เดินทาง 12,000 คนใน 14 ประเทศ รวมประเทศไทย)",
+        labelByLocale: {
+          th: "SiteMinder — Changing Traveller Report 2026 (สำรวจผู้เดินทาง 12,000 คนใน 14 ประเทศ รวมประเทศไทย)",
+          en: "SiteMinder — Changing Traveller Report 2026 (12,000 travellers in 14 countries, including Thailand)",
+        },
+        url: "https://www.siteminder.com/news/changing-traveller-report-2026/",
+      },
+      {
+        label: "กระทรวงการท่องเที่ยวและกีฬา ผ่าน Nation Thailand — สถิตินักท่องเที่ยวต่างชาติ 1 ม.ค.–19 ก.ย. 2569",
+        labelByLocale: {
+          th: "กระทรวงการท่องเที่ยวและกีฬา ผ่าน Nation Thailand — สถิตินักท่องเที่ยวต่างชาติ 1 ม.ค.–19 ก.ย. 2569",
+          en: "Ministry of Tourism and Sports via Nation Thailand — international arrivals, 1 Jan–19 Sep 2026",
+        },
+        url: "https://www.nationthailand.com/news/tourism/40071305",
+      },
+      {
+        label: "Skift — Google’s Agentic Hotel Booking Tool Comes to AI Mode (27 ส.ค. 2569)",
+        labelByLocale: {
+          th: "Skift — Google’s Agentic Hotel Booking Tool Comes to AI Mode (27 ส.ค. 2569)",
+          en: "Skift — Google’s Agentic Hotel Booking Tool Comes to AI Mode (27 Aug 2026)",
+        },
+        url: "https://skift.com/2026/08/27/googles-agentic-hotel-booking-tool-comes-to-ai-mode/",
+      },
+    ],
+    category: {
+      th: "การตลาดโรงแรม",
+      en: "Hotel Digital Marketing",
+      ru: "Digital-маркетинг отеля",
+      zh: "酒店數位行銷",
+    },
+    title: {
+      th: "การตลาดโรงแรม (Hotel Marketing) คืออะไร? 8 กลยุทธ์เชื่อมการค้นพบจนถึงการจอง",
+      en: "What Is Hotel Marketing? Why It Matters for Bookings and Revenue (2026 Update)",
+      ru: "What Is Hotel Marketing? Why It Matters for Bookings and Revenue (2026 Update)",
+      zh: "What Is Hotel Marketing? Why It Matters for Bookings and Revenue (2026 Update)",
+    },
+    excerpt: {
+      th: "การตลาดโรงแรมคือการเชื่อม Google, OTA, Website, Direct Booking, Distribution และ Revenue Management ให้ผู้เข้าพักค้นพบ เปรียบเทียบ และเลือกจองด้วยข้อมูลที่ชัดเจน โดยไม่รับประกันยอดจองหรือรายได้",
+      en: "Hotel marketing in 2026 explained: guests, channels, pricing and measuring net revenue, with a starting plan for small, independent hotels in Thailand.",
+      ru: "Hotel marketing in 2026 explained: guests, channels, pricing and measuring net revenue, with a starting plan for small, independent hotels in Thailand.",
+      zh: "Hotel marketing in 2026 explained: guests, channels, pricing and measuring net revenue, with a starting plan for small, independent hotels in Thailand.",
+    },
+  },
+  {
+    id: "hotel-marketing-plan-2027",
+    slug: "hotel-marketing-plan-2027",
+    href: "/insights/hotel-marketing-plan-2027",
+    publishedAt: "2025-01-25",
+    updatedAt: "2026-11-17",
+    readingTimeMinutes: 10,
+    coverImage: "/images/blog/hotel-marketing-plan-2027/th/cover.webp",
+    coverImageAlt: "ภาพปกบทความแผนการตลาดโรงแรมปี 2027 วางแผนให้ได้รายได้สุทธิเมื่อตลาดไม่โตเท่าเดิม โดย The KPI Plus",
+    coverImageFit: "cover",
+    coverImageStatus: "approved",
+    
+    authorName: EDITORIAL_AUTHOR_NAME,
+    isPublished: true,
+    relatedArticleIds: ["10-hotel-marketing-strategies","hotel-rate-parity"],
+    sources: [
+      {
+        label: "Nation Thailand — Thailand’s tourist arrivals fall 4.59% to 25.46m in 10 months (5 Nov 2026)",
+        labelByLocale: {
+          th: "Nation Thailand — Thailand’s tourist arrivals fall 4.59% to 25.46m in 10 months (5 Nov 2026)",
+          en: "Nation Thailand — Thailand’s tourist arrivals fall 4.59% to 25.46m in 10 months (5 Nov 2026)",
+        },
+        url: "https://www.nationthailand.com/news/tourism/40073122",
+      },
+      {
+        label: "Skift — Thailand cuts 2026 arrivals forecast, sets 2027 target of at least 33 million (2026)",
+        labelByLocale: {
+          th: "Skift — Thailand cuts 2026 arrivals forecast, sets 2027 target of at least 33 million (2026)",
+          en: "Skift — Thailand cuts 2026 arrivals forecast, sets 2027 target of at least 33 million (2026)",
+        },
+        url: "https://skift.com/?p=846231",
+      },
+      {
+        label: "Nation Thailand — 52% of Thai hoteliers surveyed expect under 32m foreign arrivals in 2026 (15 Sep 2026)",
+        labelByLocale: {
+          th: "Nation Thailand — 52% of Thai hoteliers surveyed expect under 32m foreign arrivals in 2026 (15 Sep 2026)",
+          en: "Nation Thailand — 52% of Thai hoteliers surveyed expect under 32m foreign arrivals in 2026 (15 Sep 2026)",
+        },
+        url: "https://www.nationthailand.com/news/tourism/40071054",
+      },
+      {
+        label: "SiteMinder — Changing Traveller Report 2026",
+        labelByLocale: {
+          th: "SiteMinder — Changing Traveller Report 2026",
+          en: "SiteMinder — Changing Traveller Report 2026",
+        },
+        url: "https://www.siteminder.com/news/changing-traveller-report-2026/",
+      },
+      {
+        label: "Google — How to book travel with AI Mode in Google Search (27 Aug 2026)",
+        labelByLocale: {
+          th: "Google — How to book travel with AI Mode in Google Search (27 Aug 2026)",
+          en: "Google — How to book travel with AI Mode in Google Search (27 Aug 2026)",
+        },
+        url: "https://blog.google/products-and-platforms/products/search/book-travel-ai-mode/",
+      },
+    ],
+    category: {
+      th: "การตลาดโรงแรม",
+      en: "Hotel Marketing",
+      ru: "Маркетинг отеля",
+      zh: "飯店行銷",
+    },
+    title: {
+      th: "แผนการตลาดโรงแรมปี 2027: วางอย่างไรเมื่อตลาดไม่โตเท่าเดิม (อัปเดต 2569)",
+      en: "Hotel Marketing Plan 2027: How to Plan When Thailand's Market Isn't Growing (2026 Update)",
+      ru: "Hotel Marketing Plan 2027: How to Plan When Thailand's Market Isn't Growing (2026 Update)",
+      zh: "Hotel Marketing Plan 2027: How to Plan When Thailand's Market Isn't Growing (2026 Update)",
+    },
+    excerpt: {
+      th: "แผนการตลาดโรงแรมปี 2027 สำหรับเจ้าของและ GM: ตั้งเป้าจากวันที่ต้องขาย เลือกตลาด จัดช่องทาง OTA และจองตรง แบ่งงบ และแผนรายไตรมาส จากข้อมูลตลาดล่าสุด",
+      en: "A hotel marketing plan for 2027 in Thailand: targets by need dates, market mix, OTAs vs direct bookings, budget split and a quarterly plan.",
+      ru: "A hotel marketing plan for 2027 in Thailand: targets by need dates, market mix, OTAs vs direct bookings, budget split and a quarterly plan.",
+      zh: "A hotel marketing plan for 2027 in Thailand: targets by need dates, market mix, OTAs vs direct bookings, budget split and a quarterly plan.",
+    },
+  },
+  {
+    id: "hotel-organizational-structure",
+    slug: "hotel-organizational-structure",
+    href: "/insights/hotel-organizational-structure",
+    publishedAt: "2023-09-20",
+    updatedAt: "2026-11-17",
+    readingTimeMinutes: 10,
+    coverImage: "/images/blog/hotel-organizational-structure/th/cover.webp",
+    coverImageAlt: "ภาพปกบทความโครงสร้างองค์กรโรงแรม แผนก คน และระบบที่ต้องทำงานร่วมกัน โดย The KPI Plus",
+    coverImageFit: "cover",
+    coverImageStatus: "approved",
+    
+    authorName: EDITORIAL_AUTHOR_NAME,
+    isPublished: true,
+    relatedArticleIds: ["small-hotel-marketing-and-operations","hotel-marketing-plan-2027"],
+    sources: [
+      {
+        label: "Nation Thailand — Thai hotels face liquidity crunch amid rising operating costs (19 Jun 2026)",
+        labelByLocale: {
+          th: "Nation Thailand — Thai hotels face liquidity crunch amid rising operating costs (19 Jun 2026)",
+          en: "Nation Thailand — Thai hotels face liquidity crunch amid rising operating costs (19 Jun 2026)",
+        },
+        url: "https://www.nationthailand.com/business/economy/40067617",
+      },
+      {
+        label: "Nation Thailand — Thai hotels expect weaker second-half revenues in 2025 (THA–BOT survey, 25 Dec 2025)",
+        labelByLocale: {
+          th: "Nation Thailand — Thai hotels expect weaker second-half revenues in 2025 (THA–BOT survey, 25 Dec 2025)",
+          en: "Nation Thailand — Thai hotels expect weaker second-half revenues in 2025 (THA–BOT survey, 25 Dec 2025)",
+        },
+        url: "https://www.nationthailand.com/news/tourism/40060290",
+      },
+      {
+        label: "Nation Thailand — 52% of Thai hoteliers surveyed expect under 32m foreign arrivals in 2026 (15 Sep 2026)",
+        labelByLocale: {
+          th: "Nation Thailand — 52% of Thai hoteliers surveyed expect under 32m foreign arrivals in 2026 (15 Sep 2026)",
+          en: "Nation Thailand — 52% of Thai hoteliers surveyed expect under 32m foreign arrivals in 2026 (15 Sep 2026)",
+        },
+        url: "https://www.nationthailand.com/news/tourism/40071054",
+      },
+    ],
+    category: {
+      th: "การตลาดโรงแรม",
+      en: "Hotel Marketing",
+      ru: "Маркетинг отеля",
+      zh: "飯店行銷",
+    },
+    title: {
+      th: "โครงสร้างองค์กรโรงแรม: แผนก คน และระบบที่ต้องทำงานร่วมกัน (อัปเดต 2569)",
+      en: "Hotel Organizational Structure: Departments, Roles and Systems for Independent Hotels (2026 Update)",
+      ru: "Hotel Organizational Structure: Departments, Roles and Systems for Independent Hotels (2026 Update)",
+      zh: "Hotel Organizational Structure: Departments, Roles and Systems for Independent Hotels (2026 Update)",
+    },
+    excerpt: {
+      th: "โครงสร้างองค์กรโรงแรมสำหรับโรงแรมอิสระ: แผนกหลัก หน้าที่ของแต่ละฝ่าย จำนวนคนตามขนาดโรงแรม ระบบ PMS และ Channel Manager และวิธีส่งต่องานไม่ให้ตกหล่น",
+      en: "Hotel organizational structure for independent hotels: core departments, roles by size, PMS and channel manager basics, and handovers that protect revenue.",
+      ru: "Hotel organizational structure for independent hotels: core departments, roles by size, PMS and channel manager basics, and handovers that protect revenue.",
+      zh: "Hotel organizational structure for independent hotels: core departments, roles by size, PMS and channel manager basics, and handovers that protect revenue.",
+    },
+  },
+  {
+    id: "hotel-rate-parity",
+    slug: "hotel-rate-parity",
+    href: "/insights/hotel-rate-parity",
+    publishedAt: "2026-11-17",
+    updatedAt: "2026-11-17",
+    readingTimeMinutes: 10,
+    coverImage: "/images/blog/hotel-rate-parity/th/cover.webp",
+    coverImageAlt: "ภาพปกบทความ Rate Parity คืออะไร และโรงแรมควรคุมราคาทุกช่องทางอย่างไร โดย The KPI Plus",
+    coverImageFit: "cover",
+    coverImageStatus: "approved",
+    
+    authorName: EDITORIAL_AUTHOR_NAME,
+    isPublished: true,
+    relatedArticleIds: ["what-is-ota","increase-hotel-bookings-from-google"],
+    sources: [
+      {
+        label: "Cyprus Mail / Reuters — Booking.com’s price curbs on hotels may hinder competition, EU top court says (22 Sep 2024)",
+        labelByLocale: {
+          th: "Cyprus Mail / Reuters — Booking.com’s price curbs on hotels may hinder competition, EU top court says (22 Sep 2024)",
+          en: "Cyprus Mail / Reuters — Booking.com’s price curbs on hotels may hinder competition, EU top court says (22 Sep 2024)",
+        },
+        url: "https://cyprus-mail.com/2024/09/22/booking-coms-price-curbs-on-hotels-may-hinder-competition-eu-top-court-says",
+      },
+      {
+        label: "Irish Legal News — Booking.com now required to comply with EU Digital Markets Act (Nov 2024)",
+        labelByLocale: {
+          th: "Irish Legal News — Booking.com now required to comply with EU Digital Markets Act (Nov 2024)",
+          en: "Irish Legal News — Booking.com now required to comply with EU Digital Markets Act (Nov 2024)",
+        },
+        url: "https://www.irishlegal.com/articles/bookingcom-now-required-to-comply-with-eu-digital-markets-act",
+      },
+      {
+        label: "Rental Scale-Up — Booking.com rate parity and the DMA: September 2026 changes (2026)",
+        labelByLocale: {
+          th: "Rental Scale-Up — Booking.com rate parity and the DMA: September 2026 changes (2026)",
+          en: "Rental Scale-Up — Booking.com rate parity and the DMA: September 2026 changes (2026)",
+        },
+        url: "https://www.rentalscaleup.com/booking-com-rate-parity-dma-2026/",
+      },
+      {
+        label: "Hospitality Net — Europe killed the parity clause. Parity didn’t die. (2026)",
+        labelByLocale: {
+          th: "Hospitality Net — Europe killed the parity clause. Parity didn’t die. (2026)",
+          en: "Hospitality Net — Europe killed the parity clause. Parity didn’t die. (2026)",
+        },
+        url: "https://www.hospitalitynet.org/opinion/4133110/europe-killed-the-parity-clause-parity-didnt-die",
+      },
+      {
+        label: "Google Hotel Center Help — Price accuracy",
+        labelByLocale: {
+          th: "Google Hotel Center Help — Price accuracy",
+          en: "Google Hotel Center Help — Price accuracy",
+        },
+        url: "https://support.google.com/hotelprices/answer/6069469",
+      },
+    ],
+    category: {
+      th: "การจองตรง",
+      en: "OTA / Direct Booking",
+      ru: "OTA / Direct Booking",
+      zh: "OTA / Direct Booking",
+    },
+    title: {
+      th: "Rate Parity คืออะไร? โรงแรมควรคุมราคาทุกช่องทางอย่างไรในปี 2569 (อัปเดต 2569)",
+      en: "Hotel Rate Parity: What It Means and How to Control Prices Across Channels (2026 Update)",
+      ru: "Hotel Rate Parity: What It Means and How to Control Prices Across Channels (2026 Update)",
+      zh: "Hotel Rate Parity: What It Means and How to Control Prices Across Channels (2026 Update)",
+    },
+    excerpt: {
+      th: "Rate Parity คืออะไร ต่างจาก Rate Disparity อย่างไร ทำไมราคาหลุด และโรงแรมควรตรวจราคา OTA เว็บไซต์ และ Google อย่างไร พร้อมข้อเสนอจองตรงที่ไม่ต้องลดราคา",
+      en: "Hotel rate parity explained: wide vs narrow parity, Europe's ban, why rates leak, how to check OTA, website and Google prices, and direct-booking perks.",
+      ru: "Hotel rate parity explained: wide vs narrow parity, Europe's ban, why rates leak, how to check OTA, website and Google prices, and direct-booking perks.",
+      zh: "Hotel rate parity explained: wide vs narrow parity, Europe's ban, why rates leak, how to check OTA, website and Google prices, and direct-booking perks.",
+    },
+  },
+  {
+    id: "hotel-review-management",
+    slug: "hotel-review-management",
+    href: "/insights/hotel-review-management",
+    publishedAt: "2024-09-20",
+    updatedAt: "2026-11-17",
+    readingTimeMinutes: 9,
+    coverImage: "/images/blog/hotel-review-management/th/cover.webp",
+    coverImageAlt: "ภาพปกบทความจัดการรีวิวโรงแรม: ขอรีวิว ตอบรีวิว และใช้รีวิวให้ได้ยอดจอง โดย The KPI Plus",
+    coverImageFit: "cover",
+    coverImageStatus: "approved",
+    
+    authorName: EDITORIAL_AUTHOR_NAME,
+    isPublished: true,
+    relatedArticleIds: ["hotel-local-seo","hotel-social-media"],
+    sources: [
+      {
+        label: "BrightLocal — Local Consumer Review Survey 2026 (11 Feb 2026)",
+        labelByLocale: {
+          th: "BrightLocal — Local Consumer Review Survey 2026 (11 Feb 2026)",
+          en: "BrightLocal — Local Consumer Review Survey 2026 (11 Feb 2026)",
+        },
+        url: "https://www.brightlocal.com/research/local-consumer-review-survey/",
+      },
+      {
+        label: "BrightLocal — Small businesses can’t keep up with consumer review expectations (21 Oct 2026)",
+        labelByLocale: {
+          th: "BrightLocal — Small businesses can’t keep up with consumer review expectations (21 Oct 2026)",
+          en: "BrightLocal — Small businesses can’t keep up with consumer review expectations (21 Oct 2026)",
+        },
+        url: "https://www.brightlocal.com/blog/smb-report-enough-reviews/",
+      },
+      {
+        label: "Google — Hotels Business Profile Best Practices Playbook 2026",
+        labelByLocale: {
+          th: "Google — Hotels Business Profile Best Practices Playbook 2026",
+          en: "Google — Hotels Business Profile Best Practices Playbook 2026",
+        },
+        url: "https://services.google.com/fh/files/helpcenter/hotels_gbp_best_practices_playbook_2026.pdf",
+      },
+      {
+        label: "Google Maps — Prohibited and restricted content (review policy)",
+        labelByLocale: {
+          th: "Google Maps — Prohibited and restricted content (review policy)",
+          en: "Google Maps — Prohibited and restricted content (review policy)",
+        },
+        url: "https://support.google.com/contributionpolicy/answer/7400114?hl=en",
+      },
+    ],
+    category: {
+      th: "การตลาดโรงแรม",
+      en: "Hotel Marketing",
+      ru: "Маркетинг отеля",
+      zh: "飯店行銷",
+    },
+    title: {
+      th: "จัดการรีวิวโรงแรมอย่างไรให้สร้างความน่าเชื่อถือและยอดจอง (อัปเดต 2569)",
+      en: "Hotel Review Management: How to Ask, Reply and Turn Reviews into Bookings (2026 Update)",
+      ru: "Hotel Review Management: How to Ask, Reply and Turn Reviews into Bookings (2026 Update)",
+      zh: "Hotel Review Management: How to Ask, Reply and Turn Reviews into Bookings (2026 Update)",
+    },
+    excerpt: {
+      th: "จัดการรีวิวโรงแรมให้ได้ผล: ขอรีวิวอย่างถูกกติกา ตอบรีวิวดีและรีวิวเชิงลบ ใช้รีวิวบนโซเชียล และตัวเลขที่ควรวัด สำหรับเจ้าของและ GM โรงแรม",
+      en: "Hotel review management for owners and GMs: how to ask for reviews within Google's rules, reply to good and negative reviews, and track the numbers that matter.",
+      ru: "Hotel review management for owners and GMs: how to ask for reviews within Google's rules, reply to good and negative reviews, and track the numbers that matter.",
+      zh: "Hotel review management for owners and GMs: how to ask for reviews within Google's rules, reply to good and negative reviews, and track the numbers that matter.",
+    },
+  },
+  {
+    id: "hotel-seo",
+    slug: "hotel-seo",
+    href: "/insights/hotel-seo",
+    publishedAt: "2026-11-17",
+    updatedAt: "2026-11-17",
+    readingTimeMinutes: 10,
+    coverImage: "/images/blog/hotel-seo/th/cover.webp",
+    coverImageAlt: "ภาพปกบทความ SEO โรงแรม ทำอย่างไรให้เว็บไซต์โรงแรมติดหน้าแรก Google โดย The KPI Plus",
+    coverImageFit: "cover",
+    coverImageStatus: "approved",
+    
+    authorName: EDITORIAL_AUTHOR_NAME,
+    isPublished: true,
+    relatedArticleIds: ["hotel-website-content","hotel-local-seo"],
+    sources: [
+      {
+        label: "Search Engine Journal — Google begins rolling out May 2026 core update (21 May 2026)",
+        labelByLocale: {
+          th: "Search Engine Journal — Google begins rolling out May 2026 core update (21 May 2026)",
+          en: "Search Engine Journal — Google begins rolling out May 2026 core update (21 May 2026)",
+        },
+        url: "https://www.searchenginejournal.com/google-begins-rolling-out-may-2026-core-update/575589/",
+      },
+      {
+        label: "Momentic — November 2026 core update",
+        labelByLocale: {
+          th: "Momentic — November 2026 core update",
+          en: "Momentic — November 2026 core update",
+        },
+        url: "https://momenticmarketing.com/google-updates/november-2026-core-update",
+      },
+      {
+        label: "Google — How to book travel with AI Mode in Google Search (27 Aug 2026)",
+        labelByLocale: {
+          th: "Google — How to book travel with AI Mode in Google Search (27 Aug 2026)",
+          en: "Google — How to book travel with AI Mode in Google Search (27 Aug 2026)",
+        },
+        url: "https://blog.google/products-and-platforms/products/search/book-travel-ai-mode/",
+      },
+      {
+        label: "SiteMinder — Changing Traveller Report 2026",
+        labelByLocale: {
+          th: "SiteMinder — Changing Traveller Report 2026",
+          en: "SiteMinder — Changing Traveller Report 2026",
+        },
+        url: "https://www.siteminder.com/news/changing-traveller-report-2026/",
+      },
+      {
+        label: "Google Search Central — SEO Starter Guide",
+        labelByLocale: {
+          th: "Google Search Central — SEO Starter Guide",
+          en: "Google Search Central — SEO Starter Guide",
+        },
+        url: "https://developers.google.com/search/docs/fundamentals/seo-starter-guide",
+      },
+    ],
+    category: {
+      th: "SEO และ Local Search",
+      en: "SEO / Local Search",
+      ru: "SEO / Local Search",
+      zh: "SEO / Local Search",
+    },
+    title: {
+      th: "SEO โรงแรม: ทำอย่างไรให้เว็บไซต์โรงแรมติดหน้าแรก Google (อัปเดต 2569)",
+      en: "Hotel SEO: How to Get Your Hotel Website on Page One of Google (2026 Update)",
+      ru: "Hotel SEO: How to Get Your Hotel Website on Page One of Google (2026 Update)",
+      zh: "Hotel SEO: How to Get Your Hotel Website on Page One of Google (2026 Update)",
+    },
+    excerpt: {
+      th: "SEO โรงแรมสำหรับเจ้าของและ GM: คำค้นแบบไหนติดหน้าแรกได้จริง พื้นฐานเทคนิค หน้าที่ต้องมี Google Maps ลิงก์ และวิธีวัดผลเป็นยอดจอง พร้อมแผน 90 วัน",
+      en: "Hotel SEO for owners in Thailand: searches you can win, technical basics, pages to build, Google Maps, links and a 90-day plan measured in bookings.",
+      ru: "Hotel SEO for owners in Thailand: searches you can win, technical basics, pages to build, Google Maps, links and a 90-day plan measured in bookings.",
+      zh: "Hotel SEO for owners in Thailand: searches you can win, technical basics, pages to build, Google Maps, links and a 90-day plan measured in bookings.",
+    },
+  },
+  {
+    id: "hotel-social-media",
+    slug: "hotel-social-media",
+    href: "/insights/hotel-social-media",
+    publishedAt: "2023-08-14",
+    updatedAt: "2026-11-17",
+    readingTimeMinutes: 12,
+    coverImage: "/images/blog/hotel-social-media/th/cover.webp",
+    coverImageAlt: "ภาพปกบทความ โซเชียลมีเดียโรงแรม เลือกช่องทางไหนให้ได้ยอดจอง แสดงโทรศัพท์ที่มีโพสต์ของโรงแรมและข้อความลูกค้าถามห้องว่าง",
+    coverImageFit: "cover",
+    coverImageStatus: "approved",
+    
+    authorName: EDITORIAL_AUTHOR_NAME,
+    isPublished: true,
+    relatedArticleIds: ["hotel-social-media-mistakes","hotel-review-management"],
+    sources: [
+      {
+        label: "DataReportal — Digital 2026: Thailand (We Are Social / Meltwater)",
+        labelByLocale: {
+          th: "DataReportal — Digital 2026: Thailand (We Are Social / Meltwater)",
+          en: "DataReportal — Digital 2026: Thailand (We Are Social / Meltwater)",
+        },
+        url: "https://datareportal.com/reports/digital-2026-thailand",
+      },
+      {
+        label: "InsightEra — สรุป Digital 2026 Thailand: แพลตฟอร์มที่คนไทยใช้",
+        labelByLocale: {
+          th: "InsightEra — สรุป Digital 2026 Thailand: แพลตฟอร์มที่คนไทยใช้",
+          en: "InsightEra — Digital 2026 Thailand summary: platforms Thais use (Thai)",
+        },
+        url: "https://www.insightera.co.th/digital-2026-thailand/",
+      },
+      {
+        label: "SiteMinder — Changing Traveller Report 2026",
+        labelByLocale: {
+          th: "SiteMinder — Changing Traveller Report 2026",
+          en: "SiteMinder — Changing Traveller Report 2026",
+        },
+        url: "https://www.siteminder.com/news/changing-traveller-report-2026/",
+      },
+      {
+        label: "แหล่งตรวจคุณสมบัติแพลตฟอร์ม (ตรวจ 28 ก.ย. 2569): Meta Business Suite",
+        labelByLocale: {
+          th: "แหล่งตรวจคุณสมบัติแพลตฟอร์ม (ตรวจ 28 ก.ย. 2569): Meta Business Suite",
+          en: "Platform features checked 28 Sep 2026: Meta Business Suite",
+        },
+        url: "https://www.facebook.com/business/tools/meta-business-suite",
+      },
+      {
+        label: "Meta Inbox",
+        labelByLocale: {
+          th: "Meta Inbox",
+          en: "Meta Inbox",
+        },
+        url: "https://www.facebook.com/business/help/294426838452244",
+      },
+      {
+        label: "Instagram business profile",
+        labelByLocale: {
+          th: "Instagram business profile",
+          en: "Instagram business profile",
+        },
+        url: "https://help.instagram.com/138925576505882/",
+      },
+      {
+        label: "TikTok for Business — Travel",
+        labelByLocale: {
+          th: "TikTok for Business — Travel",
+          en: "TikTok for Business — Travel",
+        },
+        url: "https://ads.tiktok.com/business/en/industries/travel",
+      },
+      {
+        label: "YouTube — links in videos",
+        labelByLocale: {
+          th: "YouTube — links in videos",
+          en: "YouTube — links in videos",
+        },
+        url: "https://support.google.com/youtube/answer/13748639?hl=en-419",
+      },
+      {
+        label: "LINE Official Account Help Center",
+        labelByLocale: {
+          th: "LINE Official Account Help Center",
+          en: "LINE Official Account Help Center",
+        },
+        url: "https://lineforbusiness.com/th/helpcenter/line-oa",
+      },
+      {
+        label: "X Help Center",
+        labelByLocale: {
+          th: "X Help Center",
+          en: "X Help Center",
+        },
+        url: "https://help.x.com/en/using-x",
+      },
+    ],
+    category: {
+      th: "การตลาดโรงแรม",
+      en: "Hotel Marketing",
+      ru: "Маркетинг отеля",
+      zh: "飯店行銷",
+    },
+    title: {
+      th: "โซเชียลมีเดียโรงแรม: เลือกช่องทางไหนให้เหมาะกับลูกค้าและเป้าหมายการจอง (อัปเดต 2569)",
+      en: "Hotel Social Media: Choosing the Right Channels for Your Guests and Booking Goals (2026 Update)",
+      ru: "Hotel Social Media: Choosing the Right Channels for Your Guests and Booking Goals (2026 Update)",
+      zh: "Hotel Social Media: Choosing the Right Channels for Your Guests and Booking Goals (2026 Update)",
+    },
+    excerpt: {
+      th: "โซเชียลมีเดียโรงแรมปี 2569: เทียบ Facebook, Instagram, TikTok, YouTube, LINE OA และ X พร้อมวิธีเลือกช่องทาง เชื่อมไปการจอง และวัดผลอย่างคุ้มค่า",
+      en: "Hotel social media in 2026: Facebook, Instagram, TikTok, YouTube, LINE and X compared, how to choose channels and turn posts into bookings.",
+      ru: "Hotel social media in 2026: Facebook, Instagram, TikTok, YouTube, LINE and X compared, how to choose channels and turn posts into bookings.",
+      zh: "Hotel social media in 2026: Facebook, Instagram, TikTok, YouTube, LINE and X compared, how to choose channels and turn posts into bookings.",
+    },
+  },
+  {
+    id: "hotel-social-media-mistakes",
+    slug: "hotel-social-media-mistakes",
+    href: "/insights/hotel-social-media-mistakes",
+    publishedAt: "2023-07-04",
+    updatedAt: "2026-11-17",
+    readingTimeMinutes: 9,
+    coverImage: "/images/blog/hotel-social-media-mistakes/th/cover.webp",
+    coverImageAlt: "ภาพปกบทความโพสต์โซเชียลโรงแรมต้องระวังอะไร 7 จุดที่ควรตรวจก่อนเผยแพร่ โดย The KPI Plus",
+    coverImageFit: "cover",
+    coverImageStatus: "approved",
+    
+    authorName: EDITORIAL_AUTHOR_NAME,
+    isPublished: true,
+    relatedArticleIds: ["hotel-social-media","hotel-review-management"],
+    sources: [
+      {
+        label: "Tilleke & Gibbins — Thailand’s Updated Alcohol Law Balances Public Health and Tourism (Sep 2025)",
+        labelByLocale: {
+          th: "Tilleke & Gibbins — Thailand’s Updated Alcohol Law Balances Public Health and Tourism (Sep 2025)",
+          en: "Tilleke & Gibbins — Thailand’s Updated Alcohol Law Balances Public Health and Tourism (Sep 2025)",
+        },
+        url: "https://www.tilleke.com/insights/thailands-updated-alcohol-law-balances-public-health-and-tourism/",
+      },
+      {
+        label: "Asia News Network / The Nation — Thailand’s new alcohol control law takes effect (10 Nov 2025)",
+        labelByLocale: {
+          th: "Asia News Network / The Nation — Thailand’s new alcohol control law takes effect (10 Nov 2025)",
+          en: "Asia News Network / The Nation — Thailand’s new alcohol control law takes effect (10 Nov 2025)",
+        },
+        url: "https://asianews.network/?p=237602",
+      },
+      {
+        label: "Herbert Smith Freehills Kramer — Thailand ramps up data protection enforcement (Aug 2025)",
+        labelByLocale: {
+          th: "Herbert Smith Freehills Kramer — Thailand ramps up data protection enforcement (Aug 2025)",
+          en: "Herbert Smith Freehills Kramer — Thailand ramps up data protection enforcement (Aug 2025)",
+        },
+        url: "https://www.hlc.com/en/publications/thailand-ramps-up-data-protection-enforcement",
+      },
+      {
+        label: "Google — Hotels Business Profile Best Practices Playbook 2026",
+        labelByLocale: {
+          th: "Google — Hotels Business Profile Best Practices Playbook 2026",
+          en: "Google — Hotels Business Profile Best Practices Playbook 2026",
+        },
+        url: "https://services.google.com/fh/files/helpcenter/hotels_gbp_best_practices_playbook_2026.pdf",
+      },
+    ],
+    category: {
+      th: "การตลาดโรงแรม",
+      en: "Hotel Marketing",
+      ru: "Маркетинг отеля",
+      zh: "飯店行銷",
+    },
+    title: {
+      th: "โพสต์โซเชียลโรงแรมต้องระวังอะไร? 7 จุดที่ควรตรวจก่อนกดเผยแพร่ (อัปเดต 2569)",
+      en: "Hotel Social Media Mistakes: 7 Checks Before You Post in Thailand (2026 Update)",
+      ru: "Hotel Social Media Mistakes: 7 Checks Before You Post in Thailand (2026 Update)",
+      zh: "Hotel Social Media Mistakes: 7 Checks Before You Post in Thailand (2026 Update)",
+    },
+    excerpt: {
+      th: "โพสต์โซเชียลโรงแรมให้ปลอดภัย: ตรวจข้อมูลห้อง ราคา โปรโมชัน เครื่องดื่มแอลกอฮอล์ PDPA ลิขสิทธิ์ และคนตอบแชต ก่อนกดเผยแพร่ พร้อมเช็กลิสต์สำหรับทีมโรงแรม",
+      en: "Avoid hotel social media mistakes in Thailand: wrong prices, alcohol ads, guest privacy (PDPA), music rights and slow replies. A checklist for owners.",
+      ru: "Avoid hotel social media mistakes in Thailand: wrong prices, alcohol ads, guest privacy (PDPA), music rights and slow replies. A checklist for owners.",
+      zh: "Avoid hotel social media mistakes in Thailand: wrong prices, alcohol ads, guest privacy (PDPA), music rights and slow replies. A checklist for owners.",
+    },
+  },
+  {
+    id: "hotel-website-content",
+    slug: "hotel-website-content",
+    href: "/insights/hotel-website-content",
+    publishedAt: "2024-12-29",
+    updatedAt: "2026-11-17",
+    readingTimeMinutes: 10,
+    coverImage: "/images/blog/hotel-website-content/th/cover.webp",
+    coverImageAlt: "ภาพปกบทความคอนเทนต์เว็บไซต์โรงแรม ปรับอย่างไรให้ค้นพบบน Google และจองง่ายขึ้น โดย The KPI Plus",
+    coverImageFit: "cover",
+    coverImageStatus: "approved",
+    
+    authorName: EDITORIAL_AUTHOR_NAME,
+    isPublished: true,
+    relatedArticleIds: ["hotel-seo","increase-hotel-bookings-from-google"],
+    sources: [
+      {
+        label: "SiteMinder — Changing Traveller Report 2026",
+        labelByLocale: {
+          th: "SiteMinder — Changing Traveller Report 2026",
+          en: "SiteMinder — Changing Traveller Report 2026",
+        },
+        url: "https://www.siteminder.com/news/changing-traveller-report-2026/",
+      },
+      {
+        label: "Google — How to book travel with AI Mode in Google Search (27 Aug 2026)",
+        labelByLocale: {
+          th: "Google — How to book travel with AI Mode in Google Search (27 Aug 2026)",
+          en: "Google — How to book travel with AI Mode in Google Search (27 Aug 2026)",
+        },
+        url: "https://blog.google/products-and-platforms/products/search/book-travel-ai-mode/",
+      },
+      {
+        label: "Search Engine Journal — Google begins rolling out May 2026 core update (21 May 2026)",
+        labelByLocale: {
+          th: "Search Engine Journal — Google begins rolling out May 2026 core update (21 May 2026)",
+          en: "Search Engine Journal — Google begins rolling out May 2026 core update (21 May 2026)",
+        },
+        url: "https://www.searchenginejournal.com/google-begins-rolling-out-may-2026-core-update/575589/",
+      },
+      {
+        label: "Google Search Central — Creating helpful, reliable, people-first content",
+        labelByLocale: {
+          th: "Google Search Central — Creating helpful, reliable, people-first content",
+          en: "Google Search Central — Creating helpful, reliable, people-first content",
+        },
+        url: "https://developers.google.com/search/docs/fundamentals/creating-helpful-content",
+      },
+    ],
+    category: {
+      th: "SEO และ Local Search",
+      en: "SEO / Local Search",
+      ru: "SEO / Local Search",
+      zh: "SEO / Local Search",
+    },
+    title: {
+      th: "คอนเทนต์เว็บไซต์โรงแรม: ปรับอย่างไรให้ค้นพบบน Google และจองง่ายขึ้น (อัปเดต 2569)",
+      en: "Hotel Website Content: How to Get Found on Google and Make Booking Easier (2026 Update)",
+      ru: "Hotel Website Content: How to Get Found on Google and Make Booking Easier (2026 Update)",
+      zh: "Hotel Website Content: How to Get Found on Google and Make Booking Easier (2026 Update)",
+    },
+    excerpt: {
+      th: "ปรับคอนเทนต์เว็บไซต์โรงแรมให้ตอบคำถามก่อนจอง: หน้าห้องพัก หน้าทำเล ชื่อหน้า ภาพและ alt text คำถามที่พบบ่อย การอัปเดต และการวัดผลจาก Google ถึงยอดจอง",
+      en: "Improve your hotel website content: room pages, location pages, titles, photos and alt text, FAQs, updates, and how to measure from Google search to booking.",
+      ru: "Improve your hotel website content: room pages, location pages, titles, photos and alt text, FAQs, updates, and how to measure from Google search to booking.",
+      zh: "Improve your hotel website content: room pages, location pages, titles, photos and alt text, FAQs, updates, and how to measure from Google search to booking.",
+    },
+  },
+  {
+    id: "increase-hotel-bookings-from-google",
+    slug: "increase-hotel-bookings-from-google",
+    href: "/insights/increase-hotel-bookings-from-google",
+    publishedAt: "2024-09-19",
+    updatedAt: "2026-11-17",
+    readingTimeMinutes: 10,
+    coverImage: "/images/blog/increase-hotel-bookings-from-google/th/cover.webp",
+    coverImageAlt: "ภาพปกบทความเพิ่มยอดจองโรงแรมจาก Google ด้วย SEO, Google Maps และ Google Ads โดย The KPI Plus",
+    coverImageFit: "cover",
+    coverImageStatus: "approved",
+    
+    authorName: EDITORIAL_AUTHOR_NAME,
+    isPublished: true,
+    relatedArticleIds: ["hotel-seo","hotel-local-seo"],
+    sources: [
+      {
+        label: "SiteMinder — Changing Traveller Report 2026",
+        labelByLocale: {
+          th: "SiteMinder — Changing Traveller Report 2026",
+          en: "SiteMinder — Changing Traveller Report 2026",
+        },
+        url: "https://www.siteminder.com/news/changing-traveller-report-2026/",
+      },
+      {
+        label: "Google — How to book travel with AI Mode in Google Search (27 Aug 2026)",
+        labelByLocale: {
+          th: "Google — How to book travel with AI Mode in Google Search (27 Aug 2026)",
+          en: "Google — How to book travel with AI Mode in Google Search (27 Aug 2026)",
+        },
+        url: "https://blog.google/products-and-platforms/products/search/book-travel-ai-mode/",
+      },
+      {
+        label: "Google — Hotels Business Profile Best Practices Playbook 2026",
+        labelByLocale: {
+          th: "Google — Hotels Business Profile Best Practices Playbook 2026",
+          en: "Google — Hotels Business Profile Best Practices Playbook 2026",
+        },
+        url: "https://services.google.com/fh/files/helpcenter/hotels_gbp_best_practices_playbook_2026.pdf",
+      },
+      {
+        label: "Google Hotel Center Help — Free booking links",
+        labelByLocale: {
+          th: "Google Hotel Center Help — Free booking links",
+          en: "Google Hotel Center Help — Free booking links",
+        },
+        url: "https://support.google.com/hotelprices/answer/10472393",
+      },
+    ],
+    category: {
+      th: "SEO และ Local Search",
+      en: "SEO / Local Search",
+      ru: "SEO / Local Search",
+      zh: "SEO / Local Search",
+    },
+    title: {
+      th: "เพิ่มยอดจองโรงแรมจาก Google: ใช้ SEO, Google Maps และ Google Ads ให้การค้นหากลายเป็นการจอง (อัปเดต 2569)",
+      en: "How to Increase Hotel Bookings from Google: SEO, Google Maps and Google Ads Working Together (2026 Update)",
+      ru: "How to Increase Hotel Bookings from Google: SEO, Google Maps and Google Ads Working Together (2026 Update)",
+      zh: "How to Increase Hotel Bookings from Google: SEO, Google Maps and Google Ads Working Together (2026 Update)",
+    },
+    excerpt: {
+      th: "เพิ่มยอดจองโรงแรมจาก Google อย่างเป็นระบบ: ปิดจุดรั่วบนเว็บไซต์ ใช้ SEO, Google Maps, Free Booking Links และ Google Ads ร่วมกัน และวัดผลเป็นการจองจริง",
+      en: "Increase hotel bookings from Google: fix booking leaks first, then combine SEO, Google Maps, free booking links and Google Ads, and measure real bookings.",
+      ru: "Increase hotel bookings from Google: fix booking leaks first, then combine SEO, Google Maps, free booking links and Google Ads, and measure real bookings.",
+      zh: "Increase hotel bookings from Google: fix booking leaks first, then combine SEO, Google Maps, free booking links and Google Ads, and measure real bookings.",
+    },
+  },
+  {
+    id: "small-hotel-marketing-and-operations",
+    slug: "small-hotel-marketing-and-operations",
+    href: "/insights/small-hotel-marketing-and-operations",
+    publishedAt: "2023-06-10",
+    updatedAt: "2026-11-17",
+    readingTimeMinutes: 10,
+    coverImage: "/images/blog/small-hotel-marketing-and-operations/th/cover.webp",
+    coverImageAlt: "ภาพปกบทความ 7 วิธีบริหารและทำการตลาดโรงแรมขนาดเล็ก เมื่อห้องน้อยและทีมงานจำกัด อัปเดตปลายปี 2569 บนพื้นสีเขียวมะนาวของ The KPI Plus",
+    coverImageFit: "cover",
+    coverImageStatus: "approved",
+    
+    authorName: EDITORIAL_AUTHOR_NAME,
+    isPublished: true,
+    relatedArticleIds: ["hotel-organizational-structure","hotel-rate-parity"],
+    sources: [
+      {
+        label: "กระทรวงการท่องเที่ยวและกีฬา ผ่าน Nation Thailand — สถิตินักท่องเที่ยวต่างชาติ 1 ม.ค.–19 ก.ย. 2569",
+        labelByLocale: {
+          th: "กระทรวงการท่องเที่ยวและกีฬา ผ่าน Nation Thailand — สถิตินักท่องเที่ยวต่างชาติ 1 ม.ค.–19 ก.ย. 2569",
+          en: "Ministry of Tourism and Sports via Nation Thailand — foreign arrivals 1 Jan–19 Sep 2026",
+        },
+        url: "https://www.nationthailand.com/news/tourism/40071305",
+      },
+      {
+        label: "TAT Newsroom — มาตรการยกเว้นการตรวจลงตรา 30 วันและ 15 วัน มีผล 15 ก.ย. 2569",
+        labelByLocale: {
+          th: "TAT Newsroom — มาตรการยกเว้นการตรวจลงตรา 30 วันและ 15 วัน มีผล 15 ก.ย. 2569",
+          en: "TAT Newsroom — new 30-day and 15-day visa exemption rules from 15 September 2026",
+        },
+        url: "https://www.tatnews.org/2026/09/thailand-introduces-new-30-day-and-15-day-visa-exemption-rules-from-15-september/",
+      },
+      {
+        label: "Skift — Google’s Agentic Hotel Booking Tool Comes to AI Mode (27 ส.ค. 2569)",
+        labelByLocale: {
+          th: "Skift — Google’s Agentic Hotel Booking Tool Comes to AI Mode (27 ส.ค. 2569)",
+          en: "Skift — Google’s Agentic Hotel Booking Tool Comes to AI Mode (27 Aug 2026)",
+        },
+        url: "https://skift.com/2026/08/27/googles-agentic-hotel-booking-tool-comes-to-ai-mode/",
+      },
+    ],
+    category: {
+      th: "การตลาดโรงแรม",
+      en: "Hotel Marketing",
+      ru: "Маркетинг отеля",
+      zh: "飯店行銷",
+    },
+    title: {
+      th: "7 วิธีบริหารและทำการตลาดโรงแรมขนาดเล็ก เมื่อห้องน้อยและทีมงานจำกัด (อัปเดตปลายปี 2569)",
+      en: "Small Hotel Marketing: 7 Ways to Run and Market a Small Hotel with a Small Team (2026 Update)",
+      ru: "Small Hotel Marketing: 7 Ways to Run and Market a Small Hotel with a Small Team (2026 Update)",
+      zh: "Small Hotel Marketing: 7 Ways to Run and Market a Small Hotel with a Small Team (2026 Update)",
+    },
+    excerpt: {
+      th: "การตลาดโรงแรมขนาดเล็กเมื่อห้องน้อยและทีมจำกัด: 7 วิธีดูแลจุดขาย ช่องทางจอง ราคา การตอบลูกค้า ห้องว่าง และรีวิว อัปเดตปลายปี 2569",
+      en: "Small hotel marketing for properties with few rooms and a small team: a clear selling point, consistent listings, night-by-night offers, replies and reviews.",
+      ru: "Small hotel marketing for properties with few rooms and a small team: a clear selling point, consistent listings, night-by-night offers, replies and reviews.",
+      zh: "Small hotel marketing for properties with few rooms and a small team: a clear selling point, consistent listings, night-by-night offers, replies and reviews.",
+    },
+  },
+  {
+    id: "what-is-ota",
+    slug: "what-is-ota",
+    href: "/insights/what-is-ota",
+    publishedAt: "2023-06-21",
+    updatedAt: "2026-11-17",
+    readingTimeMinutes: 11,
+    coverImage: "/images/blog/what-is-ota/th/cover.webp",
+    coverImageAlt: "ภาพปกบทความ OTA คืออะไร และช่วยโรงแรมเติบโตอย่างไร แสดงเครือข่ายเชื่อมโรงแรม ช่องทางขายออนไลน์ และลูกค้า",
+    coverImageFit: "cover",
+    coverImageStatus: "approved",
+    
+    authorName: EDITORIAL_AUTHOR_NAME,
+    isPublished: true,
+    relatedArticleIds: ["hotel-rate-parity","increase-hotel-bookings-from-google"],
+    sources: [
+      {
+        label: "SiteMinder — Changing Traveller Report 2026 (สำรวจผู้เดินทาง 12,000 คนใน 14 ประเทศ รวมประเทศไทย)",
+        labelByLocale: {
+          th: "SiteMinder — Changing Traveller Report 2026 (สำรวจผู้เดินทาง 12,000 คนใน 14 ประเทศ รวมประเทศไทย)",
+          en: "SiteMinder — Changing Traveller Report 2026 (12,000 travellers in 14 countries, including Thailand)",
+        },
+        url: "https://www.siteminder.com/news/changing-traveller-report-2026/",
+      },
+      {
+        label: "Google — How to book travel with AI Mode in Google Search (27 ส.ค. 2569)",
+        labelByLocale: {
+          th: "Google — How to book travel with AI Mode in Google Search (27 ส.ค. 2569)",
+          en: "Google — How to book travel with AI Mode in Google Search (27 Aug 2026)",
+        },
+        url: "https://blog.google/products-and-platforms/products/search/book-travel-ai-mode/",
+      },
+      {
+        label: "Skift — Google’s Agentic Hotel Booking Tool Comes to AI Mode (27 ส.ค. 2569)",
+        labelByLocale: {
+          th: "Skift — Google’s Agentic Hotel Booking Tool Comes to AI Mode (27 ส.ค. 2569)",
+          en: "Skift — Google’s Agentic Hotel Booking Tool Comes to AI Mode (27 Aug 2026)",
+        },
+        url: "https://skift.com/2026/08/27/googles-agentic-hotel-booking-tool-comes-to-ai-mode/",
+      },
+    ],
+    category: {
+      th: "การจองตรง",
+      en: "OTA / Direct Booking",
+      ru: "OTA / Direct Booking",
+      zh: "OTA / Direct Booking",
+    },
+    title: {
+      th: "OTA คืออะไร? โรงแรมใช้เพิ่มยอดจองอย่างไรให้คุ้มค่า (อัปเดต 2569)",
+      en: "What Is an OTA? How Hotels Can Use Online Travel Agencies Profitably (2026 Update)",
+      ru: "What Is an OTA? How Hotels Can Use Online Travel Agencies Profitably (2026 Update)",
+      zh: "What Is an OTA? How Hotels Can Use Online Travel Agencies Profitably (2026 Update)",
+    },
+    excerpt: {
+      th: "OTA คืออะไร: ช่องทางจองโรงแรมออนไลน์อย่าง Agoda และ Booking.com วิธีทำงาน ประโยชน์ ค่าคอมมิชชัน บทบาทในยุค AI และตัวเลขที่โรงแรมควรวัด",
+      en: "What is an OTA? Agoda and Booking.com explained for hotels: how OTAs work, how they help growth, commission, AI booking and the numbers to track.",
+      ru: "What is an OTA? Agoda and Booking.com explained for hotels: how OTAs work, how they help growth, commission, AI booking and the numbers to track.",
+      zh: "What is an OTA? Agoda and Booking.com explained for hotels: how OTAs work, how they help growth, commission, AI booking and the numbers to track.",
+    },
+  }
 ];
 
 export const FEATURED_INSIGHT_SLUG = "hotel-revenue-meetings-that-lead-to-decisions";
@@ -572,7 +1618,7 @@ export const insightsIndexCopy = {
       "Start from the information the hotel already has",
       "Leave with advice the team can put into action",
     ],
-    toc: "Table of contents",
+    toc: "In this article",
     tocOpen: "In this article",
     tocCurrent: "current section",
     takeaway: "In brief",

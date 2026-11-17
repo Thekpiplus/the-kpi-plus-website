@@ -1,7 +1,7 @@
 # /zh/case-studies
 **Language:** zh
 **Title:** 已公開的客戶合作 | The KPI Plus
-**Description:** 經同意可公開的合作名稱，以及不虛構成果或推薦的案例發布標準。
+**Description:** 以真實收益衡量的飯店案例，而非虛榮指標：客房營收、ADR、入住率、RevPAR、直銷預訂與 ROAS，涵蓋普吉多家物業。我們公開已獲同意的客戶名稱，以及任何案例研究的標準：要有工作範圍、資料來源，以及客戶核准。
 **Canonical:** https://thekpiplus.com/zh/case-studies
 
 ## Page content and controls

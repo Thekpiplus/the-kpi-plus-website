@@ -62,7 +62,8 @@ export function InsightCover({
       sourceHeight={useCompactCover ? (isRelated ? 800 : 675) : media.sourceHeight}
       lazy={variant !== "featured"}
       priority={variant === "featured"}
-      fill={useCompactCover}
+      /* Featured article heroes fill the reading column (same width as H1 / takeaway / prose). */
+      fill={useCompactCover || variant === "featured"}
       className={
         isRelated ? "kpi-insight-related-media" : isCard ? "kpi-insight-card-media" : "kpi-insight-featured-media"
       }

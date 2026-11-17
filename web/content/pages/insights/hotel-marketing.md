@@ -1,7 +1,7 @@
 # /insights/hotel-marketing
 **Language:** th
 **Title:** การตลาดโรงแรม (Hotel Marketing) คืออะไร? 8 กลยุทธ์เชื่อมการค้นพบจนถึงการจอง
-**Description:** การตลาดโรงแรมคือการเชื่อม Google, OTA, Website, Direct Booking, Distribution และ Revenue Management ให้ผู้เข้าพักค้นพบ เปรียบเทียบ และเลือกจองด้วยข้อมูลที่ชัดเจน — โดยไม่รับประกันยอดจองหรือรายได้
+**Description:** การตลาดโรงแรมคือการเชื่อม Google OTA Website Direct Booking Distribution และ Revenue Management ให้ผู้เข้าพักค้นพบ เปรียบเทียบ และจองได้ชัดเจน โดยไม่รับประกันยอดจอง
 **Canonical:** https://thekpiplus.com/insights/hotel-marketing
 **Author:** The KPI Plus Editorial Team
 **Published:** 2026-08-31
@@ -39,7 +39,7 @@ Booking.com และ Agoda เป็นตัวอย่าง OTA ที่�
 เว็บไซต์โรงแรมไม่ควรเป็นเพียงโบรชัวร์ออนไลน์ แต่ควรตอบได้ว่าโรงแรมอยู่ที่ไหน เหมาะกับใคร ห้องพักเป็นอย่างไร จุดเด่นคืออะไร ราคาและเงื่อนไขเป็นอย่างไร และเพราะเหตุใดผู้เข้าพักจึงควรพิจารณา Direct Booking
 ประสบการณ์บนมือถือ ความเร็วเว็บไซต์ ปุ่ม Book Now ที่ชัดเจน Booking Engine, Trust Signals และภาพถ่ายโรงแรมจริง ล้วนมีผลต่อความมั่นใจของผู้เข้าพักก่อนเข้าสู่ขั้นตอนจอง
 ### 5. Social Media และ Content Marketing
-Content ของโรงแรมสามารถเล่า Guest Experience, ห้องพัก, Food and Beverage, จุดหมายปลายทาง, Local Experiences, Wellness, เบื้องหลังการทำงาน และเรื่องราวของโรงแรมได้ เลือกสิ่งที่สะท้อนประสบการณ์จริง เพื่อให้ผู้สนใจเห็นภาพที่ใกล้เคียงกับสิ่งที่โรงแรมมอบให้
+Content ของโรงแรมสามารถเล่า Guest Experience, ห้องพัก, Food and Beverage, จุดหมายปลายทาง, Local Experiences, Wellness, เบื้องหลังการทำงาน และเรื่องราวของโรงแรมได้ เลือกสิ่งที่[สะท้อนประสบการณ์จริง](/insights/hotel-branding) เพื่อให้ผู้สนใจเห็นภาพที่ใกล้เคียงกับสิ่งที่โรงแรมมอบให้
 เมื่อเป็นไปได้ ควรใช้ภาพถ่ายของโรงแรม ทีมงาน และประสบการณ์จริง แทนภาพ Stock ที่ไม่เกี่ยวข้องกับโรงแรม
 ### 6. Online Advertising
 Google Ads และ Meta Ads เป็นช่องทางโฆษณาที่โรงแรมอาจใช้ตามเป้าหมายและงบประมาณของตนเอง การวัดผลควรเชื่อมกับ Booking, Revenue, Conversion และ ROAS ตามข้อมูลที่โรงแรมตรวจสอบได้ ไม่ใช่ดูเพียง Click, Like หรือ Impression

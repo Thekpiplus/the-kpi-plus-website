@@ -1,7 +1,7 @@
 # /zh/privacy
 **Language:** zh
 **Title:** 隱私權政策 | The KPI Plus
-**Description:** The KPI Plus 如何處理網站諮詢、CRM 存取、分析與個人資料。
+**Description:** 說明 The KPI Plus 如何處理網站諮詢、CRM 存取、分析與個人資料，以及您在 PDPA 下的權利。The KPI Plus 如何處理諮詢、CRM 存取、分析與公開網站資訊。
 **Canonical:** https://thekpiplus.com/zh/privacy
 
 ## Page content and controls

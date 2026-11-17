@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { InsightImageFit, InsightImageStatus } from "@/lib/insights-media";
 import type { Locale } from "@/lib/seo";
 
@@ -47,6 +48,7 @@ export function InsightMediaFrame({
   const sample = !hasAsset || status === "sample" || status === "placeholder";
   const badge = sampleLabel ?? (locale === "th" ? SAMPLE_LABEL.th : SAMPLE_LABEL.en);
   const ratio = fill ? "16 / 9" : `${displayWidth} / ${displayHeight}`;
+  const sizes = `(max-width: 48rem) calc(100vw - 2rem), ${displayWidth}px`;
 
   // TODO: Pass a real src only after the approved file exists in /public. Empty src must not invent or generate an image.
   return (
@@ -56,24 +58,21 @@ export function InsightMediaFrame({
     >
       <div className="kpi-insight-slot-frame" style={{ aspectRatio: ratio }}>
         {hasAsset ? (
-          <img
+          <Image
             src={src}
             alt={alt}
             width={sourceWidth}
             height={sourceHeight}
-            sizes={`(max-width: 48rem) calc(100vw - 2rem), ${displayWidth}px`}
+            sizes={sizes}
+            priority={priority || !lazy}
             loading={priority || !lazy ? "eager" : "lazy"}
-            fetchPriority={priority ? "high" : "low"}
-            decoding="async"
             className={imageClassName}
-            style={objectPosition ? { objectPosition } : undefined}
+            style={objectPosition ? { objectPosition, width: "100%", height: "100%" } : { width: "100%", height: "100%" }}
           />
         ) : (
-          <div className="kpi-insight-slot-empty" role="img" aria-label={alt}>
-            <span className="kpi-insight-slot-label">{label}</span>
-          </div>
+          <div className="kpi-insight-slot-empty" role="img" aria-label={alt} />
         )}
-        {sample ? <span className="kpi-insight-sample-label">{badge}</span> : null}
+        {sample && hasAsset ? <span className="kpi-insight-sample-label">{badge}</span> : null}
       </div>
     </div>
   );

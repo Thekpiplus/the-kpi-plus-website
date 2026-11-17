@@ -1,7 +1,10 @@
+import Image from "next/image";
 import Link from "next/link";
+import "@/app/page-about.css";
+import { ClientLogoMarquee } from "@/components/ClientLogoMarquee";
 import { SiteShell } from "@/components/SiteShell";
 import { loadAboutPageCopy } from "@/lib/cms/about-page-public";
-import { loadPublishedClientLogos } from "@/lib/cms/client-logo-public";
+import { loadVisibleClientLogos } from "@/lib/cms/client-logo-public";
 import { auditHref, localizePath, type Locale } from "@/lib/seo";
 
 function splitTags(tags: string) {
@@ -24,7 +27,14 @@ function AboutSlotPhoto({
   return (
     <figure className={`kpi-about-slot ${className}`}>
       <div className="kpi-about-slot-frame">
-        <img src={src} alt={alt} width={width} height={height} loading="lazy" decoding="async" />
+        <Image
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          sizes="(max-width: 48rem) calc(100vw - 2rem), 28rem"
+          loading="lazy"
+        />
       </div>
     </figure>
   );
@@ -43,7 +53,7 @@ function AboutPillarPreview({
   return (
     <div className="kpi-about-deliverable kpi-about-deliverable-photo" aria-hidden="true">
       <span className="kpi-about-deliverable-badge">{sampleLabel}</span>
-      <img src={src} alt="" width={1600} height={1000} loading="lazy" decoding="async" />
+      <Image src={src} alt="" width={1600} height={1000} sizes="(max-width: 48rem) 100vw, 36rem" loading="lazy" />
     </div>
   );
 }
@@ -51,11 +61,16 @@ function AboutPillarPreview({
 
 
 export async function AboutView({ locale }: { locale: Locale }) {
-  const [publishedLogos, t] = await Promise.all([loadPublishedClientLogos(), loadAboutPageCopy(locale)]);
-  const aboutFeaturedClients = t.featuredClientNames.flatMap((name) => {
-    const client = publishedLogos.find((item) => item.name === name);
-    return client ? [client] : [];
-  });
+  const [visibleLogos, t] = await Promise.all([loadVisibleClientLogos(), loadAboutPageCopy(locale)]);
+  // Featured names first, then the rest — keeps priority logos leading the marquee loops.
+  const featuredSet = new Set(t.featuredClientNames);
+  const aboutMarqueeLogos = [
+    ...t.featuredClientNames.flatMap((name) => {
+      const client = visibleLogos.find((item) => item.name === name);
+      return client ? [client] : [];
+    }),
+    ...visibleLogos.filter((item) => !featuredSet.has(item.name)),
+  ];
   const audit = auditHref(locale);
   const contact = localizePath("/contact-us", locale);
   const approach = localizePath("/approach", locale);
@@ -83,14 +98,13 @@ export async function AboutView({ locale }: { locale: Locale }) {
             <figure className="kpi-home-hero-visual kpi-about-hero-visual">
               {/* Verified real The KPI Plus team photo. Do not replace with AI/stock; leadership uses founders only. */}
               <div className="kpi-about-hero-photo">
-                <img
+                <Image
                   src={t.workPhoto}
                   alt={t.workAlt}
                   width={1024}
                   height={682}
                   sizes="(min-width: 64rem) 28rem, min(36rem, 100vw)"
-                  fetchPriority="high"
-                  decoding="async"
+                  priority
                 />
               </div>
             </figure>
@@ -258,23 +272,10 @@ export async function AboutView({ locale }: { locale: Locale }) {
             height={1067}
             alt={t.caseHotelAlt}
           />
-          {aboutFeaturedClients.length ? (
+          {aboutMarqueeLogos.length ? (
             <>
               <p className={`kpi-about-clients-eyebrow${isTh ? "" : " kpi-latin"}`}>{t.clientsEyebrow}</p>
-              <ul className="kpi-about-clients" aria-label={t.clientsEyebrow}>
-                {aboutFeaturedClients.map((client) => (
-                  <li key={client.name} className="kpi-about-client">
-                    <img
-                      src={client.src}
-                      alt={client.alt || `${client.name} logo`}
-                      width={160}
-                      height={64}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </li>
-                ))}
-              </ul>
+              <ClientLogoMarquee label={t.clientsEyebrow} logos={aboutMarqueeLogos} className="kpi-about-marquee" rows={2} />
             </>
           ) : null}
         </div>
@@ -314,14 +315,13 @@ export async function AboutView({ locale }: { locale: Locale }) {
                 Verified option: founder portrait with confirmed names and roles.
               */}
               <div className="kpi-about-leadership-photo">
-                <img
+                <Image
                   src={t.foundersPhoto}
                   alt={t.foundersAlt}
                   width={705}
                   height={1024}
                   sizes="(min-width: 48rem) 22rem, 100vw"
                   loading="lazy"
-                  decoding="async"
                 />
               </div>
               <figcaption className="kpi-about-leadership-caption">{t.foundersCaption}</figcaption>

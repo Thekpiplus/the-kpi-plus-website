@@ -104,31 +104,33 @@ export function parseMain(source: string): HandoffBlock[] {
       continue;
     }
     flushList();
-    if (line.startsWith("# ")) {
-      blocks.push({ type: "h1", text: line.slice(2) });
+    // Blockquotes become paragraphs (callout labels stay in the text).
+    const paragraphLine = line.startsWith(">") ? line.replace(/^>\s*/, "") : line;
+    if (paragraphLine.startsWith("# ")) {
+      blocks.push({ type: "h1", text: paragraphLine.slice(2) });
       continue;
     }
-    if (line.startsWith("## ")) {
-      blocks.push({ type: "h2", text: line.slice(3) });
+    if (paragraphLine.startsWith("## ")) {
+      blocks.push({ type: "h2", text: paragraphLine.slice(3) });
       continue;
     }
-    if (line.startsWith("### ")) {
-      const heading = line.slice(4);
+    if (paragraphLine.startsWith("### ")) {
+      const heading = paragraphLine.slice(4);
       if (NOISE.has(heading)) continue;
       blocks.push({ type: "h3", text: heading });
       continue;
     }
-    const image = parseImage(line);
+    const image = parseImage(paragraphLine);
     if (image) {
       blocks.push({ type: "image", ...image });
       continue;
     }
-    const link = parseInlineLink(line);
+    const link = parseInlineLink(paragraphLine);
     if (link) {
       blocks.push({ type: "link", ...link });
       continue;
     }
-    blocks.push({ type: "p", text: line });
+    blocks.push({ type: "p", text: paragraphLine });
   }
   flushList();
   flushTable();

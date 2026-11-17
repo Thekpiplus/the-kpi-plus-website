@@ -1,3 +1,5 @@
+"use client";
+
 import { HOTEL_SEO_HELP_BOUNDARY } from "@/lib/hotel-seo";
 import type { Locale } from "@/lib/seo";
 

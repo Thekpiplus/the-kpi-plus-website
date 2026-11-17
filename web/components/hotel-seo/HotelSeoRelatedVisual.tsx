@@ -1,3 +1,5 @@
+"use client";
+
 import {
   HOTEL_SEO_RELATED_VISUAL,
   HOTEL_SEO_RELATED_VISUAL_OPTIONS,

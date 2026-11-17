@@ -1,7 +1,7 @@
 # /zh/cookies
 **Language:** zh
 **Title:** Cookie 政策 | The KPI Plus
-**Description:** The KPI Plus 如何在本網站使用必要技術、分析、偏好設定與 Google 地圖。
+**Description:** 了解 The KPI Plus 如何在本網站使用必要技術、分析、偏好設定與 Google 地圖相關 Cookie，以及如何調整設定。The KPI Plus 如何使用必要技術、偏好設定、分析與 Google 地圖。
 **Canonical:** https://thekpiplus.com/zh/cookies
 
 ## Page content and controls

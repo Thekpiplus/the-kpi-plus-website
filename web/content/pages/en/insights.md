@@ -26,11 +26,11 @@ Automation, adoption, and team capability that make the work happen.
 Featured
 ## How to run a revenue meeting that ends in a usable decision
 A hotel revenue-meeting frame that turns revenue and growth signals into a decision, an owner, and a review point.
-[Read the article](/insights/hotel-revenue-meetings-that-lead-to-decisions)
+[Read the article](/en/insights/hotel-revenue-meetings-that-lead-to-decisions)
 [What is hotel marketing? 8 ways to grow bookings and revenue](/insights/hotel-marketing)
-[How technology and AI can actually help a hotel team work better](/insights/hotel-technology-adoption-commercial-project)
-[Audit the hotel’s direct-booking journey](/insights/direct-booking-journey-audit)
-[SEO vs SEM for hotels: where to start](/insights/seo-vs-sem-for-hotels-which-one-should-you-focus-on)
+[How technology and AI can actually help a hotel team work better](/en/insights/hotel-technology-adoption-commercial-project)
+[Audit the hotel’s direct-booking journey](/en/insights/direct-booking-journey-audit)
+[SEO vs SEM for hotels: where to start](/en/insights/seo-vs-sem-for-hotels-which-one-should-you-focus-on)
 The KPI Plus Performance Path
 ## See the problem clearly, work in the same direction, and measure what happens
 [Start a conversation](/en#audit)

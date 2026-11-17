@@ -3,7 +3,7 @@ import { ArrowUpRight } from "@/components/Icons";
 import { InsightArticleMeta } from "@/components/insights/InsightArticleMeta";
 import { InsightCover } from "@/components/insights/InsightCover";
 import { insightExcerpt, insightsIndexCopy, type InsightPost } from "@/lib/insights";
-import type { Locale } from "@/lib/seo";
+import { existingHref, type Locale } from "@/lib/seo";
 
 export function InsightArticleCard({ post, locale }: { post: InsightPost; locale: Locale }) {
   const t = insightsIndexCopy[locale];
@@ -13,7 +13,11 @@ export function InsightArticleCard({ post, locale }: { post: InsightPost; locale
 
   return (
     <article className="kpi-insight-card">
-      <Link href={post.href} className="kpi-insight-card-link" aria-labelledby={titleId}>
+      <Link
+        href={existingHref(post.href, locale) ?? post.href}
+        className="kpi-insight-card-link"
+        aria-labelledby={titleId}
+      >
         <InsightCover post={post} locale={locale} />
         <div className="kpi-insight-card-body">
           <p className={`kpi-insight-category${latinCategory ? " kpi-latin" : ""}`}>{category}</p>

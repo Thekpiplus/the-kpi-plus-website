@@ -1,3 +1,5 @@
+"use client";
+
 import {
   HOTEL_SEO_KPI_COPY,
   HOTEL_SEO_KPI_FIELDS,

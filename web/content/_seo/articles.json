@@ -1,0 +1,557 @@
+[
+  {
+    "slug": "hotel-branding",
+    "category": "Marketing",
+    "publishedAt": "2023-05-23",
+    "updatedAt": "2026-11-17",
+    "serviceLinks": [
+      "/solutions/hotel-website-design",
+      "/solutions/revenue-commercial-management"
+    ],
+    "replacesOldArticle": "การสร้างแบรนด์สำหรับโรงแรม (บทความเดิมบนเว็บไซต์เก่า)",
+    "th": {
+      "url": "/insights/hotel-branding",
+      "title": "การสร้างแบรนด์โรงแรมในปี 2569: ทำอย่างไรให้ลูกค้าจำได้และมั่นใจที่จะจอง",
+      "primaryKeyword": "การสร้างแบรนด์โรงแรม",
+      "secondaryKeywords": [
+        "แบรนด์โรงแรม",
+        "คำสัญญาของแบรนด์",
+        "จุดขายโรงแรม",
+        "รีวิวโรงแรม",
+        "โรงแรมอิสระ"
+      ]
+    },
+    "en": {
+      "url": "/en/insights/hotel-branding",
+      "title": "Hotel Branding in 2026: How to Make Guests Remember You and Book with Confidence",
+      "primaryKeyword": "hotel branding",
+      "secondaryKeywords": [
+        "hotel brand strategy",
+        "brand promise for hotels",
+        "independent hotel brand",
+        "hotel positioning",
+        "boutique hotel branding"
+      ]
+    }
+  },
+  {
+    "slug": "10-hotel-marketing-strategies",
+    "category": "Marketing",
+    "publishedAt": "2023-03-23",
+    "updatedAt": "2026-11-17",
+    "serviceLinks": [
+      "/solutions/revenue-commercial-management",
+      "/solutions/hotel-direct-bookings"
+    ],
+    "replacesOldArticle": "10 กลยุทธ์การตลาดโรงแรม (บทความเดิมบนเว็บไซต์เก่า)",
+    "th": {
+      "url": "/insights/10-hotel-marketing-strategies",
+      "title": "10 กลยุทธ์การตลาดโรงแรม: วางแผนอย่างไรให้ยอดจองคุ้มค่า (อัปเดตปลายปี 2569)",
+      "primaryKeyword": "กลยุทธ์การตลาดโรงแรม",
+      "secondaryKeywords": [
+        "แผนการตลาดโรงแรม",
+        "ช่องทางขายโรงแรม",
+        "โปรโมชั่นโรงแรม",
+        "เว็บไซต์โรงแรม",
+        "โรงแรมขนาดเล็ก"
+      ]
+    },
+    "en": {
+      "url": "/en/insights/10-hotel-marketing-strategies",
+      "title": "10 Hotel Marketing Strategies: How to Plan for Bookings That Pay Off (Late 2026 Update)",
+      "primaryKeyword": "hotel marketing strategies",
+      "secondaryKeywords": [
+        "hotel marketing plan",
+        "hotel distribution channels",
+        "hotel promotion ideas",
+        "independent hotel marketing",
+        "hotel marketing Thailand"
+      ]
+    }
+  },
+  {
+    "slug": "7-hotel-marketing-methods",
+    "category": "Marketing",
+    "publishedAt": "2023-03-17",
+    "updatedAt": "2026-11-17",
+    "serviceLinks": [
+      "/solutions/revenue-commercial-management",
+      "/solutions/google-ads-management"
+    ],
+    "replacesOldArticle": "7 วิธีทำการตลาดโรงแรม (บทความเดิมบนเว็บไซต์เก่า)",
+    "th": {
+      "url": "/insights/7-hotel-marketing-methods",
+      "title": "7 วิธีทำการตลาดโรงแรมให้ได้ผลต่อเนื่อง (อัปเดตปลายปี 2569)",
+      "primaryKeyword": "วิธีทำการตลาดโรงแรม",
+      "secondaryKeywords": [
+        "การตลาดโรงแรม 2569",
+        "โฆษณาโรงแรม",
+        "โปรโมชั่นโรงแรม",
+        "รายได้สุทธิ",
+        "AI Mode"
+      ]
+    },
+    "en": {
+      "url": "/en/insights/7-hotel-marketing-methods",
+      "title": "7 Hotel Marketing Ideas That Keep Working: A Practical Guide for Thai Hotels (2026 Update)",
+      "primaryKeyword": "hotel marketing ideas",
+      "secondaryKeywords": [
+        "how to market a hotel",
+        "hotel promotion ideas",
+        "hotel advertising",
+        "hotel marketing Thailand",
+        "measure hotel marketing ROI"
+      ]
+    }
+  },
+  {
+    "slug": "hotel-local-seo",
+    "category": "Marketing",
+    "publishedAt": "2024-12-29",
+    "updatedAt": "2026-11-17",
+    "serviceLinks": [
+      "/solutions/hotel-seo-google-maps-ai-search",
+      "/tools/hotel-review-link"
+    ],
+    "replacesOldArticle": "Local SEO โรงแรมช่วยเพิ่มยอดจองอย่างไร? คู่มือสำหรับปี 2026–2027",
+    "th": {
+      "url": "/insights/hotel-local-seo",
+      "title": "Local SEO โรงแรม: ทำ Google Maps และ Business Profile ให้ได้ยอดจอง (อัปเดต 2569)",
+      "primaryKeyword": "Local SEO โรงแรม",
+      "secondaryKeywords": [
+        "Google Maps โรงแรม",
+        "Google Business Profile โรงแรม",
+        "ติดอันดับ Google Maps",
+        "รีวิว Google",
+        "ลิงก์จองบน Google"
+      ]
+    },
+    "en": {
+      "url": "/en/insights/hotel-local-seo",
+      "title": "Local SEO for Hotels: Make Google Maps and Your Business Profile Drive Bookings (2026 Update)",
+      "primaryKeyword": "local SEO for hotels",
+      "secondaryKeywords": [
+        "Google Maps hotel ranking",
+        "Google Business Profile for hotels",
+        "hotel local search",
+        "Google reviews",
+        "free booking links"
+      ]
+    }
+  },
+  {
+    "slug": "hotel-marketing",
+    "category": "Marketing",
+    "publishedAt": "2023-02-22",
+    "updatedAt": "2026-11-17",
+    "serviceLinks": [
+      "/solutions/revenue-commercial-management",
+      "/hotel-digital-marketing"
+    ],
+    "replacesOldArticle": "การตลาดโรงแรม คืออะไร (บทความเดิม)",
+    "th": {
+      "url": "/insights/hotel-marketing",
+      "title": "การตลาดโรงแรมคืออะไร? ทำไมจึงสำคัญต่อยอดจองและรายได้ (อัปเดต 2569)",
+      "primaryKeyword": "การตลาดโรงแรม",
+      "secondaryKeywords": [
+        "Hotel Marketing คืออะไร",
+        "กลยุทธ์การตลาดโรงแรม",
+        "ตัวเลขวัดผลการตลาดโรงแรม",
+        "การตลาดกับ Revenue Management"
+      ]
+    },
+    "en": {
+      "url": "/en/insights/hotel-marketing",
+      "title": "What Is Hotel Marketing? Why It Matters for Bookings and Revenue (2026 Update)",
+      "primaryKeyword": "hotel marketing",
+      "secondaryKeywords": [
+        "what is hotel marketing",
+        "hotel marketing metrics",
+        "hotel marketing vs revenue management",
+        "hotel marketing Thailand"
+      ]
+    }
+  },
+  {
+    "slug": "hotel-marketing-plan-2027",
+    "category": "Marketing",
+    "publishedAt": "2025-01-25",
+    "updatedAt": "2026-11-17",
+    "serviceLinks": [
+      "/solutions/revenue-commercial-management",
+      "/tools/hotel-budget-calculator"
+    ],
+    "replacesOldArticle": "กลยุทธ์การตลาดโรงแรมปี 2027: จากการมองเห็นสู่รายได้ที่คุ้มค่า",
+    "th": {
+      "url": "/insights/hotel-marketing-plan-2027",
+      "title": "แผนการตลาดโรงแรมปี 2027: วางอย่างไรเมื่อตลาดไม่โตเท่าเดิม (อัปเดต 2569)",
+      "primaryKeyword": "แผนการตลาดโรงแรม",
+      "secondaryKeywords": [
+        "กลยุทธ์การตลาดโรงแรม 2027",
+        "งบการตลาดโรงแรม",
+        "เพิ่มยอดจองตรง",
+        "รายได้สุทธิหลังค่าคอมมิชชัน",
+        "ตลาดนักท่องเที่ยว 2027"
+      ]
+    },
+    "en": {
+      "url": "/en/insights/hotel-marketing-plan-2027",
+      "title": "Hotel Marketing Plan 2027: How to Plan When Thailand's Market Isn't Growing (2026 Update)",
+      "primaryKeyword": "hotel marketing plan",
+      "secondaryKeywords": [
+        "hotel marketing plan 2027",
+        "hotel marketing strategy Thailand",
+        "hotel marketing budget",
+        "increase direct bookings",
+        "net revenue after commission",
+        "Thailand tourism 2027"
+      ]
+    }
+  },
+  {
+    "slug": "hotel-organizational-structure",
+    "category": "Operations",
+    "publishedAt": "2023-09-20",
+    "updatedAt": "2026-11-17",
+    "serviceLinks": [
+      "/solutions/independent-hotel-management",
+      "/solutions/hotel-systems-implementation"
+    ],
+    "replacesOldArticle": "หลังบ้านโรงแรมมีอะไรบ้าง? รู้จักงาน คน และระบบที่ต้องทำงานร่วมกัน",
+    "th": {
+      "url": "/insights/hotel-organizational-structure",
+      "title": "โครงสร้างองค์กรโรงแรม: แผนก คน และระบบที่ต้องทำงานร่วมกัน (อัปเดต 2569)",
+      "primaryKeyword": "โครงสร้างองค์กรโรงแรม",
+      "secondaryKeywords": [
+        "แผนกในโรงแรม",
+        "หลังบ้านโรงแรม",
+        "ตำแหน่งงานในโรงแรม",
+        "PMS และ Channel Manager",
+        "บริหารโรงแรมขนาดเล็ก"
+      ]
+    },
+    "en": {
+      "url": "/en/insights/hotel-organizational-structure",
+      "title": "Hotel Organizational Structure: Departments, Roles and Systems for Independent Hotels (2026 Update)",
+      "primaryKeyword": "hotel organizational structure",
+      "secondaryKeywords": [
+        "hotel departments",
+        "hotel org chart",
+        "hotel staffing small hotel",
+        "PMS and channel manager",
+        "independent hotel management"
+      ]
+    }
+  },
+  {
+    "slug": "hotel-rate-parity",
+    "category": "Distribution",
+    "publishedAt": "2026-11-17",
+    "updatedAt": "2026-11-17",
+    "serviceLinks": [
+      "/solutions/revenue-commercial-management",
+      "/tools/ota-commission-calculator"
+    ],
+    "replacesOldArticle": "Rate Parity (บทความเดิมในโฟลเดอร์ Rate Parity)",
+    "th": {
+      "url": "/insights/hotel-rate-parity",
+      "title": "Rate Parity คืออะไร? โรงแรมควรคุมราคาทุกช่องทางอย่างไรในปี 2569 (อัปเดต 2569)",
+      "primaryKeyword": "Rate Parity คืออะไร",
+      "secondaryKeywords": [
+        "ราคาห้องพักไม่ตรงกัน",
+        "Rate Disparity",
+        "ราคา OTA กับเว็บไซต์",
+        "Parity Clause",
+        "ราคาจองตรง"
+      ]
+    },
+    "en": {
+      "url": "/en/insights/hotel-rate-parity",
+      "title": "Hotel Rate Parity: What It Means and How to Control Prices Across Channels (2026 Update)",
+      "primaryKeyword": "hotel rate parity",
+      "secondaryKeywords": [
+        "rate disparity",
+        "parity clause",
+        "OTA vs direct price",
+        "rate integrity",
+        "direct booking benefits"
+      ]
+    }
+  },
+  {
+    "slug": "hotel-review-management",
+    "category": "Marketing",
+    "publishedAt": "2024-09-20",
+    "updatedAt": "2026-11-17",
+    "serviceLinks": [
+      "/solutions/hotel-seo-google-maps-ai-search",
+      "/tools/hotel-review-link"
+    ],
+    "replacesOldArticle": "รีวิวโรงแรมและโซเชียลมีเดีย: สร้างความน่าเชื่อถือจากประสบการณ์แขกจริง",
+    "th": {
+      "url": "/insights/hotel-review-management",
+      "title": "จัดการรีวิวโรงแรมอย่างไรให้สร้างความน่าเชื่อถือและยอดจอง (อัปเดต 2569)",
+      "primaryKeyword": "จัดการรีวิวโรงแรม",
+      "secondaryKeywords": [
+        "ตอบรีวิวโรงแรม",
+        "รีวิวเชิงลบ",
+        "ขอรีวิวจากแขก",
+        "รีวิว Google",
+        "ชื่อเสียงออนไลน์"
+      ]
+    },
+    "en": {
+      "url": "/en/insights/hotel-review-management",
+      "title": "Hotel Review Management: How to Ask, Reply and Turn Reviews into Bookings (2026 Update)",
+      "primaryKeyword": "hotel review management",
+      "secondaryKeywords": [
+        "respond to hotel reviews",
+        "negative hotel reviews",
+        "ask guests for reviews",
+        "Google reviews",
+        "online reputation"
+      ]
+    }
+  },
+  {
+    "slug": "hotel-seo",
+    "category": "Marketing",
+    "publishedAt": "2026-11-17",
+    "updatedAt": "2026-11-17",
+    "serviceLinks": [
+      "/solutions/hotel-seo-google-maps-ai-search",
+      "/tools/hotel-searchability-check"
+    ],
+    "replacesOldArticle": "ทำเว็บไซต์โรงแรมให้ติดหน้าแรก Google (How to make your hotel website on 1st page on Google)",
+    "th": {
+      "url": "/insights/hotel-seo",
+      "title": "SEO โรงแรม: ทำอย่างไรให้เว็บไซต์โรงแรมติดหน้าแรก Google (อัปเดต 2569)",
+      "primaryKeyword": "SEO โรงแรม",
+      "secondaryKeywords": [
+        "ติดหน้าแรก Google",
+        "เว็บไซต์โรงแรม",
+        "Google Search Console",
+        "AI Search",
+        "รับทำ SEO โรงแรม"
+      ]
+    },
+    "en": {
+      "url": "/en/insights/hotel-seo",
+      "title": "Hotel SEO: How to Get Your Hotel Website on Page One of Google (2026 Update)",
+      "primaryKeyword": "hotel SEO",
+      "secondaryKeywords": [
+        "hotel website first page Google",
+        "hotel SEO Thailand",
+        "Google Search Console",
+        "AI search hotels",
+        "hotel SEO agency"
+      ]
+    }
+  },
+  {
+    "slug": "hotel-social-media",
+    "category": "Marketing",
+    "publishedAt": "2023-08-14",
+    "updatedAt": "2026-11-17",
+    "serviceLinks": [
+      "/solutions/meta-ads-management",
+      "/hotel-digital-marketing"
+    ],
+    "replacesOldArticle": "โซเชียลมีเดียโรงแรม เลือกช่องทางไหนดี (บทความเดิม)",
+    "th": {
+      "url": "/insights/hotel-social-media",
+      "title": "โซเชียลมีเดียโรงแรม: เลือกช่องทางไหนให้เหมาะกับลูกค้าและเป้าหมายการจอง (อัปเดต 2569)",
+      "primaryKeyword": "โซเชียลมีเดียโรงแรม",
+      "secondaryKeywords": [
+        "เลือกช่องทางโซเชียล",
+        "LINE Official Account โรงแรม",
+        "TikTok โรงแรม",
+        "แชตสู่การจอง"
+      ]
+    },
+    "en": {
+      "url": "/en/insights/hotel-social-media",
+      "title": "Hotel Social Media: Choosing the Right Channels for Your Guests and Booking Goals (2026 Update)",
+      "primaryKeyword": "hotel social media",
+      "secondaryKeywords": [
+        "social media for hotels",
+        "best social media platforms for hotels",
+        "LINE for hotels",
+        "hotel social media strategy"
+      ]
+    }
+  },
+  {
+    "slug": "hotel-social-media-mistakes",
+    "category": "Marketing",
+    "publishedAt": "2023-07-04",
+    "updatedAt": "2026-11-17",
+    "serviceLinks": [
+      "/solutions/meta-ads-management",
+      "/hotel-digital-marketing"
+    ],
+    "replacesOldArticle": "โรงแรมโพสต์โซเชียลต้องระวังอะไร? 7 จุดที่ควรตรวจก่อนเผยแพร่",
+    "th": {
+      "url": "/insights/hotel-social-media-mistakes",
+      "title": "โพสต์โซเชียลโรงแรมต้องระวังอะไร? 7 จุดที่ควรตรวจก่อนกดเผยแพร่ (อัปเดต 2569)",
+      "primaryKeyword": "โพสต์โซเชียลโรงแรม",
+      "secondaryKeywords": [
+        "ข้อควรระวังโพสต์โซเชียล",
+        "PDPA โรงแรม",
+        "โฆษณาเครื่องดื่มแอลกอฮอล์",
+        "ลิขสิทธิ์เพลงและภาพ",
+        "เช็กลิสต์ก่อนโพสต์"
+      ]
+    },
+    "en": {
+      "url": "/en/insights/hotel-social-media-mistakes",
+      "title": "Hotel Social Media Mistakes: 7 Checks Before You Post in Thailand (2026 Update)",
+      "primaryKeyword": "hotel social media mistakes",
+      "secondaryKeywords": [
+        "hotel social media checklist",
+        "PDPA hotel",
+        "alcohol advertising Thailand",
+        "music copyright reels",
+        "hotel social media approval"
+      ]
+    }
+  },
+  {
+    "slug": "hotel-website-content",
+    "category": "Marketing",
+    "publishedAt": "2024-12-29",
+    "updatedAt": "2026-11-17",
+    "serviceLinks": [
+      "/solutions/hotel-website-design",
+      "/hotel-website-conversion"
+    ],
+    "replacesOldArticle": "ปรับคอนเทนต์เว็บไซต์โรงแรมอย่างไรให้ลูกค้าค้นพบและตัดสินใจจองง่ายขึ้น",
+    "th": {
+      "url": "/insights/hotel-website-content",
+      "title": "คอนเทนต์เว็บไซต์โรงแรม: ปรับอย่างไรให้ค้นพบบน Google และจองง่ายขึ้น (อัปเดต 2569)",
+      "primaryKeyword": "คอนเทนต์เว็บไซต์โรงแรม",
+      "secondaryKeywords": [
+        "หน้าห้องพัก",
+        "เขียนเว็บไซต์โรงแรม",
+        "ชื่อหน้าและ meta description",
+        "alt text ภาพโรงแรม",
+        "เว็บไซต์โรงแรมควรมีอะไรบ้าง"
+      ]
+    },
+    "en": {
+      "url": "/en/insights/hotel-website-content",
+      "title": "Hotel Website Content: How to Get Found on Google and Make Booking Easier (2026 Update)",
+      "primaryKeyword": "hotel website content",
+      "secondaryKeywords": [
+        "hotel room page",
+        "what a hotel website should include",
+        "hotel meta description",
+        "hotel image alt text",
+        "hotel website copywriting"
+      ]
+    }
+  },
+  {
+    "slug": "increase-hotel-bookings-from-google",
+    "category": "Marketing",
+    "publishedAt": "2024-09-19",
+    "updatedAt": "2026-11-17",
+    "serviceLinks": [
+      "/solutions/google-ads-management",
+      "/solutions/hotel-direct-bookings"
+    ],
+    "replacesOldArticle": "SEO และ SEM สำหรับโรงแรม: ใช้อย่างไรให้การค้นหากลายเป็นยอดจอง",
+    "th": {
+      "url": "/insights/increase-hotel-bookings-from-google",
+      "title": "เพิ่มยอดจองโรงแรมจาก Google: ใช้ SEO, Google Maps และ Google Ads ให้การค้นหากลายเป็นการจอง (อัปเดต 2569)",
+      "primaryKeyword": "เพิ่มยอดจองโรงแรม",
+      "secondaryKeywords": [
+        "Google Ads โรงแรม",
+        "Free Booking Links",
+        "จองตรง",
+        "วัดผลการจอง",
+        "SEO และ SEM"
+      ]
+    },
+    "en": {
+      "url": "/en/insights/increase-hotel-bookings-from-google",
+      "title": "How to Increase Hotel Bookings from Google: SEO, Google Maps and Google Ads Working Together (2026 Update)",
+      "primaryKeyword": "increase hotel bookings",
+      "secondaryKeywords": [
+        "Google Ads for hotels",
+        "free booking links",
+        "direct bookings",
+        "hotel booking tracking",
+        "SEO and SEM for hotels"
+      ]
+    }
+  },
+  {
+    "slug": "small-hotel-marketing-and-operations",
+    "category": "Revenue Management",
+    "publishedAt": "2023-06-10",
+    "updatedAt": "2026-11-17",
+    "serviceLinks": [
+      "/solutions/independent-hotel-management",
+      "/tools/revpar-calculator"
+    ],
+    "replacesOldArticle": "7 วิธีบริหารและทำการตลาดโรงแรมขนาดเล็ก (บทความเดิมบนเว็บไซต์เก่า)",
+    "th": {
+      "url": "/insights/small-hotel-marketing-and-operations",
+      "title": "7 วิธีบริหารและทำการตลาดโรงแรมขนาดเล็ก เมื่อห้องน้อยและทีมงานจำกัด (อัปเดตปลายปี 2569)",
+      "primaryKeyword": "การตลาดโรงแรมขนาดเล็ก",
+      "secondaryKeywords": [
+        "บริหารโรงแรมขนาดเล็ก",
+        "โรงแรมห้องน้อย",
+        "ข้อเสนอเฉพาะคืน",
+        "ตอบแชตลูกค้า",
+        "Channel Manager"
+      ]
+    },
+    "en": {
+      "url": "/en/insights/small-hotel-marketing-and-operations",
+      "title": "Small Hotel Marketing: 7 Ways to Run and Market a Small Hotel with a Small Team (2026 Update)",
+      "primaryKeyword": "small hotel marketing",
+      "secondaryKeywords": [
+        "how to market a small hotel",
+        "small hotel management",
+        "boutique hotel marketing Thailand",
+        "small hotel pricing",
+        "guesthouse marketing"
+      ]
+    }
+  },
+  {
+    "slug": "what-is-ota",
+    "category": "Distribution",
+    "publishedAt": "2023-06-21",
+    "updatedAt": "2026-11-17",
+    "serviceLinks": [
+      "/solutions/revenue-commercial-management",
+      "/tools/ota-commission-calculator"
+    ],
+    "replacesOldArticle": "OTA คืออะไร ช่วยโรงแรมเติบโตอย่างไร (บทความเดิม)",
+    "th": {
+      "url": "/insights/what-is-ota",
+      "title": "OTA คืออะไร? โรงแรมใช้เพิ่มยอดจองอย่างไรให้คุ้มค่า (อัปเดต 2569)",
+      "primaryKeyword": "OTA คืออะไร",
+      "secondaryKeywords": [
+        "OTA โรงแรม",
+        "ค่าคอมมิชชัน OTA",
+        "Online Travel Agency",
+        "OTA กับจองตรง"
+      ]
+    },
+    "en": {
+      "url": "/en/insights/what-is-ota",
+      "title": "What Is an OTA? How Hotels Can Use Online Travel Agencies Profitably (2026 Update)",
+      "primaryKeyword": "what is an OTA",
+      "secondaryKeywords": [
+        "online travel agency",
+        "hotel OTA commission",
+        "OTA vs direct booking",
+        "OTA hotel distribution"
+      ]
+    }
+  }
+]

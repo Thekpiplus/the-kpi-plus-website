@@ -1,0 +1,30 @@
+{
+  "hotel-revenue-meetings-that-lead-to-decisions": {
+    "cover": "/images/blog/hotel-revenue-meetings-that-lead-to-decisions/th/cover.webp",
+    "og": "/images/blog/hotel-revenue-meetings-that-lead-to-decisions/th/og.webp",
+    "alt": "ภาพปกบทความประชุม Revenue โรงแรม ให้จบด้วยการตัดสินใจ จากสัญญาณรายได้สู่เจ้าของงานและจุดทบทวน โดย The KPI Plus"
+  },
+  "hotel-technology-adoption-commercial-project": {
+    "cover": "/images/blog/hotel-technology-adoption-commercial-project/th/cover.webp",
+    "og": "/images/blog/hotel-technology-adoption-commercial-project/th/og.webp",
+    "alt": "ภาพปกบทความ Technology และ AI ช่วยทีมโรงแรม ด้วยเวิร์กโฟลว์ แผนปรับใช้ และบริบทรายได้ โดย The KPI Plus"
+  },
+  "direct-booking-journey-audit": {
+    "cover": "/images/blog/direct-booking-journey-audit/th/cover.webp",
+    "og": "/images/blog/direct-booking-journey-audit/th/og.webp",
+    "alt": "ภาพปกบทความวิเคราะห์เส้นทาง Direct Booking จาก Search ถึง Website และ Booking Engine โดย The KPI Plus"
+  },
+  "seo-vs-sem-for-hotels-which-one-should-you-focus-on": {
+    "cover": "/images/blog/seo-vs-sem-for-hotels-which-one-should-you-focus-on/th/cover.webp",
+    "og": "/images/blog/seo-vs-sem-for-hotels-which-one-should-you-focus-on/th/og.webp",
+    "alt": "ภาพปกบทความ SEO vs SEM สำหรับโรงแรม เปรียบเทียบ Organic SEO Paid SEM และเส้นทางจองตรง โดย The KPI Plus"
+  },
+  "hotel-marketing": {
+    "cover": "/images/blog/hotel-marketing/th/cover.webp",
+    "og": "/images/blog/hotel-marketing/th/og.webp",
+    "alt": "ภาพปกบทความการตลาดโรงแรมคืออะไร เชื่อมการค้นพบจนถึงการจอง โดย The KPI Plus",
+    "enCover": "/images/blog/hotel-marketing/en/cover.webp",
+    "enOg": "/images/blog/hotel-marketing/en/og.webp",
+    "enAlt": "Cover image for What Is Hotel Marketing and Why It Matters, by The KPI Plus"
+  }
+}

@@ -1,3 +1,5 @@
+"use client";
+
 import {
   HOTEL_SEO_BEHAVIOR_MAP,
   HOTEL_SEO_BEHAVIOR_TYPES,

@@ -63,8 +63,8 @@ Related Insights
 [INSIGHTS How to Audit the Direct Booking Journey Read the related Insight](/en/insights/direct-booking-journey-audit)
 Free Hotel Tools
 ## Try a relevant free tool.
-[OTA Commission Calculator See the commission cost behind OTA revenue and the net revenue remaining after commission. Try a free tool](/en/tools/ota-commission-calculator)
-[Hotel Budget Calculator Build a fast room-revenue budget from rooms, operating days, target occupancy, and target ADR. Try a free tool](/en/tools/hotel-budget-calculator)
+[OTA Commission Calculator See the commission cost behind OTA revenue and the net revenue remaining after commission. Try a free tool](/tools/ota-commission-calculator)
+[Hotel Budget Calculator Build a fast room-revenue budget from rooms, operating days, target occupancy, and target ADR. Try a free tool](/tools/hotel-budget-calculator)
 
 ### SECTION
 
@@ -141,13 +141,13 @@ Follow The KPI Plus
 [Associations](/ru/associations)
 [Contact](../contact-us.html)
 ## Free Hotel Tools
-[Hotel Searchability Check](/ru/tools/hotel-searchability-check)
-[Profit & Revenue](/ru/tools/hotel-profit-calculator)
-[Hotel Budget](/ru/tools/hotel-budget-calculator)
-[OTA Commission](/ru/tools/ota-commission-calculator)
-[VAT & Service Charge](/ru/tools/hotel-vat-service-charge-calculator)
-[RevPAR, ADR & Occupancy](/ru/tools/revpar-calculator)
-[View all tools](/ru/tools)
+[Hotel Searchability Check](/tools/hotel-searchability-check)
+[Profit & Revenue](/tools/hotel-profit-calculator)
+[Hotel Budget](/tools/hotel-budget-calculator)
+[OTA Commission](/tools/ota-commission-calculator)
+[VAT & Service Charge](/tools/hotel-vat-service-charge-calculator)
+[RevPAR, ADR & Occupancy](/tools/revpar-calculator)
+[View all tools](/tools)
 ## The KPI Plus Academy
 Corporate AI Training Program
 - AI Mindset & Security
@@ -187,13 +187,13 @@ Language : Русский
 ### SECTION
 
 ## Free Hotel Tools
-[Hotel Searchability Check](/ru/tools/hotel-searchability-check)
-[Profit & Revenue](/ru/tools/hotel-profit-calculator)
-[Hotel Budget](/ru/tools/hotel-budget-calculator)
-[OTA Commission](/ru/tools/ota-commission-calculator)
-[VAT & Service Charge](/ru/tools/hotel-vat-service-charge-calculator)
-[RevPAR, ADR & Occupancy](/ru/tools/revpar-calculator)
-[View all tools](/ru/tools)
+[Hotel Searchability Check](/tools/hotel-searchability-check)
+[Profit & Revenue](/tools/hotel-profit-calculator)
+[Hotel Budget](/tools/hotel-budget-calculator)
+[OTA Commission](/tools/ota-commission-calculator)
+[VAT & Service Charge](/tools/hotel-vat-service-charge-calculator)
+[RevPAR, ADR & Occupancy](/tools/revpar-calculator)
+[View all tools](/tools)
 
 ### SECTION
 

@@ -1,0 +1,868 @@
+/* Extracted from globals.css — import only from the matching page view */
+
+
+/* Direct Booking / Conversion page */
+.kpi-conversion-hero-crumb {
+  margin: 0 0 1.15rem;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.5;
+}
+
+
+.kpi-conversion-hero-crumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+.kpi-conversion-hero-crumb a {
+  color: inherit;
+  text-decoration: none;
+}
+
+
+.kpi-conversion-hero-crumb a:hover {
+  color: #fff;
+}
+
+
+.kpi-shell .kpi-conversion-hero .kpi-latin {
+  font-family: Montserrat, "Noto Sans Thai", sans-serif !important;
+}
+
+
+.kpi-conversion-hero .kpi-home-hero > * {
+  min-width: 0;
+}
+
+
+.kpi-conversion-hero .kpi-home-hero-copy {
+  position: relative;
+  z-index: 1;
+  overflow: visible;
+  max-width: 34rem;
+}
+
+
+.kpi-conversion-hero .kpi-home-photo {
+  position: relative;
+  z-index: 0;
+  overflow: visible;
+  width: 100%;
+  max-width: min(560px, 100%);
+  justify-self: stretch;
+  background: transparent;
+  box-shadow: none;
+}
+
+
+.kpi-conversion-hero .kpi-home-photo .db-visual {
+  max-width: 100%;
+}
+
+
+.kpi-conversion-hero .kpi-home-photo .db-visual-frame {
+  width: 100%;
+  max-width: 560px;
+  max-height: 350px;
+  aspect-ratio: 8 / 5;
+}
+
+
+.kpi-conversion-hero .kpi-home-photo img {
+  aspect-ratio: 8 / 5;
+  object-fit: contain;
+  object-position: center;
+}
+
+
+.kpi-conversion-hero .kpi-home-eyebrow {
+  color: #a2dc25;
+}
+
+
+.kpi-conversion-hero h1.kpi-home-h1,
+.kpi-shell :lang(th) .kpi-conversion-hero h1.kpi-home-h1 {
+  max-width: 100%;
+  margin-top: 0.85rem;
+  text-wrap: wrap;
+}
+
+
+.kpi-conversion-hero a.kpi-button {
+  background: #a2dc25;
+  color: #0b1f33;
+}
+
+
+.kpi-conversion-hero a.kpi-button:hover {
+  background: #ebe722;
+  color: #1a3a02;
+}
+
+
+.kpi-conversion-lead-close,
+.kpi-shell :lang(th) .kpi-conversion-lead-close {
+  max-width: 34rem;
+  margin: 0.85rem 0 0;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+}
+
+
+.kpi-conversion-hero-note,
+.kpi-shell :lang(th) .kpi-conversion-hero-note {
+  margin: 0.85rem 0 0;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.875rem;
+  letter-spacing: 0 !important;
+  line-height: 1.6 !important;
+}
+
+
+.kpi-conversion-journey {
+  margin-top: 1.1rem !important;
+}
+
+
+.kpi-conversion-hero-trust {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 32rem;
+  margin: 0.45rem 0 0;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.5;
+}
+
+
+.kpi-conversion-hero-trust span:not(:last-child)::after {
+  content: "·";
+  margin-inline: 0.45rem;
+  color: #a2dc25;
+}
+
+
+.kpi-conversion-hero .db-visual-caption {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+
+.kpi-conversion-hero .db-visual-caption strong {
+  color: #ebe722;
+  font-size: 0.78rem;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+
+.kpi-conversion-hero .db-visual-meta {
+  color: rgba(255, 255, 255, 0.58);
+}
+
+
+.kpi-shell .kpi-conversion-why h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-conversion-why h2.kpi-h2,
+.kpi-shell .kpi-conversion-stops h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-conversion-stops h2.kpi-h2,
+.kpi-shell .kpi-conversion-help h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-conversion-help h2.kpi-h2,
+.kpi-shell .kpi-conversion-vs h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-conversion-vs h2.kpi-h2,
+.kpi-shell .kpi-conversion-measure h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-conversion-measure h2.kpi-h2,
+.kpi-shell .kpi-conversion-method h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-conversion-method h2.kpi-h2,
+.kpi-shell .kpi-conversion-related h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-conversion-related h2.kpi-h2 {
+  max-width: none;
+  color: #3b3b3b;
+  font-size: clamp(1.5rem, 1.05rem + 1.35vw, 2.25rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+  text-align: left;
+  text-wrap: wrap;
+}
+
+
+.kpi-shell .kpi-conversion-why .kpi-latin,
+.kpi-shell .kpi-conversion-stops .kpi-latin,
+.kpi-shell .kpi-conversion-help .kpi-latin,
+.kpi-shell .kpi-conversion-method .kpi-latin,
+.kpi-shell .kpi-conversion-related .kpi-latin {
+  font-family: Montserrat, "Noto Sans Thai", sans-serif !important;
+}
+
+
+.kpi-conversion-why,
+.kpi-conversion-help,
+.kpi-conversion-measure {
+  background: #f8f8f8;
+}
+
+
+.kpi-conversion-why-grid {
+  display: grid;
+  gap: 1.75rem;
+}
+
+
+.kpi-conversion-why-findings {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.35rem;
+}
+
+
+.kpi-conversion-why-finding {
+  padding: 0 0 1rem;
+  border-bottom: 1px solid #e3e8eb;
+}
+
+
+.kpi-conversion-why-stat {
+  margin: 0;
+  color: #1f2a33;
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+
+.kpi-conversion-why-number {
+  color: #0A2472;
+  font-size: 1.75rem;
+  font-weight: 600;
+}
+
+
+.kpi-conversion-why-stat-mid,
+.kpi-conversion-why-stat-label {
+  color: #3b3b3b;
+}
+
+
+.kpi-shell .kpi-conversion-why-finding h3,
+.kpi-shell :lang(th) .kpi-conversion-why-finding h3 {
+  margin: 0;
+  color: #1f2a33;
+  font-size: 1.125rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+
+.kpi-conversion-why-finding-body,
+.kpi-shell :lang(th) .kpi-conversion-why-finding-body,
+.kpi-conversion-why-fallback,
+.kpi-shell :lang(th) .kpi-conversion-why-fallback,
+.kpi-conversion-why-note,
+.kpi-shell :lang(th) .kpi-conversion-why-note {
+  margin: 0.45rem 0 0;
+  color: #555555;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+}
+
+
+.kpi-conversion-why-takeaway,
+.kpi-shell :lang(th) .kpi-conversion-why-takeaway {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  max-width: 34rem;
+  margin: 1.25rem 0 0;
+  color: #3b3b3b;
+  font-size: 1.0625rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.55;
+}
+
+
+.kpi-conversion-why-takeaway-strong {
+  color: #1f2a33;
+  font-weight: 600;
+}
+
+
+.kpi-conversion-why-flow-label,
+.kpi-shell :lang(th) .kpi-conversion-why-flow-label {
+  margin: 1.15rem 0 0;
+  color: #3b3b3b;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0 !important;
+  line-height: 1.5 !important;
+}
+
+
+.kpi-conversion-why-cite,
+.kpi-shell :lang(th) .kpi-conversion-why-cite {
+  margin: 0.4rem 0 0;
+  color: #8a9196;
+  font-size: 0.75rem;
+  letter-spacing: 0 !important;
+  line-height: 1.55 !important;
+}
+
+
+.kpi-conversion-why-cite a {
+  color: #0a2472;
+  text-decoration: none;
+}
+
+
+.kpi-conversion-why-sources {
+  margin-top: 1.1rem;
+}
+
+
+.kpi-conversion-why-sources p,
+.kpi-shell :lang(th) .kpi-conversion-why-sources p {
+  margin: 0.25rem 0 0;
+  color: #8a9196;
+  font-size: 0.75rem;
+  letter-spacing: 0 !important;
+  line-height: 1.55 !important;
+}
+
+
+.kpi-conversion-why-sources a {
+  color: #0A2472;
+  text-decoration: none;
+}
+
+
+.kpi-conversion-why-media {
+  margin: 0;
+  overflow: visible;
+  max-width: min(480px, 100%);
+  border-radius: 10px;
+  background: transparent;
+  box-shadow: none;
+}
+
+
+.kpi-conversion-why-media .db-visual-frame {
+  width: 100%;
+  max-width: 480px;
+  max-height: 320px;
+  aspect-ratio: 3 / 2;
+}
+
+
+.kpi-conversion-why-media img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: contain;
+  object-position: center;
+}
+
+
+.kpi-conversion-stops-list,
+.kpi-conversion-help-list,
+.kpi-conversion-method-list {
+  display: grid;
+  gap: 0;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid #e3e8eb;
+}
+
+
+.kpi-conversion-stops-item,
+.kpi-conversion-help-item {
+  display: grid;
+  grid-template-columns: 1.75rem minmax(0, 1fr);
+  column-gap: 0.85rem;
+  align-items: start;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid #e3e8eb;
+  background: transparent;
+  box-shadow: none;
+}
+
+
+.kpi-conversion-stops-num,
+.kpi-conversion-help-num,
+.kpi-conversion-method-num {
+  margin-top: 0.2rem;
+  color: #0A2472;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+}
+
+
+.kpi-shell .kpi-conversion-stops-item p,
+.kpi-shell :lang(th) .kpi-conversion-stops-item p,
+.kpi-shell .kpi-conversion-help-copy p,
+.kpi-shell :lang(th) .kpi-conversion-help-copy p,
+.kpi-shell .kpi-conversion-method-copy p,
+.kpi-shell :lang(th) .kpi-conversion-method-copy p {
+  margin: 0.35rem 0 0;
+  color: #555555;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+  text-wrap: pretty;
+}
+
+
+.kpi-shell .kpi-conversion-help-copy h3,
+.kpi-shell :lang(th) .kpi-conversion-help-copy h3,
+.kpi-shell .kpi-conversion-method-copy h3,
+.kpi-shell :lang(th) .kpi-conversion-method-copy h3 {
+  margin: 0;
+  color: #1f2a33;
+  font-size: clamp(1.2rem, 1.1rem + 0.3vw, 1.4375rem) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+
+.kpi-conversion-help-item.is-outcome h3,
+.kpi-shell :lang(th) .kpi-conversion-help-item.is-outcome h3 {
+  font-size: clamp(1.3rem, 1.15rem + 0.4vw, 1.5rem) !important;
+}
+
+
+.kpi-conversion-help-cta {
+  margin-top: 1.5rem;
+  border-radius: 9px;
+  box-shadow: none;
+}
+
+
+.kpi-conversion-vs-grid {
+  display: grid;
+  gap: 0.85rem;
+  max-width: 44rem;
+  margin-top: 1.35rem;
+}
+
+
+.kpi-conversion-vs-body,
+.kpi-shell :lang(th) .kpi-conversion-vs-body {
+  margin: 0;
+  color: #555555;
+  font-size: 0.975rem;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+}
+
+
+.kpi-conversion-vs-close,
+.kpi-shell :lang(th) .kpi-conversion-vs-close {
+  margin: 0;
+  color: #1f2a33;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0 !important;
+  line-height: 1.55 !important;
+}
+
+
+.kpi-conversion-table-wrap {
+  margin-top: 1.5rem;
+  overflow-x: auto;
+  border: 1px solid #e3e8eb;
+  border-radius: 10px;
+  background: #fff;
+}
+
+
+.kpi-conversion-table {
+  width: 100%;
+  min-width: 34rem;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+
+.kpi-conversion-table thead {
+  background: #f4f4f4;
+}
+
+
+.kpi-conversion-table th,
+.kpi-conversion-table td {
+  padding: 0.95rem 1.15rem;
+  border-bottom: 1px solid #e3e8eb;
+  letter-spacing: 0;
+}
+
+
+.kpi-conversion-table thead th {
+  color: #1f2a33;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+
+.kpi-conversion-table tbody th {
+  width: 30%;
+  color: #1f2a33;
+  font-size: 0.95rem;
+  font-weight: 600;
+  vertical-align: top;
+}
+
+
+.kpi-conversion-table tbody td {
+  color: #555555;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  line-height: 1.65;
+}
+
+
+.kpi-conversion-table tbody tr:last-child th,
+.kpi-conversion-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+
+.kpi-conversion-measure-note,
+.kpi-shell :lang(th) .kpi-conversion-measure-note {
+  max-width: 40rem;
+  margin: 1.15rem 0 0;
+  color: #3b3b3b;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0 !important;
+  line-height: 1.65 !important;
+}
+
+
+.kpi-conversion-method-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 0.4rem;
+  position: relative;
+  padding: 0 0 1.45rem;
+}
+
+
+.kpi-conversion-method-item:last-child {
+  padding-bottom: 0;
+}
+
+
+.kpi-conversion-method-item:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  top: 1.55rem;
+  bottom: 0;
+  left: 0.55rem;
+  width: 1px;
+  background: #e3e8eb;
+}
+
+
+.kpi-conversion-method-meta {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.45rem 0.65rem;
+  position: relative;
+  z-index: 1;
+  padding-left: 1.35rem;
+}
+
+
+.kpi-conversion-method-num {
+  position: absolute;
+  left: 0;
+  top: 0.05rem;
+}
+
+
+.kpi-conversion-method-label {
+  color: #6b7a80;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+
+.kpi-conversion-method-copy {
+  padding-left: 1.35rem;
+}
+
+
+.kpi-conversion-related {
+  border-top: 1px solid #e3e8eb;
+  background: #f8f8f8;
+}
+
+
+.kpi-conversion-related-layout {
+  display: grid;
+  gap: 1rem;
+  margin: 1.5rem 0 0;
+}
+
+
+.kpi-conversion-related-primary,
+.kpi-conversion-related-secondary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0;
+  border: 1px solid #e3e8eb;
+  border-radius: 9px;
+  background: #fff;
+  box-shadow: none;
+}
+
+
+.kpi-conversion-related-primary {
+  padding: 1.5rem 1.35rem 1.55rem;
+}
+
+
+.kpi-conversion-related-secondary {
+  padding: 1.25rem 1.2rem 1.35rem;
+}
+
+
+.kpi-conversion-related-accent {
+  display: block;
+  width: 1.75rem;
+  height: 2px;
+  margin: 0 0 1rem;
+  background: #c7f000;
+}
+
+
+.kpi-shell .kpi-conversion-related-primary h3,
+.kpi-shell :lang(th) .kpi-conversion-related-primary h3 {
+  margin: 0;
+  color: #1f2a33;
+  font-size: clamp(1.45rem, 1.25rem + 0.5vw, 1.7rem) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.3 !important;
+}
+
+
+.kpi-shell .kpi-conversion-related-secondary h3,
+.kpi-shell :lang(th) .kpi-conversion-related-secondary h3 {
+  margin: 0;
+  color: #1f2a33;
+  font-size: clamp(1.2rem, 1.1rem + 0.3vw, 1.4rem) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+
+.kpi-shell .kpi-conversion-related-primary p,
+.kpi-shell :lang(th) .kpi-conversion-related-primary p,
+.kpi-shell .kpi-conversion-related-secondary p,
+.kpi-shell :lang(th) .kpi-conversion-related-secondary p {
+  max-width: 28rem;
+  margin: 0.7rem 0 0;
+  color: #555555;
+  font-size: 0.9375rem;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+}
+
+
+.kpi-conversion-related-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 1.25rem;
+  color: #0A2472;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+
+.kpi-conversion-related-cta span[aria-hidden="true"] {
+  font-family: Montserrat, sans-serif;
+  transition: transform 0.18s ease;
+}
+
+
+.kpi-conversion-related-cta:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+
+.kpi-conversion-related-cta:hover span[aria-hidden="true"] {
+  transform: translateX(2px);
+}
+
+
+.kpi-shell:has(.kpi-conversion) .kpi-faq-home {
+  scroll-margin-top: 7.25rem;
+}
+
+
+.kpi-shell:has(.kpi-conversion) .kpi-faq-home .kpi-faq-list {
+  max-width: none;
+  padding-inline: 0;
+}
+
+
+.kpi-shell:has(.kpi-conversion) .kpi-faq-home .kpi-faq-item.is-open::before {
+  background: #a2dc25;
+}
+
+
+.kpi-shell:has(.kpi-conversion) .kpi-faq-home .kpi-faq-item,
+.kpi-shell:has(.kpi-conversion) #conversion-enquiry,
+.kpi-shell:has(.kpi-conversion) #hotel-direct-bookings-faq {
+  scroll-margin-bottom: 6.5rem;
+}
+
+
+.kpi-shell:has(.kpi-conversion) .kpi-faq-home .kpi-faq-trigger {
+  min-height: var(--kpi-touch);
+}
+
+
+.kpi-shell:has(.kpi-conversion) .kpi-faq-home .kpi-faq-trigger:focus,
+.kpi-shell:has(.kpi-conversion) .kpi-faq-home .kpi-faq-trigger:focus-visible {
+  outline: 2px solid #a2dc25 !important;
+  outline-color: #a2dc25 !important;
+  outline-style: solid !important;
+  outline-width: 2px !important;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px #ffffff, 0 0 0 5px #a2dc25 !important;
+}
+
+
+.kpi-shell:has(.kpi-conversion) .kpi-faq-home .kpi-faq-item.is-open .kpi-faq-mark {
+  color: #0b6660;
+}
+
+
+.kpi-shell:has(.kpi-conversion) .kpi-faq-home .kpi-faq-q,
+.kpi-shell:has(.kpi-conversion) .kpi-faq-home .kpi-faq-panel p {
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
+
+
+.kpi-shell:has(.kpi-conversion) .kpi-faq-home .kpi-faq-panel p {
+  max-width: 40rem;
+  text-wrap: pretty;
+}
+
+
+.kpi-shell:has(.kpi-conversion) .kpi-faq-home img,
+.kpi-shell:has(.kpi-conversion) .kpi-faq-home dialog {
+  display: none;
+}
+
+
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-faq-home .kpi-faq-trigger,
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-faq-home .kpi-faq-lead,
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-faq-home .kpi-faq-panel p {
+  font-family: "Noto Sans Thai", "Noto Sans Thai", Tahoma, Arial, sans-serif;
+}
+
+
+.kpi-shell:has(.kpi-conversion) .kpi-faq-home .kpi-latin,
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-faq-home .kpi-latin {
+  font-family: Montserrat, Montserrat, sans-serif !important;
+}
+
+
+.kpi-shell:has(.kpi-conversion) .kpi-footer .kpi-button,
+.kpi-footer--conversion .kpi-button {
+  min-height: var(--kpi-touch);
+  background: #a2dc25;
+  color: #0b1f33;
+  white-space: normal;
+}
+
+
+.kpi-shell:has(.kpi-conversion) .kpi-footer .kpi-button:hover,
+.kpi-shell:has(.kpi-conversion) .kpi-footer .kpi-button:active,
+.kpi-footer--conversion .kpi-button:hover,
+.kpi-footer--conversion .kpi-button:active {
+  background: #93c91f;
+  color: #0b1f33;
+}
+
+
+.kpi-shell:has(.kpi-conversion) .kpi-footer a:focus,
+.kpi-shell:has(.kpi-conversion) .kpi-footer a:focus-visible,
+.kpi-shell:has(.kpi-conversion) .kpi-footer button:focus,
+.kpi-shell:has(.kpi-conversion) .kpi-footer button:focus-visible {
+  outline: 2px solid #a2dc25 !important;
+  outline-offset: 3px;
+}
+
+
+.kpi-shell:has(.kpi-conversion) .kpi-footer-statement,
+.kpi-shell:has(.kpi-conversion) .kpi-footer-link,
+.kpi-shell:has(.kpi-conversion) .kpi-footer-address,
+.kpi-shell:has(.kpi-conversion) .kpi-footer-copy,
+.kpi-shell:has(.kpi-conversion) .kpi-footer-legal-links {
+  overflow-wrap: anywhere;
+}
+
+
+.kpi-shell:has(.kpi-conversion) .kpi-footer-legal a:hover,
+.kpi-shell:has(.kpi-conversion) .kpi-footer-legal button:hover,
+.kpi-shell:has(.kpi-conversion) .kpi-footer-lang a:hover {
+  color: #a2dc25;
+}
+
+
+/* Hotel Direct Bookings: "Noto Sans Thai" for Thai copy, with Noto Sans Thai fallback. */
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-conversion,
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-conversion :is(h1, h2, h3, h4, p, li, dt, dd, label, button, a, figcaption, strong, small),
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-conversion .kpi-h1,
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-conversion .kpi-h2,
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-conversion .kpi-home-h1,
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-conversion .kpi-home-h1-lead,
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-conversion .kpi-home-h1-rest,
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-conversion .kpi-lead,
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-conversion .kpi-button,
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-website-enquiry :is(h2, h3, p, li, label, button, span),
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-faq-home :is(h2, p, button) {
+  font-family: "Noto Sans Thai", "Noto Sans Thai", Tahoma, Arial, sans-serif !important;
+}
+
+
+.kpi-shell:has(.kpi-conversion) .kpi-conversion .kpi-latin,
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-conversion .kpi-latin,
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-website-enquiry .kpi-latin,
+.kpi-shell.kpi-locale-th:has(.kpi-conversion) .kpi-faq-home .kpi-latin {
+  font-family: Montserrat, "Noto Sans Thai", sans-serif !important;
+}

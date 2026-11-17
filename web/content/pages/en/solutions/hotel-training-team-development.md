@@ -2,7 +2,7 @@
 **Source:** `en/solutions/hotel-training-team-development.html`
 **Language:** en
 **Title:** Team and skills development for hotels and hospitality | The KPI Plus
-**Description:** Training, workshops, team building, and people development for hotels and hospitality organisations, from revenue and digital marketing through service, leadership, technology, and AI.
+**Description:** Training, workshops, team building, and people development for hotels — from revenue and digital marketing to service, leadership, technology, and AI.
 **Canonical:** https://thekpiplus.com/en/solutions/hotel-training-team-development
 
 ## Page content and controls
@@ -63,8 +63,8 @@ Related Insights
 [INSIGHTS Hotel Technology Adoption as a Commercial Project Read the related Insight](/en/insights/hotel-technology-adoption-commercial-project)
 Free Hotel Tools
 ## Try a relevant free tool.
-[Hotel Budget Calculator Build a fast room-revenue budget from rooms, operating days, target occupancy, and target ADR. Try a free tool](/en/tools/hotel-budget-calculator)
-[RevPAR, ADR & Occupancy Calculator A quick daily calculator for finding RevPAR, ADR, or occupancy from the other two metrics. Try a free tool](/en/tools/revpar-calculator)
+[Hotel Budget Calculator Build a fast room-revenue budget from rooms, operating days, target occupancy, and target ADR. Try a free tool](/tools/hotel-budget-calculator)
+[RevPAR, ADR & Occupancy Calculator A quick daily calculator for finding RevPAR, ADR, or occupancy from the other two metrics. Try a free tool](/tools/revpar-calculator)
 
 ### SECTION
 
@@ -141,13 +141,13 @@ Follow The KPI Plus
 [Associations](/en/associations)
 [Contact](../contact-us.html)
 ## Free Hotel Tools
-[Hotel Searchability Check](/en/tools/hotel-searchability-check)
-[Profit & Revenue](/en/tools/hotel-profit-calculator)
-[Hotel Budget](/en/tools/hotel-budget-calculator)
-[OTA Commission](/en/tools/ota-commission-calculator)
-[VAT & Service Charge](/en/tools/hotel-vat-service-charge-calculator)
-[RevPAR, ADR & Occupancy](/en/tools/revpar-calculator)
-[View all tools](/en/tools)
+[Hotel Searchability Check](/tools/hotel-searchability-check)
+[Profit & Revenue](/tools/hotel-profit-calculator)
+[Hotel Budget](/tools/hotel-budget-calculator)
+[OTA Commission](/tools/ota-commission-calculator)
+[VAT & Service Charge](/tools/hotel-vat-service-charge-calculator)
+[RevPAR, ADR & Occupancy](/tools/revpar-calculator)
+[View all tools](/tools)
 ## The KPI Plus Academy
 Corporate AI Training Program
 - AI Mindset & Security
@@ -187,13 +187,13 @@ Language : English
 ### SECTION
 
 ## Free Hotel Tools
-[Hotel Searchability Check](/en/tools/hotel-searchability-check)
-[Profit & Revenue](/en/tools/hotel-profit-calculator)
-[Hotel Budget](/en/tools/hotel-budget-calculator)
-[OTA Commission](/en/tools/ota-commission-calculator)
-[VAT & Service Charge](/en/tools/hotel-vat-service-charge-calculator)
-[RevPAR, ADR & Occupancy](/en/tools/revpar-calculator)
-[View all tools](/en/tools)
+[Hotel Searchability Check](/tools/hotel-searchability-check)
+[Profit & Revenue](/tools/hotel-profit-calculator)
+[Hotel Budget](/tools/hotel-budget-calculator)
+[OTA Commission](/tools/ota-commission-calculator)
+[VAT & Service Charge](/tools/hotel-vat-service-charge-calculator)
+[RevPAR, ADR & Occupancy](/tools/revpar-calculator)
+[View all tools](/tools)
 
 ### SECTION
 

@@ -93,7 +93,7 @@ Related Solutions
 Related Insights
 ## อ่านบทความที่เกี่ยวข้อง
 [INSIGHTS SEO vs SEM สำหรับโรงแรม ควรโฟกัสอะไร อ่านบทความที่เกี่ยวข้อง](../insights/seo-vs-sem-for-hotels-which-one-should-you-focus-on.html)
-[INSIGHTS โรงแรมเพิ่ม Direct Booking อย่างเป็นระบบได้อย่างไร อ่านบทความที่เกี่ยวข้อง](/insights/how-to-increase-direct-bookings-for-independent-hotels)
+[INSIGHTS โรงแรมเพิ่ม Direct Booking อย่างเป็นระบบได้อย่างไร อ่านบทความที่เกี่ยวข้อง](/insights/direct-booking-journey-audit)
 Free Hotel Tools
 ## ลองใช้เครื่องมือฟรีที่เกี่ยวข้อง
 [ตรวจสุขภาพการค้นหาเว็บไซต์โรงแรม ตรวจว่าเว็บไซต์โรงแรมพร้อมแค่ไหนสำหรับ Google, AI Search และผู้ใช้งานบนมือถือ ลองใช้เครื่องมือฟรี](../tools/hotel-searchability-check.html)

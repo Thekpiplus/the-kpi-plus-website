@@ -1,4 +1,5 @@
 import Link from "next/link";
+import "@/app/page-b2b.css";
 import { B2bEnquiry } from "@/components/B2bEnquiry";
 import { B2bFrameworkMatrix } from "@/components/b2b/B2bFrameworkMatrix";
 import { B2bFunnelStages } from "@/components/b2b/B2bFunnelStages";

@@ -1,12 +1,12 @@
 .kpi-independent {
-  font-family: Prompt, "Noto Sans Thai", Tahoma, Arial, sans-serif;
+  font-family: "Noto Sans Thai", "Noto Sans Thai", Tahoma, Arial, sans-serif;
   min-width: 0;
   overflow-x: clip;
 }
 
 .kpi-independent .kpi-latin,
 .kpi-independent :lang(en) {
-  font-family: Montserrat, Prompt, sans-serif;
+  font-family: Montserrat, "Noto Sans Thai", sans-serif;
 }
 
 .kpi-independent-enquiry-aside {

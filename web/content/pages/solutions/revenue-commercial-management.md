@@ -93,7 +93,7 @@ Related Solutions
 Related Insights
 ## อ่านบทความที่เกี่ยวข้อง
 [INSIGHTS ประชุม Revenue อย่างไรให้จบด้วยการตัดสินใจที่นำไปใช้ได้จริง อ่านบทความที่เกี่ยวข้อง](../insights/hotel-revenue-meetings-that-lead-to-decisions.html)
-[INSIGHTS โรงแรมเพิ่ม Direct Booking อย่างเป็นระบบได้อย่างไร อ่านบทความที่เกี่ยวข้อง](/insights/how-to-increase-direct-bookings-for-independent-hotels)
+[INSIGHTS โรงแรมเพิ่ม Direct Booking อย่างเป็นระบบได้อย่างไร อ่านบทความที่เกี่ยวข้อง](/insights/direct-booking-journey-audit)
 Free Hotel Tools
 ## ลองใช้เครื่องมือฟรีที่เกี่ยวข้อง
 [เครื่องคำนวณ RevPAR, ADR และ Occupancy คำนวณ RevPAR, ADR หรือ Occupancy จากข้อมูลอีกสองตัวแปร ใช้ได้เร็วสำหรับดูตัวเลขรายวัน ลองใช้เครื่องมือฟรี](../tools/revpar-calculator.html)

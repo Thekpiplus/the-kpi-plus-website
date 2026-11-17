@@ -7,46 +7,69 @@ type RelatedServiceDef = {
 };
 
 const relatedServices: Record<string, RelatedServiceDef[]> = {
+  "what-is-ota": [
+    { href: "/solutions/revenue-commercial-management" },
+    { href: "/tools/ota-commission-calculator" },
+  ],
+  "small-hotel-marketing-and-operations": [
+    { href: "/solutions/independent-hotel-management" },
+    { href: "/tools/revpar-calculator" },
+  ],
+  "increase-hotel-bookings-from-google": [
+    { href: "/solutions/google-ads-management" },
+    { href: "/solutions/hotel-direct-bookings" },
+  ],
+  "hotel-website-content": [
+    { href: "/solutions/hotel-website-design" },
+    { href: "/hotel-website-conversion" },
+  ],
+  "hotel-social-media-mistakes": [
+    { href: "/solutions/meta-ads-management" },
+    { href: "/hotel-digital-marketing" },
+  ],
+  "hotel-social-media": [
+    { href: "/solutions/meta-ads-management" },
+    { href: "/hotel-digital-marketing" },
+  ],
+  "hotel-seo": [
+    { href: "/solutions/hotel-seo-google-maps-ai-search" },
+    { href: "/tools/hotel-searchability-check" },
+  ],
+  "hotel-review-management": [
+    { href: "/solutions/hotel-seo-google-maps-ai-search" },
+    { href: "/tools/hotel-review-link" },
+  ],
+  "hotel-rate-parity": [
+    { href: "/solutions/revenue-commercial-management" },
+    { href: "/tools/ota-commission-calculator" },
+  ],
+  "hotel-organizational-structure": [
+    { href: "/solutions/independent-hotel-management" },
+    { href: "/solutions/hotel-systems-implementation" },
+  ],
+  "hotel-marketing-plan-2027": [
+    { href: "/solutions/revenue-commercial-management" },
+    { href: "/tools/hotel-budget-calculator" },
+  ],
+  "hotel-local-seo": [
+    { href: "/solutions/hotel-seo-google-maps-ai-search" },
+    { href: "/tools/hotel-review-link" },
+  ],
+  "7-hotel-marketing-methods": [
+    { href: "/solutions/revenue-commercial-management" },
+    { href: "/solutions/google-ads-management" },
+  ],
+  "10-hotel-marketing-strategies": [
+    { href: "/solutions/revenue-commercial-management" },
+    { href: "/solutions/hotel-direct-bookings" },
+  ],
   "hotel-revenue-meetings-that-lead-to-decisions": [
     { href: "/solutions/revenue-commercial-management" },
     { href: "/case-studies" },
   ],
   "hotel-marketing": [
-    {
-      href: "/solutions/hotel-seo-google-maps-ai-search",
-      why: {
-        th: "ช่วยเรื่อง Search Visibility, Google Maps และข้อมูลโรงแรมให้ค้นพบและเชื่อถือได้ก่อนจอง",
-        en: "Supports search visibility, Google Maps, and accurate hotel information before guests book",
-      },
-    },
-    {
-      href: "/solutions/google-ads-management",
-      why: {
-        th: "เชื่อม Demand จาก Search กับ Landing Page และเส้นทางไปยัง Booking Engine",
-        en: "Connects search demand with the landing page and path to the booking engine",
-      },
-    },
-    {
-      href: "/solutions/meta-ads-management",
-      why: {
-        th: "สร้างการรับรู้และ Interest บน Social โดยยังต้องเชื่อมกับข้อเสนอที่จองได้จริง",
-        en: "Builds awareness and interest on social while staying tied to bookable offers",
-      },
-    },
-    {
-      href: "/solutions/hotel-direct-bookings",
-      why: {
-        th: "ดูแล Website Conversion และเส้นทาง Direct Booking บนมือถือ",
-        en: "Covers website conversion and the mobile direct-booking path",
-      },
-    },
-    {
-      href: "/solutions/revenue-commercial-management",
-      why: {
-        th: "เชื่อม Marketing กับ Pricing, Inventory, Distribution และบริบทรายได้",
-        en: "Connects marketing with pricing, inventory, distribution, and revenue context",
-      },
-    },
+    { href: "/solutions/revenue-commercial-management" },
+    { href: "/hotel-digital-marketing" },
   ],
   "hotel-technology-adoption-commercial-project": [
     { href: "/solutions/hotel-ai-automation" },
@@ -59,6 +82,10 @@ const relatedServices: Record<string, RelatedServiceDef[]> = {
   "seo-vs-sem-for-hotels-which-one-should-you-focus-on": [
     { href: "/solutions/hotel-seo-google-maps-ai-search" },
     { href: "/solutions/google-ads-management" },
+  ],
+  "hotel-branding": [
+    { href: "/solutions/hotel-website-design" },
+    { href: "/solutions/revenue-commercial-management" },
   ],
 };
 

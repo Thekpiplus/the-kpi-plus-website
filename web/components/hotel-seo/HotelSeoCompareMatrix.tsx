@@ -1,3 +1,5 @@
+"use client";
+
 import {
   HOTEL_SEO_COMPARE_COLUMNS,
   HOTEL_SEO_COMPARE_ROWS,

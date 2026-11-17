@@ -1,12 +1,44 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Script from "next/script";
+import { hasAnalyticsConsent } from "@/lib/consent-client";
 
 /**
- * Loads Google Tag Manager once for the whole site.
- * Consent Mode defaults are set earlier in <ConsentDefaults />; tags inside GTM
- * should respect analytics / ads consent updates from CookieConsent.
+ * Loads GTM after analytics consent or the first user interaction.
+ * Consent Mode defaults stay denied until CookieConsent updates them.
  */
 export function GoogleTagManager({ id }: { id: string }) {
-  if (!id) return null;
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    if (!id) return;
+
+    const arm = () => setReady(true);
+    if (hasAnalyticsConsent()) {
+      arm();
+      return;
+    }
+
+    const onConsent = () => {
+      if (hasAnalyticsConsent()) arm();
+    };
+    const onInteract = () => arm();
+
+    window.addEventListener("kpi-consent-change", onConsent);
+    window.addEventListener("pointerdown", onInteract, { once: true, passive: true });
+    window.addEventListener("keydown", onInteract, { once: true });
+    window.addEventListener("scroll", onInteract, { once: true, passive: true });
+
+    return () => {
+      window.removeEventListener("kpi-consent-change", onConsent);
+      window.removeEventListener("pointerdown", onInteract);
+      window.removeEventListener("keydown", onInteract);
+      window.removeEventListener("scroll", onInteract);
+    };
+  }, [id]);
+
+  if (!id || !ready) return null;
 
   return (
     <>

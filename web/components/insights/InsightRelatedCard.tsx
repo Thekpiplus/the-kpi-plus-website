@@ -8,7 +8,7 @@ import {
   insightUpdatedAt,
   type InsightPost,
 } from "@/lib/insights";
-import type { Locale } from "@/lib/seo";
+import { existingHref, type Locale } from "@/lib/seo";
 
 export function InsightRelatedCard({ post, locale }: { post: InsightPost; locale: Locale }) {
   const t = insightsIndexCopy[locale];
@@ -19,9 +19,12 @@ export function InsightRelatedCard({ post, locale }: { post: InsightPost; locale
   const dateIso = updated || post.publishedAt?.trim() || "";
   const dateLabel = updated ? t.updated : t.published;
 
+  const href = existingHref(post.href, locale);
+  if (!href) return null;
+
   return (
     <article className="kpi-article-related-card">
-      <Link href={post.href} className="kpi-article-related-card-link">
+      <Link href={href} className="kpi-article-related-card-link">
         <div className="kpi-article-related-cover">
           <InsightCover post={post} locale={locale} variant="related" />
         </div>

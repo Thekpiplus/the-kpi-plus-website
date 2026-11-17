@@ -1,4 +1,4 @@
-/* Thai subset only, so Poppins is never used for Thai characters. */
+/* Thai subset only, so Montserrat is never used for Thai characters. */
 @font-face {
   font-family: "Noto Sans Thai";
   src: url("/fonts/noto-sans-thai/NotoSansThai.woff2") format("woff2");
@@ -40,9 +40,9 @@
   --kpi-hero-navy-deep: #06182b;
   --kpi-hero-navy: #092441;
   --kpi-hero-navy-mid: #0f3559;
-  --kpi-font-display: "Poppins", sans-serif;
+  --kpi-font-display: "Montserrat", sans-serif;
   --kpi-font-thai: "Noto Sans Thai", Tahoma, Arial, sans-serif;
-  --kpi-font-body: "Noto Sans Thai", "Poppins", Tahoma, Arial, sans-serif;
+  --kpi-font-body: "Noto Sans Thai", "Montserrat", Tahoma, Arial, sans-serif;
   --kpi-wrap: 68rem;
   --kpi-gutter: 1.25rem;
   --kpi-hero-y: 3.25rem;

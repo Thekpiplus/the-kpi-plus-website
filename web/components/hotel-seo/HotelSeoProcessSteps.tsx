@@ -1,3 +1,5 @@
+"use client";
+
 import { HOTEL_SEO_PROCESS_FIELDS, HOTEL_SEO_PROCESS_STEPS } from "@/lib/hotel-seo";
 import type { Locale } from "@/lib/seo";
 

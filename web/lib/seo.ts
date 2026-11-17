@@ -55,12 +55,41 @@ export function localizePath(pathname: string, locale: Locale) {
   return bare === "/" ? `/${locale}` : `/${locale}${bare}`;
 }
 
+/**
+ * Blog articles exist in Thai and English only.
+ * RU/ZH readers fall back to the English article when it exists.
+ */
+export function insightArticleHref(href: string, locale: Locale): string | null {
+  const bare = barePath(href);
+  if (bare === "/insights" || !bare.startsWith("/insights/")) return null;
+  const slug = bare.slice("/insights/".length).split("/")[0];
+  if (!slug) return null;
+
+  const th = `/insights/${slug}`;
+  const en = `/en/insights/${slug}`;
+
+  if (locale === "th") return pageByRoute.has(th) ? th : pageByRoute.has(en) ? en : null;
+  // en, ru, zh → prefer English article content
+  if (pageByRoute.has(en)) return en;
+  if (pageByRoute.has(th)) return th;
+  return null;
+}
+
 export function switchLocale(pathname: string, locale: Locale) {
+  const bare = barePath(pathname);
+
+  // Insight articles: TH ↔ EN; RU/ZH switch lands on English article content.
+  if (bare.startsWith("/insights/")) {
+    const article = insightArticleHref(bare, locale);
+    if (article) return article;
+    const insights = localizePath("/insights", locale);
+    if (pageByRoute.has(insights)) return insights;
+  }
+
   const candidate = localizePath(pathname, locale);
   if (pageByRoute.has(candidate)) return candidate;
 
-  const bare = barePath(pathname);
-  if (bare.startsWith("/insights")) {
+  if (bare === "/insights" || bare.startsWith("/insights")) {
     const insights = localizePath("/insights", locale);
     if (pageByRoute.has(insights)) return insights;
   }
@@ -95,10 +124,14 @@ export function existingHref(href: string, locale: Locale): string | null {
     return href;
   }
 
+  const bare = barePath(href);
+  if (bare.startsWith("/insights/")) {
+    return insightArticleHref(bare, locale);
+  }
+
   const localized = localizePath(href, locale);
   if (pageByRoute.has(localized)) return localized;
 
-  const bare = barePath(href);
   if (bare.startsWith("/case-studies/")) {
     const slug = bare.slice("/case-studies/".length).split("/")[0];
     if (slug && pageByRoute.has(localizePath(`/case-studies/${slug}`, "th"))) {
@@ -148,6 +181,27 @@ export function htmlLang(locale: Locale) {
   return locale;
 }
 
+/** Keep only alternates whose path exists in the SEO manifest (drops /en/tools 404s, etc.). */
+export function existingLanguageAlternates(page: SeoEntry): Record<string, string> {
+  const languages: Record<string, string> = {};
+  for (const alt of page.alternates || []) {
+    if (!alt?.hreflang || !alt?.href) continue;
+    try {
+      const path = new URL(alt.href, SITE).pathname.replace(/\/$/, "") || "/";
+      if (!pageByRoute.has(path)) continue;
+      languages[alt.hreflang] = alt.href;
+    } catch {
+      // skip invalid href
+    }
+  }
+  const thai =
+    languages.th ||
+    page.alternates?.find((alt) => alt.hreflang === "th")?.href ||
+    (page.language === "th" || page.language === "th-TH" ? page.canonical : undefined);
+  if (thai) languages["x-default"] = thai;
+  return languages;
+}
+
 export function metadataFor(
   route: string,
   extra?: {
@@ -168,13 +222,11 @@ export function metadataFor(
       ? extra.image
       : `${SITE}${extra.image}`
     : (page?.ogImage ?? `${SITE}/media/the-kpi-plus-performance-hero_2f986b5f.jpg`);
-  const languages = Object.fromEntries((page?.alternates ?? []).map((item) => [item.hreflang, item.href]));
-  const thaiHref = languages.th;
-  if (thaiHref) {
-    languages["x-default"] = thaiHref;
-  } else if (locale === "th") {
-    languages["x-default"] = canonical;
-  }
+  const languages = page
+    ? existingLanguageAlternates(page)
+    : locale === "th"
+      ? { th: canonical, "x-default": canonical }
+      : {};
 
   return {
     title,

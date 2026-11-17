@@ -1,7 +1,7 @@
 .ht-shell {
   min-width: 0;
   overflow-x: clip;
-  font-family: Prompt, "Noto Sans Thai", Tahoma, Arial, sans-serif;
+  font-family: "Noto Sans Thai", "Noto Sans Thai", Tahoma, Arial, sans-serif;
 }
 
 .kpi-shell.kpi-locale-th:has(.kpi-train) .ht-shell,
@@ -15,7 +15,7 @@
 .kpi-shell.kpi-locale-th:has(.kpi-train) .ht-shell .kpi-button,
 .kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-website-enquiry :is(h2, h3, p, li, label, button, span),
 .kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-faq-home :is(h2, p, button) {
-  font-family: Prompt, "Noto Sans Thai", Tahoma, Arial, sans-serif !important;
+  font-family: "Noto Sans Thai", "Noto Sans Thai", Tahoma, Arial, sans-serif !important;
 }
 
 .kpi-shell .ht-shell .kpi-latin,
@@ -25,7 +25,7 @@
 .kpi-shell:has(.kpi-train) .kpi-train-hero .kpi-latin,
 .kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-website-enquiry .kpi-latin,
 .kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-faq-home .kpi-latin {
-  font-family: Montserrat, Prompt, sans-serif !important;
+  font-family: Montserrat, "Noto Sans Thai", sans-serif !important;
 }
 
 .kpi-train-hero .kpi-home-accent {

@@ -1,3 +1,5 @@
+"use client";
+
 import {
   DIRECT_BOOKING_HANDOVER_LABEL,
   DIRECT_BOOKING_WORKFLOW,

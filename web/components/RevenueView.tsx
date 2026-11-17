@@ -1,4 +1,5 @@
 import Link from "next/link";
+import "@/app/page-revenue.css";
 import { KpiTrendChart } from "@/components/revenue-commercial/KpiTrendChart";
 import { RevenueHeroVisual } from "@/components/revenue-commercial/RevenueHeroVisual";
 import { DecisionFlowDiagram } from "@/components/revenue-commercial/DecisionFlowDiagram";

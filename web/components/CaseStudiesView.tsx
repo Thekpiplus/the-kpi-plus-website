@@ -1,10 +1,11 @@
 import Link from "next/link";
+import "@/app/page-case-study.css";
 import { CaseStudyCard } from "@/components/case-studies/CaseStudyCard";
 import { CaseStudyCta } from "@/components/case-studies/CaseStudyCta";
 import { DummyImage } from "@/components/case-studies/DummyImage";
 import { MetricCard } from "@/components/case-studies/MetricCard";
 import { ResultsChart } from "@/components/case-studies/ResultsChart";
-import { ClientLogoGrid } from "@/components/ClientLogoGrid";
+import { ClientLogoMarquee } from "@/components/ClientLogoMarquee";
 import { SiteShell } from "@/components/SiteShell";
 import {
   caseStudyComparisonFor,
@@ -14,7 +15,7 @@ import {
   caseStudyResultsNote,
   localizeCaseStudy,
 } from "@/lib/case-studies";
-import { loadPublishedClientLogos } from "@/lib/cms/client-logo-public";
+import { loadVisibleClientLogos } from "@/lib/cms/client-logo-public";
 import { loadPublishedCaseStudies } from "@/lib/cms/case-study-public";
 import { loadCaseStudiesPageCopy } from "@/lib/cms/case-studies-page-public";
 import { caseStudyOverviewChart } from "@/lib/case-study-chart";
@@ -78,7 +79,8 @@ export async function CaseStudiesView({ locale }: { locale: Locale }) {
   const heroVisual = caseStudiesHeroVisual(locale);
   const disclaimer = caseStudyDisclaimerFor(locale);
   const stackTh = locale === "th";
-  const partnerLogos = await loadPublishedClientLogos();
+  // CMS first; if the DB is empty/unreachable, show brand-pack logos from /public/brand/clients.
+  const partnerLogos = await loadVisibleClientLogos();
   const partnersTitle = t.clientsLabelLines.join(" ");
   const overviewChart = featured
     ? caseStudyOverviewChart(featured, featured.comparison ?? caseStudyComparisonFor(featured.slug, locale), locale)
@@ -152,7 +154,7 @@ export async function CaseStudiesView({ locale }: { locale: Locale }) {
                 <StackedLines lines={t.clientsLabelLines} stacked={stackTh} />
               </h2>
             </header>
-            <ClientLogoGrid logos={partnerLogos} label={partnersTitle} />
+            <ClientLogoMarquee logos={partnerLogos} label={partnersTitle} className="kpi-cs-marquee" rows={2} />
           </div>
         </section>
       ) : null}

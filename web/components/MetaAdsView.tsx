@@ -1,4 +1,5 @@
 import Link from "next/link";
+import "@/app/page-meta-ads.css";
 import { ArrowUpRight } from "@/components/Icons";
 import { MetaObjectiveBoundary } from "@/components/meta-ads/MetaObjectiveBoundary";
 import { MetaScenarioMatrix } from "@/components/meta-ads/MetaScenarioMatrix";

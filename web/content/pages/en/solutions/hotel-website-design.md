@@ -2,7 +2,7 @@
 **Source:** `en/solutions/hotel-website-design.html`
 **Language:** en
 **Title:** Hotel Website Design | The KPI Plus
-**Description:** Hotel website design support for clearer guest journeys, mobile usability, booking-path clarity, and direct commercial action.
+**Description:** Plan and build a hotel website for booking confidence and a team that can keep using it. CMS choice follows the hotel’s needs, not a single tool.
 **Canonical:** https://thekpiplus.com/en/solutions/hotel-website-design
 
 ## Page content and controls
@@ -63,7 +63,7 @@ Related Insights
 [INSIGHTS SEO vs SEM for Hotels Read the related Insight](/en/insights/seo-vs-sem-for-hotels-which-one-should-you-focus-on)
 Free Hotel Tools
 ## Try a relevant free tool.
-[Hotel Searchability Check Check whether a hotel homepage is ready for Google, AI Search, and mobile visitors in one quick review. Try a free tool](/en/tools/hotel-searchability-check)
+[Hotel Searchability Check Check whether a hotel homepage is ready for Google, AI Search, and mobile visitors in one quick review. Try a free tool](/tools/hotel-searchability-check)
 
 ### SECTION
 
@@ -140,13 +140,13 @@ Follow The KPI Plus
 [Associations](/en/associations)
 [Contact](../contact-us.html)
 ## Free Hotel Tools
-[Hotel Searchability Check](/en/tools/hotel-searchability-check)
-[Profit & Revenue](/en/tools/hotel-profit-calculator)
-[Hotel Budget](/en/tools/hotel-budget-calculator)
-[OTA Commission](/en/tools/ota-commission-calculator)
-[VAT & Service Charge](/en/tools/hotel-vat-service-charge-calculator)
-[RevPAR, ADR & Occupancy](/en/tools/revpar-calculator)
-[View all tools](/en/tools)
+[Hotel Searchability Check](/tools/hotel-searchability-check)
+[Profit & Revenue](/tools/hotel-profit-calculator)
+[Hotel Budget](/tools/hotel-budget-calculator)
+[OTA Commission](/tools/ota-commission-calculator)
+[VAT & Service Charge](/tools/hotel-vat-service-charge-calculator)
+[RevPAR, ADR & Occupancy](/tools/revpar-calculator)
+[View all tools](/tools)
 ## The KPI Plus Academy
 Corporate AI Training Program
 - AI Mindset & Security
@@ -186,13 +186,13 @@ Language : English
 ### SECTION
 
 ## Free Hotel Tools
-[Hotel Searchability Check](/en/tools/hotel-searchability-check)
-[Profit & Revenue](/en/tools/hotel-profit-calculator)
-[Hotel Budget](/en/tools/hotel-budget-calculator)
-[OTA Commission](/en/tools/ota-commission-calculator)
-[VAT & Service Charge](/en/tools/hotel-vat-service-charge-calculator)
-[RevPAR, ADR & Occupancy](/en/tools/revpar-calculator)
-[View all tools](/en/tools)
+[Hotel Searchability Check](/tools/hotel-searchability-check)
+[Profit & Revenue](/tools/hotel-profit-calculator)
+[Hotel Budget](/tools/hotel-budget-calculator)
+[OTA Commission](/tools/ota-commission-calculator)
+[VAT & Service Charge](/tools/hotel-vat-service-charge-calculator)
+[RevPAR, ADR & Occupancy](/tools/revpar-calculator)
+[View all tools](/tools)
 
 ### SECTION
 

@@ -1,0 +1,4324 @@
+/* Extracted from globals.css — import only from the matching page view */
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry {
+  border-top: 1px solid #e3e8eb;
+  background: #fff;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry .kpi-section {
+  padding-block: 2.4rem 2.2rem;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.35rem;
+  align-items: start;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-kicker {
+  margin: 0;
+  color: #0A2472;
+  font-family: Montserrat, sans-serif !important;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em !important;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-enquiry-heading,
+.kpi-shell :lang(th) .kpi-website-enquiry-heading {
+  max-width: none;
+  margin-top: 0.55rem;
+  color: #3b3b3b;
+  font-size: clamp(1.65rem, 1.1rem + 1vw, 2.15rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+  text-align: left;
+  text-wrap: wrap;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-enquiry .kpi-latin,
+.kpi-shell :lang(th) .kpi-website-enquiry .kpi-latin {
+  font-family: Montserrat, Montserrat, sans-serif !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-receive {
+  margin-top: 1.2rem;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-receive-title,
+.kpi-website-enquiry-next-title,
+.kpi-shell :lang(th) .kpi-website-enquiry-receive-title,
+.kpi-shell :lang(th) .kpi-website-enquiry-next-title {
+  margin: 0;
+  color: #0b1f33;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.4 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-receive ul {
+  margin: 0.55rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-receive li {
+  padding: 0.7rem 0;
+  border-bottom: 1px solid #e3e8eb;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-receive li:first-child {
+  border-top: 1px solid #e3e8eb;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-receive strong {
+  display: block;
+  color: #0b6660;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-receive span {
+  display: block;
+  margin-top: 0.28rem;
+  color: #555555;
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-next {
+  margin-top: 1.25rem;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-num {
+  color: #0a2472;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-stack {
+  display: grid;
+  gap: 0.8rem;
+  margin-top: 0.8rem;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-hint,
+.kpi-shell :lang(th) .kpi-website-enquiry-hint {
+  margin: 0.35rem 0 0;
+  color: #6a6a6a;
+  font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.5 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-error {
+  margin: 0.45rem 0 0;
+  color: #c45c26;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-status {
+  margin: 0.55rem 0 0;
+  color: #0b6660;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-done {
+  display: grid;
+  gap: 0.75rem;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-lead,
+.kpi-shell :lang(th) .kpi-website-enquiry-lead,
+.kpi-shell :lang(th) .kpi-website-enquiry-line {
+  max-width: 26rem;
+  margin: 0.75rem 0 0;
+  color: #555555;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-line {
+  display: block;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-points {
+  max-width: 24rem;
+  margin: 1.15rem 0 0;
+  padding: 0.15rem 0 0;
+  list-style: none;
+  border-top: 1px solid #e3e8eb;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-points li {
+  display: grid;
+  grid-template-columns: 1.7rem minmax(0, 1fr);
+  column-gap: 0.65rem;
+  align-items: baseline;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid #e3e8eb;
+  color: #1f2a33;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.5;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-points .kpi-latin {
+  color: #0A2472;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-note,
+.kpi-shell :lang(th) .kpi-website-enquiry-note {
+  max-width: 22rem;
+  margin: 0.9rem 0 0;
+  color: #6a6a6a;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.65 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-panel {
+  border: 1px solid #e3e8eb;
+  border-radius: 11px;
+  background: #fff;
+  box-shadow: none;
+  padding: 1.15rem 1.1rem 1rem;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-fields {
+  display: grid;
+  gap: 0;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-group + .kpi-website-enquiry-group {
+  margin-top: 0.95rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid #e3e8eb;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-group-label,
+.kpi-shell :lang(th) .kpi-website-enquiry-group-label {
+  margin: 0 0 0.65rem;
+  color: #3b3b3b;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0 !important;
+  line-height: 1.4;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-pair {
+  display: grid;
+  gap: 0.8rem;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-label,
+.kpi-shell :lang(th) .kpi-website-enquiry-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: #3b3b3b;
+  font-size: 0.875rem;
+  font-weight: 500 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.4;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry .kpi-field {
+  height: 46px;
+  min-height: 46px;
+  padding: 0 0.85rem;
+  border: 1px solid #e3e8eb;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: none;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry textarea.kpi-field {
+  min-height: 110px;
+  height: 110px;
+  padding-top: 0.7rem;
+  resize: vertical;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry .kpi-field:focus {
+  outline: none;
+  border-color: #0B6660;
+  box-shadow: none;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-privacy {
+  margin-top: 1rem;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-privacy p,
+.kpi-shell :lang(th) .kpi-website-enquiry-privacy p {
+  margin: 0;
+  color: #6a6a6a;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.65 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-privacy a,
+.kpi-website-enquiry-consent a {
+  color: #0A2472;
+  font-weight: 600;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-consent,
+.kpi-shell :lang(th) .kpi-website-enquiry-consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  margin-top: 0.7rem;
+  color: #6a6a6a;
+  font-size: 0.8125rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.65 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-consent input {
+  width: 1rem;
+  height: 1rem;
+  margin-top: 0.18rem;
+  flex-shrink: 0;
+  accent-color: #0B6660;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry .kpi-button,
+.kpi-website-enquiry-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  width: 100%;
+  margin-top: 0.95rem;
+  border-radius: 9px;
+  background: #c7f000;
+  color: #0b1f33;
+  box-shadow: none;
+  font-weight: 600;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry .kpi-button:hover,
+.kpi-website-enquiry .kpi-button:active,
+.kpi-website-enquiry-submit:hover,
+.kpi-website-enquiry-submit:active {
+  background: #b6dc00;
+  color: #0b1f33;
+  box-shadow: none;
+  filter: none;
+  transform: none;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website .kpi-website-enquiry .kpi-button,
+.kpi-website .kpi-website-enquiry-submit {
+  background: #a2dc25;
+  color: #0b1f33;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website .kpi-website-enquiry .kpi-button:hover,
+.kpi-website .kpi-website-enquiry .kpi-button:active,
+.kpi-website .kpi-website-enquiry-submit:hover,
+.kpi-website .kpi-website-enquiry-submit:active {
+  background: #a2dc25;
+  color: #0b1f33;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-arrow {
+  font-family: Montserrat, sans-serif;
+  line-height: 1;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-direct {
+  margin-top: 0.8rem !important;
+  padding-top: 0.7rem;
+  border-top: 1px solid #e3e8eb;
+  color: #6a6a6a !important;
+  font-size: 0.8125rem !important;
+  font-weight: 400;
+  line-height: 1.6 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-direct a {
+  color: #0A2472;
+  font-size: inherit;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-enquiry-success {
+  margin: 0;
+  color: #0b1f33;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.65;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-hero-crumb {
+  margin: 0 0 1.15rem;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.5;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-hero-crumb ol {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-hero-crumb a {
+  color: inherit;
+  text-decoration: none;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-hero-crumb a:hover {
+  color: #fff;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-hero .kpi-latin {
+  font-family: Montserrat, "Noto Sans Thai", sans-serif !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-hero .kpi-home-hero > * {
+  min-width: 0;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-hero .kpi-home-hero-copy {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  max-width: 34rem;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-hero .kpi-home-photo {
+  position: relative;
+  z-index: 0;
+  overflow: visible;
+  width: 100%;
+  max-width: min(560px, 100%);
+  justify-self: stretch;
+  background: transparent;
+  box-shadow: none;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-hero .kpi-home-photo .web-visual,
+.kpi-website-why-media .web-visual,
+.kpi-website-readiness-visual,
+.kpi-website-cms .web-visual,
+.kpi-website-new .web-visual,
+.kpi-website-method .web-visual,
+.kpi-website-measure .web-visual,
+.kpi-website-related .web-visual {
+  max-width: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-related .web-visual--related {
+  max-width: min(520px, 100%);
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-method .web-visual--workflow {
+  max-width: 40rem;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-measure .web-visual--measure {
+  max-width: 45rem;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-hero .kpi-home-photo .web-visual-frame {
+  width: 100%;
+  max-width: 560px;
+  max-height: 350px;
+  aspect-ratio: 8 / 5;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-why-media .web-visual-frame {
+  width: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-readiness-visual {
+  margin: 1.25rem 0 1.5rem;
+  max-width: 36rem;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-hero .kpi-home-eyebrow {
+  margin: 0;
+  color: #a2dc25;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-hero h1.kpi-home-h1,
+.kpi-shell :lang(th) .kpi-website-hero h1.kpi-home-h1 {
+  max-width: 100%;
+  margin-top: 0.85rem;
+  text-wrap: wrap;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-hero .kpi-home-h1-lead,
+.kpi-website-hero .kpi-home-h1-rest,
+.kpi-shell :lang(th) .kpi-website-hero .kpi-home-h1-lead,
+.kpi-shell :lang(th) .kpi-website-hero .kpi-home-h1-rest {
+  display: block;
+  max-width: 100%;
+  white-space: normal;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-hero .kpi-home-accent {
+  color: #ebe722;
+  white-space: nowrap;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-hero .kpi-home-lead,
+.kpi-shell :lang(th) .kpi-website-hero .kpi-home-lead {
+  max-width: 32rem;
+  margin-top: 1rem;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 1.025rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.62 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-lead-close,
+.kpi-shell :lang(th) .kpi-website-lead-close {
+  max-width: 32rem;
+  margin: 0.7rem 0 0;
+  color: rgba(255, 255, 255, 0.64);
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.6 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-hero .kpi-actions {
+  margin-top: 1.25rem;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-hero a.kpi-button,
+.kpi-website-hero a.kpi-website-hero-cta {
+  background: #a2dc25;
+  color: #0b1f33;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-hero a.kpi-button:hover,
+.kpi-website-hero a.kpi-website-hero-cta:hover {
+  background: #ebe722;
+  color: #1a3a02;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-hero-note,
+.kpi-website-hero-trust {
+  max-width: 32rem;
+  margin: 0.7rem 0 0;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.5;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-hero-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem 0;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-hero-trust span:not(:last-child)::after {
+  content: "·";
+  margin-inline: 0.45rem;
+  color: #a2dc25;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-hero .kpi-home-photo img {
+  aspect-ratio: 8 / 5;
+  object-fit: contain;
+  object-position: center;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-hero .web-visual-caption {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-hero .web-visual-caption strong {
+  color: #ebe722;
+  font-size: 0.78rem;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-hero .web-visual-meta {
+  color: rgba(255, 255, 255, 0.58);
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-why h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-website-why h2.kpi-h2 {
+  max-width: none;
+  color: #3b3b3b;
+  font-size: clamp(1.5rem, 1.05rem + 1.35vw, 2.25rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+  text-align: left;
+  text-wrap: wrap;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-why-em {
+  color: #7d9a16;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-why .kpi-latin {
+  font-family: Montserrat, "Noto Sans Thai", sans-serif !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-why-grid {
+  display: grid;
+  gap: 1.75rem;
+  align-items: start;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-why-copy {
+  min-width: 0;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-why-findings {
+  margin-top: 1.5rem;
+  border-top: 1px solid #e3e8eb;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-why-finding {
+  padding: 1.15rem 0;
+  border-bottom: 1px solid #e3e8eb;
+  background: transparent;
+  box-shadow: none;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-why-stat {
+  margin: 0;
+  color: #1f2a33;
+  font-size: clamp(1.35rem, 1.15rem + 0.6vw, 1.75rem);
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.25;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-why-number {
+  display: inline;
+  color: #0b6660;
+  font-family: Montserrat, "Noto Sans Thai", sans-serif !important;
+  font-size: clamp(2.25rem, 1.85rem + 1.2vw, 3rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-why-stat-mid,
+.kpi-website-why-stat-label {
+  color: #1f2a33;
+  font-weight: 600;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-why-finding h3,
+.kpi-shell :lang(th) .kpi-website-why-finding h3 {
+  margin: 0;
+  color: #1f2a33;
+  font-size: clamp(1.25rem, 1.15rem + 0.35vw, 1.5rem) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-why-finding-body,
+.kpi-shell :lang(th) .kpi-website-why-finding-body {
+  max-width: 30rem;
+  margin: 0.45rem 0 0;
+  color: #555555;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-why-takeaway,
+.kpi-shell :lang(th) .kpi-website-why-takeaway {
+  max-width: 30rem;
+  margin: 1.35rem 0 0;
+  color: #3b3b3b;
+  font-size: 1.125rem;
+  font-weight: 500;
+  letter-spacing: 0 !important;
+  line-height: 1.65 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-why-takeaway > span {
+  display: block;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-why-takeaway-strong,
+.kpi-shell :lang(th) .kpi-website-why-takeaway-strong {
+  margin-top: 0.35rem;
+  color: #0b1f33;
+  font-weight: 600;
+  line-height: 1.65 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-why-sources {
+  margin-top: 1.15rem;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-why-sources p,
+.kpi-shell :lang(th) .kpi-website-why-sources p {
+  margin: 0.2rem 0 0;
+  color: #6d746f;
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.55 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-why-sources p:first-child {
+  margin-top: 0;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-why-flow-label,
+.kpi-shell :lang(th) .kpi-website-why-flow-label {
+  margin: 1.2rem 0 0.55rem;
+  color: #0b1f33;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0 !important;
+  line-height: 1.45 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-why-flow {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-why-flow li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  min-width: 0;
+  padding: 0.45rem 0.65rem;
+  border: 1px solid #e3e8eb;
+  border-radius: 0.55rem;
+  background: #f2f8e2;
+  color: #3b3b3b;
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-why-flow li span:first-child {
+  flex: none;
+  color: #0b6660;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-why-note,
+.kpi-shell :lang(th) .kpi-website-why-note {
+  max-width: 34rem;
+  margin: 1rem 0 0;
+  color: #555555;
+  font-size: 0.84rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.6 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-why-sources a {
+  color: #0b6660;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-why-sources a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-why-fallback,
+.kpi-shell :lang(th) .kpi-website-why-fallback {
+  max-width: 34rem;
+  margin: 1.1rem 0 0;
+  color: #555555;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.75;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-why-media {
+  margin: 0;
+  overflow: visible;
+  max-width: min(480px, 100%);
+  border-radius: 0.875rem;
+  background: transparent;
+  box-shadow: none;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-why-media .web-visual-frame {
+  width: 100%;
+  max-width: 480px;
+  max-height: 320px;
+  aspect-ratio: 3 / 2;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-why-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: contain;
+  object-position: center;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-why-br {
+  display: inline;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-questions h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-website-questions h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-website-questions-line {
+  max-width: none;
+  color: #3b3b3b;
+  font-size: clamp(1.5rem, 1.05rem + 1.35vw, 2.25rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+  text-align: left;
+  text-wrap: wrap;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-questions .kpi-latin {
+  font-family: Montserrat, "Noto Sans Thai", sans-serif !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-questions-lead,
+.kpi-shell :lang(th) .kpi-website-questions-lead {
+  max-width: 42rem;
+  margin: 0.85rem 0 0;
+  color: #555555;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-questions-em {
+  color: #7d9a16;
+  font-weight: 600;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell :lang(th) .kpi-website-questions-em {
+  line-height: inherit !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-questions-list {
+  display: grid;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid #e3e8eb;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-questions-item {
+  display: grid;
+  grid-template-columns: 1.75rem minmax(0, 1fr);
+  column-gap: 0.75rem;
+  align-items: start;
+  padding: 1rem 0;
+  border-bottom: 1px solid #e3e8eb;
+  background: transparent;
+  box-shadow: none;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-questions-num {
+  margin-top: 0.2rem;
+  color: #0b6660;
+  font-family: Montserrat, "Noto Sans Thai", sans-serif !important;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-questions-copy {
+  min-width: 0;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-questions h3,
+.kpi-shell :lang(th) .kpi-website-questions h3 {
+  margin: 0;
+  color: #1f2a33;
+  font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.3125rem) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-questions-copy p,
+.kpi-shell :lang(th) .kpi-website-questions-copy p {
+  max-width: 28rem;
+  margin: 0.35rem 0 0;
+  color: #555555;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-questions-close,
+.kpi-shell :lang(th) .kpi-website-questions-close {
+  max-width: 34rem;
+  margin: 1.5rem 0 0;
+  color: #3b3b3b;
+  font-size: 1.125rem;
+  font-weight: 500;
+  letter-spacing: 0 !important;
+  line-height: 1.65 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-questions-close > span {
+  display: block;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-questions-close-strong,
+.kpi-shell :lang(th) .kpi-website-questions-close-strong {
+  margin-top: 0.35rem;
+  color: #0b1f33;
+  font-weight: 600;
+  line-height: 1.65 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-questions-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 1.15rem;
+  padding: 0.7rem 1.1rem;
+  border-radius: 999px;
+  background: #a2dc25;
+  color: #0b1f33;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-decoration: none;
+  transition: background-color 220ms ease, color 220ms ease;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-questions-cta span[aria-hidden="true"] {
+  font-family: Montserrat, sans-serif;
+  line-height: 1;
+  transition: transform 220ms ease;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-questions-br {
+  display: inline;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-help h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-website-help h2.kpi-h2 {
+  max-width: none;
+  color: #3b3b3b;
+  font-size: clamp(1.5rem, 1.05rem + 1.35vw, 2.25rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+  text-align: left;
+  text-wrap: wrap;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-help .kpi-latin {
+  font-family: Montserrat, sans-serif !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-help .web-framework .kpi-latin,
+.kpi-shell .kpi-website-help .web-visual--framework .kpi-latin {
+  font-family: Montserrat, "Noto Sans Thai", sans-serif !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-help .web-framework-boundary h3,
+.kpi-shell :lang(th) .kpi-website-help .web-framework-boundary h3 {
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-help-list {
+  display: grid;
+  gap: 0;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid #e3e8eb;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-help-item {
+  display: grid;
+  grid-template-columns: 1.75rem minmax(0, 1fr);
+  column-gap: 0.8rem;
+  align-items: start;
+  padding: 1.15rem 0;
+  border-bottom: 1px solid #e3e8eb;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-help-item.is-outcome {
+  padding: 1.35rem 0 1.25rem;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-help-num {
+  margin-top: 0.22rem;
+  color: #0A2472;
+  font-family: Montserrat, sans-serif !important;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-help-copy .kpi-website-help-p-follow,
+.kpi-shell :lang(th) .kpi-website-help-copy .kpi-website-help-p-follow {
+  margin-top: 0.7rem;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-help-copy {
+  min-width: 0;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-help h3,
+.kpi-shell :lang(th) .kpi-website-help h3 {
+  margin: 0;
+  color: #1f2a33;
+  font-size: clamp(1.25rem, 1.15rem + 0.3vw, 1.4375rem) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-help-item.is-outcome h3,
+.kpi-shell :lang(th) .kpi-website-help-item.is-outcome h3 {
+  font-size: clamp(1.35rem, 1.2rem + 0.4vw, 1.5625rem) !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-help-copy p,
+.kpi-shell :lang(th) .kpi-website-help-copy p {
+  max-width: 34rem;
+  margin: 0.4rem 0 0;
+  color: #555555;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-help-item.is-outcome .kpi-website-help-copy p {
+  max-width: 44rem;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-help-em {
+  color: #7d9a16;
+  font-weight: 600;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell :lang(th) .kpi-website-help-em {
+  line-height: inherit !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-help-br {
+  display: inline;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-help .kpi-website-help-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  width: 100%;
+  margin-top: 1.5rem;
+  border-radius: 9px;
+  background: #c7f000;
+  color: #0b1f33;
+  box-shadow: none;
+  font-weight: 600;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-help .kpi-website-help-cta:hover,
+.kpi-website-help .kpi-website-help-cta:active {
+  background: #b6dc00;
+  color: #0b1f33;
+  box-shadow: none;
+  filter: none;
+  transform: none;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-help-cta span[aria-hidden="true"] {
+  font-family: Montserrat, sans-serif;
+  line-height: 1;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-cms h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-website-cms h2.kpi-h2 {
+  max-width: none;
+  color: #3b3b3b;
+  font-size: clamp(1.5rem, 1.05rem + 1.35vw, 2.25rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+  text-align: left;
+  text-wrap: wrap;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-cms .kpi-latin {
+  font-family: Montserrat, sans-serif !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-cms .web-cms-stack .kpi-latin,
+.kpi-shell .kpi-website-cms .web-visual--cms .kpi-latin {
+  font-family: Montserrat, "Noto Sans Thai", sans-serif !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-cms-list {
+  display: grid;
+  gap: 0;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid #e3e8eb;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-cms-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1.2rem 0;
+  border-bottom: 1px solid #e3e8eb;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-cms-num {
+  color: #0A2472;
+  font-family: Montserrat, sans-serif !important;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-cms-label {
+  margin-top: 0.45rem;
+  color: #6b7a80;
+  font-family: Montserrat, sans-serif !important;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-cms h3,
+.kpi-shell :lang(th) .kpi-website-cms h3 {
+  margin: 0.55rem 0 0;
+  color: #1f2a33;
+  font-size: clamp(1.1875rem, 1.1rem + 0.25vw, 1.375rem) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-cms-item p,
+.kpi-shell :lang(th) .kpi-website-cms-item p {
+  max-width: 22rem;
+  margin: 0.45rem 0 0;
+  color: #555555;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-cms-br {
+  display: inline;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-cms-close {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  max-width: 34rem;
+  margin: 1.75rem 0 0;
+  color: #3b3b3b;
+  font-size: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.55;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-cms-close-strong {
+  color: #1f2a33;
+  font-weight: 600;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-cms-em {
+  color: #7d9a16;
+  font-weight: 600;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell :lang(th) .kpi-website-cms-em {
+  line-height: inherit !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-related h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-website-related h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-website-related-line {
+  max-width: none;
+  color: #3b3b3b;
+  font-size: clamp(1.5rem, 1.05rem + 1.35vw, 2.25rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+  text-align: left;
+  text-wrap: wrap;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-related .kpi-latin,
+.kpi-shell :lang(th) .kpi-website-related .kpi-latin,
+.kpi-shell .kpi-website-related .web-related .kpi-latin,
+.kpi-shell :lang(th) .kpi-website-related .web-related .kpi-latin {
+  font-family: Montserrat, Montserrat, sans-serif !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-related-layout {
+  display: grid;
+  gap: 1rem;
+  margin: 1.5rem 0 0;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-related-primary,
+.kpi-website-related-secondary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0;
+  border: 1px solid #e3e8eb;
+  border-radius: 9px;
+  background: transparent;
+  box-shadow: none;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-related-primary {
+  padding: 1.45rem 1.35rem 1.5rem;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-related-secondary {
+  padding: 1.25rem 1.2rem 1.35rem;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-related-accent {
+  display: block;
+  width: 1.75rem;
+  height: 2px;
+  margin: 0 0 1rem;
+  background: #c7f000;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-related-primary h3,
+.kpi-shell :lang(th) .kpi-website-related-primary h3 {
+  margin: 0;
+  color: #1f2a33;
+  font-size: clamp(1.5rem, 1.3rem + 0.55vw, 1.75rem) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.3 !important;
+  text-wrap: pretty;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-related-secondary h3,
+.kpi-shell :lang(th) .kpi-website-related-secondary h3 {
+  margin: 0;
+  color: #1f2a33;
+  font-size: clamp(1.25rem, 1.15rem + 0.3vw, 1.4375rem) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+  text-wrap: pretty;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-related-primary p,
+.kpi-shell :lang(th) .kpi-website-related-primary p,
+.kpi-shell .kpi-website-related-secondary p,
+.kpi-shell :lang(th) .kpi-website-related-secondary p {
+  max-width: 28rem;
+  margin: 0.7rem 0 0;
+  color: #555555;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+  text-wrap: pretty;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-related-primary .kpi-website-related-follow,
+.kpi-shell :lang(th) .kpi-website-related-primary .kpi-website-related-follow,
+.kpi-shell .kpi-website-related-secondary .kpi-website-related-follow,
+.kpi-shell :lang(th) .kpi-website-related-secondary .kpi-website-related-follow {
+  margin-top: 0.65rem;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-related-br {
+  display: inline;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-related-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 1.25rem;
+  color: #0A2472;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.3;
+  text-decoration: none;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-related-primary .kpi-website-related-cta {
+  margin-top: 1.5rem;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-related-cta span[aria-hidden="true"] {
+  font-family: Montserrat, sans-serif;
+  line-height: 1;
+  transition: transform 0.18s ease;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-related-cta:hover,
+.kpi-website-related-cta:focus-visible {
+  color: #0A2472;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-related-cta:hover span[aria-hidden="true"],
+.kpi-website-related-cta:focus-visible span[aria-hidden="true"] {
+  transform: translateX(2px);
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-measure h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-website-measure h2.kpi-h2 {
+  max-width: none;
+  color: #3b3b3b;
+  font-size: clamp(1.5rem, 1.05rem + 1.35vw, 2.25rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+  text-align: left;
+  text-wrap: wrap;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-measure .kpi-latin {
+  font-family: Montserrat, sans-serif !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-measure .web-measure .kpi-latin,
+.kpi-shell .kpi-website-measure .web-visual--measure .kpi-latin {
+  font-family: Montserrat, "Noto Sans Thai", sans-serif !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-measure .web-kpi-group h3,
+.kpi-shell :lang(th) .kpi-website-measure .web-kpi-group h3,
+.kpi-shell .kpi-website-measure .web-kpi-chart-head h3,
+.kpi-shell :lang(th) .kpi-website-measure .web-kpi-chart-head h3 {
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-measure-list {
+  display: grid;
+  gap: 0;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid #e3e8eb;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-measure-item {
+  display: grid;
+  grid-template-columns: 1.75rem minmax(0, 1fr);
+  column-gap: 0.8rem;
+  align-items: start;
+  padding: 1.2rem 0;
+  border-bottom: 1px solid #e3e8eb;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-measure-num {
+  margin-top: 0.28rem;
+  color: #0A2472;
+  font-family: Montserrat, sans-serif !important;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-measure-copy {
+  min-width: 0;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-measure h3,
+.kpi-shell :lang(th) .kpi-website-measure h3 {
+  margin: 0;
+  color: #1f2a33;
+  font-size: clamp(1rem, 0.95rem + 0.2vw, 1.1875rem) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-measure-copy p,
+.kpi-shell :lang(th) .kpi-website-measure-copy p {
+  max-width: 22rem;
+  margin: 0.4rem 0 0;
+  color: #555555;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+  text-wrap: pretty;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-measure-copy .kpi-website-measure-p-follow,
+.kpi-shell :lang(th) .kpi-website-measure-copy .kpi-website-measure-p-follow {
+  margin-top: 0.65rem;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-measure-br {
+  display: inline;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-measure-em {
+  color: #7d9a16;
+  font-weight: 600;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell :lang(th) .kpi-website-measure-em {
+  line-height: inherit !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-measure-close {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-width: 34rem;
+  margin: 1.75rem 0 0;
+  color: #3b3b3b;
+  font-size: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-measure-close-strong {
+  color: #1f2a33;
+  font-weight: 600;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-new h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-website-new h2.kpi-h2 {
+  max-width: none;
+  color: #3b3b3b;
+  font-size: clamp(1.5rem, 1.05rem + 1.35vw, 2.25rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+  text-align: left;
+  text-wrap: wrap;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-new .kpi-latin {
+  font-family: Montserrat, sans-serif !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-new .web-decision .kpi-latin,
+.kpi-shell .kpi-website-new .web-visual--decision .kpi-latin {
+  font-family: Montserrat, "Noto Sans Thai", sans-serif !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-new .web-decision-card h3,
+.kpi-shell :lang(th) .kpi-website-new .web-decision-card h3 {
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-new-grid {
+  display: grid;
+  gap: 0;
+  margin: 1.5rem 0 0;
+  border-top: 1px solid #e3e8eb;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-new-col {
+  padding: 1.25rem 0;
+  border-bottom: 1px solid #e3e8eb;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-new h3,
+.kpi-shell :lang(th) .kpi-website-new h3 {
+  margin: 0;
+  color: #1f2a33;
+  font-size: clamp(1.25rem, 1.15rem + 0.35vw, 1.5rem) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-new-support,
+.kpi-shell :lang(th) .kpi-website-new-support {
+  max-width: 28rem;
+  margin: 0.55rem 0 0;
+  color: #3b3b3b;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: 0 !important;
+  line-height: 1.65 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-new-points {
+  display: grid;
+  gap: 0.55rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-new-points li,
+.kpi-shell :lang(th) .kpi-website-new-points li {
+  position: relative;
+  padding-left: 0.95rem;
+  color: #555555;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-new-points li::before {
+  content: "";
+  position: absolute;
+  top: 0.72em;
+  left: 0;
+  width: 0.28rem;
+  height: 0.28rem;
+  border-radius: 50%;
+  background: #0b6660;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-new-br {
+  display: inline;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-new-close {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  max-width: 34rem;
+  margin: 1.75rem 0 0;
+  color: #3b3b3b;
+  font-size: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.55;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-new-close-strong {
+  color: #1f2a33;
+  font-weight: 600;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-new-em {
+  color: #7d9a16;
+  font-weight: 600;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell :lang(th) .kpi-website-new-em {
+  line-height: inherit !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-method h2.kpi-h2,
+.kpi-shell :lang(th) .kpi-website-method h2.kpi-h2 {
+  max-width: none;
+  color: #3b3b3b;
+  font-size: clamp(1.5rem, 1.05rem + 1.35vw, 2.25rem) !important;
+  font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+  text-align: left;
+  text-wrap: wrap;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-method .kpi-latin {
+  font-family: Montserrat, sans-serif !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-method .web-workflow .kpi-latin,
+.kpi-shell .kpi-website-method .web-visual--workflow .kpi-latin {
+  font-family: Montserrat, "Noto Sans Thai", sans-serif !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-method .web-workflow-handover h3,
+.kpi-shell :lang(th) .kpi-website-method .web-workflow-handover h3 {
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-method-list {
+  display: grid;
+  gap: 0;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-method-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 0.4rem;
+  position: relative;
+  align-items: start;
+  padding: 0 0 1.45rem;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-method-item:last-child {
+  padding-bottom: 0;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-method-item:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  top: 1.55rem;
+  bottom: 0;
+  left: 0.55rem;
+  width: 1px;
+  background: #e3e8eb;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-method-meta {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.45rem 0.65rem;
+  position: relative;
+  z-index: 1;
+  padding-left: 1.35rem;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-method-num {
+  position: absolute;
+  left: 0;
+  top: 0.05rem;
+  color: #0A2472;
+  font-family: Montserrat, sans-serif !important;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-method-label {
+  color: #6b7a80;
+  font-family: Montserrat, sans-serif !important;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.3;
+  text-transform: uppercase;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-method-copy {
+  min-width: 0;
+  padding-left: 1.35rem;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-method-copy h3,
+.kpi-shell :lang(th) .kpi-website-method-copy h3 {
+  margin: 0;
+  color: #1f2a33;
+  font-size: clamp(1.25rem, 1.15rem + 0.3vw, 1.4375rem) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+  text-wrap: pretty;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-method-copy p,
+.kpi-shell :lang(th) .kpi-website-method-copy p {
+  max-width: 32rem;
+  margin: 0.45rem 0 0;
+  color: #555555;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+  text-wrap: pretty;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-method-copy .kpi-website-method-p-follow,
+.kpi-shell :lang(th) .kpi-website-method-copy .kpi-website-method-p-follow {
+  margin-top: 0.7rem;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-method-br {
+  display: inline;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-method-tools {
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e3e8eb;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-method-tools-title,
+.kpi-shell :lang(th) .kpi-website-method-tools-title {
+  margin: 0;
+  color: #1f2a33;
+  font-size: clamp(1.25rem, 1.1rem + 0.4vw, 1.5rem) !important;
+  font-weight: 600 !important;
+  letter-spacing: 0 !important;
+  line-height: 1.35 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-method-tools-copy {
+  display: grid;
+  gap: 0.85rem;
+  max-width: 42rem;
+  margin-top: 0.9rem;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell .kpi-website-method-tools-copy p,
+.kpi-shell :lang(th) .kpi-website-method-tools-copy p,
+.kpi-shell .kpi-website-method-tools-fallback,
+.kpi-shell :lang(th) .kpi-website-method-tools-fallback {
+  margin: 0;
+  color: #555555;
+  font-size: 0.9375rem;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+  line-height: 1.7 !important;
+  text-wrap: pretty;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-method-tools-fallback {
+  max-width: 38rem;
+  margin-top: 0.9rem !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-method-tools-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem 0.15rem;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-method-tools-row li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #3b3b3b;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-method-tools-row li:not(:first-child)::before {
+  content: "·";
+  margin-right: 0.55rem;
+  color: #9aa6ab;
+  font-family: Montserrat, sans-serif;
+  font-weight: 600;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-method-tools-mark {
+  width: auto;
+  height: 22px;
+  max-width: 4.5rem;
+  object-fit: contain;
+  opacity: 0.72;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-method-tools-mark.is-wordmark {
+  height: 18px;
+  max-width: 5.5rem;
+  opacity: 0.78;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-method-tools-name-fallback {
+  display: none;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-method-tools-close {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-width: 36rem;
+  margin: 1.5rem 0 0;
+  color: #3b3b3b;
+  font-size: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-method-tools-close-strong {
+  color: #1f2a33;
+  font-weight: 600;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-website-method-em {
+  color: #7d9a16;
+  font-weight: 600;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell :lang(th) .kpi-website-method-em {
+  line-height: inherit !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell:has(.kpi-website-hero) .kpi-faq-home {
+  scroll-margin-top: 7.25rem;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell:has(.kpi-website-hero) .kpi-faq-home .kpi-faq-list {
+  max-width: none;
+  padding-inline: 0;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell:has(.kpi-website-hero) .kpi-faq-home .kpi-faq-item.is-open::before {
+  background: #a2dc25;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell:has(.kpi-website-hero) .kpi-faq-home .kpi-faq-item,
+.kpi-shell:has(.kpi-website-hero) #website-enquiry,
+.kpi-shell:has(.kpi-website-hero) #hotel-website-faq {
+  scroll-margin-bottom: 6.5rem;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell:has(.kpi-website-hero) .kpi-faq-home .kpi-faq-trigger {
+  min-height: var(--kpi-touch);
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell:has(.kpi-website-hero) .kpi-faq-home .kpi-faq-trigger:focus,
+.kpi-shell:has(.kpi-website-hero) .kpi-faq-home .kpi-faq-trigger:focus-visible {
+  outline: 2px solid #a2dc25 !important;
+  outline-color: #a2dc25 !important;
+  outline-style: solid !important;
+  outline-width: 2px !important;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 3px #ffffff, 0 0 0 5px #a2dc25 !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell:has(.kpi-website-hero) .kpi-faq-home .kpi-faq-item.is-open .kpi-faq-mark {
+  color: #0b6660;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell:has(.kpi-website-hero) .kpi-faq-home .kpi-faq-q,
+.kpi-shell:has(.kpi-website-hero) .kpi-faq-home .kpi-faq-panel p {
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell:has(.kpi-website-hero) .kpi-faq-home .kpi-faq-panel p {
+  max-width: 40rem;
+  text-wrap: pretty;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell:has(.kpi-website-hero) .kpi-faq-home img,
+.kpi-shell:has(.kpi-website-hero) .kpi-faq-home dialog {
+  display: none;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell.kpi-locale-th:has(.kpi-website-hero) .kpi-faq-home .kpi-faq-trigger,
+.kpi-shell.kpi-locale-th:has(.kpi-website-hero) .kpi-faq-home .kpi-faq-lead,
+.kpi-shell.kpi-locale-th:has(.kpi-website-hero) .kpi-faq-home .kpi-faq-panel p {
+  font-family: "Noto Sans Thai", "Noto Sans Thai", Tahoma, Arial, sans-serif;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell:has(.kpi-website-hero) .kpi-faq-home .kpi-latin,
+.kpi-shell.kpi-locale-th:has(.kpi-website-hero) .kpi-faq-home .kpi-latin {
+  font-family: Montserrat, Montserrat, sans-serif !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell:has(.kpi-website-hero) .kpi-footer .kpi-button {
+  min-height: var(--kpi-touch);
+  background: #a2dc25;
+  color: #0b1f33;
+  white-space: normal;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell:has(.kpi-website-hero) .kpi-footer .kpi-button:hover,
+.kpi-shell:has(.kpi-website-hero) .kpi-footer .kpi-button:active {
+  background: #93c91f;
+  color: #0b1f33;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell:has(.kpi-website-hero) .kpi-footer a:focus,
+.kpi-shell:has(.kpi-website-hero) .kpi-footer a:focus-visible,
+.kpi-shell:has(.kpi-website-hero) .kpi-footer button:focus,
+.kpi-shell:has(.kpi-website-hero) .kpi-footer button:focus-visible {
+  outline: 2px solid #a2dc25 !important;
+  outline-offset: 3px;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell:has(.kpi-website-hero) .kpi-footer-statement,
+.kpi-shell:has(.kpi-website-hero) .kpi-footer-link,
+.kpi-shell:has(.kpi-website-hero) .kpi-footer-address,
+.kpi-shell:has(.kpi-website-hero) .kpi-footer-copy,
+.kpi-shell:has(.kpi-website-hero) .kpi-footer-legal-links {
+  overflow-wrap: break-word;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell:has(.kpi-website-hero) .kpi-footer-legal a:hover,
+.kpi-shell:has(.kpi-website-hero) .kpi-footer-legal button:hover,
+.kpi-shell:has(.kpi-website-hero) .kpi-footer-lang a:hover {
+  color: #a2dc25;
+}
+
+
+
+
+
+
+
+
+
+
+/* Independent Hotel Management: "Noto Sans Thai" for Thai copy, with Noto Sans Thai fallback. */
+.kpi-shell.kpi-locale-th:has(.kpi-independent) .kpi-independent,
+.kpi-shell.kpi-locale-th:has(.kpi-independent) .kpi-independent :is(h1, h2, h3, h4, p, li, dt, dd, label, button, a, figcaption, strong, small),
+.kpi-shell.kpi-locale-th:has(.kpi-independent) .kpi-independent .kpi-h1,
+.kpi-shell.kpi-locale-th:has(.kpi-independent) .kpi-independent .kpi-h2,
+.kpi-shell.kpi-locale-th:has(.kpi-independent) .kpi-independent .kpi-home-h1,
+.kpi-shell.kpi-locale-th:has(.kpi-independent) .kpi-independent .kpi-home-h1-lead,
+.kpi-shell.kpi-locale-th:has(.kpi-independent) .kpi-independent .kpi-home-h1-rest,
+.kpi-shell.kpi-locale-th:has(.kpi-independent) .kpi-independent .kpi-lead,
+.kpi-shell.kpi-locale-th:has(.kpi-independent) .kpi-independent .kpi-button,
+.kpi-shell.kpi-locale-th:has(.kpi-independent) .kpi-website-enquiry :is(h2, h3, p, li, label, button, span),
+.kpi-shell.kpi-locale-th:has(.kpi-independent) .kpi-faq-home :is(h2, p, button) {
+  font-family: "Noto Sans Thai", "Noto Sans Thai", Tahoma, Arial, sans-serif !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell:has(.kpi-independent) .kpi-independent .kpi-latin,
+.kpi-shell.kpi-locale-th:has(.kpi-independent) .kpi-independent .kpi-latin,
+.kpi-shell.kpi-locale-th:has(.kpi-independent) .kpi-website-enquiry .kpi-latin,
+.kpi-shell.kpi-locale-th:has(.kpi-independent) .kpi-faq-home .kpi-latin {
+  font-family: Montserrat, "Noto Sans Thai", sans-serif !important;
+}
+
+
+
+
+
+
+
+
+
+
+/* Hotel Training & Team Development: "Noto Sans Thai" for Thai copy, with Noto Sans Thai fallback. */
+.kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-train,
+.kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-train :is(h1, h2, h3, h4, p, li, dt, dd, label, button, a, figcaption, strong, small),
+.kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-train .kpi-h1,
+.kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-train .kpi-h2,
+.kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-train .kpi-home-h1,
+.kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-train .kpi-home-h1-lead,
+.kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-train .kpi-home-h1-rest,
+.kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-train .kpi-lead,
+.kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-train .kpi-button,
+.kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-website-enquiry :is(h2, h3, p, li, label, button, span),
+.kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-faq-home :is(h2, p, button) {
+  font-family: "Noto Sans Thai", "Noto Sans Thai", Tahoma, Arial, sans-serif !important;
+}
+
+
+
+
+
+
+
+
+
+
+.kpi-shell:has(.kpi-train) .kpi-train .kpi-latin,
+.kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-train .kpi-latin,
+.kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-website-enquiry .kpi-latin,
+.kpi-shell.kpi-locale-th:has(.kpi-train) .kpi-faq-home .kpi-latin {
+  font-family: Montserrat, "Noto Sans Thai", sans-serif !important;
+}
