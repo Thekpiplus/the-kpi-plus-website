@@ -10,7 +10,7 @@ import { requireUser } from "@/lib/crm/auth";
 import {
   formatRelativeThai,
   formatThaiDateTime,
-  pipelineData,
+  leadSourceCounts,
   recentLeadEvents,
   todayLists,
 } from "@/lib/crm/queries";
@@ -40,10 +40,10 @@ export default async function SalesHomePage({
   const params = await searchParams;
   const filter = parseFilter(params.filter);
   const q = params.q?.trim() ?? "";
-  const [lists, events, stages] = await Promise.all([
+  const [lists, events, sourceRows] = await Promise.all([
     todayLists(),
     recentLeadEvents(8),
-    pipelineData(),
+    leadSourceCounts(6),
   ]);
 
   const seen = new Set<string>();
@@ -123,17 +123,10 @@ export default async function SalesHomePage({
     new: items.filter((item) => item.status === "new").length,
   };
 
-  const sourceMap = new Map<string, number>();
-  for (const stage of stages) {
-    for (const lead of stage.leads) {
-      const label = sourceLabel(lead.source);
-      sourceMap.set(label, (sourceMap.get(label) ?? 0) + 1);
-    }
-  }
-  const channels = [...sourceMap.entries()]
-    .map(([label, count]) => ({ label, count }))
-    .sort((a, b) => b.count - a.count)
-    .slice(0, 6);
+  const channels = sourceRows.map((row) => ({
+    label: sourceLabel(row.source),
+    count: row.count,
+  }));
   const channelTotal = channels.reduce((sum, item) => sum + item.count, 0) || 1;
 
   const todayLabel = formatThaiDateToday();
@@ -214,20 +207,25 @@ export default async function SalesHomePage({
               </div>
             ) : (
               <div className="kpi-leads-channels">
-                {channels.map((channel) => (
-                  <div key={channel.label} className="kpi-leads-channel">
-                    <div className="kpi-leads-channel-meta">
-                      <span>{channel.label}</span>
-                      <span>{channel.count}</span>
+                {channels.map((channel) => {
+                  const pct = Math.round((channel.count / channelTotal) * 100);
+                  return (
+                    <div key={channel.label} className="kpi-leads-channel">
+                      <div className="kpi-leads-channel-meta">
+                        <span className="kpi-leads-channel-label">{channel.label}</span>
+                        <span className="kpi-leads-channel-value">
+                          <strong>{channel.count}</strong>
+                        </span>
+                      </div>
+                      <div className="kpi-leads-channel-bar" aria-hidden="true">
+                        <div
+                          className="kpi-leads-channel-fill"
+                          style={{ width: `${Math.max(8, pct)}%` }}
+                        />
+                      </div>
                     </div>
-                    <div className="kpi-leads-channel-bar" aria-hidden="true">
-                      <div
-                        className="kpi-leads-channel-fill"
-                        style={{ width: `${Math.max(8, Math.round((channel.count / channelTotal) * 100))}%` }}
-                      />
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </section>

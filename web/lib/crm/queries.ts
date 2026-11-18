@@ -213,38 +213,38 @@ export async function todayLists() {
   const now = new Date();
   const start = startOfDay(now);
   const end = endOfDay(now);
-  const activeIds = await leadIdsByArchive("active");
-  const active = archiveWhere(activeIds);
+  // Filter by archivedAt directly — avoid SELECT id FROM Lead then IN (...).
+  const activeLead = { archivedAt: null };
 
   const [overdue, dueToday, upcoming, firstResponse, noNext, newLeads] = await Promise.all([
     db.activity.findMany({
-      where: { status: "open", dueAt: { lt: start }, lead: active },
+      where: { status: "open", dueAt: { lt: start }, lead: activeLead },
       include: { lead: { include: { stage: true } } },
       orderBy: { dueAt: "asc" },
     }),
     db.activity.findMany({
-      where: { status: "open", dueAt: { gte: start, lte: end }, lead: active },
+      where: { status: "open", dueAt: { gte: start, lte: end }, lead: activeLead },
       include: { lead: { include: { stage: true } } },
       orderBy: { dueAt: "asc" },
     }),
     db.activity.findMany({
-      where: { status: "open", dueAt: { gt: end }, lead: active },
+      where: { status: "open", dueAt: { gt: end }, lead: activeLead },
       include: { lead: { include: { stage: true } } },
       orderBy: { dueAt: "asc" },
       take: 12,
     }),
     db.activity.findMany({
-      where: { status: "open", firstResponse: true, lead: active },
+      where: { status: "open", firstResponse: true, lead: activeLead },
       include: { lead: { include: { stage: true } } },
       orderBy: { createdAt: "desc" },
     }),
     db.lead.findMany({
-      where: { noFollowUp: false, nextActivityAt: null, outcome: "", ...active },
+      where: { noFollowUp: false, nextActivityAt: null, outcome: "", ...activeLead },
       include: { stage: true },
       orderBy: { updatedAt: "desc" },
     }),
     db.lead.findMany({
-      where: { stage: { sortOrder: 1 }, ...active },
+      where: { stage: { sortOrder: 1 }, ...activeLead },
       include: { stage: true },
       orderBy: { createdAt: "desc" },
       take: 12,
@@ -300,6 +300,21 @@ export async function leadOriginCounts() {
     db.lead.count({ where: { source: { not: "website_form" }, ...active } }),
   ]);
   return { web, manual, total: web + manual };
+}
+
+/** Lightweight source histogram for sales channel bars (avoids loading full pipeline). */
+export async function leadSourceCounts(take = 6) {
+  const db = prisma();
+  const rows = await db.lead.groupBy({
+    by: ["source"],
+    where: { archivedAt: null },
+    _count: { _all: true },
+    orderBy: { _count: { source: "desc" } },
+  });
+  return rows.slice(0, take).map((row) => ({
+    source: row.source,
+    count: row._count._all,
+  }));
 }
 
 export async function leadById(id: string) {

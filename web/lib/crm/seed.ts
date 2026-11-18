@@ -48,10 +48,11 @@ export async function ensureCrmSeed() {
 
 async function seedCrmOnce() {
   const db = prisma();
-  const production = process.env.NODE_ENV === "production";
-  // Production already runs Prisma migrations on deploy. Skip legacy ALTER/ensure*
-  // sweeps — they hold the MySQL pool and make CRM pages stall or time out.
-  if (!production) {
+  // Local .env points at Hostinger MySQL — legacy ALTER/ensure* sweeps + refreshCmsFiles
+  // stall every cold start over the network. Migrations already own schema; opt in with
+  // KPI_ENSURE_SCHEMA=1 when you intentionally need the old repair path.
+  const runSchemaSweep = process.env.KPI_ENSURE_SCHEMA === "1";
+  if (runSchemaSweep) {
     await ensureUsernameColumn().catch(() => undefined);
     await ensureAvatarColumn().catch(() => undefined);
   }
@@ -75,8 +76,10 @@ async function seedCrmOnce() {
     }
   }
   await ensureAdminUser();
-  if (!production) {
+  if (process.env.NODE_ENV !== "production") {
     await ensureDemoLeads();
+  }
+  if (runSchemaSweep) {
     await ensureLeadArchiveColumn().catch(() => undefined);
     await ensureCmsSchema().catch(() => undefined);
     await ensureReservationOpsSchema().catch(() => undefined);

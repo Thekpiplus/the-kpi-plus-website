@@ -144,37 +144,37 @@ export function NewLeadModalProvider({
               ) : null}
               {duplicateId ? <input type="hidden" name="confirmDuplicate" value="1" /> : null}
 
-              <div className="crm-modal-grid">
-                <label className="crm-modal-field">
-                  ชื่อผู้ติดต่อ *
-                  <input className="crm-field" name="contactName" required autoFocus />
+              <div className="kpi-leads-create-grid">
+                <label className="kpi-leads-create-field">
+                  <span>ชื่อผู้ติดต่อ *</span>
+                  <input className="kpi-leads-create-input" name="contactName" required autoFocus />
                 </label>
-                <label className="crm-modal-field">
-                  กิจการ
-                  <input className="crm-field" name="businessName" />
+                <label className="kpi-leads-create-field">
+                  <span>กิจการ</span>
+                  <input className="kpi-leads-create-input" name="businessName" />
                 </label>
-                <label className="crm-modal-field">
-                  ประเภทกิจการ
-                  <input className="crm-field" name="businessType" />
+                <label className="kpi-leads-create-field">
+                  <span>ประเภทกิจการ</span>
+                  <input className="kpi-leads-create-input" name="businessType" />
                 </label>
-                <label className="crm-modal-field">
-                  เบอร์โทร
-                  <input className="crm-field" name="phone" />
+                <label className="kpi-leads-create-field">
+                  <span>เบอร์โทร</span>
+                  <input className="kpi-leads-create-input" name="phone" inputMode="tel" />
                 </label>
-                <label className="crm-modal-field">
-                  อีเมล
-                  <input className="crm-field" name="email" type="email" />
+                <label className="kpi-leads-create-field">
+                  <span>อีเมล</span>
+                  <input className="kpi-leads-create-input" name="email" type="email" />
                 </label>
-                <label className="crm-modal-field">
-                  ที่ตั้ง
-                  <input className="crm-field" name="location" />
+                <label className="kpi-leads-create-field">
+                  <span>ที่ตั้ง</span>
+                  <input className="kpi-leads-create-input" name="location" />
                 </label>
-                <label className="crm-modal-field">
-                  เว็บไซต์
-                  <input className="crm-field" name="website" />
+                <label className="kpi-leads-create-field kpi-leads-create-field-span">
+                  <span>เว็บไซต์</span>
+                  <input className="kpi-leads-create-input" name="website" />
                 </label>
-                <label className="crm-modal-field">
-                  มอบหมายให้
+                <label className="kpi-leads-create-field">
+                  <span>มอบหมายให้</span>
                   <CrmSelect
                     name="ownerId"
                     aria-label="มอบหมายให้"
@@ -182,8 +182,8 @@ export function NewLeadModalProvider({
                     options={owners.map((owner) => ({ value: owner.id, label: owner.name }))}
                   />
                 </label>
-                <label className="crm-modal-field">
-                  แหล่งที่มา
+                <label className="kpi-leads-create-field">
+                  <span>แหล่งที่มา</span>
                   <CrmSelect
                     name="source"
                     aria-label="แหล่งที่มา"
@@ -194,8 +194,8 @@ export function NewLeadModalProvider({
                     }))}
                   />
                 </label>
-                <label className="crm-modal-field">
-                  พาร์ตเนอร์ที่ได้รับเครดิต
+                <label className="kpi-leads-create-field">
+                  <span>พาร์ตเนอร์ที่ได้รับเครดิต</span>
                   <CrmSelect
                     name="partnerId"
                     aria-label="พาร์ตเนอร์ที่ได้รับเครดิต"
@@ -209,20 +209,22 @@ export function NewLeadModalProvider({
                     ]}
                   />
                 </label>
-                <label className="crm-modal-field">
-                  มูลค่าโดยประมาณ
-                  <input className="crm-field" name="estimatedValue" type="number" min="0" />
+                <label className="kpi-leads-create-field">
+                  <span>มูลค่าโดยประมาณ</span>
+                  <input className="kpi-leads-create-input" name="estimatedValue" type="number" min="0" />
                 </label>
               </div>
 
-              <LeadServicesField compact />
+              <div className="kpi-leads-create-services">
+                <LeadServicesField compact />
+              </div>
 
-              <label className="crm-modal-field">
-                บันทึกการคุยครั้งนี้
+              <label className="kpi-leads-create-field kpi-leads-create-field-span">
+                <span>บันทึกการคุยครั้งนี้</span>
                 <textarea
-                  className="crm-field"
+                  className="kpi-leads-create-input is-textarea"
                   name="notes"
-                  rows={2}
+                  rows={3}
                   placeholder="คุยอะไรไปแล้ว ต้องติดตามเรื่องอะไร"
                 />
               </label>
