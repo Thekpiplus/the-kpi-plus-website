@@ -4,7 +4,15 @@ import Link from "next/link";
 import { useId, useState } from "react";
 
 /** Inline notice only — no mock role CRUD / no schema invent. */
-export function RolesCreateNotice({ canEdit }: { canEdit: boolean }) {
+export function RolesCreateNotice({
+  canEdit,
+  label = "+ สร้างบทบาท",
+  className = "kpi-button crm-users-primary",
+}: {
+  canEdit: boolean;
+  label?: string;
+  className?: string;
+}) {
   const [open, setOpen] = useState(false);
   const titleId = useId();
 
@@ -12,12 +20,12 @@ export function RolesCreateNotice({ canEdit }: { canEdit: boolean }) {
     <div className="kpi-users-roles-create">
       <button
         type="button"
-        className="crm-users-secondary"
+        className={className}
         aria-expanded={open}
         aria-controls={open ? titleId : undefined}
         onClick={() => setOpen((value) => !value)}
       >
-        {open ? "ปิดคำอธิบาย" : "เพิ่มบทบาท"}
+        {open ? "ปิดคำอธิบาย" : label}
       </button>
 
       {open ? (
@@ -28,12 +36,11 @@ export function RolesCreateNotice({ canEdit }: { canEdit: boolean }) {
           aria-labelledby={`${titleId}-label`}
         >
           <p id={`${titleId}-label`}>
-            ตอนนี้ระบบมีเฉพาะ <strong>system roles</strong> ในโค้ด (Superadmin, Admin, User, Staff, Sales,
-            Partners) — ยังไม่มี data model สำหรับบทบาทตามแผนก (Department) หรือตำแหน่งงาน (Job Title)
+            ตอนนี้ระบบมีเฉพาะ <strong>system roles</strong> ในโค้ด — ยังไม่มี data model สำหรับสร้างบทบาทใหม่ตามแผนก
+            (Department) หรือตำแหน่งงาน (Job Title)
           </p>
           <p>
-            การมอบสิทธิ์ทำได้โดยแก้บทบาทและโมดูล<strong>รายบัญชี</strong>ที่รายชื่อผู้ใช้ ไม่สร้าง API/schema
-            จำลองในรอบนี้
+            การมอบสิทธิ์ทำได้โดยแก้บทบาทและโมดูล<strong>รายบัญชี</strong>ที่รายชื่อผู้ใช้
           </p>
           <div className="kpi-users-inline-confirm-actions">
             <button type="button" className="crm-users-secondary" onClick={() => setOpen(false)}>

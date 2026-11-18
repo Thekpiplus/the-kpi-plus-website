@@ -1,55 +1,64 @@
 import Link from "next/link";
-import { RolesReferenceFilter, type RoleReferenceItem } from "@/components/crm/ui/RolesReferenceFilter";
+import { RolesCardGrid, type RoleCardItem } from "@/components/crm/users/RolesCardGrid";
 import { RolesCreateNotice } from "@/components/crm/users/RolesCreateNotice";
 import { UsersPageChrome } from "@/components/crm/users/UsersPageChrome";
 import { currentUser } from "@/lib/crm/auth";
 import { prisma } from "@/lib/crm/db";
-import { ADMIN_MODULES, MODULE_LABEL, canManageUsers } from "@/lib/crm/modules";
+import { ADMIN_MODULES, MODULE_LABEL, canManageUsers, type AdminModule } from "@/lib/crm/modules";
+import { userCounts } from "@/lib/crm/queries";
 import {
   FULL_ACCESS_ROLES,
-  ROLE_LABEL,
   USER_ROLES,
   roleQueryValues,
   type UserRole,
 } from "@/lib/crm/roles";
 
-const ROLE_SUMMARY: Record<UserRole, { blurb: string; access: string }> = {
+const ROLE_SUMMARY: Record<
+  UserRole,
+  { blurb: string; department: string; jobTitle: string; suggestedModules: AdminModule[] }
+> = {
   superadmin: {
     blurb: "ผู้ดูแลสูงสุดของระบบแอดมิน",
-    access: "เข้าได้ทุกโมดูลโดยอัตโนมัติ และกำหนดบทบาทภายในได้ครบ",
+    department: "IT / Systems",
+    jobTitle: "Head of Systems",
+    suggestedModules: [...ADMIN_MODULES],
   },
   admin: {
-    blurb: "ผู้ดูแลระบบ",
-    access: "เข้าได้ทุกโมดูลโดยอัตโนมัติ กำหนดบทบาทได้ยกเว้น Superadmin",
+    blurb: "ผู้ดูแลระบบและตั้งค่าสิทธิ์ทีม",
+    department: "Operations",
+    jobTitle: "Admin",
+    suggestedModules: [...ADMIN_MODULES],
   },
   user: {
-    blurb: "ผู้ใช้ทั่วไปในทีม",
-    access: "เข้าได้เฉพาะโมดูลที่เปิดให้บัญชีนี้ใน Users Management",
+    blurb: "ผู้ใช้ทั่วไปในทีมภายใน",
+    department: "Operations",
+    jobTitle: "Team Member",
+    suggestedModules: ["leads", "cms"],
   },
   staff: {
-    blurb: "พนักงานปฏิบัติการ",
-    access: "เข้าได้เฉพาะโมดูลที่เปิดให้บัญชีนี้ใน Users Management",
+    blurb: "พนักงานปฏิบัติการตามโมดูลที่เปิด",
+    department: "Operations",
+    jobTitle: "Operations Staff",
+    suggestedModules: ["leads", "reservations", "cms"],
   },
   sales: {
-    blurb: "ทีมขาย",
-    access: "เข้าได้เฉพาะโมดูลที่เปิดให้บัญชีนี้ใน Users Management",
+    blurb: "ทีมขายและดูแลลีดลูกค้า",
+    department: "Sales",
+    jobTitle: "Sales Executive",
+    suggestedModules: ["leads", "partners", "b2b"],
   },
   partner: {
-    blurb: "บัญชีพาร์ตเนอร์",
-    access: "ใช้พอร์ทัลพาร์ตเนอร์ — ไม่ใช้สิทธิโมดูลแอดมินรายบัญชี",
+    blurb: "บัญชีพาร์ตเนอร์ — ใช้พอร์ทัลพาร์ตเนอร์",
+    department: "Partners",
+    jobTitle: "Partner",
+    suggestedModules: [],
   },
 };
-
-/** How each role obtains module access — mirrors lib/crm/modules.ts (no invented rules). */
-function moduleAccessLabel(role: UserRole, _module: (typeof ADMIN_MODULES)[number]) {
-  if (role === "partner") return { kind: "none" as const, label: "ไม่ใช้" };
-  if (FULL_ACCESS_ROLES.includes(role)) return { kind: "auto" as const, label: "อัตโนมัติ" };
-  return { kind: "account" as const, label: "ต่อบัญชี" };
-}
 
 export default async function UserRolesPage() {
   const me = await currentUser();
   const canEdit = canManageUsers(me);
+  const counts = await userCounts();
 
   const roleCounts = Object.fromEntries(
     await Promise.all(
@@ -61,163 +70,78 @@ export default async function UserRolesPage() {
     ),
   ) as Record<UserRole, number>;
 
-  const roleItems: RoleReferenceItem[] = USER_ROLES.map((role) => {
+  const roleItems: RoleCardItem[] = USER_ROLES.map((role) => {
     const meta = ROLE_SUMMARY[role];
-    const label = ROLE_LABEL[role];
+    const fullAccess = FULL_ACCESS_ROLES.includes(role);
+    const modules = fullAccess ? [...ADMIN_MODULES] : meta.suggestedModules;
     return {
       role,
       blurb: meta.blurb,
-      access: meta.access,
+      department: meta.department,
+      jobTitle: meta.jobTitle,
       count: roleCounts[role] ?? 0,
-      fullAccess: FULL_ACCESS_ROLES.includes(role),
-      system: true,
-      searchText: `${role} ${label} ${meta.blurb} ${meta.access}`.toLowerCase(),
+      fullAccess,
+      modules,
+      moduleLabels: modules.map((module) => MODULE_LABEL[module]),
     };
   });
 
   return (
     <UsersPageChrome
-      title="บทบาทและสิทธิ์"
-      description="อ้างอิงบทบาทในระบบและจำนวนผู้ใช้ต่อบทบาท — สิทธิ์โมดูลกำหนดต่อบัญชีที่รายชื่อผู้ใช้ (ยังไม่มี CRUD บทบาทตามแผนก/ตำแหน่งงานใน schema ปัจจุบัน)"
-      actions={
-        <div className="kpi-users-hero-actions">
-          <RolesCreateNotice canEdit={Boolean(canEdit)} />
-          {canEdit ? (
-            <Link href="/crm/users?new=1" className="kpi-button crm-users-primary">
-              เพิ่มผู้ใช้งาน
-            </Link>
-          ) : null}
-        </div>
-      }
+      title="จัดการผู้ใช้งาน"
+      description="กำหนดบทบาทและสิทธิ์การเข้าถึงโมดูล — แสดงบทบาทในระบบจริง พร้อมทางลัดไปมอบสิทธิ์รายบัญชี"
+      actions={<RolesCreateNotice canEdit={Boolean(canEdit)} />}
     >
-      <section className="kpi-users-summary" aria-label="สรุปบทบาท">
+      <section className="kpi-users-summary" aria-label="สรุปผู้ใช้">
+        <Link
+          href="/crm/users"
+          className="kpi-users-stat is-total"
+          aria-label={`ผู้ใช้ทั้งหมด ${counts.total} รายการ`}
+        >
+          <span className="kpi-users-stat-label">ผู้ใช้ทั้งหมด</span>
+          <strong className="kpi-users-stat-value">{counts.total}</strong>
+          <span className="kpi-users-stat-hint">บัญชีในระบบ</span>
+        </Link>
         <div className="kpi-users-stat is-static" role="group">
-          <span className="kpi-users-stat-label">บทบาทในระบบ</span>
-          <strong className="kpi-users-stat-value">{USER_ROLES.length}</strong>
-          <span className="kpi-users-stat-hint">อ้างอิงจากโมเดลจริง</span>
+          <span className="kpi-users-stat-label">ทีมภายใน</span>
+          <strong className="kpi-users-stat-value">{counts.staff}</strong>
+          <span className="kpi-users-stat-hint">ไม่รวม Partners</span>
         </div>
-        <div className="kpi-users-stat is-static" role="group">
-          <span className="kpi-users-stat-label">เข้าทุกโมดูลอัตโนมัติ</span>
-          <strong className="kpi-users-stat-value">{FULL_ACCESS_ROLES.length}</strong>
-          <span className="kpi-users-stat-hint">Superadmin / Admin</span>
-        </div>
-        <div className="kpi-users-stat is-partners is-static" role="group">
-          <span className="kpi-users-stat-label">โมดูลที่อ้างอิง</span>
-          <strong className="kpi-users-stat-value">{ADMIN_MODULES.length}</strong>
-          <span className="kpi-users-stat-hint">ในเมทริกซ์ด้านล่าง</span>
-        </div>
+        <Link
+          href="/crm/users?role=partner"
+          className={`kpi-users-stat is-partners`}
+          aria-label={`Partners ${counts.partners} รายการ`}
+        >
+          <span className="kpi-users-stat-label">Partners</span>
+          <strong className="kpi-users-stat-value">{counts.partners}</strong>
+          <span className="kpi-users-stat-hint">เปิดรายการ Partners</span>
+        </Link>
+        <Link
+          href="/crm/users?status=locked"
+          className={`kpi-users-stat is-locked${counts.locked > 0 ? " has-value" : ""}`}
+          aria-label={`บัญชีที่ถูกล็อก ${counts.locked} รายการ`}
+        >
+          <span className="kpi-users-stat-label">ถูกล็อก</span>
+          <strong className="kpi-users-stat-value">{counts.locked}</strong>
+          <span className="kpi-users-stat-hint">ทั้งระบบ</span>
+        </Link>
       </section>
 
-      <section className="crm-users-roles-note" aria-label="วิธีคำนวณสิทธิ์">
-        <h2>Effective permissions ในระบบนี้</h2>
-        <ol className="crm-users-roles-steps">
-          <li>
-            <strong>บทบาท (User Role)</strong> บนบัญชี — Superadmin/Admin ได้ทุกโมดูลอัตโนมัติ
-          </li>
-          <li>
-            <strong>โมดูลต่อบัญชี</strong> (ฟิลด์ <code>modules</code>) — ใช้กับ User / Staff / Sales
-          </li>
-          <li>
-            สิทธิ์แผนกภายในโมดูล ops (เช่น B2B, Ads) อยู่ใน <strong>Settings ของโมดูลนั้น</strong> ไม่ใช่หน้านี้
-          </li>
-        </ol>
-        <p className="crm-users-roles-limit">
-          ระบบยัง<strong>ไม่มี</strong> API หรือ data model สำหรับกำหนดสิทธิ์ตาม Department หรือ Job Title ระดับทั้ง
-          CRM — หน้านี้จึงเป็นหน้าอ้างอิงและทางลัดไปมอบสิทธิ์รายบัญชีเท่านั้น ไม่มีปุ่มบันทึกเมทริกซ์แผนก
+      <section className="kpi-users-panel kpi-roles-panel" aria-labelledby="crm-roles-cards-heading">
+        <div className="kpi-users-panel-head">
+          <h2 id="crm-roles-cards-heading">บทบาทและสิทธิ์</h2>
+          <p>
+            {USER_ROLES.length} บทบาทในระบบ · แผนก/ตำแหน่งเป็นป้ายอ้างอิง (ยังไม่มี schema CRUD บทบาท)
+            {canEdit ? " · กดแก้ไขสิทธิ์เพื่อไปจัดการผู้ใช้ตามบทบาท" : ""}
+          </p>
+        </div>
+
+        <RolesCardGrid items={roleItems} canEdit={Boolean(canEdit)} />
+
+        <p className="kpi-roles-footnote">
+          โมดูลบนการ์ดของ User / Staff / Sales เป็นแนวทางอ้างอิง — สิทธิ์จริงเก็บบนบัญชีใน{" "}
+          <Link href="/crm/users">รายชื่อผู้ใช้</Link>
         </p>
-      </section>
-
-      <section className="kpi-users-panel" aria-labelledby="crm-roles-list-heading">
-        <div className="kpi-users-panel-head">
-          <h2 id="crm-roles-list-heading">บทบาทในระบบ</h2>
-          <p>
-            เป็น system roles ที่กำหนดในโค้ด ({USER_ROLES.length} บทบาท) — ไม่มี API สร้าง/ลบบทบาทใหม่
-          </p>
-        </div>
-        <RolesReferenceFilter items={roleItems} />
-      </section>
-
-      <section className="kpi-users-panel" aria-labelledby="crm-roles-matrix-heading">
-        <div className="kpi-users-panel-head">
-          <h2 id="crm-roles-matrix-heading">เมทริกซ์สิทธิ์โมดูล (อ่านอย่างเดียว)</h2>
-          <p>
-            สรุปจาก <code>lib/crm/modules.ts</code> — ไม่ใช่ฟอร์มแก้ไข และไม่บันทึกค่าจากตารางนี้
-          </p>
-        </div>
-
-        <div className="crm-roles-matrix-wrap" tabIndex={0} aria-label="ตารางสิทธิ์โมดูลตามบทบาท เลื่อนแนวนอนได้ภายในตาราง">
-          <table className="crm-roles-matrix">
-            <caption className="sr-only">สิทธิ์เข้าถึงโมดูลแอดมินแยกตามบทบาท</caption>
-            <thead>
-              <tr>
-                <th scope="col">โมดูล</th>
-                {USER_ROLES.map((role) => (
-                  <th key={role} scope="col">
-                    {ROLE_LABEL[role]}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {ADMIN_MODULES.map((module) => (
-                <tr key={module}>
-                  <th scope="row">
-                    <span className="crm-roles-matrix-module">{MODULE_LABEL[module]}</span>
-                    <code>{module}</code>
-                  </th>
-                  {USER_ROLES.map((role) => {
-                    const cell = moduleAccessLabel(role, module);
-                    return (
-                      <td key={`${module}-${role}`}>
-                        <span className={`crm-roles-matrix-pill is-${cell.kind}`}>{cell.label}</span>
-                      </td>
-                    );
-                  })}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        <ul className="crm-roles-matrix-legend" aria-label="คำอธิบายสถานะในตาราง">
-          <li>
-            <span className="crm-roles-matrix-pill is-auto">อัตโนมัติ</span>
-            ได้ทุกโมดูลจากบทบาท Full Access
-          </li>
-          <li>
-            <span className="crm-roles-matrix-pill is-account">ต่อบัญชี</span>
-            เปิด/ปิดโมดูลตอนสร้างหรือแก้ไขผู้ใช้
-          </li>
-          <li>
-            <span className="crm-roles-matrix-pill is-none">ไม่ใช้</span>
-            ไม่เข้าโมดูลแอดมิน (พอร์ทัลพาร์ตเนอร์)
-          </li>
-        </ul>
-      </section>
-
-      <section className="kpi-users-panel" aria-labelledby="crm-roles-assign-heading">
-        <div className="kpi-users-panel-head">
-          <h2 id="crm-roles-assign-heading">วิธีมอบหรือเปลี่ยนสิทธิ์</h2>
-          <p>การบันทึกจริงทำผ่าน Users Management เท่านั้น</p>
-        </div>
-        {canEdit ? (
-          <div className="crm-roles-assign-actions">
-            <Link href="/crm/users" className="kpi-button crm-users-primary">
-              เปิดรายชื่อผู้ใช้เพื่อแก้ไขบทบาท/โมดูล
-            </Link>
-            <Link href="/crm/users?new=1" className="crm-hero-btn crm-hero-btn-secondary">
-              เพิ่มผู้ใช้งาน
-            </Link>
-            <p className="crm-users-roles-hint">
-              เลือกบัญชี → แก้ไข → ตั้ง Role และโมดูล → บันทึก (server action{" "}
-              <code>updateStaffUser</code>)
-            </p>
-          </div>
-        ) : (
-          <p className="crm-users-roles-hint">
-            คุณดูสรุปบทบาทได้ แต่ไม่มีสิทธิ์จัดการผู้ใช้ — ติดต่อ Superadmin หรือ Admin
-          </p>
-        )}
       </section>
     </UsersPageChrome>
   );
