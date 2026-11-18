@@ -13,9 +13,11 @@ function databaseUrl() {
   // (e.g. leftover sqlite file: URLs or broken .env quoting).
   if (!/^mysql:\/\//i.test(raw)) return undefined;
   if (/[?&]connection_limit=/.test(raw)) return raw;
+  // connection_limit=1 serializes every CRM query and makes pages hang under load.
+  // Keep a small pool in production; override with PRISMA_CONNECTION_LIMIT if needed.
   const limit =
     process.env.PRISMA_CONNECTION_LIMIT?.trim() ||
-    (process.env.NODE_ENV === "production" ? "1" : "5");
+    (process.env.NODE_ENV === "production" ? "3" : "5");
   return raw.includes("?")
     ? `${raw}&connection_limit=${limit}&pool_timeout=20`
     : `${raw}?connection_limit=${limit}&pool_timeout=20`;

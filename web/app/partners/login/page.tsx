@@ -19,11 +19,7 @@ export default async function PartnerLoginPage({
     );
   }
 
-  try {
-    await ensureCrmSeed();
-  } catch {
-    // Show the form even if seed is incomplete.
-  }
+  void ensureCrmSeed().catch(() => undefined);
   const user = await currentUser().catch(() => null);
   if (user?.role === "partner") redirect("/partners");
   if (user) redirect(firstModulePath(user));

@@ -41,7 +41,7 @@ export default async function PartnersLayout({ children }: { children: React.Rea
     );
   }
 
-  await ensureCrmSeed();
+  void ensureCrmSeed().catch(() => undefined);
   const user = await currentUser();
   if (!user) redirect("/partners/login");
   if (isStaff(user)) redirect(firstModulePath(user));

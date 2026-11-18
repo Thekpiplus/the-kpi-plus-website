@@ -48,8 +48,13 @@ export async function ensureCrmSeed() {
 
 async function seedCrmOnce() {
   const db = prisma();
-  await ensureUsernameColumn().catch(() => undefined);
-  await ensureAvatarColumn().catch(() => undefined);
+  const production = process.env.NODE_ENV === "production";
+  // Production already runs Prisma migrations on deploy. Skip legacy ALTER/ensure*
+  // sweeps — they hold the MySQL pool and make CRM pages stall or time out.
+  if (!production) {
+    await ensureUsernameColumn().catch(() => undefined);
+    await ensureAvatarColumn().catch(() => undefined);
+  }
   const count = await db.stage.count();
   if (count === 0) {
     await db.stage.createMany({ data: STAGES.map((stage) => ({ ...stage })) });
@@ -70,19 +75,21 @@ async function seedCrmOnce() {
     }
   }
   await ensureAdminUser();
-  await ensureDemoLeads();
-  await ensureLeadArchiveColumn().catch(() => undefined);
-  await ensureCmsSchema().catch(() => undefined);
-  await ensureReservationOpsSchema().catch(() => undefined);
-  await ensureB2bOpsSchema().catch(() => undefined);
-  await ensureAdsOpsSchema().catch(() => undefined);
-  await ensureMetaOpsSchema().catch(() => undefined);
-  await ensureSeoOpsSchema().catch(() => undefined);
-  await ensureHotelAiOpsSchema().catch(() => undefined);
-  await ensureTrainingOpsSchema().catch(() => undefined);
-  await ensureHotelMarketingOpsSchema().catch(() => undefined);
-  await ensureSolutionsOpsSchema().catch(() => undefined);
-  await refreshCmsFiles().catch(() => undefined);
+  if (!production) {
+    await ensureDemoLeads();
+    await ensureLeadArchiveColumn().catch(() => undefined);
+    await ensureCmsSchema().catch(() => undefined);
+    await ensureReservationOpsSchema().catch(() => undefined);
+    await ensureB2bOpsSchema().catch(() => undefined);
+    await ensureAdsOpsSchema().catch(() => undefined);
+    await ensureMetaOpsSchema().catch(() => undefined);
+    await ensureSeoOpsSchema().catch(() => undefined);
+    await ensureHotelAiOpsSchema().catch(() => undefined);
+    await ensureTrainingOpsSchema().catch(() => undefined);
+    await ensureHotelMarketingOpsSchema().catch(() => undefined);
+    await ensureSolutionsOpsSchema().catch(() => undefined);
+    await refreshCmsFiles().catch(() => undefined);
+  }
 }
 
 async function ensureDemoLeads() {
