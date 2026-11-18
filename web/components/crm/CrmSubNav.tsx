@@ -21,12 +21,23 @@ export function isCrmSubNavCurrent(pathname: string, search: string, href: strin
   const currentQuery = search.startsWith("?") ? search.slice(1) : search;
   if (path === "/crm/leads") {
     if (pathname !== "/crm/leads") return false;
-    const hrefOrigin = query ? new URLSearchParams(query).get("origin") : null;
+    const hrefParams = query ? new URLSearchParams(query) : null;
+    const hrefOrigin = hrefParams?.get("origin") ?? null;
+    const hrefView = hrefParams?.get("view") ?? null;
     const currentOrigin = searchParam(search, "origin");
-    if (hrefOrigin === "web" || hrefOrigin === "manual") {
-      return currentOrigin === hrefOrigin;
+    const currentView = searchParam(search, "view");
+    const onPending = currentView === "pending";
+    const onChannel = currentView === "channel" || currentOrigin === "web";
+    if (hrefView === "pending") {
+      return onPending;
     }
-    return !currentOrigin;
+    if (hrefView === "channel" || hrefOrigin === "web") {
+      return onChannel && !onPending;
+    }
+    if (hrefOrigin === "manual") {
+      return currentOrigin === "manual" && !onChannel && !onPending;
+    }
+    return !currentOrigin && !onChannel && !onPending;
   }
   if (query) return pathname === path && currentQuery === query;
   if (path === "/crm/sales") return pathname === "/crm/sales";

@@ -2,32 +2,30 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import "./leads-a.css";
 
-export type LeadsTab = "today" | "pipeline" | "all";
-
-const TABS: { id: LeadsTab; href: string; label: string }[] = [
-  { id: "today", href: "/crm/sales", label: "ต้องติดต่อวันนี้" },
-  { id: "pipeline", href: "/crm/pipeline", label: "Pipeline" },
-  { id: "all", href: "/crm/leads", label: "ลีดทั้งหมด" },
-];
-
 export function LeadsPageChrome({
-  tab,
   title,
   description,
+  meta,
   actions,
   notice,
+  heroVariant = "default",
   children,
 }: {
-  tab: LeadsTab;
   title: string;
   description: string;
+  meta?: ReactNode;
   actions?: ReactNode;
   notice?: ReactNode;
+  heroVariant?: "default" | "pipeline" | "activities";
   children: ReactNode;
 }) {
   return (
     <div className="kpi-leads-a">
-      <header className="kpi-leads-hero">
+      <header
+        className={`kpi-leads-hero${
+          heroVariant === "pipeline" ? " is-pipeline" : heroVariant === "activities" ? " is-activities" : ""
+        }`}
+      >
         <nav className="kpi-leads-breadcrumb" aria-label="เส้นทาง">
           <Link href="/crm">การขายและลูกค้า</Link>
           <span aria-hidden="true">/</span>
@@ -37,26 +35,11 @@ export function LeadsPageChrome({
           <div>
             <h1 className="kpi-leads-title">{title}</h1>
             <p className="kpi-leads-desc">{description}</p>
+            {meta ? <p className="kpi-leads-hero-meta">{meta}</p> : null}
           </div>
           {actions ? <div className="kpi-leads-hero-actions">{actions}</div> : null}
         </div>
       </header>
-
-      <nav className="kpi-leads-tabs" aria-label="แท็บ Lead Management">
-        {TABS.map((item) => (
-          <Link
-            key={item.id}
-            href={item.href}
-            className={`kpi-leads-tab${tab === item.id ? " is-active" : ""}`}
-            aria-current={tab === item.id ? "page" : undefined}
-          >
-            {item.label}
-          </Link>
-        ))}
-        <Link href="/crm/users/roles" className="kpi-leads-tab is-shortcut">
-          บทบาทและสิทธิ์
-        </Link>
-      </nav>
 
       {notice ? (
         <div className="kpi-leads-notice" role="status" aria-live="polite">

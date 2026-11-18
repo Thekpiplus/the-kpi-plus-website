@@ -274,6 +274,29 @@ export async function archiveLeadFromList(formData: FormData) {
   redirect(returnTo);
 }
 
+/** Archive/restore without redirect — for list inline panels. */
+export async function setLeadArchiveQuiet(formData: FormData): Promise<void> {
+  const user = await requireUser();
+  const leadId = String(formData.get("leadId") ?? "");
+  const archived = String(formData.get("archived") ?? "") === "1";
+  if (!leadId) return;
+  await setLeadArchived(leadId, archived);
+  await prisma().leadEvent.create({
+    data: {
+      leadId,
+      userId: user.id,
+      type: archived ? "archived" : "restored",
+      detail: archived ? "เก็บลีดออกจากรายการหลัก" : "นำลีดกลับมาใช้",
+    },
+  });
+  revalidatePath("/crm");
+  revalidatePath("/crm/leads");
+  revalidatePath("/crm/sales");
+  revalidatePath("/crm/pipeline");
+  revalidatePath("/crm/activities");
+  revalidatePath(`/crm/leads/${leadId}`);
+}
+
 /** @deprecated use archiveLeadFromList */
 export async function archiveLeadFromPipeline(formData: FormData) {
   if (!formData.get("returnTo")) formData.set("returnTo", "/crm/pipeline?view=table");
@@ -286,6 +309,7 @@ export async function addNote(leadId: string, note: string) {
   await prisma().leadEvent.create({
     data: { leadId, userId: user.id, type: "note", detail: note.trim() },
   });
+  revalidatePath("/crm/leads");
   revalidatePath(`/crm/leads/${leadId}`);
 }
 
@@ -321,6 +345,7 @@ export async function scheduleActivity(formData: FormData) {
   });
   revalidatePath("/crm");
   revalidatePath("/crm/sales");
+  revalidatePath("/crm/leads");
   revalidatePath("/crm/activities");
   revalidatePath(`/crm/leads/${leadId}`);
 }

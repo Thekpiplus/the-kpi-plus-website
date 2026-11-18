@@ -353,7 +353,11 @@ export async function openActivities() {
   const active = archiveWhere(await leadIdsByArchive("active"));
   return prisma().activity.findMany({
     where: { status: "open", lead: active },
-    include: { lead: { include: { stage: true } } },
+    include: {
+      lead: {
+        include: { stage: true },
+      },
+    },
     orderBy: { dueAt: "asc" },
   });
 }

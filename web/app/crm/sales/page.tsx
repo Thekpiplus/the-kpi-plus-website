@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { LeadsPageChrome } from "@/components/crm/leads/LeadsPageChrome";
+import { SalesChannelsVisual } from "@/components/crm/leads/SalesChannelsVisual";
 import {
   SalesTodayBoard,
   type SalesTodayFilter,
@@ -124,10 +125,10 @@ export default async function SalesHomePage({
   };
 
   const channels = sourceRows.map((row) => ({
+    source: row.source,
     label: sourceLabel(row.source),
     count: row.count,
   }));
-  const channelTotal = channels.reduce((sum, item) => sum + item.count, 0) || 1;
 
   const todayLabel = formatThaiDateToday();
   const notice =
@@ -143,7 +144,6 @@ export default async function SalesHomePage({
 
   return (
     <LeadsPageChrome
-      tab="today"
       title="ต้องติดต่อวันนี้"
       description={`${todayLabel} · คิวติดตามตามความเร่งด่วน`}
       notice={notice}
@@ -198,7 +198,7 @@ export default async function SalesHomePage({
           <section className="kpi-leads-panel kpi-leads-channels-panel">
             <header className="kpi-leads-panel-head">
               <h2>ช่องทางที่ลีดเข้ามา</h2>
-              <p>สัดส่วนจากลีดใน Pipeline</p>
+              <p>โดนัทสัดส่วน + กราฟแท่งจากลีดที่ใช้งานอยู่ · คลิกแท่งเพื่อเปิดช่องทางนั้น</p>
             </header>
             {channels.length === 0 ? (
               <div className="kpi-leads-empty">
@@ -206,27 +206,7 @@ export default async function SalesHomePage({
                 <p>เมื่อมีลีดใน Pipeline จะแสดงสัดส่วนที่นี่</p>
               </div>
             ) : (
-              <div className="kpi-leads-channels">
-                {channels.map((channel) => {
-                  const pct = Math.round((channel.count / channelTotal) * 100);
-                  return (
-                    <div key={channel.label} className="kpi-leads-channel">
-                      <div className="kpi-leads-channel-meta">
-                        <span className="kpi-leads-channel-label">{channel.label}</span>
-                        <span className="kpi-leads-channel-value">
-                          <strong>{channel.count}</strong>
-                        </span>
-                      </div>
-                      <div className="kpi-leads-channel-bar" aria-hidden="true">
-                        <div
-                          className="kpi-leads-channel-fill"
-                          style={{ width: `${Math.max(8, pct)}%` }}
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
+              <SalesChannelsVisual channels={channels} />
             )}
           </section>
 

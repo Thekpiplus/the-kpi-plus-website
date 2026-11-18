@@ -21,7 +21,8 @@ const leadLinks: ContextLink[] = [
   { href: "/crm/sales", label: "วันนี้" },
   { href: "/crm/pipeline", label: "Pipeline" },
   { href: "/crm/leads", label: "ลีดทั้งหมด" },
-  { href: "/crm/leads?origin=web", label: "จากเว็บ" },
+  { href: "/crm/leads?view=pending", label: "งานค้าง" },
+  { href: "/crm/leads?view=channel", label: "แยกตามช่องทาง" },
   { href: "/crm/leads?origin=manual", label: "คีย์เอง" },
   { href: "/crm/activities", label: "กิจกรรม" },
 ];
