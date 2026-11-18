@@ -12,6 +12,7 @@ import {
 import { createPortal } from "react-dom";
 import { CrmSelect } from "@/components/crm/CrmSelect";
 import { LeadServicesField } from "@/components/crm/LeadServicesField";
+import "@/components/crm/leads/leads-a.css";
 import { createLeadAndOpen } from "@/lib/crm/actions";
 import { SOURCES } from "@/lib/crm/constants";
 import { sourceLabel } from "@/lib/crm/sources";
@@ -88,156 +89,162 @@ export function NewLeadModalProvider({
       if (event.key === "Escape") setOpen(false);
     }
     document.addEventListener("keydown", onKey);
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prev;
-    };
+    return () => document.removeEventListener("keydown", onKey);
   }, [open]);
 
-  const dialog =
+  const panel =
     open && mounted ? (
-        <div className="crm-modal" role="presentation">
-          <button type="button" className="crm-modal-backdrop" aria-label="ปิดหน้าต่าง" onClick={closeModal} />
-          <div
-            className="crm-modal-panel crm-modal-panel-lead"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby={titleId}
-          >
-            <div className="crm-modal-head">
-              <div>
-                <p className="crm-modal-eyebrow">Lead Management</p>
-                <h2 id={titleId} className="crm-modal-title">
-                  คีย์ลีด
-                </h2>
-                <p className="crm-modal-lead">บันทึกลีดจากโทร LINE WhatsApp หรือแหล่งอื่น แล้วติดตามต่อได้ทันที</p>
-              </div>
-              <button type="button" className="crm-modal-close" aria-label="ปิด" onClick={closeModal}>
-                ✕
-              </button>
+      <div className={`kpi-leads-create-root is-open`} role="presentation">
+        <button
+          type="button"
+          className="kpi-leads-create-scrim"
+          aria-label="ปิดแผงเพิ่มลีด"
+          onClick={closeModal}
+        />
+        <aside
+          className="kpi-leads-create-panel"
+          role="region"
+          aria-labelledby={titleId}
+        >
+          <div className="kpi-leads-create-head">
+            <div>
+              <p className="kpi-leads-create-eyebrow">Lead Management</p>
+              <h2 id={titleId} className="kpi-leads-create-title">
+                เพิ่มลีดใหม่
+              </h2>
+              <p className="kpi-leads-create-lead">
+                บันทึกลีดจากโทร LINE WhatsApp หรือแหล่งอื่น แล้วติดตามต่อได้ทันที
+              </p>
             </div>
+            <button
+              type="button"
+              className="kpi-leads-create-close"
+              aria-label="ยกเลิกและปิดแผง"
+              onClick={closeModal}
+            >
+              ✕
+            </button>
+          </div>
 
-            <form action={createLeadAndOpen} method="post" className="crm-modal-form crm-modal-form-lead">
-              <div className="crm-modal-lead-body">
-                {duplicateId ? (
-                  <p className="crm-users-alert is-warn" role="alert">
-                    พบบันทึกที่อาจซ้ำ{" "}
-                    <a className="underline" href={`/crm/leads/${duplicateId}`}>
-                      เปิดลีดเดิม
-                    </a>{" "}
-                    หรือกดบันทึกอีกครั้งเพื่อสร้างต่อ
-                  </p>
-                ) : null}
-                {error && !duplicateId ? (
-                  <p className="crm-users-alert is-warn" role="alert">
-                    บันทึกลีดไม่สำเร็จ ตรวจชื่อผู้ติดต่อแล้วลองใหม่
-                  </p>
-                ) : null}
-                {duplicateId ? <input type="hidden" name="confirmDuplicate" value="1" /> : null}
+          <form action={createLeadAndOpen} method="post" className="kpi-leads-create-form">
+            <div className="kpi-leads-create-body">
+              {duplicateId ? (
+                <p className="kpi-leads-alert" role="alert">
+                  พบบันทึกที่อาจซ้ำ{" "}
+                  <a className="underline" href={`/crm/leads/${duplicateId}`}>
+                    เปิดลีดเดิม
+                  </a>{" "}
+                  หรือกดบันทึกอีกครั้งเพื่อสร้างต่อ
+                </p>
+              ) : null}
+              {error && !duplicateId ? (
+                <p className="kpi-leads-alert" role="alert">
+                  บันทึกลีดไม่สำเร็จ ตรวจชื่อผู้ติดต่อแล้วลองใหม่
+                </p>
+              ) : null}
+              {duplicateId ? <input type="hidden" name="confirmDuplicate" value="1" /> : null}
 
-                <div className="crm-modal-grid">
-                  <label className="crm-modal-field">
-                    ชื่อผู้ติดต่อ *
-                    <input className="crm-field" name="contactName" required autoFocus />
-                  </label>
-                  <label className="crm-modal-field">
-                    กิจการ
-                    <input className="crm-field" name="businessName" />
-                  </label>
-                  <label className="crm-modal-field">
-                    ประเภทกิจการ
-                    <input className="crm-field" name="businessType" />
-                  </label>
-                  <label className="crm-modal-field">
-                    เบอร์โทร
-                    <input className="crm-field" name="phone" />
-                  </label>
-                  <label className="crm-modal-field">
-                    อีเมล
-                    <input className="crm-field" name="email" type="email" />
-                  </label>
-                  <label className="crm-modal-field">
-                    ที่ตั้ง
-                    <input className="crm-field" name="location" />
-                  </label>
-                  <label className="crm-modal-field">
-                    เว็บไซต์
-                    <input className="crm-field" name="website" />
-                  </label>
-                  <label className="crm-modal-field">
-                    มอบหมายให้
-                    <CrmSelect
-                      name="ownerId"
-                      aria-label="มอบหมายให้"
-                      defaultValue={currentUserId ?? owners[0]?.id ?? ""}
-                      options={owners.map((owner) => ({ value: owner.id, label: owner.name }))}
-                    />
-                  </label>
-                  <label className="crm-modal-field">
-                    แหล่งที่มา
-                    <CrmSelect
-                      name="source"
-                      aria-label="แหล่งที่มา"
-                      defaultValue="manual"
-                      options={KEY_SOURCES.map((source) => ({
-                        value: source,
-                        label: sourceLabel(source),
-                      }))}
-                    />
-                  </label>
-                  <label className="crm-modal-field">
-                    พาร์ตเนอร์ที่ได้รับเครดิต
-                    <CrmSelect
-                      name="partnerId"
-                      aria-label="พาร์ตเนอร์ที่ได้รับเครดิต"
-                      defaultValue=""
-                      options={[
-                        { value: "", label: "ไม่มี" },
-                        ...partners.map((partner) => ({
-                          value: partner.id,
-                          label: partner.displayName,
-                        })),
-                      ]}
-                    />
-                  </label>
-                  <label className="crm-modal-field">
-                    มูลค่าโดยประมาณ
-                    <input className="crm-field" name="estimatedValue" type="number" min="0" />
-                  </label>
-                </div>
-
-                <LeadServicesField compact />
-
+              <div className="crm-modal-grid">
                 <label className="crm-modal-field">
-                  บันทึกการคุยครั้งนี้
-                  <textarea
-                    className="crm-field"
-                    name="notes"
-                    rows={2}
-                    placeholder="คุยอะไรไปแล้ว ต้องติดตามเรื่องอะไร"
+                  ชื่อผู้ติดต่อ *
+                  <input className="crm-field" name="contactName" required autoFocus />
+                </label>
+                <label className="crm-modal-field">
+                  กิจการ
+                  <input className="crm-field" name="businessName" />
+                </label>
+                <label className="crm-modal-field">
+                  ประเภทกิจการ
+                  <input className="crm-field" name="businessType" />
+                </label>
+                <label className="crm-modal-field">
+                  เบอร์โทร
+                  <input className="crm-field" name="phone" />
+                </label>
+                <label className="crm-modal-field">
+                  อีเมล
+                  <input className="crm-field" name="email" type="email" />
+                </label>
+                <label className="crm-modal-field">
+                  ที่ตั้ง
+                  <input className="crm-field" name="location" />
+                </label>
+                <label className="crm-modal-field">
+                  เว็บไซต์
+                  <input className="crm-field" name="website" />
+                </label>
+                <label className="crm-modal-field">
+                  มอบหมายให้
+                  <CrmSelect
+                    name="ownerId"
+                    aria-label="มอบหมายให้"
+                    defaultValue={currentUserId ?? owners[0]?.id ?? ""}
+                    options={owners.map((owner) => ({ value: owner.id, label: owner.name }))}
                   />
+                </label>
+                <label className="crm-modal-field">
+                  แหล่งที่มา
+                  <CrmSelect
+                    name="source"
+                    aria-label="แหล่งที่มา"
+                    defaultValue="manual"
+                    options={KEY_SOURCES.map((source) => ({
+                      value: source,
+                      label: sourceLabel(source),
+                    }))}
+                  />
+                </label>
+                <label className="crm-modal-field">
+                  พาร์ตเนอร์ที่ได้รับเครดิต
+                  <CrmSelect
+                    name="partnerId"
+                    aria-label="พาร์ตเนอร์ที่ได้รับเครดิต"
+                    defaultValue=""
+                    options={[
+                      { value: "", label: "ไม่มี" },
+                      ...partners.map((partner) => ({
+                        value: partner.id,
+                        label: partner.displayName,
+                      })),
+                    ]}
+                  />
+                </label>
+                <label className="crm-modal-field">
+                  มูลค่าโดยประมาณ
+                  <input className="crm-field" name="estimatedValue" type="number" min="0" />
                 </label>
               </div>
 
-              <div className="crm-modal-actions crm-modal-actions-bar">
-                <button type="button" className="crm-users-secondary" onClick={closeModal}>
-                  ยกเลิก
-                </button>
-                <button className="kpi-button" type="submit">
-                  บันทึกลีดแล้วไปติดตาม
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
+              <LeadServicesField compact />
+
+              <label className="crm-modal-field">
+                บันทึกการคุยครั้งนี้
+                <textarea
+                  className="crm-field"
+                  name="notes"
+                  rows={2}
+                  placeholder="คุยอะไรไปแล้ว ต้องติดตามเรื่องอะไร"
+                />
+              </label>
+            </div>
+
+            <div className="kpi-leads-create-actions">
+              <button type="button" className="kpi-leads-btn-secondary" onClick={closeModal}>
+                ยกเลิก
+              </button>
+              <button className="kpi-leads-btn-primary" type="submit">
+                บันทึกลีดแล้วไปติดตาม
+              </button>
+            </div>
+          </form>
+        </aside>
+      </div>
     ) : null;
 
   return (
     <NewLeadModalContext.Provider value={{ open: openModal, close: closeModal }}>
       {children}
-      {dialog && mounted ? createPortal(dialog, document.body) : null}
+      {panel && mounted ? createPortal(panel, document.body) : null}
     </NewLeadModalContext.Provider>
   );
 }

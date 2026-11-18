@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useId, useState } from "react";
+import { useId, useState } from "react";
 import { archiveLeadFromList } from "@/lib/crm/actions";
 
 function IconEdit() {
@@ -44,22 +44,8 @@ export function LeadRowActions({
   const [confirmDelete, setConfirmDelete] = useState(false);
   const titleId = useId();
 
-  useEffect(() => {
-    if (!confirmDelete) return;
-    function onKey(event: KeyboardEvent) {
-      if (event.key === "Escape") setConfirmDelete(false);
-    }
-    document.addEventListener("keydown", onKey);
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prev;
-    };
-  }, [confirmDelete]);
-
   return (
-    <>
+    <div className="kpi-leads-row-actions">
       <div className="crm-users-icon-actions crm-pipe-row-actions">
         <Link
           href={`/crm/leads/${leadId}`}
@@ -74,53 +60,40 @@ export function LeadRowActions({
           className="crm-users-icon-btn is-danger"
           title="ลบ"
           aria-label={`ลบ ${contactName}`}
-          onClick={() => setConfirmDelete(true)}
+          aria-expanded={confirmDelete}
+          aria-controls={confirmDelete ? titleId : undefined}
+          onClick={() => setConfirmDelete((open) => !open)}
         >
           <IconTrash />
         </button>
       </div>
 
       {confirmDelete ? (
-        <div className="crm-modal" role="presentation">
-          <button
-            type="button"
-            className="crm-modal-backdrop"
-            aria-label="ปิดหน้าต่าง"
-            onClick={() => setConfirmDelete(false)}
-          />
-          <div
-            className="crm-modal-panel crm-modal-panel-user"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby={titleId}
-          >
-            <div className="crm-modal-head">
-              <div>
-                <p className="crm-modal-eyebrow">Lead</p>
-                <h2 id={titleId}>ลบลีด</h2>
-              </div>
-              <button type="button" className="crm-modal-close" aria-label="ปิด" onClick={() => setConfirmDelete(false)}>
-                ×
-              </button>
-            </div>
-            <form action={archiveLeadFromList} className="crm-modal-form">
-              <input type="hidden" name="leadId" value={leadId} />
-              <input type="hidden" name="returnTo" value={returnTo} />
-              <p className="crm-users-alert is-warn" role="status">
-                ยืนยันลบ “{contactName}”? ลีดจะถูกเก็บไว้และเรียกคืนได้จากหน้ารายการลีดที่เก็บไว้
-              </p>
-              <div className="crm-modal-actions">
-                <button type="button" className="crm-users-secondary" onClick={() => setConfirmDelete(false)}>
-                  ยกเลิก
-                </button>
-                <button className="kpi-button crm-users-delete-btn" type="submit">
-                  ลบ
-                </button>
-              </div>
-            </form>
+        <form
+          action={archiveLeadFromList}
+          className="kpi-leads-inline-confirm"
+          id={titleId}
+          aria-label={`ยืนยันลบ ${contactName}`}
+        >
+          <input type="hidden" name="leadId" value={leadId} />
+          <input type="hidden" name="returnTo" value={returnTo} />
+          <p className="kpi-leads-alert" role="status">
+            ยืนยันลบ “{contactName}”? ลีดจะถูกเก็บไว้และเรียกคืนได้จากหน้ารายการลีดที่เก็บไว้
+          </p>
+          <div className="kpi-leads-followup-actions">
+            <button type="submit" className="kpi-leads-btn-danger">
+              ลบ
+            </button>
+            <button
+              type="button"
+              className="kpi-leads-btn-secondary"
+              onClick={() => setConfirmDelete(false)}
+            >
+              ยกเลิก
+            </button>
           </div>
-        </div>
+        </form>
       ) : null}
-    </>
+    </div>
   );
 }

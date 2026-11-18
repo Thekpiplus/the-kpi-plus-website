@@ -1,6 +1,6 @@
 import Link from "next/link";
+import { PipelineMoveForm } from "@/components/crm/leads/PipelineMoveForm";
 import { stageToneKey, type PipelineStage } from "@/components/crm/pipeline-types";
-import { changeLeadStageFormAction } from "@/lib/crm/actions";
 import { formatMoney, formatThaiDateTime } from "@/lib/crm/queries";
 import { sourceLabel } from "@/lib/crm/sources";
 
@@ -58,27 +58,12 @@ export function PipelineBoard({ stages }: { stages: PipelineStage[] }) {
                           <p className="crm-pipe-next">นัด {formatThaiDateTime(lead.nextActivityAt)}</p>
                         ) : null}
 
-                        <form action={changeLeadStageFormAction} className="crm-pipe-move">
-                          <input type="hidden" name="leadId" value={lead.id} />
-                          <label className="sr-only" htmlFor={`stage-${lead.id}`}>
-                            ย้ายขั้นของ {lead.contactName}
-                          </label>
-                          <select
-                            id={`stage-${lead.id}`}
-                            className="crm-pipe-select"
-                            name="stageId"
-                            defaultValue={stage.id}
-                          >
-                            {stages.map((item) => (
-                              <option key={item.id} value={item.id}>
-                                {item.nameTh}
-                              </option>
-                            ))}
-                          </select>
-                          <button className="crm-pipe-move-btn" type="submit" title="ย้ายขั้น">
-                            ย้าย
-                          </button>
-                        </form>
+                        <PipelineMoveForm
+                          leadId={lead.id}
+                          contactName={lead.contactName}
+                          currentStageId={stage.id}
+                          stages={stages.map((item) => ({ id: item.id, nameTh: item.nameTh }))}
+                        />
                       </article>
                     ))
                   )}

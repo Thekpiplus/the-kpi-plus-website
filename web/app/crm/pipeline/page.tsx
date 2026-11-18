@@ -2,10 +2,10 @@ import Link from "next/link";
 import { PipelineBoard } from "@/components/crm/PipelineBoard";
 import { PipelineCalendar } from "@/components/crm/PipelineCalendar";
 import { PipelineTable } from "@/components/crm/PipelineTable";
+import { LeadsPageChrome } from "@/components/crm/leads/LeadsPageChrome";
 import { parsePipelineView, stageToneKey } from "@/components/crm/pipeline-types";
 import { EmptyState } from "@/components/crm/ui/EmptyState";
 import { NewLeadOpenButton } from "@/components/crm/ui/NewLeadModal";
-import { PageHeader } from "@/components/crm/ui/PageHeader";
 import { PipelineViewSwitch } from "@/components/crm/ui/PipelineViewSwitch";
 import { formatMoney, pipelineData } from "@/lib/crm/queries";
 
@@ -43,46 +43,40 @@ export default async function PipelinePage({
         : "ติดตามลีดตามขั้นแบบคานบัน เปิดรายละเอียดหรือย้ายขั้นจากบัตร";
 
   return (
-    <div className="crm-leads crm-pipe-page">
-      <PageHeader
-        eyebrow="Lead Management · Pipeline"
-        title="Pipeline"
-        description={description}
-        actions={
-          <div className="crm-leads-actions crm-pipe-actions">
-            <NewLeadOpenButton className="kpi-button crm-users-primary">คีย์ลีด</NewLeadOpenButton>
-            <Link href="/crm/sales" className="crm-users-secondary">
-              งานวันนี้
-            </Link>
-            <Link href="/crm/leads" className="crm-users-secondary">
-              ลีดทั้งหมด
-            </Link>
-          </div>
-        }
-      />
-
-      <section className="crm-pipe-summary crm-dash-summary" aria-label="สรุป Pipeline">
-        <div className="crm-dash-stats" role="list">
-          <div className="crm-dash-stat is-users is-static" role="listitem">
-            <span className="crm-dash-stat-label">ลีดทั้งหมด</span>
-            <strong className="crm-dash-stat-value">{total}</strong>
-            <span className="crm-dash-stat-hint">ใน Pipeline</span>
-          </div>
-          <div className="crm-dash-stat is-today is-static" role="listitem">
-            <span className="crm-dash-stat-label">กำลังติดตาม</span>
-            <strong className="crm-dash-stat-value">{openCount}</strong>
-            <span className="crm-dash-stat-hint">ยังไม่ปิด</span>
-          </div>
-          <div className="crm-dash-stat is-web is-static" role="listitem">
-            <span className="crm-dash-stat-label">ปิดได้</span>
-            <strong className="crm-dash-stat-value">{wonCount}</strong>
-            <span className="crm-dash-stat-hint">ขั้นชนะ</span>
-          </div>
-          <div className="crm-dash-stat is-partners is-static" role="listitem">
-            <span className="crm-dash-stat-label">มูลค่ารวม</span>
-            <strong className="crm-dash-stat-value">{formatMoney(pipelineValue)}</strong>
-            <span className="crm-dash-stat-hint">ไม่รวมขั้นแพ้</span>
-          </div>
+    <LeadsPageChrome
+      tab="pipeline"
+      title="Pipeline"
+      description={description}
+      actions={
+        <>
+          <NewLeadOpenButton className="kpi-leads-btn-primary">เพิ่มลีดใหม่</NewLeadOpenButton>
+          <Link href="/crm/sales" className="kpi-leads-btn-secondary">
+            งานวันนี้
+          </Link>
+        </>
+      }
+    >
+      <div className="crm-leads crm-pipe-page kpi-leads-pipe">
+      <section className="kpi-leads-kpi" aria-label="สรุป Pipeline">
+        <div className="kpi-leads-stat is-static">
+          <span className="kpi-leads-stat-label">ลีดทั้งหมด</span>
+          <strong className="kpi-leads-stat-value">{total}</strong>
+          <span className="kpi-leads-stat-hint">ใน Pipeline</span>
+        </div>
+        <div className="kpi-leads-stat is-today is-static">
+          <span className="kpi-leads-stat-label">กำลังติดตาม</span>
+          <strong className="kpi-leads-stat-value">{openCount}</strong>
+          <span className="kpi-leads-stat-hint">ยังไม่ปิด</span>
+        </div>
+        <div className="kpi-leads-stat is-new is-static">
+          <span className="kpi-leads-stat-label">ปิดได้</span>
+          <strong className="kpi-leads-stat-value">{wonCount}</strong>
+          <span className="kpi-leads-stat-hint">ขั้นชนะ</span>
+        </div>
+        <div className="kpi-leads-stat is-waiting is-static">
+          <span className="kpi-leads-stat-label">มูลค่ารวม</span>
+          <strong className="kpi-leads-stat-value">{formatMoney(pipelineValue)}</strong>
+          <span className="kpi-leads-stat-hint">ไม่รวมขั้นแพ้</span>
         </div>
       </section>
 
@@ -120,7 +114,7 @@ export default async function PipelinePage({
             title="ยังไม่มีลีดใน Pipeline"
             body="คีย์ลีดใหม่ หรือเปิดรายการลีดทั้งหมดเพื่อเริ่มติดตาม"
             compact
-            action={<NewLeadOpenButton className="kpi-button crm-users-primary">คีย์ลีด</NewLeadOpenButton>}
+            action={<NewLeadOpenButton className="kpi-leads-btn-primary">เพิ่มลีดใหม่</NewLeadOpenButton>}
           />
         ) : view === "table" ? (
           <PipelineTable stages={stages} />
@@ -130,6 +124,7 @@ export default async function PipelinePage({
           <PipelineBoard stages={stages} />
         )}
       </section>
-    </div>
+      </div>
+    </LeadsPageChrome>
   );
 }

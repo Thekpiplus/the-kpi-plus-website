@@ -1,12 +1,19 @@
 import Link from "next/link";
-import type { ReactNode } from "react";
-import { EmptyState } from "@/components/crm/ui/EmptyState";
+import { LeadsPageChrome } from "@/components/crm/leads/LeadsPageChrome";
+import {
+  SalesTodayBoard,
+  type SalesTodayFilter,
+  type SalesTodayItem,
+} from "@/components/crm/leads/SalesTodayBoard";
 import { NewLeadOpenButton } from "@/components/crm/ui/NewLeadModal";
-import { greetingForHour, OverviewHero } from "@/components/crm/ui/OverviewHero";
-import { StatusBadge } from "@/components/crm/ui/StatusBadge";
-import { completeActivity } from "@/lib/crm/actions";
 import { requireUser } from "@/lib/crm/auth";
-import { formatThaiDateTime, leadOriginCounts, todayLists } from "@/lib/crm/queries";
+import {
+  formatRelativeThai,
+  formatThaiDateTime,
+  pipelineData,
+  recentLeadEvents,
+  todayLists,
+} from "@/lib/crm/queries";
 import { sourceLabel } from "@/lib/crm/sources";
 
 function formatThaiDateToday(value = new Date()) {
@@ -19,289 +26,276 @@ function formatThaiDateToday(value = new Date()) {
   }).format(value);
 }
 
-export default async function SalesHomePage() {
-  const user = await requireUser();
-  const [lists, origins] = await Promise.all([todayLists(), leadOriginCounts()]);
-  const dueToday = lists.dueToday.length;
-  const overdue = lists.overdue.length;
-  const openWork = dueToday + overdue;
+function parseFilter(value?: string): SalesTodayFilter {
+  if (value === "overdue" || value === "today" || value === "first" || value === "new") return value;
+  return "all";
+}
+
+export default async function SalesHomePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ filter?: string; q?: string; saved?: string }>;
+}) {
+  await requireUser();
+  const params = await searchParams;
+  const filter = parseFilter(params.filter);
+  const q = params.q?.trim() ?? "";
+  const [lists, events, stages] = await Promise.all([
+    todayLists(),
+    recentLeadEvents(8),
+    pipelineData(),
+  ]);
+
+  const seen = new Set<string>();
+  const items: SalesTodayItem[] = [];
+
+  function pushItem(item: SalesTodayItem) {
+    if (seen.has(item.leadId)) return;
+    seen.add(item.leadId);
+    items.push(item);
+  }
+
+  for (const item of lists.overdue) {
+    pushItem({
+      key: `overdue-${item.id}`,
+      activityId: item.id,
+      leadId: item.lead.id,
+      contactName: item.lead.contactName,
+      businessName: item.lead.businessName || item.lead.formName || "ไม่มีชื่อกิจการ",
+      scope: item.lead.stage?.nameTh || item.title,
+      channel: sourceLabel(item.lead.source),
+      lastContactLabel: formatRelativeThai(item.lead.lastContactAt),
+      dueLabel: formatThaiDateTime(item.dueAt),
+      status: "overdue",
+      title: item.title,
+    });
+  }
+
+  for (const item of lists.dueToday) {
+    pushItem({
+      key: `today-${item.id}`,
+      activityId: item.id,
+      leadId: item.lead.id,
+      contactName: item.lead.contactName,
+      businessName: item.lead.businessName || item.lead.formName || "ไม่มีชื่อกิจการ",
+      scope: item.lead.stage?.nameTh || item.title,
+      channel: sourceLabel(item.lead.source),
+      lastContactLabel: formatRelativeThai(item.lead.lastContactAt),
+      dueLabel: formatThaiDateTime(item.dueAt),
+      status: "today",
+      title: item.title,
+    });
+  }
+
+  for (const item of lists.firstResponse) {
+    pushItem({
+      key: `first-${item.id}`,
+      activityId: item.id,
+      leadId: item.lead.id,
+      contactName: item.lead.contactName,
+      businessName: item.lead.businessName || item.lead.formName || "ไม่มีชื่อกิจการ",
+      scope: item.lead.stage?.nameTh || "รอตอบครั้งแรก",
+      channel: sourceLabel(item.lead.source),
+      lastContactLabel: formatRelativeThai(item.lead.lastContactAt || item.createdAt),
+      status: "first",
+      title: item.title,
+    });
+  }
+
+  for (const lead of lists.newLeads) {
+    pushItem({
+      key: `new-${lead.id}`,
+      leadId: lead.id,
+      contactName: lead.contactName,
+      businessName: lead.businessName || lead.formName || "ไม่มีชื่อกิจการ",
+      scope: lead.stage?.nameTh || "ลีดใหม่",
+      channel: sourceLabel(lead.source),
+      lastContactLabel: formatRelativeThai(lead.lastContactAt || lead.createdAt),
+      status: "new",
+    });
+  }
+
+  const counts = {
+    all: items.length,
+    overdue: items.filter((item) => item.status === "overdue").length,
+    today: items.filter((item) => item.status === "today").length,
+    first: items.filter((item) => item.status === "first").length,
+    new: items.filter((item) => item.status === "new").length,
+  };
+
+  const sourceMap = new Map<string, number>();
+  for (const stage of stages) {
+    for (const lead of stage.leads) {
+      const label = sourceLabel(lead.source);
+      sourceMap.set(label, (sourceMap.get(label) ?? 0) + 1);
+    }
+  }
+  const channels = [...sourceMap.entries()]
+    .map(([label, count]) => ({ label, count }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 6);
+  const channelTotal = channels.reduce((sum, item) => sum + item.count, 0) || 1;
+
   const todayLabel = formatThaiDateToday();
-  const greeting = greetingForHour();
+  const notice =
+    params.saved === "1" ? "บันทึกผลการติดตามแล้ว — รายการจะอัปเดตตามคิวงาน" : null;
+
+  function kpiHref(next: SalesTodayFilter) {
+    const query = new URLSearchParams();
+    if (next !== "all") query.set("filter", next);
+    if (q) query.set("q", q);
+    const value = query.toString();
+    return value ? `/crm/sales?${value}` : "/crm/sales";
+  }
 
   return (
-    <div className="crm-leads crm-leads-page crm-sales-today">
-      <OverviewHero
-        variant="welcome"
-        eyebrow="Lead Management · งานวันนี้"
-        badge={
-          <span className={`crm-hero-badge${overdue > 0 ? " is-alert" : ""}`}>
-            {openWork > 0 ? `งานเปิด ${openWork}` : "คิวว่าง"}
-          </span>
-        }
-        title={`${greeting}, ${user.name || "ทีม KPI Plus"}`}
-        description={`คิวติดตาม · ${todayLabel}`}
-        label="งานวันนี้"
-        actions={
-          <>
-            <NewLeadOpenButton className="crm-hero-btn crm-hero-btn-primary">คีย์ลีด</NewLeadOpenButton>
-            <Link href="/crm/pipeline" className="crm-hero-btn crm-hero-btn-secondary">
-              Pipeline
-            </Link>
-          </>
-        }
-      />
-
-      <section className="crm-sales-summary" aria-label="สรุปงานวันนี้">
-        <div className="crm-leads-stats crm-sales-stats" role="list">
-          <Link href="/crm/activities" className="crm-leads-stat is-overdue is-priority" role="listitem">
-            <span className="crm-leads-stat-label">เกินกำหนด</span>
-            <strong className="crm-leads-stat-value">{overdue}</strong>
-            <span className="crm-leads-stat-hint">ต้องติดตามก่อน</span>
+    <LeadsPageChrome
+      tab="today"
+      title="ต้องติดต่อวันนี้"
+      description={`${todayLabel} · คิวติดตามตามความเร่งด่วน`}
+      notice={notice}
+      actions={
+        <>
+          <NewLeadOpenButton className="kpi-leads-btn-primary">เพิ่มลีดใหม่</NewLeadOpenButton>
+          <Link href="/crm/pipeline" className="kpi-leads-btn-secondary">
+            ดู Pipeline
           </Link>
-          <div className="crm-leads-stat is-today is-static is-priority" role="listitem" aria-current="true">
-            <span className="crm-leads-stat-label">ครบกำหนดวันนี้</span>
-            <strong className="crm-leads-stat-value">{dueToday}</strong>
-            <span className="crm-leads-stat-hint">คิวด้านล่าง</span>
-          </div>
-          <Link href="/crm/leads?origin=web" className="crm-leads-stat is-web is-secondary-stat" role="listitem">
-            <span className="crm-leads-stat-label">จากเว็บไซต์</span>
-            <strong className="crm-leads-stat-value">{origins.web}</strong>
-            <span className="crm-leads-stat-hint">เปิดรายการ</span>
-          </Link>
-          <Link href="/crm/leads?origin=manual" className="crm-leads-stat is-manual is-secondary-stat" role="listitem">
-            <span className="crm-leads-stat-label">คีย์เอง</span>
-            <strong className="crm-leads-stat-value">{origins.manual}</strong>
-            <span className="crm-leads-stat-hint">เปิดรายการ</span>
-          </Link>
-        </div>
+        </>
+      }
+    >
+      <section className="kpi-leads-kpi" aria-label="สรุปงานวันนี้">
+        <Link
+          href={kpiHref("overdue")}
+          className={`kpi-leads-stat is-overdue${counts.overdue > 0 ? " has-value" : ""}${
+            filter === "overdue" ? " is-selected" : ""
+          }`}
+        >
+          <span className="kpi-leads-stat-label">เกินกำหนด</span>
+          <strong className="kpi-leads-stat-value">{counts.overdue}</strong>
+          <span className="kpi-leads-stat-hint">ต้องติดตามก่อน</span>
+        </Link>
+        <Link
+          href={kpiHref("today")}
+          className={`kpi-leads-stat is-today${filter === "today" ? " is-selected" : ""}`}
+        >
+          <span className="kpi-leads-stat-label">ถึงกำหนดวันนี้</span>
+          <strong className="kpi-leads-stat-value">{counts.today}</strong>
+          <span className="kpi-leads-stat-hint">คิววันนี้</span>
+        </Link>
+        <Link
+          href={kpiHref("first")}
+          className={`kpi-leads-stat is-waiting${filter === "first" ? " is-selected" : ""}`}
+        >
+          <span className="kpi-leads-stat-label">รอตอบกลับ</span>
+          <strong className="kpi-leads-stat-value">{counts.first}</strong>
+          <span className="kpi-leads-stat-hint">ตอบครั้งแรก</span>
+        </Link>
+        <Link
+          href={kpiHref("new")}
+          className={`kpi-leads-stat is-new${filter === "new" ? " is-selected" : ""}`}
+        >
+          <span className="kpi-leads-stat-label">ลีดใหม่</span>
+          <strong className="kpi-leads-stat-value">{counts.new}</strong>
+          <span className="kpi-leads-stat-hint">ขั้นเริ่มต้น</span>
+        </Link>
       </section>
 
-      <div className="crm-sales-layout">
-        <section className="crm-sales-followups" aria-labelledby="crm-sales-followups-heading">
-          <header className="crm-sales-section-head crm-sales-section-head-row">
-            <div>
-              <h2 id="crm-sales-followups-heading">รายการที่ต้องติดตาม</h2>
-              <p>เรียงตามความเร่งด่วน — เกินกำหนด · ครบกำหนดวันนี้ · ลีดใหม่ที่รอตอบ</p>
-            </div>
-            <form className="crm-leads-search crm-sales-inline-search" method="get" action="/crm/leads">
-              <label className="crm-leads-search-field">
-                <span className="sr-only">ค้นหาลีดจากชื่อ กิจการ เบอร์ หรืออีเมล</span>
-                <span aria-hidden="true">⌕</span>
-                <input name="q" placeholder="ค้นหาชื่อ กิจการ เบอร์ หรืออีเมล" autoComplete="off" />
-              </label>
-              <button className="kpi-button crm-users-primary" type="submit">
-                ค้นหา
-              </button>
-            </form>
-          </header>
+      <div className="kpi-leads-layout">
+        <SalesTodayBoard items={items} filter={filter} q={q} counts={counts} />
 
-          <div className="crm-sales-followups-grid">
-            <TaskPanel
-              title="เกินกำหนด"
-              hint="งานที่เลยวันกำหนดแล้ว"
-              tone="overdue"
-              items={lists.overdue}
-              empty="ไม่มีงานเกินกำหนด"
-              emptyBody="เมื่อมีกิจกรรมเลยกำหนด จะแสดงที่นี่"
-            />
-            <TaskPanel
-              title="ครบกำหนดวันนี้"
-              hint="ติดตามภายในวันนี้"
-              tone="today"
-              items={lists.dueToday}
-              empty="ไม่มีงานครบกำหนดวันนี้"
-              emptyBody="ยังไม่มีกิจกรรมครบกำหนดวันนี้"
-            />
-            <ListPanel
-              title="ลีดใหม่ที่รอตอบ"
-              hint="ควรตอบกลับครั้งแรกให้เร็ว"
-              empty="ไม่มีลีดรอตอบ"
-              emptyBody="ลีดที่ต้องตอบครั้งแรกจะแสดงที่นี่"
-              actionHref="/crm/leads?origin=web"
-              actionLabel="ดูลีดจากเว็บ"
-              count={lists.firstResponse.length}
-              className="crm-sales-panel-span crm-sales-panel-secondary-queue"
-            >
-              {lists.firstResponse.map((item) => (
-                <li key={item.id} className="crm-leads-simple-row">
-                  <Link href={`/crm/leads/${item.lead.id}`}>
-                    <strong>{item.lead.contactName}</strong>
-                    <em>{item.lead.businessName || item.lead.formName || "ไม่มีชื่อกิจการ"}</em>
-                  </Link>
-                  <StatusBadge label={sourceLabel(item.lead.source)} tone="info" />
-                </li>
-              ))}
-            </ListPanel>
-          </div>
-        </section>
+        <aside className="kpi-leads-side-stack" aria-label="ภาพรวมด้านข้าง">
+          <section className="kpi-leads-panel">
+            <header className="kpi-leads-panel-head">
+              <h2>กิจกรรมล่าสุด</h2>
+              <p>เหตุการณ์จากลีดในระบบ</p>
+            </header>
+            {events.length === 0 ? (
+              <div className="kpi-leads-empty">
+                <h3>ยังไม่มีกิจกรรม</h3>
+                <p>เมื่อมีการติดตามหรือเปลี่ยนขั้น จะแสดงที่นี่</p>
+              </div>
+            ) : (
+              <ul className="kpi-leads-side-list">
+                {events.map((event) => (
+                  <li key={event.id} className="kpi-leads-side-item">
+                    <span className="kpi-leads-side-dot" aria-hidden="true" />
+                    <div>
+                      <Link href={`/crm/leads/${event.lead.id}`}>
+                        <strong>{event.detail || event.type}</strong>
+                      </Link>
+                      <em>
+                        {event.lead.contactName}
+                        {event.lead.businessName ? ` · ${event.lead.businessName}` : ""}
+                      </em>
+                      <span>{formatRelativeThai(event.createdAt)}</span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
 
-        <aside className="crm-sales-secondary" aria-labelledby="crm-sales-secondary-heading">
-          <header className="crm-sales-section-head">
-            <div>
-              <h2 id="crm-sales-secondary-heading">กิจกรรมถัดไป</h2>
-              <p>ลีดที่ยังไม่มีนัดติดตามต่อ</p>
-            </div>
-          </header>
-          <ListPanel
-            title="ยังไม่มีกิจกรรมถัดไป"
-            hint="ตั้งนัดติดตามต่อให้ลีดเหล่านี้"
-            empty="ยังไม่มีกิจกรรมถัดไป"
-            emptyBody="ลีดทุกตัวมีนัดติดตามต่อแล้ว"
-            actionHref="/crm/leads"
-            actionLabel="ดูลีดทั้งหมด"
-            count={lists.noNext.length}
-            className="crm-sales-panel-side"
-          >
-            {lists.noNext.map((lead) => (
-              <li key={lead.id} className="crm-leads-simple-row">
-                <Link href={`/crm/leads/${lead.id}`}>
-                  <strong>{lead.contactName}</strong>
-                  <em>{lead.businessName || lead.formName || "ไม่มีชื่อกิจการ"}</em>
-                </Link>
-                <StatusBadge label={lead.stage.nameTh} tone="neutral" />
-              </li>
-            ))}
-          </ListPanel>
+          <section className="kpi-leads-panel">
+            <header className="kpi-leads-panel-head">
+              <h2>ลีดใหม่ที่สุด</h2>
+              <p>ลีดในขั้นเริ่มต้น</p>
+            </header>
+            {lists.newLeads.length === 0 ? (
+              <div className="kpi-leads-empty">
+                <h3>ยังไม่มีลีดใหม่</h3>
+                <p>ลีดที่เข้าขั้นเริ่มต้นจะแสดงที่นี่</p>
+              </div>
+            ) : (
+              <ul className="kpi-leads-side-list">
+                {lists.newLeads.slice(0, 6).map((lead) => (
+                  <li key={lead.id} className="kpi-leads-side-item">
+                    <span className="kpi-leads-side-dot" aria-hidden="true" />
+                    <div>
+                      <Link href={`/crm/leads/${lead.id}`}>
+                        <strong>{lead.contactName}</strong>
+                      </Link>
+                      <em>{lead.businessName || lead.formName || "ไม่มีชื่อกิจการ"}</em>
+                      <span>
+                        {sourceLabel(lead.source)} · {formatRelativeThai(lead.createdAt)}
+                      </span>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+
+          <section className="kpi-leads-panel">
+            <header className="kpi-leads-panel-head">
+              <h2>ช่องทางที่ลีดเข้ามา</h2>
+              <p>สัดส่วนจากลีดใน Pipeline</p>
+            </header>
+            {channels.length === 0 ? (
+              <div className="kpi-leads-empty">
+                <h3>ยังไม่มีข้อมูลช่องทาง</h3>
+                <p>เมื่อมีลีดใน Pipeline จะแสดงสัดส่วนที่นี่</p>
+              </div>
+            ) : (
+              <div className="kpi-leads-channels">
+                {channels.map((channel) => (
+                  <div key={channel.label} className="kpi-leads-channel">
+                    <div className="kpi-leads-channel-meta">
+                      <span>{channel.label}</span>
+                      <span>{channel.count}</span>
+                    </div>
+                    <div className="kpi-leads-channel-bar" aria-hidden="true">
+                      <div
+                        className="kpi-leads-channel-fill"
+                        style={{ width: `${Math.max(8, Math.round((channel.count / channelTotal) * 100))}%` }}
+                      />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
         </aside>
       </div>
-    </div>
-  );
-}
-
-function ListPanel({
-  title,
-  hint,
-  empty,
-  emptyBody,
-  actionHref,
-  actionLabel,
-  count,
-  children,
-  className,
-}: {
-  title: string;
-  hint: string;
-  empty: string;
-  emptyBody: string;
-  actionHref: string;
-  actionLabel: string;
-  count: number;
-  children: ReactNode;
-  className?: string;
-}) {
-  const emptyClass = count === 0 ? " is-empty" : "";
-  return (
-    <section className={`crm-leads-panel${emptyClass}${className ? ` ${className}` : ""}`}>
-      <div className="crm-leads-panel-head">
-        <div>
-          <h2>
-            {title}
-            {count ? <span className="crm-leads-count">{count}</span> : null}
-          </h2>
-          <p>{hint}</p>
-        </div>
-        <Link href={actionHref} className="crm-leads-panel-link">
-          {actionLabel}
-        </Link>
-      </div>
-      {count === 0 ? (
-        <EmptyState title={empty} body={emptyBody} compact />
-      ) : (
-        <ul className="crm-leads-simple-list">{children}</ul>
-      )}
-    </section>
-  );
-}
-
-function TaskPanel({
-  title,
-  hint,
-  tone,
-  items,
-  empty,
-  emptyBody,
-}: {
-  title: string;
-  hint: string;
-  tone: "overdue" | "today";
-  items: {
-    id: string;
-    title: string;
-    dueAt: Date;
-    lead: { id: string; contactName: string; businessName: string; formName?: string };
-  }[];
-  empty: string;
-  emptyBody: string;
-}) {
-  const emptyClass = items.length === 0 ? " is-empty" : "";
-  return (
-    <section
-      className={`crm-leads-panel crm-sales-panel-priority${emptyClass}${
-        tone === "overdue" && items.length ? " is-overdue" : ""
-      }`}
-    >
-      <div className="crm-leads-panel-head">
-        <div>
-          <h2>
-            {title}
-            {items.length ? <span className="crm-leads-count">{items.length}</span> : null}
-          </h2>
-          <p>{hint}</p>
-        </div>
-        {items.length ? (
-          <Link href="/crm/activities" className="crm-leads-panel-link">
-            ดูทั้งหมด
-          </Link>
-        ) : null}
-      </div>
-      {items.length === 0 ? (
-        <EmptyState title={empty} body={emptyBody} compact />
-      ) : (
-        <ul className="crm-leads-task-list">
-          {items.map((item) => (
-            <li key={item.id} className={`crm-leads-task${tone === "overdue" ? " is-overdue" : ""}`}>
-              <div className="crm-leads-task-top">
-                <div>
-                  <Link href={`/crm/leads/${item.lead.id}`} className="crm-leads-task-name">
-                    {item.lead.contactName}
-                  </Link>
-                  <p className="crm-leads-task-biz">
-                    {item.lead.businessName || item.lead.formName || "ไม่มีชื่อกิจการ"}
-                  </p>
-                  <p className="crm-leads-task-meta">
-                    {item.title}
-                    <span> · {formatThaiDateTime(item.dueAt)}</span>
-                  </p>
-                </div>
-                <StatusBadge
-                  label={tone === "overdue" ? "เกินกำหนด" : "วันนี้"}
-                  tone={tone === "overdue" ? "danger" : "warning"}
-                />
-              </div>
-              <form action={completeActivity} className="crm-leads-task-form">
-                <input type="hidden" name="activityId" value={item.id} />
-                <div className="crm-leads-task-fields">
-                  <label className="crm-leads-task-field">
-                    <span className="sr-only">ผลลัพธ์การติดตาม</span>
-                    <input className="crm-field" name="outcome" placeholder="ผลลัพธ์การติดตาม" />
-                  </label>
-                  <label className="crm-leads-task-field">
-                    <span className="sr-only">วันเวลานัดติดตามครั้งถัดไป</span>
-                    <input className="crm-field" type="datetime-local" name="nextDueAt" />
-                  </label>
-                  <label className="crm-leads-task-field">
-                    <span className="sr-only">ชื่อนัดติดตามครั้งถัดไป</span>
-                    <input className="crm-field" name="nextTitle" placeholder="นัดติดตามครั้งถัดไป" />
-                  </label>
-                </div>
-                <button className="kpi-button crm-users-primary crm-leads-task-submit" type="submit">
-                  ปิดแล้วตั้งติดตามต่อ
-                </button>
-              </form>
-            </li>
-          ))}
-        </ul>
-      )}
-    </section>
+    </LeadsPageChrome>
   );
 }

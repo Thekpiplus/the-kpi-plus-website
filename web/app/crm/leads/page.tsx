@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { CrmSelect } from "@/components/crm/CrmSelect";
+import { LeadsPageChrome } from "@/components/crm/leads/LeadsPageChrome";
+import { PipelineMoveForm } from "@/components/crm/leads/PipelineMoveForm";
 import { EmptyState } from "@/components/crm/ui/EmptyState";
 import { LeadRowActions } from "@/components/crm/ui/LeadRowActions";
 import { NewLeadOpenButton } from "@/components/crm/ui/NewLeadModal";
-import { PageHeader } from "@/components/crm/ui/PageHeader";
 import { stageToneKey } from "@/components/crm/pipeline-types";
-import { assignLeadOwner, changeLeadStageFormAction } from "@/lib/crm/actions";
+import { assignLeadOwner } from "@/lib/crm/actions";
 import { leadArchiveCounts, type LeadArchiveView } from "@/lib/crm/archive";
 import {
   formatMoney,
@@ -70,12 +71,6 @@ export default async function LeadsPage({
 
   const pageTitle =
     origin === "web" ? "ลีดจากเว็บไซต์" : origin === "manual" ? "ลีดที่คีย์เอง" : "ลีดทั้งหมด";
-  const pageEyebrow =
-    origin === "web"
-      ? "Lead Management · จากเว็บ"
-      : origin === "manual"
-        ? "Lead Management · คีย์เอง"
-        : "Lead Management · ลีดทั้งหมด";
   const pageDescription =
     archive === "archived"
       ? origin
@@ -108,66 +103,61 @@ export default async function LeadsPage({
         : "คีย์ลีดใหม่เพื่อเริ่มติดตามในรายการนี้";
 
   return (
-    <div className={`crm-leads crm-leads-page${origin ? ` is-origin-${origin}` : ""}`}>
-      <PageHeader
-        eyebrow={pageEyebrow}
-        title={pageTitle}
-        description={pageDescription}
-        actions={
-          <div className="crm-leads-actions">
-            <NewLeadOpenButton className="kpi-button crm-users-primary">คีย์ลีด</NewLeadOpenButton>
-            <Link href="/crm/pipeline" className="crm-users-secondary">
-              Pipeline
-            </Link>
-            <Link href="/crm/sales" className="crm-users-secondary">
-              งานวันนี้
-            </Link>
-          </div>
-        }
-      />
-
-      <section className="crm-leads-archive" aria-label="สถานะการเก็บลีด">
-        <nav className="crm-leads-tabs" aria-label="ตัวกรองสถานะลีด">
+    <LeadsPageChrome
+      tab="all"
+      title={pageTitle}
+      description={pageDescription}
+      actions={
+        <>
+          <NewLeadOpenButton className="kpi-leads-btn-primary">เพิ่มลีดใหม่</NewLeadOpenButton>
+          <Link href="/crm/pipeline" className="kpi-leads-btn-secondary">
+            ดู Pipeline
+          </Link>
+        </>
+      }
+    >
+    <div className={`crm-leads crm-leads-page kpi-leads-all${origin ? ` is-origin-${origin}` : ""}`}>
+      <section className="kpi-leads-panel kpi-leads-archive" aria-label="สถานะการเก็บลีด">
+        <div className="kpi-leads-chips" role="group" aria-label="ตัวกรองสถานะลีด">
           {tabs.map((tab) => {
             const active = archive === tab.id;
             return (
               <Link
                 key={tab.id}
                 href={leadsListHref(params, tab.id)}
-                className={`crm-leads-tab is-${tab.tone}${active ? " is-active" : ""}`}
+                className={`kpi-leads-chip is-archive is-${tab.tone}${active ? " is-active" : ""}`}
                 aria-current={active ? "page" : undefined}
               >
-                <span className="crm-leads-tab-label">{tab.label}</span>
-                {!origin ? <span className="crm-leads-tab-count">{tab.count}</span> : null}
+                {tab.label}
+                {!origin ? <strong>{tab.count}</strong> : null}
                 {active ? <span className="sr-only"> (กำลังกรอง)</span> : null}
               </Link>
             );
           })}
-        </nav>
-        <p className="crm-leads-archive-hint">
+        </div>
+        <p className="kpi-leads-archive-hint">
           {origin
             ? `กำลังดู${pageTitle} — แท็บด้านบนกรองสถานะเก็บภายในรายการนี้ · จำนวนผลลัพธ์อยู่เหนือตาราง`
             : "ตัวเลขบนแท็บคือจำนวนในระบบตามสถานะเก็บลีด — ไม่ใช่จำนวนผลลัพธ์หลังค้นหา"}
         </p>
         {origin && originScopeCount != null ? (
-          <p className="crm-leads-origin-scope" aria-live="polite">
-            <span className="crm-leads-origin-scope-label">
+          <p className="kpi-leads-origin-scope" aria-live="polite">
+            <span>
               {origin === "web" ? "ลีดจากเว็บไซต์ที่ใช้งานอยู่" : "ลีดที่คีย์เองที่ใช้งานอยู่"}
             </span>
-            <span className="crm-leads-origin-scope-count">{originScopeCount}</span>
-            <span className="crm-leads-origin-scope-sep">ในระบบ · ไม่ใช่ผลลัพธ์หลังค้นหา</span>
+            <strong>{originScopeCount}</strong>
+            <span>ในระบบ · ไม่ใช่ผลลัพธ์หลังค้นหา</span>
           </p>
         ) : null}
       </section>
 
-      <section className="crm-leads-toolbar" aria-label="ค้นหาและตัวกรอง">
-        <form className="crm-leads-filters" method="get">
+      <section className="kpi-leads-panel kpi-leads-toolbar-panel" aria-label="ค้นหาและตัวกรอง">
+        <form className="kpi-leads-filters" method="get">
           {archive !== "active" ? <input type="hidden" name="archive" value={archive} /> : null}
           {origin ? <input type="hidden" name="origin" value={origin} /> : null}
-          <label className="crm-leads-filter-field is-search">
-            <span>ค้นหา</span>
+          <label className="kpi-leads-field is-search">
+            ค้นหา
             <input
-              className="crm-field"
               name="q"
               defaultValue={params.q}
               placeholder="ชื่อ กิจการ เบอร์ หรืออีเมล"
@@ -175,8 +165,8 @@ export default async function LeadsPage({
             />
           </label>
           {!origin ? (
-            <label className="crm-leads-filter-field">
-              <span>แหล่งที่มา</span>
+            <label className="kpi-leads-field">
+              แหล่งที่มา
               <CrmSelect
                 name="origin"
                 aria-label="แหล่งที่มา"
@@ -189,13 +179,13 @@ export default async function LeadsPage({
               />
             </label>
           ) : (
-            <div className="crm-leads-filter-field is-locked" aria-label="แหล่งที่มา">
-              <span>แหล่งที่มา</span>
-              <p className="crm-leads-filter-locked">{originFilterLabel(origin)}</p>
+            <div className="kpi-leads-field is-locked" aria-label="แหล่งที่มา">
+              แหล่งที่มา
+              <p className="kpi-leads-filter-locked">{originFilterLabel(origin)}</p>
             </div>
           )}
-          <label className="crm-leads-filter-field">
-            <span>ขั้น</span>
+          <label className="kpi-leads-field">
+            ขั้น
             <CrmSelect
               name="stageId"
               aria-label="ขั้น"
@@ -206,8 +196,8 @@ export default async function LeadsPage({
               ]}
             />
           </label>
-          <label className="crm-leads-filter-field">
-            <span>ผู้ดูแล</span>
+          <label className="kpi-leads-field">
+            ผู้ดูแล
             <CrmSelect
               name="ownerId"
               aria-label="ผู้ดูแล"
@@ -218,40 +208,42 @@ export default async function LeadsPage({
               ]}
             />
           </label>
-          <div className="crm-leads-filters-actions">
-            <button className="kpi-button crm-users-primary" type="submit">
+          <div className="kpi-leads-filters-actions">
+            <button className="kpi-leads-btn-secondary" type="submit">
               กรอง
             </button>
             {extraFiltered ? (
-              <Link href={clearExtraHref} className="crm-leads-clear">
+              <Link href={clearExtraHref} className="kpi-leads-btn-secondary">
                 ล้างตัวกรอง
               </Link>
             ) : null}
           </div>
         </form>
         {hasActiveFilters ? (
-          <div className="crm-filter-chips" aria-label="ตัวกรองที่ใช้งาน">
+          <div className="kpi-leads-active-filters" aria-label="ตัวกรองที่ใช้งาน">
             {origin ? (
-              <span className="crm-filter-chip is-context">แหล่ง: {originFilterLabel(origin)}</span>
+              <span className="kpi-leads-chip is-static">แหล่ง: {originFilterLabel(origin)}</span>
             ) : null}
-            {params.q?.trim() ? <span className="crm-filter-chip">ค้นหา: {params.q.trim()}</span> : null}
+            {params.q?.trim() ? (
+              <span className="kpi-leads-chip is-static">ค้นหา: {params.q.trim()}</span>
+            ) : null}
             {params.stageId ? (
-              <span className="crm-filter-chip">
+              <span className="kpi-leads-chip is-static">
                 ขั้น: {stages.find((stage) => stage.id === params.stageId)?.nameTh ?? "เลือกแล้ว"}
               </span>
             ) : null}
             {params.ownerId ? (
-              <span className="crm-filter-chip">
+              <span className="kpi-leads-chip is-static">
                 ผู้ดูแล: {ownersById[params.ownerId] ?? "เลือกแล้ว"}
               </span>
             ) : null}
             {extraFiltered ? (
-              <Link href={clearExtraHref} className="crm-filter-chip-clear">
+              <Link href={clearExtraHref} className="kpi-leads-chip is-clear">
                 ล้างตัวกรองเพิ่มเติม
               </Link>
             ) : null}
             {origin ? (
-              <Link href={clearAllHref} className="crm-filter-chip-clear">
+              <Link href={clearAllHref} className="kpi-leads-chip is-clear">
                 ดูลีดทั้งหมด
               </Link>
             ) : null}
@@ -260,25 +252,23 @@ export default async function LeadsPage({
       </section>
 
       <section
-        className={`crm-leads-panel${leads.length === 0 ? " is-empty" : ""}`}
+        className={`kpi-leads-panel crm-leads-panel${leads.length === 0 ? " is-empty" : ""}`}
         aria-labelledby="crm-leads-list-heading"
       >
-        <div className="crm-leads-panel-head">
-          <div>
-            <h2 id="crm-leads-list-heading">
-              {origin ? `รายชื่อ${pageTitle}` : "รายชื่อลีด"}
-              <span className="crm-leads-count" title="จำนวนผลลัพธ์ที่แสดงตามตัวกรองปัจจุบัน">
-                {leads.length}
-              </span>
-            </h2>
-            <p>
-              ผลลัพธ์ที่พบ {leads.length} รายการ · {archiveLabel}
-              {origin ? ` · ${pageTitle}` : ""}
-              {params.q?.trim() ? ` · “${params.q.trim()}”` : ""}
-              {extraFiltered ? " · ตามเงื่อนไขที่เลือก" : ""}
-            </p>
-          </div>
-        </div>
+        <header className="kpi-leads-panel-head">
+          <h2 id="crm-leads-list-heading">
+            {origin ? `รายชื่อ${pageTitle}` : "รายชื่อลีด"}{" "}
+            <span className="kpi-leads-count" title="จำนวนผลลัพธ์ที่แสดงตามตัวกรองปัจจุบัน">
+              {leads.length}
+            </span>
+          </h2>
+          <p>
+            ผลลัพธ์ที่พบ {leads.length} รายการ · {archiveLabel}
+            {origin ? ` · ${pageTitle}` : ""}
+            {params.q?.trim() ? ` · “${params.q.trim()}”` : ""}
+            {extraFiltered ? " · ตามเงื่อนไขที่เลือก" : ""}
+          </p>
+        </header>
 
         {leads.length === 0 ? (
           <EmptyState
@@ -288,21 +278,21 @@ export default async function LeadsPage({
             body={emptyBody}
             action={
               extraFiltered ? (
-                <Link href={clearExtraHref} className="crm-users-secondary">
+                <Link href={clearExtraHref} className="kpi-leads-btn-secondary">
                   ล้างตัวกรอง
                 </Link>
               ) : origin === "web" ? (
-                <Link href="/crm/leads" className="crm-users-secondary">
+                <Link href="/crm/leads" className="kpi-leads-btn-secondary">
                   ดูลีดทั้งหมด
                 </Link>
               ) : (
-                <NewLeadOpenButton className="kpi-button crm-users-primary">คีย์ลีด</NewLeadOpenButton>
+                <NewLeadOpenButton className="kpi-leads-btn-secondary">คีย์ลีด</NewLeadOpenButton>
               )
             }
           />
         ) : (
-          <div className="crm-leads-table-wrap">
-            <table className="crm-leads-table">
+          <div className="crm-leads-table-wrap kpi-leads-table-wrap">
+            <table className="crm-leads-table kpi-leads-table">
               <thead>
                 <tr>
                   <th scope="col">ผู้ติดต่อ</th>
@@ -328,45 +318,38 @@ export default async function LeadsPage({
                   return (
                     <tr key={lead.id} className={archived ? "is-archived" : undefined}>
                       <td data-label="ผู้ติดต่อ">
-                        <Link href={`/crm/leads/${lead.id}`} className="crm-leads-table-name">
+                        <Link href={`/crm/leads/${lead.id}`} className="kpi-leads-table-name">
                           {lead.contactName}
                         </Link>
                       </td>
                       <td data-label="กิจการ">
-                        <span className="crm-leads-table-secondary">{lead.businessName || "—"}</span>
+                        <span className="kpi-leads-table-muted">{lead.businessName || "—"}</span>
                       </td>
                       <td data-label="ลำดับขั้น">
                         <span className="crm-pipe-stage-badge" data-stage-tone={tone}>
                           {stage?.nameTh ?? "—"}
                         </span>
-                        {archived ? <span className="crm-leads-archived-tag">เก็บแล้ว</span> : null}
+                        {archived ? <span className="kpi-leads-archived-tag">เก็บแล้ว</span> : null}
                       </td>
                       <td data-label="แหล่งที่มา">
-                        <span className="crm-leads-table-secondary">{sourceLabel(lead.source)}</span>
+                        <span className="kpi-leads-table-muted">{sourceLabel(lead.source)}</span>
                       </td>
                       <td data-label="ผู้ดูแล">{ownersById[lead.ownerId ?? ""] || "—"}</td>
-                      <td data-label="มูลค่า" className="crm-leads-table-money">
+                      <td data-label="มูลค่า" className="kpi-leads-table-money">
                         {formatMoney(lead.estimatedValue)}
                       </td>
                       <td data-label="อัปเดต">
-                        <span className="crm-leads-table-secondary">{formatThaiDateTime(lead.updatedAt)}</span>
+                        <span className="kpi-leads-table-muted">{formatThaiDateTime(lead.updatedAt)}</span>
                       </td>
                       <td data-label="ย้ายขั้น">
-                        <form action={changeLeadStageFormAction} className="crm-leads-table-move">
-                          <input type="hidden" name="leadId" value={lead.id} />
-                          <CrmSelect
-                            size="pipe"
-                            name="stageId"
-                            defaultValue={lead.stageId}
-                            aria-label={`ย้ายขั้นของ ${lead.contactName}`}
-                            options={stages
-                              .filter((item) => !item.isLost || item.id === lead.stageId)
-                              .map((item) => ({ value: item.id, label: item.nameTh }))}
-                          />
-                          <button className="crm-pipe-move-btn" type="submit">
-                            ย้าย
-                          </button>
-                        </form>
+                        <PipelineMoveForm
+                          leadId={lead.id}
+                          contactName={lead.contactName}
+                          currentStageId={lead.stageId}
+                          stages={stages
+                            .filter((item) => !item.isLost || item.id === lead.stageId)
+                            .map((item) => ({ id: item.id, nameTh: item.nameTh }))}
+                        />
                       </td>
                       <td data-label="มอบหมาย">
                         <form action={assignLeadOwner} className="crm-leads-table-move">
@@ -398,5 +381,6 @@ export default async function LeadsPage({
         )}
       </section>
     </div>
+    </LeadsPageChrome>
   );
 }
