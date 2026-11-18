@@ -589,6 +589,52 @@ const NAV_ICON: Record<NavKey, () => ReactNode> = {
   settings: IconSettings,
 };
 
+/** Quick links for mobile/tablet bottom bar — filtered by permissions, max 4 + More. */
+const BOTTOM_NAV_PRIORITY: NavKey[] = [
+  "home",
+  "leads",
+  "partners",
+  "reservations",
+  "cms",
+  "users",
+  "b2b",
+];
+
+const BOTTOM_NAV_SHORT: Record<NavKey, string> = {
+  home: "หน้าหลัก",
+  leads: "ลีด",
+  partners: "พาร์ตเนอร์",
+  reservations: "จอง",
+  b2b: "B2B",
+  ads: "Ads",
+  meta: "Meta",
+  seo: "SEO",
+  website: "เว็บ",
+  conversion: "Booking",
+  management: "โรงแรม",
+  systems: "ระบบ",
+  hotel_ai: "AI",
+  training: "เทรน",
+  hotel_marketing: "มาร์เก็ต",
+  solutions: "โซลูชัน",
+  users: "ผู้ใช้",
+  cms: "CMS",
+  settings: "ตั้งค่า",
+};
+
+function IconMore() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M5 7h14M5 12h14M5 17h14"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
 function workspaceOf(pathname: string): Workspace {
   if (pathname.startsWith("/crm/cms")) return "cms";
   if (pathname.startsWith("/crm/users")) return "users";
@@ -1118,6 +1164,41 @@ export function CrmShell({
           {children}
         </main>
       </div>
+
+      <nav className="crm-bottom-nav" aria-label="เมนูนำทางล่าง">
+        {BOTTOM_NAV_PRIORITY.filter((key) => allowedSet.has(key))
+          .slice(0, 4)
+          .map((key) => {
+            const Icon = NAV_ICON[key];
+            const current = isNavKeyCurrent(key, workspace, pathname);
+            return (
+              <Link
+                key={key}
+                href={navHref(key)}
+                className={`crm-bottom-nav-item${current ? " is-active" : ""}`}
+                aria-current={current ? "page" : undefined}
+              >
+                <span className="crm-bottom-nav-ico" aria-hidden="true">
+                  <Icon />
+                </span>
+                <span className="crm-bottom-nav-label">{BOTTOM_NAV_SHORT[key]}</span>
+              </Link>
+            );
+          })}
+        <button
+          type="button"
+          className={`crm-bottom-nav-item is-more${drawerOpen ? " is-active" : ""}`}
+          aria-label="เปิดเมนูระบบทั้งหมด"
+          aria-expanded={drawerOpen}
+          aria-controls={drawerId}
+          onClick={() => setDrawerOpen(true)}
+        >
+          <span className="crm-bottom-nav-ico" aria-hidden="true">
+            <IconMore />
+          </span>
+          <span className="crm-bottom-nav-label">เมนู</span>
+        </button>
+      </nav>
 
       <CrmCommandPalette open={commandOpen} onClose={() => setCommandOpen(false)} items={commandItems} />
     </div>

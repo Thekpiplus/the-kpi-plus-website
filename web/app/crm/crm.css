@@ -5429,10 +5429,118 @@ html[data-crm-theme="dark"] .crm-role-badge.is-partner,
   }
 }
 
-@media (min-width: 861px) {
+@media (min-width: 1280px) {
   .crm-drawer,
   .crm-drawer-backdrop {
     display: none;
+  }
+}
+
+/* Mobile + tablet bottom navigation (Design Spec A < 1280) */
+.crm-bottom-nav {
+  display: none;
+}
+
+@media (max-width: 1279px) {
+  .crm-shell-app,
+  .crm-shell-app.is-rail-expanded {
+    --crm-rail: 0;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .crm-rail-desktop {
+    display: none;
+  }
+
+  .crm-rail-expand-btn {
+    display: none;
+  }
+
+  .crm-menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    width: auto;
+    min-width: 2.55rem;
+    padding: 0 0.75rem;
+  }
+
+  .crm-bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    gap: 0.15rem;
+    padding: 0.4rem 0.45rem calc(0.45rem + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid var(--crm-border);
+    background: color-mix(in srgb, var(--crm-surface) 94%, #fff);
+    box-shadow: 0 -8px 24px rgba(22, 32, 43, 0.08);
+    backdrop-filter: blur(10px);
+  }
+
+  .crm-bottom-nav-item {
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    gap: 0.2rem;
+    min-width: 0;
+    min-height: 3.15rem;
+    padding: 0.35rem 0.2rem;
+    border: 0;
+    border-radius: 14px;
+    background: transparent;
+    color: var(--crm-text-muted);
+    font: inherit;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .crm-bottom-nav-ico {
+    display: grid;
+    place-items: center;
+    width: 1.55rem;
+    height: 1.55rem;
+  }
+
+  .crm-bottom-nav-ico svg {
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+
+  .crm-bottom-nav-label {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 0.84375rem; /* 13.5px — Design Spec A floor */
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .crm-bottom-nav-item.is-active {
+    background: color-mix(in srgb, var(--crm-lime) 22%, transparent);
+    color: var(--crm-on-lime);
+  }
+
+  .crm-bottom-nav-item:focus-visible {
+    outline: 2px solid var(--crm-lime);
+    outline-offset: 2px;
+  }
+
+  .crm-shell-app .crm-main {
+    padding-bottom: calc(5.25rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (max-width: 420px) {
+  .crm-bottom-nav-item {
+    min-height: 3rem;
+    padding: 0.3rem 0.1rem;
   }
 }
 
