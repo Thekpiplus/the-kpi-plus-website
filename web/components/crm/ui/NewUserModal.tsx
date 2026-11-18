@@ -6,6 +6,7 @@ import {
   useContext,
   useEffect,
   useId,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
@@ -59,10 +60,11 @@ export function NewUserModalProvider({
 }) {
   const [open, setOpen] = useState(autoOpen);
   const titleId = useId();
+  const firstFieldRef = useRef<HTMLInputElement>(null);
   const formError = error && ERROR_COPY[error] ? ERROR_COPY[error] : null;
 
-  const openModal = useCallback(() => setOpen(true), []);
-  const closeModal = useCallback(() => setOpen(false), []);
+  const openPanel = useCallback(() => setOpen(true), []);
+  const closePanel = useCallback(() => setOpen(false), []);
 
   useEffect(() => {
     if (autoOpen) setOpen(true);
@@ -74,112 +76,114 @@ export function NewUserModalProvider({
       if (event.key === "Escape") setOpen(false);
     }
     document.addEventListener("keydown", onKey);
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const timer = window.setTimeout(() => firstFieldRef.current?.focus(), 40);
     return () => {
       document.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prev;
+      window.clearTimeout(timer);
     };
   }, [open]);
 
   return (
-    <NewUserModalContext.Provider value={{ open: openModal, close: closeModal }}>
+    <NewUserModalContext.Provider value={{ open: openPanel, close: closePanel }}>
       {children}
       {open ? (
-        <div className="crm-modal" role="presentation">
-          <button type="button" className="crm-modal-backdrop" aria-label="ปิดหน้าต่าง" onClick={closeModal} />
-          <div
-            className="crm-modal-panel crm-modal-panel-user"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby={titleId}
-          >
-            <div className="crm-modal-head crm-modal-head-user">
-              <div>
-                <p className="crm-modal-eyebrow">Users Management</p>
-                <h2 id={titleId} className="crm-modal-title">
-                  เพิ่มผู้ใช้งาน
-                </h2>
-                <p className="crm-modal-lead">กรอกข้อมูลบัญชี เลือกบทบาท และเปิดฟังก์ชันที่ต้องการให้เข้าใช้</p>
-              </div>
-              <button type="button" className="crm-modal-close" aria-label="ปิด" onClick={closeModal}>
-                ✕
-              </button>
+        <aside
+          className="kpi-users-sidepanel"
+          role="region"
+          aria-labelledby={titleId}
+        >
+          <div className="kpi-users-sidepanel-head">
+            <div>
+              <p className="kpi-users-sidepanel-eyebrow">Users Management</p>
+              <h2 id={titleId} className="kpi-users-sidepanel-title">
+                เพิ่มผู้ใช้งาน
+              </h2>
+              <p className="kpi-users-sidepanel-lead">
+                กรอกข้อมูลบัญชี เลือกบทบาท และเปิดฟังก์ชันที่ต้องการให้เข้าใช้
+              </p>
+            </div>
+            <button
+              type="button"
+              className="kpi-users-sidepanel-close"
+              aria-label="ยกเลิกและปิดแผง"
+              onClick={closePanel}
+            >
+              ✕
+            </button>
+          </div>
+
+          <form action={createStaffUser} className="kpi-users-sidepanel-form">
+            <div className="kpi-users-sidepanel-body">
+              {formError ? (
+                <p className="kpi-users-alert is-warn" role="status" aria-live="polite">
+                  {formError}
+                </p>
+              ) : null}
+
+              <section className="crm-modal-section" aria-label="ข้อมูลบัญชี">
+                <h3 className="crm-modal-section-title">ข้อมูลบัญชี</h3>
+                <div className="crm-modal-grid">
+                  <label className="crm-modal-field">
+                    ชื่อ
+                    <input ref={firstFieldRef} className="crm-field" name="name" required />
+                  </label>
+                  <label className="crm-modal-field">
+                    ชื่อผู้ใช้ (Username)
+                    <input
+                      className="crm-field"
+                      name="username"
+                      pattern="[a-zA-Z0-9._-]{3,32}"
+                      autoComplete="username"
+                      required
+                    />
+                  </label>
+                  <label className="crm-modal-field">
+                    อีเมล
+                    <input className="crm-field" type="email" name="email" required />
+                  </label>
+                  <label className="crm-modal-field">
+                    บทบาท (User Role)
+                    <CrmSelect
+                      name="role"
+                      aria-label="บทบาท"
+                      defaultValue="user"
+                      required
+                      options={roles.map((role) => ({
+                        value: role,
+                        label: ROLE_LABEL[role],
+                      }))}
+                    />
+                  </label>
+                  <PasswordField name="password" label="รหัสผ่าน" className="crm-modal-span-2" />
+                </div>
+              </section>
+
+              <fieldset className="crm-modal-modules">
+                <legend>ฟังก์ชันที่เข้าได้</legend>
+                <p>Superadmin และ Admin เข้าได้ทุกฟังก์ชันอัตโนมัติ — บัญชีอื่นเลือกเฉพาะที่ต้องการ</p>
+                <div className="crm-modal-module-grid">
+                  {ADMIN_MODULES.map((module) => (
+                    <label key={module} className="crm-modal-check">
+                      <input type="checkbox" name="modules" value={module} />
+                      <span>{MODULE_LABEL[module]}</span>
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+
+              <p className="crm-modal-note">บัญชี Partners สร้างตอนสมัครพาร์ตเนอร์ ไม่สร้างจากหน้านี้</p>
             </div>
 
-            <form action={createStaffUser} className="crm-modal-form crm-modal-form-user">
-              <div className="crm-modal-body">
-                {formError ? (
-                  <p className="crm-users-alert is-warn" role="alert">
-                    {formError}
-                  </p>
-                ) : null}
-
-                <section className="crm-modal-section" aria-label="ข้อมูลบัญชี">
-                  <h3 className="crm-modal-section-title">ข้อมูลบัญชี</h3>
-                  <div className="crm-modal-grid">
-                    <label className="crm-modal-field">
-                      ชื่อ
-                      <input className="crm-field" name="name" required autoFocus />
-                    </label>
-                    <label className="crm-modal-field">
-                      ชื่อผู้ใช้ (Username)
-                      <input
-                        className="crm-field"
-                        name="username"
-                        pattern="[a-zA-Z0-9._-]{3,32}"
-                        autoComplete="username"
-                        required
-                      />
-                    </label>
-                    <label className="crm-modal-field">
-                      อีเมล
-                      <input className="crm-field" type="email" name="email" required />
-                    </label>
-                    <label className="crm-modal-field">
-                      บทบาท (User Role)
-                      <CrmSelect
-                        name="role"
-                        aria-label="บทบาท"
-                        defaultValue="user"
-                        required
-                        options={roles.map((role) => ({
-                          value: role,
-                          label: ROLE_LABEL[role],
-                        }))}
-                      />
-                    </label>
-                    <PasswordField name="password" label="รหัสผ่าน" className="crm-modal-span-2" />
-                  </div>
-                </section>
-
-                <fieldset className="crm-modal-modules">
-                  <legend>ฟังก์ชันที่เข้าได้</legend>
-                  <p>Superadmin และ Admin เข้าได้ทุกฟังก์ชันอัตโนมัติ — บัญชีอื่นเลือกเฉพาะที่ต้องการ</p>
-                  <div className="crm-modal-module-grid">
-                    {ADMIN_MODULES.map((module) => (
-                      <label key={module} className="crm-modal-check">
-                        <input type="checkbox" name="modules" value={module} />
-                        <span>{MODULE_LABEL[module]}</span>
-                      </label>
-                    ))}
-                  </div>
-                </fieldset>
-
-                <p className="crm-modal-note">บัญชี Partners สร้างตอนสมัครพาร์ตเนอร์ ไม่สร้างจากหน้านี้</p>
-              </div>
-
-              <div className="crm-modal-actions crm-modal-actions-bar">
-                <button type="button" className="crm-users-secondary" onClick={closeModal}>
-                  ยกเลิก
-                </button>
-                <PendingSubmitButton className="kpi-button crm-users-primary" pendingLabel="กำลังสร้าง…">
-                  บันทึก
-                </PendingSubmitButton>
-              </div>
-            </form>
-          </div>
-        </div>
+            <div className="kpi-users-sidepanel-actions">
+              <button type="button" className="crm-users-secondary" onClick={closePanel}>
+                ยกเลิก
+              </button>
+              <PendingSubmitButton className="kpi-button crm-users-primary" pendingLabel="กำลังสร้าง…">
+                บันทึก
+              </PendingSubmitButton>
+            </div>
+          </form>
+        </aside>
       ) : null}
     </NewUserModalContext.Provider>
   );

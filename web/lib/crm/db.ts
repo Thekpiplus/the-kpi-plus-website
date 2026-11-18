@@ -5,7 +5,7 @@ const globalForPrisma = globalThis as unknown as {
   kpiDbDisabled?: string;
 };
 
-/** Keep Hostinger MySQL under max_connections_per_hour by capping the Prisma pool. */
+/** Cap Prisma pool: production stays tight for Hostinger hourly connection limits; local needs more. */
 function databaseUrl() {
   const raw = process.env.DATABASE_URL?.trim().replace(/^["']|["']$/g, "");
   if (!raw) return undefined;
@@ -13,9 +13,12 @@ function databaseUrl() {
   // (e.g. leftover sqlite file: URLs or broken .env quoting).
   if (!/^mysql:\/\//i.test(raw)) return undefined;
   if (/[?&]connection_limit=/.test(raw)) return raw;
+  const limit =
+    process.env.PRISMA_CONNECTION_LIMIT?.trim() ||
+    (process.env.NODE_ENV === "production" ? "1" : "5");
   return raw.includes("?")
-    ? `${raw}&connection_limit=1&pool_timeout=20`
-    : `${raw}?connection_limit=1&pool_timeout=20`;
+    ? `${raw}&connection_limit=${limit}&pool_timeout=20`
+    : `${raw}?connection_limit=${limit}&pool_timeout=20`;
 }
 
 export function crmEnabled() {

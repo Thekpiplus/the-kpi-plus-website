@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { EmptyState } from "@/components/crm/ui/EmptyState";
-import { NewUserModalProvider, NewUserOpenButton } from "@/components/crm/ui/NewUserModal";
-import { PageHeader } from "@/components/crm/ui/PageHeader";
-import { RoleBadge } from "@/components/crm/ui/RoleBadge";
-import { StatusBadge } from "@/components/crm/ui/StatusBadge";
-import { UserRowActions } from "@/components/crm/ui/UserRowActions";
+import {
+  UsersCreateOpenButton,
+  UsersWorkspace,
+  type WorkspaceUser,
+} from "@/components/crm/users/UsersWorkspace";
+import { UsersDirectory, type UsersDirectoryItem } from "@/components/crm/users/UsersDirectory";
+import { UsersPageChrome } from "@/components/crm/users/UsersPageChrome";
 import { currentUser } from "@/lib/crm/auth";
 import { formatThaiDateTime, listUsers, userCounts } from "@/lib/crm/queries";
 import {
@@ -18,13 +20,6 @@ import {
   type InternalRole,
 } from "@/lib/crm/roles";
 import { canManageUsers, inferredModules } from "@/lib/crm/modules";
-
-function initials(name: string) {
-  const parts = name.trim().split(/\s+/).filter(Boolean);
-  if (!parts.length) return "KP";
-  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
-  return `${parts[0][0]}${parts[1][0]}`.toUpperCase();
-}
 
 export default async function UsersPage({
   searchParams,
@@ -63,112 +58,150 @@ export default async function UsersPage({
 
   const canEdit = canManageUsers(me);
   const roles = me ? assignableInternalRoles(me.role) : [];
-  const lockedCount = users.filter((user) => user.lockedUntil && user.lockedUntil.getTime() > now).length;
   const filtered = Boolean(q || role || status);
   const formError = params.error === "invalid" || params.error === "exists" ? params.error : undefined;
-  const autoOpen = canEdit && (params.new === "1" || Boolean(formError));
+  const autoOpenCreate = canEdit && (params.new === "1" || Boolean(formError));
   const passwordError = params.error === "password";
   const passwordUserId = params.pwd === "1" ? params.user : undefined;
 
-  const content = (
-    <div className="crm-users">
-      <PageHeader
-        eyebrow="จัดการระบบ / ผู้ใช้งาน"
-        title="จัดการผู้ใช้งาน"
-        description="ดูรายชื่อ เพิ่มบัญชี และจัดการบทบาทกับสถานะการเข้าใช้งาน"
-        actions={
-          canEdit ? (
-            <NewUserOpenButton className="kpi-button crm-users-primary">เพิ่มผู้ใช้งาน</NewUserOpenButton>
-          ) : undefined
-        }
-      />
+  const directoryUsers: UsersDirectoryItem[] = users.map((user) => {
+    const normalized = normalizeRole(user.role);
+    const roleOptions: InternalRole[] = roles.includes(normalized as InternalRole)
+      ? roles
+      : normalized !== "partner"
+        ? [normalized as InternalRole, ...roles.filter((item) => item !== normalized)]
+        : roles;
+    const canDelete =
+      Boolean(me) &&
+      user.id !== me?.id &&
+      !isPartnerRoleValue(user.role) &&
+      !(isSuperadminRole(user.role) && me && !isSuperadminRole(me.role));
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      username: user.username,
+      phone: user.phone,
+      role: user.role,
+      normalizedRole: normalized,
+      selectedModules: inferredModules(user),
+      isPartner: isPartnerRoleValue(user.role),
+      isFullAccess: isFullAccessRole(user.role),
+      canDelete,
+      locked: Boolean(user.lockedUntil && user.lockedUntil.getTime() > now),
+      lastLoginLabel: user.lastLoginAt ? formatThaiDateTime(user.lastLoginAt) : "ยังไม่เคยเข้าใช้",
+      roleOptions,
+    };
+  });
 
+  const passwordTargetUser = passwordUserId
+    ? directoryUsers.find((user) => user.id === passwordUserId)
+    : undefined;
+  const passwordTarget: WorkspaceUser | undefined = passwordTargetUser
+    ? {
+        id: passwordTargetUser.id,
+        name: passwordTargetUser.name,
+        email: passwordTargetUser.email,
+        username: passwordTargetUser.username,
+        phone: passwordTargetUser.phone,
+        role: passwordTargetUser.normalizedRole,
+        selectedModules: passwordTargetUser.selectedModules,
+        isPartner: passwordTargetUser.isPartner,
+        isFullAccess: passwordTargetUser.isFullAccess,
+        canDelete: passwordTargetUser.canDelete,
+        roleOptions: passwordTargetUser.roleOptions,
+      }
+    : undefined;
+
+  const content = (
+    <UsersPageChrome
+      title="จัดการผู้ใช้งาน"
+      description="ดูรายชื่อ เพิ่มบัญชี และจัดการบทบาทกับสถานะการเข้าใช้งาน"
+      actions={
+        canEdit ? (
+          <UsersCreateOpenButton className="kpi-button crm-users-primary">เพิ่มผู้ใช้งาน</UsersCreateOpenButton>
+        ) : undefined
+      }
+    >
       {params.error === "forbidden" ? (
-        <p className="crm-users-alert is-warn" role="status">
+        <p className="kpi-users-alert is-warn" role="status" aria-live="polite">
           ต้องมีสิทธิ Users Management จึงจะเพิ่มหรือแก้ไขผู้ใช้ได้
         </p>
       ) : null}
       {params.deleted === "1" ? (
-        <p className="crm-users-alert is-ok" role="status">
+        <p className="kpi-users-alert is-ok" role="status" aria-live="polite">
           ลบผู้ใช้แล้ว
         </p>
       ) : null}
       {params.created === "1" ? (
-        <p className="crm-users-alert is-ok" role="status">
+        <p className="kpi-users-alert is-ok" role="status" aria-live="polite">
           สร้างผู้ใช้ใหม่แล้ว
         </p>
       ) : null}
       {params.saved === "1" ? (
-        <p className="crm-users-alert is-ok" role="status">
+        <p className="kpi-users-alert is-ok" role="status" aria-live="polite">
           บันทึกข้อมูลผู้ใช้แล้ว
         </p>
       ) : null}
       {params.pwdChanged === "1" ? (
-        <p className="crm-users-alert is-ok" role="status">
+        <p className="kpi-users-alert is-ok" role="status" aria-live="polite">
           เปลี่ยนรหัสผ่านแล้ว
         </p>
       ) : null}
 
-      <section className="crm-dash-summary crm-users-summary" aria-label="สรุปผู้ใช้">
-        <div className="crm-dash-stats" role="list">
-          <Link
-            href="/crm/users"
-            className={`crm-dash-stat is-users${!role && !status && !q ? " is-selected" : ""}`}
-            role="listitem"
-            aria-current={!role && !status && !q ? "page" : undefined}
-          >
-            <span className="crm-dash-stat-label">ผู้ใช้ทั้งหมด</span>
-            <strong className="crm-dash-stat-value">{counts.total}</strong>
-            <span className="crm-dash-stat-hint">บัญชีในระบบ</span>
-          </Link>
-          <div className="crm-dash-stat is-today is-static" role="listitem">
-            <span className="crm-dash-stat-label">ทีมภายใน</span>
-            <strong className="crm-dash-stat-value">{counts.staff}</strong>
-            <span className="crm-dash-stat-hint">ไม่รวม Partners</span>
-          </div>
-          <Link
-            href="/crm/users?role=partner"
-            className={`crm-dash-stat is-partners${role === "partner" ? " is-selected" : ""}`}
-            role="listitem"
-            aria-current={role === "partner" ? "page" : undefined}
-          >
-            <span className="crm-dash-stat-label">Partners</span>
-            <strong className="crm-dash-stat-value">{counts.partners}</strong>
-            <span className="crm-dash-stat-hint">เปิดรายการ Partners</span>
-          </Link>
-          <Link
-            href="/crm/users?status=locked"
-            className={`crm-dash-stat is-overdue${status === "locked" ? " is-selected" : ""}`}
-            role="listitem"
-            aria-current={status === "locked" ? "page" : undefined}
-            aria-label={`บัญชีที่ถูกล็อกในผลลัพธ์ ${lockedCount} รายการ`}
-          >
-            <span className="crm-dash-stat-label">ถูกล็อก</span>
-            <strong className="crm-dash-stat-value">{lockedCount}</strong>
-            <span className="crm-dash-stat-hint">ในผลลัพธ์ปัจจุบัน</span>
-          </Link>
+      <section className="kpi-users-summary" aria-label="สรุปผู้ใช้">
+        <Link
+          href="/crm/users"
+          className={`kpi-users-stat${!role && !status && !q ? " is-selected" : ""}`}
+          aria-current={!role && !status && !q ? "page" : undefined}
+        >
+          <span className="kpi-users-stat-label">ผู้ใช้ทั้งหมด</span>
+          <strong className="kpi-users-stat-value">{counts.total}</strong>
+          <span className="kpi-users-stat-hint">บัญชีในระบบ</span>
+        </Link>
+        <div className="kpi-users-stat is-static" role="group">
+          <span className="kpi-users-stat-label">ทีมภายใน</span>
+          <strong className="kpi-users-stat-value">{counts.staff}</strong>
+          <span className="kpi-users-stat-hint">ไม่รวม Partners</span>
         </div>
+        <Link
+          href="/crm/users?role=partner"
+          className={`kpi-users-stat is-partners${role === "partner" ? " is-selected" : ""}`}
+          aria-current={role === "partner" ? "page" : undefined}
+        >
+          <span className="kpi-users-stat-label">Partners</span>
+          <strong className="kpi-users-stat-value">{counts.partners}</strong>
+          <span className="kpi-users-stat-hint">เปิดรายการ Partners</span>
+        </Link>
+        <Link
+          href="/crm/users?status=locked"
+          className={`kpi-users-stat is-locked${counts.locked > 0 ? " has-value" : ""}${status === "locked" ? " is-selected" : ""}`}
+          aria-current={status === "locked" ? "page" : undefined}
+          aria-label={`บัญชีที่ถูกล็อก ${counts.locked} รายการ`}
+        >
+          <span className="kpi-users-stat-label">ถูกล็อก</span>
+          <strong className="kpi-users-stat-value">{counts.locked}</strong>
+          <span className="kpi-users-stat-hint">ทั้งระบบ</span>
+        </Link>
       </section>
 
-      <section className="crm-users-panel" aria-labelledby="crm-users-list-heading">
-        <div className="crm-users-panel-head">
-          <div>
-            <h2 id="crm-users-list-heading">รายชื่อผู้ใช้</h2>
-            <p>
-              แสดง {users.length} รายการ
-              {role ? ` · ${ROLE_LABEL[normalizeRole(role)] ?? role}` : ""}
-              {status === "locked" ? " · ถูกล็อก" : ""}
-              {status === "active" ? " · ใช้งานได้" : ""}
-              {q ? ` · “${q}”` : ""}
-            </p>
-          </div>
+      <section className="kpi-users-panel" aria-labelledby="crm-users-list-heading">
+        <div className="kpi-users-panel-head">
+          <h2 id="crm-users-list-heading">รายชื่อผู้ใช้</h2>
+          <p>
+            แสดง {users.length} รายการ
+            {role ? ` · ${ROLE_LABEL[normalizeRole(role)] ?? role}` : ""}
+            {status === "locked" ? " · ถูกล็อก" : ""}
+            {status === "active" ? " · ใช้งานได้" : ""}
+            {q ? ` · “${q}”` : ""}
+          </p>
         </div>
 
-        <form className="crm-users-toolbar" method="get" action="/crm/users" role="search">
-          <div className="crm-users-toolbar-main">
-            <label className="crm-users-search-field">
-              <span className="crm-users-search-label">ค้นหา</span>
-              <span className="crm-users-search-icon" aria-hidden="true">
+        <form className="kpi-users-toolbar" method="get" action="/crm/users" role="search">
+          <div className="kpi-users-toolbar-main">
+            <label className="kpi-users-search-field">
+              <span className="kpi-users-search-label">ค้นหา</span>
+              <span className="kpi-users-search-icon" aria-hidden="true">
                 ⌕
               </span>
               <input
@@ -180,9 +213,9 @@ export default async function UsersPage({
               />
             </label>
 
-            <label className="crm-users-filter">
-              <span className="crm-users-filter-label">บทบาท</span>
-              <select className="crm-select crm-users-filter-select" name="role" defaultValue={role}>
+            <label className="kpi-users-filter">
+              <span className="kpi-users-filter-label">บทบาท</span>
+              <select className="crm-select kpi-users-filter-select" name="role" defaultValue={role}>
                 <option value="">ทั้งหมด</option>
                 {USER_ROLES.map((key) => (
                   <option key={key} value={key}>
@@ -192,9 +225,9 @@ export default async function UsersPage({
               </select>
             </label>
 
-            <label className="crm-users-filter">
-              <span className="crm-users-filter-label">สถานะ</span>
-              <select className="crm-select crm-users-filter-select" name="status" defaultValue={status}>
+            <label className="kpi-users-filter">
+              <span className="kpi-users-filter-label">สถานะ</span>
+              <select className="crm-select kpi-users-filter-select" name="status" defaultValue={status}>
                 <option value="">ทั้งหมด</option>
                 <option value="active">ใช้งานได้</option>
                 <option value="locked">ถูกล็อก</option>
@@ -207,17 +240,14 @@ export default async function UsersPage({
           </div>
 
           {filtered ? (
-            <div className="crm-users-active-filters">
-              <p className="crm-users-toolbar-label">ตัวกรองที่ใช้อยู่</p>
-              <div className="crm-users-filter-chips">
-                {q ? <span className="crm-filter-chip">ค้นหา: {q}</span> : null}
-                {role ? <span className="crm-filter-chip">บทบาท: {ROLE_LABEL[normalizeRole(role)]}</span> : null}
-                {status === "locked" ? <span className="crm-filter-chip">สถานะ: ถูกล็อก</span> : null}
-                {status === "active" ? <span className="crm-filter-chip">สถานะ: ใช้งานได้</span> : null}
-                <Link href="/crm/users" className="crm-users-clear">
-                  ล้างตัวกรอง
-                </Link>
-              </div>
+            <div className="kpi-users-filter-chips">
+              {q ? <span className="kpi-users-chip">ค้นหา: {q}</span> : null}
+              {role ? <span className="kpi-users-chip">บทบาท: {ROLE_LABEL[normalizeRole(role)]}</span> : null}
+              {status === "locked" ? <span className="kpi-users-chip">สถานะ: ถูกล็อก</span> : null}
+              {status === "active" ? <span className="kpi-users-chip">สถานะ: ใช้งานได้</span> : null}
+              <Link href="/crm/users" className="crm-users-clear">
+                ล้างตัวกรอง
+              </Link>
             </div>
           ) : null}
         </form>
@@ -237,114 +267,28 @@ export default async function UsersPage({
                   ล้างตัวกรอง
                 </Link>
               ) : canEdit ? (
-                <NewUserOpenButton className="kpi-button crm-users-primary">เพิ่มผู้ใช้งาน</NewUserOpenButton>
+                <UsersCreateOpenButton className="kpi-button crm-users-primary">เพิ่มผู้ใช้งาน</UsersCreateOpenButton>
               ) : null
             }
           />
         ) : (
-          <div className="crm-users-table-wrap">
-            <table className="crm-users-table">
-              <thead>
-                <tr>
-                  <th scope="col">ชื่อผู้ใช้</th>
-                  <th scope="col">อีเมล</th>
-                  <th scope="col">บทบาท</th>
-                  <th scope="col">สถานะบัญชี</th>
-                  <th scope="col">ใช้งานล่าสุด</th>
-                  <th scope="col">จัดการ</th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((user) => {
-                  const locked = Boolean(user.lockedUntil && user.lockedUntil.getTime() > now);
-                  const normalized = normalizeRole(user.role);
-                  const roleOptions: InternalRole[] = roles.includes(normalized as InternalRole)
-                    ? roles
-                    : normalized !== "partner"
-                      ? [normalized as InternalRole, ...roles.filter((item) => item !== normalized)]
-                      : roles;
-                  const canDelete =
-                    Boolean(me) &&
-                    user.id !== me?.id &&
-                    !isPartnerRoleValue(user.role) &&
-                    !(isSuperadminRole(user.role) && me && !isSuperadminRole(me.role));
-                  return (
-                    <tr key={user.id} className={locked ? "is-locked" : undefined}>
-                      <td data-label="ชื่อผู้ใช้">
-                        <div className="crm-users-identity">
-                          <span className="crm-users-avatar" aria-hidden="true">
-                            {initials(user.name)}
-                          </span>
-                          <div className="crm-users-identity-copy">
-                            <Link href={`/crm/users/${user.id}`} className="crm-users-name">
-                              {user.name}
-                            </Link>
-                            {user.username ? <p className="crm-users-meta">@{user.username}</p> : null}
-                            <div className="crm-users-mobile-badges" aria-hidden="true">
-                              <RoleBadge role={user.role} />
-                              {locked ? (
-                                <StatusBadge label="ถูกล็อก" tone="danger" />
-                              ) : (
-                                <StatusBadge label="ใช้งานได้" tone="success" />
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td data-label="อีเมล">
-                        <span className="crm-users-email">{user.email}</span>
-                      </td>
-                      <td data-label="บทบาท" className="crm-users-col-role">
-                        <RoleBadge role={user.role} />
-                      </td>
-                      <td data-label="สถานะบัญชี" className="crm-users-col-status">
-                        {locked ? (
-                          <StatusBadge label="ถูกล็อก" tone="danger" />
-                        ) : (
-                          <StatusBadge label="ใช้งานได้" tone="success" />
-                        )}
-                      </td>
-                      <td data-label="ใช้งานล่าสุด">
-                        <span className="crm-users-login">
-                          {user.lastLoginAt ? formatThaiDateTime(user.lastLoginAt) : "ยังไม่เคยเข้าใช้"}
-                        </span>
-                      </td>
-                      <td data-label="จัดการ">
-                        <UserRowActions
-                          canEdit={canEdit}
-                          roles={roleOptions}
-                          passwordError={passwordError && passwordUserId === user.id}
-                          autoPassword={passwordUserId === user.id}
-                          user={{
-                            id: user.id,
-                            name: user.name,
-                            email: user.email,
-                            username: user.username,
-                            phone: user.phone,
-                            role: normalized,
-                            selectedModules: inferredModules(user),
-                            isPartner: isPartnerRoleValue(user.role),
-                            isFullAccess: isFullAccessRole(user.role),
-                            canDelete,
-                          }}
-                        />
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+          <UsersDirectory users={directoryUsers} canEdit={canEdit} />
         )}
       </section>
-    </div>
+    </UsersPageChrome>
   );
 
   if (!canEdit) return content;
 
   return (
-    <NewUserModalProvider roles={roles} error={formError} autoOpen={autoOpen}>
+    <UsersWorkspace
+      roles={roles}
+      createError={formError}
+      autoOpenCreate={autoOpenCreate}
+      passwordTarget={passwordError && passwordTarget ? passwordTarget : undefined}
+      passwordError={passwordError}
+    >
       {content}
-    </NewUserModalProvider>
+    </UsersWorkspace>
   );
 }

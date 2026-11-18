@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { EmptyState } from "@/components/crm/ui/EmptyState";
-import { PageHeader } from "@/components/crm/ui/PageHeader";
 import { StatusBadge } from "@/components/crm/ui/StatusBadge";
+import { UsersPageChrome } from "@/components/crm/users/UsersPageChrome";
 import { formatThaiDateTime, searchLoginLogs } from "@/lib/crm/queries";
 import { roleLabel } from "@/lib/crm/roles";
 
@@ -52,30 +52,25 @@ export default async function LoginLogPage({
   }
 
   return (
-    <div className="crm-logs">
-      <PageHeader
-        eyebrow="จัดการระบบ / ผู้ใช้งาน"
-        title="บันทึกการเข้าใช้"
-        description="ดูประวัติการเข้าสู่ระบบล่าสุด ค้นด้วยอีเมลเพื่อตรวจบัญชีทีม"
-      />
-
-      <section className="crm-dash-summary crm-logs-summary" aria-label="สรุป Login Log">
-        <div className="crm-dash-stats" role="list">
-          <div className="crm-dash-stat is-users is-static" role="listitem">
-            <span className="crm-dash-stat-label">รายการที่แสดง</span>
-            <strong className="crm-dash-stat-value">{logs.length}</strong>
-            <span className="crm-dash-stat-hint">ตามตัวกรองปัจจุบัน</span>
-          </div>
-          <div className="crm-dash-stat is-today is-static" role="listitem">
-            <span className="crm-dash-stat-label">เข้าสู่ระบบสำเร็จ</span>
-            <strong className="crm-dash-stat-value">{okCount}</strong>
-            <span className="crm-dash-stat-hint">ในผลลัพธ์</span>
-          </div>
-          <div className="crm-dash-stat is-overdue is-static" role="listitem">
-            <span className="crm-dash-stat-label">ไม่สำเร็จ</span>
-            <strong className="crm-dash-stat-value">{failCount}</strong>
-            <span className="crm-dash-stat-hint">ในผลลัพธ์</span>
-          </div>
+    <UsersPageChrome
+      title="บันทึกการเข้าใช้"
+      description="ดูประวัติการเข้าสู่ระบบล่าสุด ค้นด้วยอีเมลเพื่อตรวจบัญชีทีม"
+    >
+      <section className="kpi-users-summary" aria-label="สรุป Login Log">
+        <div className="kpi-users-stat is-static" role="group">
+          <span className="kpi-users-stat-label">รายการที่แสดง</span>
+          <strong className="kpi-users-stat-value">{logs.length}</strong>
+          <span className="kpi-users-stat-hint">ตามตัวกรองปัจจุบัน</span>
+        </div>
+        <div className="kpi-users-stat is-static" role="group">
+          <span className="kpi-users-stat-label">เข้าสู่ระบบสำเร็จ</span>
+          <strong className="kpi-users-stat-value">{okCount}</strong>
+          <span className="kpi-users-stat-hint">ในผลลัพธ์</span>
+        </div>
+        <div className={`kpi-users-stat is-locked is-static${failCount > 0 ? " has-value" : ""}`} role="group">
+          <span className="kpi-users-stat-label">ไม่สำเร็จ</span>
+          <strong className="kpi-users-stat-value">{failCount}</strong>
+          <span className="kpi-users-stat-hint">ในผลลัพธ์</span>
         </div>
       </section>
 
@@ -234,6 +229,6 @@ export default async function LoginLogPage({
           </div>
         )}
       </section>
-    </div>
+    </UsersPageChrome>
   );
 }

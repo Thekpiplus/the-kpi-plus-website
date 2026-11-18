@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { PageHeader } from "@/components/crm/ui/PageHeader";
 import { RolesReferenceFilter, type RoleReferenceItem } from "@/components/crm/ui/RolesReferenceFilter";
+import { RolesCreateNotice } from "@/components/crm/users/RolesCreateNotice";
+import { UsersPageChrome } from "@/components/crm/users/UsersPageChrome";
 import { currentUser } from "@/lib/crm/auth";
 import { prisma } from "@/lib/crm/db";
 import { ADMIN_MODULES, MODULE_LABEL, canManageUsers } from "@/lib/crm/modules";
@@ -75,42 +76,35 @@ export default async function UserRolesPage() {
   });
 
   return (
-    <div className="crm-users crm-users-roles-page">
-      <PageHeader
-        eyebrow="จัดการระบบ · ผู้ใช้งาน"
-        title="บทบาทและสิทธิ์"
-        description="อ้างอิงบทบาทในระบบและวิธีได้สิทธิ์โมดูลตามโมเดลจริง — การมอบสิทธิ์ทำที่รายชื่อผู้ใช้ ไม่ใช่เมทริกซ์แผนก/ตำแหน่งงาน"
-        actions={
-          canEdit ? (
-            <div className="crm-users-actions">
-              <Link href="/crm/users" className="crm-hero-btn crm-hero-btn-secondary">
-                รายชื่อผู้ใช้
-              </Link>
-              <Link href="/crm/users?new=1" className="kpi-button crm-users-primary">
-                เพิ่มผู้ใช้งาน
-              </Link>
-            </div>
-          ) : undefined
-        }
-      />
-
-      <section className="crm-dash-summary" aria-label="สรุปบทบาท">
-        <div className="crm-dash-stats" role="list">
-          <div className="crm-dash-stat is-users is-static" role="listitem">
-            <span className="crm-dash-stat-label">บทบาทในระบบ</span>
-            <strong className="crm-dash-stat-value">{USER_ROLES.length}</strong>
-            <span className="crm-dash-stat-hint">อ้างอิงจากโมเดลจริง</span>
-          </div>
-          <div className="crm-dash-stat is-today is-static" role="listitem">
-            <span className="crm-dash-stat-label">เข้าทุกโมดูลอัตโนมัติ</span>
-            <strong className="crm-dash-stat-value">{FULL_ACCESS_ROLES.length}</strong>
-            <span className="crm-dash-stat-hint">Superadmin / Admin</span>
-          </div>
-          <div className="crm-dash-stat is-cms is-static" role="listitem">
-            <span className="crm-dash-stat-label">โมดูลที่อ้างอิง</span>
-            <strong className="crm-dash-stat-value">{ADMIN_MODULES.length}</strong>
-            <span className="crm-dash-stat-hint">ในเมทริกซ์ด้านล่าง</span>
-          </div>
+    <UsersPageChrome
+      title="บทบาทและสิทธิ์"
+      description="อ้างอิงบทบาทในระบบและจำนวนผู้ใช้ต่อบทบาท — สิทธิ์โมดูลกำหนดต่อบัญชีที่รายชื่อผู้ใช้ (ยังไม่มี CRUD บทบาทตามแผนก/ตำแหน่งงานใน schema ปัจจุบัน)"
+      actions={
+        <div className="kpi-users-hero-actions">
+          <RolesCreateNotice canEdit={Boolean(canEdit)} />
+          {canEdit ? (
+            <Link href="/crm/users?new=1" className="kpi-button crm-users-primary">
+              เพิ่มผู้ใช้งาน
+            </Link>
+          ) : null}
+        </div>
+      }
+    >
+      <section className="kpi-users-summary" aria-label="สรุปบทบาท">
+        <div className="kpi-users-stat is-static" role="group">
+          <span className="kpi-users-stat-label">บทบาทในระบบ</span>
+          <strong className="kpi-users-stat-value">{USER_ROLES.length}</strong>
+          <span className="kpi-users-stat-hint">อ้างอิงจากโมเดลจริง</span>
+        </div>
+        <div className="kpi-users-stat is-static" role="group">
+          <span className="kpi-users-stat-label">เข้าทุกโมดูลอัตโนมัติ</span>
+          <strong className="kpi-users-stat-value">{FULL_ACCESS_ROLES.length}</strong>
+          <span className="kpi-users-stat-hint">Superadmin / Admin</span>
+        </div>
+        <div className="kpi-users-stat is-partners is-static" role="group">
+          <span className="kpi-users-stat-label">โมดูลที่อ้างอิง</span>
+          <strong className="kpi-users-stat-value">{ADMIN_MODULES.length}</strong>
+          <span className="kpi-users-stat-hint">ในเมทริกซ์ด้านล่าง</span>
         </div>
       </section>
 
@@ -133,26 +127,22 @@ export default async function UserRolesPage() {
         </p>
       </section>
 
-      <section className="crm-users-panel" aria-labelledby="crm-roles-list-heading">
-        <div className="crm-users-panel-head">
-          <div>
-            <h2 id="crm-roles-list-heading">บทบาทในระบบ</h2>
-            <p>
-              เป็น system roles ที่กำหนดในโค้ด ({USER_ROLES.length} บทบาท) — ไม่มี API สร้าง/ลบบทบาทใหม่
-            </p>
-          </div>
+      <section className="kpi-users-panel" aria-labelledby="crm-roles-list-heading">
+        <div className="kpi-users-panel-head">
+          <h2 id="crm-roles-list-heading">บทบาทในระบบ</h2>
+          <p>
+            เป็น system roles ที่กำหนดในโค้ด ({USER_ROLES.length} บทบาท) — ไม่มี API สร้าง/ลบบทบาทใหม่
+          </p>
         </div>
         <RolesReferenceFilter items={roleItems} />
       </section>
 
-      <section className="crm-users-panel" aria-labelledby="crm-roles-matrix-heading">
-        <div className="crm-users-panel-head">
-          <div>
-            <h2 id="crm-roles-matrix-heading">เมทริกซ์สิทธิ์โมดูล (อ่านอย่างเดียว)</h2>
-            <p>
-              สรุปจาก <code>lib/crm/modules.ts</code> — ไม่ใช่ฟอร์มแก้ไข และไม่บันทึกค่าจากตารางนี้
-            </p>
-          </div>
+      <section className="kpi-users-panel" aria-labelledby="crm-roles-matrix-heading">
+        <div className="kpi-users-panel-head">
+          <h2 id="crm-roles-matrix-heading">เมทริกซ์สิทธิ์โมดูล (อ่านอย่างเดียว)</h2>
+          <p>
+            สรุปจาก <code>lib/crm/modules.ts</code> — ไม่ใช่ฟอร์มแก้ไข และไม่บันทึกค่าจากตารางนี้
+          </p>
         </div>
 
         <div className="crm-roles-matrix-wrap" tabIndex={0} aria-label="ตารางสิทธิ์โมดูลตามบทบาท เลื่อนแนวนอนได้ภายในตาราง">
@@ -205,12 +195,10 @@ export default async function UserRolesPage() {
         </ul>
       </section>
 
-      <section className="crm-users-panel" aria-labelledby="crm-roles-assign-heading">
-        <div className="crm-users-panel-head">
-          <div>
-            <h2 id="crm-roles-assign-heading">วิธีมอบหรือเปลี่ยนสิทธิ์</h2>
-            <p>การบันทึกจริงทำผ่าน Users Management เท่านั้น</p>
-          </div>
+      <section className="kpi-users-panel" aria-labelledby="crm-roles-assign-heading">
+        <div className="kpi-users-panel-head">
+          <h2 id="crm-roles-assign-heading">วิธีมอบหรือเปลี่ยนสิทธิ์</h2>
+          <p>การบันทึกจริงทำผ่าน Users Management เท่านั้น</p>
         </div>
         {canEdit ? (
           <div className="crm-roles-assign-actions">
@@ -231,6 +219,6 @@ export default async function UserRolesPage() {
           </p>
         )}
       </section>
-    </div>
+    </UsersPageChrome>
   );
 }

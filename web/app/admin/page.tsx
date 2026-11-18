@@ -29,11 +29,9 @@ export default async function AdminLoginPage({
     );
   }
 
-  try {
-    await ensureCrmSeed();
-  } catch {
-    // Show the form even if seed is incomplete; login action will retry.
-  }
+  // Do not block the login screen on full CRM seed (many remote schema checks).
+  // Login / CRM layouts still call ensureCrmSeed when needed.
+  void ensureCrmSeed().catch(() => undefined);
   const user = await currentUser().catch(() => null);
   if (user) redirect(user.role === "partner" || user.role === "partners" ? "/partners" : "/crm");
   const { error } = await searchParams;

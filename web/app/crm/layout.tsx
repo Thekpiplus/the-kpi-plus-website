@@ -47,11 +47,9 @@ export default async function CrmLayout({ children }: { children: React.ReactNod
     );
   }
 
-  try {
-    await ensureCrmSeed();
-  } catch {
-    // Keep the admin shell available while optional partner tables catch up.
-  }
+  // Kick seed in the background — awaiting every ensure*Schema on remote MySQL
+  // blocks /admin→/crm redirects for tens of seconds on local.
+  void ensureCrmSeed().catch(() => undefined);
 
   let user: Awaited<ReturnType<typeof requireUser>>;
   try {

@@ -199,12 +199,13 @@ export async function searchLoginLogs(filters: { email?: string; success?: "yes"
 
 export async function userCounts() {
   const db = prisma();
-  const [total, staff, partners] = await Promise.all([
+  const [total, staff, partners, locked] = await Promise.all([
     db.user.count(),
     db.user.count({ where: { role: { notIn: ["partner", "partners"] } } }),
     db.user.count({ where: { role: { in: ["partner", "partners"] } } }),
+    db.user.count({ where: { lockedUntil: { gt: new Date() } } }),
   ]);
-  return { total, staff, partners };
+  return { total, staff, partners, locked };
 }
 
 export async function todayLists() {
