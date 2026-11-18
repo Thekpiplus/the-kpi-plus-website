@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import type { ComponentProps } from "react";
 import type { Locale } from "@/lib/seo";
 
 function Slot({ minHeight = 280 }: { minHeight?: number }) {
@@ -40,30 +41,30 @@ const Related = dynamic(
   { ssr: false, loading: () => <Slot minHeight={280} /> },
 );
 
-/* Props mirror the underlying section components; kept loose so the server view can pass CMS shapes through. */
+/* Server views pass CMS shapes through; cast keeps deferred wrappers from fighting dynamic prop inference. */
 type DeferredProps = { locale: Locale } & Record<string, unknown>;
 
 export function DeferredConfidenceVisual(props: DeferredProps) {
-  return <ConfidenceVisual {...props} />;
+  return <ConfidenceVisual {...(props as ComponentProps<typeof ConfidenceVisual>)} />;
 }
 export function DeferredFrictionMap(props: DeferredProps) {
-  return <FrictionMap {...props} />;
+  return <FrictionMap {...(props as ComponentProps<typeof FrictionMap>)} />;
 }
 export function DeferredFramework(props: DeferredProps) {
-  return <Framework {...props} />;
+  return <Framework {...(props as ComponentProps<typeof Framework>)} />;
 }
 export function DeferredFrictionAudit(props: DeferredProps) {
-  return <FrictionAudit {...props} />;
+  return <FrictionAudit {...(props as ComponentProps<typeof FrictionAudit>)} />;
 }
 export function DeferredDecision(props: DeferredProps) {
-  return <Decision {...props} />;
+  return <Decision {...(props as ComponentProps<typeof Decision>)} />;
 }
 export function DeferredMeasure(props: DeferredProps) {
-  return <Measure {...props} />;
+  return <Measure {...(props as ComponentProps<typeof Measure>)} />;
 }
 export function DeferredWorkflow(props: DeferredProps) {
-  return <Workflow {...props} />;
+  return <Workflow {...(props as ComponentProps<typeof Workflow>)} />;
 }
 export function DeferredRelated(props: DeferredProps) {
-  return <Related {...props} />;
+  return <Related {...(props as ComponentProps<typeof Related>)} />;
 }

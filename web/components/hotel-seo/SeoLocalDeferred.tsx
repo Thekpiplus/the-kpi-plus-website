@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import type { ComponentProps } from "react";
 import type { Locale } from "@/lib/seo";
 
 function Slot({ minHeight = 280 }: { minHeight?: number }) {
@@ -60,44 +61,45 @@ const RelatedCards = dynamic(
   { ssr: false, loading: () => <Slot minHeight={240} /> },
 );
 
-type DeferredProps = Record<string, unknown> & { locale?: Locale | "th" | "en" };
+/* Server views pass CMS shapes through; cast keeps deferred wrappers from fighting dynamic prop inference. */
+type DeferredProps = { locale: Locale } & Record<string, unknown>;
 
 export function DeferredSearchBehaviorVisual(props: DeferredProps) {
-  return <SearchBehaviorVisual {...props} />;
+  return <SearchBehaviorVisual {...(props as ComponentProps<typeof SearchBehaviorVisual>)} />;
 }
 export function DeferredCompareMatrix(props: DeferredProps) {
-  return <CompareMatrix {...props} />;
+  return <CompareMatrix {...(props as ComponentProps<typeof CompareMatrix>)} />;
 }
 export function DeferredAuditVisual(props: DeferredProps) {
-  return <AuditVisual {...props} />;
+  return <AuditVisual {...(props as ComponentProps<typeof AuditVisual>)} />;
 }
 export function DeferredDiscoveryFlow(props: DeferredProps) {
-  return <DiscoveryFlow {...props} />;
+  return <DiscoveryFlow {...(props as ComponentProps<typeof DiscoveryFlow>)} />;
 }
 export function DeferredHelpSteps(props: DeferredProps) {
-  return <HelpSteps {...props} />;
+  return <HelpSteps {...(props as ComponentProps<typeof HelpSteps>)} />;
 }
 export function DeferredHelpBoundary(props: DeferredProps) {
-  return <HelpBoundary {...props} />;
+  return <HelpBoundary {...(props as ComponentProps<typeof HelpBoundary>)} />;
 }
 export function DeferredGbpVisual(props: DeferredProps) {
-  return <GbpVisual {...props} />;
+  return <GbpVisual {...(props as ComponentProps<typeof GbpVisual>)} />;
 }
 export function DeferredProcessVisual(props: DeferredProps) {
-  return <ProcessVisual {...props} />;
+  return <ProcessVisual {...(props as ComponentProps<typeof ProcessVisual>)} />;
 }
 export function DeferredProcessSteps(props: DeferredProps) {
-  return <ProcessSteps {...props} />;
+  return <ProcessSteps {...(props as ComponentProps<typeof ProcessSteps>)} />;
 }
 export function DeferredKpiVisual(props: DeferredProps) {
-  return <KpiVisual {...props} />;
+  return <KpiVisual {...(props as ComponentProps<typeof KpiVisual>)} />;
 }
 export function DeferredKpiFramework(props: DeferredProps) {
-  return <KpiFramework {...props} />;
+  return <KpiFramework {...(props as ComponentProps<typeof KpiFramework>)} />;
 }
 export function DeferredRelatedVisual(props: DeferredProps) {
-  return <RelatedVisual {...props} />;
+  return <RelatedVisual {...(props as ComponentProps<typeof RelatedVisual>)} />;
 }
 export function DeferredRelatedCards(props: DeferredProps) {
-  return <RelatedCards {...props} />;
+  return <RelatedCards {...(props as ComponentProps<typeof RelatedCards>)} />;
 }

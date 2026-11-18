@@ -442,30 +442,6 @@ const ROUTE_LINKS: Record<string, LinkRef[]> = {
     { href: "/case-studies", kind: "page" },
     { href: "/tools", kind: "tool" },
   ],
-  "/insights": [
-    { href: "/insights/hotel-branding", kind: "insight" },
-    { href: "/insights/hotel-seo", kind: "insight" },
-    { href: "/insights/what-is-ota", kind: "insight" },
-    { href: "/solutions", kind: "page" },
-    { href: "/case-studies", kind: "page" },
-    { href: "/tools", kind: "tool" },
-  ],
-  "/insights": [
-    { href: "/insights/hotel-branding", kind: "insight" },
-    { href: "/insights/hotel-seo", kind: "insight" },
-    { href: "/insights/what-is-ota", kind: "insight" },
-    { href: "/solutions", kind: "page" },
-    { href: "/case-studies", kind: "page" },
-    { href: "/tools", kind: "tool" },
-  ],
-  "/insights": [
-    { href: "/insights/hotel-branding", kind: "insight" },
-    { href: "/insights/hotel-seo", kind: "insight" },
-    { href: "/insights/what-is-ota", kind: "insight" },
-    { href: "/solutions", kind: "page" },
-    { href: "/case-studies", kind: "page" },
-    { href: "/tools", kind: "tool" },
-  ],
   "/about-us": [
     { href: "/approach", kind: "page" },
     { href: "/solutions", kind: "page" },
@@ -505,12 +481,6 @@ const ROUTE_LINKS: Record<string, LinkRef[]> = {
     { href: "/tools", kind: "tool" },
     { href: "/approach", kind: "page" },
     { href: "/contact-us", kind: "page" },
-  ],
-  "/insights": [
-    { href: "/solutions", kind: "page" },
-    { href: "/case-studies", kind: "page" },
-    { href: "/tools", kind: "tool" },
-    { href: "/approach", kind: "page" },
   ],
   "/case-studies": [
     { href: "/solutions", kind: "page" },
