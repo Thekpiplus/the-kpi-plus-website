@@ -201,40 +201,41 @@ export default async function SalesHomePage({
       </section>
 
       <div className="kpi-leads-layout">
-        <SalesTodayBoard items={items} filter={filter} q={q} counts={counts} />
-
-        <aside className="kpi-leads-side-stack" aria-label="ภาพรวมด้านข้าง">
-          <section className="kpi-leads-panel">
+        <div className="kpi-leads-main-stack">
+          <section className="kpi-leads-panel kpi-leads-channels-panel">
             <header className="kpi-leads-panel-head">
-              <h2>กิจกรรมล่าสุด</h2>
-              <p>เหตุการณ์จากลีดในระบบ</p>
+              <h2>ช่องทางที่ลีดเข้ามา</h2>
+              <p>สัดส่วนจากลีดใน Pipeline</p>
             </header>
-            {events.length === 0 ? (
+            {channels.length === 0 ? (
               <div className="kpi-leads-empty">
-                <h3>ยังไม่มีกิจกรรม</h3>
-                <p>เมื่อมีการติดตามหรือเปลี่ยนขั้น จะแสดงที่นี่</p>
+                <h3>ยังไม่มีข้อมูลช่องทาง</h3>
+                <p>เมื่อมีลีดใน Pipeline จะแสดงสัดส่วนที่นี่</p>
               </div>
             ) : (
-              <ul className="kpi-leads-side-list">
-                {events.map((event) => (
-                  <li key={event.id} className="kpi-leads-side-item">
-                    <span className="kpi-leads-side-dot" aria-hidden="true" />
-                    <div>
-                      <Link href={`/crm/leads/${event.lead.id}`}>
-                        <strong>{event.detail || event.type}</strong>
-                      </Link>
-                      <em>
-                        {event.lead.contactName}
-                        {event.lead.businessName ? ` · ${event.lead.businessName}` : ""}
-                      </em>
-                      <span>{formatRelativeThai(event.createdAt)}</span>
+              <div className="kpi-leads-channels">
+                {channels.map((channel) => (
+                  <div key={channel.label} className="kpi-leads-channel">
+                    <div className="kpi-leads-channel-meta">
+                      <span>{channel.label}</span>
+                      <span>{channel.count}</span>
                     </div>
-                  </li>
+                    <div className="kpi-leads-channel-bar" aria-hidden="true">
+                      <div
+                        className="kpi-leads-channel-fill"
+                        style={{ width: `${Math.max(8, Math.round((channel.count / channelTotal) * 100))}%` }}
+                      />
+                    </div>
+                  </div>
                 ))}
-              </ul>
+              </div>
             )}
           </section>
 
+          <SalesTodayBoard items={items} filter={filter} q={q} counts={counts} />
+        </div>
+
+        <aside className="kpi-leads-side-stack" aria-label="ภาพรวมด้านข้าง">
           <section className="kpi-leads-panel">
             <header className="kpi-leads-panel-head">
               <h2>ลีดใหม่ที่สุด</h2>
@@ -267,31 +268,32 @@ export default async function SalesHomePage({
 
           <section className="kpi-leads-panel">
             <header className="kpi-leads-panel-head">
-              <h2>ช่องทางที่ลีดเข้ามา</h2>
-              <p>สัดส่วนจากลีดใน Pipeline</p>
+              <h2>กิจกรรมล่าสุด</h2>
+              <p>เหตุการณ์จากลีดในระบบ</p>
             </header>
-            {channels.length === 0 ? (
+            {events.length === 0 ? (
               <div className="kpi-leads-empty">
-                <h3>ยังไม่มีข้อมูลช่องทาง</h3>
-                <p>เมื่อมีลีดใน Pipeline จะแสดงสัดส่วนที่นี่</p>
+                <h3>ยังไม่มีกิจกรรม</h3>
+                <p>เมื่อมีการติดตามหรือเปลี่ยนขั้น จะแสดงที่นี่</p>
               </div>
             ) : (
-              <div className="kpi-leads-channels">
-                {channels.map((channel) => (
-                  <div key={channel.label} className="kpi-leads-channel">
-                    <div className="kpi-leads-channel-meta">
-                      <span>{channel.label}</span>
-                      <span>{channel.count}</span>
+              <ul className="kpi-leads-side-list">
+                {events.map((event) => (
+                  <li key={event.id} className="kpi-leads-side-item">
+                    <span className="kpi-leads-side-dot" aria-hidden="true" />
+                    <div>
+                      <Link href={`/crm/leads/${event.lead.id}`}>
+                        <strong>{event.detail || event.type}</strong>
+                      </Link>
+                      <em>
+                        {event.lead.contactName}
+                        {event.lead.businessName ? ` · ${event.lead.businessName}` : ""}
+                      </em>
+                      <span>{formatRelativeThai(event.createdAt)}</span>
                     </div>
-                    <div className="kpi-leads-channel-bar" aria-hidden="true">
-                      <div
-                        className="kpi-leads-channel-fill"
-                        style={{ width: `${Math.max(8, Math.round((channel.count / channelTotal) * 100))}%` }}
-                      />
-                    </div>
-                  </div>
+                  </li>
                 ))}
-              </div>
+              </ul>
             )}
           </section>
         </aside>

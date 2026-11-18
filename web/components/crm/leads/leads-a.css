@@ -285,6 +285,16 @@
   align-items: start;
 }
 
+.kpi-leads-main-stack {
+  display: grid;
+  gap: clamp(0.9rem, 1.5vw, 1.15rem);
+  min-width: 0;
+}
+
+.kpi-leads-channels-panel .kpi-leads-channels {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+}
+
 .kpi-leads-panel {
   display: grid;
   gap: 0.9rem;
