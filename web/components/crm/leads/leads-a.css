@@ -573,21 +573,30 @@
   align-items: center;
   justify-content: center;
   min-height: 2.35rem;
-  padding: 0.4rem 0.9rem;
-  border: 1px solid var(--kpi-a-border);
+  padding: 0.4rem 0.95rem;
+  border: 1px solid color-mix(in srgb, var(--kpi-a-brand) 55%, #fff);
   border-radius: 999px;
-  background: #fff;
-  color: var(--kpi-a-text);
+  background: var(--kpi-a-brand);
+  color: var(--kpi-a-brand-ink);
   font: inherit;
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   white-space: nowrap;
+  text-decoration: none;
+  box-shadow: 0 1px 0 color-mix(in srgb, var(--kpi-a-brand-ink) 12%, transparent);
 }
 
 .kpi-leads-row-action:hover {
-  border-color: var(--kpi-a-hover-border);
-  background: var(--kpi-a-subtle);
+  border-color: var(--kpi-a-brand-hover);
+  background: var(--kpi-a-brand-hover);
+  color: var(--kpi-a-brand-ink);
+}
+
+.kpi-leads-row-action:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 .kpi-leads-followup {

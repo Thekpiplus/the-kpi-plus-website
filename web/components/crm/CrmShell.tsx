@@ -1106,29 +1106,31 @@ export function CrmShell({
 
       <div className="crm-app">
         <header className="crm-app-top">
-          <button
-            type="button"
-            className="crm-rail-expand-btn"
-            aria-label={railExpanded ? "ย่อแถบเมนู" : "ขยายแถบเมนู"}
-            aria-expanded={railExpanded}
-            title={railExpanded ? "ย่อแถบเมนู" : "ขยายแถบเมนูเพื่อเห็นชื่อเมนู"}
-            onClick={() => setRailExpanded((value) => !value)}
-          >
-            <span aria-hidden="true">{railExpanded ? "◧" : "☰"}</span>
-          </button>
-          <button
-            ref={menuToggleRef}
-            type="button"
-            className="crm-menu-toggle"
-            aria-label="เปิดเมนูระบบ"
-            title="เปิดเมนูระบบ"
-            aria-expanded={drawerOpen}
-            aria-controls={drawerId}
-            onClick={() => setDrawerOpen(true)}
-          >
-            <span aria-hidden="true">☰</span>
-            <span className="crm-menu-toggle-label">เมนูระบบ</span>
-          </button>
+          <div className="crm-app-top-left">
+            <button
+              type="button"
+              className="crm-rail-expand-btn"
+              aria-label={railExpanded ? "ย่อแถบเมนู" : "ขยายแถบเมนู"}
+              aria-expanded={railExpanded}
+              title={railExpanded ? "ย่อแถบเมนู" : "ขยายแถบเมนูเพื่อเห็นชื่อเมนู"}
+              onClick={() => setRailExpanded((value) => !value)}
+            >
+              <span aria-hidden="true">{railExpanded ? "◧" : "☰"}</span>
+            </button>
+            <button
+              ref={menuToggleRef}
+              type="button"
+              className="crm-menu-toggle"
+              aria-label="เปิดเมนูระบบ"
+              title="เปิดเมนูระบบ"
+              aria-expanded={drawerOpen}
+              aria-controls={drawerId}
+              onClick={() => setDrawerOpen(true)}
+            >
+              <span aria-hidden="true">☰</span>
+              <span className="crm-menu-toggle-label">เมนูระบบ</span>
+            </button>
+          </div>
           <button
             type="button"
             className="crm-app-search"
@@ -1138,7 +1140,6 @@ export function CrmShell({
           >
             <span aria-hidden="true">⌕</span>
             <span className="crm-app-search-placeholder">ค้นหาข้อมูล เมนู หรือคำสั่ง…</span>
-            <kbd aria-hidden="true">⌘ K</kbd>
           </button>
           <div className="crm-app-top-right">
             <CrmThemeToggle className="crm-top-theme" />
