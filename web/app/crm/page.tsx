@@ -4,11 +4,9 @@ import {
   ActivityFeed,
   HeroPanel,
   KpiStrip,
-  ModuleGrid,
   TaskQueue,
   type DashActivity,
   type DashKpi,
-  type DashModule,
   type DashTask,
 } from "@/components/crm/dashboard";
 import "@/components/crm/dashboard/tokens.css";
@@ -16,15 +14,12 @@ import { NewLeadOpenButton } from "@/components/crm/ui/NewLeadModal";
 import { greetingForHour } from "@/components/crm/ui/OverviewHero";
 import { requireUser } from "@/lib/crm/auth";
 import { hasModule } from "@/lib/crm/modules";
-import { formatRelativeThai, leadOriginCounts, recentLeadEvents, todayLists, userCounts } from "@/lib/crm/queries";
+import { formatRelativeThai, leadOriginCounts, recentLeadEvents, todayLists } from "@/lib/crm/queries";
 import { roleLabel } from "@/lib/crm/roles";
-import { adsOpsOverview } from "@/lib/ads-ops/queries";
 import { b2bOpsOverview } from "@/lib/b2b-ops/queries";
 import { cmsOverview } from "@/lib/cms/queries";
-import { metaOpsOverview } from "@/lib/meta-ops/queries";
 import { partnerOverview } from "@/lib/partners/queries";
 import { reservationOpsOverview } from "@/lib/reservations-ops/queries";
-import { seoOpsOverview } from "@/lib/seo-ops/queries";
 import { solutionsOpsOverview } from "@/lib/solutions-ops/queries";
 import { trainingOpsOverview } from "@/lib/training-ops/queries";
 
@@ -60,46 +55,41 @@ async function DashboardHome({
 }: {
   user: Awaited<ReturnType<typeof requireUser>>;
 }) {
-  const [lists, origins, partners, users, cms, reservations, b2b, ads, meta, seo, training, solutions, leadEvents] =
-    await Promise.all([
-      todayLists(),
-      leadOriginCounts(),
-      partnerOverview().catch(() => ({
-        applications: 0,
-        referrals: 0,
-        commissions: 0,
-        payouts: 0,
-        overdue: 0,
-      })),
-      userCounts(),
-      cmsOverview().catch(() => ({ pages: 0, insights: 0, drafts: 0, media: 0 })),
-      reservationOpsOverview().catch(() => ({ open: 0, due: 0, escalated: 0 })),
-      b2bOpsOverview(user).catch(() => ({ total: 0, active: 0, due: 0, pendingRates: 0 })),
-      adsOpsOverview(user).catch(() => ({ total: 0, live: 0, due: 0 })),
-      metaOpsOverview(user).catch(() => ({ total: 0, live: 0, due: 0 })),
-      seoOpsOverview(user).catch(() => ({ total: 0, live: 0, due: 0 })),
-      trainingOpsOverview(user).catch(() => ({ total: 0, live: 0, due: 0 })),
-      hasModule(user, "solutions")
-        ? solutionsOpsOverview().catch(() => ({
-            total: 0,
-            byStatus: {} as Record<string, number>,
-            byDepartment: {},
-            dueReview: 0,
-            needsApproval: 0,
-            imagePending: 0,
-            categories: 0,
-          }))
-        : Promise.resolve({
-            total: 0,
-            byStatus: {} as Record<string, number>,
-            byDepartment: {},
-            dueReview: 0,
-            needsApproval: 0,
-            imagePending: 0,
-            categories: 0,
-          }),
-      recentLeadEvents(4).catch(() => []),
-    ]);
+  const [lists, origins, partners, cms, reservations, b2b, training, solutions, leadEvents] = await Promise.all([
+    todayLists(),
+    leadOriginCounts(),
+    partnerOverview().catch(() => ({
+      applications: 0,
+      referrals: 0,
+      commissions: 0,
+      payouts: 0,
+      overdue: 0,
+    })),
+    cmsOverview().catch(() => ({ pages: 0, insights: 0, drafts: 0, media: 0 })),
+    reservationOpsOverview().catch(() => ({ open: 0, due: 0, escalated: 0 })),
+    b2bOpsOverview(user).catch(() => ({ total: 0, active: 0, due: 0, pendingRates: 0 })),
+    trainingOpsOverview(user).catch(() => ({ total: 0, live: 0, due: 0 })),
+    hasModule(user, "solutions")
+      ? solutionsOpsOverview().catch(() => ({
+          total: 0,
+          byStatus: {} as Record<string, number>,
+          byDepartment: {},
+          dueReview: 0,
+          needsApproval: 0,
+          imagePending: 0,
+          categories: 0,
+        }))
+      : Promise.resolve({
+          total: 0,
+          byStatus: {} as Record<string, number>,
+          byDepartment: {},
+          dueReview: 0,
+          needsApproval: 0,
+          imagePending: 0,
+          categories: 0,
+        }),
+    recentLeadEvents(4).catch(() => []),
+  ]);
 
   const dueTodayCount = lists.dueToday.length;
   const overdueCount = lists.overdue.length;
@@ -111,185 +101,6 @@ async function DashboardHome({
   const greeting = greetingForHour();
   const canLeads = hasModule(user, "leads");
   const canCms = hasModule(user, "cms");
-
-  const modules = [
-    hasModule(user, "leads")
-      ? {
-          href: "/crm/sales",
-          code: "LEAD",
-          name: "Lead Management",
-          blurb: "ติดตามลีด คัดกรอง และดู Pipeline",
-          icon: "◎",
-          tone: "leads",
-          metrics: [
-            { label: "ถึงกำหนด", value: dueToday },
-            { label: "ทั้งหมด", value: origins.web + origins.manual },
-            { label: "เกินกำหนด", value: overdueCount },
-          ],
-          cta: "เปิด Lead Management",
-        }
-      : null,
-    hasModule(user, "partners")
-      ? {
-          href: "/crm/partners",
-          code: "PARTNER",
-          name: "Partner Management",
-          blurb: "อนุมัติพาร์ตเนอร์และติดตามค่าคอมมิชชัน",
-          icon: "◈",
-          tone: "partners",
-          metrics: [
-            { label: "รออนุมัติ", value: partners.applications },
-            { label: "คอมมิชชัน", value: partners.commissions },
-            { label: "รอจ่าย", value: partners.payouts + partners.overdue },
-          ],
-          cta: "เปิด Partner Management",
-        }
-      : null,
-    hasModule(user, "reservations")
-      ? {
-          href: "/crm/reservations",
-          code: "RESERVATIONS",
-          name: "Reservation Operations",
-          blurb: "คิว Inquiry, Booking และ Confirmation",
-          icon: "▣",
-          tone: "reservations",
-          metrics: [
-            { label: "เปิดอยู่", value: reservations.open },
-            { label: "ถึงกำหนด", value: reservations.due },
-            { label: "ส่งต่อ", value: reservations.escalated },
-          ],
-          cta: "เปิด Reservation Operations",
-        }
-      : null,
-    hasModule(user, "b2b")
-      ? {
-          href: "/crm/b2b",
-          code: "B2B",
-          name: "B2B Sales Operations",
-          blurb: "Pipeline พาร์ตเนอร์ท่องเที่ยวและเรท",
-          icon: "▦",
-          tone: "b2b",
-          metrics: [
-            { label: "ทั้งหมด", value: b2b.total },
-            { label: "ใช้งาน", value: b2b.active },
-            { label: "ติดตาม", value: b2b.due },
-          ],
-          cta: "เปิด B2B Sales",
-        }
-      : null,
-    hasModule(user, "ads")
-      ? {
-          href: "/crm/ads",
-          code: "ADS",
-          name: "Google Ads Operations",
-          blurb: "บอร์ดแคมเปญ Search และ Hotel Ads",
-          icon: "▣",
-          tone: "ads",
-          metrics: [
-            { label: "ทั้งหมด", value: ads.total },
-            { label: "ใช้งาน", value: ads.live },
-            { label: "ติดตาม", value: ads.due },
-          ],
-          cta: "เปิด Google Ads",
-        }
-      : null,
-    hasModule(user, "meta")
-      ? {
-          href: "/crm/meta",
-          code: "META",
-          name: "Meta Ads Operations",
-          blurb: "บอร์ดแคมเปญ Awareness ถึง Remarketing",
-          icon: "▣",
-          tone: "meta",
-          metrics: [
-            { label: "ทั้งหมด", value: meta.total },
-            { label: "ใช้งาน", value: meta.live },
-            { label: "ติดตาม", value: meta.due },
-          ],
-          cta: "เปิด Meta Ads",
-        }
-      : null,
-    hasModule(user, "seo")
-      ? {
-          href: "/crm/seo",
-          code: "SEO",
-          name: "Local Search Operations",
-          blurb: "Search Visibility, GBP, Maps และ AEO",
-          icon: "▣",
-          tone: "seo",
-          metrics: [
-            { label: "ทั้งหมด", value: seo.total },
-            { label: "เผยแพร่", value: seo.live },
-            { label: "ติดตาม", value: seo.due },
-          ],
-          cta: "เปิด Local Search",
-        }
-      : null,
-    hasModule(user, "training")
-      ? {
-          href: "/crm/training",
-          code: "TRAINING",
-          name: "Hotel Training Operations",
-          blurb: "คำขออบรม ปฏิทิน และติดตามภายใน",
-          icon: "▣",
-          tone: "training",
-          metrics: [
-            { label: "ทั้งหมด", value: training.total },
-            { label: "ใช้งาน", value: training.live },
-            { label: "ติดตาม", value: training.due },
-          ],
-          cta: "เปิด Hotel Training",
-        }
-      : null,
-    hasModule(user, "solutions")
-      ? {
-          href: "/crm/solutions",
-          code: "SOLUTIONS",
-          name: "Hotel Solutions",
-          blurb: "ไดเรกทอรีบริการภายในและคิวคำขอ",
-          icon: "▦",
-          tone: "solutions",
-          metrics: [
-            { label: "ทั้งหมด", value: solutions.total },
-            { label: "รออนุมัติ", value: solutions.needsApproval },
-            { label: "ทบทวน", value: solutions.dueReview },
-          ],
-          cta: "เปิด Solutions",
-        }
-      : null,
-    hasModule(user, "users")
-      ? {
-          href: "/crm/users",
-          code: "USERS",
-          name: "Users Management",
-          blurb: "จัดการผู้ใช้และสิทธิ์การเข้าถึง",
-          icon: "◉",
-          tone: "users",
-          metrics: [
-            { label: "ทีม", value: users.staff },
-            { label: "พาร์ตเนอร์", value: users.partners },
-            { label: "ทั้งหมด", value: users.total },
-          ],
-          cta: "เปิด Users",
-        }
-      : null,
-    hasModule(user, "cms")
-      ? {
-          href: "/crm/cms",
-          code: "CONTENT",
-          name: "Content Management",
-          blurb: "จัดการหน้า บทความ และสื่อบนเว็บ",
-          icon: "▤",
-          tone: "cms",
-          metrics: [
-            { label: "หน้า", value: cms.pages },
-            { label: "บทความ", value: cms.insights },
-            { label: "ร่าง", value: cms.drafts },
-          ],
-          cta: "เปิด Content",
-        }
-      : null,
-  ].filter(Boolean) as DashModule[];
 
   const tasks: DashTask[] = [
     ...lists.overdue.slice(0, 3).map((item) => ({
@@ -472,7 +283,6 @@ async function DashboardHome({
         }
       />
 
-      <ModuleGrid modules={modules} />
       <ActivityFeed items={activity} />
     </div>
   );

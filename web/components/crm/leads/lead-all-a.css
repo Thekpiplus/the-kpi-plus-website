@@ -271,13 +271,13 @@
 }
 
 .kpi-lead-all-bulk select {
-  min-height: 2.35rem;
-  padding: 0.3rem 0.55rem;
+  min-height: 2rem;
+  padding: 0.22rem 0.5rem;
   border: 1px solid var(--kpi-a-border);
-  border-radius: 8px;
+  border-radius: 999px;
   background: #fff;
   font: inherit;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
 }
 
 .kpi-lead-all-table-wrap {
@@ -304,9 +304,10 @@
 
 .kpi-lead-all-table th {
   font-size: 0.875rem;
-  font-weight: 500;
-  color: var(--kpi-a-muted);
-  background: var(--kpi-a-subtle);
+  font-weight: 700;
+  color: var(--kpi-a-th-fg, #f4f7fa);
+  background: var(--kpi-a-th-bg, #0b1f33);
+  border-bottom-color: var(--kpi-a-th-border, #1a334d);
   white-space: nowrap;
 }
 
@@ -592,7 +593,139 @@
 .kpi-lead-all-inline-btns {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.45rem;
+  gap: 0.4rem;
+}
+
+.kpi-lead-all-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2rem;
+  padding: 0.28rem 0.7rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.kpi-lead-all-action-btn.is-advance {
+  border-color: color-mix(in srgb, var(--kpi-a-brand) 45%, #fff);
+  background: var(--kpi-a-brand);
+  color: var(--kpi-a-brand-ink);
+}
+
+.kpi-lead-all-action-btn.is-advance:hover:not(:disabled) {
+  background: var(--kpi-a-brand-hover);
+}
+
+.kpi-lead-all-action-btn.is-move {
+  border-color: color-mix(in srgb, #0b6660 55%, #fff);
+  background: #b4e4de;
+  color: #000;
+  font-weight: 800;
+  -webkit-text-fill-color: #000;
+}
+
+.kpi-lead-all-action-btn.is-move:hover:not(:disabled) {
+  border-color: color-mix(in srgb, #0b6660 70%, #fff);
+  background: #95d5cd;
+}
+
+.kpi-lead-all-action-btn.is-assign {
+  border-color: color-mix(in srgb, var(--kpi-a-sky) 55%, #fff);
+  background: #a5dbfb;
+  color: #000;
+  font-weight: 800;
+  -webkit-text-fill-color: #000;
+}
+
+.kpi-lead-all-action-btn.is-assign:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--kpi-a-sky) 70%, #fff);
+  background: #7cc8f5;
+}
+
+.kpi-lead-all-action-btn.is-edit {
+  border-color: color-mix(in srgb, var(--kpi-a-sky) 40%, #fff);
+  background: var(--kpi-a-sky-soft);
+  color: #0c4a6e;
+}
+
+.kpi-lead-all-action-btn.is-edit:hover,
+.kpi-lead-all-action-btn.is-edit.is-open {
+  border-color: color-mix(in srgb, var(--kpi-a-sky) 55%, #fff);
+  background: color-mix(in srgb, var(--kpi-a-sky) 18%, #fff);
+}
+
+.kpi-lead-all-action-btn.is-detail {
+  border-color: color-mix(in srgb, var(--kpi-a-text) 16%, #fff);
+  background: #eef2f6;
+  color: var(--kpi-a-text);
+}
+
+.kpi-lead-all-action-btn.is-detail:hover {
+  border-color: color-mix(in srgb, var(--kpi-a-text) 28%, #fff);
+  background: #e4eaf0;
+}
+
+.kpi-lead-all-action-btn.is-archive {
+  border-color: color-mix(in srgb, var(--kpi-a-rose) 35%, #fff);
+  background: var(--kpi-a-rose-soft);
+  color: #9f1239;
+}
+
+.kpi-lead-all-action-btn.is-archive:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--kpi-a-rose) 50%, #fff);
+  background: color-mix(in srgb, var(--kpi-a-rose) 16%, #fff);
+}
+
+.kpi-lead-all-action-btn.is-delete {
+  border-color: color-mix(in srgb, var(--kpi-a-rose) 45%, #fff);
+  background: var(--kpi-a-rose);
+  color: #fff;
+}
+
+.kpi-lead-all-action-btn.is-delete:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--kpi-a-rose) 88%, #000);
+}
+
+.kpi-lead-all-action-btn.is-restore {
+  border-color: color-mix(in srgb, var(--kpi-a-brand) 40%, #fff);
+  background: var(--kpi-a-brand-soft);
+  color: var(--kpi-a-brand-ink);
+}
+
+.kpi-lead-all-action-btn.is-restore:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--kpi-a-brand) 22%, #fff);
+}
+
+.kpi-lead-all-action-btn:disabled {
+  cursor: not-allowed;
+  filter: none;
+  opacity: 1;
+  box-shadow: none;
+}
+
+.kpi-lead-all-action-btn.is-move:disabled {
+  border-color: color-mix(in srgb, #0b6660 30%, #fff);
+  background: #d7efeb;
+  color: #111;
+  -webkit-text-fill-color: #111;
+}
+
+.kpi-lead-all-action-btn.is-assign:disabled {
+  border-color: color-mix(in srgb, var(--kpi-a-sky) 30%, #fff);
+  background: #d4eefc;
+  color: #111;
+  -webkit-text-fill-color: #111;
+}
+
+.kpi-lead-all-action-btn:disabled:not(.is-move):not(.is-assign) {
+  opacity: 0.45;
 }
 
 .kpi-lead-all-edit-grid {

@@ -16,17 +16,6 @@ export type DashTask = {
   href: string;
 };
 
-export type DashModule = {
-  href: string;
-  code: string;
-  name: string;
-  blurb: string;
-  icon: string;
-  tone: string;
-  metrics: Array<{ label: string; value: number }>;
-  cta: string;
-};
-
 export type DashActivity = {
   title: string;
   meta: string;

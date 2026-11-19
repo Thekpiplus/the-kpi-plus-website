@@ -15,6 +15,9 @@
   --kpi-a-text: #16202b;
   --kpi-a-muted: #5b6b7a;
   --kpi-a-subtle: #fafcf7;
+  --kpi-a-th-bg: #0b1f33;
+  --kpi-a-th-fg: #f4f7fa;
+  --kpi-a-th-border: #1a334d;
   --kpi-a-radius-lg: 20px;
   --kpi-a-radius-md: 16px;
   --kpi-a-radius-sm: 12px;
@@ -790,8 +793,9 @@
 }
 
 .kpi-users-table th {
-  background: var(--kpi-a-subtle);
-  color: var(--kpi-a-muted);
+  background: var(--kpi-a-th-bg);
+  color: var(--kpi-a-th-fg);
+  border-bottom-color: var(--kpi-a-th-border);
   font-size: 0.8125rem;
   font-weight: 700;
   letter-spacing: 0.02em;

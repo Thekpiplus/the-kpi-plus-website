@@ -37,7 +37,7 @@ export function HeroPanel({
         <h1 className="kpi-dash-a-hero-title">
           {greeting}, {name}
         </h1>
-        <p className="kpi-dash-a-hero-lead">ภาพรวมงานวันนี้และทางลัดเข้าโมดูลที่คุณมีสิทธิ์ใช้</p>
+        <p className="kpi-dash-a-hero-lead">ภาพรวมงานวันนี้และคิวที่ต้องจัดการ</p>
         <div className="kpi-dash-a-hero-actions">
           {primaryAction}
           {secondaryAction}

@@ -23,8 +23,8 @@ import {
 } from "@/components/crm/activities/activity-types";
 import { ACTIVITY_TONES } from "@/components/crm/activities/activity-tones";
 import { completeActivity, scheduleActivity } from "@/lib/crm/actions";
+import { LeadsPageChrome } from "@/components/crm/leads/LeadsPageChrome";
 import { NewLeadOpenButton } from "@/components/crm/ui/NewLeadModal";
-import "@/components/crm/leads/leads-a.css";
 import "./activities-a.css";
 
 function dayParts(offset: number, base: Date) {
@@ -207,39 +207,27 @@ export function ActivitiesWorkspace({ items }: { items: ActivityCard[] }) {
   });
 
   return (
-    <div className="kpi-act-a">
-      <header className="kpi-leads-hero is-activities">
-        <nav className="kpi-leads-breadcrumb" aria-label="เส้นทาง">
-          <Link href="/crm">การขายและลูกค้า</Link>
-          <span aria-hidden="true">/</span>
-          <span>Lead Management</span>
-        </nav>
-        <div className="kpi-leads-hero-row">
-          <div>
-            <h1 className="kpi-leads-title">กิจกรรมที่ต้องทำ</h1>
-            <p className="kpi-leads-desc">
-              คิวติดตามลีดแบบการ์ด — กรองตามวันและประเภท แล้วบันทึกผลหรือทำเสร็จทีละงาน
-            </p>
-            <p className="kpi-leads-hero-meta">
-              {formatThaiDateLong()} · {meta.open} งานที่ต้องทำ · {meta.overdue} งานเกินกำหนด ·{" "}
-              {meta.today} วันนี้
-            </p>
-          </div>
-          <div className="kpi-leads-hero-actions">
-            <NewLeadOpenButton className="kpi-leads-btn-primary">เพิ่มลีดใหม่</NewLeadOpenButton>
-            <Link href="/crm/pipeline" className="kpi-leads-btn-secondary">
-              ดู Pipeline
-            </Link>
-          </div>
-        </div>
-      </header>
-
-      {notice ? (
-        <div className="kpi-act-notice" role="status" aria-live="polite">
-          {notice}
-        </div>
-      ) : null}
-
+    <LeadsPageChrome
+      heroVariant="activities"
+      title="กิจกรรมที่ต้องทำ"
+      description="คิวติดตามลีดแบบการ์ด — กรองตามวันและประเภท แล้วบันทึกผลหรือทำเสร็จทีละงาน"
+      meta={
+        <>
+          {formatThaiDateLong()} · {meta.open} งานที่ต้องทำ · {meta.overdue} งานเกินกำหนด · {meta.today}{" "}
+          วันนี้
+        </>
+      }
+      notice={notice}
+      actions={
+        <>
+          <NewLeadOpenButton className="kpi-leads-btn-primary">เพิ่มลีดใหม่</NewLeadOpenButton>
+          <Link href="/crm/pipeline" className="kpi-leads-btn-secondary">
+            ดู Pipeline
+          </Link>
+        </>
+      }
+    >
+      <div className="kpi-act-a">
       <section className="kpi-act-stats" aria-label="สรุปสถานะงาน">
         {(
           [
@@ -490,6 +478,7 @@ export function ActivitiesWorkspace({ items }: { items: ActivityCard[] }) {
         ข้อมูลจากกิจกรรมเปิดจริงในระบบ · ช่อง «ไม่มีกำหนด» ว่างจนกว่า dueAt จะรองรับค่าว่าง ·
         ยกเลิกจาก «เสร็จแล้ว» จะเปิดนัดใหม่ด้วยกำหนดเดิม
       </p>
-    </div>
+      </div>
+    </LeadsPageChrome>
   );
 }

@@ -1,8 +1,21 @@
 import { LoginForm } from "@/components/crm/LoginForm";
 import { currentUser } from "@/lib/crm/auth";
 import { crmEnabled } from "@/lib/crm/db";
-import { ensureCrmSeed } from "@/lib/crm/seed";
 import { redirect } from "next/navigation";
+
+async function currentUserFast() {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    return await Promise.race([
+      currentUser().catch(() => null),
+      new Promise<null>((resolve) => {
+        timer = setTimeout(() => resolve(null), 2500);
+      }),
+    ]);
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+}
 
 export default async function AdminLoginPage({
   searchParams,
@@ -29,10 +42,8 @@ export default async function AdminLoginPage({
     );
   }
 
-  // Do not block the login screen on full CRM seed (many remote schema checks).
-  // Login / CRM layouts still call ensureCrmSeed when needed.
-  void ensureCrmSeed().catch(() => undefined);
-  const user = await currentUser().catch(() => null);
+  // Never block login on seed/schema sweeps — CRM layouts seed after auth.
+  const user = await currentUserFast();
   if (user) redirect(user.role === "partner" || user.role === "partners" ? "/partners" : "/crm");
   const { error } = await searchParams;
   return <LoginForm error={error} />;

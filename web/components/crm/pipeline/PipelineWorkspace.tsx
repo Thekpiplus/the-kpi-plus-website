@@ -539,15 +539,15 @@ export function PipelineWorkspace({
         <div className="kpi-pipe-sort" role="group" aria-label="เรียงลำดับ">
           {(
             [
-              { id: "value" as const, label: "มูลค่าสูงสุด" },
-              { id: "chance" as const, label: "โอกาสปิดสูง" },
-              { id: "risk" as const, label: "เสี่ยงก่อน" },
+              { id: "value" as const, label: "มูลค่าสูง", tone: "is-value" },
+              { id: "chance" as const, label: "โอกาสปิดสูง", tone: "is-chance" },
+              { id: "risk" as const, label: "เสี่ยงก่อน", tone: "is-risk" },
             ] as const
           ).map((item) => (
             <button
               key={item.id}
               type="button"
-              className={`kpi-pipe-seg${initialSort === item.id ? " is-active" : ""}`}
+              className={`kpi-pipe-sort-btn ${item.tone}${initialSort === item.id ? " is-active" : ""}`}
               aria-pressed={initialSort === item.id}
               onClick={() => pushState({ sort: item.id })}
             >
@@ -608,14 +608,34 @@ export function PipelineWorkspace({
             <div className="kpi-pipe-table-wrap">
               <table className="kpi-pipe-table">
                 <caption className="sr-only">รายการดีลใน Pipeline</caption>
+                <colgroup>
+                  <col className="is-contact" />
+                  <col className="is-stage" />
+                  <col className="is-num" />
+                  <col className="is-chance" />
+                  <col className="is-when" />
+                  <col className="is-actions" />
+                </colgroup>
                 <thead>
                   <tr>
-                    <th scope="col">ผู้ติดต่อ</th>
-                    <th scope="col">ขั้นตอนนี้</th>
-                    <th scope="col">มูลค่า</th>
-                    <th scope="col">โอกาสปิด</th>
-                    <th scope="col">ติดต่อครั้งถัดไป</th>
-                    <th scope="col">จัดการ</th>
+                    <th scope="col" className="is-contact">
+                      ผู้ติดต่อ
+                    </th>
+                    <th scope="col" className="is-stage">
+                      ขั้นตอนนี้
+                    </th>
+                    <th scope="col" className="is-num">
+                      มูลค่า
+                    </th>
+                    <th scope="col" className="is-chance">
+                      โอกาสปิด
+                    </th>
+                    <th scope="col" className="is-when">
+                      ติดต่อครั้งถัดไป
+                    </th>
+                    <th scope="col" className="is-actions">
+                      จัดการ
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -624,11 +644,11 @@ export function PipelineWorkspace({
                     return (
                       <Fragment key={deal.id}>
                         <tr className={deal.risk === "high" ? "is-risk" : undefined}>
-                          <td data-label="ผู้ติดต่อ">
+                          <td data-label="ผู้ติดต่อ" className="is-contact">
                             <strong>{deal.contactName}</strong>
                             <span>{deal.businessName || "—"}</span>
                           </td>
-                          <td data-label="ขั้นตอนนี้">
+                          <td data-label="ขั้นตอนนี้" className="is-stage">
                             <span className="kpi-pipe-stage-pill">{deal.stageName}</span>
                           </td>
                           <td data-label="มูลค่า" className="is-num">
@@ -638,11 +658,13 @@ export function PipelineWorkspace({
                             <span>{deal.chance}%</span>
                             <i style={{ width: `${deal.chance}%` }} aria-hidden="true" />
                           </td>
-                          <td data-label="ติดต่อครั้งถัดไป">{formatWhen(deal.nextActivityAt)}</td>
-                          <td data-label="จัดการ">
+                          <td data-label="ติดต่อครั้งถัดไป" className="is-when">
+                            {formatWhen(deal.nextActivityAt)}
+                          </td>
+                          <td data-label="จัดการ" className="is-actions">
                             <button
                               type="button"
-                              className="kpi-leads-btn-secondary"
+                              className={`kpi-pipe-manage-btn${open ? " is-open" : ""}`}
                               aria-expanded={open}
                               onClick={() => setOpenId(open ? null : deal.id)}
                             >

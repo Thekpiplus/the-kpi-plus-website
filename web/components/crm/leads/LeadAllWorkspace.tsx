@@ -551,7 +551,7 @@ export function LeadAllWorkspace({
             <div className="kpi-lead-all-inline-btns">
               <button
                 type="button"
-                className="kpi-leads-btn-secondary"
+                className="kpi-lead-all-action-btn is-advance"
                 disabled={!next || pending || archived}
                 onClick={() => advanceLead(lead)}
               >
@@ -559,13 +559,13 @@ export function LeadAllWorkspace({
               </button>
               <button
                 type="button"
-                className="kpi-leads-btn-secondary"
+                className={`kpi-lead-all-action-btn is-edit${editingId === lead.id ? " is-open" : ""}`}
                 aria-expanded={editingId === lead.id}
                 onClick={() => setEditingId(editingId === lead.id ? null : lead.id)}
               >
                 {editingId === lead.id ? "ปิดฟอร์มแก้ไข" : "แก้ไขข้อมูลสั้น"}
               </button>
-              <Link href={`/crm/leads/${lead.id}`} className="kpi-leads-btn-secondary">
+              <Link href={`/crm/leads/${lead.id}`} className="kpi-lead-all-action-btn is-detail">
                 เปิดหน้ารายละเอียด
               </Link>
             </div>
@@ -641,7 +641,7 @@ export function LeadAllWorkspace({
               <input name="nextTitle" defaultValue="ติดตามผล" disabled={archived || pending} />
             </label>
             <div className="kpi-lead-all-inline-btns">
-              <button type="submit" className="kpi-leads-btn-primary" disabled={archived || pending}>
+              <button type="submit" className="kpi-lead-all-action-btn is-advance" disabled={archived || pending}>
                 บันทึกผล
               </button>
             </div>
@@ -652,7 +652,7 @@ export function LeadAllWorkspace({
             {archived ? (
               <button
                 type="button"
-                className="kpi-leads-btn-secondary"
+                className="kpi-lead-all-action-btn is-restore"
                 disabled={pending}
                 onClick={() => archiveLead(lead.id, false, lead.contactName)}
               >
@@ -661,7 +661,7 @@ export function LeadAllWorkspace({
             ) : (
               <button
                 type="button"
-                className="kpi-leads-btn-secondary"
+                className="kpi-lead-all-action-btn is-archive"
                 disabled={pending}
                 onClick={() => archiveLead(lead.id, true, lead.contactName)}
               >
@@ -679,7 +679,7 @@ export function LeadAllWorkspace({
                   <div className="kpi-lead-all-inline-btns">
                     <button
                       type="button"
-                      className="kpi-leads-btn-danger"
+                      className="kpi-lead-all-action-btn is-delete"
                       disabled={pending}
                       onClick={() => archiveLead(lead.id, true, lead.contactName)}
                     >
@@ -687,7 +687,7 @@ export function LeadAllWorkspace({
                     </button>
                     <button
                       type="button"
-                      className="kpi-leads-btn-secondary"
+                      className="kpi-lead-all-action-btn is-detail"
                       onClick={() => setConfirmDeleteId(null)}
                     >
                       ยกเลิก
@@ -697,7 +697,7 @@ export function LeadAllWorkspace({
               ) : (
                 <button
                   type="button"
-                  className="kpi-leads-btn-danger"
+                  className="kpi-lead-all-action-btn is-delete"
                   disabled={pending}
                   onClick={() => setConfirmDeleteId(lead.id)}
                 >
@@ -940,7 +940,7 @@ export function LeadAllWorkspace({
             </select>
             <button
               type="button"
-              className="kpi-leads-btn-secondary"
+              className="kpi-lead-all-action-btn is-move"
               disabled={!bulkStageId || pending}
               onClick={bulkMove}
             >
@@ -963,7 +963,7 @@ export function LeadAllWorkspace({
             </select>
             <button
               type="button"
-              className="kpi-leads-btn-secondary"
+              className="kpi-lead-all-action-btn is-assign"
               disabled={!bulkOwnerId || pending}
               onClick={bulkAssign}
             >
@@ -971,13 +971,17 @@ export function LeadAllWorkspace({
             </button>
             <button
               type="button"
-              className="kpi-leads-btn-secondary"
+              className="kpi-lead-all-action-btn is-archive"
               disabled={pending || archive === "archived"}
               onClick={bulkArchive}
             >
               เก็บที่เลือก
             </button>
-            <button type="button" className="kpi-leads-btn-secondary" onClick={() => setSelected([])}>
+            <button
+              type="button"
+              className="kpi-lead-all-action-btn is-detail"
+              onClick={() => setSelected([])}
+            >
               ยกเลิกการเลือก
             </button>
           </div>
