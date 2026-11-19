@@ -44,13 +44,6 @@ function dayParts(offset: number, base: Date) {
   return { weekday, dateLabel };
 }
 
-function initials(name: string) {
-  const parts = name.trim().split(/\s+/).filter(Boolean);
-  if (parts.length === 0) return "?";
-  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
-  return `${parts[0][0] ?? ""}${parts[1][0] ?? ""}`.toUpperCase();
-}
-
 export function ActivitiesWorkspace({ items }: { items: ActivityCard[] }) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -397,21 +390,16 @@ export function ActivitiesWorkspace({ items }: { items: ActivityCard[] }) {
                 </h3>
                 <p className="kpi-act-detail">{item.detail}</p>
                 <div className="kpi-act-context">
-                  <span className="kpi-act-avatar" aria-hidden="true">
-                    {initials(item.contactName)}
-                  </span>
-                  <div>
-                    <strong>{item.contactName}</strong>
-                    <span>{item.businessName}</span>
-                    <em>
-                      ผู้ดูแล {item.ownerName} · {item.valueLabel}
-                    </em>
-                  </div>
+                  <strong>{item.contactName}</strong>
+                  <span>{item.businessName}</span>
+                  <em>
+                    ผู้ดูแล {item.ownerName} · {item.valueLabel}
+                  </em>
                 </div>
                 <div className="kpi-act-card-footer">
                   <button
                     type="button"
-                    className="kpi-leads-btn-secondary"
+                    className={`kpi-act-record-btn${formOpen ? " is-open" : ""}`}
                     aria-expanded={formOpen}
                     disabled={pending}
                     onClick={() => setOpenFormId(formOpen ? null : item.id)}

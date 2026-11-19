@@ -575,6 +575,8 @@ html[data-crm-theme="dark"] .crm-shell,
 
 .crm-shell-app .crm-main {
   max-width: none;
+  min-width: 0;
+  overflow-x: clip;
   padding: clamp(1rem, 1.5vw, 1.35rem) clamp(0.85rem, 2vw, 1.5rem) clamp(1.75rem, 3vw, 2.25rem);
 }
 
@@ -2365,8 +2367,9 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
 }
 
 .crm-app-avatar {
-  display: grid;
-  place-items: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 2.55rem;
   height: 2.55rem;
   border-radius: 999px;
@@ -2374,6 +2377,10 @@ html[data-crm-theme="dark"] .crm-shell .crm-auth-logo,
   color: #fff;
   font-size: 0.75rem;
   font-weight: 800;
+  line-height: 1;
+  text-align: center;
+  padding: 0.12em 0 0;
+  box-sizing: border-box;
 }
 
 .crm-app-user-meta {
@@ -16635,8 +16642,9 @@ html[data-crm-theme="dark"] .crm-settings-panel,
 
 .crm-profile-avatar,
 .crm-profile-avatar-img {
-  display: grid;
-  place-items: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 5.5rem;
   height: 5.5rem;
   border-radius: 999px;
@@ -16645,10 +16653,18 @@ html[data-crm-theme="dark"] .crm-settings-panel,
   font-size: 1.35rem;
   font-weight: 800;
   letter-spacing: 0.02em;
+  line-height: 1;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.crm-profile-avatar {
+  padding: 0.12em 0 0;
 }
 
 .crm-profile-avatar-img {
   display: block;
+  padding: 0;
   object-fit: cover;
   border: 2px solid color-mix(in srgb, var(--crm-lime) 45%, var(--crm-border));
   background: var(--crm-surface-2);

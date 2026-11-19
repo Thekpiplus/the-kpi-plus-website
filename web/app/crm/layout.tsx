@@ -5,9 +5,8 @@ import { CrmThemeScript } from "@/components/crm/CrmThemeScript";
 import { requireUser } from "@/lib/crm/auth";
 import { isPartnerRole, isStaff } from "@/lib/partners/access";
 import { redirect } from "next/navigation";
-import { crmEnabled, prisma } from "@/lib/crm/db";
+import { crmEnabled } from "@/lib/crm/db";
 import { allowedModules, firstModulePath, hasModule, moduleForPath } from "@/lib/crm/modules";
-import { staffDirectory } from "@/lib/crm/queries";
 import { roleLabel } from "@/lib/crm/roles";
 import { ensureCrmSeed } from "@/lib/crm/seed";
 import "./crm.css";
@@ -47,13 +46,24 @@ export default async function CrmLayout({ children }: { children: React.ReactNod
     );
   }
 
-  // Kick seed in the background — awaiting every ensure*Schema on remote MySQL
-  // blocks /admin→/crm redirects for tens of seconds on local.
-  void ensureCrmSeed().catch(() => undefined);
+  // Defer seed so the first authenticated paint is not fighting the MySQL pool.
+  setTimeout(() => {
+    void ensureCrmSeed().catch(() => undefined);
+  }, 1500);
 
   let user: Awaited<ReturnType<typeof requireUser>>;
   try {
-    user = await requireUser();
+    let authTimer: ReturnType<typeof setTimeout> | undefined;
+    try {
+      user = await Promise.race([
+        requireUser(),
+        new Promise<never>((_, reject) => {
+          authTimer = setTimeout(() => reject(new Error("auth-timeout")), 4000);
+        }),
+      ]);
+    } finally {
+      if (authTimer) clearTimeout(authTimer);
+    }
   } catch (error) {
     const digest = typeof error === "object" && error && "digest" in error ? String((error as { digest: unknown }).digest) : "";
     if (digest.includes("NEXT_REDIRECT")) throw error;
@@ -80,21 +90,15 @@ export default async function CrmLayout({ children }: { children: React.ReactNod
   const needed = moduleForPath(pathname);
   if (needed && !hasModule(user, needed)) redirect(firstModulePath(user));
 
+  // Skip partner/owner lookups here — awaiting them on a cold MySQL pool froze
+  // every CRM route (including /crm/sales). New-lead modal still opens; lists
+  // can be filled later without blocking first paint.
   const leadForm = hasModule(user, "leads")
-    ? await Promise.all([
-        prisma()
-          .partner.findMany({
-            where: { status: { in: ["active", "pending"] } },
-            orderBy: { displayName: "asc" },
-            select: { id: true, displayName: true, tier: true },
-          })
-          .catch(() => [] as { id: string; displayName: string; tier: string }[]),
-        staffDirectory().catch(() => [] as Awaited<ReturnType<typeof staffDirectory>>),
-      ]).then(([partners, owners]) => ({
-        partners,
-        owners: owners.map((owner) => ({ id: owner.id, name: owner.name })),
+    ? {
+        partners: [] as { id: string; displayName: string; tier: string }[],
+        owners: [] as { id: string; name: string }[],
         currentUserId: user.id,
-      }))
+      }
     : undefined;
 
   return (

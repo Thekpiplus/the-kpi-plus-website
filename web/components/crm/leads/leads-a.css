@@ -105,7 +105,7 @@
 .kpi-leads-hero-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.55rem;
+  gap: 0.4rem;
   align-items: center;
   justify-content: flex-end;
   max-width: 100%;
@@ -114,6 +114,17 @@
 .kpi-leads-hero-actions > * {
   flex: 0 1 auto;
   white-space: nowrap;
+}
+
+.kpi-leads-hero-actions .kpi-leads-btn-primary,
+.kpi-leads-hero-actions .kpi-leads-btn-secondary,
+.kpi-leads-hero-actions .kpi-button.crm-users-primary,
+.kpi-leads-hero-actions .crm-users-secondary,
+.kpi-leads-hero-actions a,
+.kpi-leads-hero-actions button {
+  min-height: 2.1rem;
+  padding: 0.28rem 0.85rem;
+  font-size: 0.875rem;
 }
 
 @media (max-width: 720px) {
@@ -470,8 +481,9 @@
 }
 
 .kpi-leads-avatar {
-  display: grid;
-  place-items: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 999px;
@@ -479,6 +491,10 @@
   color: var(--kpi-a-brand-ink);
   font-size: 0.875rem;
   font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  padding: 0.12em 0 0;
+  box-sizing: border-box;
   flex-shrink: 0;
   position: relative;
 }
@@ -573,14 +589,14 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2.35rem;
-  padding: 0.4rem 0.95rem;
+  min-height: 2rem;
+  padding: 0.28rem 0.75rem;
   border: 1px solid color-mix(in srgb, var(--kpi-a-brand) 55%, #fff);
   border-radius: 999px;
   background: var(--kpi-a-brand);
   color: var(--kpi-a-brand-ink);
   font: inherit;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 700;
   cursor: pointer;
   white-space: nowrap;
@@ -692,7 +708,14 @@
 .kpi-leads-followup-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.55rem;
+  gap: 0.4rem;
+}
+
+.kpi-leads-followup-actions .kpi-leads-btn-primary,
+.kpi-leads-followup-actions .kpi-leads-btn-secondary {
+  min-height: 2rem;
+  padding: 0.28rem 0.85rem;
+  font-size: 0.8125rem;
 }
 
 .kpi-leads-alert {

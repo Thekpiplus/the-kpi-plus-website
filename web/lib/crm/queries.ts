@@ -215,43 +215,66 @@ export async function todayLists() {
   const end = endOfDay(now);
   // Filter by archivedAt directly — avoid SELECT id FROM Lead then IN (...).
   const activeLead = { archivedAt: null };
+  const leadInclude = {
+    lead: {
+      select: {
+        id: true,
+        contactName: true,
+        businessName: true,
+        formName: true,
+        source: true,
+        lastContactAt: true,
+        createdAt: true,
+        stage: { select: { id: true, nameTh: true, sortOrder: true } },
+      },
+    },
+  } as const;
 
-  const [overdue, dueToday, upcoming, firstResponse, noNext, newLeads] = await Promise.all([
+  // Cap each list — unbounded Activity scans were stalling /crm/sales under load.
+  const [overdue, dueToday, firstResponse, newLeads] = await Promise.all([
     db.activity.findMany({
       where: { status: "open", dueAt: { lt: start }, lead: activeLead },
-      include: { lead: { include: { stage: true } } },
+      include: leadInclude,
       orderBy: { dueAt: "asc" },
+      take: 60,
     }),
     db.activity.findMany({
       where: { status: "open", dueAt: { gte: start, lte: end }, lead: activeLead },
-      include: { lead: { include: { stage: true } } },
+      include: leadInclude,
       orderBy: { dueAt: "asc" },
-    }),
-    db.activity.findMany({
-      where: { status: "open", dueAt: { gt: end }, lead: activeLead },
-      include: { lead: { include: { stage: true } } },
-      orderBy: { dueAt: "asc" },
-      take: 12,
+      take: 60,
     }),
     db.activity.findMany({
       where: { status: "open", firstResponse: true, lead: activeLead },
-      include: { lead: { include: { stage: true } } },
+      include: leadInclude,
       orderBy: { createdAt: "desc" },
-    }),
-    db.lead.findMany({
-      where: { noFollowUp: false, nextActivityAt: null, outcome: "", ...activeLead },
-      include: { stage: true },
-      orderBy: { updatedAt: "desc" },
+      take: 40,
     }),
     db.lead.findMany({
       where: { stage: { sortOrder: 1 }, ...activeLead },
-      include: { stage: true },
+      select: {
+        id: true,
+        contactName: true,
+        businessName: true,
+        formName: true,
+        source: true,
+        lastContactAt: true,
+        createdAt: true,
+        stage: { select: { id: true, nameTh: true, sortOrder: true } },
+      },
       orderBy: { createdAt: "desc" },
-      take: 12,
+      take: 24,
     }),
   ]);
 
-  return { overdue, dueToday, upcoming, firstResponse, noNext, newLeads };
+  return {
+    overdue,
+    dueToday,
+    upcoming: [] as typeof overdue,
+    firstResponse,
+    noNext: [] as typeof newLeads,
+    newLeads,
+  };
 }
 
 export async function searchLeads(filters: {

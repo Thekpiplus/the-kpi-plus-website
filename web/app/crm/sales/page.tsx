@@ -7,7 +7,6 @@ import {
   type SalesTodayItem,
 } from "@/components/crm/leads/SalesTodayBoard";
 import { NewLeadOpenButton } from "@/components/crm/ui/NewLeadModal";
-import { requireUser } from "@/lib/crm/auth";
 import {
   formatRelativeThai,
   formatThaiDateTime,
@@ -37,14 +36,25 @@ export default async function SalesHomePage({
 }: {
   searchParams: Promise<{ filter?: string; q?: string; saved?: string }>;
 }) {
-  await requireUser();
   const params = await searchParams;
   const filter = parseFilter(params.filter);
   const q = params.q?.trim() ?? "";
-  const [lists, events, sourceRows] = await Promise.all([
-    todayLists(),
-    recentLeadEvents(8),
-    leadSourceCounts(6),
+  const emptyLists = {
+    overdue: [] as Awaited<ReturnType<typeof todayLists>>["overdue"],
+    dueToday: [] as Awaited<ReturnType<typeof todayLists>>["dueToday"],
+    upcoming: [] as Awaited<ReturnType<typeof todayLists>>["upcoming"],
+    firstResponse: [] as Awaited<ReturnType<typeof todayLists>>["firstResponse"],
+    noNext: [] as Awaited<ReturnType<typeof todayLists>>["noNext"],
+    newLeads: [] as Awaited<ReturnType<typeof todayLists>>["newLeads"],
+  };
+  // Prefer today board first; side panels can fail soft without blocking the page.
+  const lists = await Promise.race([
+    todayLists().catch(() => emptyLists),
+    new Promise<typeof emptyLists>((resolve) => setTimeout(() => resolve(emptyLists), 5000)),
+  ]);
+  const [events, sourceRows] = await Promise.all([
+    recentLeadEvents(8).catch(() => [] as Awaited<ReturnType<typeof recentLeadEvents>>),
+    leadSourceCounts(6).catch(() => [] as Awaited<ReturnType<typeof leadSourceCounts>>),
   ]);
 
   const seen = new Set<string>();

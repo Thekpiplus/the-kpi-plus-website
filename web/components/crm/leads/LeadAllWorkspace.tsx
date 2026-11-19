@@ -1028,6 +1028,15 @@ export function LeadAllWorkspace({
             <div className="kpi-lead-all-table-wrap kpi-lead-all-desktop">
               <table className="kpi-lead-all-table">
                 <caption className="sr-only">รายการลีดทั้งหมด</caption>
+                <colgroup>
+                  <col className="is-check" />
+                  <col className="is-contact" />
+                  <col className="is-stage" />
+                  <col className="is-value" />
+                  <col className="is-owner" />
+                  <col className="is-due" />
+                  <col className="is-actions" />
+                </colgroup>
                 <thead>
                   <tr>
                     <th scope="col" className="is-check">

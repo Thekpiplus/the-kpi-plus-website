@@ -817,8 +817,9 @@
 }
 
 .kpi-users-avatar {
-  display: grid;
-  place-items: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 2.5rem;
   height: 2.5rem;
   border-radius: 999px;
@@ -826,6 +827,10 @@
   color: var(--kpi-a-brand-ink);
   font-size: 0.8125rem;
   font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  padding: 0.12em 0 0;
+  box-sizing: border-box;
   flex-shrink: 0;
 }
 

@@ -17,10 +17,10 @@ function databaseUrl() {
   // Keep a small pool in production; override with PRISMA_CONNECTION_LIMIT if needed.
   const limit =
     process.env.PRISMA_CONNECTION_LIMIT?.trim() ||
-    (process.env.NODE_ENV === "production" ? "3" : "5");
+    (process.env.NODE_ENV === "production" ? "3" : "10");
   return raw.includes("?")
-    ? `${raw}&connection_limit=${limit}&pool_timeout=20`
-    : `${raw}?connection_limit=${limit}&pool_timeout=20`;
+    ? `${raw}&connection_limit=${limit}&pool_timeout=10`
+    : `${raw}?connection_limit=${limit}&pool_timeout=10`;
 }
 
 export function crmEnabled() {

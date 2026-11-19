@@ -689,7 +689,7 @@ export function PipelineWorkspace({
         </section>
       ) : (
         <section className="kpi-pipe-board-panel" aria-label="บอร์ด Pipeline">
-          <div className="kpi-pipe-board" style={{ ["--pipe-cols" as string]: String(Math.max(stages.length, 1)) }}>
+          <div className="kpi-pipe-board">
             {stages.map((stage) => {
               const cards = filtered.filter((d) => d.stageId === stage.id);
               return (
@@ -726,7 +726,7 @@ export function PipelineWorkspace({
                               {next && !deal.isWon && !deal.isLost ? (
                                 <button
                                   type="button"
-                                  className="kpi-leads-btn-secondary"
+                                  className="kpi-pipe-card-btn is-next"
                                   disabled={pending}
                                   onClick={() => moveDeal(deal, next.id)}
                                 >
@@ -735,7 +735,7 @@ export function PipelineWorkspace({
                               ) : null}
                               <button
                                 type="button"
-                                className="kpi-leads-btn-secondary"
+                                className="kpi-pipe-card-btn is-view"
                                 onClick={() => setBoardSelected(deal.id)}
                               >
                                 ดู

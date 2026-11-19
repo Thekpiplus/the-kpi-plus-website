@@ -293,13 +293,47 @@
   table-layout: fixed;
 }
 
+.kpi-lead-all-table col.is-check {
+  width: 3%;
+}
+
+.kpi-lead-all-table col.is-contact {
+  width: 28%;
+}
+
+.kpi-lead-all-table col.is-stage {
+  width: 14%;
+}
+
+.kpi-lead-all-table col.is-value {
+  width: 12%;
+}
+
+.kpi-lead-all-table col.is-owner {
+  width: 14%;
+}
+
+.kpi-lead-all-table col.is-due {
+  width: 15%;
+}
+
+.kpi-lead-all-table col.is-actions {
+  width: 14%;
+}
+
 .kpi-lead-all-table th,
 .kpi-lead-all-table td {
-  padding: 0.7rem 0.55rem;
+  padding: 0.7rem 0.75rem;
+  border-right: 1px solid var(--kpi-a-hairline);
   border-bottom: 1px solid var(--kpi-a-hairline);
   text-align: left;
   vertical-align: top;
   overflow-wrap: anywhere;
+}
+
+.kpi-lead-all-table th:last-child,
+.kpi-lead-all-table td:last-child {
+  border-right: 0;
 }
 
 .kpi-lead-all-table th {
@@ -307,49 +341,34 @@
   font-weight: 700;
   color: var(--kpi-a-th-fg, #f4f7fa);
   background: var(--kpi-a-th-bg, #0b1f33);
+  border-right-color: color-mix(in srgb, #fff 16%, var(--kpi-a-th-bg, #0b1f33));
   border-bottom-color: var(--kpi-a-th-border, #1a334d);
   white-space: nowrap;
 }
 
+.kpi-lead-all-table th:last-child {
+  border-right: 0;
+}
+
 .kpi-lead-all-table th.is-check,
 .kpi-lead-all-table td.is-check {
-  width: 2.5rem;
   padding-left: 0.55rem;
-  padding-right: 0.25rem;
-}
-
-.kpi-lead-all-table th.is-contact,
-.kpi-lead-all-table td.is-contact {
-  width: auto;
-  min-width: 11rem;
-}
-
-.kpi-lead-all-table th.is-stage,
-.kpi-lead-all-table td.is-stage {
-  width: 7.5rem;
+  padding-right: 0.35rem;
+  text-align: center;
+  vertical-align: middle;
 }
 
 .kpi-lead-all-table th.is-value,
 .kpi-lead-all-table td.is-value {
   text-align: right;
   font-variant-numeric: tabular-nums;
-  width: 7rem;
   white-space: nowrap;
-}
-
-.kpi-lead-all-table th.is-owner,
-.kpi-lead-all-table td.is-owner {
-  width: 7rem;
-}
-
-.kpi-lead-all-table th.is-due,
-.kpi-lead-all-table td.is-due {
-  width: 7.25rem;
 }
 
 .kpi-lead-all-table th.is-actions,
 .kpi-lead-all-table td.is-actions {
-  width: 8.25rem;
+  text-align: right;
+  white-space: nowrap;
 }
 
 .kpi-lead-all-table tbody tr.is-open {
@@ -412,28 +431,49 @@
 
 .kpi-lead-all-stage.tone-1 {
   color: #0f766e;
+  border-color: color-mix(in srgb, #0b6660 35%, #fff);
+  background: #c8ebe7;
 }
+
 .kpi-lead-all-stage.tone-2 {
   color: #0369a1;
+  border-color: color-mix(in srgb, var(--kpi-a-sky) 40%, #fff);
+  background: #bae6fd;
 }
+
 .kpi-lead-all-stage.tone-3 {
-  color: #a16207;
+  color: #92400e;
+  border-color: color-mix(in srgb, var(--kpi-a-amber) 40%, #fff);
+  background: #fde68a;
 }
+
 .kpi-lead-all-stage.tone-4 {
-  color: #7c3aed;
+  color: #5b21b6;
+  border-color: color-mix(in srgb, #7c3aed 35%, #fff);
+  background: #e9d5ff;
 }
+
 .kpi-lead-all-stage.tone-5 {
-  color: #1a3a02;
+  color: var(--kpi-a-brand-ink);
+  border-color: color-mix(in srgb, var(--kpi-a-brand) 45%, #fff);
+  background: var(--kpi-a-brand);
 }
+
 .kpi-lead-all-stage.tone-6 {
-  color: #334155;
+  color: #0b1f33;
+  border-color: color-mix(in srgb, #64748b 35%, #fff);
+  background: #e2e8f0;
 }
+
 .kpi-lead-all-stage.tone-won {
-  color: #166534;
-  background: #ecfdf3;
+  color: #14532d;
+  border-color: color-mix(in srgb, #16a34a 40%, #fff);
+  background: #bbf7d0;
 }
+
 .kpi-lead-all-stage.tone-lost {
   color: #9f1239;
+  border-color: color-mix(in srgb, var(--kpi-a-rose) 35%, #fff);
   background: var(--kpi-a-rose-soft);
 }
 
@@ -819,23 +859,22 @@
     min-width: 56rem;
   }
 
-  .kpi-lead-all-table th.is-stage,
-  .kpi-lead-all-table td.is-stage,
-  .kpi-lead-all-table th.is-owner,
-  .kpi-lead-all-table td.is-owner,
-  .kpi-lead-all-table th.is-due,
-  .kpi-lead-all-table td.is-due {
-    width: 6.75rem;
+  .kpi-lead-all-table col.is-contact {
+    width: 26%;
   }
 
-  .kpi-lead-all-table th.is-value,
-  .kpi-lead-all-table td.is-value {
-    width: 6.5rem;
+  .kpi-lead-all-table col.is-stage,
+  .kpi-lead-all-table col.is-owner,
+  .kpi-lead-all-table col.is-due {
+    width: 13%;
   }
 
-  .kpi-lead-all-table th.is-actions,
-  .kpi-lead-all-table td.is-actions {
-    width: 7.75rem;
+  .kpi-lead-all-table col.is-value {
+    width: 11%;
+  }
+
+  .kpi-lead-all-table col.is-actions {
+    width: 13%;
   }
 }
 
@@ -901,23 +940,22 @@
     min-width: 56rem;
   }
 
-  .kpi-lead-all-table th.is-stage,
-  .kpi-lead-all-table td.is-stage,
-  .kpi-lead-all-table th.is-owner,
-  .kpi-lead-all-table td.is-owner,
-  .kpi-lead-all-table th.is-due,
-  .kpi-lead-all-table td.is-due {
-    width: 6.75rem;
+  .kpi-lead-all-table col.is-contact {
+    width: 26%;
   }
 
-  .kpi-lead-all-table th.is-value,
-  .kpi-lead-all-table td.is-value {
-    width: 6.5rem;
+  .kpi-lead-all-table col.is-stage,
+  .kpi-lead-all-table col.is-owner,
+  .kpi-lead-all-table col.is-due {
+    width: 13%;
   }
 
-  .kpi-lead-all-table th.is-actions,
-  .kpi-lead-all-table td.is-actions {
-    width: 7.75rem;
+  .kpi-lead-all-table col.is-value {
+    width: 11%;
+  }
+
+  .kpi-lead-all-table col.is-actions {
+    width: 13%;
   }
 }
 
