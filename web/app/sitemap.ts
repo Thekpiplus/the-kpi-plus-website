@@ -6,9 +6,22 @@ import { existingLanguageAlternates, SITE, pages, type SeoEntry } from "@/lib/se
 
 const PRIVATE = [/^\/admin/, /^\/crm/, /^\/partners/, /^\/login/, /^\/dashboard/];
 
+/** Force absolute https URLs — CMS canonicals may be stored as paths like `/solutions`. */
+function absoluteUrl(value: string) {
+  const raw = value.trim();
+  if (!raw) return SITE;
+  try {
+    if (/^https?:\/\//i.test(raw)) return new URL(raw).toString().replace(/\/$/, "") || SITE;
+    const path = raw.startsWith("/") ? raw : `/${raw}`;
+    return new URL(path, SITE).toString().replace(/\/$/, "") || SITE;
+  } catch {
+    return `${SITE}${raw.startsWith("/") ? raw : `/${raw}`}`.replace(/\/$/, "") || SITE;
+  }
+}
+
 function isRedirectedLegacy(url: string) {
   try {
-    const path = new URL(url).pathname.replace(/\/$/, "") || "/";
+    const path = new URL(absoluteUrl(url)).pathname.replace(/\/$/, "") || "/";
     return (
       path === "/about" ||
       path === "/contact" ||
@@ -32,7 +45,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .map((page) => {
       const insight = insightByHref(page.route);
       return {
-        url: page.canonical,
+        url: absoluteUrl(page.canonical),
         lastModified: insight?.updatedAt || insight?.publishedAt || undefined,
         alternates: languageAlternates(page),
       };
@@ -43,10 +56,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .filter((doc) => !doc.noindex)
     .map((doc) => {
       const path = documentPath(doc);
+      const raw = (doc.canonical || `${SITE}${path}`)
+        .replace(/\/about$/, "/about-us")
+        .replace(/\/contact$/, "/contact-us");
       return {
-        url: (doc.canonical || `${SITE}${path}`)
-          .replace(/\/about$/, "/about-us")
-          .replace(/\/contact$/, "/contact-us"),
+        url: absoluteUrl(raw),
         lastModified: doc.updatedAt.toISOString().slice(0, 10),
         changeFrequency: "monthly" as const,
         priority: doc.kind === "insight" ? 0.7 : 0.6,
