@@ -13,7 +13,7 @@
 整理收益管理、行銷、科技與 AI 的觀點，幫助酒店團隊看見下一個有用的問題。
 [申請評估](/zh#audit)
 [查看相關方案](/zh/solutions/revenue-commercial-management)
-![The KPI Plus hospitality commercial planning](media/the-kpi-plus-insights-scene_8a7e72cb.jpg)
+![The KPI Plus hospitality commercial planning](media/the-kpi-plus-insights-scene_8a7e72cb.webp)
 這些內容幫助團隊看清楚收益問題、成長問題、決策，以及下一次該談什麼。
 如何使用
 ## 從問題走到有負責人的工作

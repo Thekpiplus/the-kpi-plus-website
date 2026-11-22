@@ -13,7 +13,7 @@
 我們公開已獲同意的客戶名稱，以及任何案例研究的標準：要有工作範圍、資料來源，以及客戶核准。
 [談談您的酒店](/zh#audit)
 [查看我們的方案](/zh/solutions/revenue-commercial-management)
-![The KPI Plus hospitality commercial planning](media/the-kpi-plus-revenue-scene_4932d3c7.jpg)
+![The KPI Plus hospitality commercial planning](media/the-kpi-plus-revenue-scene_4932d3c7.webp)
 我們謹慎公開合作資訊，並把事實與尚未確認的內容分開。
 發布前的標準
 ## 把問題、工作與證據分開，合作資訊才有意義

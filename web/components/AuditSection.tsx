@@ -158,7 +158,7 @@ export function AuditSection({ locale, leftExtra }: { locale: Locale; leftExtra?
           <aside className="kpi-audit-aside">
             <figure className="kpi-audit-people">
               <img
-                src="/media/kpi-plus-team-review_d4af97f6.jpg"
+                src="/media/kpi-plus-team-review_d4af97f6.webp"
                 alt={
                   locale === "th"
                     ? "ทีม The KPI Plus ประชุมรีวิวข้อมูลโรงแรมด้วยกัน"

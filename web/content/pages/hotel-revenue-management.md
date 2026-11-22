@@ -29,7 +29,7 @@ Revenue · Direct Booking · Commercial Growth
 เชื่อมรายได้ การจองตรง และการเติบโตของโรงแรมให้เป็นแผนที่ทีมลงมือทำและวัดผลได้จริง
 [ดูบริการ Revenue Management](solutions/revenue-commercial-management.html)
 [ขอคุยเรื่องรายได้โรงแรม](index.html#audit)
-![Hospitality commercial decision-making](media/the-kpi-plus-revenue-scene_4932d3c7.jpg)
+![Hospitality commercial decision-making](media/the-kpi-plus-revenue-scene_4932d3c7.webp)
 แนวทางทำงาน
 บริบทราคาและ Demand
 Distribution และ Channel Mix
@@ -179,5 +179,5 @@ OTA ช่องทางตรง B2B และแหล่งอื่นม�
 ## Page image assets
 
 - `media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus
-- `media/the-kpi-plus-revenue-scene_4932d3c7.jpg` — Hospitality commercial decision-making
+- `media/the-kpi-plus-revenue-scene_4932d3c7.webp` — Hospitality commercial decision-making
 - `media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus

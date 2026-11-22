@@ -48,7 +48,7 @@ Revenue · Direct Booking · Commercial Growth
 - SEO ช่วยเรื่องอะไร
 - SEM ช่วยเรื่องอะไร
 - ตัวอย่างการใช้จริงในโรงแรม
-![Hospitality insight from The KPI Plus](../media/the-kpi-plus-insights-scene_8a7e72cb.jpg)
+![Hospitality insight from The KPI Plus](../media/the-kpi-plus-insights-scene_8a7e72cb.webp)
 ## เริ่มจากคำถามของโรงแรม
 SEO และ SEM ไม่ใช่ตัวเลือกที่ต้องเลือกเพียงอย่างเดียว จุดเริ่มต้นคือดูว่าทีมต้องการให้ผู้ค้นหาเจอข้อมูลอะไร และโรงแรมมีหน้าเว็บหรือเส้นทางต่อไปที่ตอบคำถามนั้นแล้วหรือยัง
 ## SEO ช่วยเรื่องอะไร
@@ -230,5 +230,5 @@ Revenue · Direct Booking · Commercial Growth
 ## Page image assets
 
 - `../media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus
-- `../media/the-kpi-plus-insights-scene_8a7e72cb.jpg` — Hospitality insight from The KPI Plus
+- `../media/the-kpi-plus-insights-scene_8a7e72cb.webp` — Hospitality insight from The KPI Plus
 - `../media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus

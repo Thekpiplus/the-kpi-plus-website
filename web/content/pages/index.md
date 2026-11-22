@@ -28,7 +28,7 @@ Direct Booking
 ·
 Commercial Growth
 รายได้ · การจองตรง · การเติบโตของโรงแรม
-![ผู้บริหารโรงแรมวิเคราะห์ข้อมูลรายได้และการเติบโตในล็อบบี้โรงแรมร่วมสมัย](media/kpi-plus-thai-hero-performance-corrected_2937c314.jpg)
+![ผู้บริหารโรงแรมวิเคราะห์ข้อมูลรายได้และการเติบโตในล็อบบี้โรงแรมร่วมสมัย](media/kpi-plus-thai-hero-performance-corrected_2937c314.webp)
 รายได้รั่วตรงไหน
 วิเคราะห์ราคาและ Demand ให้เห็นภาพเดียว
 พึ่งพา OTA สูงไปไหม
@@ -83,7 +83,7 @@ Technology · AI · Automation · Training
 ### วัดผลและพัฒนา
 ติดตามผล ปรับแนวทาง และพัฒนาต่อจากข้อมูลที่เกิดขึ้นจริง
 [ขอรับการวิเคราะห์โรงแรม](index.html#audit)
-![Hospitality revenue-management workspace](media/the-kpi-plus-revenue-scene_4932d3c7.jpg)
+![Hospitality revenue-management workspace](media/the-kpi-plus-revenue-scene_4932d3c7.webp)
 Commercial system
 ดึง Demand → เปลี่ยนเป็นการจอง → ดูแลรายได้ → ติดตาม → ปิดการขาย → วัดผล
 ทุกอย่างต้องทำงานเชื่อมโยงกัน
@@ -99,7 +99,7 @@ Direct booking
 ## แนวคิดที่ทีมโรงแรมนำไปใช้ได้จริง
 รวมเรื่อง Revenue, Demand, Technology, AI และการทำงานของทีม เพื่อช่วยให้เจ้าของและทีมโรงแรมตัดสินใจได้เร็วขึ้น
 [ดูบทความและมุมมอง](insights.html)
-![Hotel industry research materials](media/the-kpi-plus-insights-scene_8a7e72cb.jpg)
+![Hotel industry research materials](media/the-kpi-plus-insights-scene_8a7e72cb.webp)
 Revenue · Demand
 Technology · AI
 ผลลัพธ์ที่มีข้อมูลรองรับ
@@ -395,8 +395,8 @@ By submitting, you agree that The KPI Plus may contact you about this enquiry.
 ## Page image assets
 
 - `media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus
-- `media/kpi-plus-thai-hero-performance-corrected_2937c314.jpg` — ผู้บริหารโรงแรมวิเคราะห์ข้อมูลรายได้และการเติบโตในล็อบบี้โรงแรมร่วมสมัย
-- `media/the-kpi-plus-revenue-scene_4932d3c7.jpg` — Hospitality revenue-management workspace
-- `media/the-kpi-plus-insights-scene_8a7e72cb.jpg` — Hotel industry research materials
+- `media/kpi-plus-thai-hero-performance-corrected_2937c314.webp` — ผู้บริหารโรงแรมวิเคราะห์ข้อมูลรายได้และการเติบโตในล็อบบี้โรงแรมร่วมสมัย
+- `media/the-kpi-plus-revenue-scene_4932d3c7.webp` — Hospitality revenue-management workspace
+- `media/the-kpi-plus-insights-scene_8a7e72cb.webp` — Hotel industry research materials
 - `media/the-kpi-plus-founders_f4c8516e.webp` — The KPI Plus founders
 - `media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus

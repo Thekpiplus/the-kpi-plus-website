@@ -29,7 +29,7 @@ Connect revenue, direct booking, and commercial-growth priorities so the hotel t
 [Explore Website Design](solutions/hotel-website-design.html)
 [Explore Website Conversion](solutions/hotel-direct-bookings.html)
 [Request an audit](/en#audit)
-![Hospitality commercial decision-making](../media/the-kpi-plus-revenue-scene_4932d3c7.jpg)
+![Hospitality commercial decision-making](../media/the-kpi-plus-revenue-scene_4932d3c7.webp)
 Commercial approach
 Website user experience
 Mobile and booking paths
@@ -180,5 +180,5 @@ Corporate AI Training Program
 ## Page image assets
 
 - `../media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus
-- `../media/the-kpi-plus-revenue-scene_4932d3c7.jpg` — Hospitality commercial decision-making
+- `../media/the-kpi-plus-revenue-scene_4932d3c7.webp` — Hospitality commercial decision-making
 - `../media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus

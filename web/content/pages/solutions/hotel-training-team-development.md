@@ -29,7 +29,7 @@ Revenue · Direct Booking · Commercial Growth
 เชื่อมรายได้ การจองตรง และการเติบโตของโรงแรมให้เป็นแผนที่ทีมลงมือทำและวัดผลได้จริง
 [ขอรับการวิเคราะห์โรงแรม](../index.html#audit)
 [พูดคุยกับทีม เดอะ เคพีไอ พลัส](../contact-us.html)
-![พัฒนาทีมและทักษะด้านธุรกิจโรงแรม](../media/kpi-grow-capability_7bba9d6e.jpg)
+![พัฒนาทีมและทักษะด้านธุรกิจโรงแรม](../media/kpi-grow-capability_7bba9d6e.webp)
 จุดที่งานนี้ให้ความสำคัญ
 Participation and Completion
 Confidence and Workflow Adoption
@@ -237,5 +237,5 @@ Revenue · Direct Booking · Commercial Growth
 ## Page image assets
 
 - `../media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus
-- `../media/kpi-grow-capability_7bba9d6e.jpg` — พัฒนาทีมและทักษะด้านธุรกิจโรงแรม
+- `../media/kpi-grow-capability_7bba9d6e.webp` — พัฒนาทีมและทักษะด้านธุรกิจโรงแรม
 - `../media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus

@@ -47,12 +47,20 @@ const nextConfig: NextConfig = {
       { source: "/media/:path*", headers: [immutableYear] },
       { source: "/brand/:path*", headers: [immutableYear] },
       { source: "/fonts/:path*", headers: [immutableYear] },
-      { source: "/favicon.png", headers: [immutableYear] },
+      { source: "/favicon.webp", headers: [immutableYear] },
       { source: "/favicon.svg", headers: [immutableYear] },
     ];
   },
   async redirects() {
     return [
+      /* Legacy raster image extensions → WebP */
+      { source: "/favicon.png", destination: "/favicon.webp", permanent: true },
+      { source: "/media/:path*.jpg", destination: "/media/:path*.webp", permanent: true },
+      { source: "/media/:path*.jpeg", destination: "/media/:path*.webp", permanent: true },
+      { source: "/media/:path*.png", destination: "/media/:path*.webp", permanent: true },
+      { source: "/brand/:path*.jpg", destination: "/brand/:path*.webp", permanent: true },
+      { source: "/brand/:path*.jpeg", destination: "/brand/:path*.webp", permanent: true },
+      { source: "/brand/:path*.png", destination: "/brand/:path*.webp", permanent: true },
       /* KPI blog batch redirects */
       {
         source: "/10-hotel-marketing-strategies",

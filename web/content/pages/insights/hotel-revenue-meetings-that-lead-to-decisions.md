@@ -48,7 +48,7 @@ Revenue · Direct Booking · Commercial Growth
 - ทบทวนเฉพาะสัญญาณที่มีผลต่อคำถามนั้น
 - ตกลงการตัดสินใจ เจ้าของงาน และวันทบทวน
 - บันทึกสิ่งที่จะตรวจสอบก่อนการประชุมครั้งต่อไป
-![Hospitality insight from The KPI Plus](../media/the-kpi-plus-insights-scene_8a7e72cb.jpg)
+![Hospitality insight from The KPI Plus](../media/the-kpi-plus-insights-scene_8a7e72cb.webp)
 ## การประชุมรายได้ควรจบด้วยการตัดสินใจ
 การประชุมรายได้ที่มีประโยชน์ไม่ควรหยุดอยู่ที่การดูตัวเลขเมื่อวาน แต่ควรช่วยให้ทีมเห็นว่าอะไรเปลี่ยนไป เหตุใดจึงสำคัญ และควรทำอะไรต่อ เมื่อการประชุมกลายเป็นเพียงการรายงาน งานด้านราคา ช่องทางขาย การตลาด และการสำรองห้องพักอาจเดินแยกกันโดยไม่มีทิศทางด้านรายได้และการเติบโตร่วมกัน
 คำถามที่ควรถามจึงไม่ใช่แค่ “เกิดอะไรขึ้น” แต่คือ “จากสิ่งที่เกิดขึ้น เราจำเป็นต้องตัดสินใจอะไร”
@@ -232,5 +232,5 @@ Revenue · Direct Booking · Commercial Growth
 ## Page image assets
 
 - `../media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus
-- `../media/the-kpi-plus-insights-scene_8a7e72cb.jpg` — Hospitality insight from The KPI Plus
+- `../media/the-kpi-plus-insights-scene_8a7e72cb.webp` — Hospitality insight from The KPI Plus
 - `../media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus

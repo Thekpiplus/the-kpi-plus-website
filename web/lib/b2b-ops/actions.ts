@@ -1,12 +1,10 @@
 "use server";
 
-import { mkdirSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { storePublicUpload } from "@/lib/media/store-upload";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/crm/auth";
 import { prisma } from "@/lib/crm/db";
-import { randomToken } from "@/lib/crm/security";
 import { b2bAccessFor, canOpenB2b } from "./access";
 import { ensureB2bOpsSchema } from "./ensure";
 import { activityStatusFromProgress, b2bSubtaskProgress } from "./progress";
@@ -67,19 +65,18 @@ async function storePrivateFile(
 ): Promise<{ error: "invalid_file" } | { filename: string; mime: string; size: number; path: string } | null> {
   if (!file.size) return null;
   if (file.size > MAX_FILE_BYTES) return { error: "invalid_file" };
-  const original = file.name || "file";
-  const dot = original.lastIndexOf(".");
-  const ext = dot >= 0 ? original.slice(dot).toLowerCase() : "";
-  const buffer = Buffer.from(await file.arrayBuffer());
-  const name = `${randomToken(8)}${ext || ""}`;
-  const dir = join(process.cwd(), "private", "b2b-ops", folder);
-  mkdirSync(dir, { recursive: true });
-  writeFileSync(join(dir, name), buffer);
+  const stored = await storePublicUpload(file, {
+    root: "private",
+    subdir: `b2b-ops/${folder}`,
+    allowedExt: () => true,
+    maxBytes: MAX_FILE_BYTES,
+  });
+  if (!stored.ok) return { error: "invalid_file" };
   return {
-    filename: original,
-    mime: file.type || "application/octet-stream",
-    size: file.size,
-    path: `private/b2b-ops/${folder}/${name}`,
+    filename: stored.upload.originalName,
+    mime: stored.upload.mime,
+    size: stored.upload.size,
+    path: stored.upload.path,
   };
 }
 

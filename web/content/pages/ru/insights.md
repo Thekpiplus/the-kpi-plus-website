@@ -13,7 +13,7 @@
 Материалы о revenue management, маркетинге, технологиях и ИИ, которые помогают команде увидеть следующий полезный вопрос.
 [Запросить аудит](/ru#audit)
 [Смотреть связанные решения](/ru/solutions/revenue-commercial-management)
-![The KPI Plus hospitality commercial planning](media/the-kpi-plus-insights-scene_8a7e72cb.jpg)
+![The KPI Plus hospitality commercial planning](media/the-kpi-plus-insights-scene_8a7e72cb.webp)
 Эти материалы помогают команде увидеть вопрос дохода, вопрос роста, решение и следующий разговор.
 Как использовать
 ## От вопроса к работе с владельцем

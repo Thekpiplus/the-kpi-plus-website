@@ -30,7 +30,7 @@ Revenue · Direct Booking · Commercial Growth
 [ดูบริการ Google Ads](solutions/google-ads-management.html)
 [ดูบริการ Meta Ads](solutions/meta-ads-management.html)
 [ขอคุยเรื่องรายได้โรงแรม](index.html#audit)
-![Hospitality commercial decision-making](media/the-kpi-plus-revenue-scene_4932d3c7.jpg)
+![Hospitality commercial decision-making](media/the-kpi-plus-revenue-scene_4932d3c7.webp)
 แนวทางทำงาน
 บทบาทของแต่ละช่องทาง
 Search และ Social Discovery
@@ -184,5 +184,5 @@ SEO ข้อมูล Local Search และเนื้อหาบนเว�
 ## Page image assets
 
 - `media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus
-- `media/the-kpi-plus-revenue-scene_4932d3c7.jpg` — Hospitality commercial decision-making
+- `media/the-kpi-plus-revenue-scene_4932d3c7.webp` — Hospitality commercial decision-making
 - `media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus

@@ -1,12 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { storePublicUpload } from "@/lib/media/store-upload";
 import { redirect } from "next/navigation";
-import { mkdirSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
 import { requireUser } from "@/lib/crm/auth";
 import { prisma } from "@/lib/crm/db";
-import { randomToken } from "@/lib/crm/security";
 import { metaAccessFor, canOpenMeta } from "./access";
 import { ensureMetaOpsSchema } from "./ensure";
 import { metaSubtaskProgress, shouldAwaitReview } from "./progress";
@@ -99,20 +97,18 @@ async function writeAudit(campaignId: string, userId: string, action: string, de
 async function storePrivateFile(file: File, folder: string) {
   if (!file.size) return null;
   if (file.size > MAX_FILE_BYTES) return { error: "invalid_file" as const };
-  const original = file.name || "file";
-  const dot = original.lastIndexOf(".");
-  const ext = dot >= 0 ? original.slice(dot).toLowerCase() : "";
-  if (ext && !/^\.(png|jpe?g|webp|gif|svg|pdf|docx?|xlsx?|txt)$/i.test(ext)) return { error: "invalid_file" as const };
-  const buffer = Buffer.from(await file.arrayBuffer());
-  const name = `${randomToken(8)}${ext || ""}`;
-  const dir = join(process.cwd(), "private", "meta-ops", folder);
-  mkdirSync(dir, { recursive: true });
-  writeFileSync(join(dir, name), buffer);
+  const stored = await storePublicUpload(file, {
+    root: "private",
+    subdir: `meta-ops/${folder}`,
+    allowedExt: (ext) => !ext || /^\.(png|jpe?g|webp|gif|svg|pdf|docx?|xlsx?|txt)$/i.test(ext),
+    maxBytes: MAX_FILE_BYTES,
+  });
+  if (!stored.ok) return { error: "invalid_file" as const };
   return {
-    filename: original,
-    mime: file.type || "application/octet-stream",
-    size: file.size,
-    path: `private/meta-ops/${folder}/${name}`,
+    filename: stored.upload.originalName,
+    mime: stored.upload.mime,
+    size: stored.upload.size,
+    path: stored.upload.path,
   };
 }
 

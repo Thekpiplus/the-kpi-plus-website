@@ -1,13 +1,13 @@
 "use server";
 
-import { mkdirSync, unlinkSync, writeFileSync } from "node:fs";
-import { extname, join } from "node:path";
+import { unlinkSync } from "node:fs";
+import { join } from "node:path";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/crm/auth";
 import { hasModule } from "@/lib/crm/modules";
 import { isFullAccessRole } from "@/lib/crm/roles";
-import { randomToken } from "@/lib/crm/security";
+import { registerCmsMedia, storeCmsImageUpload, storePublicUpload } from "@/lib/media/store-upload";
 import { SITE } from "@/lib/seo";
 import { blocksToMarkdown, bodyFromMarkdown, documentPath, slugify, unwrapCmsBody } from "./body";
 import { loadHandoff } from "@/lib/handoff";
@@ -770,24 +770,15 @@ export async function uploadMedia(formData: FormData) {
   await requireCms();
   const file = formData.get("file");
   if (!(file instanceof File) || !file.size) redirect("/crm/cms/media?error=invalid");
-  const ext = extname(file.name || "").toLowerCase() || ".bin";
   const allowed = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif", ".svg", ".pdf"]);
-  if (!allowed.has(ext)) redirect("/crm/cms/media?error=type");
-  const name = `${randomToken(8)}${ext}`;
-  const dir = join(process.cwd(), "public", "media", "cms");
-  mkdirSync(dir, { recursive: true });
-  const buffer = Buffer.from(await file.arrayBuffer());
-  writeFileSync(join(dir, name), buffer);
-  const db = await cmsDb();
-  await db.cmsMedia.create({
-    data: {
-      filename: file.name,
-      path: `/media/cms/${name}`,
-      alt: String(formData.get("alt") ?? "").trim(),
-      caption: String(formData.get("caption") ?? "").trim(),
-      mime: file.type || "application/octet-stream",
-      size: file.size,
-    },
+  const stored = await storePublicUpload(file, {
+    subdir: "media/cms",
+    allowedExt: allowed,
+  });
+  if (!stored.ok) redirect(`/crm/cms/media?error=${stored.error}`);
+  await registerCmsMedia(stored.upload, {
+    alt: String(formData.get("alt") ?? "").trim(),
+    caption: String(formData.get("caption") ?? "").trim(),
   });
   revalidatePath("/crm/cms/media");
   redirect("/crm/cms/media?saved=1");
@@ -895,29 +886,11 @@ function revalidateContactPublic() {
 }
 
 async function storeContactImage(file: File) {
-  const ext = extname(file.name || "").toLowerCase() || "";
-  if (!CONTACT_IMAGE_TYPES.has(ext) || file.size > MAX_CONTACT_IMAGE_BYTES) return "";
-  const name = `${randomToken(8)}${ext}`;
-  const dir = join(process.cwd(), "public", "media", "cms");
-  mkdirSync(dir, { recursive: true });
-  writeFileSync(join(dir, name), Buffer.from(await file.arrayBuffer()));
-  const path = `/media/cms/${name}`;
-  try {
-    const db = await cmsDb();
-    await db.cmsMedia.create({
-      data: {
-        filename: file.name,
-        path,
-        alt: "",
-        caption: "",
-        mime: file.type || "image/jpeg",
-        size: file.size,
-      },
-    });
-  } catch {
-    // File is on disk even if the media library row cannot be written.
-  }
-  return path;
+  const stored = await storeCmsImageUpload(file, {
+    allowedExt: CONTACT_IMAGE_TYPES,
+    maxBytes: MAX_CONTACT_IMAGE_BYTES,
+  });
+  return stored.ok ? stored.path : "";
 }
 
 export async function saveContact(formData: FormData): Promise<ContactSaveResult> {

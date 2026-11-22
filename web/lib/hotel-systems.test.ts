@@ -268,7 +268,7 @@ test("platform landscape is a six-category map, not a logo wall", () => {
   assert.equal(rows.every((row) => !row.logoSrc), true);
   assert.equal(systemsFitRowsAreStale(rows), false);
   assert.equal(systemsFitRowsAreStale(rows.slice(0, 3)), true);
-  assert.equal(systemsFitRowsAreStale(rows.map((row) => ({ ...row, logoSrc: "/brand/platforms/cloudbeds.png" }))), true);
+  assert.equal(systemsFitRowsAreStale(rows.map((row) => ({ ...row, logoSrc: "/brand/platforms/cloudbeds.webp" }))), true);
   assert.equal(SYSTEMS_FIT_COLUMNS.example.en, "Example or existing system");
   assert.equal(SYSTEMS_FIT_COLUMNS.verification.en, "Technical verification status");
   assert.deepEqual(
@@ -281,8 +281,8 @@ test("platform landscape is a six-category map, not a logo wall", () => {
   assert.equal(SYSTEMS_FIT_VISUAL.sourceWidth, 1600);
   assert.equal(SYSTEMS_FIT_VISUAL.sourceHeight, 900);
   assert.equal(SYSTEMS_FIT_SCENARIOS.every((row) => String(row.integrationStatus) !== "verified_integration"), true);
-  assert.equal(systemsPlatformLogoSrc("/brand/platforms/cloudbeds.png", "replace"), "");
-  assert.equal(systemsPlatformLogoSrc("/brand/platforms/cloudbeds.png", "sample"), "/brand/platforms/cloudbeds.png");
+  assert.equal(systemsPlatformLogoSrc("/brand/platforms/cloudbeds.webp", "replace"), "");
+  assert.equal(systemsPlatformLogoSrc("/brand/platforms/cloudbeds.webp", "sample"), "/brand/platforms/cloudbeds.webp");
   assert.equal(systemsPlatformLogoSrc("Cloudbeds", "sample"), "");
   assert.equal(systemsPlatformLogoSrc("/images/hotel-systems-platforms-placeholder.webp", "sample"), "");
 });

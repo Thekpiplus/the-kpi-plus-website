@@ -1,7 +1,5 @@
 "use server";
 
-import { mkdirSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/crm/auth";
@@ -9,6 +7,7 @@ import { prisma } from "@/lib/crm/db";
 import { hasModule } from "@/lib/crm/modules";
 import { isFullAccessRole } from "@/lib/crm/roles";
 import { randomToken } from "@/lib/crm/security";
+import { storePublicUpload } from "@/lib/media/store-upload";
 import { ensureReservationOpsSchema } from "./ensure";
 import { statusFromProgress, subtaskProgress } from "./progress";
 import {
@@ -266,25 +265,20 @@ export async function attachReservationOpImage(formData: FormData): Promise<Rese
   const operationId = text(formData, "operationId");
   const file = formData.get("file");
   if (!operationId || !(file instanceof File) || file.size <= 0) return { ok: false, error: "missing_file" };
-  const original = file.name || "image";
-  const dot = original.lastIndexOf(".");
-  const ext = dot >= 0 ? original.slice(dot).toLowerCase() : "";
-  if (!RESERVATION_IMAGE_TYPES.has(ext) || file.size > MAX_RESERVATION_IMAGE_BYTES) {
-    return { ok: false, error: "invalid_image" };
-  }
-  const buffer = Buffer.from(await file.arrayBuffer());
-  const storedName = `${randomToken(8)}${ext}`;
-  const dir = join(process.cwd(), "private", "reservations-ops");
-  mkdirSync(dir, { recursive: true });
-  const relative = `private/reservations-ops/${storedName}`;
-  writeFileSync(join(process.cwd(), relative), buffer);
+  const stored = await storePublicUpload(file, {
+    root: "private",
+    subdir: "reservations-ops",
+    allowedExt: RESERVATION_IMAGE_TYPES,
+    maxBytes: MAX_RESERVATION_IMAGE_BYTES,
+  });
+  if (!stored.ok) return { ok: false, error: "invalid_image" };
   await prisma().reservationOpAttachment.create({
     data: {
       operationId,
-      filename: original,
-      mime: file.type || "image/jpeg",
-      size: file.size,
-      path: relative,
+      filename: stored.upload.originalName,
+      mime: stored.upload.mime,
+      size: stored.upload.size,
+      path: stored.upload.path,
       createdBy: user.id,
     },
   });

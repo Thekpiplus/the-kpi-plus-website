@@ -30,7 +30,7 @@ Revenue · Direct Booking · Commercial Growth
 เชื่อมรายได้ การจองตรง และการเติบโตของโรงแรมให้เป็นแผนที่ทีมลงมือทำและวัดผลได้จริง
 [ขอรับการวิเคราะห์โรงแรม](../index.html#audit)
 [พูดคุยกับทีม เดอะ เคพีไอ พลัส](../contact-us.html)
-![SEO และ Local Search สำหรับโรงแรม](../media/kpi-grow-demand_24299cd0.jpg)
+![SEO และ Local Search สำหรับโรงแรม](../media/kpi-grow-demand_24299cd0.webp)
 จุดที่งานนี้ให้ความสำคัญ
 Organic Impressions และ Clicks
 Search Visibility ของหน้าเป้าหมาย
@@ -237,5 +237,5 @@ Revenue · Direct Booking · Commercial Growth
 ## Page image assets
 
 - `../media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus
-- `../media/kpi-grow-demand_24299cd0.jpg` — SEO และ Local Search สำหรับโรงแรม
+- `../media/kpi-grow-demand_24299cd0.webp` — SEO และ Local Search สำหรับโรงแรม
 - `../media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus

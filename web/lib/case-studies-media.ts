@@ -15,7 +15,7 @@ function existingPublicSrc(src: string | undefined) {
 
 export const CASE_STUDIES_HERO_VISUAL = {
   /** Approved poolside property visual with Room Revenue / ADR / ROAS highlights. */
-  approvedSrc: "/media/case-studies-hero-poolside_5539abd3.jpg" as string | undefined,
+  approvedSrc: "/media/case-studies-hero-poolside_5539abd3.webp" as string | undefined,
   approvedAlt: "Hotel poolside with Room Revenue, ADR and ROAS performance highlights",
   approvedAltTh: "วิวโรงแรมริมสระ พร้อมไฮไลต์ผล Room Revenue, ADR และ ROAS",
   reservedSrc: "/images/case-studies-hero-property-placeholder.webp",

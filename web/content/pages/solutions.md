@@ -25,7 +25,7 @@
 ไม่ว่าจะเป็นรายได้ ช่องทางการขาย การมองเห็นออนไลน์ หรือระบบการทำงาน เราช่วยหาจุดที่ควรพัฒนาก่อน แล้วเลือกแนวทางที่เหมาะกับธุรกิจของคุณ
 [ขอวิเคราะห์ธุรกิจของคุณ](index.html#audit)
 [ดูโซลูชันทั้งหมด](solutions.html#solutions)
-![การวางแผนกลยุทธ์รายได้และการเติบโตของโรงแรม](media/the-kpi-plus-revenue-scene_4932d3c7.jpg)
+![การวางแผนกลยุทธ์รายได้และการเติบโตของโรงแรม](media/the-kpi-plus-revenue-scene_4932d3c7.webp)
 เลือกจากปัญหาที่กำลังเจอ
 ## เลือกพัฒนาในจุดที่โรงแรมของคุณต้องการมากที่สุด
 01
@@ -79,7 +79,7 @@ Hotel Systems · Technology · AI · Training
 Selected hospitality collaboration record
 ## Trusted by leading hospitality brands.
 The KPI Plus has had the opportunity to work with and support hospitality brands across Thailand. This selected record is presented as factual collaboration context, not an endorsement or performance claim.
-![Destination Group](media/destination-group-official-logo_667e4ce8.jpg)
+![Destination Group](media/destination-group-official-logo_667e4ce8.webp)
 ![BYD Lofts Boutique Hotel & Serviced Apartments](media/byd-lofts-official-logo_3bebe9db.svg)
 Hotel COCO Phuket
 Naiya Buree Boutique Resort
@@ -87,7 +87,7 @@ Baan Taranya Resort
 Casa Solana Patong
 Casa De Lipe
 Baan 125 Stay
-![](media/destination-group-official-logo_667e4ce8.jpg)
+![](media/destination-group-official-logo_667e4ce8.webp)
 ![](media/byd-lofts-official-logo_3bebe9db.svg)
 Hotel COCO Phuket
 Naiya Buree Boutique Resort
@@ -256,9 +256,9 @@ Technology · AI · Automation · Training
 ## Page image assets
 
 - `media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus
-- `media/the-kpi-plus-revenue-scene_4932d3c7.jpg` — การวางแผนกลยุทธ์รายได้และการเติบโตของโรงแรม
-- `media/destination-group-official-logo_667e4ce8.jpg` — Destination Group
+- `media/the-kpi-plus-revenue-scene_4932d3c7.webp` — การวางแผนกลยุทธ์รายได้และการเติบโตของโรงแรม
+- `media/destination-group-official-logo_667e4ce8.webp` — Destination Group
 - `media/byd-lofts-official-logo_3bebe9db.svg` — BYD Lofts Boutique Hotel & Serviced Apartments
-- `media/destination-group-official-logo_667e4ce8.jpg` — 
+- `media/destination-group-official-logo_667e4ce8.webp` — 
 - `media/byd-lofts-official-logo_3bebe9db.svg` — 
 - `media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus

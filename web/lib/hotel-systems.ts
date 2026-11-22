@@ -893,12 +893,12 @@ export const SYSTEMS_READINESS_ROWS = [
 ] as const;
 
 export const SYSTEMS_PLATFORMS = [
-  { name: "Cloudbeds", src: "/brand/platforms/cloudbeds.png", kind: "example_category" as SystemsPlatformKind },
-  { name: "SiteMinder", src: "/brand/platforms/siteminder.png", kind: "example_category" as SystemsPlatformKind },
-  { name: "Yanolja Cloud", src: "/brand/platforms/yanolja.png", kind: "example_category" as SystemsPlatformKind },
-  { name: "OPERA Cloud", src: "/brand/platforms/opera-cloud.png", kind: "example_category" as SystemsPlatformKind },
-  { name: "NAWA", src: "/brand/platforms/nawa.png", kind: "example_category" as SystemsPlatformKind },
-  { name: "HotelierGuru", src: "/brand/platforms/hotelierguru.png", kind: "example_category" as SystemsPlatformKind },
+  { name: "Cloudbeds", src: "/brand/platforms/cloudbeds.webp", kind: "example_category" as SystemsPlatformKind },
+  { name: "SiteMinder", src: "/brand/platforms/siteminder.webp", kind: "example_category" as SystemsPlatformKind },
+  { name: "Yanolja Cloud", src: "/brand/platforms/yanolja.webp", kind: "example_category" as SystemsPlatformKind },
+  { name: "OPERA Cloud", src: "/brand/platforms/opera-cloud.webp", kind: "example_category" as SystemsPlatformKind },
+  { name: "NAWA", src: "/brand/platforms/nawa.webp", kind: "example_category" as SystemsPlatformKind },
+  { name: "HotelierGuru", src: "/brand/platforms/hotelierguru.webp", kind: "example_category" as SystemsPlatformKind },
 ] as const;
 
 export const SYSTEMS_METHOD_LABELS = ["Discover", "Map", "Configure", "Test", "Handover"] as const;

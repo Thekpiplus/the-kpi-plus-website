@@ -8,7 +8,8 @@
     "build": "prisma generate && next build",
     "start": "next start",
     "postinstall": "prisma generate",
-    "crm:setup": "prisma generate && prisma migrate deploy"
+    "crm:setup": "prisma generate && prisma migrate deploy",
+    "db:local": "node scripts/setup-local-db.mjs"
   },
   "dependencies": {
     "@google-analytics/data": "^7.3.0",
@@ -19,7 +20,8 @@
     "prisma": "^6.19.3",
     "qrcode": "^1.5.4",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "sharp": "^0.35.5"
   },
   "devDependencies": {
     "@types/node": "^22.18.6",

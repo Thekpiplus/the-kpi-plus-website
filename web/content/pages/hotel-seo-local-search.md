@@ -29,7 +29,7 @@ Revenue · Direct Booking · Commercial Growth
 เชื่อมรายได้ การจองตรง และการเติบโตของโรงแรมให้เป็นแผนที่ทีมลงมือทำและวัดผลได้จริง
 [ดูบริการ SEO และ Local Search](solutions/hotel-seo-google-maps-ai-search.html)
 [ขอคุยเรื่องรายได้โรงแรม](index.html#audit)
-![Hospitality commercial decision-making](media/the-kpi-plus-revenue-scene_4932d3c7.jpg)
+![Hospitality commercial decision-making](media/the-kpi-plus-revenue-scene_4932d3c7.webp)
 แนวทางทำงาน
 ความชัดเจนของข้อมูลโรงแรม
 Google Business Profile
@@ -179,5 +179,5 @@ Page Title หัวข้อ ประสบการณ์บนมือถ�
 ## Page image assets
 
 - `media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus
-- `media/the-kpi-plus-revenue-scene_4932d3c7.jpg` — Hospitality commercial decision-making
+- `media/the-kpi-plus-revenue-scene_4932d3c7.webp` — Hospitality commercial decision-making
 - `media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus

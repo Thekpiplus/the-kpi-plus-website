@@ -1,7 +1,6 @@
 ﻿"use server";
 
-import { mkdirSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { storePublicUpload } from "@/lib/media/store-upload";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/crm/auth";
@@ -112,20 +111,18 @@ function validUrl(value: string) {
 async function storePrivateFile(file: File, folder: string) {
   if (!file.size) return null;
   if (file.size > MAX_FILE_BYTES) return { error: "invalid_file" as const };
-  const original = file.name || "file";
-  const dot = original.lastIndexOf(".");
-  const ext = dot >= 0 ? original.slice(dot).toLowerCase() : "";
-  if (ext && !/^\.(png|jpe?g|webp|gif|svg|pdf|docx?|xlsx?|txt)$/i.test(ext)) return { error: "invalid_file" as const };
-  const buffer = Buffer.from(await file.arrayBuffer());
-  const name = `${randomToken(8)}${ext || ""}`;
-  const dir = join(process.cwd(), "private", "systems-ops", folder);
-  mkdirSync(dir, { recursive: true });
-  writeFileSync(join(dir, name), buffer);
+  const stored = await storePublicUpload(file, {
+    root: "private",
+    subdir: `systems-ops/${folder}`,
+    allowedExt: (ext) => !ext || /^\.(png|jpe?g|webp|gif|svg|pdf|docx?|xlsx?|txt)$/i.test(ext),
+    maxBytes: MAX_FILE_BYTES,
+  });
+  if (!stored.ok) return { error: "invalid_file" as const };
   return {
-    filename: original,
-    mime: file.type || "application/octet-stream",
-    size: file.size,
-    path: `private/systems-ops/${folder}/${name}`,
+    filename: stored.upload.originalName,
+    mime: stored.upload.mime,
+    size: stored.upload.size,
+    path: stored.upload.path,
   };
 }
 

@@ -13,7 +13,7 @@ Insights
 Notes on revenue management, marketing, technology, and AI that help a hotel team see the next useful question.
 [Request a hotel audit](/en#audit)
 [See related solutions](/en/solutions/revenue-commercial-management)
-![The KPI Plus hospitality commercial planning](media/the-kpi-plus-insights-scene_8a7e72cb.jpg)
+![The KPI Plus hospitality commercial planning](media/the-kpi-plus-insights-scene_8a7e72cb.webp)
 These notes help the team see the revenue question, the growth question, the decision, and the next conversation.
 How to use them
 ## Move from a question to work with an owner

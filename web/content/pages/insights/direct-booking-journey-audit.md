@@ -48,7 +48,7 @@ Revenue · Direct Booking · Commercial Growth
 - เริ่มที่จุดที่ผู้เข้าพักมาถึง
 - ทบทวนช่วงเวลาที่ผู้เข้าพักต้องการความมั่นใจ
 - เดินตามเส้นทางบนมือถือ
-![Hospitality insight from The KPI Plus](../media/the-kpi-plus-insights-scene_8a7e72cb.jpg)
+![Hospitality insight from The KPI Plus](../media/the-kpi-plus-insights-scene_8a7e72cb.webp)
 ## อุปสงค์มีประโยชน์เมื่อผู้เข้าพักเห็นการกระทำถัดไปชัดเจน
 โรงแรมจำนวนมากลงทุนกับการทำให้ผู้คนค้นพบโรงแรมผ่านการค้นหา โซเชียลมีเดีย พันธมิตร แคมเปญแบบเสียเงิน และข้อมูลในพื้นที่ สิ่งเหล่านี้สำคัญ แต่ความสนใจไม่ได้เท่ากับเส้นทางการจองที่ใช้งานได้จริง การตรวจเส้นทางการจองตรงเริ่มจากคำถามง่าย ๆ ว่า เมื่อผู้เข้าพักเริ่มสนใจ เขาเข้าใจโรงแรม ค้นหาข้อมูลที่เกี่ยวข้อง และก้าวไปสู่การกระทำถัดไปได้อย่างมั่นใจหรือไม่
 คำตอบมักไม่ได้อยู่ในหน้าเดียวหรือช่องทางเดียว แต่กระจายอยู่ตามเส้นทางตั้งแต่ข้อความต้นทาง หน้า Landing Page ข้อมูลห้องพัก ระบบจอง ไปจนถึงการติดตามผล
@@ -226,5 +226,5 @@ Revenue · Direct Booking · Commercial Growth
 ## Page image assets
 
 - `../media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus
-- `../media/the-kpi-plus-insights-scene_8a7e72cb.jpg` — Hospitality insight from The KPI Plus
+- `../media/the-kpi-plus-insights-scene_8a7e72cb.webp` — Hospitality insight from The KPI Plus
 - `../media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus

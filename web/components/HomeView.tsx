@@ -266,7 +266,7 @@ export async function HomeView({ locale }: { locale: Locale }) {
           <figure className="kpi-home-hero-visual">
             <div className="kpi-home-photo kpi-home-frame">
               <Image
-                src="/media/kpi-plus-performance-metrics-meeting_88bfa3ed.jpg"
+                src="/media/kpi-plus-performance-metrics-meeting_88bfa3ed.webp"
                 alt={
                   locale === "th"
                     ? "ทีมโรงแรมประชุมร่วมกับแดชบอร์ดตัวเลข Occupancy ADR RevPAR และรายได้"
@@ -464,7 +464,7 @@ export async function HomeView({ locale }: { locale: Locale }) {
             </div>
             <figure className="kpi-home-process-photo">
               <img
-                src="/media/kpi-plus-team-review_d4af97f6.jpg"
+                src="/media/kpi-plus-team-review_d4af97f6.webp"
                 alt={
                   locale === "th"
                     ? "ทีม The KPI Plus ประชุมรีวิวข้อมูลโรงแรมด้วยกัน"
@@ -507,7 +507,7 @@ export async function HomeView({ locale }: { locale: Locale }) {
           <figure className="kpi-home-performance-visual">
             <div className="kpi-home-photo kpi-home-frame">
               <Image
-                src="/media/kpi-plus-hero-hotel-performance_cd74fdd4.jpg"
+                src="/media/kpi-plus-hero-hotel-performance_cd74fdd4.webp"
                 alt={
                   locale === "th"
                     ? "โรงแรมริมน้ำพร้อมแดชบอร์ดผลการดำเนินงานโรงแรม"
@@ -597,7 +597,7 @@ export async function HomeView({ locale }: { locale: Locale }) {
           <div className="kpi-home-split mt-12">
             <div className="kpi-home-photo kpi-home-frame">
               <img
-                src="/media/the-kpi-plus-insights-scene_8a7e72cb.jpg"
+                src="/media/the-kpi-plus-insights-scene_8a7e72cb.webp"
                 alt={locale === "th" ? "เอกสารและงานวิจัยด้านโรงแรม" : "Hotel industry research materials"}
                 width={1600}
                 height={1067}

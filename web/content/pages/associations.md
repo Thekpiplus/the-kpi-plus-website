@@ -24,19 +24,19 @@
 # ความเชี่ยวชาญที่หลากหลาย เชื่อมต่อผ่านจุดประสานเดียว
 เราทำงานร่วมกับผู้เชี่ยวชาญด้านเทคโนโลยีโรงแรม การศึกษานานาชาติ และบริการท่องเที่ยว เพื่อเพิ่มทางเลือกให้ลูกค้าและพันธมิตร
 เห็นข้อมูลให้ชัด รู้ว่าใครรับผิดชอบ และเลือกสิ่งที่ควรทำต่อโดยวัดผลได้
-![NAWA Smart Hospitality Solutions logo](../brand/partners/nawa-mark.png)
+![NAWA Smart Hospitality Solutions logo](../brand/partners/nawa-mark.webp)
 ร่วมงานกับ เดอะ เคพีไอ พลัส
 ## NAWA Smart Hospitality Solutions
 ### Smart Technology Solutions for Hospitality Businesses
 Hospitality technology and digital solutions designed to improve business operations, guest experience, and overall efficiency.
 [เยี่ยมชมเว็บไซต์](https://www.nawaone.co/en)
-![Australia Smart Edu Biz Coach logo](media/australia-smart-logo_f061fbb2.png)
+![Australia Smart Edu Biz Coach logo](media/australia-smart-logo_f061fbb2.webp)
 ร่วมงานกับ เดอะ เคพีไอ พลัส
 ## Australia Smart Edu Biz Coach
 ### International Education & Education Consulting
 Supporting students, families, educational institutions, and businesses through international education consulting, study pathways, coaching, and education-related services.
 [เยี่ยมชมเว็บไซต์](https://www.australiasmart.com.au)
-![Top Travel Thailand logo](media/top-travel-logo_e8927780.png)
+![Top Travel Thailand logo](media/top-travel-logo_e8927780.webp)
 ร่วมงานกับ เดอะ เคพีไอ พลัส
 ## Top Travel Thailand
 ### Travel, Transportation & Destination Services
@@ -160,7 +160,7 @@ Providing professional travel services including airport transfers, private tran
 ## Page image assets
 
 - `media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus
-- `../brand/partners/nawa-mark.png` — NAWA Smart Hospitality Solutions logo
-- `media/australia-smart-logo_f061fbb2.png` — Australia Smart Edu Biz Coach logo
-- `media/top-travel-logo_e8927780.png` — Top Travel Thailand logo
+- `../brand/partners/nawa-mark.webp` — NAWA Smart Hospitality Solutions logo
+- `media/australia-smart-logo_f061fbb2.webp` — Australia Smart Edu Biz Coach logo
+- `media/top-travel-logo_e8927780.webp` — Top Travel Thailand logo
 - `media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus

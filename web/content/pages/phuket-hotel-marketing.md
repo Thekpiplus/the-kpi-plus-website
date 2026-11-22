@@ -30,7 +30,7 @@ Revenue · Direct Booking · Commercial Growth
 [ดูบริการ Revenue Management](solutions/revenue-commercial-management.html)
 [ดูบริการ Google Ads](solutions/google-ads-management.html)
 [ขอคุยเรื่องรายได้โรงแรม](index.html#audit)
-![Hospitality commercial decision-making](media/the-kpi-plus-revenue-scene_4932d3c7.jpg)
+![Hospitality commercial decision-making](media/the-kpi-plus-revenue-scene_4932d3c7.webp)
 แนวทางทำงาน
 บริบท Hospitality ในภูเก็ต
 คำถามด้าน Revenue และ Demand
@@ -183,5 +183,5 @@ Revenue · Direct Booking · Commercial Growth
 ## Page image assets
 
 - `media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus
-- `media/the-kpi-plus-revenue-scene_4932d3c7.jpg` — Hospitality commercial decision-making
+- `media/the-kpi-plus-revenue-scene_4932d3c7.webp` — Hospitality commercial decision-making
 - `media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus

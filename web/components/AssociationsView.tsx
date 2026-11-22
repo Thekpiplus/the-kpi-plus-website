@@ -7,7 +7,7 @@ import { localizePath, type Locale } from "@/lib/seo";
 
 const partners = [
   {
-    logo: "/brand/partners/nawa-mark.png",
+    logo: "/brand/partners/nawa-mark.webp",
     alt: "NAWA Smart Hospitality Solutions logo",
     name: "NAWA Smart Hospitality Solutions",
     subtitle: "Smart Technology Solutions for Hospitality Businesses",
@@ -16,7 +16,7 @@ const partners = [
     tile: "dark",
   },
   {
-    logo: "/media/australia-smart-logo_f061fbb2.png",
+    logo: "/media/australia-smart-logo_f061fbb2.webp",
     alt: "Australia Smart Edu Biz Coach logo",
     name: "Australia Smart Edu Biz Coach",
     subtitle: "International Education & Education Consulting",
@@ -25,7 +25,7 @@ const partners = [
     tile: "light",
   },
   {
-    logo: "/media/top-travel-logo_e8927780.png",
+    logo: "/media/top-travel-logo_e8927780.webp",
     alt: "Top Travel Thailand logo",
     name: "Top Travel Thailand",
     subtitle: "Travel, Transportation & Destination Services",

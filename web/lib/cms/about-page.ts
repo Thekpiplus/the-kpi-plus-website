@@ -323,7 +323,7 @@ export function defaultAboutCms(): CmsAboutPage {
       })),
     },
     media: {
-      workPhoto: "/media/kpi-plus-team-review_d4af97f6.jpg",
+      workPhoto: "/media/kpi-plus-team-review_d4af97f6.webp",
       foundersPhoto: "/media/the-kpi-plus-founders_f4c8516e.webp",
       workshopPhoto: "/media/process-workshop.webp",
       teamRealPhoto: "/media/about-team-real.webp",

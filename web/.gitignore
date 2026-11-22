@@ -3,6 +3,8 @@ node_modules
 out
 *.log
 .env
+.env.local
+.env.*.local
 .ga4-service-account.json
 prisma/*.db
 prisma/*.db-journal

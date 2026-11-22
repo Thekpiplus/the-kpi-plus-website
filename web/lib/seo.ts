@@ -221,7 +221,7 @@ export function metadataFor(
     ? extra.image.startsWith("http")
       ? extra.image
       : `${SITE}${extra.image}`
-    : (page?.ogImage ?? `${SITE}/media/the-kpi-plus-performance-hero_2f986b5f.jpg`);
+    : (page?.ogImage ?? `${SITE}/media/the-kpi-plus-performance-hero_2f986b5f.webp`);
   const languages = page
     ? existingLanguageAlternates(page)
     : locale === "th"

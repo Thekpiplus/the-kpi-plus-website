@@ -48,7 +48,7 @@ Revenue · Direct Booking · Commercial Growth
 - ทำแผนที่เวิร์กโฟลว์ก่อนเลือกเครื่องมือ
 - กำหนดกรณีใช้งานด้านรายได้ การขาย และการตลาด
 - ออกแบบการปรับใช้ ไม่ใช่แค่การให้สิทธิ์เข้าใช้
-![Hospitality insight from The KPI Plus](../media/the-kpi-plus-insights-scene_8a7e72cb.jpg)
+![Hospitality insight from The KPI Plus](../media/the-kpi-plus-insights-scene_8a7e72cb.webp)
 ## เทคโนโลยีควรทำให้งานโรงแรมมีเจ้าของชัดเจนขึ้น
 ระบบโรงแรมใหม่อาจดูน่าสนใจมากในช่วงสาธิต แต่ยังประสบปัญหาได้เมื่อเข้าสู่งานประจำวันของทีมรายได้ การสำรองห้องพัก การตลาด ปฏิบัติการ หรือผู้บริหาร สาเหตุไม่ได้มาจากเทคโนโลยีเสมอไป การปรับใช้มักยากเมื่อโรงแรมยังไม่ได้ตกลงว่าเวิร์กโฟลว์ การตัดสินใจ เจ้าของงาน หรือคำถามด้านรายได้และการเติบโตใดที่เครื่องมือนั้นต้องสนับสนุน
 ดังนั้นการนำเทคโนโลยีไปใช้จึงเป็นโครงการเพื่อสนับสนุนรายได้และการเติบโตควบคู่กับโครงการด้านเทคนิค ควรเริ่มจากงานที่โรงแรมต้องการทำให้ดีขึ้น ไม่ใช่เริ่มจากรายการความสามารถของแพลตฟอร์มเพียงอย่างเดียว
@@ -226,5 +226,5 @@ Revenue · Direct Booking · Commercial Growth
 ## Page image assets
 
 - `../media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus
-- `../media/the-kpi-plus-insights-scene_8a7e72cb.jpg` — Hospitality insight from The KPI Plus
+- `../media/the-kpi-plus-insights-scene_8a7e72cb.webp` — Hospitality insight from The KPI Plus
 - `../media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus

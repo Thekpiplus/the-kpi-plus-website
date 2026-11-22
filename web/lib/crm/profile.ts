@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/crm/auth";
 import { prisma } from "@/lib/crm/db";
-import { hashSecret, normalizePhone, randomToken, verifySecret } from "@/lib/crm/security";
+import { hashSecret, normalizePhone, verifySecret } from "@/lib/crm/security";
 
 const AVATAR_MAX_BYTES = 2 * 1024 * 1024;
 const AVATAR_EXT = new Set([".jpg", ".jpeg", ".png", ".webp", ".gif"]);
@@ -156,16 +156,18 @@ export async function updateOwnAvatar(formData: FormData) {
     return;
   }
 
-  const buffer = Buffer.from(await file.arrayBuffer());
-  const [{ mkdir, writeFile }, { join }] = await Promise.all([
-    import("node:fs/promises"),
-    import("node:path"),
-  ]);
-  const dir = join(process.cwd(), "public", "media", "avatars");
-  await mkdir(dir, { recursive: true });
-  const filename = `${me.id}-${randomToken(8)}${ext}`;
-  await writeFile(join(dir, filename), buffer);
-  const nextPath = `/media/avatars/${filename}`;
+  const { storePublicUpload } = await import("@/lib/media/store-upload");
+  const stored = await storePublicUpload(file, {
+    subdir: "media/avatars",
+    allowedExt: AVATAR_EXT,
+    maxBytes: AVATAR_MAX_BYTES,
+    prefix: me.id,
+  });
+  if (!stored.ok) {
+    profileRedirect(`avatarError=${stored.error}`);
+    return;
+  }
+  const nextPath = stored.upload.path;
 
   const db = prisma();
   const current = await db.user.findUnique({ where: { id: me.id }, select: { avatarUrl: true } });

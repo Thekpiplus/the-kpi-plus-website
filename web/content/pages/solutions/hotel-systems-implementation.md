@@ -29,7 +29,7 @@ Revenue · Direct Booking · Commercial Growth
 เชื่อมรายได้ การจองตรง และการเติบโตของโรงแรมให้เป็นแผนที่ทีมลงมือทำและวัดผลได้จริง
 [ให้ทีมช่วยทบทวนระบบ](../index.html#audit)
 [พูดคุยกับทีม เดอะ เคพีไอ พลัส](../contact-us.html)
-![ระบบโรงแรมและการนำระบบไปใช้งาน เพื่อผลการดำเนินงานที่ดีขึ้นของโรงแรม](../media/kpi-grow-capability_7bba9d6e.jpg)
+![ระบบโรงแรมและการนำระบบไปใช้งาน เพื่อผลการดำเนินงานที่ดีขึ้นของโรงแรม](../media/kpi-grow-capability_7bba9d6e.webp)
 จุดที่งานนี้ให้ความสำคัญ
 PMS การจับคู่ห้องพัก และโครงสร้างราคา
 การเชื่อมต่อ OTA และการจัดการ Distribution
@@ -93,10 +93,10 @@ PMS, Channel Manager หรือ Booking Engine อาจเชื่อมต�
 บริบทด้านเทคโนโลยี
 ## ระบบที่เรามีประสบการณ์ทำงานร่วมด้วย
 ขอบเขตงานสามารถครอบคลุม Cloudbeds, SiteMinder, Yanolja Cloud Solution (เดิม eZee), Oracle Opera Cloud, Concerto, HotelierGuru รวมถึง PMS, Channel Manager, Booking Engine และแพลตฟอร์ม Distribution อื่นที่โรงแรมใช้งานอยู่
-![Cloudbeds ระบบ PMS สำหรับโรงแรม](../media/cloudbeds_95e9dd7d.png)
-![SiteMinder ระบบ Channel Manager สำหรับโรงแรม](../media/siteminder_03b5c23a.png)
-![Yanolja Cloud Solution ระบบ PMS สำหรับโรงแรม](../media/yanolja-cloud-solution_5abcf1b8.png)
-![Opera Cloud ระบบ PMS สำหรับโรงแรม](../media/opera-cloud_c9615232.png)
+![Cloudbeds ระบบ PMS สำหรับโรงแรม](../media/cloudbeds_95e9dd7d.webp)
+![SiteMinder ระบบ Channel Manager สำหรับโรงแรม](../media/siteminder_03b5c23a.webp)
+![Yanolja Cloud Solution ระบบ PMS สำหรับโรงแรม](../media/yanolja-cloud-solution_5abcf1b8.webp)
+![Opera Cloud ระบบ PMS สำหรับโรงแรม](../media/opera-cloud_c9615232.webp)
 เดอะ เคพีไอ พลัส ทำงานอย่างเป็นอิสระจากแพลตฟอร์ม และให้คำแนะนำจากสิ่งที่เหมาะกับโรงแรมเป็นหลัก โลโก้เหล่านี้ใช้เพื่อระบุแพลตฟอร์มเท่านั้น และไม่ได้หมายความว่าเป็นความร่วมมืออย่างเป็นทางการ
 ขอบเขตการนำระบบไปใช้งาน
 ## สิ่งที่เราช่วยวางระบบและปรับให้ดีขึ้น
@@ -336,9 +336,9 @@ Revenue · Direct Booking · Commercial Growth
 ## Page image assets
 
 - `../media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus
-- `../media/kpi-grow-capability_7bba9d6e.jpg` — ระบบโรงแรมและการนำระบบไปใช้งาน เพื่อผลการดำเนินงานที่ดีขึ้นของโรงแรม
-- `../media/cloudbeds_95e9dd7d.png` — Cloudbeds ระบบ PMS สำหรับโรงแรม
-- `../media/siteminder_03b5c23a.png` — SiteMinder ระบบ Channel Manager สำหรับโรงแรม
-- `../media/yanolja-cloud-solution_5abcf1b8.png` — Yanolja Cloud Solution ระบบ PMS สำหรับโรงแรม
-- `../media/opera-cloud_c9615232.png` — Opera Cloud ระบบ PMS สำหรับโรงแรม
+- `../media/kpi-grow-capability_7bba9d6e.webp` — ระบบโรงแรมและการนำระบบไปใช้งาน เพื่อผลการดำเนินงานที่ดีขึ้นของโรงแรม
+- `../media/cloudbeds_95e9dd7d.webp` — Cloudbeds ระบบ PMS สำหรับโรงแรม
+- `../media/siteminder_03b5c23a.webp` — SiteMinder ระบบ Channel Manager สำหรับโรงแรม
+- `../media/yanolja-cloud-solution_5abcf1b8.webp` — Yanolja Cloud Solution ระบบ PMS สำหรับโรงแรม
+- `../media/opera-cloud_c9615232.webp` — Opera Cloud ระบบ PMS สำหรับโรงแรม
 - `../media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus

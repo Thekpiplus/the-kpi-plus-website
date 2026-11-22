@@ -42,7 +42,7 @@ export function LoginForm({ error }: { error?: string }) {
           onSubmit={() => setPending(true)}
         >
           <img
-            src="/brand/KPIPlus_Horizontal_FullColor.png"
+            src="/brand/KPIPlus_Horizontal_FullColor.webp"
             alt="The KPI Plus"
             width={180}
             height={40}

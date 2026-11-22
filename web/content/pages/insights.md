@@ -25,7 +25,7 @@
 ความรู้ แนวคิด และอัปเดตสำหรับธุรกิจโรงแรม ตั้งแต่ Revenue Management การตลาด เทคโนโลยี ไปจนถึง AI
 [ขอวิเคราะห์ประสิทธิภาพโรงแรม](index.html#audit)
 [ดูโซลูชันที่เกี่ยวข้อง](solutions/revenue-management.html)
-![The KPI Plus hospitality commercial planning](media/the-kpi-plus-insights-scene_8a7e72cb.jpg)
+![The KPI Plus hospitality commercial planning](media/the-kpi-plus-insights-scene_8a7e72cb.webp)
 บทความที่ช่วยให้ทีมเห็นคำถามด้านรายได้ การเติบโต การตัดสินใจ และบทสนทนาถัดไปได้ชัดเจน
 นำไปใช้จริงอย่างไร
 ## เรียงลำดับจากคำถามสู่การลงมือทำที่มีผู้รับผิดชอบ
@@ -60,7 +60,7 @@ Revenue Management
 ## ประชุม Revenue อย่างไรให้จบด้วยการตัดสินใจที่นำไปใช้ได้จริง
 กรอบการประชุมรายได้โรงแรมที่ช่วยให้ทีมเปลี่ยนสัญญาณด้านรายได้และการเติบโตเป็นการตัดสินใจ เจ้าของงาน และจุดทบทวนที่ชัดเจน
 [อ่านบทความ](insights/hotel-revenue-meetings-that-lead-to-decisions.html)
-![Hospitality insight from The KPI Plus](media/the-kpi-plus-insights-scene_8a7e72cb.jpg)
+![Hospitality insight from The KPI Plus](media/the-kpi-plus-insights-scene_8a7e72cb.webp)
 [Hotel Digital Marketing การตลาดโรงแรม (Hotel Marketing) คืออะไร? 8 กลยุทธ์เพิ่มยอดจองและรายได้ การตลาดโรงแรมคือการเชื่อม Google, OTA, Website, Direct Booking, Distribution และ Revenue Management ให้ผู้เข้าพักค้นพบ เปรียบเทียบ และเลือกจองด้วยข้อมูลที่ชัดเจน เรียบเรียงโดย ทีมบรรณาธิการ เดอะ เคพีไอ พลัส 31 ส.ค. 2569 อ่านประมาณ 3 นาที อ่านบทความ](/insights/hotel-marketing)
 [Hospitality Technology ทำอย่างไรให้ Technology และ AI ช่วยทีมโรงแรมทำงานได้ดีขึ้นจริง เหตุใดระบบโรงแรม ระบบอัตโนมัติ และ AI จึงต้องมีเจ้าของเวิร์กโฟลว์ แผนการปรับใช้ และบริบทด้านรายได้และการเติบโต ไม่ใช่เพียงการเปิดใช้งานทางเทคนิค เรียบเรียงโดย เดอะ เคพีไอ พลัส Editorial Team 19 ส.ค. 2569 อ่านประมาณ 3 นาที อ่านบทความ](insights/hotel-technology-adoption-commercial-project.html)
 [Direct Booking วิเคราะห์เส้นทาง Direct Booking ของโรงแรม แนวทางตรวจสอบเส้นทางผู้เข้าพักตั้งแต่เริ่มสนใจจนถึงการจองตรงอย่างมั่นใจ โดยไม่ตั้งสมมติฐานว่าปัญหาเกิดจากจำนวนทราฟฟิกเพียงอย่างเดียว เรียบเรียงโดย เดอะ เคพีไอ พลัส Editorial Team 19 ส.ค. 2569 อ่านประมาณ 3 นาที อ่านบทความ](insights/direct-booking-journey-audit.html)
@@ -205,10 +205,10 @@ The KPI Plus Performance Path
 ## Page image assets
 
 - `media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus
-- `media/the-kpi-plus-insights-scene_8a7e72cb.jpg` — The KPI Plus hospitality commercial planning
-- `media/the-kpi-plus-insights-scene_8a7e72cb.jpg` — Hospitality insight from The KPI Plus
-- `media/the-kpi-plus-performance-hero_2f986b5f.jpg` — ทีมโรงแรมวิเคราะห์ข้อมูล Revenue Management และกลยุทธ์การตลาดโรงแรม
-- `media/the-kpi-plus-insights-scene_8a7e72cb.jpg` — Hospitality insight from The KPI Plus
-- `media/the-kpi-plus-insights-scene_8a7e72cb.jpg` — Hospitality insight from The KPI Plus
-- `media/the-kpi-plus-insights-scene_8a7e72cb.jpg` — Hospitality insight from The KPI Plus
+- `media/the-kpi-plus-insights-scene_8a7e72cb.webp` — The KPI Plus hospitality commercial planning
+- `media/the-kpi-plus-insights-scene_8a7e72cb.webp` — Hospitality insight from The KPI Plus
+- `media/the-kpi-plus-performance-hero_2f986b5f.webp` — ทีมโรงแรมวิเคราะห์ข้อมูล Revenue Management และกลยุทธ์การตลาดโรงแรม
+- `media/the-kpi-plus-insights-scene_8a7e72cb.webp` — Hospitality insight from The KPI Plus
+- `media/the-kpi-plus-insights-scene_8a7e72cb.webp` — Hospitality insight from The KPI Plus
+- `media/the-kpi-plus-insights-scene_8a7e72cb.webp` — Hospitality insight from The KPI Plus
 - `media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus

@@ -2,19 +2,30 @@
 
 Login lives at `/admin`. The dashboard is at `/crm`. Both are noindex and blocked in `robots.txt`.
 
+## Local vs online (keep them separate)
+
+| | Local (`npm run dev`) | Online (Hostinger) |
+|---|---|---|
+| Config file | `.env.local` (gitignored) | Node.js env vars in hPanel only |
+| Database name | `kpi_plus_dev` on AppServ `127.0.0.1` | Hostinger MySQL (e.g. `u…_kpiplus`) |
+| Safety | Remote hosts refused unless `ALLOW_REMOTE_DB=1` | App uses `127.0.0.1` on the server |
+
+Never paste the live Hostinger `DATABASE_URL` into `.env` / `.env.local` for daily work — that overwrites production data when you save CRM/CMS locally.
+
 ## Local (MySQL — AppServ)
 
 1. Copy `.env.example` to `.env` if needed.
-2. Create the database once (AppServ MySQL root password is often `12345678`):
+2. Run once: `npm run db:local`  
+   Creates `kpi_plus_dev`, clones from existing `kpi_plus` when empty, and writes `.env.local`.
+3. Or create manually:
 
 ```sql
-CREATE DATABASE IF NOT EXISTS kpi_plus CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS kpi_plus_dev CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-3. Set `DATABASE_URL` (include `ANSI_QUOTES` so quoted identifiers in raw SQL keep working):
-
 ```env
-DATABASE_URL="mysql://root:YOUR_PASSWORD@127.0.0.1:3306/kpi_plus?sessionVariables=sql_mode='ANSI_QUOTES'"
+# web/.env.local
+DATABASE_URL="mysql://root:YOUR_PASSWORD@127.0.0.1:3306/kpi_plus_dev?sessionVariables=sql_mode='ANSI_QUOTES'"
 ```
 
 4. Run `npm install` then `npx prisma db push` (or `npm run crm:setup` / `npx prisma migrate deploy`).
@@ -28,11 +39,11 @@ Legacy SQLite migrations are kept under `prisma/migrations_sqlite/` for referenc
 
 ## Hostinger MySQL
 
-1. Create the database in hPanel → **Databases** (dedicated user, not root).
+1. Create the database in hPanel → **Databases** (dedicated user, not root). Keep it distinct from local `kpi_plus_dev`.
 2. URL-encode special characters in the password (`#` → `%23`, `;` → `%3B`) and keep `ANSI_QUOTES`.
-3. From this PC use the remote hostname (`srvXXX.hstgr.io`) or its IPv4 address if Prisma fails on IPv6. Enable **Remote MySQL** for your public IP if the connection is refused.
-4. On the Hostinger Node.js app, set `DATABASE_URL` and `CRM_BASE_URL` to the live site. Prefer host `127.0.0.1` (not `localhost`); if Prisma logs `Can't reach database server at 127.0.0.1:3306`, use the remote hostname (`srvXXX.hstgr.io`) instead and enable Remote MySQL for that database. Do not commit this URL to Git.
-5. Run `npx prisma migrate deploy` (or `npx prisma db push` on an empty database) against that URL.
+3. Set `DATABASE_URL` and `CRM_BASE_URL` only on the Hostinger Node.js app env. Prefer host `127.0.0.1` (not `localhost`) from the app itself. Do not commit this URL to Git and do not keep it in local `.env` files.
+4. Remote admin from this PC (rare): enable Remote MySQL, temporarily set `ALLOW_REMOTE_DB=1`, run the needed Prisma command, then remove the remote URL and the flag.
+5. Run `npx prisma migrate deploy` (or `npx prisma db push` on an empty database) against that Hostinger URL.
 
 ## Production settings to confirm
 

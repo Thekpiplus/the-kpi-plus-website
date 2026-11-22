@@ -5,19 +5,45 @@ const globalForPrisma = globalThis as unknown as {
   kpiDbDisabled?: string;
 };
 
-/** Cap Prisma pool: production stays tight for Hostinger hourly connection limits; local needs more. */
+/** True when the URL host is loopback / local Docker — safe for `npm run dev`. */
+function isLocalMysqlHost(url: string) {
+  try {
+    const host = new URL(url).hostname.toLowerCase();
+    return host === "127.0.0.1" || host === "localhost" || host === "::1" || host === "host.docker.internal";
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Cap Prisma pool: production stays tight for Hostinger hourly connection limits; local needs more.
+ * In development, remote hosts (Hostinger `*.hstgr.io`, public IPs, etc.) are refused unless
+ * `ALLOW_REMOTE_DB=1` so local work cannot overwrite the online database by accident.
+ */
 function databaseUrl() {
   const raw = process.env.DATABASE_URL?.trim().replace(/^["']|["']$/g, "");
   if (!raw) return undefined;
   // Prisma MySQL datasource rejects anything that does not start with mysql://
   // (e.g. leftover sqlite file: URLs or broken .env quoting).
   if (!/^mysql:\/\//i.test(raw)) return undefined;
+
+  const isProd = process.env.NODE_ENV === "production";
+  const allowRemote = process.env.ALLOW_REMOTE_DB === "1";
+  if (!isProd && !allowRemote && !isLocalMysqlHost(raw)) {
+    const msg =
+      "DATABASE_URL points at a remote MySQL host while NODE_ENV is not production. " +
+      "Use local AppServ DB `kpi_plus_local` in `.env.local`, or set ALLOW_REMOTE_DB=1 only for intentional remote admin.";
+    console.error(`[crm/db] ${msg}`);
+    markDbUnavailable(msg);
+    return undefined;
+  }
+
   if (/[?&]connection_limit=/.test(raw)) return raw;
   // connection_limit=1 serializes every CRM query and makes pages hang under load.
   // Keep a small pool in production; override with PRISMA_CONNECTION_LIMIT if needed.
   const limit =
     process.env.PRISMA_CONNECTION_LIMIT?.trim() ||
-    (process.env.NODE_ENV === "production" ? "3" : "10");
+    (isProd ? "3" : "10");
   return raw.includes("?")
     ? `${raw}&connection_limit=${limit}&pool_timeout=10`
     : `${raw}?connection_limit=${limit}&pool_timeout=10`;

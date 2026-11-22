@@ -29,7 +29,7 @@ Connect revenue, direct booking, and commercial-growth priorities so the hotel t
 [Explore Google Ads](solutions/google-ads-management.html)
 [Explore Meta Ads](solutions/meta-ads-management.html)
 [Request an audit](/en#audit)
-![Hospitality commercial decision-making](../media/the-kpi-plus-revenue-scene_4932d3c7.jpg)
+![Hospitality commercial decision-making](../media/the-kpi-plus-revenue-scene_4932d3c7.webp)
 Commercial approach
 Channel roles
 Search and social discovery
@@ -183,5 +183,5 @@ Corporate AI Training Program
 ## Page image assets
 
 - `../media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus
-- `../media/the-kpi-plus-revenue-scene_4932d3c7.jpg` — Hospitality commercial decision-making
+- `../media/the-kpi-plus-revenue-scene_4932d3c7.webp` — Hospitality commercial decision-making
 - `../media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus

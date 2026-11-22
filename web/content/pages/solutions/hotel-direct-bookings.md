@@ -29,7 +29,7 @@ Revenue · Direct Booking · Commercial Growth
 เชื่อมรายได้ การจองตรง และการเติบโตของโรงแรมให้เป็นแผนที่ทีมลงมือทำและวัดผลได้จริง
 [ขอรับการวิเคราะห์โรงแรม](../index.html#audit)
 [พูดคุยกับทีม เดอะ เคพีไอ พลัส](../contact-us.html)
-![เพิ่ม Conversion บนเว็บไซต์โรงแรม](../media/kpi-grow-demand_24299cd0.jpg)
+![เพิ่ม Conversion บนเว็บไซต์โรงแรม](../media/kpi-grow-demand_24299cd0.webp)
 จุดที่งานนี้ให้ความสำคัญ
 Booking Engine Click-through
 CTA Engagement
@@ -237,5 +237,5 @@ Revenue · Direct Booking · Commercial Growth
 ## Page image assets
 
 - `../media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus
-- `../media/kpi-grow-demand_24299cd0.jpg` — เพิ่ม Conversion บนเว็บไซต์โรงแรม
+- `../media/kpi-grow-demand_24299cd0.webp` — เพิ่ม Conversion บนเว็บไซต์โรงแรม
 - `../media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus

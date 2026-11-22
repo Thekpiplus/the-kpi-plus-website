@@ -1,11 +1,11 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { registerCmsMedia, storeCmsImageUpload, storePublicUpload } from "@/lib/media/store-upload";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/crm/auth";
 import { hasModule } from "@/lib/crm/modules";
 import { isFullAccessRole } from "@/lib/crm/roles";
-import { randomToken } from "@/lib/crm/security";
 import { CASE_STUDY_IMAGE_TYPES, MAX_CASE_STUDY_IMAGE_BYTES } from "./case-studies";
 import { documentPath } from "./body";
 import { cmsDb, documentById, pageDocumentBySlug, refreshCmsFiles } from "./queries";
@@ -61,73 +61,25 @@ function revalidateAds(doc: Pick<CmsDocumentRow, "slug" | "locale" | "kind">) {
 }
 
 async function storeImage(file: File): Promise<{ ok: true; path: string } | { ok: false; error: string }> {
-  const original = file.name || "";
-  const dot = original.lastIndexOf(".");
-  const ext = dot >= 0 ? original.slice(dot).toLowerCase() : "";
-  if (!CASE_STUDY_IMAGE_TYPES.has(ext) || file.size > MAX_CASE_STUDY_IMAGE_BYTES) {
-    return { ok: false, error: "invalid_image" };
-  }
-  const buffer = Buffer.from(await file.arrayBuffer());
-  const [{ mkdirSync, writeFileSync }, { join }] = await Promise.all([import("node:fs"), import("node:path")]);
-  const name = `${randomToken(8)}${ext || ".jpg"}`;
-  const dir = join(process.cwd(), "public", "media", "cms");
-  mkdirSync(dir, { recursive: true });
-  writeFileSync(join(dir, name), buffer);
-  const path = `/media/cms/${name}`;
-  try {
-    const db = await cmsDb();
-    await db.cmsMedia.create({
-      data: {
-        filename: file.name,
-        path,
-        alt: "",
-        caption: "",
-        mime: file.type || "image/jpeg",
-        size: file.size,
-      },
-    });
-  } catch {
-    // File is on disk even if the media library row cannot be written.
-  }
-  return { ok: true, path };
+  return storeCmsImageUpload(file, {
+    allowedExt: CASE_STUDY_IMAGE_TYPES,
+    maxBytes: MAX_CASE_STUDY_IMAGE_BYTES,
+    errorKey: "invalid_image",
+  });
 }
 
 const CREATIVE_ASSET_TYPES = new Set([".jpg", ".jpeg", ".png", ".webp", ".mp4", ".webm"]);
 const MAX_CREATIVE_ASSET_BYTES = 15 * 1024 * 1024;
 
 async function storeCreativeAsset(file: File): Promise<{ ok: true; path: string } | { ok: false; error: string }> {
-  const original = file.name || "";
-  const dot = original.lastIndexOf(".");
-  const ext = dot >= 0 ? original.slice(dot).toLowerCase() : "";
-  if (!CREATIVE_ASSET_TYPES.has(ext) || file.size > MAX_CREATIVE_ASSET_BYTES) {
-    return { ok: false, error: "invalid_asset" };
-  }
-  const buffer = Buffer.from(await file.arrayBuffer());
-  const [{ mkdirSync, writeFileSync }, { join }] = await Promise.all([import("node:fs"), import("node:path")]);
-  const name = `${randomToken(8)}${ext || ".jpg"}`;
-  const dir = join(process.cwd(), "public", "media", "cms");
-  mkdirSync(dir, { recursive: true });
-  writeFileSync(join(dir, name), buffer);
-  const path = `/media/cms/${name}`;
-  const mime =
-    file.type ||
-    (ext === ".mp4" ? "video/mp4" : ext === ".webm" ? "video/webm" : ext === ".png" ? "image/png" : ext === ".webp" ? "image/webp" : "image/jpeg");
-  try {
-    const db = await cmsDb();
-    await db.cmsMedia.create({
-      data: {
-        filename: file.name,
-        path,
-        alt: "",
-        caption: "",
-        mime,
-        size: file.size,
-      },
-    });
-  } catch {
-    // File is on disk even if the media library row cannot be written.
-  }
-  return { ok: true, path };
+  const stored = await storePublicUpload(file, {
+    subdir: "media/cms",
+    allowedExt: CREATIVE_ASSET_TYPES,
+    maxBytes: MAX_CREATIVE_ASSET_BYTES,
+  });
+  if (!stored.ok) return { ok: false, error: "invalid_asset" };
+  await registerCmsMedia(stored.upload);
+  return { ok: true, path: stored.upload.path };
 }
 
 async function applyCreativeAssetUploads(formData: FormData, rows: CmsMetaCreativeRow[]): Promise<string | null> {

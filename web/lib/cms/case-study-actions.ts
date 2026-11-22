@@ -6,6 +6,7 @@ import { requireUser } from "@/lib/crm/auth";
 import { hasModule } from "@/lib/crm/modules";
 import { isFullAccessRole } from "@/lib/crm/roles";
 import { randomToken } from "@/lib/crm/security";
+import { storeCmsImageUpload } from "@/lib/media/store-upload";
 import {
   CASE_STUDY_IMAGE_TYPES,
   MAX_CASE_STUDY_IMAGE_BYTES,
@@ -26,8 +27,6 @@ import {
   trashCaseStudyRow,
   updateCaseStudyRow,
 } from "./case-study-store";
-import { cmsDb } from "./queries";
-
 async function requireCms() {
   const user = await requireUser();
   if (!isFullAccessRole(user.role) && !hasModule(user, "cms")) redirect("/crm?error=forbidden");
@@ -62,28 +61,11 @@ async function storeCaseStudyImage(
   const buffer = Buffer.from(await file.arrayBuffer());
   const dimensionError = validateImageBuffer(buffer, kind);
   if (dimensionError) return { ok: false, error: dimensionError };
-  const [{ mkdirSync, writeFileSync }, { join }] = await Promise.all([import("node:fs"), import("node:path")]);
-  const name = `${randomToken(8)}${ext || ".jpg"}`;
-  const dir = join(process.cwd(), "public", "media", "cms");
-  mkdirSync(dir, { recursive: true });
-  writeFileSync(join(dir, name), buffer);
-  const path = `/media/cms/${name}`;
-  try {
-    const db = await cmsDb();
-    await db.cmsMedia.create({
-      data: {
-        filename: file.name,
-        path,
-        alt: "",
-        caption: "",
-        mime: file.type || "image/jpeg",
-        size: file.size,
-      },
-    });
-  } catch {
-    // File is on disk even if the media library row cannot be written.
-  }
-  return { ok: true, path };
+  const validated = new File([buffer], original || "upload.jpg", { type: file.type || "image/jpeg" });
+  return storeCmsImageUpload(validated, {
+    allowedExt: CASE_STUDY_IMAGE_TYPES,
+    maxBytes: MAX_CASE_STUDY_IMAGE_BYTES,
+  });
 }
 
 async function applyUploads(formData: FormData, input: CaseStudySaveInput): Promise<string | null> {

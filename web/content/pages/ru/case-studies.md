@@ -13,7 +13,7 @@
 Мы публикуем имена клиентов, которые разрешено называть, и ясный стандарт для любого кейса с объёмом работы, источником и одобрением клиента.
 [Обсудить ваш отель](/ru#audit)
 [Смотреть решения](/ru/solutions/revenue-commercial-management)
-![The KPI Plus hospitality commercial planning](media/the-kpi-plus-revenue-scene_4932d3c7.jpg)
+![The KPI Plus hospitality commercial planning](media/the-kpi-plus-revenue-scene_4932d3c7.webp)
 Мы публикуем информацию о сотрудничестве осторожно и отделяем факты от того, что ещё не подтверждено.
 Стандарт до публикации
 ## Сделайте сотрудничество понятным: отделите задачу, работу и доказательства

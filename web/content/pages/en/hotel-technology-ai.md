@@ -28,7 +28,7 @@ Revenue · Direct Booking · Commercial Growth
 Connect revenue, direct booking, and commercial-growth priorities so the hotel team can choose the next move and measure what changes.
 [Explore Technology, AI & Automation](solutions/hotel-ai-automation.html)
 [Request an audit](/en#audit)
-![Hospitality commercial decision-making](../media/the-kpi-plus-revenue-scene_4932d3c7.jpg)
+![Hospitality commercial decision-making](../media/the-kpi-plus-revenue-scene_4932d3c7.webp)
 Commercial approach
 Workflow questions
 Automation use cases
@@ -178,5 +178,5 @@ Corporate AI Training Program
 ## Page image assets
 
 - `../media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus
-- `../media/the-kpi-plus-revenue-scene_4932d3c7.jpg` — Hospitality commercial decision-making
+- `../media/the-kpi-plus-revenue-scene_4932d3c7.webp` — Hospitality commercial decision-making
 - `../media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus

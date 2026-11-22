@@ -15,9 +15,9 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/favicon.png", type: "image/png" },
+      { url: "/favicon.webp", type: "image/webp" },
     ],
-    apple: [{ url: "/favicon.png", sizes: "180x180", type: "image/png" }],
+    apple: [{ url: "/favicon.webp", sizes: "180x180", type: "image/webp" }],
   },
   verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
     ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }

@@ -29,7 +29,7 @@ Revenue · Direct Booking · Commercial Growth
 เชื่อมรายได้ การจองตรง และการเติบโตของโรงแรมให้เป็นแผนที่ทีมลงมือทำและวัดผลได้จริง
 [ขอรับการวิเคราะห์โรงแรม](../index.html#audit)
 [พูดคุยกับทีม เดอะ เคพีไอ พลัส](../contact-us.html)
-![Revenue Management สำหรับโรงแรม](../media/kpi-grow-revenue_f786a5a5.jpg)
+![Revenue Management สำหรับโรงแรม](../media/kpi-grow-revenue_f786a5a5.webp)
 จุดที่งานนี้ให้ความสำคัญ
 Occupancy, ADR และ RevPAR
 Booking Pace และ Forecast Accuracy
@@ -238,5 +238,5 @@ Revenue · Direct Booking · Commercial Growth
 ## Page image assets
 
 - `../media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus
-- `../media/kpi-grow-revenue_f786a5a5.jpg` — Revenue Management สำหรับโรงแรม
+- `../media/kpi-grow-revenue_f786a5a5.webp` — Revenue Management สำหรับโรงแรม
 - `../media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus

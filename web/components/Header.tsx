@@ -124,7 +124,7 @@ export function Header({ extraLinks = [] }: { extraLinks?: { href: string; label
           className="kpi-header-brand"
         >
           <Image
-            src="/brand/KPIPlus_Horizontal_FullColor.png"
+            src="/brand/KPIPlus_Horizontal_FullColor.webp"
             alt={brandName(locale)}
             width={520}
             height={180}

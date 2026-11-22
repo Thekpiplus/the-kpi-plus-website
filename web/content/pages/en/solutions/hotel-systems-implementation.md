@@ -29,7 +29,7 @@ Revenue · Direct Booking · Commercial Growth
 Connect revenue, direct booking, and commercial-growth priorities so the hotel team can choose the next move and measure what changes.
 [Review My Hotel Systems](../../index.html#audit)
 [Talk to Our Team](../../contact-us.html)
-![Hotel systems & implementation for hotels](../../media/kpi-grow-capability_7bba9d6e.jpg)
+![Hotel systems & implementation for hotels](../../media/kpi-grow-capability_7bba9d6e.webp)
 PMS, rate, and room mapping
 OTA connectivity and distribution
 Reporting and operating workflow
@@ -58,10 +58,10 @@ Inventory issues
 Technology context
 ## Platforms We Work With
 Our work can include Cloudbeds, SiteMinder, Yanolja Cloud Solution (formerly eZee), Oracle Opera Cloud, Concerto, HotelierGuru, and other PMS, Channel Manager, Booking Engine, and hotel distribution platforms.
-![Cloudbeds hotel PMS](../../media/cloudbeds_95e9dd7d.png)
-![SiteMinder hotel channel manager](../../media/siteminder_03b5c23a.png)
-![Yanolja Cloud Solution hotel PMS](../../media/yanolja-cloud-solution_5abcf1b8.png)
-![Opera Cloud hotel PMS](../../media/opera-cloud_c9615232.png)
+![Cloudbeds hotel PMS](../../media/cloudbeds_95e9dd7d.webp)
+![SiteMinder hotel channel manager](../../media/siteminder_03b5c23a.webp)
+![Yanolja Cloud Solution hotel PMS](../../media/yanolja-cloud-solution_5abcf1b8.webp)
+![Opera Cloud hotel PMS](../../media/opera-cloud_c9615232.webp)
 We are platform-independent. Our recommendations are based on what works best for the hotel. Platform marks are used for identification only and do not imply an official partnership.
 Implementation scope
 ## What We Implement & Optimize
@@ -155,7 +155,7 @@ Free Hotel Tools
 Selected hospitality collaboration record
 ## Trusted by leading hospitality brands.
 The KPI Plus has had the opportunity to work with and support hospitality brands across Thailand. This selected record is presented as factual collaboration context, not an endorsement or performance claim.
-![Destination Group](../../media/destination-group-official-logo_667e4ce8.jpg)
+![Destination Group](../../media/destination-group-official-logo_667e4ce8.webp)
 ![BYD Lofts Boutique Hotel & Serviced Apartments](../../media/byd-lofts-official-logo_3bebe9db.svg)
 Hotel COCO Phuket
 Naiya Buree Boutique Resort
@@ -163,7 +163,7 @@ Baan Taranya Resort
 Casa Solana Patong
 Casa De Lipe
 Baan 125 Stay
-![](../../media/destination-group-official-logo_667e4ce8.jpg)
+![](../../media/destination-group-official-logo_667e4ce8.webp)
 ![](../../media/byd-lofts-official-logo_3bebe9db.svg)
 Hotel COCO Phuket
 Naiya Buree Boutique Resort
@@ -354,13 +354,13 @@ Corporate AI Training Program
 ## Page image assets
 
 - `../../media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus
-- `../../media/kpi-grow-capability_7bba9d6e.jpg` — Hotel systems & implementation for hotels
-- `../../media/cloudbeds_95e9dd7d.png` — Cloudbeds hotel PMS
-- `../../media/siteminder_03b5c23a.png` — SiteMinder hotel channel manager
-- `../../media/yanolja-cloud-solution_5abcf1b8.png` — Yanolja Cloud Solution hotel PMS
-- `../../media/opera-cloud_c9615232.png` — Opera Cloud hotel PMS
-- `../../media/destination-group-official-logo_667e4ce8.jpg` — Destination Group
+- `../../media/kpi-grow-capability_7bba9d6e.webp` — Hotel systems & implementation for hotels
+- `../../media/cloudbeds_95e9dd7d.webp` — Cloudbeds hotel PMS
+- `../../media/siteminder_03b5c23a.webp` — SiteMinder hotel channel manager
+- `../../media/yanolja-cloud-solution_5abcf1b8.webp` — Yanolja Cloud Solution hotel PMS
+- `../../media/opera-cloud_c9615232.webp` — Opera Cloud hotel PMS
+- `../../media/destination-group-official-logo_667e4ce8.webp` — Destination Group
 - `../../media/byd-lofts-official-logo_3bebe9db.svg` — BYD Lofts Boutique Hotel & Serviced Apartments
-- `../../media/destination-group-official-logo_667e4ce8.jpg` — 
+- `../../media/destination-group-official-logo_667e4ce8.webp` — 
 - `../../media/byd-lofts-official-logo_3bebe9db.svg` — 
 - `../../media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus

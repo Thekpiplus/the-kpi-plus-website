@@ -8,7 +8,7 @@ export function PartnerLoginForm({ error, applied }: { error?: string; applied?:
   return (
     <form action="/api/partners/login" method="post" className="crm-card mx-auto mt-16 max-w-md">
       <img
-        src="/brand/KPIPlus_Horizontal_FullColor.png"
+        src="/brand/KPIPlus_Horizontal_FullColor.webp"
         alt="The KPI Plus"
         width={180}
         height={40}

@@ -1,11 +1,11 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { storeCmsImageUpload } from "@/lib/media/store-upload";
 import { redirect } from "next/navigation";
 import { requireUser } from "@/lib/crm/auth";
 import { hasModule } from "@/lib/crm/modules";
 import { isFullAccessRole } from "@/lib/crm/roles";
-import { randomToken } from "@/lib/crm/security";
 import { CASE_STUDY_IMAGE_TYPES, MAX_CASE_STUDY_IMAGE_BYTES } from "./case-studies";
 import { documentPath } from "./body";
 import { cmsDb, documentById, pageDocumentBySlug, pageDocumentsBySlug, refreshCmsFiles } from "./queries";
@@ -58,35 +58,11 @@ function revalidateHotelSystems(doc: Pick<CmsDocumentRow, "slug" | "locale" | "k
 }
 
 async function storeImage(file: File): Promise<{ ok: true; path: string } | { ok: false; error: string }> {
-  const original = file.name || "";
-  const dot = original.lastIndexOf(".");
-  const ext = dot >= 0 ? original.slice(dot).toLowerCase() : "";
-  if (!CASE_STUDY_IMAGE_TYPES.has(ext) || file.size > MAX_CASE_STUDY_IMAGE_BYTES) {
-    return { ok: false, error: "invalid_image" };
-  }
-  const buffer = Buffer.from(await file.arrayBuffer());
-  const [{ mkdirSync, writeFileSync }, { join }] = await Promise.all([import("node:fs"), import("node:path")]);
-  const name = `${randomToken(8)}${ext || ".jpg"}`;
-  const dir = join(process.cwd(), "public", "media", "cms");
-  mkdirSync(dir, { recursive: true });
-  writeFileSync(join(dir, name), buffer);
-  const path = `/media/cms/${name}`;
-  try {
-    const db = await cmsDb();
-    await db.cmsMedia.create({
-      data: {
-        filename: file.name,
-        path,
-        alt: "",
-        caption: "",
-        mime: file.type || "image/jpeg",
-        size: file.size,
-      },
-    });
-  } catch {
-    /* media table optional */
-  }
-  return { ok: true, path };
+  return storeCmsImageUpload(file, {
+    allowedExt: CASE_STUDY_IMAGE_TYPES,
+    maxBytes: MAX_CASE_STUDY_IMAGE_BYTES,
+    errorKey: "invalid_image",
+  });
 }
 
 async function applyVisualUpload(

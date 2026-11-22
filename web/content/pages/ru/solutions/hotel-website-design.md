@@ -28,7 +28,7 @@ Hotel website design connects information hierarchy, guest confidence, mobile us
 Revenue · Direct Booking · Commercial Growth
 Connect revenue, direct booking, and commercial-growth priorities so the hotel team can choose the next move and measure what changes.
 [Discuss this solution](../../index.html#audit)
-![Website design for hotels](../../media/kpi-grow-demand_24299cd0.jpg)
+![Website design for hotels](../../media/kpi-grow-demand_24299cd0.webp)
 Information and page hierarchy
 Mobile guest journey
 Booking-path clarity
@@ -70,7 +70,7 @@ Free Hotel Tools
 Selected hospitality collaboration record
 ## Trusted by leading hospitality brands.
 The KPI Plus has had the opportunity to work with and support hospitality brands across Thailand. This selected record is presented as factual collaboration context, not an endorsement or performance claim.
-![Destination Group](../../media/destination-group-official-logo_667e4ce8.jpg)
+![Destination Group](../../media/destination-group-official-logo_667e4ce8.webp)
 ![BYD Lofts Boutique Hotel & Serviced Apartments](../../media/byd-lofts-official-logo_3bebe9db.svg)
 Hotel COCO Phuket
 Naiya Buree Boutique Resort
@@ -78,7 +78,7 @@ Baan Taranya Resort
 Casa Solana Patong
 Casa De Lipe
 Baan 125 Stay
-![](../../media/destination-group-official-logo_667e4ce8.jpg)
+![](../../media/destination-group-official-logo_667e4ce8.webp)
 ![](../../media/byd-lofts-official-logo_3bebe9db.svg)
 Hotel COCO Phuket
 Naiya Buree Boutique Resort
@@ -248,9 +248,9 @@ Corporate AI Training Program
 ## Page image assets
 
 - `../../media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus
-- `../../media/kpi-grow-demand_24299cd0.jpg` — Website design for hotels
-- `../../media/destination-group-official-logo_667e4ce8.jpg` — Destination Group
+- `../../media/kpi-grow-demand_24299cd0.webp` — Website design for hotels
+- `../../media/destination-group-official-logo_667e4ce8.webp` — Destination Group
 - `../../media/byd-lofts-official-logo_3bebe9db.svg` — BYD Lofts Boutique Hotel & Serviced Apartments
-- `../../media/destination-group-official-logo_667e4ce8.jpg` — 
+- `../../media/destination-group-official-logo_667e4ce8.webp` — 
 - `../../media/byd-lofts-official-logo_3bebe9db.svg` — 
 - `../../media/logo_KPIPlus_PNG-01_7a55befb.webp` — The KPI Plus

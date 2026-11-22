@@ -1093,9 +1093,9 @@ export function hotelTrainingNeedsPublicSrc(visual?: { src?: string; status?: st
 }
 
 export const HOTEL_TRAINING_PARTNERS = [
-  { name: "NAWA", src: "/brand/partners/nawa.png", href: "https://www.nawaone.co/en", alt: "NAWA Smartest Hospitality Platform", width: 180, height: 64 },
-  { name: "The KPI Plus Academy", src: "/brand/KPIPlus_Horizontal_FullColor.png", href: HOTEL_TRAINING_ACADEMY_HOME, alt: "The KPI Plus Academy", width: 180, height: 64 },
-  { name: "Australia Smart", src: "/brand/partners/australia-smart.png", href: "https://www.australiasmart.com.au", alt: "Australia Smart Edu Biz Coach", width: 180, height: 64 },
+  { name: "NAWA", src: "/brand/partners/nawa.webp", href: "https://www.nawaone.co/en", alt: "NAWA Smartest Hospitality Platform", width: 180, height: 64 },
+  { name: "The KPI Plus Academy", src: "/brand/KPIPlus_Horizontal_FullColor.webp", href: HOTEL_TRAINING_ACADEMY_HOME, alt: "The KPI Plus Academy", width: 180, height: 64 },
+  { name: "Australia Smart", src: "/brand/partners/australia-smart.webp", href: "https://www.australiasmart.com.au", alt: "Australia Smart Edu Biz Coach", width: 180, height: 64 },
 ] as const;
 
 export const HOTEL_TRAINING_PROGRAM_FIELDS = {
