@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { formatGa4Number, type Ga4Overview, type Ga4Range } from "@/lib/ga4/reports";
+import { formatGa4Number, type Ga4MetricRow, type Ga4Overview, type Ga4Range } from "@/lib/ga4/reports";
 
 const RANGES: Array<{ id: Ga4Range; label: string }> = [
   { id: "7", label: "7 วัน" },
@@ -7,9 +7,11 @@ const RANGES: Array<{ id: Ga4Range; label: string }> = [
   { id: "90", label: "90 วัน" },
 ];
 
+const PALETTE = ["#0B6660", "#A3CE39", "#0B1F33", "#5B8A84", "#C5D96A", "#3B3B3B", "#7A9B98", "#E6E81F"];
+
 function MetricCard({ label, value, hint }: { label: string; value: string; hint?: string }) {
   return (
-    <div className="crm-dash-stat is-cms is-static" role="listitem">
+    <div className="crm-dash-stat is-cms is-static crm-cms-analytics-metric" role="listitem">
       <span className="crm-dash-stat-label">{label}</span>
       <strong className="crm-dash-stat-value">{value}</strong>
       {hint ? <span className="crm-dash-stat-hint">{hint}</span> : null}
@@ -17,32 +19,243 @@ function MetricCard({ label, value, hint }: { label: string; value: string; hint
   );
 }
 
-function RankTable({
+function donutBackground(rows: Ga4MetricRow[]) {
+  const positive = rows.filter((row) => row.count > 0).slice(0, PALETTE.length);
+  const total = positive.reduce((sum, row) => sum + row.count, 0);
+  if (total <= 0 || positive.length === 0) {
+    return { background: "conic-gradient(#E3E8EB 0 100%)", slices: [] as Array<Ga4MetricRow & { fill: string; share: number }> };
+  }
+  let cursor = 0;
+  const parts: string[] = [];
+  const slices = positive.map((row, index) => {
+    const start = cursor;
+    const end = cursor + (row.count / total) * 100;
+    const fill = PALETTE[index % PALETTE.length];
+    parts.push(`${fill} ${start}% ${end}%`);
+    cursor = end;
+    return { ...row, fill, share: Math.round((row.count / total) * 100) };
+  });
+  if (cursor < 100) parts.push(`#E3E8EB ${cursor}% 100%`);
+  return { background: `conic-gradient(${parts.join(", ")})`, slices, total };
+}
+
+function DonutPanel({
   title,
+  subtitle,
+  rows,
+  unit,
+  empty,
+}: {
+  title: string;
+  subtitle: string;
+  rows: Ga4MetricRow[];
+  unit: string;
+  empty: string;
+}) {
+  const { background, slices, total = 0 } = donutBackground(rows);
+  return (
+    <section className="crm-cms-panel crm-cms-analytics-panel crm-cms-analytics-donut-panel">
+      <header className="crm-cms-analytics-panel-head">
+        <h2 className="crm-cms-overview-section-title">{title}</h2>
+        <p className="crm-cms-analytics-panel-desc">{subtitle}</p>
+      </header>
+      {slices.length === 0 ? (
+        <p className="crm-cms-empty-note">{empty}</p>
+      ) : (
+        <div className="crm-cms-analytics-donut-layout">
+          <div
+            className="crm-cms-analytics-donut"
+            style={{ background }}
+            role="img"
+            aria-label={`${title} รวม ${formatGa4Number(total)} ${unit}`}
+          >
+            <span className="crm-cms-analytics-donut-hole">
+              <strong>{formatGa4Number(total)}</strong>
+              <em>{unit}</em>
+            </span>
+          </div>
+          <ul className="crm-cms-analytics-legend">
+            {slices.map((slice) => (
+              <li key={`${title}-${slice.label}`}>
+                <i style={{ background: slice.fill }} aria-hidden="true" />
+                <div>
+                  <strong>{slice.label}</strong>
+                  {slice.secondary ? <span>{slice.secondary}</span> : null}
+                </div>
+                <em>
+                  {slice.value}
+                  <b>{slice.share}%</b>
+                </em>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </section>
+  );
+}
+
+function HorizontalBars({
+  title,
+  subtitle,
   rows,
   empty,
 }: {
   title: string;
-  rows: Array<{ label: string; value: string; secondary?: string }>;
+  subtitle: string;
+  rows: Ga4MetricRow[];
   empty: string;
 }) {
+  const max = Math.max(1, ...rows.map((row) => row.count));
   return (
     <section className="crm-cms-panel crm-cms-analytics-panel">
-      <h2 className="crm-cms-overview-section-title">{title}</h2>
+      <header className="crm-cms-analytics-panel-head">
+        <h2 className="crm-cms-overview-section-title">{title}</h2>
+        <p className="crm-cms-analytics-panel-desc">{subtitle}</p>
+      </header>
       {rows.length === 0 ? (
         <p className="crm-cms-empty-note">{empty}</p>
       ) : (
-        <ul className="crm-cms-analytics-list">
-          {rows.map((row) => (
-            <li key={`${title}-${row.label}`}>
-              <div>
-                <strong>{row.label}</strong>
-                {row.secondary ? <span>{row.secondary}</span> : null}
-              </div>
-              <em>{row.value}</em>
-            </li>
-          ))}
+        <ul className="crm-cms-analytics-hbar" role="list">
+          {rows.slice(0, 8).map((row, index) => {
+            const width = Math.max(6, Math.round((row.count / max) * 100));
+            return (
+              <li key={`${title}-${row.label}`} role="listitem">
+                <span className="crm-cms-analytics-hbar-index" aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <div className="crm-cms-analytics-hbar-body">
+                  <div className="crm-cms-analytics-hbar-label">
+                    <strong title={row.label}>{row.label}</strong>
+                    {row.secondary ? <span>{row.secondary}</span> : null}
+                  </div>
+                  <div className="crm-cms-analytics-hbar-track" aria-hidden="true">
+                    <span style={{ width: `${width}%` }} />
+                  </div>
+                </div>
+                <em>{row.value}</em>
+              </li>
+            );
+          })}
         </ul>
+      )}
+    </section>
+  );
+}
+
+function DailyTrendChart({
+  daily,
+}: {
+  daily: Array<{ date: string; users: number; views: number }>;
+}) {
+  const width = 720;
+  const height = 220;
+  const padX = 12;
+  const padTop = 18;
+  const padBottom = 28;
+  const innerW = width - padX * 2;
+  const innerH = height - padTop - padBottom;
+  const maxViews = Math.max(1, ...daily.map((d) => d.views));
+  const maxUsers = Math.max(1, ...daily.map((d) => d.users));
+  const n = Math.max(1, daily.length - 1);
+
+  const point = (index: number, value: number, max: number) => {
+    const x = padX + (index / n) * innerW;
+    const y = padTop + innerH - (value / max) * innerH;
+    return { x, y };
+  };
+
+  const viewsPoints = daily.map((d, i) => point(i, d.views, maxViews));
+  const usersPoints = daily.map((d, i) => point(i, d.users, maxUsers));
+
+  const toLine = (pts: Array<{ x: number; y: number }>) =>
+    pts.map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(" ");
+
+  const areaPath =
+    viewsPoints.length > 0
+      ? `${toLine(viewsPoints)} L${viewsPoints[viewsPoints.length - 1].x.toFixed(1)} ${(padTop + innerH).toFixed(1)} L${viewsPoints[0].x.toFixed(1)} ${(padTop + innerH).toFixed(1)} Z`
+      : "";
+
+  const labelEvery = daily.length > 20 ? 4 : daily.length > 12 ? 2 : 1;
+
+  return (
+    <section className="crm-cms-panel crm-cms-analytics-panel crm-cms-analytics-trend">
+      <header className="crm-cms-analytics-panel-head crm-cms-analytics-trend-head">
+        <div>
+          <h2 className="crm-cms-overview-section-title">แนวโน้มรายวัน</h2>
+          <p className="crm-cms-analytics-panel-desc">การดูหน้า (พื้นที่) และผู้ใช้ (เส้น) ตามวัน</p>
+        </div>
+        <ul className="crm-cms-analytics-trend-legend" aria-hidden="true">
+          <li>
+            <i className="is-views" />
+            การดูหน้า
+          </li>
+          <li>
+            <i className="is-users" />
+            ผู้ใช้
+          </li>
+        </ul>
+      </header>
+      {daily.length === 0 ? (
+        <p className="crm-cms-empty-note">ยังไม่มีข้อมูลในช่วงนี้</p>
+      ) : (
+        <div className="crm-cms-analytics-trend-frame">
+          <svg
+            className="crm-cms-analytics-trend-svg"
+            viewBox={`0 0 ${width} ${height}`}
+            role="img"
+            aria-label="กราฟแนวโน้มผู้ใช้และการดูหน้ารายวัน"
+          >
+            <defs>
+              <linearGradient id="ga4ViewsFill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#A3CE39" stopOpacity="0.45" />
+                <stop offset="100%" stopColor="#0B6660" stopOpacity="0.05" />
+              </linearGradient>
+            </defs>
+            {[0.25, 0.5, 0.75, 1].map((t) => {
+              const y = padTop + innerH * (1 - t);
+              return (
+                <line
+                  key={t}
+                  x1={padX}
+                  x2={width - padX}
+                  y1={y}
+                  y2={y}
+                  className="crm-cms-analytics-trend-grid"
+                />
+              );
+            })}
+            {areaPath ? <path d={areaPath} fill="url(#ga4ViewsFill)" /> : null}
+            <path d={toLine(viewsPoints)} className="crm-cms-analytics-trend-line is-views" fill="none" />
+            <path d={toLine(usersPoints)} className="crm-cms-analytics-trend-line is-users" fill="none" />
+            {usersPoints.map((p, i) =>
+              i % labelEvery === 0 || i === usersPoints.length - 1 ? (
+                <circle key={`u-${daily[i].date}`} cx={p.x} cy={p.y} r="3.2" className="crm-cms-analytics-trend-dot" />
+              ) : null,
+            )}
+            {daily.map((day, i) =>
+              i % labelEvery === 0 || i === daily.length - 1 ? (
+                <text
+                  key={`t-${day.date}`}
+                  x={point(i, 0, 1).x}
+                  y={height - 8}
+                  textAnchor="middle"
+                  className="crm-cms-analytics-trend-label"
+                >
+                  {day.date.slice(5)}
+                </text>
+              ) : null,
+            )}
+          </svg>
+          <div className="crm-cms-analytics-trend-summary" aria-hidden="true">
+            <span>
+              สูงสุด <strong>{formatGa4Number(maxViews)}</strong> หน้า / วัน
+            </span>
+            <span>
+              ผู้ใช้สูงสุด <strong>{formatGa4Number(maxUsers)}</strong> / วัน
+            </span>
+          </div>
+        </div>
       )}
     </section>
   );
@@ -104,8 +317,6 @@ export function SiteAnalyticsDashboard({
   data: Ga4Overview;
   range: Ga4Range;
 }) {
-  const maxViews = Math.max(1, ...data.daily.map((day) => day.views));
-
   return (
     <div className="crm-cms-analytics">
       <div className="crm-cms-analytics-toolbar">
@@ -145,32 +356,46 @@ export function SiteAnalyticsDashboard({
         </p>
       ) : null}
 
-      <section className="crm-cms-panel crm-cms-analytics-panel">
-        <h2 className="crm-cms-overview-section-title">แนวโน้มรายวัน</h2>
-        {data.daily.length === 0 ? (
-          <p className="crm-cms-empty-note">ยังไม่มีข้อมูลในช่วงนี้</p>
-        ) : (
-          <div className="crm-cms-analytics-chart" role="img" aria-label="กราฟการดูหน้ารายวัน">
-            {data.daily.map((day) => (
-              <div key={day.date} className="crm-cms-analytics-bar-wrap" title={`${day.date}: ${day.views} หน้า`}>
-                <span
-                  className="crm-cms-analytics-bar"
-                  style={{ height: `${Math.max(8, (day.views / maxViews) * 100)}%` }}
-                />
-                <em>{day.date.slice(5)}</em>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
+      <DailyTrendChart daily={data.daily} />
 
-      <div className="crm-cms-overview-grid">
-        <RankTable title="หน้ายอดนิยม" rows={data.topPages} empty="ยังไม่มีข้อมูลหน้า" />
-        <RankTable title="ประเทศ" rows={data.countries} empty="ยังไม่มีข้อมูลประเทศ" />
-        <RankTable title="เมือง / ที่ตั้งโดยประมาณ" rows={data.cities} empty="ยังไม่มีข้อมูลเมือง" />
-        <RankTable title="อุปกรณ์" rows={data.devices} empty="ยังไม่มีข้อมูลอุปกรณ์" />
-        <RankTable title="ช่องทางเข้าชม" rows={data.sources} empty="ยังไม่มีข้อมูลช่องทาง" />
+      <div className="crm-cms-analytics-visual-grid">
+        <DonutPanel
+          title="อุปกรณ์"
+          subtitle="สัดส่วนผู้ใช้ตามประเภทอุปกรณ์"
+          rows={data.devices}
+          unit="ผู้ใช้"
+          empty="ยังไม่มีข้อมูลอุปกรณ์"
+        />
+        <DonutPanel
+          title="ช่องทางเข้าชม"
+          subtitle="สัดส่วนเซสชันตามช่องทาง"
+          rows={data.sources}
+          unit="เซสชัน"
+          empty="ยังไม่มีข้อมูลช่องทาง"
+        />
       </div>
+
+      <div className="crm-cms-analytics-visual-grid is-bars">
+        <HorizontalBars
+          title="หน้ายอดนิยม"
+          subtitle="อันดับตามจำนวนการดูหน้า"
+          rows={data.topPages}
+          empty="ยังไม่มีข้อมูลหน้า"
+        />
+        <HorizontalBars
+          title="ประเทศ"
+          subtitle="ผู้ใช้ตามประเทศ"
+          rows={data.countries}
+          empty="ยังไม่มีข้อมูลประเทศ"
+        />
+      </div>
+
+      <HorizontalBars
+        title="เมือง / ที่ตั้งโดยประมาณ"
+        subtitle="ผู้ใช้ตามเมือง (ประมาณการจาก GA4)"
+        rows={data.cities}
+        empty="ยังไม่มีข้อมูลเมือง"
+      />
     </div>
   );
 }

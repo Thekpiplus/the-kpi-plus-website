@@ -7,6 +7,8 @@ export type Ga4MetricRow = {
   label: string;
   value: string;
   secondary?: string;
+  /** Raw numeric value for charts / donut shares */
+  count: number;
 };
 
 export type Ga4Overview = {
@@ -164,30 +166,50 @@ export async function fetchGa4Overview(range: Ga4Range = "28"): Promise<
         bounceRate: metricValue(totalRow, 3),
         averageSessionDuration: metricValue(totalRow, 4),
       },
-      topPages: (pagesRes.rows ?? []).map((row) => ({
-        label: dim(row, 0),
-        value: formatGa4Number(metricValue(row, 0)),
-        secondary: `${formatGa4Number(metricValue(row, 1))} ผู้ใช้`,
-      })),
-      countries: (countriesRes.rows ?? []).map((row) => ({
-        label: dim(row, 0),
-        value: formatGa4Number(metricValue(row, 0)),
-        secondary: `${formatGa4Number(metricValue(row, 1))} หน้า`,
-      })),
-      cities: (citiesRes.rows ?? []).map((row) => ({
-        label: `${dim(row, 0)}${dim(row, 1) !== "—" ? `, ${dim(row, 1)}` : ""}`,
-        value: formatGa4Number(metricValue(row, 0)),
-      })),
-      devices: (devicesRes.rows ?? []).map((row) => ({
-        label: dim(row, 0),
-        value: formatGa4Number(metricValue(row, 0)),
-        secondary: `${formatGa4Number(metricValue(row, 1))} เซสชัน`,
-      })),
-      sources: (sourcesRes.rows ?? []).map((row) => ({
-        label: dim(row, 0),
-        value: formatGa4Number(metricValue(row, 0)),
-        secondary: `${formatGa4Number(metricValue(row, 1))} ผู้ใช้`,
-      })),
+      topPages: (pagesRes.rows ?? []).map((row) => {
+        const views = metricValue(row, 0);
+        return {
+          label: dim(row, 0),
+          value: formatGa4Number(views),
+          secondary: `${formatGa4Number(metricValue(row, 1))} ผู้ใช้`,
+          count: views,
+        };
+      }),
+      countries: (countriesRes.rows ?? []).map((row) => {
+        const users = metricValue(row, 0);
+        return {
+          label: dim(row, 0),
+          value: formatGa4Number(users),
+          secondary: `${formatGa4Number(metricValue(row, 1))} หน้า`,
+          count: users,
+        };
+      }),
+      cities: (citiesRes.rows ?? []).map((row) => {
+        const users = metricValue(row, 0);
+        return {
+          label: `${dim(row, 0)}${dim(row, 1) !== "—" ? `, ${dim(row, 1)}` : ""}`,
+          value: formatGa4Number(users),
+          count: users,
+        };
+      }),
+      devices: (devicesRes.rows ?? []).map((row) => {
+        const users = metricValue(row, 0);
+        return {
+          label: dim(row, 0),
+          value: formatGa4Number(users),
+          secondary: `${formatGa4Number(metricValue(row, 1))} เซสชัน`,
+          count: users,
+        };
+      }),
+      sources: (sourcesRes.rows ?? []).map((row) => {
+        const sessions = metricValue(row, 0);
+        return {
+          label: dim(row, 0),
+          value: formatGa4Number(sessions),
+          secondary: `${formatGa4Number(metricValue(row, 1))} ผู้ใช้`,
+          count: sessions,
+        };
+      }),
       daily: (dailyRes.rows ?? []).map((row) => {
         const raw = dim(row, 0);
         const date =
