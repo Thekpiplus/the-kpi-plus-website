@@ -148,11 +148,11 @@ function DailyTrendChart({
 }: {
   daily: Array<{ date: string; users: number; views: number }>;
 }) {
-  const width = 720;
-  const height = 220;
-  const padX = 12;
-  const padTop = 18;
-  const padBottom = 28;
+  const width = 760;
+  const height = 168;
+  const padX = 14;
+  const padTop = 14;
+  const padBottom = 24;
   const innerW = width - padX * 2;
   const innerH = height - padTop - padBottom;
   const maxViews = Math.max(1, ...daily.map((d) => d.views));
@@ -230,7 +230,7 @@ function DailyTrendChart({
             <path d={toLine(usersPoints)} className="crm-cms-analytics-trend-line is-users" fill="none" />
             {usersPoints.map((p, i) =>
               i % labelEvery === 0 || i === usersPoints.length - 1 ? (
-                <circle key={`u-${daily[i].date}`} cx={p.x} cy={p.y} r="3.2" className="crm-cms-analytics-trend-dot" />
+                <circle key={`u-${daily[i].date}`} cx={p.x} cy={p.y} r="2.6" className="crm-cms-analytics-trend-dot" />
               ) : null,
             )}
             {daily.map((day, i) =>
@@ -238,7 +238,7 @@ function DailyTrendChart({
                 <text
                   key={`t-${day.date}`}
                   x={point(i, 0, 1).x}
-                  y={height - 8}
+                  y={height - 6}
                   textAnchor="middle"
                   className="crm-cms-analytics-trend-label"
                 >
